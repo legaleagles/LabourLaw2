@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Land Laws — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SPLASH SCREEN ── */
+#splash {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--navy);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 900;
+  color: white; text-align: center; line-height: 1.2;
+}
+.splash-sub { color: var(--gold-light); font-size: 14px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar {
+  width: 200px; height: 3px; background: rgba(255,255,255,0.15);
+  border-radius: 2px; overflow: hidden; margin-top: 8px;
+}
+.splash-fill {
+  height: 100%; background: var(--gold-light);
+  animation: load 1.8s ease forwards;
+}
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOP NAV ── */
+#topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+}
+.topbar-icon { font-size: 22px; }
+.topbar-title {
+  font-family: 'Playfair Display', serif;
+  color: white; font-size: 16px; font-weight: 700;
+  flex: 1;
+}
+.topbar-badge {
+  background: var(--gold); color: var(--navy);
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 20px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* ── BOTTOM NAV ── */
+#bottomnav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: var(--navy);
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 4px 8px;
+  cursor: pointer; border: none; background: transparent;
+  color: rgba(255,255,255,0.45);
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after {
+  content: ''; position: absolute; top: 0; left: 20%; right: 20%;
+  height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px;
+}
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN CONTENT ── */
+#main { padding: 16px 16px 90px; }
+
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME SCREEN ── */
+.home-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  border-radius: 20px; padding: 24px 20px;
+  margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.home-hero::before {
+  content: '🌾'; position: absolute; right: -10px; top: -10px;
+  font-size: 100px; opacity: 0.07;
+}
+.home-hero h1 {
+  font-family: 'Playfair Display', serif;
+  color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px;
+}
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag {
+  background: rgba(255,255,255,0.12); color: var(--gold-light);
+  font-size: 11px; font-weight: 600; padding: 4px 10px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+
+.section-title {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin: 20px 0 10px;
+}
+
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card {
+  background: white; border-radius: 14px;
+  padding: 16px 14px; cursor: pointer;
+  box-shadow: var(--shadow);
+  border: 1.5px solid transparent;
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+}
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card {
+  background: var(--navy); border-radius: 12px;
+  padding: 14px 10px; text-align: center;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-light); font-size: 24px; font-weight: 900;
+}
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── TOPIC LIST ── */
+.part-header {
+  background: var(--navy); border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.part-header-icon { font-size: 24px; }
+.part-header-text h2 { color: white; font-family: 'Playfair Display', serif; font-size: 17px; }
+.part-header-text p { color: rgba(255,255,255,0.55); font-size: 12px; margin-top: 2px; }
+
+.topic-card {
+  background: white; border-radius: 14px;
+  margin-bottom: 10px; overflow: hidden;
+  box-shadow: var(--shadow); cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: all 0.2s;
+}
+.topic-card:active { transform: scale(0.99); }
+.topic-card.pA { border-left-color: var(--gold); }
+.topic-card.pB { border-left-color: var(--teal); }
+.topic-card.pC { border-left-color: var(--red); }
+.topic-card-header {
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.topic-num {
+  background: var(--navy); color: white;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  font-weight: 500; padding: 4px 8px; border-radius: 6px;
+  white-space: nowrap;
+}
+.pA .topic-num { background: var(--gold); color: var(--navy); }
+.pB .topic-num { background: var(--teal); }
+.pC .topic-num { background: var(--red); }
+.topic-title { font-weight: 600; font-size: 14px; color: var(--navy); flex: 1; line-height: 1.3; }
+.topic-arrow { color: var(--text-muted); font-size: 18px; transition: transform 0.2s; }
+.topic-card.open .topic-arrow { transform: rotate(90deg); }
+.topic-marks {
+  font-size: 10px; color: var(--text-muted); font-weight: 600;
+  letter-spacing: 1px; padding: 0 16px 10px;
+}
+.topic-body {
+  display: none; padding: 0 16px 16px; border-top: 1px solid var(--border);
+}
+.topic-card.open .topic-body { display: block; padding-top: 14px; }
+
+/* ── CONTENT STYLING ── */
+.def-box {
+  background: #fffbf0; border-left: 4px solid var(--gold);
+  border-radius: 0 10px 10px 0; padding: 12px 14px;
+  margin-bottom: 14px; font-size: 13px; line-height: 1.6;
+  color: var(--navy);
+}
+.warn-box {
+  background: #fff5f5; border-left: 4px solid var(--red);
+  border-radius: 0 10px 10px 0; padding: 12px 14px;
+  margin-bottom: 14px; font-size: 13px; line-height: 1.6;
+  color: #8b0000;
+}
+.verdict-box {
+  background: var(--green-light); border-left: 4px solid var(--green);
+  border-radius: 0 10px 10px 0; padding: 12px 14px;
+  margin-bottom: 14px; font-size: 13px; line-height: 1.6;
+  color: var(--green); font-weight: 600;
+}
+.section-h {
+  font-size: 12px; font-weight: 700; color: var(--teal);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin: 14px 0 8px; display: flex; align-items: center; gap: 6px;
+}
+.section-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.data-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; }
+.data-table th {
+  background: var(--navy); color: white;
+  padding: 8px 10px; text-align: left;
+  font-weight: 600; font-size: 11px; letter-spacing: 0.5px;
+}
+.data-table th:first-child { border-radius: 8px 0 0 0; }
+.data-table th:last-child { border-radius: 0 8px 0 0; }
+.data-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+.data-table tr:nth-child(even) td { background: #f8f7f3; }
+.data-table tr:last-child td { border-bottom: none; }
+
+.bullet-item {
+  display: flex; gap: 8px; margin-bottom: 7px;
+  font-size: 13px; line-height: 1.5;
+}
+.bullet-dot { color: var(--gold); font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+
+.case-card {
+  background: #fff9ef; border: 1px solid #f0d882;
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+}
+.case-name { font-weight: 700; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
+.case-ratio { font-size: 12px; color: var(--text-muted); line-height: 1.5; font-style: italic; }
+
+.formula-box {
+  background: var(--navy); color: var(--gold-light);
+  border-radius: 10px; padding: 14px;
+  font-family: 'DM Mono', monospace; font-size: 13px;
+  line-height: 1.8; margin-bottom: 14px;
+}
+
+/* ── CASES SCREEN ── */
+.cases-filter {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding-bottom: 4px; margin-bottom: 14px;
+  scrollbar-width: none;
+}
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-chip {
+  background: white; border: 1.5px solid var(--border);
+  color: var(--text-muted); font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+.case-story-card {
+  background: white; border-radius: 16px;
+  margin-bottom: 12px; overflow: hidden;
+  box-shadow: var(--shadow); cursor: pointer;
+}
+.case-story-header {
+  padding: 16px; display: flex; gap: 12px; align-items: flex-start;
+}
+.case-year-badge {
+  background: var(--gold); color: var(--navy);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  font-weight: 700; padding: 4px 8px; border-radius: 6px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.case-story-title { font-weight: 700; font-size: 14px; color: var(--navy); line-height: 1.3; }
+.case-story-tag { font-size: 11px; color: var(--teal); margin-top: 3px; font-weight: 600; }
+.case-story-body {
+  display: none; padding: 0 16px 16px; border-top: 1px solid var(--border);
+}
+.case-story-card.open .case-story-body { display: block; padding-top: 14px; }
+.story-text { font-size: 13px; line-height: 1.8; color: var(--text); }
+.story-principle {
+  background: var(--navy); color: var(--gold-light);
+  border-radius: 10px; padding: 12px 14px; margin-top: 12px;
+  font-size: 13px; font-weight: 600; line-height: 1.5;
+}
+
+/* ── QUIZ SCREEN ── */
+.quiz-start {
+  text-align: center; padding: 30px 20px;
+}
+.quiz-start h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; color: var(--navy); margin-bottom: 8px;
+}
+.quiz-start p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+.quiz-options { display: grid; gap: 10px; }
+.quiz-opt-btn {
+  background: white; border: 2px solid var(--border);
+  border-radius: 14px; padding: 16px;
+  cursor: pointer; text-align: left; transition: all 0.2s;
+}
+.quiz-opt-btn:active { transform: scale(0.98); }
+.quiz-opt-btn .opt-title { font-weight: 700; font-size: 14px; color: var(--navy); }
+.quiz-opt-btn .opt-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.quiz-opt-btn.correct { border-color: var(--green); background: var(--green-light); }
+.quiz-opt-btn.wrong { border-color: var(--red); background: #fff5f5; }
+
+.quiz-card-container { display: none; }
+.quiz-card-container.active { display: block; }
+.quiz-progress-bar {
+  height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px;
+}
+.quiz-progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+.quiz-q-num { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.quiz-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; color: var(--navy); line-height: 1.4;
+  margin-bottom: 20px;
+}
+.quiz-choices { display: grid; gap: 10px; margin-bottom: 16px; }
+.quiz-choice {
+  background: white; border: 2px solid var(--border);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; font-size: 14px; font-weight: 500;
+  color: var(--navy); transition: all 0.2s; text-align: left;
+}
+.quiz-choice:active { transform: scale(0.99); }
+.quiz-choice.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.quiz-choice.wrong { border-color: var(--red); background: #fff5f5; color: var(--red); }
+.quiz-choice.disabled { pointer-events: none; }
+.quiz-explanation {
+  background: #f0f7ff; border-left: 4px solid #3b82f6;
+  border-radius: 0 10px 10px 0; padding: 12px 14px;
+  font-size: 13px; line-height: 1.6; margin-bottom: 16px; display: none;
+}
+.quiz-next-btn {
+  width: 100%; background: var(--navy); color: white;
+  border: none; border-radius: 12px; padding: 15px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  display: none;
+}
+.quiz-result {
+  text-align: center; padding: 30px 20px; display: none;
+}
+.quiz-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px; font-weight: 900; color: var(--navy);
+}
+.quiz-score-label { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+.quiz-restart-btn {
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 12px; padding: 14px 28px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* VIDEO STYLES */
+.video-card {
+  background: white; border-radius: 16px;
+  margin-bottom: 16px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.video-unit-banner {
+  background: var(--navy); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.video-unit-num {
+  background: var(--gold); color: var(--navy);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+}
+.video-unit-title { color: white; font-size: 14px; font-weight: 700; flex: 1; }
+.video-embed {
+  position: relative; cursor: pointer;
+  background: #000; border-radius: 0;
+  overflow: hidden;
+}
+.video-thumb {
+  width: 100%; display: block;
+  aspect-ratio: 16/9; object-fit: cover;
+}
+.video-play-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.35);
+}
+.video-play-btn {
+  width: 64px; height: 64px;
+  background: #FF0000; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.video-play-btn svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+.video-play-label {
+  color: white; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.video-topics {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.video-topics-title {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.video-topic-item {
+  font-size: 12px; color: var(--text);
+  padding: 3px 0; display: flex; gap: 6px; align-items: baseline;
+}
+.video-topic-dot { color: var(--gold); font-weight: 900; flex-shrink: 0; }
+.video-yt-btn {
+  display: block; margin: 12px 16px 16px;
+  background: #FF0000; color: white;
+  text-align: center; padding: 10px;
+  border-radius: 10px; font-size: 13px; font-weight: 700;
+  text-decoration: none;
+}
+.video-subscribe {
+  background: var(--navy); color: white;
+  text-align: center; padding: 16px;
+  margin-bottom: 16px; border-radius: 16px;
+}
+.video-subscribe p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
+.video-subscribe a {
+  background: #FF0000; color: white;
+  padding: 10px 24px; border-radius: 20px;
+  font-size: 13px; font-weight: 700;
+  text-decoration: none; display: inline-block;
+}
+
+/* FOOTER */
+.app-footer {
+  background: var(--navy); border-radius: 14px;
+  padding: 20px 16px; margin-top: 20px;
+  margin-bottom: 4px;
+}
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-light); font-size: 18px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.footer-tagline { color: rgba(255,255,255,0.5); font-size: 12px; margin-bottom: 16px; }
+.footer-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 12px 0; }
+.footer-disclaimer-title {
+  color: var(--gold-light); font-size: 13px; font-weight: 700;
+  margin-bottom: 6px; margin-top: 12px;
+}
+.footer-disclaimer-text { color: rgba(255,255,255,0.45); font-size: 11px; line-height: 1.7; margin-bottom: 8px; }
+.footer-links { display: flex; gap: 12px; margin-top: 12px; }
+.footer-link {
+  color: var(--gold-light); font-size: 12px; font-weight: 600;
+  text-decoration: none;
+}
+
+/* DISCLAIMER CARD (HOME) */
+.disclaimer-card {
+  background: var(--navy); border-radius: 16px;
+  padding: 16px; margin-bottom: 20px;
+  border: 1px solid rgba(200,150,12,0.2);
+}
+.disclaimer-block {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0;
+}
+.disclaimer-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.disclaimer-heading {
+  color: var(--gold-light); font-size: 13px;
+  font-weight: 700; margin-bottom: 5px;
+}
+.disclaimer-text {
+  color: rgba(255,255,255,0.55); font-size: 11px;
+  line-height: 1.6;
+}
+.disclaimer-divider {
+  height: 1px; background: rgba(255,255,255,0.08);
+  margin: 4px 0;
+}
+.disclaimer-footer {
+  text-align: center; padding-top: 12px;
+  color: rgba(255,255,255,0.5); font-size: 11px;
+  line-height: 1.6;
+}
+
+/* CHEAT SHEET */
+.cheat-section {
+  background: white; border-radius: 14px;
+  margin-bottom: 12px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.cheat-header {
+  background: var(--navy); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+}
+.cheat-header h3 { color: white; font-size: 14px; font-weight: 700; flex: 1; }
+.cheat-header .ch-icon { font-size: 18px; }
+.cheat-header .ch-arrow { color: rgba(255,255,255,0.5); font-size: 16px; transition: transform 0.2s; }
+.cheat-section.open .ch-arrow { transform: rotate(90deg); }
+.cheat-body { display: none; padding: 14px 16px; }
+.cheat-section.open .cheat-body { display: block; }
+.cheat-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; align-items: baseline; }
+.cheat-key { font-weight: 700; color: var(--navy); white-space: nowrap; min-width: 100px; }
+.cheat-val { color: var(--text-muted); line-height: 1.5; }
+.cheat-highlight { color: var(--gold); font-weight: 700; }
+</style>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script><!-- End Cloudflare Web Analytics -->
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">🌾</div>
+  <div class="splash-title">Land Laws<br>Study Companion</div>
+  <div class="splash-sub">Osmania University · LLB 4th Sem</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="topbar-icon">🌾</div>
+  <div class="topbar-title">Land Laws</div>
+  <div class="topbar-badge">LLB Sem 4</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <h1>Land Laws — Smart Revision</h1>
+      <p>Structured study material to supplement your learning. Model answers, case stories, video lectures, quiz and cheat sheet — all in one place.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">12 Short Notes</span>
+        <span class="hero-tag">10 Essays</span>
+        <span class="hero-tag">14 Cases</span>
+        <span class="hero-tag">5 Video Lectures</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">22</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Cases</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Units</div></div>
+    </div>
+    <div class="section-title">Jump To</div>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goScreen('topics')">
+        <div class="qc-bar"></div>
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">Part A · B</div>
+      </div>
+      <div class="quick-card teal" onclick="goScreen('videos')">
+        <div class="qc-bar"></div>
+        <div class="qc-icon">🎬</div>
+        <div class="qc-label">Video Lectures</div>
+        <div class="qc-count">5 units · YouTube</div>
+      </div>
+      <div class="quick-card red" onclick="goScreen('cases')">
+        <div class="qc-bar"></div>
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Case Stories</div>
+        <div class="qc-count">14 landmark cases</div>
+      </div>
+      <div class="quick-card green" onclick="goScreen('quiz')">
+        <div class="qc-bar"></div>
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">Test yourself</div>
+      </div>
+    </div>
+    <div class="section-title">Exam Tips</div>
+    <div class="cheat-section open">
+      <div class="cheat-header" onclick="toggleCheat(this)">
+        <span class="ch-icon">💡</span>
+        <h3>How to Ace This Exam</h3>
+        <span class="ch-arrow">›</span>
+      </div>
+      <div class="cheat-body">
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Always cite <strong>Article 300A</strong> (not Article 31 — that was removed) for property rights questions</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>For LARR Act questions — always state the <strong>key numbers</strong>: SIA 6 months, consent 80%/70%, return after 5 years</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Ceiling limits — memorise the <strong>3 tiers</strong>: 54/27/10 acres for Telangana</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Samatha case (1997)</strong> — most important case for tribal land. Must cite in Scheduled Areas questions</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>For FRA 2006 — always mention <strong>December 13, 2005</strong> cut-off date and 3 generations / 75 years</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Conclude every answer — even 2 lines. Examiners reward structured endings</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">About & Disclaimer</div>
+    <div class="disclaimer-card">
+      <div class="disclaimer-block">
+        <div class="disclaimer-icon">📋</div>
+        <div class="disclaimer-content">
+          <div class="disclaimer-heading">Educational Purpose Only</div>
+          <div class="disclaimer-text">This platform provides free study material for LLB examination preparation only. Content is intended to supplement classroom learning and does not constitute legal advice. Students must verify all information with official sources, prescribed textbooks and faculty members.</div>
+        </div>
+      </div>
+      <div class="disclaimer-divider"></div>
+      <div class="disclaimer-block">
+        <div class="disclaimer-icon">🏛️</div>
+        <div class="disclaimer-content">
+          <div class="disclaimer-heading">Independent Platform — Not Affiliated</div>
+          <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any other academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+        </div>
+      </div>
+      <div class="disclaimer-divider"></div>
+      <div class="disclaimer-block">
+        <div class="disclaimer-icon">⚖️</div>
+        <div class="disclaimer-content">
+          <div class="disclaimer-heading">Copyright Notice</div>
+          <div class="disclaimer-text">Indian legislation, constitutional provisions and Supreme Court judgments are public documents. The original study content, model answers and exam frameworks on this platform are created for academic purposes. Reproduction for commercial use is not permitted.</div>
+        </div>
+      </div>
+      <div class="disclaimer-divider"></div>
+      <div class="disclaimer-footer">
+        ⚖️ LawSticker AI · Independent Study Platform · lawsticker-ai.com<br>
+        <span style="color:rgba(255,255,255,0.4);font-size:10px">© 2025 · Free forever for students</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div class="screen" id="screen-topics">
+    <div class="part-header">
+      <div class="part-header-icon">📚</div>
+      <div class="part-header-text">
+        <h2>Part A — Short Notes</h2>
+        <p>12 Topics · 6 Marks Each · Aim: 1 Page</p>
+      </div>
+    </div>
+    <div id="partA-topics"></div>
+
+    <div class="part-header" style="margin-top:20px">
+      <div class="part-header-icon">📝</div>
+      <div class="part-header-text">
+        <h2>Part B — Long Essays</h2>
+        <p>10 Topics · 15 Marks Each · Aim: 3 Pages</p>
+      </div>
+    </div>
+    <div id="partB-topics"></div>
+  </div>
+
+  <!-- CASES -->
+  <div class="screen" id="screen-cases">
+    <div class="part-header">
+      <div class="part-header-icon">⚖️</div>
+      <div class="part-header-text"><h2>Landmark Cases</h2><p>14 cases · Tap to read full story</p></div>
+    </div>
+    <div class="cases-filter" id="cases-filter"></div>
+    <div id="cases-list"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div id="quiz-start-screen" class="quiz-start">
+      <h2>Quick Quiz 🎯</h2>
+      <p>Test your knowledge on Land Laws concepts, cases and key numbers.</p>
+      <div class="quiz-options" id="quiz-type-options">
+        <div class="quiz-opt-btn" onclick="startQuiz('all')">
+          <div class="opt-title">⚡ Full Mixed Quiz</div>
+          <div class="opt-desc">All topics — 15 questions</div>
+        </div>
+        <div class="quiz-opt-btn" onclick="startQuiz('concepts')">
+          <div class="opt-title">📚 Concepts Only</div>
+          <div class="opt-desc">Definitions, doctrines, principles</div>
+        </div>
+        <div class="quiz-opt-btn" onclick="startQuiz('cases')">
+          <div class="opt-title">⚖️ Cases Only</div>
+          <div class="opt-desc">Who said what, which year</div>
+        </div>
+        <div class="quiz-opt-btn" onclick="startQuiz('numbers')">
+          <div class="opt-title">🔢 Numbers & Sections</div>
+          <div class="opt-desc">Ceiling limits, periods, amounts</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-card-container" id="quiz-active">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress"></div></div>
+      <div class="quiz-q-num" id="quiz-qnum"></div>
+      <div class="quiz-question" id="quiz-question"></div>
+      <div class="quiz-choices" id="quiz-choices"></div>
+      <div class="quiz-explanation" id="quiz-explanation"></div>
+      <button class="quiz-next-btn" id="quiz-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+    <div class="quiz-result" id="quiz-result">
+      <div class="quiz-score" id="result-score"></div>
+      <div class="quiz-score-label" id="result-label"></div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div class="screen" id="screen-videos">
+    <div class="part-header">
+      <div class="part-header-icon">🎬</div>
+      <div class="part-header-text"><h2>Video Lectures</h2><p>5 Units · Watch directly here · Powered by YouTube</p></div>
+    </div>
+    <div id="videos-list"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="screen" id="screen-cheat">
+    <div class="part-header">
+      <div class="part-header-icon">📋</div>
+      <div class="part-header-text"><h2>Cheat Sheet</h2><p>All numbers, sections & key rules</p></div>
+    </div>
+    <div id="cheat-content"></div>
+
+    <div class="app-footer">
+      <div class="footer-brand">⚖️ LawSticker AI</div>
+      <div class="footer-tagline">Free study material for LLB students · lawsticker-ai.com</div>
+      <div class="footer-divider"></div>
+      <div class="footer-disclaimer-title">📋 Educational Disclaimer</div>
+      <div class="footer-disclaimer-text">This platform provides free educational study material for LLB examination preparation purposes only. All content is intended to supplement classroom learning and does not constitute legal advice. While every effort has been made to ensure accuracy, LawSticker AI makes no warranty regarding the completeness or correctness of the content. Students are advised to verify all information with official sources, prescribed textbooks and their faculty members.</div>
+      <div class="footer-disclaimer-title">🏛️ Affiliation Disclaimer</div>
+      <div class="footer-disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is not affiliated with, endorsed by, or officially connected to Osmania University or any other academic institution. All Acts, Sections and constitutional provisions referenced are sourced from publicly available official legal documents. All judicial decisions referenced are public court records.</div>
+      <div class="footer-disclaimer-title">⚖️ Copyright Notice</div>
+      <div class="footer-disclaimer-text">The study material, model answers, case summaries and exam frameworks on this platform are original educational content created for academic preparation. Indian legislation, constitutional provisions and court judgments are public documents not subject to copyright. Unauthorised reproduction of this platform's original content for commercial purposes is not permitted.</div>
+      <div class="footer-divider"></div>
+      <div class="footer-disclaimer-text" style="text-align:center">© 2025 LawSticker AI · Free forever for students · lawsticker-ai.com</div>
+      <div class="footer-links">
+        <a class="footer-link" href="https://www.youtube.com/@lawstickerai" target="_blank">▶ YouTube</a>
+        <a class="footer-link" href="https://github.com/legaleagles" target="_blank">💻 GitHub</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav">
+  <button class="nav-btn active" onclick="goScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span><span class="nav-label">Home</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('topics')" id="nav-topics">
+    <span class="nav-icon">📚</span><span class="nav-label">Answers</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('videos')" id="nav-videos">
+    <span class="nav-icon">🎬</span><span class="nav-label">Videos</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('cases')" id="nav-cases">
+    <span class="nav-icon">⚖️</span><span class="nav-label">Cases</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('quiz')" id="nav-quiz">
+    <span class="nav-icon">🎯</span><span class="nav-label">Quiz</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('cheat')" id="nav-cheat">
+    <span class="nav-icon">📋</span><span class="nav-label">Cheat</span>
+  </button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ALL CONTENT DATA
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = {
+  A: [
+    {
+      id:"A1", title:"Doctrine of Eminent Domain", marks:"6 Marks",
+      content:`
+        <div class="def-box">Eminent Domain is the <strong>inherent sovereign power of the State</strong> to compulsorily acquire private property for public use upon payment of just compensation. It is an attribute of sovereignty — existing independent of any constitutional provision.</div>
+        <div class="section-h">▶ Three Essential Elements</div>
+        <table class="data-table"><thead><tr><th>Element</th><th>Meaning</th></tr></thead><tbody>
+        <tr><td>Sovereign Power</td><td>Only the State can exercise this — not private parties</td></tr>
+        <tr><td>Public Purpose</td><td>Acquisition must be for public benefit (roads, schools, hospitals)</td></tr>
+        <tr><td>Just Compensation</td><td>Fair market value must be paid to the owner</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Constitutional Evolution</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Pre-1978</strong> — Articles 19(1)(f) and 31 — property was a Fundamental Right</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>44th Amendment 1978</strong> — Right to Property removed from Part III FR</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 300A (current)</strong> — "No person shall be deprived of property save by authority of law"</span></div>
+        <div class="case-card"><div class="case-name">⚖ Somawanti v State of Punjab (1963)</div><div class="case-ratio">SC held Government's declaration of public purpose is conclusive — cannot be challenged unless fraud or colourable exercise of power.</div></div>
+        <div class="case-card"><div class="case-name">⚖ K.T. Plantation v State of Karnataka (2011)</div><div class="case-ratio">Article 300A is an enforceable constitutional right — deprivation must be by valid law. Arbitrary deprivation violates 300A even though property is not a fundamental right.</div></div>
+        <div class="verdict-box">✍ Eminent Domain reflects the primacy of community interest over individual ownership — balanced by the guarantee of just compensation under LARR 2013.</div>
+      `
+    },
+    {
+      id:"A2", title:"Doctrine of Escheat and Bona Vacantia", marks:"6 Marks",
+      content:`
+        <div class="def-box"><strong>Escheat</strong> — Property of a person dying intestate without legal heirs vests in the State. The State is the ultimate heir. <strong>Bona Vacantia</strong> (Latin: "ownerless goods") — property abandoned or with no owner passes to Government.</div>
+        <div class="section-h">▶ Key Distinction</div>
+        <table class="data-table"><thead><tr><th>Escheat</th><th>Bona Vacantia</th></tr></thead><tbody>
+        <tr><td>Owner dies without heirs</td><td>Property abandoned / no owner</td></tr>
+        <tr><td>Applies to individuals</td><td>Applies to companies also (S.654)</td></tr>
+        <tr><td>Section 29, HSA 1956</td><td>Section 654, Companies Act</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Legal Provision</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Section 29, Hindu Succession Act 1956</strong> — If a Hindu dies intestate without any heir specified in the Act — property passes to Government</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>State does not take as heir but as sovereign — property held for public good</span></div>
+        <div class="warn-box">⚠ Exam Alert — Section 29 HSA 1956 exact section number is directly asked. Also distinguish: Escheat (death scenario) vs Bona Vacantia (abandonment/no owner scenario).</div>
+        <div class="verdict-box">✍ Both doctrines ensure no property remains permanently ownerless. The State acts as the ultimate residuary — holding property in trust for the public.</div>
+      `
+    },
+    {
+      id:"A3", title:"Torrens System — Conclusive Land Titling", marks:"6 Marks",
+      content:`
+        <div class="def-box">The Torrens System (Australia, 1858 — Sir Robert Torrens) is a land registration system where <strong>the Register itself is conclusive proof of title</strong> — not the chain of documents. India currently uses deed registration (presumptive title only).</div>
+        <div class="section-h">▶ Three Core Principles</div>
+        <table class="data-table"><thead><tr><th>Principle</th><th>Meaning</th></tr></thead><tbody>
+        <tr><td>Mirror Principle</td><td>Register accurately reflects current state of title — like a mirror</td></tr>
+        <tr><td>Curtain Principle</td><td>No need to look behind the register — what is registered is what counts</td></tr>
+        <tr><td>Insurance Principle</td><td>If register has error causing loss — State compensates the injured party</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ India — Current vs Target</div>
+        <table class="data-table"><thead><tr><th>Current System</th><th>Torrens Target</th></tr></thead><tbody>
+        <tr><td>Deed registration — transaction registered, not title</td><td>Title registration — ownership itself registered</td></tr>
+        <tr><td>Presumptive title — rebuttable in court</td><td>Conclusive title — State guarantees, not challengeable</td></tr>
+        <tr><td>Multiple agencies — Revenue, Registration, Survey</td><td>Single integrated digital register</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Telangana — Dharani Portal</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Telangana Rights in Land and Pattadar Pass Books Act, 2020 — moves towards Torrens-style system</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Dharani Portal — integrated digital records, real-time mutation on registration</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Pattadar Pass Book — still <strong>presumptive title only</strong> (not fully conclusive yet)</span></div>
+        <div class="verdict-box">✍ Torrens system eliminates title fraud by making the register conclusive. Full implementation in India requires massive administrative reform — Dharani is the most ambitious step taken so far.</div>
+      `
+    },
+    {
+      id:"A4", title:"Ryotwari, Zamindari and Mahalwari — Settlement Systems", marks:"6 Marks",
+      content:`
+        <div class="def-box">British India had three major land revenue systems determining who paid revenue to the State and how land ownership was structured. Understanding these is essential for land reform questions.</div>
+        <div class="section-h">▶ Three Systems Compared</div>
+        <table class="data-table"><thead><tr><th>System</th><th>Revenue To</th><th>Region</th><th>Introduced By</th></tr></thead><tbody>
+        <tr><td>Zamindari / Permanent Settlement</td><td>Zamindar → State (fixed forever)</td><td>Bengal, Bihar, UP</td><td>Cornwallis, 1793</td></tr>
+        <tr><td>Ryotwari</td><td>Ryot directly → State (no intermediary)</td><td>Madras (Andhra), Bombay</td><td>Thomas Munro</td></tr>
+        <tr><td>Mahalwari</td><td>Village community collectively</td><td>NW India, Punjab, MP</td><td>Holt Mackenzie</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Post-Independence Significance</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>AP/Telangana</strong> — Ryotwari area — Ryots became occupancy tenants after independence, later conferred ownership</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Zamindari areas</strong> — Required separate abolition legislation (Bengal, Bihar, UP Zamindari Abolition Acts)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>First Amendment 1951 — Article 31A inserted to protect abolition laws from Fundamental Rights challenge</span></div>
+        <div class="verdict-box">✍ Ryotwari was the most democratic British system — direct Ryot-State relationship. AP/Telangana being Ryotwari meant land reforms were simpler — no Zamindar intermediary to remove.</div>
+      `
+    },
+    {
+      id:"A5", title:"Social Impact Assessment (SIA) — LARR Act 2013", marks:"6 Marks",
+      content:`
+        <div class="def-box">Social Impact Assessment (SIA) under <strong>Section 4 of LARR Act 2013</strong> — mandatory pre-acquisition study examining social consequences of proposed land acquisition before any compulsory acquisition can proceed.</div>
+        <div class="section-h">▶ SIA Process — Step by Step</div>
+        <div class="formula-box">Step 1 → State Govt notifies SIA study in affected area [Section 4(1)]
+Step 2 → SIA must be completed within 6 MONTHS
+Step 3 → Consultation with Gram Sabha / affected families — MANDATORY
+Step 4 → Expert Group appraises SIA report [Section 7]
+Step 5 → Expert Group reports within 2 MONTHS
+Step 6 → SIA report published — public objections invited</div>
+        <div class="section-h">▶ What SIA Studies</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Number of families to be displaced</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Extent of loss — livelihood, assets, community</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Whether less displacing alternatives exist</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>R&amp;R plan to be prepared</span></div>
+        <div class="warn-box">⚠ SIA NOT required when: Urgency clause (Section 40) invoked — defence, national security, natural calamity. Also: 80% consent (private companies) / 70% consent (PPP) obtained — bypasses SIA.</div>
+        <div class="verdict-box">✍ SIA is the cornerstone of LARR 2013's transparency framework — ensures acquisition addresses ALL social consequences, not just physical displacement.</div>
+      `
+    },
+    {
+      id:"A6", title:"Ceiling on Agricultural Land Holdings — Telangana Act 1973", marks:"6 Marks",
+      content:`
+        <div class="def-box">Land Ceiling laws fix a maximum limit on agricultural land any individual or family can hold. Land above the ceiling (surplus) is acquired by State and redistributed to landless poor. Implements <strong>Article 39(b)</strong> — equitable distribution of material resources.</div>
+        <div class="section-h">▶ Telangana Land Reforms (Ceiling on Agricultural Holdings) Act, 1973 — Limits</div>
+        <table class="data-table"><thead><tr><th>Category of Land</th><th>Ceiling Limit</th></tr></thead><tbody>
+        <tr><td>Dry / Unirrigated (single crop)</td><td><strong>54 acres</strong></td></tr>
+        <tr><td>Irrigated — Single Crop</td><td><strong>27 acres</strong></td></tr>
+        <tr><td>Irrigated — Double Crop (wet land)</td><td><strong>18 acres</strong></td></tr>
+        <tr><td>Garden / Orchard / Plantation</td><td><strong>10 acres</strong></td></tr>
+        <tr><td>Sugarcane</td><td><strong>10 acres</strong></td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Constitutional Protection</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 31A</strong> — saves the Act from FR challenge under Articles 14 and 19</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Ninth Schedule + Article 31B</strong> — absolute immunity from judicial review</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>IR Coelho (2007)</strong> — post-April 24, 1973 Ninth Schedule laws can be examined for basic structure</span></div>
+        <div class="verdict-box">✍ Land ceiling laws break the concentration of land ownership. In Telangana, significant surplus land was distributed — but much was fraudulently transferred beforehand through benami transactions.</div>
+      `
+    },
+    {
+      id:"A7", title:"Forest Rights Act 2006 — Tribal Rights over Forest Land", marks:"6 Marks",
+      content:`
+        <div class="def-box">The Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act, 2006 — recognises and vests forest rights in tribal communities who have lived in and depended on forests for generations — correcting the "historical injustice" of colonial forest laws.</div>
+        <div class="section-h">▶ Categories of Rights (Section 3)</div>
+        <table class="data-table"><thead><tr><th>Right</th><th>Details</th></tr></thead><tbody>
+        <tr><td>Individual Forest Rights (IFR)</td><td>Cultivate forest land in occupation — max <strong>4 hectares</strong></td></tr>
+        <tr><td>Community Rights</td><td>Grazing, fishing, Minor Forest Produce (tendu, bamboo)</td></tr>
+        <tr><td>Community Forest Resource Rights</td><td>Right to protect and manage community forest</td></tr>
+        <tr><td>Habitat Rights</td><td>Particularly Vulnerable Tribal Groups (PVTGs)</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Key Numbers to Remember</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>December 13, 2005</strong> — cut-off date for claims</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>3 generations (75 years)</strong> of occupation required before this date</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>4 hectares</strong> — maximum for IFR claims</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Title is <strong>heritable but NOT transferable</strong> — cannot be sold</span></div>
+        <div class="verdict-box">✍ FRA 2006 converts occupation into legal right — transforming tribals from "encroachers" on their own ancestral forest into its rightful owners. Implementation remains the major challenge.</div>
+      `
+    },
+    {
+      id:"A8", title:"Zamindari Abolition — Constitutional Basis", marks:"6 Marks",
+      content:`
+        <div class="def-box">Zamindari system (Permanent Settlement 1793) — Zamindars collected revenue from cultivators and paid a fixed sum to the British. They were pure intermediaries. Post-independence, these were abolished to give land to actual cultivators.</div>
+        <div class="section-h">▶ Constitutional Amendments for Abolition</div>
+        <table class="data-table"><thead><tr><th>Amendment</th><th>What It Did</th></tr></thead><tbody>
+        <tr><td>First Amendment 1951</td><td>Inserted Art 31A (saves acquisition of estates from FR challenge) + Art 31B + Ninth Schedule</td></tr>
+        <tr><td>Fourth Amendment 1955</td><td>Reinforced First Amendment — compensation can be fixed by Parliament</td></tr>
+        <tr><td>25th Amendment 1971</td><td>"Amount" not "compensation" — further restricted judicial review</td></tr>
+        <tr><td>44th Amendment 1978</td><td>Removed Right to Property from Fundamental Rights — Article 300A only</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Effects of Abolition</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Zamindars lost estates — land vested in State Government</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Cultivating tenants became occupancy tenants → eventually became land owners</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Jagirs, Inams similarly abolished under same framework</span></div>
+        <div class="case-card"><div class="case-name">⚖ State of Bihar v Kameshwar Singh (1952)</div><div class="case-ratio">SC struck down parts of Bihar Zamindari Abolition Act — directly led to First Constitutional Amendment inserting Article 31A, 31B and the Ninth Schedule.</div></div>
+        <div class="verdict-box">✍ Zamindari abolition dismantled feudal land tenure permanently — the most significant post-independence land reform. Implementation of ceiling and tenancy laws was far weaker.</div>
+      `
+    },
+    {
+      id:"A9", title:"Public Purpose under LARR Act 2013", marks:"6 Marks",
+      content:`
+        <div class="def-box">Public purpose is the foundational requirement for compulsory land acquisition. Without a valid public purpose, acquisition by the State is unconstitutional. It must genuinely benefit the public — not serve private gain dressed as public purpose.</div>
+        <div class="section-h">▶ Section 2(1) — Definition under LARR 2013</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Strategic purposes — defence, security, national capital</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Infrastructure — roads, railways, ports, power, water</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Planned development — housing for poor, SC/ST</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Industrial corridors, PPP projects (with consent)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Government-funded education, health institutions</span></div>
+        <div class="section-h">▶ Consent Requirements</div>
+        <table class="data-table"><thead><tr><th>Acquiring For</th><th>Consent Required</th></tr></thead><tbody>
+        <tr><td>Private companies</td><td><strong>80%</strong> of affected families</td></tr>
+        <tr><td>PPP projects</td><td><strong>70%</strong> of affected families</td></tr>
+        <tr><td>Government purpose</td><td>No consent required</td></tr>
+        </tbody></table>
+        <div class="case-card"><div class="case-name">⚖ Chameli Singh v State of UP (1996)</div><div class="case-ratio">SC held housing for EWS/LIG is a valid public purpose — right to shelter is part of right to life under Article 21.</div></div>
+        <div class="verdict-box">✍ Public purpose is the justification for overriding individual rights. LARR 2013 expanded the definition while adding consent requirements to prevent misuse for private benefit.</div>
+      `
+    },
+    {
+      id:"A10", title:"Rehabilitation and Resettlement under LARR Act 2013", marks:"6 Marks",
+      content:`
+        <div class="def-box"><strong>Rehabilitation</strong> — Restoring livelihood and improving standard of living of displaced persons. <strong>Resettlement</strong> — Providing new home and community infrastructure. LARR 2013 makes R&amp;R mandatory for all land acquisitions and must be COMPLETED before dispossession.</div>
+        <div class="section-h">▶ R&R Threshold — When It Triggers</div>
+        <table class="data-table"><thead><tr><th>Area</th><th>Families Displaced</th></tr></thead><tbody>
+        <tr><td>Urban areas</td><td><strong>100 or more families</strong></td></tr>
+        <tr><td>Rural areas</td><td><strong>200 or more families</strong></td></tr>
+        <tr><td>Private companies</td><td>No threshold — R&amp;R always applies</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Key R&R Entitlements (Second Schedule)</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>House — 300 sq ft in urban, 50 sq m in rural</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>One-time financial assistance: <strong>₹50,000</strong></span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Subsistence allowance: <strong>₹3,000/month for 12 months</strong></span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Transportation allowance: <strong>₹50,000</strong></span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Employment in the project OR <strong>₹5 lakh</strong> in lieu</span></div>
+        <div class="verdict-box">✍ R&R under LARR 2013 transforms land acquisition from mere physical displacement to a comprehensive welfare process — ensuring displaced persons are better off after acquisition than before.</div>
+      `
+    },
+    {
+      id:"A11", title:"Assigned Lands — Prohibition of Transfers Act 1977", marks:"6 Marks",
+      content:`
+        <div class="def-box">The Telangana Assigned Lands (Prohibition of Transfers) Act, 1977 — protects government-assigned land given to landless poor from being sold, mortgaged or alienated. Once assigned, the beneficiary has no power to transfer it.</div>
+        <div class="section-h">▶ What Are Assigned Lands</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Government lands distributed to landless poor — especially SCs, STs — under welfare schemes</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Ceiling surplus land redistributed as pattas</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Bhoodan lands, government poramboke granted as pattas</span></div>
+        <div class="section-h">▶ Key Prohibitions</div>
+        <table class="data-table"><thead><tr><th>Transaction</th><th>Status</th></tr></thead><tbody>
+        <tr><td>Sale / Gift / Lease</td><td>VOID ab initio</td></tr>
+        <tr><td>Mortgage to bank</td><td>PROHIBITED — bank gets no security</td></tr>
+        <tr><td>Attachment for debt</td><td>PROHIBITED — cannot be seized</td></tr>
+        </tbody></table>
+        <div class="warn-box">⚠ Problem Exam Alert — Bank advances loan on security of assigned land. Held: Void. Bank cannot recover by selling the land. Assigned land CANNOT be mortgaged even to nationalised banks.</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Collector can resume (take back) land transferred in violation</span></div>
+        <div class="verdict-box">✍ Assigned Lands Act protects the poorest from exploitation by money lenders and developers. Paradox: assigned land cannot be mortgaged — so the beneficiary cannot raise agricultural credit.</div>
+      `
+    },
+    {
+      id:"A12", title:"Scheduled Areas Land Transfer Regulation — Tribal Protection", marks:"6 Marks",
+      content:`
+        <div class="def-box">AP Scheduled Areas Land Transfer Regulation, 1959 — prohibits transfer of land from Scheduled Tribes (tribals) to non-tribals in Fifth Schedule / Scheduled Areas. Any such transfer is <strong>void ab initio</strong> and non-enforceable.</div>
+        <div class="section-h">▶ Fifth Schedule Areas (Constitutional Basis)</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 244</strong> — Administration of Scheduled Areas</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Fifth Schedule</strong> — Governor has special powers; can direct that any Act does not apply to Scheduled Area</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>PESA 1996</strong> — Gram Sabha consent mandatory before land acquisition in Scheduled Areas</span></div>
+        <div class="section-h">▶ Key Provisions of the Regulation</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>No transfer from ST to non-ST — sale, gift, mortgage, lease — ALL prohibited</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Any transfer — void ab initio — no court can enforce it</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>District Collector has power to restore tribal land</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Limitation for restoration petition: <strong>12 years</strong> from dispossession</span></div>
+        <div class="case-card"><div class="case-name">⚖ Samatha v State of AP (1997)</div><div class="case-ratio">SC extended the Regulation to cover the Government itself — Government cannot transfer Scheduled Area land to private companies for mining. Only tribal cooperatives or State mining agencies can operate there.</div></div>
+        <div class="verdict-box">✍ Scheduled Areas Land Transfer Regulation is the primary legal shield for tribal land. The Samatha ruling is the most significant judicial reinforcement — extending it even to Government grants.</div>
+      `
+    },
+  ],
+  B: [
+    {
+      id:"B1", title:"Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013 — Scheme and Salient Features", marks:"15 Marks",
+      content:`
+        <div class="def-box">LARR Act 2013 replaced the colonial Land Acquisition Act 1894. Came into force January 1, 2014. It is India's most rights-centred land acquisition law — balancing State's development needs with owners' right to fair compensation and affected families' right to dignified resettlement.</div>
+        <div class="section-h">▶ Constitutional Basis</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Entry 42</strong> — Concurrent List — Acquisition of property</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 300A</strong> — No deprivation of property except by authority of law</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Articles 39(b), 21</strong> — equitable distribution and right to life with dignity</span></div>
+        <div class="section-h">▶ Key Salient Features</div>
+        <table class="data-table"><thead><tr><th>Feature</th><th>Details</th></tr></thead><tbody>
+        <tr><td>SIA — Section 4</td><td>Mandatory — completed within 6 months</td></tr>
+        <tr><td>Consent</td><td>80% (private), 70% (PPP)</td></tr>
+        <tr><td>Compensation — Urban</td><td>2× market value + 100% solatium = <strong>4× total</strong></td></tr>
+        <tr><td>Compensation — Rural</td><td>2-4× market value + 100% solatium = <strong>up to 8× total</strong></td></tr>
+        <tr><td>R&R Mandatory</td><td>Must be completed before dispossession</td></tr>
+        <tr><td>Urgency Clause — S.40</td><td>Only for defence, national security, natural calamity</td></tr>
+        <tr><td>Land Return — S.101</td><td>Unused for 5 years — returned to owner or land bank</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Award Procedure</div>
+        <div class="formula-box">Preliminary Notification [S.11] → Objections (60 days) → Expert Group Report (2 months) → Final Declaration [S.19] (within 12 months of preliminary) → Award [S.25] (within 12 months of final declaration) → R&R completion → Possession</div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ Indore Development Authority v Manoharlal (2020)</div><div class="case-ratio">SC Constitution Bench (4-1) — Section 24(2): acquisition under 1894 Act lapses only if BOTH conditions met — possession not taken AND compensation not paid. Not either/or.</div></div>
+        <div class="case-card"><div class="case-name">⚖ Narmada Bachao Andolan v Union of India (2000)</div><div class="case-ratio">SC upheld Sardar Sarovar Dam but directed full R&R before submergence — development cannot justify displacement without proper rehabilitation.</div></div>
+        <div class="verdict-box">✍ LARR 2013 shifted Indian law from a colonial "takeover" model to a rights-based model. Its weakness lies in implementation — SIA/consent processes delay projects; dispossession before R&R completion remains common.</div>
+      `
+    },
+    {
+      id:"B2", title:"Zamindari Abolition and Land Reforms After Independence", marks:"15 Marks",
+      content:`
+        <div class="def-box">India inherited a deeply feudal land structure. Abolition of intermediaries — Zamindars, Jagirdars, Inamdars — was the first and most urgent land reform. It required four Constitutional Amendments to insulate from judicial challenge.</div>
+        <div class="section-h">▶ Historical Background</div>
+        <table class="data-table"><thead><tr><th>System</th><th>Features</th></tr></thead><tbody>
+        <tr><td>Permanent Settlement 1793</td><td>Zamindars as hereditary landlords — Bengal, Bihar</td></tr>
+        <tr><td>Ryotwari</td><td>Direct State-Ryot relationship — Madras, Bombay</td></tr>
+        <tr><td>Mahalwari</td><td>Village community — NW India</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Constitutional Amendments Timeline</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>1st Amendment 1951</strong> — Article 31A (saves estate acquisition from FR challenge) + Article 31B + Ninth Schedule (absolute immunity)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>4th Amendment 1955</strong> — Reinforced; Parliament can fix compensation amount</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>25th Amendment 1971</strong> — "Amount" instead of "compensation" — further restricted courts</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>44th Amendment 1978</strong> — Property removed from Fundamental Rights; Article 300A only</span></div>
+        <div class="section-h">▶ Key Effects of Zamindari Abolition</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Zamindars lost estates — land vested in State</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Cultivating tenants → occupancy tenants → land owners</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Compensation paid at below-market rates (8-12× annual income)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Jagirs, Inams abolished — same framework applied</span></div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ State of Bihar v Kameshwar Singh (1952)</div><div class="case-ratio">SC struck down Bihar Land Reforms Act — discriminatory compensation formula. Led directly to First Constitutional Amendment protecting all Zamindari Abolition laws.</div></div>
+        <div class="case-card"><div class="case-name">⚖ Kesavananda Bharati v State of Kerala (1973)</div><div class="case-ratio">SC held Parliament cannot abrogate Basic Structure of Constitution — even while amending to protect land reforms. Basic Structure doctrine established.</div></div>
+        <div class="case-card"><div class="case-name">⚖ IR Coelho v State of Tamil Nadu (2007)</div><div class="case-ratio">9-judge bench — Ninth Schedule laws inserted after April 24, 1973 can be examined for basic structure violations. Not absolute immunity for post-1973 laws.</div></div>
+        <div class="verdict-box">✍ Zamindari abolition was India's most successful land reform. Implementation of subsequent reforms (tenancy, ceiling) was far weaker because the beneficiaries were politically weaker than the landowners.</div>
+      `
+    },
+    {
+      id:"B3", title:"Tenancy Laws — Security, Fair Rent and Conferment of Ownership", marks:"15 Marks",
+      content:`
+        <div class="def-box">"Land to the Tiller" — after removing Zamindar intermediaries, the next reform was securing the rights of actual cultivators. Tenancy reforms had three stages: Security of Tenure → Fair Rent → Conferment of Ownership on cultivating tenants.</div>
+        <div class="section-h">▶ Three Stages of Tenancy Reform</div>
+        <table class="data-table"><thead><tr><th>Stage</th><th>Objective</th></tr></thead><tbody>
+        <tr><td>Stage 1 — Security of Tenure</td><td>Protect tenants from arbitrary eviction by landlords</td></tr>
+        <tr><td>Stage 2 — Fair Rent</td><td>Cap rent at reasonable levels (1/4 to 1/5 of produce)</td></tr>
+        <tr><td>Stage 3 — Ownership</td><td>Cultivating tenant converts to landowner after specified period</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ AP Tenancy Laws</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>AP (Andhra Area) Tenancy Act 1956</strong> — occupancy rights, fair rent, right to purchase</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>AP (Telangana Area) Tenancy and Agricultural Lands Act 1950</strong> — protected tenants in Telangana</span></div>
+        <div class="section-h">▶ Key Provisions — Occupancy Rights</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Protected tenant</strong> — continuous possession for prescribed period</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Cannot be evicted except for non-payment of rent or landlord's personal cultivation</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Right of pre-emption</strong> — tenant gets first right to purchase if landlord sells</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>After prescribed cultivation period — ownership conferred on tenant</span></div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ Balmadies Plantations v State of Tamil Nadu (1972)</div><div class="case-ratio">SC upheld tenancy laws fixing fair rent even if landlord's income is drastically reduced — social justice overrides landlord's profit expectations.</div></div>
+        <div class="warn-box">⚠ Loopholes — Landlords used "voluntary surrenders" and "personal cultivation" defences to evict tenants before laws could protect them. Oral/informal tenancy hard to prove in court.</div>
+        <div class="verdict-box">✍ Tenancy reforms have been the most contested land reforms. Despite legal protection, millions of tenant farmers remain insecure due to weak implementation and lack of legal literacy among beneficiaries.</div>
+      `
+    },
+    {
+      id:"B4", title:"LARR Act 2013 — Land Acquisition Procedure and Compensation", marks:"15 Marks",
+      content:`
+        <div class="def-box">The Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013 — complete procedure for State acquisition of land. Replaces the colonial Land Acquisition Act 1894 which had minimal safeguards.</div>
+        <div class="section-h">▶ Procedure — Complete Step by Step</div>
+        <div class="formula-box">Step 1 → SIA [S.4] — 6 months
+Step 2 → Consent (80%/70% where required)
+Step 3 → Preliminary Notification [S.11] — land frozen
+Step 4 → Objections — within 60 days
+Step 5 → Expert Group Report — within 2 months
+Step 6 → Final Declaration [S.19] — within 12 months of S.11
+Step 7 → Award [S.25] — within 12 months of S.19
+Step 8 → R&R Plan approved and implemented
+Step 9 → Possession — ONLY after award + R&R complete</div>
+        <div class="section-h">▶ Compensation Calculation</div>
+        <table class="data-table"><thead><tr><th>Component</th><th>Urban</th><th>Rural</th></tr></thead><tbody>
+        <tr><td>Market Value Multiplier</td><td>1× (circle rate or sale deed price)</td><td>1-3× depending on distance from urban area</td></tr>
+        <tr><td>Solatium</td><td>100%</td><td>100%</td></tr>
+        <tr><td>Effective Total</td><td><strong>2-4×</strong> market value</td><td><strong>up to 8×</strong> market value</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Key Protections for Land Owners</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Section 101</strong> — Land unused for 5 years — returned to owner or land bank</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Reference to Land Acquisition Collector for disputes on compensation</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Court challenge available for inadequate compensation</span></div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ Olga Tellis v Bombay Municipal Corporation (1985)</div><div class="case-ratio">SC held right to livelihood is part of right to life under Article 21 — eviction from land threatening livelihood requires compliance with Article 21 including hearing and rehabilitation.</div></div>
+        <div class="case-card"><div class="case-name">⚖ State of MP v Vishnu Prasad Sharma (1966)</div><div class="case-ratio">Just compensation = what a willing seller would accept from willing buyer. Arbitrary below-market compensation is constitutionally invalid.</div></div>
+        <div class="verdict-box">✍ LARR 2013 is rights-centred but implementation-challenged. Projects are delayed by lengthy SIA/consent processes. The real challenge: balancing India's development imperative with communities whose land is the foundation of their existence.</div>
+      `
+    },
+    {
+      id:"B5", title:"Scheduled Areas Land Transfer and Tribal Land Rights", marks:"15 Marks",
+      content:`
+        <div class="def-box">For tribal communities in Scheduled Areas — land is not merely economic — it is the foundation of cultural identity, livelihood and social organisation. A comprehensive legal framework protects tribal land from alienation to non-tribals.</div>
+        <div class="section-h">▶ Constitutional Framework</div>
+        <table class="data-table"><thead><tr><th>Provision</th><th>Content</th></tr></thead><tbody>
+        <tr><td>Fifth Schedule / Article 244</td><td>Administration of Scheduled Areas — Governor's special powers</td></tr>
+        <tr><td>PESA 1996 — Section 4(e)</td><td>Gram Sabha consent mandatory before land acquisition in Scheduled Areas</td></tr>
+        <tr><td>Article 46</td><td>DPSP — State shall promote ST economic and educational interests</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ AP Scheduled Areas Land Transfer Regulation, 1959</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>No transfer from ST to non-ST — sale, gift, mortgage, lease — ALL void ab initio</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>District Collector — power to restore land to tribal on petition</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Limitation for restoration petition: <strong>12 years</strong> from dispossession</span></div>
+        <div class="section-h">▶ Landmark Case — Samatha (1997)</div>
+        <div class="case-card"><div class="case-name">⚖ Samatha v State of AP (1997)</div><div class="case-ratio">AP Government granted mining leases in Scheduled Areas to private companies (non-tribals). SC held: (1) Government itself is a "person" under the Regulation — cannot transfer Scheduled Area land to non-tribals; (2) Only tribal cooperatives or State mining agencies can operate in Scheduled Areas; (3) 20% of profits must go to tribal development fund.</div></div>
+        <div class="section-h">▶ Challenges in Implementation</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Benami transactions — land registered in tribal name but controlled by non-tribal</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Debt bondage — money lenders circumvent law through loan default possession</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Development pressure — mining and industry interests in tribal forest areas</span></div>
+        <div class="verdict-box">✍ The legal framework for tribal land protection is robust on paper. Samatha, FRA 2006, and PESA 1996 together form a comprehensive shield — but implementation gaps mean tribal land continues to be alienated in practice.</div>
+      `
+    },
+    {
+      id:"B6", title:"Telangana Land Reforms (Ceiling on Agricultural Holdings) Act, 1973", marks:"15 Marks",
+      content:`
+        <div class="def-box">Land Ceiling laws break the concentration of agricultural land in a few hands and redistribute surplus to the landless poor. The Telangana Land Reforms (Ceiling on Agricultural Holdings) Act, 1973 is the primary ceiling legislation in Telangana.</div>
+        <div class="section-h">▶ Objective and Constitutional Basis</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 39(b)</strong> — equitable distribution of material resources</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 39(c)</strong> — prevent concentration of wealth</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Article 31A</strong> — saves Act from FR challenge; <strong>Ninth Schedule + Article 31B</strong> — absolute immunity</span></div>
+        <div class="section-h">▶ Ceiling Limits</div>
+        <table class="data-table"><thead><tr><th>Category</th><th>Ceiling</th></tr></thead><tbody>
+        <tr><td>Dry / Unirrigated — single crop</td><td><strong>54 acres</strong></td></tr>
+        <tr><td>Irrigated — single crop</td><td><strong>27 acres</strong></td></tr>
+        <tr><td>Irrigated — double crop / wet land</td><td><strong>18 acres</strong></td></tr>
+        <tr><td>Garden / Orchard / Plantation / Sugarcane</td><td><strong>10 acres</strong></td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Who Does Ceiling Apply To</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Individual, family unit, HUF — all counted together</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Benami holdings — included in ceiling computation</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Adult children — separate ceiling per major child</span></div>
+        <div class="section-h">▶ Surplus Land — Process</div>
+        <div class="formula-box">Ceiling computed → Surplus declared → Vests in State free of encumbrance → Redistributed to landless poor (SC, ST, women, small farmers) → Compensation paid to former owner (below market rate)</div>
+        <div class="section-h">▶ Exemptions</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Public charitable trusts · Religious endowments · Industrial use · Defence land</span></div>
+        <div class="section-h">▶ Ninth Schedule — IR Coelho Limitation</div>
+        <div class="case-card"><div class="case-name">⚖ IR Coelho v State of Tamil Nadu (2007)</div><div class="case-ratio">Laws in Ninth Schedule added after April 24, 1973 can be tested against basic structure — the Ceiling Act (1973) is precisely on this boundary. Courts CAN examine it for basic structure violations.</div></div>
+        <div class="verdict-box">✍ Land ceiling laws had mixed success. Surplus land was distributed in Telangana — but benami transfers before the laws could apply meant much was already hidden. Implementation requires political will absent in large landowning States.</div>
+      `
+    },
+    {
+      id:"B7", title:"Forest Rights Act 2006 — Rights of Scheduled Tribes and Forest Dwellers", marks:"15 Marks",
+      content:`
+        <div class="def-box">The Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act, 2006 (FRA) — acknowledges and corrects the "historical injustice" of colonial and post-independence forest laws that treated tribal communities as encroachers on their own ancestral forests.</div>
+        <div class="section-h">▶ Historical Injustice Background</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Indian Forest Act 1927 — classified forests as Reserved/Protected — criminalised traditional tribal activities</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Tribals living in forests for generations became "encroachers"</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>FRA 2006 — Parliament acknowledged this injustice and reversed it</span></div>
+        <div class="section-h">▶ Eligibility — Who Can Claim</div>
+        <table class="data-table"><thead><tr><th>Category</th><th>Requirement</th></tr></thead><tbody>
+        <tr><td>Scheduled Tribes</td><td>Must have resided in forest for at least 3 generations (75 years) before December 13, 2005</td></tr>
+        <tr><td>Other Traditional Forest Dwellers</td><td>Non-ST communities with at least 3 generations of forest dependency</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Categories of Rights — Section 3</div>
+        <table class="data-table"><thead><tr><th>Right</th><th>Details</th></tr></thead><tbody>
+        <tr><td>Individual Forest Rights (IFR)</td><td>Cultivate forest land in occupation — <strong>max 4 hectares</strong></td></tr>
+        <tr><td>Community Rights</td><td>Grazing, fishing, Minor Forest Produce (tendu leaves, bamboo)</td></tr>
+        <tr><td>Community Forest Resource Rights</td><td>Right to protect and manage community forest</td></tr>
+        <tr><td>Habitat Rights</td><td>For Particularly Vulnerable Tribal Groups (PVTGs)</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Claim Process — Four Tiers</div>
+        <div class="formula-box">Gram Sabha (FRC) → Sub-Divisional Level Committee (SDLC) → District Level Committee (DLC — final authority) → State Level Monitoring Committee (SLMC)</div>
+        <div class="section-h">▶ Critical Rights Guaranteed</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>MFP ownership — tribals own tendu leaves, bamboo (major economic empowerment)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>No eviction</strong> without first completing FRA rights settlement</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>FRA title — <strong>heritable but NOT transferable</strong></span></div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ Wildlife First v Ministry of Forest (2019)</div><div class="case-ratio">SC initially ordered eviction of tribals with rejected claims — mass backlash. Modified: proper FRA process must be completed before any eviction. Exposed implementation crisis.</div></div>
+        <div class="case-card"><div class="case-name">⚖ Orissa Mining Corporation v Ministry of Environment (2013)</div><div class="case-ratio">SC directed 12 Gram Sabhas in Niyamgiri Hills to vote on tribal religious rights — all voted against mining. Gram Sabha consent is mandatory for forest clearance.</div></div>
+        <div class="verdict-box">✍ FRA 2006 transforms tribals from encroachers to owners of their ancestral forest — a historic legislative correction. The challenge: millions of genuine claimants have had claims wrongly rejected. The law is sound; implementation needs urgent political attention.</div>
+      `
+    },
+    {
+      id:"B8", title:"Doctrine of Eminent Domain — Constitutional History and Judicial Interpretation", marks:"15 Marks",
+      content:`
+        <div class="def-box">Eminent Domain — inherent sovereign power to compulsorily acquire private property for public use with just compensation. Every modern State exercises this power. India's constitutional journey reflects the tension between property rights and developmental needs.</div>
+        <div class="section-h">▶ Historical Evolution in India</div>
+        <table class="data-table"><thead><tr><th>Period</th><th>Position</th></tr></thead><tbody>
+        <tr><td>Pre-Constitution</td><td>Land Acquisition Act 1894 — colonial law, minimal safeguards</td></tr>
+        <tr><td>1950-1978</td><td>Articles 19(1)(f) and 31 — Property was a Fundamental Right</td></tr>
+        <tr><td>1978 — 44th Amendment</td><td>Property removed from FR — Article 300A only</td></tr>
+        <tr><td>Post-2013</td><td>LARR Act — rights-based acquisition with consent and R&R</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Public Purpose — Judicial Tests</div>
+        <div class="case-card"><div class="case-name">⚖ Somawanti v State of Punjab (1963)</div><div class="case-ratio">Government declaration of public purpose is conclusive — cannot be questioned in court unless fraud or colourable exercise of power.</div></div>
+        <div class="case-card"><div class="case-name">⚖ Chameli Singh v State of UP (1996)</div><div class="case-ratio">Housing for EWS/LIG is a valid public purpose — right to shelter is part of right to life under Article 21.</div></div>
+        <div class="section-h">▶ Just Compensation — Judicial Position</div>
+        <div class="case-card"><div class="case-name">⚖ State of MP v Vishnu Prasad Sharma (1966)</div><div class="case-ratio">Just compensation = what willing seller accepts from willing buyer — actual market value. Arbitrary below-market compensation is constitutionally invalid.</div></div>
+        <div class="section-h">▶ Article 300A — Current Framework</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Property is NOT a fundamental right after 44th Amendment</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>But Article 300A IS an enforceable constitutional right</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Courts can examine whether deprivation is by a valid, just law</span></div>
+        <div class="case-card"><div class="case-name">⚖ K.T. Plantation v State of Karnataka (2011)</div><div class="case-ratio">Article 300A is an enforceable constitutional right. Arbitrary deprivation without valid law violates 300A — courts can examine and strike down.</div></div>
+        <div class="verdict-box">✍ The Eminent Domain doctrine represents the central tension in constitutional law — individual rights vs collective welfare. India's journey from FR to Article 300A to LARR 2013 shows how the balance evolved — State power tempered by rights-based safeguards.</div>
+      `
+    },
+    {
+      id:"B9", title:"Land Records, Pattadar Pass Books and Digital Reforms in Telangana", marks:"15 Marks",
+      content:`
+        <div class="def-box">Land record disputes are India's largest category of civil litigation. Fragmented, inconsistent, and manually maintained records enable fraud and title uncertainty. Digital reforms — especially Telangana's Dharani Portal — aim to create reliable, integrated land records.</div>
+        <div class="section-h">▶ Problems with India's Current System</div>
+        <table class="data-table"><thead><tr><th>Problem</th><th>Impact</th></tr></thead><tbody>
+        <tr><td>Multiple agencies — Revenue, Registration, Survey</td><td>Conflicting records — Pahani vs ROR vs Survey</td></tr>
+        <tr><td>Manual records</td><td>Tampering, errors, loss</td></tr>
+        <tr><td>Deed registration only</td><td>Presumptive title — rebuttable in court</td></tr>
+        <tr><td>Encumbrance certificate not conclusive</td><td>Only shows registered transactions — not all claims</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ Telangana Rights in Land and Pattadar Pass Books Act, 2020</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Dharani Portal</strong> — integrated digital land records — single platform</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Pattadar Pass Book — primary record of land rights (still presumptive title)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Mutation automatic on registration — real-time updates</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Prohibited Properties</strong> — assigned lands, endowment lands, government lands — cannot be registered on Dharani</span></div>
+        <div class="section-h">▶ National Reforms</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>DILRMP</strong> — Digital India Land Records Modernisation Programme (Central)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>ULPIN</strong> — Unique Land Parcel Identification Number (14-digit) — "Bhu-Aadhar"</span></div>
+        <div class="section-h">▶ Torrens System — Target</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>Conclusive title — register is final proof</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>State guarantees — compensates if register wrong</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span>India has NOT yet implemented full Torrens system</span></div>
+        <div class="verdict-box">✍ Without clear land title — land cannot be used as credit collateral, cannot be sold confidently, and disputes consume generations in court. Moving from presumptive to conclusive title is India's most important land administration reform.</div>
+      `
+    },
+    {
+      id:"B10", title:"Doctrine of Eminent Domain vs Police Power — Land Acquisition vs Land Use Regulation", marks:"15 Marks",
+      content:`
+        <div class="def-box">Two sovereign powers affect private property — <strong>Eminent Domain</strong> (takes property — compensation mandatory) and <strong>Police Power</strong> (regulates property use — no compensation). The distinction is critical: regulatory restriction vs physical acquisition.</div>
+        <div class="section-h">▶ Key Distinction</div>
+        <table class="data-table"><thead><tr><th>Eminent Domain</th><th>Police Power</th></tr></thead><tbody>
+        <tr><td>State TAKES property</td><td>State REGULATES property use</td></tr>
+        <tr><td>Compensation MANDATORY</td><td>No compensation</td></tr>
+        <tr><td>Governed by LARR 2013</td><td>Governed by zoning, planning, environmental laws</td></tr>
+        <tr><td>Transfer of title to State</td><td>Owner retains title — only use restricted</td></tr>
+        <tr><td>Example: Road construction</td><td>Example: Building height restrictions</td></tr>
+        </tbody></table>
+        <div class="section-h">▶ "Taking" vs "Regulation" — Tests</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Physical invasion test</strong> — If State physically occupies land — always a "taking" (compensation due)</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Economic impact test</strong> — If regulation so restricts use that no economic benefit remains — may be a "taking"</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Nexus test</strong> — Does restriction bear reasonable nexus to public welfare objective?</span></div>
+        <div class="section-h">▶ Indian Application</div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Ceiling on agricultural land</strong> — Police Power (regulates land holding) — no full market compensation</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Compulsory acquisition under LARR 2013</strong> — Eminent Domain — full compensation mandatory</span></div>
+        <div class="bullet-item"><span class="bullet-dot">▶</span><span><strong>Forest restrictions</strong> — Police Power — no compensation even if timber revenue lost</span></div>
+        <div class="section-h">▶ Landmark Cases</div>
+        <div class="case-card"><div class="case-name">⚖ MC Mehta v Kamal Nath (1997)</div><div class="case-ratio">SC applied public trust doctrine — Government cannot alienate public trust resources (rivers, forests, seashores) to private parties. Police power must be used to protect these — not Eminent Domain.</div></div>
+        <div class="verdict-box">✍ The Eminent Domain vs Police Power distinction determines whether compensation is due. India's land law framework uses both — Eminent Domain for outright acquisition, Police Power for land use regulation — creating a complex web of property rights.</div>
+      `
+    },
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════
+// CASES DATA
+// ═══════════════════════════════════════════════════════════
+
+const CASES = [
+  {
+    year:"1952", name:"State of Bihar v Maharajadhiraja Kameshwar Singh", tag:"Zamindari Abolition",
+    story:"After independence, Bihar urgently passed a land reform law to abolish Zamindari. The Maharaja challenged it — the compensation formula was discriminatory, treating different Zamindars unequally. The Supreme Court agreed and struck down parts of the Act. Parliament had to act fast — the First Constitutional Amendment (1951) was passed specifically to protect land reform laws from fundamental rights challenges. The Maharaja won the case — but Parliament amended the Constitution so he could not benefit from winning.",
+    principle:"This case directly forced the First Constitutional Amendment inserting Articles 31A, 31B and the Ninth Schedule — removing land reform laws from fundamental rights challenge permanently."
+  },
+  {
+    year:"1973", name:"Kesavananda Bharati v State of Kerala", tag:"Basic Structure",
+    story:"Swami Kesavananda Bharati challenged Kerala's land reform laws that acquired part of his religious mutt's property. The case expanded into the greatest constitutional question India had ever faced: can Parliament amend ANY part of the Constitution — including Fundamental Rights — without limit? In a historic 7-6 decision by a 13-judge bench, the Court said No. Parliament can amend but cannot destroy the Basic Structure of the Constitution. Democracy, secularism, judicial review — these cannot be abolished even by amendment.",
+    principle:"Parliament has unlimited amending power but cannot abrogate the basic structure of the Constitution — equality, judicial review, secularism, and democracy cannot be destroyed even by constitutional amendment."
+  },
+  {
+    year:"1963", name:"Somawanti v State of Punjab", tag:"Public Purpose",
+    story:"The Punjab Government acquired land for a housing colony and industrial township. Somawanti argued the land was actually being used for private builders — not truly a public purpose. The Supreme Court examined this closely. It held that the Government's declaration that the purpose is public is generally conclusive — the courts will not question it unless there is clear fraud or the Government is exercising its power for a completely different hidden purpose. Development of townships was a valid public purpose.",
+    principle:"The Government's declaration of 'public purpose' for land acquisition is generally conclusive and binding on courts — it can only be challenged if it is a colourable exercise of power or fraud."
+  },
+  {
+    year:"1997", name:"Samatha v State of Andhra Pradesh", tag:"Tribal Land Rights",
+    story:"The AP Government granted mining leases to private companies in Scheduled Areas of Visakhapatnam. Samatha, an NGO, challenged this. The State argued the Land Transfer Regulation applied only to private transfers — not Government grants. The Supreme Court's 5-judge bench (3-2 majority) strongly disagreed. The Government itself is a 'person' covered by the Regulation. It cannot transfer Scheduled Area land to private non-tribal companies. Only tribal cooperatives or Government mining agencies can operate there. 20% of profits must go to tribal development.",
+    principle:"Government cannot transfer Scheduled Area land to private mining or industrial companies. Only tribal cooperatives or State agencies can operate — making this the strongest judicial protection ever given to tribal land rights in India."
+  },
+  {
+    year:"2000", name:"Narmada Bachao Andolan v Union of India", tag:"R&R and Displacement",
+    story:"The Sardar Sarovar Dam on the Narmada would submerge hundreds of villages across three States. NBA, led by Medha Patkar, challenged the project — arguing lakhs of tribal and rural families would be displaced without adequate rehabilitation. In a 2-1 split, the Supreme Court upheld the dam — it was a valid public purpose. But the majority imposed a crucial condition: the State Governments must complete full Rehabilitation and Resettlement of all displaced persons before the dam height could be raised. R&R first — then displacement.",
+    principle:"Development projects can displace communities but Rehabilitation and Resettlement must be completed before dispossession — the right to life under Article 21 includes the right to livelihood and adequate resettlement."
+  },
+  {
+    year:"2020", name:"Indore Development Authority v Manoharlal", tag:"LARR Act 2013",
+    story:"Thousands of acquisitions under the old 1894 Act were still pending when LARR 2013 came into force. Section 24(2) said old acquisitions lapse if (a) award not made, or (b) possession not taken and compensation not deposited. High Courts split on whether 'or' meant either condition alone was enough. The Supreme Court's 5-judge Constitution Bench (4-1) finally settled this. BOTH conditions must exist simultaneously — possession not taken AND compensation not paid. If either condition was satisfied, the acquisition could proceed.",
+    principle:"Under Section 24(2) of LARR 2013, an old acquisition lapses only if BOTH conditions are simultaneously satisfied — possession not taken AND compensation not paid/deposited. Either condition alone is not enough."
+  },
+  {
+    year:"2013", name:"Orissa Mining Corporation v Ministry of Environment", tag:"Tribal Consent",
+    story:"Vedanta Resources planned to mine bauxite on the Niyamgiri Hills in Odisha — sacred to the Dongria Kondh tribe. Environmental clearance had been given. But the tribal community had not been consulted about their religious and cultural rights over the forest. The Supreme Court directed that 12 Gram Sabhas of affected villages must be held. The tribals themselves must decide whether mining would harm their religious and forest rights. All 12 Gram Sabhas voted against mining. The project was stopped.",
+    principle:"Forest clearance for mining in Scheduled/tribal areas requires prior, free and informed consent of the affected Gram Sabhas — tribal religious and community forest rights cannot be overridden without genuine consultation."
+  },
+  {
+    year:"2011", name:"K.T. Plantation v State of Karnataka", tag:"Article 300A",
+    story:"After the 44th Amendment removed property from Fundamental Rights, a key question arose: was there any enforceable property right left? Karnataka took over plantation land under a State law. The owners claimed they were not paid market value. The Supreme Court held: Article 300A is not a fundamental right — but it IS an enforceable constitutional right. It requires that deprivation of property be by authority of a valid law. Arbitrary deprivation — or deprivation under an unconstitutional law — still violates Article 300A.",
+    principle:"Article 300A is an enforceable constitutional right — not a fundamental right. Property cannot be arbitrarily deprived. Courts can examine whether deprivation is authorised by a valid, just law even after the 44th Amendment."
+  },
+  {
+    year:"1985", name:"Olga Tellis v Bombay Municipal Corporation", tag:"Right to Livelihood",
+    story:"The Bombay Municipal Corporation decided to evict all pavement dwellers from Bombay's footpaths — they were 'encroachers'. Olga Tellis, a journalist, filed a PIL. The BMC argued these were illegal occupants and the City had a right to clear encroachments. The Supreme Court held: the right to livelihood is an integral part of the right to life under Article 21. Pavement dwellers lived where they worked — eviction would destroy their livelihood. The Court said: before eviction, they must be offered alternative accommodation. Life includes livelihood.",
+    principle:"The right to livelihood is an integral part of the right to life under Article 21 — eviction from land or dwelling that destroys livelihood requires compliance with Article 21 guarantees including a hearing and rehabilitation."
+  },
+  {
+    year:"2007", name:"IR Coelho v State of Tamil Nadu", tag:"Ninth Schedule",
+    story:"The Ninth Schedule was created in 1951 to protect land reform laws from fundamental rights challenges. Over decades, governments began inserting all kinds of laws there — not just land reforms. IR Coelho challenged Tamil Nadu's laws in the Ninth Schedule. The Supreme Court's 9-judge Constitution Bench held: laws inserted in the Ninth Schedule after April 24, 1973 — the date of Kesavananda Bharati — can be examined by courts for violations of the basic structure. The Ninth Schedule is not an absolute black hole shielding laws from all constitutional scrutiny.",
+    principle:"Laws inserted in the Ninth Schedule after April 24, 1973 (Kesavananda date) can be examined by courts to see if they violate the basic structure of the Constitution — they do not enjoy absolute immunity."
+  },
+  {
+    year:"2019", name:"Wildlife First v Ministry of Forest", tag:"FRA Implementation",
+    story:"A PIL was filed arguing that tribals whose FRA 2006 claims were rejected should be evicted from forest land. The Supreme Court initially ordered all States to evict rejected claimants — potentially affecting millions of tribals. This caused a nationwide outcry. Tribal rights groups, States, and the Union Government all protested. The SC modified its order — directed that proper processing of FRA claims must be completed before any eviction can take place. Summary rejection without proper Gram Sabha process is invalid.",
+    principle:"No eviction of forest dwellers can be ordered until FRA 2006 claims have been properly processed through Gram Sabha, SDLC and DLC — summary rejection without due process violates both FRA and Article 21."
+  },
+  {
+    year:"1996", name:"Chameli Singh v State of UP", tag:"Public Purpose Housing",
+    story:"Land was acquired in Allahabad for housing schemes for Economically Weaker Sections and Lower Income Groups. The landowners challenged this — housing for poor people is not a proper 'public purpose' for land acquisition, they argued. The Supreme Court firmly rejected this. It held that housing for urban poor is not just a valid public purpose — it is among the most important public purposes. The right to shelter is part of the right to life under Article 21. Development that benefits the weakest sections is the highest public purpose.",
+    principle:"Housing for economically weaker sections and lower income groups is a constitutionally valid public purpose — the right to shelter is part of the right to life under Article 21, making housing schemes the highest form of public purpose."
+  },
+  {
+    year:"1966", name:"State of MP v Vishnu Prasad Sharma", tag:"Just Compensation",
+    story:"Agricultural land was acquired and compensation was based on government revenue records — much lower than actual market value. The landowner challenged this as inadequate. The Supreme Court examined what 'just compensation' means in the Indian constitutional context. It held that just compensation is the price that a willing seller would accept from a willing buyer in an open market transaction — i.e., actual market value. Artificially depressed administrative valuations do not constitute just compensation.",
+    principle:"Just compensation for land acquisition means the actual market value — what a willing seller would accept from a willing buyer. Government-fixed valuations below market rate do not constitute just compensation."
+  },
+  {
+    year:"1997", name:"MC Mehta v Kamal Nath", tag:"Public Trust Doctrine",
+    story:"A motel on the banks of the Beas river in Himachal Pradesh had been given a lease over riverbed and floodplains — allowing the motel to divert the river course. MC Mehta challenged this as unconstitutional. The Supreme Court applied the Public Trust Doctrine — originally from Roman and English law — to Indian constitutional law for the first time. Rivers, forests, seashores, and public land held since ancient times are held by the Government as trustee for the public. They cannot be given away to private parties for commercial exploitation.",
+    principle:"Rivers, forests, seashores and other natural resources are held by the Government as public trustee — they cannot be alienated to private parties for commercial exploitation as they are held in trust for all citizens equally."
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ DATA
+// ═══════════════════════════════════════════════════════════
+
+const QUIZ = {
+  all: [
+    { q:"Under LARR 2013, Social Impact Assessment must be completed within:", opts:["3 months","6 months","9 months","12 months"], ans:1, exp:"6 months under Section 4 of LARR 2013. Expert Group then has 2 months to report." },
+    { q:"What percentage of affected family consent is needed for private company land acquisition under LARR 2013?", opts:["60%","70%","80%","90%"], ans:2, exp:"80% for private companies. 70% for PPP projects. Government needs no consent." },
+    { q:"Under Telangana Land Reforms Act 1973, ceiling limit for dry unirrigated land is:", opts:["27 acres","40 acres","54 acres","65 acres"], ans:2, exp:"54 acres for unirrigated single crop land. 27 acres for irrigated single crop. 10 acres for garden/plantation." },
+    { q:"The Samatha case (1997) held that in Scheduled Areas, mining can only be done by:", opts:["Any company with Government licence","Only foreign companies","Tribal cooperatives or State mining agencies","All registered companies"], ans:2, exp:"Samatha v State of AP 1997 — SC held Government itself cannot transfer Scheduled Area land to private companies. Only tribal cooperatives or State agencies." },
+    { q:"Right to Property was removed from Fundamental Rights by which Constitutional Amendment?", opts:["42nd Amendment","44th Amendment","46th Amendment","50th Amendment"], ans:1, exp:"44th Constitutional Amendment, 1978 — Property removed from Part III Fundamental Rights. Now only Article 300A (constitutional right, not fundamental right)." },
+    { q:"Under FRA 2006, what is the cut-off date for establishing 3 generations of forest occupation?", opts:["January 26, 1950","August 15, 1947","December 13, 2005","January 1, 2006"], ans:2, exp:"December 13, 2005 — statutory cut-off. Claimant must prove 3 generations (75 years) of occupation BEFORE this date." },
+    { q:"Section 101 of LARR 2013 — acquired land unused for how many years must be returned?", opts:["3 years","5 years","7 years","10 years"], ans:1, exp:"5 years — if acquired land not used for stated purpose for 5 years, it must be returned to original owner or put in land bank." },
+    { q:"Kameshwar Singh case (1952) directly caused:", opts:["Samatha ruling","44th Amendment","First Constitutional Amendment and Ninth Schedule","Kesavananda judgment"], ans:2, exp:"State of Bihar v Kameshwar Singh — SC struck down Bihar Zamindari Act. Led Parliament to pass First Amendment inserting Articles 31A, 31B and Ninth Schedule." },
+    { q:"The Torrens System's 'Mirror Principle' means:", opts:["Courts reflect the register","The register accurately reflects current state of title","Parties mirror each other's rights","Registration mirrors old title"], ans:1, exp:"Mirror Principle — the register is an accurate reflection of the current title. What you see in the register is what the law recognises." },
+    { q:"Article 300A was inserted by which Amendment?", opts:["42nd Amendment","44th Amendment","46th Amendment","48th Amendment"], ans:1, exp:"44th Amendment 1978 inserted Article 300A — No person shall be deprived of property save by authority of law. This replaced Articles 19(1)(f) and 31 as FR." },
+    { q:"Maximum area for Individual Forest Rights under FRA 2006 is:", opts:["2 hectares","4 hectares","6 hectares","10 hectares"], ans:1, exp:"4 hectares (approximately 10 acres) is the maximum limit for Individual Forest Rights claims under FRA 2006." },
+    { q:"IR Coelho v State of Tamil Nadu (2007) held that:", opts:["All Ninth Schedule laws are immune forever","Post-1973 Ninth Schedule laws can be examined for basic structure","Parliament cannot amend Ninth Schedule","Land reform laws need no protection"], ans:1, exp:"IR Coelho — 9-judge bench: laws in Ninth Schedule inserted AFTER April 24, 1973 can be tested for basic structure violations. Pre-1973 laws have absolute immunity." },
+    { q:"In Indore Development Authority case (2020), S.24(2) lapse requires:", opts:["Only possession not taken","Only compensation not paid","Both possession not taken AND compensation not paid","Award not made within 2 years"], ans:2, exp:"Constitution Bench (4-1): BOTH conditions must be simultaneously satisfied — possession not taken AND compensation not paid. Either condition alone is insufficient." },
+    { q:"Ryotwari Settlement involved revenue paid:", opts:["By Zamindar to State","Directly by Ryot (cultivator) to State","By village community collectively","By Jagirdar to Zamindar"], ans:1, exp:"Ryotwari — direct relationship between Ryot (cultivator) and State. No intermediary. Prevalent in Madras (including Andhra area) and Bombay presidencies." },
+    { q:"Telangana Assigned Lands (Prohibition of Transfers) Act 1977 — transfers of assigned land are:", opts:["Valid if registered","Valid for family members only","Void ab initio","Voidable at Government option"], ans:2, exp:"ANY transfer — sale, gift, mortgage, lease — is void ab initio (invalid from beginning). Banks cannot take assigned land as security. Government can resume if violated." },
+  ],
+  concepts: [
+    { q:"What does Doctrine of Eminent Domain mean?", opts:["Right to possess neighbour's property","State's inherent sovereign power to acquire private property for public use with compensation","Individual's right to own property","Court's power to transfer disputed property"], ans:1, exp:"Eminent Domain — inherent sovereign power of State to compulsorily acquire private property for public use upon payment of just compensation. Attribute of sovereignty." },
+    { q:"Bona Vacantia means:", opts:["Good faith purchase","Property of good citizen","Ownerless goods passing to the State","Land reclaimed from water"], ans:2, exp:"Bona Vacantia (Latin: ownerless goods) — property with no owner passes to Government. Section 29 HSA for individuals; Section 654 Companies Act for dissolved companies." },
+    { q:"Which DPSP mandates equitable distribution of material resources including land?", opts:["Article 38","Article 39(b)","Article 40","Article 46"], ans:1, exp:"Article 39(b) — State shall ensure material resources of the community are distributed to serve common good. Land ceiling laws implement this directly." },
+    { q:"Doctrine of Escheat applies when:", opts:["Property is abandoned","Owner dies intestate without any legal heirs","Owner migrates permanently","Property is mortgaged"], ans:1, exp:"Escheat — property of person dying intestate without legal heirs vests in State. State is the ultimate heir. Section 29, Hindu Succession Act 1956." },
+    { q:"FRA 2006 title is:", opts:["Transferable and heritable","Neither transferable nor heritable","Heritable but NOT transferable","Transferable but not heritable"], ans:2, exp:"FRA title is heritable (passes to children on death) but NOT transferable (cannot be sold, gifted or otherwise alienated). Protects the land for the tribal family permanently." },
+    { q:"'Curtain Principle' in Torrens System means:", opts:["Registration is secret","No need to look behind the register — it is complete proof of title","Courts curtail property rights","Registration curtails ownership"], ans:1, exp:"Curtain Principle — the Register is the complete and accurate record. You do not need to investigate the history of transactions before the register entry. The register is final." },
+  ],
+  cases: [
+    { q:"Samatha v State of AP (1997) primarily concerns:", opts:["Zamindari abolition","Mining leases and tribal land in Scheduled Areas","Ceiling on land holdings","Tenancy protection"], ans:1, exp:"Samatha — SC held Government cannot grant mining leases to private (non-tribal) companies in Scheduled Areas. Only tribal cooperatives or State agencies can operate there." },
+    { q:"Olga Tellis v BMC (1985) established:", opts:["Public trust doctrine","Right to livelihood as part of right to life under Article 21","Torrens system in India","Eminent Domain limits"], ans:1, exp:"Olga Tellis — SC held right to livelihood is part of right to life (Article 21). Eviction without alternative accommodation destroys livelihood and violates Article 21." },
+    { q:"K.T. Plantation v State of Karnataka (2011) held that Article 300A is:", opts:["A fundamental right","A non-enforceable guideline","An enforceable constitutional right","Repealed by the 44th Amendment"], ans:2, exp:"Article 300A — not a fundamental right but an enforceable constitutional right. Courts can examine whether deprivation is by authority of a valid, just law." },
+    { q:"In Narmada Bachao Andolan case, the SC directed:", opts:["Stop the dam immediately","Full R&R before dispossession and raising dam height","Compensation only — no resettlement","All displaced to be given cash"], ans:1, exp:"SC upheld Sardar Sarovar Dam but directed: R&R must be completed before dam height is raised or submergence occurs. Development cannot displace without proper rehabilitation." },
+    { q:"MC Mehta v Kamal Nath (1997) applied:", opts:["Eminent Domain doctrine","Ryotwari settlement principles","Public Trust Doctrine to Indian constitutional law","Torrens system"], ans:2, exp:"MC Mehta — SC applied Public Trust Doctrine to India. Rivers, forests, seashores held by Government as trustee for public — cannot be alienated to private parties commercially." },
+    { q:"IR Coelho case (2007) decided by how many judges?", opts:["5 judges","7 judges","9 judges","13 judges"], ans:2, exp:"IR Coelho v State of Tamil Nadu — 9-judge Constitution Bench. Held: Ninth Schedule laws inserted after April 24, 1973 can be examined for basic structure violations." },
+  ],
+  numbers: [
+    { q:"SIA under LARR 2013 — completion period:", opts:["3 months","6 months","12 months","18 months"], ans:1, exp:"6 months under Section 4 of LARR 2013. Then Expert Group has 2 months to report." },
+    { q:"Under LARR 2013, Final Declaration must be issued within how many months of Preliminary Notification?", opts:["6 months","9 months","12 months","18 months"], ans:2, exp:"12 months — Section 19 Final Declaration must come within 12 months of Section 11 Preliminary Notification. If not — the acquisition process lapses." },
+    { q:"Ceiling for garden/plantation land under Telangana LR Act 1973:", opts:["5 acres","10 acres","18 acres","27 acres"], ans:1, exp:"10 acres — strictest ceiling for highest productivity land (garden, orchard, plantation, sugarcane). Compare: 54 acres for unirrigated dry land." },
+    { q:"FRA 2006 — cut-off date for claims:", opts:["January 26, 1950","August 15, 1947","December 13, 2005","January 1, 2006"], ans:2, exp:"December 13, 2005 — the statutory cut-off date. All claims must establish 3 generations / 75 years of forest occupation BEFORE this specific date." },
+    { q:"Limitation period to file tribal land restoration petition under Scheduled Areas Regulation:", opts:["3 years","5 years","12 years","No limitation"], ans:2, exp:"12 years from date of dispossession to file petition for restoration of Scheduled Area tribal land with District Collector." },
+    { q:"R&R entitlement — One-time financial assistance under LARR 2013:", opts:["₹25,000","₹50,000","₹1 lakh","₹5 lakh"], ans:1, exp:"₹50,000 one-time financial assistance. Also: subsistence allowance ₹3,000/month for 12 months; transportation ₹50,000; employment or ₹5 lakh in lieu." },
+    { q:"IFR maximum area under FRA 2006:", opts:["2 hectares","4 hectares","6 hectares","10 hectares"], ans:1, exp:"4 hectares (approximately 10 acres) is the maximum for Individual Forest Rights under Forest Rights Act 2006. Cannot claim more even if in occupation of more." },
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════
+// CHEAT SHEET DATA
+// ═══════════════════════════════════════════════════════════
+
+const CHEAT_SECTIONS = [
+  {
+    icon:"🔢", title:"LARR Act 2013 — Key Numbers",
+    items:[
+      {k:"SIA Period",v:"6 months — Section 4"},
+      {k:"Expert Group",v:"2 months to report after SIA"},
+      {k:"Objections",v:"60 days after Preliminary Notification"},
+      {k:"Final Declaration",v:"Within 12 months of Preliminary Notification [S.19]"},
+      {k:"Award Deadline",v:"Within 12 months of Final Declaration [S.25]"},
+      {k:"Private Co. Consent",v:"80% of affected families"},
+      {k:"PPP Consent",v:"70% of affected families"},
+      {k:"Urban Compensation",v:"2× market value + 100% solatium = 4× total"},
+      {k:"Rural Compensation",v:"Up to 4× market value + 100% solatium = up to 8× total"},
+      {k:"Land Return",v:"5 years unused — Section 101 — returned to owner"},
+      {k:"R&R Urban",v:"100 or more families displaced"},
+      {k:"R&R Rural",v:"200 or more families displaced"},
+    ]
+  },
+  {
+    icon:"🌾", title:"Telangana Land Ceiling Limits",
+    items:[
+      {k:"Dry / Unirrigated",v:"54 acres maximum"},
+      {k:"Irrigated — Single",v:"27 acres maximum"},
+      {k:"Double Crop / Wet",v:"18 acres maximum"},
+      {k:"Garden / Plantation",v:"10 acres maximum"},
+      {k:"Sugarcane",v:"10 acres maximum"},
+      {k:"Constitutional Shield",v:"Article 31B + Ninth Schedule immunity"},
+      {k:"Post-1973 Laws",v:"IR Coelho (2007) — basic structure check possible"},
+    ]
+  },
+  {
+    icon:"🌲", title:"Forest Rights Act 2006 — Key Facts",
+    items:[
+      {k:"Cut-off Date",v:"December 13, 2005"},
+      {k:"Occupation Required",v:"3 generations / 75 years before cut-off"},
+      {k:"IFR Max Area",v:"4 hectares (approx. 10 acres)"},
+      {k:"Title Nature",v:"Heritable — NOT transferable"},
+      {k:"Gram Sabha",v:"First tier — receives and verifies claims"},
+      {k:"DLC",v:"District Level Committee — final authority for claims"},
+      {k:"MFP Ownership",v:"Tribals own tendu leaves, bamboo — major economic right"},
+    ]
+  },
+  {
+    icon:"📜", title:"Constitutional Provisions",
+    items:[
+      {k:"Art 300A",v:"Property right — by authority of law — 44th Amendment"},
+      {k:"Art 31A",v:"Saves land reform acquisition laws from Art 14/19 challenge"},
+      {k:"Art 31B + 9th Sch",v:"Absolute immunity for listed laws (pre-1973)"},
+      {k:"Art 39(b)",v:"DPSP — equitable distribution of material resources"},
+      {k:"Art 39(c)",v:"DPSP — prevent concentration of wealth"},
+      {k:"Art 46",v:"DPSP — promote SC/ST economic interests"},
+      {k:"Fifth Schedule",v:"Scheduled Areas — Governor's special powers"},
+      {k:"Art 244",v:"Scheduled and Tribal Areas — special governance"},
+    ]
+  },
+  {
+    icon:"⚖️", title:"Landmark Cases — Quick Reference",
+    items:[
+      {k:"Kameshwar Singh 1952",v:"Led to 1st Amendment — Ninth Schedule — land reform immunity"},
+      {k:"Kesavananda 1973",v:"Basic Structure — Parliament cannot destroy Constitution"},
+      {k:"Somawanti 1963",v:"Public purpose declaration conclusive — fraud exception only"},
+      {k:"Samatha 1997",v:"Govt cannot give Scheduled Area land to private companies"},
+      {k:"Narmada 2000",v:"R&R before dispossession — development vs displacement"},
+      {k:"Olga Tellis 1985",v:"Livelihood = part of right to life — Article 21"},
+      {k:"Indore DA 2020",v:"S.24(2) — BOTH conditions needed for lapse"},
+      {k:"IR Coelho 2007",v:"Post-1973 Ninth Schedule — basic structure check"},
+      {k:"KT Plantation 2011",v:"Art 300A is enforceable constitutional right"},
+      {k:"MC Mehta 1997",v:"Public Trust Doctrine — rivers/forests not alienable"},
+    ]
+  },
+  {
+    icon:"📋", title:"Land Revenue Settlements",
+    items:[
+      {k:"Zamindari",v:"Zamindar → State | Bengal, Bihar, UP | 1793"},
+      {k:"Ryotwari",v:"Ryot direct → State | Madras (Andhra), Bombay | Thomas Munro"},
+      {k:"Mahalwari",v:"Village community → State | NW India, Punjab"},
+      {k:"AP/Telangana",v:"Ryotwari area — direct Ryot-State relationship"},
+      {k:"Abolition",v:"1st Amendment 1951 — all intermediaries abolished"},
+    ]
+  },
+  {
+    icon:"🏷️", title:"Assigned Lands — Quick Reference",
+    items:[
+      {k:"Law",v:"Telangana Assigned Lands (Prohibition of Transfers) Act 1977"},
+      {k:"Transfer Status",v:"VOID ab initio — all transfers prohibited"},
+      {k:"Bank Mortgage",v:"PROHIBITED — bank cannot take as security"},
+      {k:"Attachment",v:"PROHIBITED — cannot be seized for debt"},
+      {k:"Resumption",v:"Collector can resume land transferred in violation"},
+      {k:"Tribal Land",v:"AP Land Transfer Regulation 1959 — additional protection in Scheduled Areas"},
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// VIDEO DATA
+// ═══════════════════════════════════════════════════════════
+
+const VIDEOS = [
+  {
+    unit:"Unit 1", title:"Land Ownership, Eminent Domain, Torrens System & Land Records", id:"",
+    topics:["Doctrine of Eminent Domain — three elements","Article 300A — property after 44th Amendment","Doctrine of Escheat and Bona Vacantia — Section 29 HSA","Torrens System — Mirror, Curtain, Insurance principles","India vs Torrens — presumptive vs conclusive title","Dharani Portal — Telangana's Pattadar Pass Books","Cases: KT Plantation, Somawanti, Vishnu Prasad Sharma"]
+  },
+  {
+    unit:"Unit 2", title:"Land Reforms — Zamindari Abolition, Ryotwari & Tenancy Laws", id:"",
+    topics:["Three Revenue Settlements — Zamindari, Ryotwari, Mahalwari","Permanent Settlement 1793 — Bengal feudal system","First Constitutional Amendment 1951 — Articles 31A, 31B, Ninth Schedule","Kesavananda Bharati — Basic Structure Doctrine","Zamindari abolition effects — occupancy tenants to owners","Tenancy Reform — three stages — security, fair rent, ownership","Cases: Kameshwar Singh, Balmadies Plantations, IR Coelho"]
+  },
+  {
+    unit:"Unit 3", title:"LARR Act 2013 — Acquisition, Compensation & R&R", id:"",
+    topics:["Social Impact Assessment — 6 months — Section 4","Public Purpose definition — Section 2(1)","Consent — 80% private, 70% PPP","Compensation formula — urban 4× rural 8× calculation","R&R entitlements — Second Schedule","Section 101 — 5 year return rule","Urgency clause — Section 40 — when SIA bypassed","Cases: Narmada Bachao Andolan, Indore DA, Olga Tellis"]
+  },
+  {
+    unit:"Unit 4", title:"Land Ceiling Laws — Telangana Reforms & Assigned Lands", id:"",
+    topics:["TLR Act 1973 — ceiling limits 54/27/18/10 acres","Who does ceiling apply — family unit, benami","Surplus land — vests in State — redistribution process","Exemptions — trusts, endowments, industrial land","Ninth Schedule immunity — Article 31B","IR Coelho limitation — post-1973 laws examined","Assigned Lands Act 1977 — transfers void ab initio","Bank mortgage prohibition — key problem answer"]
+  },
+  {
+    unit:"Unit 5", title:"Tribal Land Rights — Scheduled Areas & Forest Rights Act", id:"",
+    topics:["Fifth Schedule and Article 244 — Scheduled Areas","AP Land Transfer Regulation 1959 — tribal land protection","Samatha case 1997 — complete analysis","PESA 1996 — Gram Sabha consent mandatory","Forest Rights Act 2006 — IFR, Community Rights, CFR Rights","Cut-off date December 13 2005 — 3 generations — 4 hectares max","MFP ownership — economic empowerment of tribals","Cases: Samatha, Orissa Mining Corp, Wildlife First"]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+function buildTopics() {
+  function renderPart(containerId, items, partClass) {
+    const el = document.getElementById(containerId);
+    items.forEach(t => {
+      el.insertAdjacentHTML('beforeend', `
+        <div class="topic-card ${partClass}" onclick="toggleTopic(this)">
+          <div class="topic-card-header">
+            <span class="topic-num">${t.id}</span>
+            <span class="topic-title">${t.title}</span>
+            <span class="topic-arrow">›</span>
+          </div>
+          <div class="topic-marks">${t.marks}</div>
+          <div class="topic-body">${t.content}</div>
+        </div>
+      `);
+    });
+  }
+  renderPart('partA-topics', TOPICS.A, 'pA');
+  renderPart('partB-topics', TOPICS.B, 'pB');
+}
+
+function toggleTopic(card) {
+  card.classList.toggle('open');
+}
+
+function buildCases() {
+  const tags = ['All', ...new Set(CASES.map(c => c.tag))];
+  const filterEl = document.getElementById('cases-filter');
+  tags.forEach((t, i) => {
+    filterEl.insertAdjacentHTML('beforeend', `
+      <div class="filter-chip ${i===0?'active':''}" onclick="filterCases('${t}', this)">${t}</div>
+    `);
+  });
+  const listEl = document.getElementById('cases-list');
+  CASES.forEach(c => {
+    listEl.insertAdjacentHTML('beforeend', `
+      <div class="case-story-card" data-tag="${c.tag}" onclick="this.classList.toggle('open')">
+        <div class="case-story-header">
+          <span class="case-year-badge">${c.year}</span>
+          <div>
+            <div class="case-story-title">${c.name}</div>
+            <div class="case-story-tag">${c.tag}</div>
+          </div>
+        </div>
+        <div class="case-story-body">
+          <div class="story-text">${c.story}</div>
+          <div class="story-principle">⚖ Legal Principle — ${c.principle}</div>
+        </div>
+      </div>
+    `);
+  });
+}
+
+function filterCases(tag, chipEl) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  chipEl.classList.add('active');
+  document.querySelectorAll('.case-story-card').forEach(card => {
+    card.style.display = (tag === 'All' || card.dataset.tag === tag) ? 'block' : 'none';
+  });
+}
+
+function buildCheat() {
+  const el = document.getElementById('cheat-content');
+  CHEAT_SECTIONS.forEach((s, i) => {
+    let items = s.items.map(item =>
+      `<div class="cheat-item"><span class="cheat-key">${item.k}</span><span class="cheat-val">${item.v}</span></div>`
+    ).join('');
+    el.insertAdjacentHTML('beforeend', `
+      <div class="cheat-section ${i===0?'open':''}">
+        <div class="cheat-header" onclick="toggleCheat(this)">
+          <span class="ch-icon">${s.icon}</span>
+          <h3>${s.title}</h3>
+          <span class="ch-arrow">›</span>
+        </div>
+        <div class="cheat-body">${items}</div>
+      </div>
+    `);
+  });
+}
+
+function buildVideos() {
+  const el = document.getElementById('videos-list');
+  el.insertAdjacentHTML('beforeend',`
+    <div class="video-subscribe">
+      <p>Watch all 5 unit lectures below. Subscribe to get new subject videos every semester.</p>
+      <a href="https://www.youtube.com/@lawstickerai" target="_blank">🔴 Subscribe on YouTube</a>
+    </div>
+  `);
+  VIDEOS.forEach(v => {
+    const topics = v.topics.map(t=>`<div class="video-topic-item"><span class="video-topic-dot">▶</span><span>${t}</span></div>`).join('');
+    if (v.id) {
+      el.insertAdjacentHTML('beforeend',`
+        <div class="video-card">
+          <div class="video-unit-banner">
+            <span class="video-unit-num">${v.unit}</span>
+            <span class="video-unit-title">${v.title}</span>
+          </div>
+          <div class="video-embed" onclick="window.open('https://youtu.be/${v.id}','_blank')">
+            <img class="video-thumb" src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.unit} — ${v.title}" onerror="this.src='https://img.youtube.com/vi/${v.id}/default.jpg'">
+            <div class="video-play-overlay">
+              <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+              <div class="video-play-label">Tap to Watch on YouTube</div>
+            </div>
+          </div>
+          <div class="video-topics"><div class="video-topics-title">Topics Covered</div>${topics}</div>
+          <a class="video-yt-btn" href="https://youtu.be/${v.id}" target="_blank">▶ Watch on YouTube</a>
+        </div>
+      `);
+    } else {
+      el.insertAdjacentHTML('beforeend',`
+        <div class="video-card">
+          <div class="video-unit-banner">
+            <span class="video-unit-num">${v.unit}</span>
+            <span class="video-unit-title">${v.title}</span>
+          </div>
+          <div style="background:var(--navy);padding:30px 16px;text-align:center">
+            <div style="font-size:36px;margin-bottom:8px">🔜</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:13px">Video uploading soon — Subscribe to @lawstickerai</div>
+          </div>
+          <div class="video-topics"><div class="video-topics-title">Topics Covered</div>${topics}</div>
+          <a class="video-yt-btn" href="https://www.youtube.com/@lawstickerai" target="_blank">🔴 Subscribe for Notification</a>
+        </div>
+      `);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function toggleCheat(headerEl) {
+  headerEl.parentElement.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════════
+
+let currentQuiz = [], currentQ = 0, score = 0, answered = false;
+
+function startQuiz(type) {
+  const pool = QUIZ[type] || QUIZ.all;
+  currentQuiz = [...pool].sort(() => Math.random() - 0.5).slice(0, 15);
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-start-screen').style.display = 'none';
+  document.getElementById('quiz-active').classList.add('active');
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= currentQuiz.length) { showResult(); return; }
+  const q = currentQuiz[currentQ];
+  const pct = (currentQ / currentQuiz.length) * 100;
+  document.getElementById('quiz-progress').style.width = pct + '%';
+  document.getElementById('quiz-qnum').textContent = `Question ${currentQ + 1} of ${currentQuiz.length}`;
+  document.getElementById('quiz-question').textContent = q.q;
+  const choicesEl = document.getElementById('quiz-choices');
+  choicesEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    choicesEl.insertAdjacentHTML('beforeend', `
+      <button class="quiz-choice" onclick="selectAnswer(${i})">${opt}</button>
+    `);
+  });
+  document.getElementById('quiz-explanation').style.display = 'none';
+  document.getElementById('quiz-next').style.display = 'none';
+  answered = false;
+}
+
+function selectAnswer(selected) {
+  if (answered) return;
+  answered = true;
+  const q = currentQuiz[currentQ];
+  const choices = document.querySelectorAll('.quiz-choice');
+  choices.forEach(c => c.classList.add('disabled'));
+  choices[q.ans].classList.add('correct');
+  if (selected !== q.ans) choices[selected].classList.add('wrong');
+  else score++;
+  const expEl = document.getElementById('quiz-explanation');
+  expEl.textContent = '💡 ' + q.exp;
+  expEl.style.display = 'block';
+  document.getElementById('quiz-next').style.display = 'block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuestion();
+}
+
+function showResult() {
+  document.getElementById('quiz-active').classList.remove('active');
+  const resultEl = document.getElementById('quiz-result');
+  resultEl.style.display = 'block';
+  const pct = Math.round(score / currentQuiz.length * 100);
+  document.getElementById('result-score').textContent = `${score}/${currentQuiz.length}`;
+  let label = pct >= 80 ? '🎉 Excellent! Ready for the exam.' : pct >= 60 ? '👍 Good! Keep revising.' : '📚 Keep studying — you\'ve got this!';
+  document.getElementById('result-label').textContent = label;
+}
+
+function resetQuiz() {
+  document.getElementById('quiz-start-screen').style.display = 'block';
+  document.getElementById('quiz-active').classList.remove('active');
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  buildTopics();
+  buildCases();
+  buildCheat();
+  buildVideos();
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
+  }, 2000);
+});
+</script>
+</body>
+</html>
