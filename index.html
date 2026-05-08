@@ -88,9 +88,86 @@ body {
 #bottomnav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
   background: var(--navy);
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(6, 1fr);
   border-top: 1px solid rgba(255,255,255,0.1);
   padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn { font-size: 8px; }
+.nav-icon { font-size: 18px; margin-bottom: 1px; }
+
+/* VIDEO STYLES */
+.video-card {
+  background: white; border-radius: 16px;
+  margin-bottom: 16px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.video-unit-banner {
+  background: var(--navy); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.video-unit-num {
+  background: var(--gold); color: var(--navy);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+}
+.video-unit-title { color: white; font-size: 14px; font-weight: 700; flex: 1; }
+.video-embed {
+  position: relative; cursor: pointer;
+  background: #000; border-radius: 0;
+  overflow: hidden;
+}
+.video-thumb {
+  width: 100%; display: block;
+  aspect-ratio: 16/9; object-fit: cover;
+}
+.video-play-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.35);
+}
+.video-play-btn {
+  width: 64px; height: 64px;
+  background: #FF0000; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.video-play-btn svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+.video-play-label {
+  color: white; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.video-topics {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.video-topics-title {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.video-topic-item {
+  font-size: 12px; color: var(--text);
+  padding: 3px 0; display: flex; gap: 6px; align-items: baseline;
+}
+.video-topic-dot { color: var(--gold); font-weight: 900; flex-shrink: 0; }
+.video-yt-btn {
+  display: block; margin: 12px 16px 16px;
+  background: #FF0000; color: white;
+  text-align: center; padding: 10px;
+  border-radius: 10px; font-size: 13px; font-weight: 700;
+  text-decoration: none;
+}
+.video-subscribe {
+  background: var(--navy); color: white;
+  text-align: center; padding: 16px;
+  margin-bottom: 16px; border-radius: 16px;
+}
+.video-subscribe p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
+.video-subscribe a {
+  background: #FF0000; color: white;
+  padding: 10px 24px; border-radius: 20px;
+  font-size: 13px; font-weight: 700;
+  text-decoration: none; display: inline-block;
 }
 .nav-btn {
   display: flex; flex-direction: column; align-items: center;
@@ -468,23 +545,23 @@ body {
         <div class="qc-label">Model Answers</div>
         <div class="qc-count">Part A · B · C</div>
       </div>
-      <div class="quick-card teal" onclick="goScreen('cases')">
+      <div class="quick-card teal" onclick="goScreen('videos')">
+        <div class="qc-bar"></div>
+        <div class="qc-icon">🎬</div>
+        <div class="qc-label">Video Lectures</div>
+        <div class="qc-count">5 units · YouTube</div>
+      </div>
+      <div class="quick-card red" onclick="goScreen('cases')">
         <div class="qc-bar"></div>
         <div class="qc-icon">⚖️</div>
         <div class="qc-label">Case Stories</div>
         <div class="qc-count">16 landmark cases</div>
       </div>
-      <div class="quick-card red" onclick="goScreen('quiz')">
+      <div class="quick-card green" onclick="goScreen('quiz')">
         <div class="qc-bar"></div>
         <div class="qc-icon">🎯</div>
         <div class="qc-label">Quick Quiz</div>
         <div class="qc-count">Test yourself</div>
-      </div>
-      <div class="quick-card green" onclick="goScreen('cheat')">
-        <div class="qc-bar"></div>
-        <div class="qc-icon">📋</div>
-        <div class="qc-label">Cheat Sheet</div>
-        <div class="qc-count">Numbers & sections</div>
       </div>
     </div>
     <div class="section-title">Exam Tips</div>
@@ -587,6 +664,15 @@ body {
     </div>
   </div>
 
+  <!-- VIDEOS -->
+  <div class="screen" id="screen-videos">
+    <div class="part-header">
+      <div class="part-header-icon">🎬</div>
+      <div class="part-header-text"><h2>Video Lectures</h2><p>5 Units · Watch directly here · Powered by YouTube</p></div>
+    </div>
+    <div id="videos-list"></div>
+  </div>
+
   <!-- CHEAT SHEET -->
   <div class="screen" id="screen-cheat">
     <div class="part-header">
@@ -606,6 +692,9 @@ body {
   <button class="nav-btn" onclick="goScreen('topics')" id="nav-topics">
     <span class="nav-icon">📚</span><span class="nav-label">Answers</span>
   </button>
+  <button class="nav-btn" onclick="goScreen('videos')" id="nav-videos">
+    <span class="nav-icon">🎬</span><span class="nav-label">Videos</span>
+  </button>
   <button class="nav-btn" onclick="goScreen('cases')" id="nav-cases">
     <span class="nav-icon">⚖️</span><span class="nav-label">Cases</span>
   </button>
@@ -613,7 +702,7 @@ body {
     <span class="nav-icon">🎯</span><span class="nav-label">Quiz</span>
   </button>
   <button class="nav-btn" onclick="goScreen('cheat')" id="nav-cheat">
-    <span class="nav-icon">📋</span><span class="nav-label">Cheat Sheet</span>
+    <span class="nav-icon">📋</span><span class="nav-label">Cheat</span>
   </button>
 </div>
 
@@ -1912,11 +2001,77 @@ function buildCheat() {
   });
 }
 
+// ═══════════════════════════════════════════════════════════
+// VIDEO DATA
+// ═══════════════════════════════════════════════════════════
+
+const VIDEOS = [
+  {
+    unit:"Unit 1",title:"Wages, Minimum Wages & Whitley Commission",id:"L-K-2fR-XYY",
+    topics:["Concept of Wages — included and excluded items","Wage Ladder — Minimum, Fair, Living & Need-Based Wages","15th ILC Norms 1957 — All 5 Norms + Reptakos Brett additions","Whitley Commission 1929 — All 10 Recommendations","Fixation of Minimum Wages — Committee & Notification Method","Section 25 — Contracting Out Is Void","Payment of Wages Act — Cash Only Rule","Code on Wages 2019 — Key Changes","Cases: Bijay Cotton Mills, Reptakos Brett, Sanjit Roy, Unichoyi"]
+  },
+  {
+    unit:"Unit 2",title:"Bonus, Full Bench Formula & Set On Set Off",id:"9ljIAO0_LQ0",
+    topics:["Why Bonus Is a Legal Right — Not Employer's Generosity","Full Bench Formula — All 6 Steps Explained","Available Surplus vs Allocable Surplus — Key Difference","Minimum Bonus 8.33% — Payable Even in Loss Years","Maximum Bonus 20% — Hard Ceiling","Set On & Set Off — With Simple Analogy","Wages for Bonus — What Is Excluded (OT, DA, HRA)","Eligibility — 30 Days and Rs 21,000 Ceiling","Cases: Millowners Association, Jalan Trading"]
+  },
+  {
+    unit:"Unit 3",title:"Social Security, ESI Act & Employee Compensation",id:"_XFUWMLkkCE",
+    topics:["Four Methods of Social Security","Employee's Compensation Act — No Fault Liability","Two Conditions — Arising Out Of & In Course Of Employment","Doctrine of Notional Extension — Employer Transport","Causation Test — Pre-Existing Conditions No Bar","Compensation Formula — Death, PTD and TTD amounts","ESI Act — Coverage and Contributions (3.25% + 0.75%)","All 6 Benefits Under Section 46","Cases: Saurashtra Salt, Mackinnon Mackenzie Ibrahim, ESI v Apex"]
+  },
+  {
+    unit:"Unit 4",title:"EPF Act, Maternity Benefit & Gratuity",id:"znJY9z42rwY",
+    topics:["EPF Act — Three Schemes (EPF + EPS + EDLI)","12% + 12% Contributions — How the Split Works","EPS 1995 — Monthly Pension After 10 Years Service","EDLI 1976 — Free Life Insurance Rs 7 Lakhs","Maternity Benefit — 26 Weeks for 1st & 2nd Child","Section 12 — Dismissal During Pregnancy Is VOID","Gratuity — Right Not Bounty Formula 15/26","Five Year Rule — Waived for Death & Disablement","Section 4(6) — Forfeiture Grounds Are Exhaustive","Cases: B. Shah, Lalappa Lingappa, Garment Export, Mettur Beardsell"]
+  },
+  {
+    unit:"Unit 5",title:"Factories Act, Child Labour & Equal Remuneration",id:"S3dnMG15R-U",
+    topics:["Factories Act — Health Provisions Sections 11 to 20","Section 16 — 14.2 Cubic Meters Per Worker","Safety Provisions — Fencing, Young Persons, Safety Officers 1000+","Welfare — First Aid (1/150), Canteen (150+), Crèche (30+ women)","Working Hours — 9 Hours Daily, 48 Hours Weekly","Child Labour 2016 Amendment — Complete Ban Under 14","Domestic Work Specifically Banned","Constitutional Provisions — Articles 24, 21A, 39(e), 39(f)","Equal Remuneration Act — Sections 4 & 5","Cases: MC Mehta, Bandhua Mukti Morcha, Randhir Singh, Mackinnon D'Costa"]
+  }
+];
+
+function buildVideos() {
+  const el = document.getElementById('videos-list');
+  el.insertAdjacentHTML('beforeend',`
+    <div class="video-subscribe">
+      <p>Watch all 5 unit lectures below. Subscribe to get new subject videos every semester.</p>
+      <a href="https://www.youtube.com/@lawstickerai" target="_blank">🔴 Subscribe on YouTube</a>
+    </div>
+  `);
+  VIDEOS.forEach(v => {
+    const topics = v.topics.map(t=>`<div class="video-topic-item"><span class="video-topic-dot">▶</span><span>${t}</span></div>`).join('');
+    el.insertAdjacentHTML('beforeend',`
+      <div class="video-card">
+        <div class="video-unit-banner">
+          <span class="video-unit-num">${v.unit}</span>
+          <span class="video-unit-title">${v.title}</span>
+        </div>
+        <div class="video-embed" onclick="window.open('https://youtu.be/${v.id}','_blank')">
+          <img class="video-thumb"
+            src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg"
+            alt="${v.unit} — ${v.title}"
+            onerror="this.src='https://img.youtube.com/vi/${v.id}/default.jpg'">
+          <div class="video-play-overlay">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="video-play-label">Tap to Watch on YouTube</div>
+          </div>
+        </div>
+        <div class="video-topics">
+          <div class="video-topics-title">Topics Covered</div>
+          ${topics}
+        </div>
+        <a class="video-yt-btn" href="https://youtu.be/${v.id}" target="_blank">▶ Watch on YouTube</a>
+      </div>
+    `);
+  });
+}
+
 // Splash
 window.addEventListener('load', () => {
   buildTopics();
   buildCases();
   buildCheat();
+  buildVideos();
   setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
     setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
