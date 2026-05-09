@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Public International Law — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '🌍'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS SCREEN ── */
+.part-header { background: var(--navy); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.part-header-icon { font-size: 24px; }
+.part-header-text h2 { color: white; font-family: 'Playfair Display', serif; font-size: 17px; }
+.part-header-text p { color: rgba(255,255,255,0.55); font-size: 12px; margin-top: 2px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; border-left: 4px solid transparent; transition: all 0.2s; }
+.topic-card:active { transform: scale(0.99); }
+.topic-card.pA { border-left-color: var(--gold); }
+.topic-card.pB { border-left-color: var(--teal); }
+.topic-card.pC { border-left-color: var(--red); }
+.topic-card-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.topic-num { background: var(--navy); color: white; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+.pA .topic-num { background: var(--gold); color: var(--navy); }
+.pB .topic-num { background: var(--teal); }
+.pC .topic-num { background: var(--red); }
+.topic-title { font-size: 14px; font-weight: 600; color: var(--navy); flex: 1; line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); background: var(--cream); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+.topic-arrow { color: var(--text-muted); font-size: 18px; transition: transform 0.2s; }
+.topic-card.open .topic-arrow { transform: rotate(90deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body p { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 12px; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 1px; margin-top: 14px; margin-bottom: 6px; }
+.topic-body ul { padding-left: 16px; margin-top: 6px; }
+.topic-body ul li { font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+.topic-body th { background: var(--navy); color: white; padding: 8px 10px; text-align: left; font-size: 11px; }
+.topic-body td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body tr:nth-child(even) td { background: #f9f7f2; }
+.alert-box { background: #fff8e6; border: 1px solid var(--gold); border-radius: 10px; padding: 10px 12px; margin-top: 12px; font-size: 12px; color: #7a5a00; line-height: 1.5; }
+.alert-box strong { color: var(--gold); }
+.case-box { background: #e8f5ee; border: 1px solid var(--green); border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: #1a3a26; line-height: 1.5; }
+.case-box strong { color: var(--green); font-size: 13px; }
+.maxim-box { background: #f0f4ff; border: 1px solid #6b7fd4; border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: #2a2a6e; line-height: 1.5; font-style: italic; }
+.maxim-box strong { font-style: normal; color: #2a2a6e; }
+.twist-box { background: #f8f0ff; border: 1px solid #9b59b6; border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: #4a1870; line-height: 1.5; }
+.twist-box strong { color: #7030a0; }
+.verdict-box { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 0 10px 10px 0; padding: 10px 12px; margin-top: 12px; font-size: 12px; color: var(--green); line-height: 1.5; }
+.verdict-box strong { font-size: 13px; }
+
+/* ── VIDEOS ── */
+.video-subscribe { background: var(--navy); border-radius: 14px; padding: 16px; margin-bottom: 16px; text-align: center; }
+.video-subscribe p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 12px; line-height: 1.5; }
+.video-subscribe a { display: inline-block; background: #ff0000; color: white; font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 8px; text-decoration: none; }
+.video-card { background: white; border-radius: 16px; margin-bottom: 16px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.video-unit-banner { background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+.video-unit-num { background: var(--gold); color: var(--navy); font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+.video-unit-title { color: white; font-size: 14px; font-weight: 600; line-height: 1.3; }
+.video-embed { position: relative; cursor: pointer; background: #000; }
+.video-thumb { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; opacity: 0.85; }
+.video-play-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.video-play-btn { width: 56px; height: 56px; background: rgba(255,0,0,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+.video-play-btn svg { width: 24px; height: 24px; fill: white; margin-left: 4px; }
+.video-play-label { color: white; font-size: 12px; font-weight: 600; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; }
+.video-topics { padding: 12px 16px 0; }
+.video-topics-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.video-topic-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 5px; font-size: 13px; color: var(--text); line-height: 1.4; }
+.video-topic-dot { color: var(--gold); font-size: 10px; margin-top: 2px; flex-shrink: 0; }
+.video-yt-btn { display: block; margin: 12px 16px 16px; background: #ff0000; color: white; text-align: center; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; }
+
+/* ── CASES ── */
+.filter-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; scrollbar-width: none; }
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-chip { background: white; border: 1.5px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.filter-chip.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 14px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; }
+.case-year-badge { background: var(--navy); color: var(--gold-light); font-family: 'DM Mono', monospace; font-size: 11px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
+.case-story-title { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+.case-story-tag { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 12px; }
+.story-principle { background: var(--green-light); border-left: 3px solid var(--green); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 12px; color: var(--green); font-weight: 600; margin-top: 12px; line-height: 1.5; }
+
+/* ── QUIZ ── */
+#quiz-start-screen { }
+.quiz-intro { background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; }
+.quiz-intro h2 { font-family: 'Playfair Display', serif; color: white; font-size: 20px; margin-bottom: 8px; }
+.quiz-intro p { color: rgba(255,255,255,0.65); font-size: 13px; }
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quiz-mode-btn { background: white; border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer; box-shadow: var(--shadow); border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-btn:active { transform: scale(0.97); }
+.quiz-mode-btn .qmb-icon { font-size: 28px; margin-bottom: 6px; }
+.quiz-mode-btn .qmb-title { font-size: 13px; font-weight: 700; color: var(--navy); }
+.quiz-mode-btn .qmb-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-mode-btn.gold { border-color: var(--gold); }
+.quiz-mode-btn.teal { border-color: var(--teal); }
+.quiz-mode-btn.red { border-color: var(--red); }
+.quiz-mode-btn.green { border-color: var(--green); }
+#quiz-active { display: none; }
+#quiz-active.active { display: block; }
+.quiz-progress-bar { background: var(--border); height: 4px; border-radius: 2px; margin-bottom: 12px; }
+#quiz-progress { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+#quiz-qnum { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+#quiz-question { font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; background: white; border-radius: 14px; padding: 16px; box-shadow: var(--shadow); }
+.quiz-choice { display: block; width: 100%; text-align: left; background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; font-size: 13px; color: var(--text); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.quiz-choice:active { transform: scale(0.99); }
+.quiz-choice.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 600; }
+.quiz-choice.wrong { background: #fde8e8; border-color: var(--red); color: var(--red); }
+.quiz-choice.disabled { cursor: default; pointer-events: none; }
+#quiz-explanation { background: #fff8e6; border: 1px solid var(--gold); border-radius: 10px; padding: 12px; font-size: 13px; color: #7a5a00; line-height: 1.5; margin-top: 4px; display: none; }
+#quiz-next { display: none; width: 100%; background: var(--navy); color: white; border: none; border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: 'DM Sans', sans-serif; }
+#quiz-result { display: none; text-align: center; background: white; border-radius: 16px; padding: 32px 20px; box-shadow: var(--shadow-lg); }
+#result-score { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; color: var(--navy); }
+#result-label { font-size: 15px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+#result-restart { margin-top: 20px; background: var(--navy); color: white; border: none; border-radius: 12px; padding: 14px 32px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── CHEAT SHEET ── */
+.cheat-section { background: white; border-radius: 14px; margin-bottom: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-header { padding: 14px 16px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.ch-icon { font-size: 20px; }
+.cheat-header h3 { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.ch-arrow { color: var(--text-muted); font-size: 20px; transition: transform 0.2s; }
+.cheat-section.open .ch-arrow { transform: rotate(90deg); }
+.cheat-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-body { display: block; }
+.cheat-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-weight: 700; color: var(--navy); min-width: 90px; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 12px; }
+.cheat-val { color: var(--text); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">⚖️</div>
+  <div class="splash-title">Public International Law</div>
+  <div class="splash-sub">LLB 4th Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <span class="topbar-icon">⚖️</span>
+  <span class="topbar-title">Public International Law</span>
+  <span class="topbar-badge">4th Sem</span>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <h1>Public International Law</h1>
+      <p>Complete study companion for Osmania University LLB 4th Semester — model answers, case stories, videos, quiz and cheat sheet.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Unit I–V</span>
+        <span class="hero-tag">15 Cases</span>
+        <span class="hero-tag">60+ Quiz Qs</span>
+        <span class="hero-tag">Free Forever</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">15</div><div class="stat-label">Short Notes</div></div>
+      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Essays</div></div>
+      <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Problems</div></div>
+    </div>
+
+    <div class="section-title">Quick Access</div>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goScreen('topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">Part A · B · C</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goScreen('videos')">
+        <div class="qc-icon">🎬</div>
+        <div class="qc-label">Video Lectures</div>
+        <div class="qc-count">5 Units</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goScreen('cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Case Stories</div>
+        <div class="qc-count">15 Landmark Cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goScreen('quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Practice Quiz</div>
+        <div class="qc-count">60+ Questions</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Exam Tips</div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔥 Most Important Topics 2024-25</div>
+      <div class="exam-tip-text">Sources of IL (Article 38) — appears EVERY year as 15M essay. Diplomatic Immunity (VCDR 1961) — appeared 2022, 2024, 2025. ICJ Jurisdiction — appeared 2023, 2024, 2025. Law of the Sea (UNCLOS) — 2024, 2025. State Succession — 2021, 2022, 2025.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚠️ Twisted Questions to Watch</div>
+      <div class="exam-tip-text">Can a diplomat be arrested for murder? NO — Article 31 VCDR gives complete criminal immunity. Can an individual sue in ICJ? NO — only States. Is conquest of territory valid today? NO — UN Charter Article 2(4). What is the difference between EEZ and Territorial Sea? Full sovereignty vs sovereign rights.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">💡 Memory Hooks</div>
+      <div class="exam-tip-text">Article 38 Sources = TCGJ-T (Treaties, Custom, General Principles, Judicial decisions, Teachings). Maritime Zones = I-T-C-E-C-H (Internal, Territorial 12NM, Contiguous 24NM, EEZ 200NM, Continental Shelf, High Seas). State Succession = MDSCN (Merger, Dissolution, Secession, Cession, New Independence).</div>
+    </div>
+
+    <div class="section-title">Disclaimers</div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any other academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Copyright Notice</div>
+      <div class="disclaimer-text">Indian legislation, constitutional provisions and Supreme Court judgments are public documents. The original study content, model answers and exam frameworks on this platform are created for academic purposes. Reproduction for commercial use is not permitted.</div>
+    </div>
+  </div>
+
+  <!-- ANSWERS -->
+  <div class="screen" id="screen-topics">
+    <div id="partA-header" class="part-header">
+      <span class="part-header-icon">📝</span>
+      <div class="part-header-text">
+        <h2>Part A — Short Notes</h2>
+        <p>6 Marks Each · Definition + Points + Case + Conclusion</p>
+      </div>
+    </div>
+    <div id="partA-topics"></div>
+
+    <div id="partB-header" class="part-header" style="margin-top:20px">
+      <span class="part-header-icon">📖</span>
+      <div class="part-header-text">
+        <h2>Part B — Long Essays</h2>
+        <p>15 Marks Each · Full structured answers</p>
+      </div>
+    </div>
+    <div id="partB-topics"></div>
+
+    <div id="partC-header" class="part-header" style="margin-top:20px">
+      <span class="part-header-icon">⚖️</span>
+      <div class="part-header-text">
+        <h2>Part C — Problem Questions</h2>
+        <p>10 Marks Each · Issue → Rule → Apply → Conclude</p>
+      </div>
+    </div>
+    <div id="partC-topics"></div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div class="screen" id="screen-videos">
+    <div id="videos-list"></div>
+  </div>
+
+  <!-- CASES -->
+  <div class="screen" id="screen-cases">
+    <div class="filter-bar" id="cases-filter"></div>
+    <div id="cases-list"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div id="quiz-start-screen">
+      <div class="quiz-intro">
+        <h2>🎯 Practice Quiz</h2>
+        <p>Test your knowledge of Public International Law. 15 questions per round with instant explanations.</p>
+      </div>
+      <div class="section-title">Choose Quiz Mode</div>
+      <div class="quiz-mode-grid">
+        <div class="quiz-mode-btn gold" onclick="startQuiz('all')">
+          <div class="qmb-icon">🌍</div>
+          <div class="qmb-title">All Topics</div>
+          <div class="qmb-count">60+ Questions</div>
+        </div>
+        <div class="quiz-mode-btn teal" onclick="startQuiz('sources')">
+          <div class="qmb-icon">📜</div>
+          <div class="qmb-title">Sources & Nature</div>
+          <div class="qmb-count">Unit I Topics</div>
+        </div>
+        <div class="quiz-mode-btn red" onclick="startQuiz('cases')">
+          <div class="qmb-icon">⚖️</div>
+          <div class="qmb-title">Case Laws</div>
+          <div class="qmb-count">All 15 Cases</div>
+        </div>
+        <div class="quiz-mode-btn green" onclick="startQuiz('numbers')">
+          <div class="qmb-icon">🔢</div>
+          <div class="qmb-title">Numbers & Dates</div>
+          <div class="qmb-count">Conventions & Articles</div>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-active">
+      <div class="quiz-progress-bar"><div id="quiz-progress"></div></div>
+      <div id="quiz-qnum"></div>
+      <div id="quiz-question"></div>
+      <div id="quiz-choices"></div>
+      <div id="quiz-explanation"></div>
+      <button id="quiz-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+    <div id="quiz-result">
+      <div style="font-size:48px;margin-bottom:12px">🏆</div>
+      <div id="result-score"></div>
+      <div id="result-label"></div>
+      <button id="result-restart" onclick="resetQuiz()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="screen" id="screen-cheat">
+    <div id="cheat-content"></div>
+    <div style="margin-top:16px;padding:14px;background:var(--navy);border-radius:14px;text-align:center">
+      <div style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:6px">⚖ LawSticker AI</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:11px;line-height:1.6">Free study platform for Osmania University LLB students.<br>lawsticker-ai.com · @lawstickerai · Free Forever</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav">
+  <button class="nav-btn active" id="nav-home" onclick="goScreen('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" id="nav-topics" onclick="goScreen('topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" id="nav-videos" onclick="goScreen('videos')"><span class="nav-icon">🎬</span><span class="nav-label">Videos</span></button>
+  <button class="nav-btn" id="nav-cases" onclick="goScreen('cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" id="nav-quiz" onclick="goScreen('quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" id="nav-cheat" onclick="goScreen('cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA — PUBLIC INTERNATIONAL LAW
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = {
+  A: [
+    { id:'A-1', title:'Diplomatic Immunity / Envoys', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Diplomatic immunity refers to the special privileges and exemptions granted to diplomatic agents (envoys) of one State in the territory of another, so they can perform their functions freely without interference.</p>
+      <h4>Legal Basis</h4>
+      <p>Vienna Convention on Diplomatic Relations, 1961 — the primary international law instrument.</p>
+      <h4>Key Immunities — Article 31</h4>
+      <ul>
+        <li><strong>Criminal Jurisdiction Immunity:</strong> A diplomat CANNOT be arrested or prosecuted in the receiving State for any crime — even murder.</li>
+        <li><strong>Inviolability of Person (Art. 29):</strong> Cannot be detained or arrested under any circumstances.</li>
+        <li><strong>Inviolability of Premises (Art. 22):</strong> Embassy cannot be entered without consent of the head of mission.</li>
+        <li><strong>Inviolability of Correspondence (Art. 27):</strong> Diplomatic bag cannot be opened or detained.</li>
+        <li><strong>Civil Immunity (Art. 31):</strong> Cannot be sued EXCEPT: private real estate, personal succession, private commercial activity.</li>
+        <li><strong>Tax Exemption (Art. 34):</strong> Exempt from personal, national and municipal taxes.</li>
+      </ul>
+      <h4>Theories of Immunity</h4>
+      <ul>
+        <li>Exterritoriality Theory — Now REJECTED as a legal fiction.</li>
+        <li>Functional Necessity Theory — Accepted by VCDR 1961. Privileges needed for effective diplomatic functions.</li>
+        <li>Representative Character Theory — Diplomat represents a sovereign State.</li>
+      </ul>
+      <h4>Waiver of Immunity — Article 32</h4>
+      <p>ONLY the SENDING STATE can waive immunity — not the diplomat personally. Waiver must be EXPRESS. Waiver of jurisdiction does NOT include waiver of execution of judgment.</p>
+      <h4>Persona Non Grata — Article 9</h4>
+      <p>The receiving State can declare any diplomat PNG without giving reasons. Sending State must recall them. This is the ONLY effective remedy for abuse of immunity.</p>
+      <div class="case-box"><strong>Case: Tehran Hostages Case (USA v Iran, 1980, ICJ)</strong><br>Iranian revolutionaries seized the US Embassy. Iran failed to protect the embassy and release hostages. ICJ held Iran violated Articles 22 and 29 VCDR 1961 and was internationally responsible.</div>
+      <div class="alert-box"><strong>⚠ Exam Alert:</strong> Diplomat commits murder — can the receiving State prosecute? NO. Article 31 gives COMPLETE criminal immunity even for murder. Only remedies: (1) request waiver from sending State; (2) declare PNG; (3) expel. Cannot arrest, charge, or prosecute under any circumstances.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> What about a consular officer (not diplomat)? Consular immunity under Vienna Convention on Consular Relations 1963 is LIMITED to acts in exercise of consular functions. Murder is not a consular function — consul CAN be prosecuted unlike a diplomat.</div>
+    `},
+    { id:'A-2', title:'State Succession', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> State Succession occurs when one State replaces another in the responsibility for the international relations of a territory. It deals with transfer of rights and duties from predecessor to successor State.</p>
+      <h4>Types of State Succession — MDSCN</h4>
+      <table><tr><th>Type</th><th>Definition</th><th>Example</th></tr>
+        <tr><td>Merger</td><td>Two States unite into one</td><td>Germany reunification 1990</td></tr>
+        <tr><td>Dissolution</td><td>One State breaks into multiple</td><td>USSR → 15 States (1991)</td></tr>
+        <tr><td>Secession</td><td>Part of State separates</td><td>Bangladesh from Pakistan 1971</td></tr>
+        <tr><td>Cession</td><td>Territory transferred by treaty</td><td>Hong Kong UK to China 1997</td></tr>
+        <tr><td>New Independence</td><td>Colony gains independence</td><td>India from Britain 1947</td></tr>
+      </table>
+      <h4>Effect on Treaties</h4>
+      <ul>
+        <li><strong>Clean Slate Rule (Tabula Rasa):</strong> Newly independent States NOT bound by predecessor's treaties. Start completely fresh.</li>
+        <li><strong>Moving Treaty Frontier:</strong> Territory transfer — acquiring State's treaties extend to new territory.</li>
+        <li><strong>Exception — Localised Treaties:</strong> Boundary treaties, water rights, servitudes bind successor regardless of clean slate.</li>
+      </ul>
+      <h4>Governing Law</h4>
+      <ul>
+        <li>Vienna Convention on Succession of States in Respect of Treaties, 1978.</li>
+        <li>Vienna Convention on Succession of States in Respect of State Property, Archives and Debts, 1983.</li>
+      </ul>
+      <div class="alert-box"><strong>⚠ Exam Alert:</strong> Does a successor State inherit UN membership? Generally NO. Russia is the exceptional case (continuing State of USSR, not merely successor). All other successors had to apply afresh. Always explain the Russia exception.</div>
+      <div class="maxim-box"><strong>TABULA RASA / CLEAN SLATE</strong> — Newly independent States not automatically bound by predecessor's treaties. They start completely fresh.</div>
+    `},
+    { id:'A-3', title:'Sources of International Law', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Sources of International Law refer to the materials and processes from which international legal rules are derived. Article 38(1) of the ICJ Statute is the universally accepted authoritative list.</p>
+      <h4>Primary Sources — Article 38(1) ICJ Statute</h4>
+      <ul>
+        <li><strong>1. Treaties/Conventions:</strong> Written agreements between States. Most certain source — express consent. Binding only on parties. Examples: UN Charter, VCDR 1961, UNCLOS 1982.</li>
+        <li><strong>2. International Custom:</strong> TWO elements required: (a) State Practice — consistent, general, widespread acts; (b) Opinio Juris — belief that the practice is legally obligatory, not just habit.</li>
+        <li><strong>3. General Principles of Law:</strong> Principles found in domestic systems — res judicata, estoppel, good faith, equity, proportionality.</li>
+      </ul>
+      <h4>Subsidiary Sources</h4>
+      <ul>
+        <li><strong>4. Judicial Decisions:</strong> ICJ judgments — binding only between parties (Art. 59) but highly persuasive worldwide.</li>
+        <li><strong>5. Teachings of Publicists:</strong> Works of Grotius (Father of IL), Vattel, Oppenheim, Lauterpacht — evidence of IL rules.</li>
+      </ul>
+      <h4>Hierarchy</h4>
+      <p>Jus Cogens (highest) > Treaties > Custom > General Principles > Judicial Decisions and Publicists.</p>
+      <div class="case-box"><strong>Case: North Sea Continental Shelf Cases (1969, ICJ)</strong><br>Both elements of custom must exist. Frequency of practice alone is NOT sufficient — States must feel legally obligated (opinio juris). Leading case on formation of custom.</div>
+      <div class="maxim-box"><strong>TCGJ-T</strong> — Treaties, Custom, General Principles, Judicial decisions, Teachings — Article 38 sources in order.</div>
+    `},
+    { id:'A-4', title:'Recognition of States', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Recognition is the formal acknowledgment by existing States that a new State or government meets the conditions of statehood and they are willing to deal with it as a member of the international community.</p>
+      <h4>Conditions for Statehood — Montevideo Convention 1933</h4>
+      <p>PECC = Population (permanent) + Effective government + Capacity for IL relations + Clear territory (defined).</p>
+      <h4>Theories of Recognition</h4>
+      <ul>
+        <li><strong>Constitutive Theory:</strong> Recognition CREATES the State. Without it, no international legal personality. Criticism: same entity could be State for some and not others — absurd.</li>
+        <li><strong>Declaratory Theory (Modern View):</strong> Recognition merely DECLARES facts that already exist. State exists as soon as Montevideo criteria are met. Supported by most States and Montevideo Convention 1933.</li>
+      </ul>
+      <h4>Types of Recognition</h4>
+      <table><tr><th>Type</th><th>Nature</th></tr>
+        <tr><td>De Facto</td><td>Provisional, temporary, based on effective control. Can be withdrawn. No formal diplomatic relations.</td></tr>
+        <tr><td>De Jure</td><td>Final, complete, based on legality AND effectiveness. Full diplomatic relations. Generally irrevocable.</td></tr>
+        <tr><td>Express</td><td>Formal declaration or diplomatic note.</td></tr>
+        <tr><td>Implied</td><td>Inferred from conduct — signing a bilateral treaty with the new State.</td></tr>
+      </table>
+      <div class="case-box"><strong>Case: Luther v Sagor (1921, UK Court of Appeal)</strong><br>Acts of a de facto recognised government are valid and courts must give effect to them. The Soviet government's nationalisation decree was upheld.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> If question says a State is not recognised by any other State — does it have rights under IL? Under DECLARATORY theory YES — if it meets Montevideo criteria. Under CONSTITUTIVE theory NO. Say declaratory is the modern majority view.</div>
+    `},
+    { id:'A-5', title:'Asylum', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Asylum is the protection granted by a State to a foreign national against the exercise of jurisdiction by their home State. It is a discretionary right of the granting State — NOT an absolute right of the individual.</p>
+      <h4>Types of Asylum</h4>
+      <ul>
+        <li><strong>Territorial Asylum:</strong> Granted within the territory of the granting State. RECOGNISED under international law. Based on sovereignty principle.</li>
+        <li><strong>Diplomatic Asylum:</strong> Granted in embassy premises. NOT recognised in general international law. Exception: Latin America under Havana Convention 1928 and Caracas Convention 1954.</li>
+        <li><strong>Political Asylum:</strong> Granted to persons persecuted for political opinions, race, religion, nationality, or social group membership.</li>
+      </ul>
+      <h4>Who Is a Refugee? — 1951 Geneva Refugee Convention</h4>
+      <p>A person who has a well-founded fear of persecution based on race, religion, nationality, political opinion, or membership of a particular social group, and is outside their country of nationality.</p>
+      <h4>Non-Refoulement — Most Important Principle</h4>
+      <p>A refugee CANNOT be returned to a country where they face real risk of persecution or serious harm. This is a JUS COGENS norm — no State can derogate from it.</p>
+      <div class="case-box"><strong>Case: Asylum Case — Colombia v Peru (1950, ICJ)</strong><br>Colombia granted asylum to Haya de la Torre in its Bogota embassy. ICJ held: Colombia had NOT established a right to grant diplomatic asylum. Diplomatic asylum is NOT a general right in international law — only a Latin American regional custom.</div>
+      <div class="alert-box"><strong>⚠ Exam Alert:</strong> Person takes refuge in embassy — can State B enter the embassy to remove them? NO — Article 22 VCDR 1961 makes embassy premises inviolable. BUT this does NOT create a right to grant diplomatic asylum. These are two separate rules. The person may be stuck in legal limbo (like Assange in Ecuador's London embassy 2012-2019).</div>
+      <div class="maxim-box"><strong>NON-REFOULEMENT</strong> — Refugees cannot be returned to country where they face persecution or serious harm. A jus cogens norm — absolute and non-derogable.</div>
+    `},
+    { id:'A-6', title:'ICJ — Jurisdiction', marks:'6 Marks', content:`
+      <p><strong>About ICJ:</strong> The International Court of Justice (ICJ) is the principal judicial organ of the United Nations, established under UN Charter and ICJ Statute 1945. Headquartered in The Hague, Netherlands (Peace Palace). Replaced the PCIJ of the League of Nations.</p>
+      <h4>Composition</h4>
+      <p>15 judges elected for 9-year terms (5 every 3 years). Elected independently by both UN GA and Security Council. No two judges from same country. Quorum: 9 judges. Ad hoc judges allowed.</p>
+      <h4>Types of Jurisdiction</h4>
+      <ul>
+        <li><strong>Contentious Jurisdiction:</strong> Between States only. ONLY States can be parties. Private individuals, corporations, NGOs CANNOT appear. Decisions binding.</li>
+        <li><strong>Advisory Jurisdiction:</strong> Non-binding legal opinions for UN organs and specialised agencies. Carry great moral authority.</li>
+      </ul>
+      <h4>Four Bases for Contentious Jurisdiction — Article 36</h4>
+      <ul>
+        <li>Special Agreement (Compromis): Both States agree after dispute arises.</li>
+        <li>Treaty Clause: Treaty provides for ICJ jurisdiction.</li>
+        <li>Optional Clause (Article 36(2)): States declare compulsory jurisdiction in advance.</li>
+        <li>Forum Prorogatum: Implied consent — one State files, the other participates without objecting.</li>
+      </ul>
+      <h4>Enforcement</h4>
+      <p>ICJ has NO independent enforcement. Non-compliance → Article 94(2) UN Charter → Security Council. P5 veto limits enforcement — USA vetoed action after Nicaragua judgment 1986.</p>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Can an individual sue a State in ICJ? NO. Article 34 ICJ Statute: only States can be parties. Students confuse ICJ (States only) with ICC (individuals only). They are completely different courts.</div>
+      <div class="alert-box"><strong>⚠ Exam Alert:</strong> ICJ = 15 Judges, The Hague, Only States, Contentious + Advisory. Article 36(2) = Optional Clause. No enforcement = biggest weakness.</div>
+    `},
+    { id:'A-7', title:'Extradition', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Extradition is the formal process by which one State (the requested State) surrenders a person accused or convicted of a crime to another State (the requesting State) for trial or punishment. There is NO general rule of customary IL requiring extradition in the absence of a treaty.</p>
+      <h4>Key Principles — DSSP</h4>
+      <ul>
+        <li><strong>Double Criminality:</strong> Act must be a crime in BOTH States.</li>
+        <li><strong>Specialty Principle:</strong> Person can only be tried for the specific offence named in the request.</li>
+        <li><strong>No Double Jeopardy (Ne Bis in Idem):</strong> Cannot extradite if already tried for same offence.</li>
+        <li><strong>Political Offence Exception:</strong> Purely political crimes NOT extraditable. BUT terrorism, hijacking, genocide are EXCLUDED from this exception — they ARE extraditable.</li>
+      </ul>
+      <h4>When Extradition Is Refused</h4>
+      <ul>
+        <li>No extradition treaty between States.</li>
+        <li>Own nationals — most civil law countries refuse; they must then PROSECUTE instead.</li>
+        <li>Torture risk — Article 3, UN Convention Against Torture.</li>
+        <li>Death penalty — many States refuse without assurances.</li>
+        <li>Fair trial risk.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Pinochet Case (1999, UK House of Lords)</strong><br>Former heads of State have NO immunity for acts of torture. Torture is a jus cogens crime. The political offence exception does NOT apply to torture. Pinochet could be extradited.</div>
+      <div class="maxim-box"><strong>AUT DEDERE AUT JUDICARE</strong> — Extradite or Prosecute. If extradition is refused for serious international crimes, the State MUST submit the case to its own authorities for prosecution.</div>
+    `},
+    { id:'A-8', title:'Five Freedoms of the Air', marks:'6 Marks', content:`
+      <p><strong>Background:</strong> The Chicago Convention on International Civil Aviation 1944 established the legal framework for international air transport. It created ICAO. The Five Freedoms are commercial rights agreed between States for their airlines.</p>
+      <h4>The Five Freedoms</h4>
+      <table><tr><th>Freedom</th><th>Right Granted</th></tr>
+        <tr><td>1st Freedom</td><td>Fly OVER another State's territory without landing — overflight transit right.</td></tr>
+        <tr><td>2nd Freedom</td><td>Land for TECHNICAL purposes only (fuel/emergency) without picking up/setting down commercial traffic.</td></tr>
+        <tr><td>3rd Freedom</td><td>Carry passengers/cargo FROM your home State TO another State.</td></tr>
+        <tr><td>4th Freedom</td><td>Carry passengers/cargo FROM another State BACK to your home State.</td></tr>
+        <tr><td>5th Freedom</td><td>Carry passengers/cargo BETWEEN two foreign States as part of a service starting/ending in home State.</td></tr>
+      </table>
+      <h4>Additional Freedoms</h4>
+      <ul>
+        <li>6th Freedom: Carry between two foreign countries via home country hub.</li>
+        <li>7th Freedom: Carry between two foreign countries — no connection to home country.</li>
+        <li>8th Freedom (Cabotage): Carry within a foreign country. Most restrictive — rarely granted.</li>
+      </ul>
+      <h4>Chicago Convention Key Points</h4>
+      <ul>
+        <li>Article 1: Every State has complete and exclusive sovereignty over airspace above its territory.</li>
+        <li>Covers civil aircraft only — not military or state aircraft.</li>
+        <li>ICAO Headquarters: Montreal, Canada.</li>
+      </ul>
+      <div class="alert-box"><strong>⚠ Memory Hook:</strong> 1st and 2nd = Technical/Transit. 3rd and 4th = Home country commercial traffic. 5th = Third country traffic. Chicago 1944 = ICAO created.</div>
+    `},
+    { id:'A-9', title:'Pacta Sunt Servanda', marks:'6 Marks', content:`
+      <div class="maxim-box"><strong>PACTA SUNT SERVANDA</strong> — Latin for "Agreements must be kept." Foundation of all treaty law in international relations.</div>
+      <h4>Legal Basis</h4>
+      <p>Article 26, Vienna Convention on Law of Treaties 1969 (VCLT): "Every treaty in force is binding upon the parties to it and must be performed by them in good faith."</p>
+      <h4>Key Aspects</h4>
+      <ul>
+        <li>States are legally obligated to perform treaty obligations in good faith.</li>
+        <li>Foundation of all treaty law and the international legal order.</li>
+        <li>Applies from the moment the treaty enters into force.</li>
+        <li>A State CANNOT invoke its internal law to justify failure to perform — Article 27, VCLT.</li>
+      </ul>
+      <h4>Exceptions and Limitations</h4>
+      <ul>
+        <li><strong>Jus Cogens:</strong> A treaty conflicting with peremptory norms is void — Article 53, VCLT.</li>
+        <li><strong>Rebus Sic Stantibus:</strong> Fundamental change of circumstances may justify termination.</li>
+        <li><strong>Material Breach:</strong> If one party materially breaches, other may suspend or terminate.</li>
+      </ul>
+      <h4>Relationship with Rebus Sic Stantibus</h4>
+      <p>Pacta Sunt Servanda demands strict compliance. Rebus Sic Stantibus provides a safety valve when circumstances fundamentally change. Pacta Sunt Servanda is the rule — Rebus Sic Stantibus is the rare exception.</p>
+    `},
+    { id:'A-10', title:'Jus Cogens', marks:'6 Marks', content:`
+      <div class="maxim-box"><strong>JUS COGENS</strong> — Latin for "compelling law." Peremptory norms of international law from which no derogation is permitted by any State under any circumstances.</div>
+      <h4>Legal Basis</h4>
+      <p>Article 53, Vienna Convention on Law of Treaties 1969: Any treaty that conflicts with a jus cogens norm is VOID in its entirety — not merely voidable.</p>
+      <h4>Characteristics</h4>
+      <ul>
+        <li>Accepted and recognised by international community as a whole.</li>
+        <li>No State can derogate from them even by mutual agreement.</li>
+        <li>Any treaty conflicting with existing jus cogens = VOID (Article 53 VCLT).</li>
+        <li>If new jus cogens emerges — existing conflicting treaties become void (Article 64 VCLT).</li>
+      </ul>
+      <h4>Examples of Jus Cogens Norms</h4>
+      <ul>
+        <li>Prohibition of aggression. | Prohibition of genocide.</li>
+        <li>Prohibition of slavery. | Prohibition of torture.</li>
+        <li>Prohibition of racial discrimination/apartheid.</li>
+        <li>Right to self-determination. | Non-refoulement.</li>
+      </ul>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> What happens to a treaty that conflicts with jus cogens? It is VOID — not voidable. Write Article 53 VCLT specifically. Students often write "voidable" which is wrong.</div>
+    `},
+    { id:'A-11', title:'Opinio Juris', marks:'6 Marks', content:`
+      <div class="maxim-box"><strong>OPINIO JURIS SIVE NECESSITATIS</strong> — "An opinion of law or necessity." The belief that a practice is followed because it is legally obligatory — NOT merely out of habit, courtesy, or political convenience.</div>
+      <h4>Two Elements of Customary International Law</h4>
+      <table><tr><th>Element</th><th>Meaning</th></tr>
+        <tr><td>State Practice (Objective)</td><td>What States actually DO — their consistent and general practice: legislation, court decisions, diplomatic correspondence, military manuals, UN voting.</td></tr>
+        <tr><td>Opinio Juris (Subjective)</td><td>WHY States do it — they believe they are LEGALLY OBLIGATED to do so. This mental element distinguishes law from mere usage or comity.</td></tr>
+      </table>
+      <h4>Importance</h4>
+      <ul>
+        <li>Without opinio juris, mere State practice becomes usage or comity — not law.</li>
+        <li>Helps distinguish legally binding custom from non-binding State practices.</li>
+      </ul>
+      <div class="case-box"><strong>Case: North Sea Continental Shelf Cases (1969, ICJ)</strong><br>ICJ held that for a rule to become custom, State practice must be accompanied by opinio juris — the belief that the practice is legally obligatory. Consistent practice alone is insufficient.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Is consistent State practice alone sufficient to create custom? NO. Opinio juris is also required. Without it, the practice is merely habit or comity, not law.</div>
+    `},
+    { id:'A-12', title:'De Facto Recognition', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> De Facto Recognition is a provisional, temporary form of recognition given to a State or government when it has effective control over a territory but there are doubts about its stability, permanence, or legitimacy.</p>
+      <h4>Features</h4>
+      <ul>
+        <li>Not a full and complete recognition.</li>
+        <li>No formal diplomatic relations are established.</li>
+        <li>Based on effective control of territory — not legality.</li>
+        <li>Can be withdrawn if stability fails.</li>
+        <li>May convert to de jure recognition if stability is established.</li>
+      </ul>
+      <h4>De Facto vs De Jure — Comparison</h4>
+      <table><tr><th>Feature</th><th>De Facto</th><th>De Jure</th></tr>
+        <tr><td>Nature</td><td>Provisional/Temporary</td><td>Final/Complete</td></tr>
+        <tr><td>Diplomatic Relations</td><td>Not established</td><td>Fully established</td></tr>
+        <tr><td>Basis</td><td>Effective control</td><td>Legality AND effectiveness</td></tr>
+        <tr><td>Withdrawal</td><td>Can be withdrawn</td><td>Generally irrevocable</td></tr>
+        <tr><td>Example</td><td>UK recognised Soviet Govt 1921</td><td>UK recognised Soviet Govt 1924</td></tr>
+      </table>
+      <div class="case-box"><strong>Case: Luther v Sagor (1921, UK Court of Appeal)</strong><br>Even de facto recognition has significant legal consequences. Acts of a de facto recognised government must be given legal effect in courts of the recognising State. Court upheld the Soviet government's nationalisation decree before de jure recognition was given.</div>
+    `},
+    { id:'A-13', title:'Nationality', marks:'6 Marks', content:`
+      <p><strong>Definition:</strong> Nationality is the legal bond between an individual and a State. It entitles the individual to the State's protection and gives the State the right to exercise diplomatic protection on behalf of the individual.</p>
+      <h4>How Nationality Is Acquired</h4>
+      <table><tr><th>Mode</th><th>Meaning</th><th>Memory Hook</th></tr>
+        <tr><td>Jus Soli</td><td>By birth on the State's territory.</td><td>Soli = Soil = Where born.</td></tr>
+        <tr><td>Jus Sanguinis</td><td>By descent from a national parent.</td><td>Sanguinis = Blood = Parent.</td></tr>
+        <tr><td>Naturalization</td><td>Voluntary acquisition through formal process.</td><td>—</td></tr>
+        <tr><td>Marriage</td><td>Some States grant nationality to foreign spouses.</td><td>—</td></tr>
+        <tr><td>Cession/Succession</td><td>Residents of ceded territory acquire new sovereign's nationality.</td><td>—</td></tr>
+      </table>
+      <h4>Statelessness</h4>
+      <p>A person with no nationality. Governed by 1954 Convention (Status of Stateless Persons) and 1961 Convention (Reduction of Statelessness). Stateless persons face severe disadvantages — no State is obligated to protect them diplomatically.</p>
+      <div class="case-box"><strong>Case: Nottebohm Case (1955, ICJ)</strong><br>Nationality must be based on a GENUINE CONNECTION between individual and State — habitual residence, family ties, business interests. Liechtenstein could not claim Nottebohm as its national because his genuine connection was with Guatemala. Nationality of convenience has no standing for diplomatic protection.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Can a State exercise diplomatic protection for a person with dual nationality? Only if the claiming State's nationality is the DOMINANT and EFFECTIVE one backed by genuine connection — Nottebohm test.</div>
+    `},
+    { id:'A-14', title:'Modes of Acquiring State Territory', marks:'6 Marks', content:`
+      <p><strong>Overview:</strong> International law recognises five modes by which a State may acquire title to territory. Of these, conquest is now completely illegal under modern international law.</p>
+      <h4>Five Modes</h4>
+      <ul>
+        <li><strong>1. Occupation:</strong> Acquiring territory that belongs to no State (terra nullius) by taking effective and continuous control. Very little true terra nullius remains today.</li>
+        <li><strong>2. Prescription:</strong> Acquiring title through long, uninterrupted, peaceful possession and actual exercise of sovereignty where the former sovereign made no effective protest. Similar to adverse possession in domestic law.</li>
+        <li><strong>3. Cession:</strong> Transfer of territory by bilateral treaty. Genuinely voluntary. Examples: Alaska sold by Russia to USA 1867; Hong Kong ceded to UK 1842, returned to China 1997.</li>
+        <li><strong>4. Conquest — NOW COMPLETELY ILLEGAL:</strong> Acquisition by military force. Absolutely PROHIBITED by UN Charter Article 2(4) and UN GA Resolution 2625 (1970). Territory acquired by force is void.</li>
+        <li><strong>5. Accretion:</strong> Natural addition through geological processes — river sediment deposits, volcanic islands. State automatically acquires the new land without any formal act.</li>
+      </ul>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Can conquest give valid title today? ABSOLUTELY NOT. UN Charter Article 2(4) is jus cogens. Cite also UN GA Resolution 2625 (1970). Any answer saying conquest is still valid is completely wrong.</div>
+      <div class="alert-box"><strong>⚠ Memory Hook:</strong> Legal modes today: OPC-A = Occupation, Prescription, Cession, Accretion. Conquest = illegal today — void under modern IL.</div>
+    `},
+    { id:'A-15', title:'Law of the Sea — Key Zones', marks:'6 Marks', content:`
+      <p><strong>Governing Law:</strong> United Nations Convention on the Law of the Sea (UNCLOS) 1982 — called the "Constitution of the Oceans" — with 320 articles and 168+ parties.</p>
+      <h4>Maritime Zones — I-T-C-E-C-H</h4>
+      <table><tr><th>Zone</th><th>Distance</th><th>Key Rights</th></tr>
+        <tr><td>Internal Waters</td><td>Landward of baseline</td><td>Full sovereignty. NO innocent passage right.</td></tr>
+        <tr><td>Territorial Sea</td><td>0–12 NM</td><td>Full sovereignty including airspace. RIGHT OF INNOCENT PASSAGE for foreign ships.</td></tr>
+        <tr><td>Contiguous Zone</td><td>12–24 NM</td><td>Control customs, fiscal, immigration, sanitary laws only.</td></tr>
+        <tr><td>EEZ</td><td>0–200 NM</td><td>SOVEREIGN RIGHTS (not full sovereignty) over resources. Others retain navigation freedom.</td></tr>
+        <tr><td>Continental Shelf</td><td>Up to 200/350 NM</td><td>Rights over seabed and subsoil resources only.</td></tr>
+        <tr><td>High Seas</td><td>Beyond 200 NM</td><td>No sovereignty. Freedom of navigation, overflight, fishing, research.</td></tr>
+        <tr><td>The Area</td><td>Beyond national jurisdiction</td><td>Common Heritage of Mankind. Managed by ISA.</td></tr>
+      </table>
+      <h4>Innocent Passage</h4>
+      <p>Passage is innocent so long as not prejudicial to peace, good order, or security. Submarines must navigate on surface. Passage must be continuous and expeditious.</p>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Difference between EEZ and Territorial Sea? Territorial Sea = FULL sovereignty including airspace, 12 NM, innocent passage exists. EEZ = SOVEREIGN RIGHTS only over resources, 200 NM, others retain full navigation freedom. Full sovereignty vs sovereign rights is the critical distinction.</div>
+    `}
+  ],
+  B: [
+    { id:'B-1', title:'Sources of International Law — Detailed Essay', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>International Law, unlike domestic law, does not have a single legislature or central lawmaking body. States are both creators and subjects of IL. Article 38(1) of the ICJ Statute is universally accepted as the authoritative list of sources.</p>
+      <h4>Primary Source 1 — International Treaties</h4>
+      <p>Formal written agreements between States creating binding obligations. Most certain source — express consent is given. Binding ONLY on parties (Pacta Tertiis rule). Important: a treaty can become custom if widely accepted with opinio juris by non-parties too (North Sea Continental Shelf Cases 1969).</p>
+      <h4>Primary Source 2 — International Custom</h4>
+      <p>Two mandatory elements: (1) State Practice — consistent, general, widespread acts; (2) Opinio Juris — belief the practice is legally obligatory, not merely habit. ICJ examined this in North Sea Continental Shelf Cases 1969 and Lotus Case 1927.</p>
+      <h4>Primary Source 3 — General Principles of Law</h4>
+      <p>Principles found in domestic systems of most nations transplanted to international plane. Fill gaps when treaties and custom provide no rule. Examples: res judicata, estoppel, good faith, equity, proportionality.</p>
+      <h4>Subsidiary Source 4 — Judicial Decisions</h4>
+      <p>Article 59 ICJ Statute: ICJ decisions binding only between parties. But highly persuasive worldwide as evidence of law. ICJ, PCIJ, ICC, WTO DSB decisions all count.</p>
+      <h4>Subsidiary Source 5 — Teachings of Publicists</h4>
+      <p>Works of scholars — Grotius (Father of IL), Vattel, Oppenheim, Lauterpacht — used as evidence of IL rules especially where no treaty or custom exists.</p>
+      <h4>Other Modern Sources</h4>
+      <ul>
+        <li>UN General Assembly Resolutions: Soft law — not binding but influential. Can crystallise into custom.</li>
+        <li>Acts of International Organisations: WHO regulations, ILO conventions, ICAO standards.</li>
+        <li>Unilateral State Acts: Declarations can create binding obligations.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Nuclear Tests Cases (1974, ICJ)</strong><br>France's unilateral public declaration to stop nuclear testing created a legally binding obligation WITHOUT any treaty. Unilateral declarations of serious nature are binding.</div>
+      <h4>Hierarchy of Sources</h4>
+      <p>Jus Cogens (highest) > Treaties > Custom > General Principles > Judicial Decisions and Publicists.</p>
+      <div class="verdict-box"><strong>Conclusion:</strong> The sources of IL under Article 38 provide a comprehensive framework that is not exhaustive. Modern IL has evolved to include soft law and acts of international organisations. The interplay between these sources ensures flexibility and continuous development of the international legal order.</div>
+    `},
+    { id:'B-2', title:'Monism vs Dualism — IL and Municipal Law', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>The relationship between Municipal Law (domestic law) and International Law is one of the most fundamental debates in legal theory. When they conflict, which one prevails? Two main theories answer this question.</p>
+      <h4>Monism</h4>
+      <p>IL and Municipal Law form ONE unified legal system. IL is superior and automatically becomes part of domestic law. In case of conflict, IL prevails. Supporters: Hans Kelsen (Grundnorm theory), Lauterpacht, Duguit. Example countries: Netherlands, France — treaties automatically binding without Parliamentary approval.</p>
+      <h4>Dualism (Pluralism)</h4>
+      <p>IL and Municipal Law are TWO completely SEPARATE systems. For IL to apply in domestic courts it must be TRANSFORMED into domestic law by Parliament. Supporters: Triepel, Anzilotti. Example countries: UK, USA, India (traditionally).</p>
+      <table><tr><th>Feature</th><th>Monism</th><th>Dualism</th></tr>
+        <tr><td>Legal System</td><td>ONE unified system</td><td>TWO separate systems</td></tr>
+        <tr><td>Application</td><td>IL directly applicable</td><td>Transformation needed</td></tr>
+        <tr><td>Conflict</td><td>IL always prevails</td><td>Domestic law prevails in courts</td></tr>
+        <tr><td>Supporters</td><td>Kelsen, Lauterpacht</td><td>Triepel, Anzilotti</td></tr>
+        <tr><td>Examples</td><td>Netherlands, France</td><td>UK, USA, India</td></tr>
+      </table>
+      <h4>India's Position — Modified Dualism</h4>
+      <ul>
+        <li>Article 51 Constitution: India shall endeavour to respect international law.</li>
+        <li>Article 253: Parliament has power to make laws implementing international treaties — transformation requirement (dualist).</li>
+        <li>Customary IL automatically part of Indian law unless Parliament legislates otherwise — monist tendency for custom.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Vishaka v State of Rajasthan (1997, Supreme Court of India)</strong><br>In absence of domestic legislation, Supreme Court used CEDAW (international convention) to formulate binding guidelines against sexual harassment at workplace — treated IL as part of Indian law in the legislative gap.</div>
+      <div class="case-box"><strong>Case: Gramophone Company v Birendra Bahadur Pandey (1984, Supreme Court)</strong><br>Customary IL is part of Indian law so long as not inconsistent with Acts of Parliament. This IS India's modified dualist position.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> Does India follow monism or dualism? Answer: MODIFIED DUALISM — not simply dualism. India incorporates both elements. Custom = automatically incorporated (monist tendency). Treaty law = requires Article 253 legislation (dualist tendency). Never just say "dualism" — you will lose marks.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> The monism-dualism debate reflects fundamental tension between State sovereignty and international legal obligations. Practice shows convergence. India's modified dualism is the best example of a pragmatic approach that respects both sovereignty and international obligations.</div>
+    `},
+    { id:'B-3', title:'ICJ — Powers, Functions and Jurisdiction', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>The International Court of Justice (ICJ) is the principal judicial organ of the United Nations, established in 1945 under the UN Charter and ICJ Statute. It replaced the PCIJ of the League of Nations era. Sits at the Peace Palace in The Hague, Netherlands.</p>
+      <h4>Composition and Structure</h4>
+      <ul>
+        <li>15 judges elected for 9-year terms, 5 elected every 3 years for continuity.</li>
+        <li>Elected independently by both UN GA AND Security Council. No two judges from same country.</li>
+        <li>Quorum: 9 judges. President and Vice-President elected by the Court for 3-year terms.</li>
+        <li>Ad hoc judges: a party without a judge of its nationality may appoint one for that specific case only.</li>
+      </ul>
+      <h4>Contentious Jurisdiction — Article 36</h4>
+      <p>Settles legal disputes between States. ONLY States can be parties. Individuals, corporations, NGOs, international organisations CANNOT appear. Four bases:</p>
+      <ul>
+        <li>Special Agreement (Compromis): Both States agree AFTER dispute arises.</li>
+        <li>Treaty Clause: Treaty provides for ICJ jurisdiction.</li>
+        <li>Optional Clause (Article 36(2)): States make unilateral declaration accepting compulsory jurisdiction in advance.</li>
+        <li>Forum Prorogatum: Implied consent — one State files, other participates without objecting.</li>
+      </ul>
+      <h4>Advisory Jurisdiction — Article 65</h4>
+      <p>Non-binding legal opinions on legal questions. Who can request: UN GA, UN SC, other UN organs and specialised agencies authorised by UNGA. States CANNOT directly request. Individuals and NGOs cannot request.</p>
+      <h4>Enforcement of Judgments</h4>
+      <p>ICJ has NO independent enforcement mechanism. Non-compliance → Article 94(2) UN Charter → Security Council. P5 veto severely limits enforcement. USA vetoed Council action after Nicaragua judgment 1986 — most dramatic illustration of ICJ's enforcement weakness.</p>
+      <div class="case-box"><strong>Case: Reparations for Injuries Case (1949, ICJ Advisory)</strong><br>UN has international legal personality — can bring claims against States even non-members. Established when UN mediator Count Bernadotte was assassinated in Israel.</div>
+      <div class="case-box"><strong>Case: Corfu Channel Case UK v Albania (1949, ICJ)</strong><br>First contentious case. Albania liable for mines in its territorial waters damaging UK warships. Duty not to allow territory to harm other States.</div>
+      <div class="case-box"><strong>Case: Nicaragua v USA (1986, ICJ)</strong><br>USA violated customary IL by mining Nicaragua's harbour. USA ignored judgment. USA vetoed SC enforcement — most dramatic illustration of ICJ's enforcement weakness.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> The ICJ plays an indispensable role in the international legal order. Lack of compulsory jurisdiction and effective enforcement remain its greatest weaknesses. However, increasing reliance by States on the ICJ for peaceful dispute resolution demonstrates the growing acceptance of judicial settlement in international relations.</div>
+    `},
+    { id:'B-4', title:'State Succession — Kinds, Rights and Duties', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>State Succession in international law refers to the replacement of one State by another in the responsibility for the international relations of territory. It raises fundamental questions about what happens to treaties, property, debts, archives, and nationality.</p>
+      <h4>Governing Law</h4>
+      <p>Vienna Convention on Succession of States in Respect of Treaties 1978. Vienna Convention on Succession of States in Respect of State Property, Archives and Debts 1983.</p>
+      <h4>Kinds of State Succession — MDSCN</h4>
+      <table><tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td>Merger</td><td>Two States unite</td><td>Germany reunification 1990</td></tr>
+        <tr><td>Dissolution</td><td>One State breaks up</td><td>USSR into 15 States 1991</td></tr>
+        <tr><td>Secession</td><td>Part separates</td><td>Bangladesh from Pakistan 1971</td></tr>
+        <tr><td>Cession</td><td>Territory transferred by treaty</td><td>Hong Kong UK to China 1997</td></tr>
+        <tr><td>New Independence</td><td>Colony gains independence</td><td>India from Britain 1947</td></tr>
+      </table>
+      <h4>Effect on Treaties</h4>
+      <ul>
+        <li><strong>Clean Slate Rule:</strong> Newly independent States NOT automatically bound by predecessor's treaties.</li>
+        <li><strong>Moving Treaty Frontier:</strong> Territory transfer — acquiring State's treaties extend to new territory.</li>
+        <li><strong>Exception — Localised Treaties:</strong> Boundary treaties, water rights, servitudes bind successor regardless of clean slate.</li>
+      </ul>
+      <h4>Effect on Property, Debts, Nationality</h4>
+      <ul>
+        <li>Public property passes to successor State.</li>
+        <li>Successor takes proportionate share of predecessor's debt. Odious debts do NOT pass.</li>
+        <li>Citizens generally acquire nationality of successor. Statelessness must be avoided.</li>
+      </ul>
+      <div class="verdict-box"><strong>Conclusion:</strong> State succession involves complex issues of continuity and change. The clean slate rule protects newly independent States while continuity principles ensure order in cases of merger and dissolution.</div>
+    `},
+    { id:'B-5', title:'Diplomatic Privileges and Immunities', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>Diplomatic privileges and immunities are the special rights and protections granted by the receiving State to diplomatic agents of the sending State. The primary instrument is the Vienna Convention on Diplomatic Relations 1961 (VCDR).</p>
+      <h4>Theories</h4>
+      <ul>
+        <li>Exterritoriality Theory — Now DISCREDITED as a legal fiction.</li>
+        <li>Functional Necessity Theory (Accepted by VCDR 1961) — Privileges necessary for effective diplomatic functions.</li>
+        <li>Representative Character Theory — Diplomat represents sovereign State.</li>
+      </ul>
+      <h4>Key Immunities Under VCDR 1961</h4>
+      <ul>
+        <li><strong>Inviolability of Person (Art. 29):</strong> Cannot be arrested or detained under any circumstances.</li>
+        <li><strong>Inviolability of Premises (Art. 22):</strong> Embassy cannot be entered without consent. Receiving State has POSITIVE DUTY to protect.</li>
+        <li><strong>Inviolability of Archives (Art. 24):</strong> Archives inviolable at any time wherever located.</li>
+        <li><strong>Inviolability of Correspondence (Art. 27):</strong> Diplomatic bag cannot be opened or detained.</li>
+        <li><strong>Immunity from Criminal Jurisdiction (Art. 31):</strong> COMPLETE immunity — cannot be arrested, prosecuted, or punished for ANY crime.</li>
+        <li><strong>Immunity from Civil Jurisdiction (Art. 31):</strong> EXCEPT: private immovable property, personal succession, private commercial activity.</li>
+        <li><strong>Tax Exemption (Art. 34):</strong> Exempt from all personal, national and municipal taxes.</li>
+      </ul>
+      <h4>Persons and Their Immunity Levels</h4>
+      <table><tr><th>Person</th><th>Immunity Level</th></tr>
+        <tr><td>Head of Mission and Diplomatic Agents</td><td>Full immunity — criminal, civil, administrative</td></tr>
+        <tr><td>Administrative and Technical Staff</td><td>Full criminal immunity, limited civil immunity</td></tr>
+        <tr><td>Service Staff of Mission</td><td>Immunity only for official acts</td></tr>
+        <tr><td>Family Members (non-nationals)</td><td>Same as diplomatic agent they accompany</td></tr>
+        <tr><td>Private Servants</td><td>Tax exemption only — no immunity</td></tr>
+      </table>
+      <h4>Waiver (Article 32)</h4>
+      <p>ONLY the SENDING STATE can waive immunity — not the diplomat personally. Waiver must be EXPRESS.</p>
+      <h4>Persona Non Grata (Article 9)</h4>
+      <p>Receiving State can declare any diplomat PNG at any time without giving any reasons. Sending State must recall them. ONLY effective remedy for abuse of immunity.</p>
+      <div class="case-box"><strong>Case: Tehran Hostages Case USA v Iran (1980, ICJ)</strong><br>Iranian revolutionaries seized the US Embassy. Iran failed to protect and release hostages. ICJ held Iran violated Articles 22 and 29 VCDR 1961 and was internationally responsible.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> Diplomatic privileges and immunities are NOT personal privileges but are granted for efficient functioning of diplomatic missions. The Vienna Convention 1961 balances effective diplomacy with accountability through the waiver mechanism and the PNG remedy.</div>
+    `},
+    { id:'B-6', title:'Law of the Sea — UNCLOS 1982', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>UNCLOS 1982, the "Constitution of the Oceans," is the primary instrument governing the world's oceans. It has 320 articles and 168+ parties. Came into force 1994.</p>
+      <h4>Historical Evolution</h4>
+      <ul>
+        <li>Hugo Grotius (1609) — Mare Liberum: The sea is free and open to all nations.</li>
+        <li>John Selden (1635) — Mare Clausum: The sea can be owned and controlled by States.</li>
+        <li>Bynkershoek (1703) — Cannon-shot rule: Territorial sea = range of a cannon, approximately 3 NM.</li>
+        <li>Geneva Conventions 1958 — First successful codification in four separate conventions.</li>
+        <li>UNCLOS 1982 — Comprehensive regime. Came into force 1994. 168+ parties.</li>
+      </ul>
+      <h4>Maritime Zones</h4>
+      <table><tr><th>Zone</th><th>Distance</th><th>Key Rights</th></tr>
+        <tr><td>Internal Waters</td><td>Landward of baseline</td><td>Full sovereignty. NO innocent passage.</td></tr>
+        <tr><td>Territorial Sea (Art. 3)</td><td>0–12 NM</td><td>Full sovereignty. RIGHT OF INNOCENT PASSAGE.</td></tr>
+        <tr><td>Contiguous Zone (Art. 33)</td><td>12–24 NM</td><td>Control customs, fiscal, immigration, sanitary laws.</td></tr>
+        <tr><td>EEZ (Arts. 55-75)</td><td>0–200 NM</td><td>SOVEREIGN RIGHTS (not full sovereignty) over resources.</td></tr>
+        <tr><td>Continental Shelf (Art. 76)</td><td>Up to 200/350 NM</td><td>Rights over seabed resources only.</td></tr>
+        <tr><td>High Seas (Art. 86)</td><td>Beyond 200 NM</td><td>No sovereignty. Freedom of navigation, overflight, fishing.</td></tr>
+        <tr><td>The Area (Part XI)</td><td>Beyond national jurisdiction</td><td>Common Heritage of Mankind. Managed by ISA.</td></tr>
+      </table>
+      <h4>Common Heritage of Mankind</h4>
+      <p>The International Seabed Area and its resources are the Common Heritage of Mankind. No State can claim sovereignty. Resources benefit all States. Managed by International Seabed Authority (ISA).</p>
+      <div class="case-box"><strong>Case: Anglo-Norwegian Fisheries Case (1951, ICJ)</strong><br>Norway was permitted to use straight baselines along its deeply indented fjords. ICJ upheld straight baselines as valid where coast is deeply indented or fringed with islands.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> UNCLOS 1982 balances competing interests of coastal States wanting wider control and maritime powers wanting freedom of navigation. With 168+ parties it is one of the most successful international treaties ever concluded.</div>
+    `},
+    { id:'B-7', title:'Airspace — Chicago Convention and Five Freedoms', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>Every State has complete and exclusive sovereignty over the airspace above its territory — Article 1, Chicago Convention 1944. The Chicago Convention is the cornerstone of international aviation law.</p>
+      <h4>Historical Conventions</h4>
+      <table><tr><th>Convention</th><th>Year</th><th>Key Point</th></tr>
+        <tr><td>Paris Convention</td><td>1919</td><td>First major aviation convention. State sovereignty over airspace confirmed.</td></tr>
+        <tr><td>Havana Convention</td><td>1928</td><td>Pan-American aviation convention for Latin American States.</td></tr>
+        <tr><td>Warsaw Convention</td><td>1929</td><td>Airline liability for passenger injury, death, baggage. Updated by Montreal Convention 1999.</td></tr>
+        <tr><td>Chicago Convention</td><td>1944</td><td>Most important. Created ICAO. 193 States parties. Covers civil aircraft only.</td></tr>
+      </table>
+      <h4>Five Freedoms of the Air</h4>
+      <table><tr><th>Freedom</th><th>Right Granted</th></tr>
+        <tr><td>1st Freedom</td><td>Fly OVER another State's territory without landing — overflight transit right.</td></tr>
+        <tr><td>2nd Freedom</td><td>Land for TECHNICAL purposes (fuel/emergency) without commercial traffic.</td></tr>
+        <tr><td>3rd Freedom</td><td>Carry passengers/cargo FROM home State TO another State.</td></tr>
+        <tr><td>4th Freedom</td><td>Carry passengers/cargo FROM another State BACK to home State.</td></tr>
+        <tr><td>5th Freedom</td><td>Carry between two foreign States as part of service starting/ending in home State.</td></tr>
+      </table>
+      <h4>ICAO</h4>
+      <p>International Civil Aviation Organization — specialised UN agency. Headquarters: Montreal, Canada. Sets SARPS — Standards and Recommended Practices for safety, security, navigation.</p>
+      <div class="case-box"><strong>Case: KAL 007 (1983)</strong><br>Korean Airlines Boeing 747 shot down by USSR over Sakhalin Island. Led to Chicago Convention amendment PROHIBITING use of weapons against civil aircraft in flight.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> The Chicago Convention 1944 and ICAO have created a comprehensive framework for international civil aviation. State sovereignty over airspace is balanced with practical necessity of international air transport through the system of freedoms.</div>
+    `},
+    { id:'B-8', title:'Recognition of States — De Facto and De Jure', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>Recognition in international law is the act by which States acknowledge the existence of a new State or government and indicate willingness to deal with it as a member of the international community.</p>
+      <h4>Conditions for Statehood — Montevideo Convention 1933</h4>
+      <p>PECC: Permanent population + Effective government + Capacity for IL relations + Clear territory (defined).</p>
+      <h4>Theories of Recognition</h4>
+      <ul>
+        <li><strong>Constitutive Theory:</strong> Recognition CREATES the State — without it, no international legal personality. Criticism: same entity could be a State for some and not others — absurd.</li>
+        <li><strong>Declaratory Theory (Modern Majority View):</strong> Recognition merely DECLARES facts that already exist. State exists as soon as Montevideo criteria are met. Supported by most States and Montevideo Convention 1933.</li>
+      </ul>
+      <h4>Forms of Recognition</h4>
+      <table><tr><th>Type</th><th>Nature</th></tr>
+        <tr><td>De Facto</td><td>Provisional, temporary, based on effective control. Can be withdrawn. No formal diplomatic relations. Example: UK de facto recognition of Soviet Govt 1921.</td></tr>
+        <tr><td>De Jure</td><td>Final, complete, based on legality AND effectiveness. Full diplomatic relations. Generally irrevocable. Example: UK de jure recognition of Soviet Govt 1924.</td></tr>
+        <tr><td>Express</td><td>Formal declaration or diplomatic note.</td></tr>
+        <tr><td>Implied</td><td>Inferred from conduct — signing bilateral treaty with the new State.</td></tr>
+        <tr><td>Collective</td><td>Group of States together — commonly through UN admission.</td></tr>
+      </table>
+      <div class="case-box"><strong>Case: Luther v Sagor (1921, UK Court of Appeal)</strong><br>Acts of de facto recognised government are valid and courts must give effect to them. Soviet government's nationalisation decree upheld even before de jure recognition.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> Recognition is both legal and political. The modern declaratory theory reduces the power of established States to arbitrarily withhold recognition. The UN admission process now serves as collective recognition in the modern world.</div>
+    `},
+    { id:'B-9', title:'State Responsibility', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>State Responsibility is the principle that when a State commits an internationally wrongful act, it bears international legal responsibility and must make reparations. The governing instrument is the ILC Articles on Responsibility of States for Internationally Wrongful Acts 2001 — authoritative but not a binding treaty.</p>
+      <h4>Two Conditions — Article 2, ILC Articles 2001</h4>
+      <ul>
+        <li>(a) Conduct must be attributable to the State under international law.</li>
+        <li>(b) Conduct must constitute a breach of an international obligation of that State.</li>
+      </ul>
+      <h4>Attribution to State</h4>
+      <table><tr><th>Type of Conduct</th><th>Attribution Rule</th></tr>
+        <tr><td>Acts of State Organs</td><td>Any legislative, executive, or judicial act — automatically attributed.</td></tr>
+        <tr><td>Persons exercising Govt Authority</td><td>Attributed even if not formally a State organ.</td></tr>
+        <tr><td>Acts directed by State</td><td>Private persons acting on State's instructions.</td></tr>
+        <tr><td>Insurrectional Movements</td><td>Generally NOT attributed unless movement succeeds and becomes new government.</td></tr>
+      </table>
+      <h4>Circumstances Precluding Wrongfulness</h4>
+      <ul>
+        <li>Consent. | Self-Defence (UN Charter Article 51). | Countermeasures.</li>
+        <li>Force Majeure. | Distress (save human life). | Necessity (protect essential State interest).</li>
+      </ul>
+      <h4>Reparations</h4>
+      <ul>
+        <li><strong>Restitution:</strong> Restore situation before wrongful act — first preference.</li>
+        <li><strong>Compensation:</strong> Pay money for damage that cannot be remedied by restitution.</li>
+        <li><strong>Satisfaction:</strong> Acknowledgment, apology, assurances — for non-material injury.</li>
+      </ul>
+      <h4>International Minimum Standard vs Calvo Doctrine</h4>
+      <table><tr><th>Doctrine</th><th>Position</th></tr>
+        <tr><td>International Minimum Standard (Western)</td><td>Regardless of how nationals are treated, aliens must receive minimum standard of civilised justice.</td></tr>
+        <tr><td>Calvo Doctrine (Latin American)</td><td>Aliens treated same as nationals. No higher standard. Exhaust local remedies first.</td></tr>
+      </table>
+      <div class="case-box"><strong>Case: Barcelona Traction Case Belgium v Spain (1970, ICJ)</strong><br>Distinguished erga omnes obligations (owed to all States — any State can complain) from bilateral obligations (only specifically affected State can claim). A landmark case on the nature of international obligations.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> State responsibility is the cornerstone of accountability in international law. The ILC Articles 2001 provide a comprehensive balanced framework ensuring States bear consequences of internationally wrongful acts.</div>
+    `},
+    { id:'B-10', title:'Extradition — Meaning and Restrictions', marks:'15 Marks', content:`
+      <h4>Introduction</h4>
+      <p>Extradition is the formal legal process by which one State (the requested State) surrenders a person accused or convicted of a crime to another State (the requesting State) for trial or punishment. There is NO general rule of customary IL requiring extradition in the absence of a treaty.</p>
+      <h4>Key Principles — DSSP</h4>
+      <ul>
+        <li><strong>Double Criminality:</strong> Act must be a crime in BOTH the requesting AND the requested State.</li>
+        <li><strong>Specialty Principle:</strong> Extradited person can ONLY be tried for the specific offence named in the extradition request.</li>
+        <li><strong>Double Jeopardy (Ne Bis in Idem):</strong> Cannot extradite if person already tried and acquitted or convicted for same offence.</li>
+        <li><strong>Treaty Requirement:</strong> Generally only possible if there is a bilateral or multilateral extradition treaty.</li>
+      </ul>
+      <h4>Restrictions — When Extradition Is Refused</h4>
+      <ul>
+        <li>Political Offence Exception: Purely political crimes NOT extraditable. BUT terrorism, hijacking, genocide specifically EXCLUDED from exception — they ARE extraditable.</li>
+        <li>Non-Extradition of Own Nationals: Most civil law countries refuse. They must then PROSECUTE instead — Aut Dedere Aut Judicare.</li>
+        <li>Torture Risk: Article 3, UN Convention Against Torture — extradition prohibited if real risk of torture.</li>
+        <li>Death Penalty: Many States refuse without assurances.</li>
+        <li>Fair Trial Risk: Cannot guarantee fair trial in requesting State.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Pinochet Case (1999, UK House of Lords)</strong><br>Former heads of State have NO immunity for acts of torture. Torture is jus cogens. Political offence exception does NOT apply to torture.</div>
+      <div class="case-box"><strong>Case: Soering v UK (1989, ECHR)</strong><br>UK could not extradite because the death row phenomenon itself would violate Article 3 ECHR prohibition of inhuman and degrading treatment.</div>
+      <div class="maxim-box"><strong>AUT DEDERE AUT JUDICARE</strong> — Extradite or Prosecute. If extradition refused for serious international crimes, the State MUST prosecute itself. No fugitive can escape justice simply by crossing a border.</div>
+      <div class="verdict-box"><strong>Conclusion:</strong> Extradition is essential for international cooperation against transnational crime. Modern IL progressively narrows the political offence exception for serious international crimes. Aut Dedere Aut Judicare ensures no fugitive escapes justice.</div>
+    `}
+  ],
+  C: [
+    { id:'C-1', title:'Diplomat Commits Crime — Claims Immunity', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> Ambassador X of State A, posted in State B, commits murder. State B wants to arrest and prosecute. Can it?</p>
+      <h4>Issue</h4>
+      <p>Does Ambassador X enjoy diplomatic immunity? Can State B arrest or prosecute?</p>
+      <h4>Applicable Law — VCDR 1961</h4>
+      <ul>
+        <li>Article 29: Diplomatic agents are inviolable — cannot be arrested or detained.</li>
+        <li>Article 31(1): COMPLETE immunity from criminal jurisdiction of receiving State — cannot be arrested, prosecuted, or punished for ANY crime.</li>
+        <li>Article 32: Immunity can ONLY be waived by SENDING STATE. Waiver must be express.</li>
+        <li>Article 9: Receiving State can declare diplomat Persona Non Grata — sending State must recall.</li>
+      </ul>
+      <h4>Analysis</h4>
+      <ul>
+        <li>Ambassador X is duly accredited — has full diplomatic immunity under Article 31.</li>
+        <li>State B CANNOT arrest, detain, charge, or prosecute X even for murder.</li>
+        <li>Immunity is ABSOLUTE in criminal matters — covers personal acts as well as official acts.</li>
+      </ul>
+      <h4>Remedies Available to State B</h4>
+      <ul>
+        <li>Request State A to WAIVE immunity — State A under no obligation to agree.</li>
+        <li>Declare X PERSONA NON GRATA under Article 9 — most effective practical remedy. Expel X.</li>
+        <li>Lodge formal diplomatic protest against State A.</li>
+      </ul>
+      <div class="verdict-box"><strong>Decision:</strong> Ambassador X enjoys complete diplomatic immunity under Article 31 VCDR 1961. State B cannot arrest or prosecute even for murder. The only effective remedy is PNG declaration and expulsion.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> What if it is a consular officer — not a diplomat? Consular immunity under VCOR 1963 is LIMITED to official consular functions. Murder is not a consular function — consul CAN be prosecuted, unlike a diplomat.</div>
+    `},
+    { id:'C-2', title:'Extradition — No Treaty Between States', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> X commits serious crime in State A and flees to State B. No extradition treaty exists. State A requests extradition. State B refuses. Is State B's refusal valid?</p>
+      <h4>Issue</h4>
+      <p>Is there a legal obligation to extradite without a treaty?</p>
+      <h4>Applicable Law</h4>
+      <ul>
+        <li>General Rule: NO treaty = NO obligation to extradite under customary IL. Extradition is primarily treaty-based.</li>
+        <li>Exception: For serious international crimes (terrorism, hijacking, genocide, torture, piracy), multilateral conventions impose Aut Dedere Aut Judicare obligation.</li>
+      </ul>
+      <h4>Analysis</h4>
+      <ul>
+        <li>State A and State B have no extradition treaty — State B is NOT legally obligated to extradite X.</li>
+        <li>Refusal does not violate IL in the absence of a treaty.</li>
+        <li>BUT: If X's crime falls under a multilateral convention both States have joined — State B must EITHER extradite OR prosecute (Aut Dedere Aut Judicare).</li>
+      </ul>
+      <div class="verdict-box"><strong>Decision:</strong> Without a treaty, State B has no general obligation. But for serious international crimes covered by multilateral conventions both States have joined, State B must extradite or prosecute under Aut Dedere Aut Judicare. State B's refusal is valid only if the crime is not covered by any multilateral convention.</div>
+    `},
+    { id:'C-3', title:'State Responsibility — Foreigner Killed in Riots', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> A national of State A is killed during riots in State B. State A claims State B is internationally responsible. State B says it is not liable for acts of private rioters.</p>
+      <h4>Issue</h4>
+      <p>Is State B responsible for injury to a foreign national caused by private rioters?</p>
+      <h4>Applicable Law</h4>
+      <ul>
+        <li>A State is NOT automatically responsible for acts of private individuals.</li>
+        <li>BUT State may be responsible for FAILURE TO EXERCISE DUE DILIGENCE to protect foreigners on its territory.</li>
+        <li>International Minimum Standard: States must treat aliens with minimum standard of civilised justice regardless of how they treat their own nationals.</li>
+        <li>Local Remedies Rule: State A must first exhaust local remedies in State B before bringing international claim.</li>
+      </ul>
+      <h4>Analysis</h4>
+      <p>Direct attribution? NO — rioters are private persons, not State organs. BUT State B may be responsible if: (a) police failed to take reasonable steps to protect; (b) failed to investigate and punish perpetrators; (c) courts denied justice to victim's family; (d) State organs participated in or encouraged riots.</p>
+      <div class="verdict-box"><strong>Decision:</strong> State B may not be directly responsible for rioters' acts. However, if it failed due diligence in protecting the foreigner, failed to punish perpetrators, or denied justice — State B has violated its international obligations. State A can exercise diplomatic protection after local remedies in State B are exhausted.</div>
+    `},
+    { id:'C-4', title:'Satellite Crash — Absolute Liability', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> Satellite launched by State A crashes in State B causing damage to persons and property. State B claims compensation. State A denies liability. Discuss.</p>
+      <h4>Issue</h4>
+      <p>What liability does State A bear? Absolute or fault-based?</p>
+      <h4>Applicable Law</h4>
+      <ul>
+        <li>Outer Space Treaty 1967, Article VI: States responsible for ALL national space activities — governmental AND non-governmental.</li>
+        <li>Liability Convention 1972, Article II: ABSOLUTE LIABILITY for damage on Earth's surface or to aircraft in flight. No fault needed.</li>
+        <li>Liability Convention 1972, Article III: FAULT-BASED liability for damage in outer space between space objects — must prove negligence.</li>
+      </ul>
+      <h4>Analysis</h4>
+      <ul>
+        <li>State A is the launching State (launched, procured launch, or territory used for launch).</li>
+        <li>Damage occurred on Earth's surface — Article II ABSOLUTE LIABILITY applies.</li>
+        <li>State B does NOT need to prove any fault or negligence on the part of State A.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Cosmos 954 Incident (1978, Canada v USSR — Diplomatic settlement)</strong><br>Soviet nuclear satellite crashed over Canada's Northwest Territories spreading radioactive debris. USSR paid $3 million compensation. Absolute liability confirmed in State practice.</div>
+      <div class="verdict-box"><strong>Decision:</strong> State A bears ABSOLUTE LIABILITY under Article II Liability Convention 1972. State B need not prove fault. State A must pay full compensation.</div>
+      <div class="twist-box"><strong>🔀 Twisted Q:</strong> What if the damage was between two satellites in outer space? Article III applies — FAULT-BASED liability. State B would need to prove State A was at fault. This distinction is the most common exam twist in this problem type.</div>
+    `},
+    { id:'C-5', title:'Asylum Seeker in Embassy', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> X, a citizen of State B, takes refuge in State A's embassy in State B. State B demands handover. State A claims X has political asylum. Discuss.</p>
+      <h4>Issue</h4>
+      <p>Can State A grant diplomatic embassy asylum? Can State B enter the embassy?</p>
+      <h4>Applicable Law</h4>
+      <ul>
+        <li>Territorial Asylum: RECOGNISED in general international law.</li>
+        <li>Diplomatic/Embassy Asylum: NOT recognised in general international law.</li>
+        <li>Embassy premises are INVIOLABLE (Article 22, VCDR 1961) — State B cannot enter without consent.</li>
+        <li>CRITICAL: Inviolability of premises does NOT equal a right to grant diplomatic asylum. Two separate rules.</li>
+        <li>Asylum Case (ICJ 1950): Diplomatic asylum is NOT a general right in IL — only Latin American regional custom.</li>
+      </ul>
+      <h4>Analysis</h4>
+      <ul>
+        <li>State A does NOT have a right to grant diplomatic asylum under general IL.</li>
+        <li>State B CANNOT forcibly enter the embassy — Article 22 inviolability prevents this.</li>
+        <li>X is in legal limbo — protected from forced removal by inviolability but State A has no legal right to grant permanent diplomatic asylum.</li>
+      </ul>
+      <div class="verdict-box"><strong>Decision:</strong> State A should negotiate with State B for safe passage for X, then grant territorial asylum once X reaches State A's own territory. Inviolability of premises prevents forced removal but does NOT create a positive right of diplomatic asylum.</div>
+    `},
+    { id:'C-6', title:'Warship Entering Territorial Waters', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> A foreign warship enters State A's territorial sea without permission, claiming innocent passage. State A orders it to leave. The warship refuses. Discuss the legal position.</p>
+      <h4>Issue</h4>
+      <p>Do warships have a right of innocent passage? What can State A do?</p>
+      <h4>Applicable Law</h4>
+      <ul>
+        <li>UNCLOS 1982, Articles 17-26: All ships including warships enjoy right of innocent passage through territorial sea.</li>
+        <li>Article 19: Passage is innocent as long as NOT prejudicial to peace, good order, or security. Lists non-innocent activities: weapons practice, intelligence gathering, propaganda, launching aircraft, threats of force.</li>
+        <li>Article 20: Submarines must navigate on surface and show their flag.</li>
+        <li>Article 30: If warship fails to comply with coastal State's laws, coastal State may require it to leave territorial sea immediately.</li>
+      </ul>
+      <h4>Analysis and Decision</h4>
+      <p>If warship is on continuous, expeditious, innocent passage — it has the right and State A cannot stop it. If warship is conducting military exercises, intelligence gathering, or weapons practice — passage is non-innocent. State A is fully entitled to order it to leave immediately, escort it out, and lodge formal diplomatic protest with the flag State.</p>
+      <div class="verdict-box"><strong>Decision:</strong> Warships have right of innocent passage under UNCLOS 1982. If passage was non-innocent (military exercises, intelligence gathering), State A was entitled to order it to leave. State A cannot sink the warship but can take all proportionate measures short of that.</div>
+    `},
+    { id:'C-7', title:'New State Seeking UN Membership', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> New State X created by secession from State Y. State X applies for UN membership. Some powerful States oppose. Discuss conditions, procedure, and whether membership can be blocked.</p>
+      <h4>Issue</h4>
+      <p>What are the conditions and procedure for UN membership? Can membership be blocked?</p>
+      <h4>Applicable Law — Article 4, UN Charter</h4>
+      <p>Conditions: (1) Must be a State. (2) Peace-loving. (3) Accept UN Charter obligations. (4) Willing and able to carry them out.</p>
+      <p>Procedure: Application → Security Council recommendation (9 votes including P5 — ANY P5 can VETO) → General Assembly admission by two-thirds majority.</p>
+      <h4>Analysis</h4>
+      <ul>
+        <li>State X must satisfy all four conditions of Article 4.</li>
+        <li>If conditions are met, admission should follow as a matter of international law.</li>
+        <li>BUT any P5 member can VETO the Security Council recommendation — blocking membership regardless of legal qualifications.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Advisory Opinion on Admission of States (1948, ICJ)</strong><br>Article 4 conditions are EXHAUSTIVE. Political reasons alone cannot justify refusal if conditions are met. But the P5 veto makes this practically unenforceable.</div>
+      <div class="verdict-box"><strong>Decision:</strong> State X has a legal entitlement if conditions are met but political power (P5 veto) determines the practical outcome. This highlights the gap between international law and political reality in the UN system.</div>
+    `},
+    { id:'C-8', title:'Political Activist — Asylum vs Extradition', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> X, a political activist from State A, has fled to State B and been granted asylum. State A requests extradition on charges of sedition and terrorism. State B refuses. Discuss the legal position.</p>
+      <h4>Issue</h4>
+      <p>Can State B lawfully refuse extradition? Does X's asylum grant protect them?</p>
+      <h4>Analysis</h4>
+      <ul>
+        <li>Political Offence Exception: Purely political offences (sedition, treason, rebellion) NOT extraditable. State B can refuse if charges are purely political.</li>
+        <li>BUT: Terrorism is NOT a purely political offence under modern IL. Anti-terrorism conventions specifically EXCLUDE terrorism from the political offence exception.</li>
+        <li>Non-Refoulement: State B cannot extradite if X faces real risk of persecution or torture in State A — ABSOLUTE rule.</li>
+        <li>Asylum granted by State B is a sovereign decision — State A cannot demand surrender as of right.</li>
+      </ul>
+      <div class="verdict-box"><strong>Decision:</strong> If offences are purely political (sedition), State B can lawfully refuse. If terrorism charges are genuine, State B must either extradite or prosecute under Aut Dedere Aut Judicare. Non-refoulement remains paramount throughout — if X faces risk of persecution or torture, extradition is prohibited regardless.</div>
+    `},
+    { id:'C-9', title:'Recognition — De Facto Complications', marks:'10 Marks', content:`
+      <p><strong>Scenario:</strong> State A gave de facto recognition to new government of State B which came to power through a coup. Old government also claims to be the lawful government. Discuss legal complications.</p>
+      <h4>Issue</h4>
+      <p>What are the legal consequences of de facto recognition? Can two governments be recognised simultaneously?</p>
+      <h4>Analysis</h4>
+      <ul>
+        <li>De Facto Recognition: State A recognised coup government as having effective factual control — provisional, no full diplomatic rights yet.</li>
+        <li>Competing Governments: Multiple States may recognise different governments simultaneously. This arose with China after 1949 — some recognised mainland communist govt, others continued recognising Taiwan govt.</li>
+        <li>Legal effects of de facto recognition: Coup government can sue in State A's courts. Its laws and acts are recognised. But no formal diplomatic relations.</li>
+        <li>Until de jure recognition: Old government may retain claims over State property and pre-recognition assets in State A.</li>
+      </ul>
+      <div class="case-box"><strong>Case: Luther v Sagor (1921, UK Court of Appeal)</strong><br>Acts of de facto recognised government must be given legal effect in courts of the recognising State. Soviet government's nationalisation decree upheld even before de jure recognition.</div>
+      <div class="verdict-box"><strong>Decision:</strong> De facto recognition gives limited but real legal consequences in State A's courts. Situation creates legal complexity. The Estrada Doctrine (continuing or suspending diplomatic relations without formal recognition declaration) offers the most practical modern approach.</div>
+    `}
+  ]
+};
+
+// ─────────────────────────────────────────────
+// VIDEO DATA
+// ─────────────────────────────────────────────
+const VIDEOS = [
+  { unit:'Unit I', title:'Foundations of International Law', id:'YSy8LC3nrc4', topics:['Definition, Nature, Scope and Importance of IL','Relation of IL to Municipal Law — Monism vs Dualism','Sources of International Law — Article 38 ICJ Statute','Jus Cogens — Peremptory Norms','Opinio Juris — The mental element of custom','Codification — Role of ILC'] },
+  { unit:'Unit II', title:'State Recognition, Succession and Territory', id:'NuLsiFmNbvY', topics:['Recognition of States — Constitutive vs Declaratory Theory','De Facto and De Jure Recognition','State Succession — MDSCN (all 5 types)','Effects on Treaties — Clean Slate Rule','Modes of Acquiring State Territory','State Responsibility — ILC Articles 2001'] },
+  { unit:'Unit III', title:'Individual, Nationality, Extradition, Asylum and Treaties', id:'toshLuo_1JY', topics:['Position of Individual in International Law','Nationality — Jus Soli and Jus Sanguinis','Extradition — DSSP Principles and Restrictions','Asylum — Types and Non-Refoulement','Diplomatic Privileges and Immunities — VCDR 1961','Treaties — Formation, Reservations, Termination'] },
+  { unit:'Unit IV', title:'Law of the Sea, Airspace and Outer Space', id:'rtOKwQEcN_s', topics:['UNCLOS 1982 — All Maritime Zones (I-T-C-E-C-H)','Common Heritage of Mankind','Five Freedoms of Air — Chicago Convention 1944','Historical Conventions — Paris, Havana, Warsaw','Outer Space Treaty 1967 — Key Articles','Liability Convention 1972 — Absolute vs Fault Liability','India\'s Space Missions — Chandrayaan, Mangalyaan, Gaganyaan'] },
+  { unit:'Unit V', title:'International Organisations — UN, ICJ, ICC and Agencies', id:'QeUzbJFtgIM', topics:['League of Nations — History and Failure','United Nations — Structure and Functions','ICJ vs ICC — Key Differences','ICJ Jurisdiction — Contentious and Advisory','WHO, UNESCO, ILO, IMF, WTO — Functions','UN Membership — Conditions and Procedure'] }
+];
+
+// ─────────────────────────────────────────────
+// CASES DATA
+// ─────────────────────────────────────────────
+const CASES = [
+  { year:'1927', name:'The Lotus Case (France v Turkey)', tag:'Foundations', story:'A French ship — the Lotus — collided with a Turkish ship on the high seas, killing Turkish sailors. Turkey prosecuted the French officer in its own courts. France objected, saying Turkey had no jurisdiction. The PCIJ had to decide: does international law prohibit Turkey from exercising jurisdiction? The court said NO — Turkey was free to act because nothing in IL specifically prohibited it.', principle:'What is not prohibited by international law is permitted. States retain freedom of action unless IL clearly restricts them.' },
+  { year:'1949', name:'Corfu Channel Case (UK v Albania)', tag:'State Responsibility', story:'British warships were damaged by mines in the Corfu Channel — Albanian territorial waters. Albania knew about the minefield but said nothing to warn the British ships. UK sued Albania in the ICJ. Albania claimed it was not responsible because it did not lay the mines itself. But ICJ held Albania responsible — it knew about the mines and failed to warn, violating its obligation not to allow its territory to harm other States.', principle:'A State has an obligation not to allow its territory to be used to cause harm to other States. Failure to warn of known dangers in territorial waters constitutes State responsibility.' },
+  { year:'1949', name:'Reparations for Injuries Case (ICJ Advisory)', tag:'International Organisations', story:'UN mediator Count Bernadotte was assassinated in Jerusalem in 1948 while on a peace mission. Israel was not yet a UN member. The UN General Assembly asked the ICJ: Can the UN bring a claim on behalf of its agents against a State, even a non-member? ICJ said YES — the UN has international legal personality, the ability to bring claims, even against States that are not members.', principle:'The United Nations has international legal personality — it can bring international claims against States even if those States are not UN members.' },
+  { year:'1950', name:'Asylum Case (Colombia v Peru)', tag:'Asylum', story:'Víctor Raúl Haya de la Torre, a Peruvian politician, sought refuge in the Colombian Embassy in Lima after a failed rebellion. Colombia granted him diplomatic asylum and classified his offence as political. Peru refused to grant safe conduct for him to leave, saying Colombia had no right to unilaterally decide the offence was political. ICJ agreed with Peru — Colombia had not established a right to grant diplomatic asylum as a general rule of international law.', principle:'Diplomatic asylum (asylum granted inside an embassy in a foreign country) is NOT a general right in international law. It is only a regional custom in Latin America. Inviolability of premises ≠ right to grant diplomatic asylum.' },
+  { year:'1951', name:'Anglo-Norwegian Fisheries Case', tag:'Law of the Sea', story:'Norway had drawn straight baselines connecting the outermost points of its deeply indented coastline to measure its territorial sea — resulting in vast areas of sea falling within its exclusive fishing zone. The UK challenged this, claiming Norway could only use the low-water mark (the normal baseline). ICJ upheld Norway\'s straight baselines, finding that for deeply indented or island-fringed coasts, straight baselines are a valid and recognised method under international law.', principle:'Straight baselines are valid for measuring the territorial sea where the coastline is deeply indented or where there is a fringe of islands along the coast.' },
+  { year:'1955', name:'Nottebohm Case (Liechtenstein v Guatemala)', tag:'Nationality', story:'Friedrich Nottebohm was a German national who lived in Guatemala for decades, running a business there. Just before World War II, he quickly obtained Liechtenstein nationality and then returned to Guatemala. Guatemala arrested him as an enemy alien during WWII and seized his property. Liechtenstein brought a claim to ICJ on his behalf. ICJ refused to allow the claim — Nottebohm had no real connection with Liechtenstein. His life, family, and business were all in Guatemala.', principle:'Nationality for the purposes of international diplomatic protection must be based on a genuine connection — habitual residence, family ties, business. A nationality of convenience acquired without real links to the State cannot found a diplomatic protection claim.' },
+  { year:'1969', name:'North Sea Continental Shelf Cases', tag:'Foundations', story:'Germany, the Netherlands and Denmark disputed where the boundaries of their continental shelves should lie in the North Sea. The other States wanted to use the equidistance rule. Germany said this was not a binding rule of customary international law. ICJ agreed with Germany and laid down the fundamental test for when a treaty rule becomes binding custom — you need consistent State practice AND the belief that it is legally obligatory.', principle:'For a rule to crystallise into customary international law, both State practice (widespread, consistent acts) AND opinio juris (the belief that the practice is legally obligatory) must be present. Frequent practice without the belief of legal obligation is merely usage, not custom.' },
+  { year:'1970', name:'Barcelona Traction Case (Belgium v Spain)', tag:'State Responsibility', story:'Barcelona Traction was a Canadian company operating in Spain. Its majority shareholders were Belgian nationals. Spain allowed the company to go bankrupt through various state measures. Belgium tried to bring a claim to ICJ on behalf of its nationals (the shareholders). ICJ rejected the Belgian claim — Belgium was claiming on behalf of shareholders, not the company itself. The right to bring claims for injury to a company belongs to the company\'s national State (Canada), not shareholders\' States.', principle:'The right of diplomatic protection for a corporation belongs to the State of nationality of the company, not the States of nationality of shareholders. ICJ also established the concept of erga omnes obligations — obligations owed to the international community as a whole, which any State can invoke.' },
+  { year:'1974', name:'Nuclear Tests Cases (Australia/New Zealand v France)', tag:'Foundations', story:'France was conducting atmospheric nuclear tests in the South Pacific. Australia and New Zealand brought cases to ICJ arguing this violated their rights. While the cases were pending, France publicly declared it would stop atmospheric testing. ICJ immediately dismissed the cases — saying there was nothing left to decide. France\'s unilateral public declaration had created a binding obligation without any treaty. France could not go back on its word.', principle:'Unilateral public declarations made by a State can create legally binding international obligations. A State cannot renege on a clear, public, unambiguous declaration made to the international community.' },
+  { year:'1980', name:'Tehran Hostages Case (USA v Iran)', tag:'Diplomatic Immunity', story:'In November 1979, Iranian revolutionary students stormed the US Embassy in Tehran and took 52 American diplomats hostage for 444 days. The Iranian government refused to intervene and even appeared to endorse the seizure. USA brought a case to the ICJ. Iran did not participate. ICJ held that Iran had violated the Vienna Convention on Diplomatic Relations 1961 — the embassy premises were inviolable under Article 22, and the diplomats\' persons were inviolable under Article 29. Iran was obligated to protect the mission and release the hostages immediately.', principle:'States have an absolute duty to protect foreign diplomatic missions and to ensure the inviolability of diplomatic agents. Failure to protect the embassy and release hostages constitutes a serious violation of the Vienna Convention on Diplomatic Relations 1961.' },
+  { year:'1986', name:'Nicaragua v United States of America', tag:'Sources & State Responsibility', story:'The USA secretly mined Nicaragua\'s main harbours and provided support to the Contra rebels trying to overthrow Nicaragua\'s government. Nicaragua brought a case to ICJ. USA said the ICJ had no jurisdiction. ICJ disagreed and found jurisdiction. It then found the USA violated customary international law by mining the harbours and supporting the Contras. The USA refused to participate, and then withdrew its acceptance of the optional clause jurisdiction. When Nicaragua tried to get the UN Security Council to enforce the judgment, USA vetoed the resolution.', principle:'A State that violates customary international law is internationally responsible regardless of whether a treaty also covers the same conduct. The ICJ\'s enforcement weakness is starkly illustrated — even a clear judgment against the USA could not be enforced due to the P5 veto.' },
+  { year:'1989', name:'Soering v United Kingdom (ECHR)', tag:'Extradition', story:'Jens Soering was a German national accused of murder in Virginia, USA. He was arrested in the UK. USA requested his extradition. If extradited, Soering would face trial in Virginia where the crime carried the death penalty. He argued that the prolonged wait on death row before execution — sometimes years — constituted inhuman and degrading treatment prohibited by Article 3 of the European Convention on Human Rights. The ECHR agreed — the UK could not extradite him to face the "death row phenomenon."', principle:'A State violates its human rights obligations if it extradites a person to a country where they would face treatment (including the death row phenomenon) that constitutes inhuman or degrading treatment, even if the extraditing State does not itself apply that treatment.' },
+  { year:'1999', name:'R v Bow Street Magistrate (Pinochet Case)', tag:'Extradition & Immunity', story:'Former Chilean dictator Augusto Pinochet was arrested in London while receiving medical treatment, on a Spanish warrant for torture and murder committed during his regime 1973-1990. He claimed immunity as a former head of State. The UK House of Lords (5-4) held that there is NO immunity from prosecution for acts of torture, even for former heads of State. Torture is a jus cogens crime — a peremptory norm of international law. The political offence exception does not apply to systematic torture.', principle:'Former heads of State do not enjoy immunity from prosecution for acts of torture. Torture is a crime under international law (jus cogens) for which all States have an obligation to prosecute or extradite, regardless of the official status of the alleged perpetrator.' },
+  { year:'2007', name:'Genocide Convention Case (Bosnia v Serbia)', tag:'State Responsibility', story:'Bosnia brought a claim against Serbia arguing Serbia was responsible for the genocide at Srebrenica in 1995, where approximately 8,000 Bosniak Muslim men and boys were killed by Bosnian Serb forces. ICJ held Serbia was NOT directly responsible for genocide — because Bosnian Serb forces were not proven to be under Serbia\'s effective control. BUT Serbia WAS responsible for failing to PREVENT the genocide even though it knew or should have known it was about to happen. This was a separate and distinct obligation under the Genocide Convention.', principle:'A State can be internationally responsible for FAILING TO PREVENT genocide even if it did not directly commit or control the acts. The obligation to prevent genocide is separate from the obligation not to commit it.' },
+  { year:'1978', name:'Cosmos 954 Incident (Canada v USSR)', tag:'Outer Space Law', story:'On January 24, 1978, a Soviet nuclear-powered surveillance satellite — Cosmos 954 — fell out of orbit and broke apart on reentry, scattering radioactive debris over a vast area of Canada\'s Northwest Territories. Canada launched a massive cleanup operation costing millions. Canada presented a formal claim to the USSR based on the Liability Convention 1972, which provides for ABSOLUTE LIABILITY for space objects causing damage on Earth\'s surface. The USSR agreed to pay $3 million CAD in a diplomatic settlement. No fault needed to be proved.', principle:'Under the Liability Convention 1972 Article II, the launching State bears ABSOLUTE LIABILITY for damage caused by its space objects on the surface of the Earth. No fault or negligence needs to be proved — the mere fact of damage is sufficient to establish liability.' }
+];
+
+// ─────────────────────────────────────────────
+// QUIZ DATA
+// ─────────────────────────────────────────────
+const QUIZ = {
+  all: [
+    { q:'Which Article of the ICJ Statute lists the authoritative sources of international law?', opts:['Article 36','Article 38','Article 51','Article 94'], ans:1, exp:'Article 38(1) of the ICJ Statute lists the four primary and two subsidiary sources of international law accepted as authoritative worldwide.' },
+    { q:'What are the TWO elements required to establish customary international law?', opts:['Treaty + Ratification','State Practice + Opinio Juris','UN Resolution + Custom','General Principles + Judicial Decisions'], ans:1, exp:'Both State Practice (what States actually do — consistent, widespread acts) AND Opinio Juris (the belief that the practice is legally obligatory) must be present for custom to form.' },
+    { q:'Which Article of VCDR 1961 gives a diplomat complete immunity from criminal jurisdiction?', opts:['Article 22','Article 27','Article 31','Article 32'], ans:2, exp:'Article 31(1) of the Vienna Convention on Diplomatic Relations 1961 gives a diplomatic agent complete immunity from the criminal jurisdiction of the receiving State — for any crime, including personal acts.' },
+    { q:'Non-refoulement is classified as which type of international norm?', opts:['Soft Law','Treaty obligation only','Jus Cogens — peremptory norm','Customary law only'], ans:2, exp:'Non-refoulement — the principle that refugees cannot be returned to a country where they face persecution — is classified as a jus cogens norm, meaning no State can derogate from it under any circumstances.' },
+    { q:'What does "Aut Dedere Aut Judicare" mean?', opts:['Extradite and Prosecute','Extradite or Prosecute','Neither Extradite nor Prosecute','Extradite only'], ans:1, exp:'Aut Dedere Aut Judicare means "Extradite or Prosecute." If a State refuses to extradite a person (especially for serious international crimes), it must submit the case to its own authorities for prosecution.' },
+    { q:'Under the Liability Convention 1972, what type of liability applies to space damage on Earth\'s surface?', opts:['Fault-based liability','Strict liability','No liability','Absolute liability'], ans:3, exp:'Article II of the Liability Convention 1972 imposes ABSOLUTE LIABILITY for damage caused by a space object on the surface of the Earth or to aircraft in flight — no fault or negligence needs to be proved.' },
+    { q:'Which theory of recognition holds that recognition CREATES the State?', opts:['Declaratory Theory','Estoppel Theory','Constitutive Theory','Montevideo Theory'], ans:2, exp:'The Constitutive Theory holds that recognition by other States CREATES the State\'s international legal personality. Without recognition, an entity has no standing in international law. (The modern majority view is the Declaratory Theory.)' },
+    { q:'What is "Persona Non Grata" under Article 9 of the VCDR 1961?', opts:['A diplomatic bag','A State with no recognition','An unwelcome diplomat whom receiving State can expel','A classified diplomatic document'], ans:2, exp:'Persona Non Grata (PNG) means an unwelcome person. Under Article 9, the receiving State can declare any diplomatic agent PNG without giving reasons. The sending State must then recall them. This is the ONLY effective remedy against a diplomat who abuses immunity.' },
+    { q:'What is the maximum breadth of the Exclusive Economic Zone (EEZ) under UNCLOS 1982?', opts:['12 nautical miles','24 nautical miles','200 nautical miles','350 nautical miles'], ans:2, exp:'The EEZ extends up to 200 nautical miles from the baseline under Article 55-75 of UNCLOS 1982. Within this zone, the coastal State has sovereign rights (not full sovereignty) over the exploration and exploitation of natural resources.' },
+    { q:'Which case established that nationality for diplomatic protection must be based on a "genuine connection"?', opts:['Barcelona Traction Case','Lotus Case','Nottebohm Case','Corfu Channel Case'], ans:2, exp:'In the Nottebohm Case (ICJ, 1955), the ICJ held that nationality for diplomatic protection purposes must be based on a genuine connection between the individual and the State — habitual residence, family ties, business interests. A nationality of convenience without real links is not sufficient.' },
+    { q:'India follows which approach to the relationship between IL and Municipal Law?', opts:['Pure Monism','Pure Dualism','Modified Dualism','Neither monism nor dualism'], ans:2, exp:'India follows a MODIFIED DUALIST approach. Customary IL is automatically part of Indian law (monist tendency), while treaty law requires Article 253 Parliamentary legislation (dualist tendency). Cases: Vishaka v Rajasthan (1997) and Gramophone Company v Pandey (1984).' },
+    { q:'What does the "Clean Slate Rule" (Tabula Rasa) apply to in State Succession?', opts:['Successor States in mergers','Newly independent States from colonialism','All successor States in all cases','Only States that secede'], ans:1, exp:'The Clean Slate Rule applies primarily to newly independent States (especially former colonies). They are NOT automatically bound by the predecessor State\'s treaties — they start completely fresh. Vienna Convention on Succession of States in Respect of Treaties 1978.' },
+    { q:'Which Article of the UN Charter allows the Security Council to authorise use of force?', opts:['Article 2(4)','Article 51','Chapter VII','Article 94'], ans:2, exp:'Chapter VII of the UN Charter (Articles 39-51) allows the Security Council to determine threats to peace, breaches of peace, or acts of aggression, and to authorise measures including use of force.' },
+    { q:'The 5th Freedom of the Air allows airlines to:', opts:['Fly over a foreign country without landing','Land for technical purposes without commercial traffic','Carry traffic between two foreign States as part of a service starting/ending in home State','Carry traffic within a foreign country (cabotage)'], ans:2, exp:'The 5th Freedom of the Air grants the right to carry passengers and cargo between two foreign States as part of a service that begins or ends in the airline\'s home State. Created by the Chicago Convention on International Civil Aviation 1944.' },
+    { q:'Which convention governs the liability of States for damage caused by space objects?', opts:['Outer Space Treaty 1967','Rescue Agreement 1968','Liability Convention 1972','Registration Convention 1975'], ans:2, exp:'The Convention on International Liability for Damage Caused by Space Objects 1972 (Liability Convention) governs State liability for space damage. Article II imposes absolute liability for surface damage; Article III imposes fault-based liability for space-to-space damage.' }
+  ],
+  sources: [
+    { q:'What is the legal maxim meaning "agreements must be kept"?', opts:['Rebus Sic Stantibus','Aut Dedere Aut Judicare','Pacta Sunt Servanda','Opinio Juris Sive Necessitatis'], ans:2, exp:'Pacta Sunt Servanda — Latin for "agreements must be kept" — is the fundamental principle of treaty law. Article 26 of the Vienna Convention on Law of Treaties 1969 states that every treaty in force is binding upon parties and must be performed in good faith.' },
+    { q:'Jus Cogens norms are governed by which Article of the VCLT 1969?', opts:['Article 26','Article 38','Article 53','Article 64'], ans:2, exp:'Article 53 of the Vienna Convention on Law of Treaties 1969 governs jus cogens (peremptory norms). It states that any treaty conflicting with an existing jus cogens norm is void in its entirety.' },
+    { q:'The North Sea Continental Shelf Cases (1969) are the leading authority for:', opts:['The definition of the EEZ','The two elements of customary international law','The formation of treaties','The right of innocent passage'], ans:1, exp:'The North Sea Continental Shelf Cases (ICJ, 1969) are the leading authority on the formation of customary international law. ICJ held that BOTH State practice AND opinio juris are required — consistent practice without the belief of legal obligation is merely usage.' },
+    { q:'What is "Rebus Sic Stantibus" in treaty law?', opts:['A treaty cannot be terminated','Fundamental change of circumstances may justify treaty termination','Treaties bind non-parties','Agreements must be kept'], ans:1, exp:'Rebus Sic Stantibus means "things standing as they are." It provides that a fundamental (not merely inconvenient), unforeseen change of circumstances may justify a State terminating or withdrawing from a treaty. It is the safety valve against the absolute rigidity of Pacta Sunt Servanda.' },
+    { q:'According to India\'s Supreme Court, customary IL is part of Indian law provided:', opts:['The President approves it','It is not inconsistent with Acts of Parliament','Parliament specifically enacts it','The ICJ endorses it'], ans:1, exp:'In Gramophone Company v Birendra Bahadur Pandey (1984), the Supreme Court held that customary international law is part of Indian law so long as it is not inconsistent with Acts of Parliament or final decisions of superior courts — India\'s modified dualist position.' }
+  ],
+  cases: [
+    { q:'In which case did the ICJ hold that the UN has international legal personality?', opts:['Corfu Channel Case','Reparations for Injuries Case','Barcelona Traction Case','Nicaragua v USA'], ans:1, exp:'The Reparations for Injuries Case (ICJ Advisory Opinion, 1949) arose after UN mediator Count Bernadotte was assassinated in Jerusalem. ICJ held the UN has international legal personality and can bring claims against States — even non-member States.' },
+    { q:'The Pinochet Case (1999) established that:', opts:['Former heads of State have full immunity for all acts','Heads of State can be extradited for any crime','Former heads of State have NO immunity for acts of torture','Torture is a political offence exempt from extradition'], ans:2, exp:'In R v Bow Street Magistrate (Pinochet Case, 1999), the UK House of Lords held that former heads of State have NO immunity from prosecution for acts of torture. Torture is a jus cogens crime. The political offence exception does NOT apply to systematic torture.' },
+    { q:'The Cosmos 954 Incident (1978) established what principle in space law?', opts:['Fault-based liability for all space damage','Absolute liability for surface damage confirmed in State practice','No liability for space debris','USSR was not responsible for the crash'], ans:1, exp:'The Cosmos 954 Incident (1978) — when a Soviet nuclear satellite crashed over Canada — confirmed through State practice that Article II of the Liability Convention 1972 imposes ABSOLUTE LIABILITY for space damage on the Earth\'s surface, regardless of fault. USSR paid $3 million to Canada.' },
+    { q:'Which case held that a State can be responsible for FAILING TO PREVENT genocide?', opts:['Nicaragua v USA','Genocide Convention Case (Bosnia v Serbia, 2007)','Barcelona Traction Case','Tehran Hostages Case'], ans:1, exp:'In the Genocide Convention Case (Bosnia v Serbia, ICJ, 2007), the ICJ held Serbia was not directly liable for genocide but WAS responsible for failing to prevent the Srebrenica genocide even though it knew it was about to happen. The obligation to prevent genocide is separate from the obligation not to commit it.' },
+    { q:'The Tehran Hostages Case (1980) found Iran responsible for violating which convention?', opts:['Vienna Convention on Law of Treaties 1969','Montevideo Convention 1933','Vienna Convention on Diplomatic Relations 1961','Outer Space Treaty 1967'], ans:2, exp:'ICJ held Iran violated the Vienna Convention on Diplomatic Relations 1961 (VCDR 1961) — specifically Articles 22 (inviolability of premises) and 29 (inviolability of diplomatic agents) — by failing to protect the US Embassy and release the hostages.' }
+  ],
+  numbers: [
+    { q:'What is the breadth of the Territorial Sea under UNCLOS 1982?', opts:['6 NM','12 NM','24 NM','200 NM'], ans:1, exp:'The Territorial Sea extends up to 12 nautical miles (NM) from the baseline under Article 3 of UNCLOS 1982. Within this zone, the coastal State has FULL sovereignty including the airspace above and seabed below. Foreign ships have the right of innocent passage.' },
+    { q:'When was the Vienna Convention on Diplomatic Relations adopted?', opts:['1945','1954','1961','1969'], ans:2, exp:'The Vienna Convention on Diplomatic Relations (VCDR) was adopted in 1961. It is the primary international law instrument governing diplomatic privileges and immunities — inviolability of person, premises, correspondence, immunity from criminal and civil jurisdiction.' },
+    { q:'The Outer Space Treaty was adopted in which year?', opts:['1961','1965','1967','1972'], ans:2, exp:'The Outer Space Treaty (OST) was adopted in 1967. It is called the "Magna Carta of Space Law." Key provisions: outer space is the province of all mankind (Article I), no sovereignty claims (Article II), States responsible for all national space activities including private entities (Article VI).' },
+    { q:'UNCLOS 1982 provides that the EEZ extends up to how many nautical miles?', opts:['12 NM','24 NM','200 NM','350 NM'], ans:2, exp:'The Exclusive Economic Zone (EEZ) extends up to 200 nautical miles from the baseline under Articles 55-75 of UNCLOS 1982. Within this zone, the coastal State has sovereign rights (not full sovereignty) over exploration, exploitation, conservation and management of natural resources.' },
+    { q:'The Liability Convention for space damage was adopted in:', opts:['1967','1968','1972','1975'], ans:2, exp:'The Convention on International Liability for Damage Caused by Space Objects (Liability Convention) was adopted in 1972. Article II: absolute liability for surface damage (no fault needed). Article III: fault-based liability for space-to-space damage (must prove negligence).' },
+    { q:'How many judges does the ICJ have, and what are their terms?', opts:['9 judges, 5-year terms','12 judges, 6-year terms','15 judges, 9-year terms','18 judges, 12-year terms'], ans:2, exp:'The ICJ consists of 15 judges elected for 9-year terms (staggered — 5 elected every 3 years). They are elected independently by both the UN General Assembly and the Security Council. No two judges can be nationals of the same State. Quorum: 9 judges.' }
+  ]
+};
+
+// ─────────────────────────────────────────────
+// CHEAT SHEET DATA
+// ─────────────────────────────────────────────
+const CHEAT_SECTIONS = [
+  { icon:'⚖️', title:'Legal Maxims — Must Know', items:[
+    { k:'Pacta Sunt Servanda', v:'Agreements must be kept. Article 26, VCLT 1969. Foundation of all treaty law.' },
+    { k:'Pacta Tertiis...', v:'A treaty does not bind or benefit third parties who are not party to it.' },
+    { k:'Rebus Sic Stantibus', v:'Fundamental change of circumstances may justify treaty termination. Safety valve against Pacta Sunt Servanda.' },
+    { k:'Opinio Juris', v:'The belief that a practice is followed because it is legally obligatory — subjective element of custom.' },
+    { k:'Jus Cogens', v:'Peremptory norms — no derogation permitted. Examples: prohibition of genocide, slavery, torture. Article 53 VCLT.' },
+    { k:'Erga Omnes', v:'Obligations owed to international community as a whole. Any State can complain if violated. Examples: genocide, apartheid.' },
+    { k:'Aut Dedere Aut Judicare', v:'Extradite or Prosecute. If extradition refused for serious crimes, State must prosecute itself.' },
+    { k:'Ne Bis in Idem', v:'No double jeopardy — person cannot be tried twice for same offence.' },
+    { k:'Non-Refoulement', v:'Refugees cannot be returned to country where they face persecution or serious harm. Jus cogens norm — absolute.' },
+    { k:'Persona Non Grata', v:'Unwelcome person. Receiving State can declare any diplomat PNG without giving reasons. Ultimate remedy.' },
+    { k:'Mare Liberum', v:'The sea is free and open to all nations. Hugo Grotius, 1609.' },
+    { k:'Terra Nullius', v:'No man\'s land — territory belonging to no State. Can be acquired by occupation.' },
+    { k:'Tabula Rasa', v:'Clean Slate — newly independent States not automatically bound by predecessor\'s treaties.' }
+  ]},
+  { icon:'📅', title:'Key Conventions — Year by Year', items:[
+    { k:'1919', v:'ILO established | League Covenant | Paris Convention on Airspace' },
+    { k:'1928', v:'Havana Convention on Asylum (Latin America) | Havana Convention on Airspace' },
+    { k:'1929', v:'Warsaw Convention on Airline Liability (passengers/baggage)' },
+    { k:'1933', v:'Montevideo Convention on Statehood — PECC criteria' },
+    { k:'1944', v:'Chicago Convention on Civil Aviation — ICAO created | Bretton Woods — IMF and World Bank' },
+    { k:'1945', v:'UN Charter and ICJ Statute | UNESCO established' },
+    { k:'1948', v:'Genocide Convention | WHO established | Universal Declaration of Human Rights' },
+    { k:'1951', v:'Geneva Refugee Convention — Non-Refoulement principle' },
+    { k:'1961', v:'Vienna Convention on Diplomatic Relations (VCDR) — main diplomatic instrument' },
+    { k:'1967', v:'Outer Space Treaty (OST) — Magna Carta of Space Law' },
+    { k:'1968', v:'Rescue Agreement — Astronauts are envoys of mankind' },
+    { k:'1969', v:'Vienna Convention on Law of Treaties (VCLT) — Pacta Sunt Servanda, Jus Cogens Article 53' },
+    { k:'1972', v:'Liability Convention (Space) — Absolute liability for surface damage' },
+    { k:'1975', v:'Registration Convention for Space Objects' },
+    { k:'1978', v:'Vienna Convention on State Succession (Treaties) — Clean Slate Rule' },
+    { k:'1982', v:'UNCLOS — Constitution of the Oceans' },
+    { k:'1984', v:'Convention Against Torture (CAT)' },
+    { k:'1998', v:'Rome Statute — ICC established (operational from 2002)' }
+  ]},
+  { icon:'🌊', title:'Maritime Zones — Distances', items:[
+    { k:'Internal Waters', v:'Landward of baseline. Full sovereignty. NO innocent passage.' },
+    { k:'Territorial Sea', v:'0–12 NM. Full sovereignty including airspace. RIGHT OF INNOCENT PASSAGE.' },
+    { k:'Contiguous Zone', v:'12–24 NM. Control customs, fiscal, immigration, sanitary laws only.' },
+    { k:'EEZ', v:'0–200 NM. Sovereign rights (NOT full sovereignty) over resources. Others retain navigation freedom.' },
+    { k:'Continental Shelf', v:'Up to 200 NM or 350 NM. Rights over seabed resources only.' },
+    { k:'High Seas', v:'Beyond 200 NM. No sovereignty. Freedom of navigation, overflight, fishing, research.' },
+    { k:'The Area', v:'International seabed beyond national jurisdiction. Common Heritage of Mankind. Managed by ISA.' },
+    { k:'Memory Hook', v:'I-T-C-E-C-H = Internal, Territorial(12), Contiguous(24), EEZ(200), Continental Shelf, High Seas' }
+  ]},
+  { icon:'✈️', title:'Five Freedoms of the Air', items:[
+    { k:'1st Freedom', v:'Fly OVER another State\'s territory without landing — overflight transit right.' },
+    { k:'2nd Freedom', v:'Land for TECHNICAL purposes only (fuel/emergency) without picking up/setting down commercial traffic.' },
+    { k:'3rd Freedom', v:'Carry passengers/cargo FROM your home State TO another State.' },
+    { k:'4th Freedom', v:'Carry passengers/cargo FROM another State BACK to your home State.' },
+    { k:'5th Freedom', v:'Carry between two foreign States as part of a service starting/ending in home State.' },
+    { k:'6th Freedom', v:'Carry between two foreign countries via home country hub.' },
+    { k:'7th Freedom', v:'Carry between two foreign countries — no connection to home country.' },
+    { k:'8th Freedom', v:'Carry within a foreign country (Cabotage). Most restrictive — rarely granted.' },
+    { k:'Chicago 1944', v:'ICAO created. 193 parties. Civil aircraft only. Sovereignty over airspace — Article 1.' }
+  ]},
+  { icon:'🔢', title:'State Succession Types — MDSCN', items:[
+    { k:'M — Merger', v:'Two States unite into one. Example: Germany reunification 1990.' },
+    { k:'D — Dissolution', v:'One State breaks into multiple. Example: USSR into 15 States (1991).' },
+    { k:'S — Secession', v:'Part of State separates. Example: Bangladesh from Pakistan (1971).' },
+    { k:'C — Cession', v:'Territory transferred by treaty. Example: Hong Kong from UK to China (1997).' },
+    { k:'N — New Independence', v:'Colony gains independence. Example: India from Britain (1947).' },
+    { k:'Clean Slate Rule', v:'Newly independent States NOT bound by predecessor\'s treaties — start fresh.' },
+    { k:'Exception', v:'Localised treaties (boundaries, water rights, servitudes) — bind successor regardless of clean slate.' }
+  ]},
+  { icon:'🏛️', title:'ICJ vs ICC — Key Differences', items:[
+    { k:'ICJ — Full Name', v:'International Court of Justice. Principal judicial organ of UN.' },
+    { k:'ICJ — Established', v:'1945 under UN Charter. Replaced PCIJ. Headquarters: The Hague.' },
+    { k:'ICJ — Parties', v:'ONLY States can be parties. Individuals, corporations, NGOs CANNOT appear.' },
+    { k:'ICJ — Jurisdiction', v:'Contentious (binding, between States) + Advisory (non-binding, for UN organs).' },
+    { k:'ICJ — Enforcement', v:'No independent enforcement. Failure to comply → UN Security Council Article 94(2).' },
+    { k:'ICC — Full Name', v:'International Criminal Court. Established by Rome Statute 1998. Operational 2002.' },
+    { k:'ICC — Parties', v:'ONLY individuals can be prosecuted. Not States.' },
+    { k:'ICC — Crimes', v:'Genocide, Crimes Against Humanity, War Crimes, Crime of Aggression.' },
+    { k:'ICC — Complementarity', v:'Acts only when national courts are UNABLE or UNWILLING to genuinely prosecute.' },
+    { k:'India', v:'ICJ = India is subject. ICC = India is NOT a party (Rome Statute not ratified).' }
+  ]},
+  { icon:'🚀', title:'Outer Space Law', items:[
+    { k:'OST 1967 Art. I', v:'Outer space is province of all mankind. Exploration for benefit of ALL countries.' },
+    { k:'OST 1967 Art. II', v:'No State can claim sovereignty over outer space or celestial bodies.' },
+    { k:'OST 1967 Art. VI', v:'States responsible for ALL national space activities — governmental AND private.' },
+    { k:'OST 1967 Art. VII', v:'States internationally liable for damage caused by their space objects.' },
+    { k:'Liability 1972 Art. II', v:'ABSOLUTE LIABILITY for damage on Earth\'s surface or aircraft — no fault needed.' },
+    { k:'Liability 1972 Art. III', v:'FAULT-BASED liability for damage in outer space between space objects.' },
+    { k:'Cosmos 954 (1978)', v:'Soviet satellite crashed in Canada. USSR paid $3M. Absolute liability confirmed.' },
+    { k:'Chandrayaan-3 (2023)', v:'India FIRST country to land near Moon\'s South Pole. Historic achievement.' },
+    { k:'Mangalyaan (2013-14)', v:'India\'s first interplanetary mission. First Asian nation to reach Mars orbit. Cost $74M.' }
+  ]}
+];
+
+// ═══════════════════════════════════════════════════════════
+// BUILD FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+function buildTopics() {
+  function renderPart(containerId, topics, cssClass) {
+    const el = document.getElementById(containerId);
+    topics.forEach(t => {
+      el.insertAdjacentHTML('beforeend', `
+        <div class="topic-card ${cssClass}" onclick="toggleTopic(this)">
+          <div class="topic-card-header">
+            <span class="topic-num">${t.id}</span>
+            <span class="topic-title">${t.title}</span>
+            <span class="topic-marks">${t.marks}</span>
+            <span class="topic-arrow">›</span>
+          </div>
+          <div class="topic-body">${t.content}</div>
+        </div>
+      `);
+    });
+  }
+  renderPart('partA-topics', TOPICS.A, 'pA');
+  renderPart('partB-topics', TOPICS.B, 'pB');
+  renderPart('partC-topics', TOPICS.C, 'pC');
+}
+
+function toggleTopic(card) { card.classList.toggle('open'); }
+
+function buildCases() {
+  const tags = ['All', ...new Set(CASES.map(c => c.tag))];
+  const filterEl = document.getElementById('cases-filter');
+  tags.forEach((t, i) => {
+    filterEl.insertAdjacentHTML('beforeend', `<div class="filter-chip ${i===0?'active':''}" onclick="filterCases('${t}', this)">${t}</div>`);
+  });
+  const listEl = document.getElementById('cases-list');
+  CASES.forEach(c => {
+    listEl.insertAdjacentHTML('beforeend', `
+      <div class="case-story-card" data-tag="${c.tag}" onclick="this.classList.toggle('open')">
+        <div class="case-story-header">
+          <span class="case-year-badge">${c.year}</span>
+          <div>
+            <div class="case-story-title">${c.name}</div>
+            <div class="case-story-tag">${c.tag}</div>
+          </div>
+        </div>
+        <div class="case-story-body">
+          <div class="story-text">${c.story}</div>
+          <div class="story-principle">⚖ Legal Principle — ${c.principle}</div>
+        </div>
+      </div>
+    `);
+  });
+}
+
+function filterCases(tag, chipEl) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  chipEl.classList.add('active');
+  document.querySelectorAll('.case-story-card').forEach(card => {
+    card.style.display = (tag === 'All' || card.dataset.tag === tag) ? 'block' : 'none';
+  });
+}
+
+function buildCheat() {
+  const el = document.getElementById('cheat-content');
+  CHEAT_SECTIONS.forEach((s, i) => {
+    let items = s.items.map(item =>
+      `<div class="cheat-item"><span class="cheat-key">${item.k}</span><span class="cheat-val">${item.v}</span></div>`
+    ).join('');
+    el.insertAdjacentHTML('beforeend', `
+      <div class="cheat-section ${i===0?'open':''}">
+        <div class="cheat-header" onclick="toggleCheat(this)">
+          <span class="ch-icon">${s.icon}</span>
+          <h3>${s.title}</h3>
+          <span class="ch-arrow">›</span>
+        </div>
+        <div class="cheat-body">${items}</div>
+      </div>
+    `);
+  });
+}
+
+function buildVideos() {
+  const el = document.getElementById('videos-list');
+  el.insertAdjacentHTML('beforeend',`
+    <div class="video-subscribe">
+      <p>Watch all 5 unit lectures for Public International Law. Subscribe to get new subject videos every semester.</p>
+      <a href="https://www.youtube.com/@lawstickerai" target="_blank">🔴 Subscribe on YouTube</a>
+    </div>
+  `);
+  VIDEOS.forEach(v => {
+    const topics = v.topics.map(t=>`<div class="video-topic-item"><span class="video-topic-dot">▶</span><span>${t}</span></div>`).join('');
+    if (v.id) {
+      el.insertAdjacentHTML('beforeend',`
+        <div class="video-card">
+          <div class="video-unit-banner">
+            <span class="video-unit-num">${v.unit}</span>
+            <span class="video-unit-title">${v.title}</span>
+          </div>
+          <div class="video-embed" onclick="window.open('https://youtu.be/${v.id}','_blank')">
+            <img class="video-thumb" src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.unit} — ${v.title}" onerror="this.src='https://img.youtube.com/vi/${v.id}/default.jpg'">
+            <div class="video-play-overlay">
+              <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+              <div class="video-play-label">Tap to Watch on YouTube</div>
+            </div>
+          </div>
+          <div class="video-topics"><div class="video-topics-title">Topics Covered</div>${topics}</div>
+          <a class="video-yt-btn" href="https://youtu.be/${v.id}" target="_blank">▶ Watch on YouTube</a>
+        </div>
+      `);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function toggleCheat(headerEl) { headerEl.parentElement.classList.toggle('open'); }
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════════
+
+let currentQuiz = [], currentQ = 0, score = 0, answered = false;
+
+function startQuiz(type) {
+  const pool = QUIZ[type] || QUIZ.all;
+  currentQuiz = [...pool].sort(() => Math.random() - 0.5).slice(0, Math.min(15, pool.length));
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-start-screen').style.display = 'none';
+  document.getElementById('quiz-active').classList.add('active');
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= currentQuiz.length) { showResult(); return; }
+  const q = currentQuiz[currentQ];
+  const pct = (currentQ / currentQuiz.length) * 100;
+  document.getElementById('quiz-progress').style.width = pct + '%';
+  document.getElementById('quiz-qnum').textContent = `Question ${currentQ + 1} of ${currentQuiz.length}`;
+  document.getElementById('quiz-question').textContent = q.q;
+  const choicesEl = document.getElementById('quiz-choices');
+  choicesEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    choicesEl.insertAdjacentHTML('beforeend', `<button class="quiz-choice" onclick="selectAnswer(${i})">${opt}</button>`);
+  });
+  document.getElementById('quiz-explanation').style.display = 'none';
+  document.getElementById('quiz-next').style.display = 'none';
+  answered = false;
+}
+
+function selectAnswer(selected) {
+  if (answered) return;
+  answered = true;
+  const q = currentQuiz[currentQ];
+  const choices = document.querySelectorAll('.quiz-choice');
+  choices.forEach(c => c.classList.add('disabled'));
+  choices[q.ans].classList.add('correct');
+  if (selected !== q.ans) choices[selected].classList.add('wrong');
+  else score++;
+  const expEl = document.getElementById('quiz-explanation');
+  expEl.textContent = '💡 ' + q.exp;
+  expEl.style.display = 'block';
+  document.getElementById('quiz-next').style.display = 'block';
+}
+
+function nextQuestion() { currentQ++; renderQuestion(); }
+
+function showResult() {
+  document.getElementById('quiz-active').classList.remove('active');
+  const resultEl = document.getElementById('quiz-result');
+  resultEl.style.display = 'block';
+  const pct = Math.round(score / currentQuiz.length * 100);
+  document.getElementById('result-score').textContent = `${score}/${currentQuiz.length}`;
+  let label = pct >= 80 ? '🎉 Excellent! Ready for the exam.' : pct >= 60 ? '👍 Good! Keep revising.' : '📚 Keep studying — you\'ve got this!';
+  document.getElementById('result-label').textContent = label;
+}
+
+function resetQuiz() {
+  document.getElementById('quiz-start-screen').style.display = 'block';
+  document.getElementById('quiz-active').classList.remove('active');
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  buildTopics();
+  buildCases();
+  buildCheat();
+  buildVideos();
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
+  }, 2000);
+});
+</script>
+</body>
+</html>
