@@ -4,12 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Sangam Electricals | Electrical Contractors</title>
+<title>Sangam Electricals | Premium Electrical Contractors</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+:root{
+    --bg:#07111f;
+    --bg2:#0d1b2d;
+    --primary:#ff8c1a;
+    --secondary:#00d4ff;
+    --light:#ffffff;
+    --text:#d8e1ea;
+    --card:#101d31;
+    --glass:rgba(255,255,255,0.06);
+}
 
 *{
     margin:0;
@@ -22,53 +33,78 @@ html{
 }
 
 body{
-    font-family:'Montserrat',sans-serif;
-    background:#0d0d0d;
+    font-family:'Outfit',sans-serif;
+    background:linear-gradient(180deg,var(--bg),#050b14);
     color:white;
     overflow-x:hidden;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:linear-gradient(var(--primary),var(--secondary));
+    border-radius:20px;
 }
 
 /* NAVBAR */
 
 nav{
     position:fixed;
-    top:0;
     width:100%;
-    z-index:1000;
-    backdrop-filter:blur(12px);
-    background:rgba(0,0,0,0.65);
-    padding:18px 8%;
+    top:0;
+    z-index:999;
+    padding:20px 8%;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    backdrop-filter:blur(14px);
+    background:rgba(4,10,18,0.7);
     border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .logo{
-    font-size:28px;
+    font-size:30px;
     font-weight:800;
     letter-spacing:1px;
 }
 
 .logo span{
-    color:#ff7a00;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 nav ul{
     display:flex;
-    gap:30px;
+    gap:34px;
     list-style:none;
 }
 
 nav ul li a{
-    color:white;
     text-decoration:none;
-    font-size:14px;
+    color:white;
+    font-size:15px;
+    transition:0.3s;
+    position:relative;
+}
+
+nav ul li a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0%;
+    height:2px;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
     transition:0.3s;
 }
 
-nav ul li a:hover{
-    color:#ff7a00;
+nav ul li a:hover::after{
+    width:100%;
 }
 
 /* HERO */
@@ -78,93 +114,177 @@ nav ul li a:hover{
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:140px 8% 80px;
-    background:
-    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.8)),
-    url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1400&auto=format&fit=crop');
-    background-size:cover;
-    background-position:center;
+    padding:140px 8% 100px;
+    position:relative;
+    overflow:hidden;
 }
 
-.hero-content{
-    max-width:900px;
-    text-align:center;
+.hero::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,var(--primary),transparent 70%);
+    top:-200px;
+    left:-200px;
+    opacity:0.2;
 }
 
-.hero h1{
-    font-size:72px;
-    line-height:1.1;
+.hero::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,var(--secondary),transparent 70%);
+    bottom:-200px;
+    right:-200px;
+    opacity:0.2;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:60px;
+    align-items:center;
+    position:relative;
+    z-index:2;
+}
+
+.hero-content h1{
+    font-size:78px;
+    line-height:1.05;
+    margin-bottom:28px;
     font-weight:800;
-    margin-bottom:24px;
 }
 
-.hero h1 span{
-    color:#ff7a00;
+.hero-content h1 span{
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.hero p{
-    color:#d0d0d0;
-    line-height:1.8;
+.hero-content p{
+    color:var(--text);
+    line-height:1.9;
     font-size:18px;
     margin-bottom:40px;
+    max-width:700px;
 }
 
 .hero-buttons{
     display:flex;
     gap:20px;
-    justify-content:center;
     flex-wrap:wrap;
 }
 
 .btn{
     padding:16px 32px;
-    border-radius:50px;
+    border-radius:60px;
     text-decoration:none;
     font-weight:700;
-    transition:0.3s;
+    transition:0.35s;
 }
 
 .btn-primary{
-    background:#ff7a00;
+    background:linear-gradient(90deg,var(--primary),#ff5e00);
     color:white;
+    box-shadow:0 12px 35px rgba(255,140,26,0.35);
 }
 
 .btn-primary:hover{
-    transform:translateY(-4px);
-    box-shadow:0 12px 30px rgba(255,122,0,0.4);
+    transform:translateY(-5px) scale(1.03);
 }
 
 .btn-secondary{
-    border:1px solid rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,0.15);
     color:white;
+    background:rgba(255,255,255,0.04);
 }
 
 .btn-secondary:hover{
-    background:white;
-    color:black;
+    background:rgba(255,255,255,0.1);
 }
 
-/* SECTIONS */
+/* HERO CARD */
+
+.hero-card{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    border-radius:30px;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-card::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    background:linear-gradient(var(--primary),transparent);
+    border-radius:50%;
+    top:-60px;
+    right:-60px;
+    opacity:0.3;
+}
+
+.stat{
+    margin-bottom:30px;
+}
+
+.stat h2{
+    font-size:54px;
+    color:var(--primary);
+}
+
+.stat p{
+    color:var(--text);
+    margin-top:8px;
+}
+
+.small-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.mini-box{
+    background:rgba(255,255,255,0.05);
+    padding:18px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.mini-box h4{
+    color:var(--secondary);
+    margin-bottom:10px;
+}
+
+/* SECTION */
 
 section{
-    padding:100px 8%;
+    padding:110px 8%;
 }
 
 .section-title{
-    font-size:52px;
+    font-size:58px;
     margin-bottom:20px;
     font-weight:800;
 }
 
 .section-title span{
-    color:#ff7a00;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 .section-sub{
-    color:#bdbdbd;
-    max-width:760px;
-    line-height:1.8;
-    margin-bottom:60px;
+    color:var(--text);
+    line-height:1.9;
+    max-width:850px;
+    margin-bottom:70px;
+    font-size:18px;
 }
 
 /* ABOUT */
@@ -172,36 +292,49 @@ section{
 .about-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:40px;
+    gap:30px;
 }
 
 .about-card{
-    background:#171717;
+    background:linear-gradient(145deg,#0f1d31,#16253f);
+    border-radius:28px;
     padding:40px;
-    border-radius:24px;
     border:1px solid rgba(255,255,255,0.06);
-    transition:0.3s;
+    transition:0.4s;
+    position:relative;
+    overflow:hidden;
 }
 
 .about-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-10px);
+}
+
+.about-card::before{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    background:radial-gradient(circle,var(--secondary),transparent 70%);
+    top:-140px;
+    right:-120px;
+    opacity:0.12;
 }
 
 .about-card h3{
-    margin-bottom:20px;
-    font-size:28px;
-    color:#ff7a00;
+    margin-bottom:22px;
+    font-size:30px;
+    color:var(--primary);
 }
 
 .about-card p{
-    color:#d0d0d0;
+    color:var(--text);
     line-height:1.9;
 }
 
 /* SERVICES */
 
 .services{
-    background:#121212;
+    background:linear-gradient(180deg,#07111f,#091524);
 }
 
 .service-grid{
@@ -211,134 +344,186 @@ section{
 }
 
 .service-card{
-    background:#1a1a1a;
+    background:linear-gradient(145deg,#122038,#0b1728);
     padding:35px;
-    border-radius:22px;
-    transition:0.3s;
+    border-radius:26px;
+    transition:0.4s;
     border:1px solid rgba(255,255,255,0.06);
+    position:relative;
+    overflow:hidden;
+}
+
+.service-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,transparent,rgba(255,255,255,0.04));
 }
 
 .service-card:hover{
-    transform:translateY(-10px);
-    border-color:#ff7a00;
+    transform:translateY(-12px);
+    border-color:rgba(0,212,255,0.5);
+    box-shadow:0 20px 40px rgba(0,0,0,0.35);
 }
 
 .service-icon{
-    font-size:42px;
-    margin-bottom:20px;
+    font-size:52px;
+    margin-bottom:24px;
 }
 
 .service-card h3{
     margin-bottom:14px;
-    font-size:22px;
+    font-size:24px;
 }
 
 .service-card p{
-    color:#cfcfcf;
-    line-height:1.7;
+    color:var(--text);
+    line-height:1.8;
 }
 
 /* CLIENTS */
 
 .client-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:30px;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:24px;
 }
 
 .client-card{
-    background:#171717;
-    padding:40px;
+    background:linear-gradient(145deg,#101d31,#182742);
+    border-radius:24px;
+    padding:38px;
     text-align:center;
-    border-radius:20px;
-    font-size:24px;
+    font-size:28px;
     font-weight:700;
-    transition:0.3s;
+    transition:0.35s;
+    border:1px solid rgba(255,255,255,0.06);
 }
 
 .client-card:hover{
-    background:#ff7a00;
+    transform:translateY(-10px) scale(1.03);
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+
+/* WHY US */
+
+.why-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:24px;
+}
+
+.why-box{
+    background:rgba(255,255,255,0.04);
+    border-radius:22px;
+    padding:30px;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.why-box h3{
+    margin-bottom:14px;
+    color:var(--secondary);
+}
+
+.why-box p{
+    color:var(--text);
+    line-height:1.8;
 }
 
 /* CONTACT */
 
 .contact{
-    background:linear-gradient(135deg,#ff7a00,#ff5100);
-    text-align:center;
+    position:relative;
+    overflow:hidden;
 }
 
-.contact h2{
-    font-size:56px;
-    margin-bottom:24px;
+.contact::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(135deg,rgba(255,140,26,0.18),transparent),
+    linear-gradient(315deg,rgba(0,212,255,0.12),transparent);
 }
 
-.contact p{
-    font-size:18px;
-    line-height:1.8;
-    margin-bottom:40px;
+.contact-content{
+    position:relative;
+    z-index:2;
 }
 
-.contact-details{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    flex-wrap:wrap;
+.contact-boxes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:26px;
+    margin-top:50px;
 }
 
 .contact-box{
-    background:rgba(255,255,255,0.12);
-    padding:28px;
-    border-radius:18px;
-    min-width:260px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:34px;
+    border-radius:24px;
+    backdrop-filter:blur(12px);
+}
+
+.contact-box h3{
+    margin-bottom:14px;
+    color:var(--primary);
 }
 
 /* FOOTER */
 
 footer{
     background:black;
-    padding:30px;
     text-align:center;
-    color:#9a9a9a;
+    padding:30px;
+    color:#7f8a97;
+    border-top:1px solid rgba(255,255,255,0.05);
 }
 
-/* WHATSAPP */
+/* FLOATING */
 
 .whatsapp{
     position:fixed;
-    bottom:24px;
-    right:24px;
-    width:65px;
-    height:65px;
-    border-radius:50%;
+    right:25px;
+    bottom:25px;
+    width:68px;
+    height:68px;
     background:#25D366;
+    border-radius:50%;
     display:flex;
-    justify-content:center;
     align-items:center;
-    font-size:30px;
+    justify-content:center;
     text-decoration:none;
     color:white;
+    font-size:32px;
     z-index:999;
     box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    transition:0.3s;
+}
+
+.whatsapp:hover{
+    transform:scale(1.08);
 }
 
 /* MOBILE */
 
-@media(max-width:768px){
+@media(max-width:980px){
+
+    .hero-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero-content h1{
+        font-size:52px;
+    }
 
     nav ul{
         display:none;
     }
 
-    .hero h1{
-        font-size:44px;
-    }
-
     .section-title{
-        font-size:38px;
-    }
-
-    .contact h2{
-        font-size:40px;
+        font-size:42px;
     }
 }
 
@@ -348,35 +533,75 @@ footer{
 <body>
 
 <nav>
-    <div class="logo">SANGAM <span>ELECTRICALS</span></div>
+
+    <div class="logo">
+        SANGAM <span>ELECTRICALS</span>
+    </div>
 
     <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#clients">Clients</a></li>
+        <li><a href="#why">Why Us</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
+
 </nav>
 
 <section class="hero">
 
-    <div class="hero-content">
+    <div class="hero-grid">
 
-        <h1>
-            Powering Modern
-            <span>Infrastructure</span>
-        </h1>
+        <div class="hero-content">
 
-        <p>
-            Sangam Electricals delivers high-quality electrical contracting,
-            commercial wiring, HVAC installations, CCTV networking,
-            firefighting systems, civil works and industrial solutions
-            across Telangana, Andhra Pradesh, Maharashtra and Karnataka.
-        </p>
+            <h1>
+                Engineering
+                Reliable
+                <span>Electrical Excellence</span>
+            </h1>
 
-        <div class="hero-buttons">
-            <a href="#contact" class="btn btn-primary">Get Quote</a>
-            <a href="#services" class="btn btn-secondary">Our Services</a>
+            <p>
+                Established in 2014, Sangam Electricals delivers premium electrical contracting and infrastructure solutions for residential, commercial and industrial projects. From precision wiring to modern retail fit-outs, HVAC integrations, firefighting systems and CCTV networking, we help businesses build environments that are efficient, safe and future-ready.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Request Consultation</a>
+                <a href="#services" class="btn btn-secondary">Explore Services</a>
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+
+            <div class="stat">
+                <h2>10+</h2>
+                <p>Years of trusted industry experience across multiple states.</p>
+            </div>
+
+            <div class="small-grid">
+
+                <div class="mini-box">
+                    <h4>⚡ Specialized</h4>
+                    <p>Commercial & Industrial Electrical Projects</p>
+                </div>
+
+                <div class="mini-box">
+                    <h4>🏢 Clients</h4>
+                    <p>Nykaa, Fossil, Subway, Ethos & more</p>
+                </div>
+
+                <div class="mini-box">
+                    <h4>📍 Operations</h4>
+                    <p>Telangana, AP, Karnataka, Maharashtra</p>
+                </div>
+
+                <div class="mini-box">
+                    <h4>🛠 Solutions</h4>
+                    <p>End-to-end Infrastructure Services</p>
+                </div>
+
+            </div>
+
         </div>
 
     </div>
@@ -386,27 +611,33 @@ footer{
 <section id="about">
 
     <h2 class="section-title">
-        About <span>Company</span>
+        About <span>Sangam</span>
     </h2>
 
     <p class="section-sub">
-        Established in 2014, Sangam Electricals is a trusted electrical contracting company focused on delivering reliable, scalable and efficient solutions for residential, commercial and industrial projects.
+        Sangam Electricals is a rapidly growing electrical contracting company known for reliability, technical execution and quality workmanship. Over the years, the company has successfully executed projects for premium retail brands, commercial establishments and infrastructure environments with a focus on safety, precision and long-term performance.
     </p>
 
     <div class="about-grid">
 
         <div class="about-card">
+
             <h3>Our Mission</h3>
+
             <p>
-                To provide the highest quality electrical services with exceptional customer support while building long-term relationships through trust, precision and execution excellence.
+                To deliver high-quality electrical and infrastructure services with exceptional professionalism, while building lasting client relationships through trust, transparency and technical excellence.
             </p>
+
         </div>
 
         <div class="about-card">
+
             <h3>Our Vision</h3>
+
             <p>
-                To become a leading provider of innovative and sustainable electrical infrastructure solutions while consistently exceeding industry standards.
+                To become one of the most respected electrical solution providers in India by consistently exceeding industry standards through innovation, execution quality and customer satisfaction.
             </p>
+
         </div>
 
     </div>
@@ -420,45 +651,57 @@ footer{
     </h2>
 
     <p class="section-sub">
-        Complete end-to-end electrical and infrastructure solutions tailored for modern commercial and industrial environments.
+        Comprehensive infrastructure and electrical solutions designed for modern commercial spaces, retail outlets, industrial facilities and high-performance environments.
     </p>
 
     <div class="service-grid">
 
         <div class="service-card">
             <div class="service-icon">⚡</div>
-            <h3>Construction Wiring</h3>
-            <p>New construction electrical installations with safety and compliance standards.</p>
+            <h3>Electrical Contracting</h3>
+            <p>
+                Complete electrical installations for residential, commercial and industrial projects with strict adherence to quality and safety standards.
+            </p>
         </div>
 
         <div class="service-card">
-            <div class="service-icon">🏢</div>
-            <h3>Commercial Wiring</h3>
-            <p>Professional residential and commercial electrical wiring services.</p>
+            <div class="service-icon">🏗️</div>
+            <h3>Construction Wiring</h3>
+            <p>
+                Structured electrical planning and execution for new construction projects and large-scale developments.
+            </p>
         </div>
 
         <div class="service-card">
             <div class="service-icon">📹</div>
             <h3>CCTV & Networking</h3>
-            <p>Advanced surveillance systems and structured networking solutions.</p>
+            <p>
+                Advanced surveillance systems, networking infrastructure and connectivity solutions for secure operations.
+            </p>
         </div>
 
         <div class="service-card">
             <div class="service-icon">❄️</div>
             <h3>HVAC Installations</h3>
-            <p>Efficient HVAC electrical integrations and maintenance support.</p>
+            <p>
+                Efficient HVAC electrical support and system integrations designed for reliability and operational efficiency.
+            </p>
         </div>
 
         <div class="service-card">
             <div class="service-icon">🔥</div>
             <h3>Fire Fighting Systems</h3>
-            <p>Electrical support for fire safety and emergency protection systems.</p>
+            <p>
+                Fire safety electrical integrations and emergency system support for commercial environments.
+            </p>
         </div>
 
         <div class="service-card">
-            <div class="service-icon">🏗️</div>
-            <h3>Civil & Interior Works</h3>
-            <p>POP ceiling work, glass fixing, plumbing and infrastructure services.</p>
+            <div class="service-icon">🏢</div>
+            <h3>Interior Infrastructure</h3>
+            <p>
+                False ceiling POP work, glass fixing, plumbing and civil support services for premium interiors.
+            </p>
         </div>
 
     </div>
@@ -468,21 +711,65 @@ footer{
 <section id="clients">
 
     <h2 class="section-title">
-        Trusted <span>Clients</span>
+        Brands That <span>Trust Us</span>
     </h2>
 
     <p class="section-sub">
-        Our work has powered premium retail and commercial environments for recognized brands.
+        Sangam Electricals has contributed to premium retail and commercial projects for recognized national and international brands.
     </p>
 
     <div class="client-grid">
 
-        <div class="client-card">Nykaa</div>
-        <div class="client-card">The Sleep Company</div>
-        <div class="client-card">Fossil</div>
-        <div class="client-card">Ethos</div>
-        <div class="client-card">Subway</div>
-        <div class="client-card">Bvlgari</div>
+        <div class="client-card">NYKAA</div>
+        <div class="client-card">FOSSIL</div>
+        <div class="client-card">ETHOS</div>
+        <div class="client-card">SUBWAY</div>
+        <div class="client-card">BVLGARI</div>
+        <div class="client-card">THE SLEEP COMPANY</div>
+
+    </div>
+
+</section>
+
+<section id="why">
+
+    <h2 class="section-title">
+        Why Clients <span>Choose Us</span>
+    </h2>
+
+    <p class="section-sub">
+        Execution quality matters more than promises. Sangam Electricals focuses on timely delivery, technical precision and dependable project support.
+    </p>
+
+    <div class="why-grid">
+
+        <div class="why-box">
+            <h3>⚡ Experienced Execution</h3>
+            <p>
+                More than a decade of practical project delivery across multiple sectors.
+            </p>
+        </div>
+
+        <div class="why-box">
+            <h3>🛡 Quality & Safety</h3>
+            <p>
+                Every installation is executed with strong emphasis on safety and compliance.
+            </p>
+        </div>
+
+        <div class="why-box">
+            <h3>🏢 Premium Retail Expertise</h3>
+            <p>
+                Proven experience working with premium retail brands and modern commercial spaces.
+            </p>
+        </div>
+
+        <div class="why-box">
+            <h3>🚀 End-to-End Solutions</h3>
+            <p>
+                From electricals to infrastructure support, clients get integrated execution under one roof.
+            </p>
+        </div>
 
     </div>
 
@@ -490,28 +777,38 @@ footer{
 
 <section class="contact" id="contact">
 
-    <h2>Let’s Build Something Powerful</h2>
+    <div class="contact-content">
 
-    <p>
-        Looking for reliable electrical contractors for your next commercial or industrial project?
-        Connect with Sangam Electricals today.
-    </p>
+        <h2 class="section-title">
+            Let’s Build Something <span>Powerful</span>
+        </h2>
 
-    <div class="contact-details">
+        <p class="section-sub">
+            Looking for reliable electrical contractors for your next commercial or industrial project? Connect with Sangam Electricals today and discuss your requirements with our team.
+        </p>
 
-        <div class="contact-box">
-            <h3>📞 Call Us</h3>
-            <p>9000364477</p>
-        </div>
+        <div class="contact-boxes">
 
-        <div class="contact-box">
-            <h3>✉️ Email</h3>
-            <p>sangamelectricals2022@gmail.com</p>
-        </div>
+            <div class="contact-box">
+                <h3>📞 Phone</h3>
+                <p>9000364477</p>
+            </div>
 
-        <div class="contact-box">
-            <h3>📍 Service Areas</h3>
-            <p>Telangana, Andhra Pradesh, Maharashtra, Karnataka</p>
+            <div class="contact-box">
+                <h3>✉️ Email</h3>
+                <p>sangamelectricals2022@gmail.com</p>
+            </div>
+
+            <div class="contact-box">
+                <h3>📍 Locations</h3>
+                <p>
+                    Telangana<br>
+                    Andhra Pradesh<br>
+                    Maharashtra<br>
+                    Karnataka
+                </p>
+            </div>
+
         </div>
 
     </div>
@@ -520,13 +817,11 @@ footer{
 
 <footer>
 
-    © 2025 Sangam Electricals • Electrical Contractors • Est. 2014
+    © 2025 Sangam Electricals • Premium Electrical Contractors • Est. 2014
 
 </footer>
 
-<a class="whatsapp"
-href="https://wa.me/919000364477"
-target="_blank">
+<a href="https://wa.me/919000364477" class="whatsapp" target="_blank">
 💬
 </a>
 
