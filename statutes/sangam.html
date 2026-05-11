@@ -1,177 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangam Electricals | Premium Electrical Contractors</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .vibrant-glow { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-        .hero-bg {
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), 
-                        url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Sangam Electricals | Electrical Contractors</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Montserrat',sans-serif;
+    background:#0d0d0d;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+    backdrop-filter:blur(12px);
+    background:rgba(0,0,0,0.65);
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#ff7a00;
+}
+
+nav ul{
+    display:flex;
+    gap:30px;
+    list-style:none;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+nav ul li a:hover{
+    color:#ff7a00;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:140px 8% 80px;
+    background:
+    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.8)),
+    url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1400&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center;
+}
+
+.hero-content{
+    max-width:900px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:72px;
+    line-height:1.1;
+    font-weight:800;
+    margin-bottom:24px;
+}
+
+.hero h1 span{
+    color:#ff7a00;
+}
+
+.hero p{
+    color:#d0d0d0;
+    line-height:1.8;
+    font-size:18px;
+    margin-bottom:40px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:16px 32px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.btn-primary{
+    background:#ff7a00;
+    color:white;
+}
+
+.btn-primary:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(255,122,0,0.4);
+}
+
+.btn-secondary{
+    border:1px solid rgba(255,255,255,0.2);
+    color:white;
+}
+
+.btn-secondary:hover{
+    background:white;
+    color:black;
+}
+
+/* SECTIONS */
+
+section{
+    padding:100px 8%;
+}
+
+.section-title{
+    font-size:52px;
+    margin-bottom:20px;
+    font-weight:800;
+}
+
+.section-title span{
+    color:#ff7a00;
+}
+
+.section-sub{
+    color:#bdbdbd;
+    max-width:760px;
+    line-height:1.8;
+    margin-bottom:60px;
+}
+
+/* ABOUT */
+
+.about-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:40px;
+}
+
+.about-card{
+    background:#171717;
+    padding:40px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.06);
+    transition:0.3s;
+}
+
+.about-card:hover{
+    transform:translateY(-8px);
+}
+
+.about-card h3{
+    margin-bottom:20px;
+    font-size:28px;
+    color:#ff7a00;
+}
+
+.about-card p{
+    color:#d0d0d0;
+    line-height:1.9;
+}
+
+/* SERVICES */
+
+.services{
+    background:#121212;
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:28px;
+}
+
+.service-card{
+    background:#1a1a1a;
+    padding:35px;
+    border-radius:22px;
+    transition:0.3s;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.service-card:hover{
+    transform:translateY(-10px);
+    border-color:#ff7a00;
+}
+
+.service-icon{
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.service-card h3{
+    margin-bottom:14px;
+    font-size:22px;
+}
+
+.service-card p{
+    color:#cfcfcf;
+    line-height:1.7;
+}
+
+/* CLIENTS */
+
+.client-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+}
+
+.client-card{
+    background:#171717;
+    padding:40px;
+    text-align:center;
+    border-radius:20px;
+    font-size:24px;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.client-card:hover{
+    background:#ff7a00;
+}
+
+/* CONTACT */
+
+.contact{
+    background:linear-gradient(135deg,#ff7a00,#ff5100);
+    text-align:center;
+}
+
+.contact h2{
+    font-size:56px;
+    margin-bottom:24px;
+}
+
+.contact p{
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+.contact-details{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+.contact-box{
+    background:rgba(255,255,255,0.12);
+    padding:28px;
+    border-radius:18px;
+    min-width:260px;
+}
+
+/* FOOTER */
+
+footer{
+    background:black;
+    padding:30px;
+    text-align:center;
+    color:#9a9a9a;
+}
+
+/* WHATSAPP */
+
+.whatsapp{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#25D366;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    text-decoration:none;
+    color:white;
+    z-index:999;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    nav ul{
+        display:none;
+    }
+
+    .hero h1{
+        font-size:44px;
+    }
+
+    .section-title{
+        font-size:38px;
+    }
+
+    .contact h2{
+        font-size:40px;
+    }
+}
+
+</style>
 </head>
-<body class="bg-slate-50 text-slate-900 scroll-smooth">
 
-    <header class="fixed w-full z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex flex-col">
-                <span class="text-2xl font-extrabold tracking-tight text-blue-900 leading-none">SANGAM</span>
-                <span class="text-xs font-bold text-blue-500 tracking-[0.2em]">ELECTRICALS</span>
-            </div>
-            <nav class="hidden md:flex space-x-10 text-sm font-bold uppercase tracking-widest text-slate-600">
-                <a href="#services" class="hover:text-blue-600 transition">Services</a>
-                <a href="#portfolio" class="hover:text-blue-600 transition">Portfolio</a>
-                <a href="#contact" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 shadow-lg transition">Contact</a>
-            </nav>
+<body>
+
+<nav>
+    <div class="logo">SANGAM <span>ELECTRICALS</span></div>
+
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#clients">Clients</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Powering Modern
+            <span>Infrastructure</span>
+        </h1>
+
+        <p>
+            Sangam Electricals delivers high-quality electrical contracting,
+            commercial wiring, HVAC installations, CCTV networking,
+            firefighting systems, civil works and industrial solutions
+            across Telangana, Andhra Pradesh, Maharashtra and Karnataka.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">Get Quote</a>
+            <a href="#services" class="btn btn-secondary">Our Services</a>
         </div>
-    </header>
 
-    <section class="hero-bg min-h-screen flex items-center pt-20">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="text-white">
-                <div class="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-400/30 px-3 py-1 rounded-full mb-6">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                    </span>
-                    <span class="text-xs font-bold uppercase tracking-tighter">Established 2014</span>
-                </div>
-                <h1 class="text-6xl font-extrabold leading-[1.1] mb-6">Powering <span class="text-blue-400">Excellence</span> Across 4 States</h1>
-                <p class="text-lg text-slate-300 mb-10 leading-relaxed max-w-md">
-                    [span_2](start_span)To be the leading provider of innovative and sustainable electrical solutions, consistently exceeding industry standards.[span_2](end_span)
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl vibrant-glow">Start Your Project</a>
-                </div>
-            </div>
-            <div class="hidden md:block">
-                <div class="bg-white/5 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-xl">
-                    <h3 class="text-white font-bold text-xl mb-6">Our Mission</h3>
-                    [span_3](start_span)<p class="text-slate-400 italic">"To provide the highest quality electrical services with exceptional customer service, exceeding client expectations."[span_3](end_span)</p>
-                </div>
-            </div>
+    </div>
+
+</section>
+
+<section id="about">
+
+    <h2 class="section-title">
+        About <span>Company</span>
+    </h2>
+
+    <p class="section-sub">
+        Established in 2014, Sangam Electricals is a trusted electrical contracting company focused on delivering reliable, scalable and efficient solutions for residential, commercial and industrial projects.
+    </p>
+
+    <div class="about-grid">
+
+        <div class="about-card">
+            <h3>Our Mission</h3>
+            <p>
+                To provide the highest quality electrical services with exceptional customer support while building long-term relationships through trust, precision and execution excellence.
+            </p>
         </div>
-    </section>
 
-    <section class="py-20 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-center text-slate-400 font-bold uppercase tracking-[0.3em] text-xs mb-12 underline decoration-blue-500 decoration-4 underline-offset-8">Partners in Progress</h2>
-            <div class="flex flex-wrap justify-center gap-12 md:gap-24 items-center opacity-60">
-                <span class="text-3xl font-black italic">NYKAA</span>
-                <span class="text-3xl font-black italic">SUBWAY</span>
-                <span class="text-3xl font-black italic">FOSSIL</span>
-                <span class="text-3xl font-black italic">BVLGARI</span>
-                <span class="text-3xl font-black italic">ETHOS</span>
-            </div>
+        <div class="about-card">
+            <h3>Our Vision</h3>
+            <p>
+                To become a leading provider of innovative and sustainable electrical infrastructure solutions while consistently exceeding industry standards.
+            </p>
         </div>
-    </section>
 
-    <section id="services" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-16">
-                <div class="max-w-2xl">
-                    [span_4](start_span)<h2 class="text-4xl font-extrabold mb-4 text-blue-900">Comprehensive Solutions[span_4](end_span)</h2>
-                    <p class="text-slate-500">From commercial high-rises to industrial installations, we handle it all.</p>
-                </div>
-                <div class="hidden md:block text-right">
-                    <span class="block text-4xl font-black text-slate-200">01</span>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-10 rounded-[2rem] border border-slate-200 hover:border-blue-500 transition shadow-sm group">
-                    <i class="fa-solid fa-plug-circle-bolt text-4xl text-blue-600 mb-6 group-hover:scale-110 transition"></i>
-                    [span_5](start_span)<h3 class="text-xl font-bold mb-4">Construction & Wiring[span_5](end_span)</h3>
-                    [span_6](start_span)<p class="text-slate-500 text-sm leading-relaxed">Specializing in new construction, residential, and commercial wiring including outlets and lighting.[span_6](end_span)</p>
-                </div>
+    </div>
 
-                <div class="bg-white p-10 rounded-[2rem] border border-slate-200 hover:border-blue-500 transition shadow-sm group">
-                    <i class="fa-solid fa-shield-halved text-4xl text-blue-600 mb-6 group-hover:scale-110 transition"></i>
-                    [span_7](start_span)<h3 class="text-xl font-bold mb-4">Safety & Security[span_7](end_span)</h3>
-                    [span_8](start_span)<p class="text-slate-500 text-sm leading-relaxed">Integrated CCTV, Networking, and robust Firefighting system installations for maximum safety.[span_8](end_span)</p>
-                </div>
+</section>
 
-                <div class="bg-white p-10 rounded-[2rem] border border-slate-200 hover:border-blue-500 transition shadow-sm group">
-                    <i class="fa-solid fa-gears text-4xl text-blue-600 mb-6 group-hover:scale-110 transition"></i>
-                    [span_9](start_span)<h3 class="text-xl font-bold mb-4">Allied Services[span_9](end_span)</h3>
-                    [span_10](start_span)<p class="text-slate-500 text-sm leading-relaxed">A one-stop solution for HVAC, Plumbing, Civil services, and expert False Ceiling POP work.[span_10](end_span)</p>
-                </div>
-            </div>
+<section class="services" id="services">
+
+    <h2 class="section-title">
+        Our <span>Services</span>
+    </h2>
+
+    <p class="section-sub">
+        Complete end-to-end electrical and infrastructure solutions tailored for modern commercial and industrial environments.
+    </p>
+
+    <div class="service-grid">
+
+        <div class="service-card">
+            <div class="service-icon">⚡</div>
+            <h3>Construction Wiring</h3>
+            <p>New construction electrical installations with safety and compliance standards.</p>
         </div>
-    </section>
 
-    <section id="contact" class="py-32 bg-slate-900 text-white relative">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20">
-            <div>
-                <h2 class="text-4xl font-extrabold mb-8">Ready to expand?</h2>
-                [span_11](start_span)[span_12](start_span)<p class="text-slate-400 mb-12">We are currently delivering high-quality, reliable, and efficient solutions across these regions:[span_11](end_span)[span_12](end_span)</p>
-                
-                <div class="grid grid-cols-2 gap-6 mb-12">
-                    <div class="flex items-center space-x-3 bg-white/5 p-4 rounded-xl">
-                        <i class="fa-solid fa-location-arrow text-blue-400"></i>
-                        <span class="font-bold">Telangana</span>
-                    </div>
-                    <div class="flex items-center space-x-3 bg-white/5 p-4 rounded-xl">
-                        <i class="fa-solid fa-location-arrow text-blue-400"></i>
-                        <span class="font-bold">Karnataka</span>
-                    </div>
-                    <div class="flex items-center space-x-3 bg-white/5 p-4 rounded-xl">
-                        <i class="fa-solid fa-location-arrow text-blue-400"></i>
-                        <span class="font-bold">Maharashtra</span>
-                    </div>
-                    <div class="flex items-center space-x-3 bg-white/5 p-4 rounded-xl">
-                        <i class="fa-solid fa-location-arrow text-blue-400"></i>
-                        <span class="font-bold">Andhra Pradesh</span>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <p class="flex items-center space-x-4">
-                        <i class="fa-solid fa-phone text-blue-500"></i>
-                        [span_13](start_span)<span class="text-xl font-bold">9000364477[span_13](end_span)</span>
-                    </p>
-                    <p class="flex items-center space-x-4">
-                        <i class="fa-solid fa-envelope text-blue-500"></i>
-                        [span_14](start_span)<span class="text-lg">sangamelectricals2022@gmail.com[span_14](end_span)</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 md:p-12 rounded-[3rem] text-slate-900">
-                <form class="space-y-6">
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest mb-2">Project Type</label>
-                        <select class="w-full border-b-2 border-slate-200 p-3 focus:border-blue-600 outline-none transition">
-                            <option>Commercial</option>
-                            <option>Industrial</option>
-                            <option>Residential</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest mb-2">Full Name</label>
-                        <input type="text" class="w-full border-b-2 border-slate-200 p-3 focus:border-blue-600 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest mb-2">Project Details</label>
-                        <textarea rows="4" class="w-full border-b-2 border-slate-200 p-3 focus:border-blue-600 outline-none transition"></textarea>
-                    </div>
-                    <button class="w-full bg-blue-600 text-white font-bold py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg">Submit Request</button>
-                </form>
-            </div>
+        <div class="service-card">
+            <div class="service-icon">🏢</div>
+            <h3>Commercial Wiring</h3>
+            <p>Professional residential and commercial electrical wiring services.</p>
         </div>
-    </section>
 
-    <footer class="py-12 bg-white text-center border-t border-slate-100">
-        <p class="text-slate-400 font-medium">© 2026 Sangam Electricals. All rights reserved.</p>
-    </footer>
+        <div class="service-card">
+            <div class="service-icon">📹</div>
+            <h3>CCTV & Networking</h3>
+            <p>Advanced surveillance systems and structured networking solutions.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">❄️</div>
+            <h3>HVAC Installations</h3>
+            <p>Efficient HVAC electrical integrations and maintenance support.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🔥</div>
+            <h3>Fire Fighting Systems</h3>
+            <p>Electrical support for fire safety and emergency protection systems.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🏗️</div>
+            <h3>Civil & Interior Works</h3>
+            <p>POP ceiling work, glass fixing, plumbing and infrastructure services.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section id="clients">
+
+    <h2 class="section-title">
+        Trusted <span>Clients</span>
+    </h2>
+
+    <p class="section-sub">
+        Our work has powered premium retail and commercial environments for recognized brands.
+    </p>
+
+    <div class="client-grid">
+
+        <div class="client-card">Nykaa</div>
+        <div class="client-card">The Sleep Company</div>
+        <div class="client-card">Fossil</div>
+        <div class="client-card">Ethos</div>
+        <div class="client-card">Subway</div>
+        <div class="client-card">Bvlgari</div>
+
+    </div>
+
+</section>
+
+<section class="contact" id="contact">
+
+    <h2>Let’s Build Something Powerful</h2>
+
+    <p>
+        Looking for reliable electrical contractors for your next commercial or industrial project?
+        Connect with Sangam Electricals today.
+    </p>
+
+    <div class="contact-details">
+
+        <div class="contact-box">
+            <h3>📞 Call Us</h3>
+            <p>9000364477</p>
+        </div>
+
+        <div class="contact-box">
+            <h3>✉️ Email</h3>
+            <p>sangamelectricals2022@gmail.com</p>
+        </div>
+
+        <div class="contact-box">
+            <h3>📍 Service Areas</h3>
+            <p>Telangana, Andhra Pradesh, Maharashtra, Karnataka</p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    © 2025 Sangam Electricals • Electrical Contractors • Est. 2014
+
+</footer>
+
+<a class="whatsapp"
+href="https://wa.me/919000364477"
+target="_blank">
+💬
+</a>
 
 </body>
 </html>
