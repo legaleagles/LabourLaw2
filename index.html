@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>LawSticker AI — Free LLB Study Platform | Osmania University</title>
+<meta name="description" content="Free LLB study platform for Osmania University students. Model answers, case stories, video lectures, quiz and cheat sheet for all subjects.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy:#0f2044; --navy2:#1a3260; --navy3:#0a1628;
+  --gold:#c8960c; --gold-light:#f0b429; --gold-pale:#fff8e1;
+  --teal:#0d6e6e; --teal-light:#1a9090;
+  --cream:#faf8f2; --white:#ffffff;
+  --text:#1a1a2e; --muted:#6b6478; --border:#e2ddd0;
+  --shadow:0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg:0 12px 48px rgba(15,32,68,0.20);
+  --green:#22c55e;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(10,22,40,0.95);backdrop-filter:blur(20px);
+  padding:12px 20px;display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid rgba(200,150,12,0.2);
+}
+.nav-brand{
+  font-family:'Playfair Display',serif;color:white;
+  font-size:17px;font-weight:900;flex:1;letter-spacing:-0.3px;
+}
+.nav-brand span{color:var(--gold-light);}
+.nav-pill{
+  color:rgba(255,255,255,0.6);font-size:11px;font-weight:600;
+  padding:5px 12px;border-radius:20px;
+  border:1px solid rgba(255,255,255,0.15);
+  text-decoration:none;transition:all 0.2s;
+}
+.nav-pill:hover{color:white;border-color:rgba(255,255,255,0.4);}
+.nav-yt{
+  background:#FF0000;color:white;font-size:11px;font-weight:700;
+  padding:6px 14px;border-radius:20px;text-decoration:none;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;padding:90px 24px 60px;
+  background:linear-gradient(145deg,#050d1a 0%,#0a1628 40%,#0f2044 70%,#0d1f3d 100%);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,12,0.08) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(200,150,12,0.12);border:1px solid rgba(200,150,12,0.3);
+  color:var(--gold-light);font-size:11px;font-weight:700;
+  padding:6px 16px;border-radius:30px;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:28px;
+}
+.badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,9vw,64px);color:white;
+  line-height:1.1;margin-bottom:20px;font-weight:900;
+  letter-spacing:-1px;
+}
+.hero h1 em{color:var(--gold-light);font-style:normal;position:relative;}
+.hero h1 em::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:3px;background:linear-gradient(90deg,var(--gold),transparent);
+  border-radius:2px;
+}
+.hero-sub{
+  color:rgba(255,255,255,0.55);font-size:15px;line-height:1.8;
+  max-width:400px;margin:0 auto 36px;
+}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);
+  color:var(--navy);font-size:14px;font-weight:800;
+  padding:14px 28px;border-radius:50px;text-decoration:none;
+  box-shadow:0 4px 24px rgba(200,150,12,0.35);transition:all 0.2s;
+  letter-spacing:0.3px;
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,150,12,0.5);}
+.btn-ghost{
+  background:rgba(255,255,255,0.07);color:white;
+  font-size:14px;font-weight:600;padding:14px 28px;border-radius:50px;
+  text-decoration:none;border:1px solid rgba(255,255,255,0.18);transition:all 0.2s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.13);}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;max-width:440px;
+}
+.hstat{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;padding:14px 8px;text-align:center;
+  transition:all 0.2s;
+}
+.hstat:hover{background:rgba(255,255,255,0.07);}
+.hstat-num{
+  font-family:'Playfair Display',serif;color:var(--gold-light);
+  font-size:24px;font-weight:900;
+}
+.hstat-label{color:rgba(255,255,255,0.35);font-size:9px;margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint{
+  margin-top:40px;color:rgba(255,255,255,0.25);
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.scroll-arrow{animation:bounce 2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* ── SECTION BASE ── */
+.section{padding:64px 20px;}
+.section-eyebrow{
+  font-size:10px;font-weight:700;color:var(--gold);
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;
+}
+.section-h{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(26px,6vw,38px);color:var(--navy);
+  font-weight:900;line-height:1.2;margin-bottom:10px;letter-spacing:-0.5px;
+}
+.section-p{color:var(--muted);font-size:14px;line-height:1.8;max-width:400px;margin:0 auto 36px;}
+.tc{text-align:center;}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:white;}
+.how-steps{display:grid;gap:1px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:8px;}
+.how-step{
+  background:white;padding:24px 20px;
+  display:flex;gap:16px;align-items:flex-start;
+}
+.step-num{
+  width:40px;height:40px;border-radius:12px;flex-shrink:0;
+  background:var(--navy);color:var(--gold-light);
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-title{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:5px;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ── SUBJECTS ── */
+.subjects-section{
+  background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);
+  padding:64px 20px;
+}
+.subjects-section .section-eyebrow{color:var(--gold-light);}
+.subjects-section .section-h{color:white;}
+.subjects-section .section-p{color:rgba(255,255,255,0.45);}
+
+.sem-label{
+  display:flex;align-items:center;gap:10px;
+  margin:28px 0 14px;
+}
+.sem-tag{
+  background:rgba(200,150,12,0.15);border:1px solid rgba(200,150,12,0.3);
+  color:var(--gold-light);font-size:10px;font-weight:700;
+  padding:4px 12px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;
+}
+.sem-line{flex:1;height:1px;background:rgba(255,255,255,0.08);}
+
+.subjects-grid{display:grid;gap:14px;}
+
+/* LIVE CARD */
+.subject-card{
+  border-radius:18px;overflow:hidden;
+  transition:transform 0.2s,box-shadow 0.2s;
+  position:relative;
+}
+.subject-card:active{transform:scale(0.99);}
+
+.card-live{
+  background:white;
+  box-shadow:0 4px 24px rgba(0,0,0,0.15),0 0 0 1px rgba(200,150,12,0.2);
+}
+.card-live:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.2),0 0 0 2px rgba(200,150,12,0.4);}
+
+.card-top-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+
+.card-inner{padding:20px;}
+
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.live-pill{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);
+  color:#16a34a;font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:20px;letter-spacing:1px;
+}
+.live-pulse{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite;}
+.card-sem-tag{font-size:10px;color:var(--muted);font-weight:600;}
+
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.2;
+}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.ctag{
+  background:rgba(15,32,68,0.06);color:var(--navy);
+  font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;
+}
+.card-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--navy);color:white;
+  padding:13px 16px;border-radius:12px;
+  text-decoration:none;font-size:14px;font-weight:700;
+  transition:background 0.2s;
+}
+.card-btn:hover{background:var(--navy2);}
+.card-btn-arrow{font-size:18px;transition:transform 0.2s;}
+.card-btn:hover .card-btn-arrow{transform:translateX(4px);}
+
+/* COMING SOON CARD */
+.card-soon{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.card-soon .card-title{color:rgba(255,255,255,0.35);}
+.card-soon .card-sem-tag{color:rgba(255,255,255,0.2);}
+.card-soon .ctag{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.2);}
+.soon-pill{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.3);font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:20px;letter-spacing:1px;
+}
+.soon-btn{
+  background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);
+  padding:13px 16px;border-radius:12px;font-size:14px;font-weight:700;
+  border:1px solid rgba(255,255,255,0.06);cursor:not-allowed;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+/* ── FEATURES ── */
+.features-section{background:var(--cream);}
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.feat-card{
+  background:white;border-radius:18px;padding:22px 16px;
+  box-shadow:var(--shadow);text-align:center;
+  border-bottom:3px solid transparent;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  opacity:0;transition:opacity 0.2s;
+}
+.feat-card:hover::before{opacity:1;}
+.feat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.feat-icon{font-size:30px;margin-bottom:10px;}
+.feat-title{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:5px;}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ── YOUTUBE ── */
+.yt-section{
+  background:linear-gradient(135deg,#1a0000 0%,#8b0000 40%,#cc0000 100%);
+  padding:56px 24px;text-align:center;position:relative;overflow:hidden;
+}
+.yt-section::before{
+  content:'▶';position:absolute;font-size:300px;opacity:0.04;
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.yt-label{
+  display:inline-block;background:rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.7);font-size:10px;font-weight:700;
+  padding:4px 12px;border-radius:20px;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:16px;
+}
+.yt-section h2{
+  font-family:'Playfair Display',serif;color:white;
+  font-size:clamp(24px,6vw,36px);margin-bottom:10px;font-weight:900;
+}
+.yt-section p{color:rgba(255,255,255,0.65);font-size:14px;margin-bottom:28px;line-height:1.7;}
+.yt-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:white;color:#cc0000;font-size:14px;font-weight:800;
+  padding:14px 28px;border-radius:50px;text-decoration:none;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);transition:all 0.2s;
+}
+.yt-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,0,0,0.4);}
+
+/* ── DISCLAIMER ── */
+.disclaimer-section{background:var(--navy3);padding:48px 20px;}
+.disclaimer-grid{display:grid;gap:16px;margin-bottom:24px;}
+.disc-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;padding:16px;display:flex;gap:12px;
+}
+.disc-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.disc-title{color:var(--gold-light);font-size:12px;font-weight:700;margin-bottom:5px;}
+.disc-text{color:rgba(255,255,255,0.35);font-size:11px;line-height:1.7;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);
+  padding:32px 20px 24px;text-align:center;
+}
+.footer-brand{
+  font-family:'Playfair Display',serif;color:white;font-size:20px;margin-bottom:4px;
+}
+.footer-brand span{color:var(--gold-light);}
+.footer-sub{color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:20px;}
+.footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.footer-link{color:var(--gold-light);font-size:12px;font-weight:600;text-decoration:none;}
+.footer-divider{height:1px;background:rgba(255,255,255,0.06);margin:16px 0;}
+.footer-copy{color:rgba(255,255,255,0.2);font-size:11px;}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:all 0.65s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.2s;}
+.reveal-delay-3{transition-delay:0.3s;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">⚖ Law<span>Sticker</span> AI</div>
+  <a class="nav-pill" href="#subjects">Subjects</a>
+  <a class="nav-yt" href="https://youtube.com/@lawstickerai" target="_blank">▶ YouTube</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Free · Osmania University · LLB
+  </div>
+  <h1>Study Smarter.<br><em>Score Higher.</em></h1>
+  <p class="hero-sub">Structured revision material for every LLB subject. Model answers, case stories, video lectures and quiz — all in one place, completely free.</p>
+  <div class="hero-cta">
+    <a href="#subjects" class="btn-gold">Explore Subjects ↓</a>
+    <a href="https://youtube.com/@lawstickerai" target="_blank" class="btn-ghost">▶ Watch Videos</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-num">3</div>
+      <div class="hstat-label">Live Now</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">60+</div>
+      <div class="hstat-label">Topics</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">5</div>
+      <div class="hstat-label">Videos</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">Free</div>
+      <div class="hstat-label">Always</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <span class="scroll-arrow">↓</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section">
+  <div class="tc reveal">
+    <div class="section-eyebrow">How It Works</div>
+    <div class="section-h">Three Steps to Exam Ready</div>
+    <div class="section-p">Built for efficient revision. Maximum exam coverage in minimum time.</div>
+  </div>
+  <div class="how-steps reveal reveal-delay-1">
+    <div class="how-step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Pick Your Subject</div>
+        <div class="step-desc">Choose from our growing library of LLB 4th semester subjects. Each subject has complete unit-wise coverage.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Watch, Read & Practice</div>
+        <div class="step-desc">Watch unit video lectures, read topper model answers with landmark case stories, then test yourself with the quiz.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Ace Your Exam</div>
+        <div class="step-desc">Use the cheat sheet the night before — all key numbers, sections and case ratios in one quick scan.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="subjects-section" id="subjects">
+  <div class="tc reveal">
+    <div class="section-eyebrow">Study Material</div>
+    <div class="section-h">LLB Subjects</div>
+    <div class="section-p">Tap any subject to open the full study app — model answers, videos, cases, quiz and cheat sheet.</div>
+  </div>
+
+  <!-- 4TH SEMESTER — ALL OPEN -->
+  <div class="sem-label reveal">
+    <span class="sem-tag">4th Semester</span>
+    <span class="sem-line"></span>
+  </div>
+
+  <div class="subjects-grid reveal">
+
+    <!-- LABOUR LAW II -->
+    <div class="subject-card card-live">
+      <div class="card-top-bar"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="live-pill"><span class="live-pulse"></span>LIVE</div>
+          <span class="card-sem-tag">Paper I</span>
+        </div>
+        <div class="card-title">Labour Law II</div>
+        <div class="card-tags">
+          <span class="ctag">📚 33 Topics</span>
+          <span class="ctag">⚖️ 16 Cases</span>
+          <span class="ctag">🎬 5 Videos</span>
+          <span class="ctag">🎯 Quiz</span>
+          <span class="ctag">📋 Cheat Sheet</span>
+        </div>
+        <a href="/labourlaw2" class="card-btn">
+          Open Study App
+          <span class="card-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- PUBLIC INTERNATIONAL LAW -->
+    <div class="subject-card card-live">
+      <div class="card-top-bar"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="live-pill"><span class="live-pulse"></span>LIVE</div>
+          <span class="card-sem-tag">Paper II</span>
+        </div>
+        <div class="card-title">Public International Law</div>
+        <div class="card-tags">
+          <span class="ctag">📚 Model Answers</span>
+          <span class="ctag">⚖️ Cases</span>
+          <span class="ctag">🎯 Quiz</span>
+          <span class="ctag">📋 Cheat Sheet</span>
+        </div>
+        <a href="/pil" class="card-btn">
+          Open Study App
+          <span class="card-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- INTERPRETATION OF STATUTES -->
+    <div class="subject-card card-live">
+      <div class="card-top-bar"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="live-pill"><span class="live-pulse"></span>LIVE</div>
+          <span class="card-sem-tag">Paper III</span>
+        </div>
+        <div class="card-title">Interpretation of Statutes</div>
+        <div class="card-tags">
+          <span class="ctag">📚 Model Answers</span>
+          <span class="ctag">⚖️ Cases</span>
+          <span class="ctag">🎯 Quiz</span>
+          <span class="ctag">📋 Cheat Sheet</span>
+        </div>
+        <a href="/statutes" class="card-btn">
+          Open Study App
+          <span class="card-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- LAND LAWS -->
+    <div class="subject-card card-live">
+      <div class="card-top-bar"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="live-pill"><span class="live-pulse"></span>LIVE</div>
+          <span class="card-sem-tag">Paper IV</span>
+        </div>
+        <div class="card-title">Land Laws</div>
+        <div class="card-tags">
+          <span class="ctag">📚 Model Answers</span>
+          <span class="ctag">⚖️ Cases</span>
+          <span class="ctag">🎯 Quiz</span>
+          <span class="ctag">📋 Cheat Sheet</span>
+        </div>
+        <a href="/landlaw" class="card-btn">
+          Open Study App
+          <span class="card-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- INTELLECTUAL PROPERTY LAW -->
+    <div class="subject-card card-live">
+      <div class="card-top-bar"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="live-pill"><span class="live-pulse"></span>LIVE</div>
+          <span class="card-sem-tag">Paper V</span>
+        </div>
+        <div class="card-title">Intellectual Property Law</div>
+        <div class="card-tags">
+          <span class="ctag">📚 Model Answers</span>
+          <span class="ctag">⚖️ Cases</span>
+          <span class="ctag">🎯 Quiz</span>
+          <span class="ctag">📋 Cheat Sheet</span>
+        </div>
+        <a href="/ipr" class="card-btn">
+          Open Study App
+          <span class="card-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3RD SEMESTER — COMING SOON -->
+  <div class="sem-label reveal" style="margin-top:32px;">
+    <span class="sem-tag">3rd Semester</span>
+    <span class="sem-line"></span>
+  </div>
+
+  <div class="subjects-grid reveal">
+
+    <div class="subject-card card-soon">
+      <div class="card-inner">
+        <div class="card-header">
+          <span class="soon-pill">🔜 Coming Soon</span>
+          <span class="card-sem-tag">Paper V</span>
+        </div>
+        <div class="card-title">Labour Law I</div>
+        <div class="card-tags">
+          <span class="ctag">Model Answers</span>
+          <span class="ctag">Cases</span>
+          <span class="ctag">Quiz</span>
+        </div>
+        <div class="soon-btn">Coming Soon <span>🔒</span></div>
+      </div>
+    </div>
+
+    <div class="subject-card card-soon">
+      <div class="card-inner">
+        <div class="card-header">
+          <span class="soon-pill">🔜 Coming Soon</span>
+          <span class="card-sem-tag">Paper I</span>
+        </div>
+        <div class="card-title">Jurisprudence</div>
+        <div class="card-tags">
+          <span class="ctag">Model Answers</span>
+          <span class="ctag">Cases</span>
+          <span class="ctag">Quiz</span>
+        </div>
+        <div class="soon-btn">Coming Soon <span>🔒</span></div>
+      </div>
+    </div>
+
+    <div class="subject-card card-soon">
+      <div class="card-inner">
+        <div class="card-header">
+          <span class="soon-pill">🔜 Coming Soon</span>
+          <span class="card-sem-tag">Paper III</span>
+        </div>
+        <div class="card-title">Administrative Law</div>
+        <div class="card-tags">
+          <span class="ctag">Model Answers</span>
+          <span class="ctag">Cases</span>
+          <span class="ctag">Quiz</span>
+        </div>
+        <div class="soon-btn">Coming Soon <span>🔒</span></div>
+      </div>
+    </div>
+
+    <div class="subject-card card-soon">
+      <div class="card-inner">
+        <div class="card-header">
+          <span class="soon-pill">🔜 Coming Soon</span>
+          <span class="card-sem-tag">Paper IV</span>
+        </div>
+        <div class="card-title">Company Law</div>
+        <div class="card-tags">
+          <span class="ctag">Model Answers</span>
+          <span class="ctag">Cases</span>
+          <span class="ctag">Quiz</span>
+        </div>
+        <div class="soon-btn">Coming Soon <span>🔒</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-section">
+  <div class="tc reveal">
+    <div class="section-eyebrow">Features</div>
+    <div class="section-h">Everything in One App</div>
+    <div class="section-p">Every subject comes with a complete set of revision tools — all free, all offline-capable.</div>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon">📚</div>
+      <div class="feat-title">Model Answers</div>
+      <div class="feat-desc">Topper-level answers for every Part A, B & C question type with exam frameworks</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚖️</div>
+      <div class="feat-title">Case Stories</div>
+      <div class="feat-desc">Every landmark case narrated as a full story — registers in memory, not just notes</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎬</div>
+      <div class="feat-title">Video Lectures</div>
+      <div class="feat-desc">Unit-wise lectures on YouTube — watch during commute, revise anywhere</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-title">Quiz Mode</div>
+      <div class="feat-desc">60+ questions with instant explanations — concepts, cases and key numbers</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <div class="feat-title">Cheat Sheet</div>
+      <div class="feat-desc">All key numbers, sections and case ratios — perfect for the night before</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📱</div>
+      <div class="feat-title">Works Offline</div>
+      <div class="feat-desc">Save to home screen — opens like a native app, works without internet</div>
+    </div>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<div class="yt-section reveal">
+  <div class="yt-label">YouTube · Free · Subscribe</div>
+  <h2>Watch Free Video Lectures</h2>
+  <p>Unit-wise faculty-style lectures covering every topic, every case and every exam alert. Subscribe and get new subject videos every semester.</p>
+  <a href="https://youtube.com/@lawstickerai" target="_blank" class="yt-btn">
+    <span>▶</span> Subscribe to LawSticker AI
+  </a>
+</div>
+
+<!-- DISCLAIMER -->
+<section class="disclaimer-section">
+  <div class="disclaimer-grid reveal">
+    <div class="disc-card">
+      <div class="disc-icon">📋</div>
+      <div>
+        <div class="disc-title">Educational Purpose Only</div>
+        <div class="disc-text">This platform provides free study material for LLB examination preparation only. Content is intended to supplement classroom learning and does not constitute legal advice. Students must verify all information with official sources, prescribed textbooks and faculty members.</div>
+      </div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-icon">🏛️</div>
+      <div>
+        <div class="disc-title">Independent Platform — Not Affiliated</div>
+        <div class="disc-text">LawSticker AI is an independent educational platform. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any other academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+      </div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-icon">⚖️</div>
+      <div>
+        <div class="disc-title">Copyright Notice</div>
+        <div class="disc-text">Indian legislation, constitutional provisions and Supreme Court judgments are public documents. The original study content, model answers and exam frameworks on this platform are created for academic purposes. Reproduction for commercial use is not permitted.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">⚖ Law<span>Sticker</span> AI</div>
+  <div class="footer-sub">Free LLB Study Platform · lawsticker-ai.com</div>
+  <div class="footer-links">
+    <a class="footer-link" href="/labourlaw2">Labour Law II</a>
+    <a class="footer-link" href="/pil">Public Int. Law</a>
+    <a class="footer-link" href="/statutes">Statutes</a>
+    <a class="footer-link" href="/landlaw">Land Laws</a>
+    <a class="footer-link" href="/ipr">IPR</a>
+    <a class="footer-link" href="https://youtube.com/@lawstickerai" target="_blank">YouTube</a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-copy">© 2025 LawSticker AI · Independent Study Platform · Free forever for students</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
