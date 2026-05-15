@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SANGAM ⚡ Electrical Contractors / Engineered for Brands</title>
+<meta name="description" content="High-voltage electrical contractors for India's most demanding brands. Wiring Nykaa, Fossil, Subway, Bulgari, Ethos & The Sleep Company since 2014.">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #050505;
+  --ink: #0a0a0a;
+  --char: #141414;
+  --steel: #1f1f1f;
+  --wire: #2a2a2a;
+  --bone: #e8e4dc;
+  --paper: #f5f1e8;
+  --volt: #FFE800;        /* electric yellow - signature */
+  --plasma: #FF5C00;      /* hot orange */
+  --neon: #00FF85;        /* live circuit green */
+  --copper: #d97706;
+  --mute: #6b6b6b;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  background: var(--void);
+  color: var(--bone);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "ss02";
+}
+
+::selection { background: var(--volt); color: var(--void); }
+
+/* ═══════════════════════════════════════════
+   GRID PAPER BACKGROUND (blueprint vibe)
+═══════════════════════════════════════════ */
+.grid-paper {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.grid-paper::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top, transparent 0%, var(--void) 80%);
+}
+
+/* ═══════════════════════════════════════════
+   NAV - asymmetric, technical
+═══════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 14px 18px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 12px;
+  background: rgba(5,5,5,0.7);
+  backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid var(--line);
+}
+.brand-mark {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.brand-bolt {
+  width: 32px; height: 32px;
+  background: var(--volt);
+  display: grid; place-items: center;
+  position: relative;
+  clip-path: polygon(40% 0, 100% 0, 60% 50%, 100% 50%, 0 100%, 40% 50%, 0 50%);
+}
+.brand-text {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 14px;
+  color: var(--bone); letter-spacing: -0.3px;
+  line-height: 1;
+}
+.brand-text small {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-weight: 400; font-size: 8px;
+  color: var(--mute); letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+.nav-status {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--mute);
+  letter-spacing: 1.5px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.nav-status .live-dot {
+  width: 6px; height: 6px; background: var(--neon); border-radius: 50%;
+  box-shadow: 0 0 8px var(--neon);
+  animation: pulse-live 1.5s infinite;
+}
+@keyframes pulse-live {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--volt); color: var(--void);
+  font-size: 11px; font-weight: 700;
+  padding: 9px 14px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  position: relative;
+  transition: all 0.15s;
+}
+.nav-cta:hover { background: var(--bone); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--volt); }
+
+/* ═══════════════════════════════════════════
+   HERO - massive, electric, alive
+═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  padding: 90px 18px 30px;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* Animated voltage SVG behind hero */
+.voltage-bg {
+  position: absolute; inset: 0;
+  z-index: 0; pointer-events: none;
+  opacity: 0.4;
+}
+.voltage-bg svg { width: 100%; height: 100%; }
+.voltage-path {
+  fill: none;
+  stroke: var(--volt);
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+  animation: dash 20s linear infinite;
+}
+.voltage-path-2 {
+  stroke: var(--plasma);
+  stroke-dasharray: 3 8;
+  animation: dash 15s linear infinite reverse;
+}
+@keyframes dash {
+  to { stroke-dashoffset: -200; }
+}
+
+/* Mouse spotlight */
+.spotlight {
+  position: absolute; pointer-events: none;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,232,0,0.10) 0%, transparent 60%);
+  transform: translate(-50%,-50%);
+  z-index: 0;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.hero:hover .spotlight { opacity: 1; }
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-top-bar {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--mute);
+  letter-spacing: 1.5px;
+}
+.hero-top-bar span { display: flex; align-items: center; gap: 6px; }
+.tick { color: var(--neon); }
+
+.hero h1 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(54px, 16vw, 110px);
+  line-height: 0.85; letter-spacing: -3.5px;
+  color: var(--bone);
+  margin-bottom: 32px;
+  position: relative;
+}
+.hero h1 .word {
+  display: block;
+  position: relative;
+}
+.hero h1 .italic {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--volt);
+  letter-spacing: -2px;
+}
+.hero h1 .outline {
+  -webkit-text-stroke: 1.5px var(--bone);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.hero h1 .strike {
+  position: relative;
+  display: inline-block;
+}
+.hero h1 .strike::after {
+  content: '';
+  position: absolute; left: -4%; right: -4%;
+  top: 50%; height: 6px;
+  background: var(--plasma);
+  transform: translateY(-50%) rotate(-2deg);
+}
+
+/* Glitch hover on signature word */
+.glitch {
+  position: relative;
+  cursor: default;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+}
+.glitch:hover::before {
+  opacity: 1;
+  color: var(--plasma);
+  animation: glitch-1 0.4s steps(4) infinite;
+}
+.glitch:hover::after {
+  opacity: 1;
+  color: var(--neon);
+  animation: glitch-2 0.4s steps(4) infinite;
+}
+@keyframes glitch-1 {
+  0%,100% { transform: translate(0); clip-path: inset(0 0 90% 0); }
+  20% { transform: translate(-3px,1px); clip-path: inset(40% 0 30% 0); }
+  40% { transform: translate(3px,-1px); clip-path: inset(70% 0 10% 0); }
+  60% { transform: translate(-2px,2px); clip-path: inset(10% 0 60% 0); }
+  80% { transform: translate(2px,-2px); clip-path: inset(50% 0 25% 0); }
+}
+@keyframes glitch-2 {
+  0%,100% { transform: translate(0); clip-path: inset(60% 0 20% 0); }
+  20% { transform: translate(3px,-1px); clip-path: inset(20% 0 50% 0); }
+  40% { transform: translate(-3px,1px); clip-path: inset(10% 0 80% 0); }
+  60% { transform: translate(2px,-2px); clip-path: inset(70% 0 5% 0); }
+  80% { transform: translate(-2px,2px); clip-path: inset(30% 0 45% 0); }
+}
+
+.hero-meta {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 24px 0 36px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.hero-meta-block label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--mute);
+  letter-spacing: 1.5px; margin-bottom: 6px;
+}
+.hero-meta-block p {
+  font-size: 13px; color: var(--bone);
+  line-height: 1.5;
+}
+.hero-meta-block p strong {
+  color: var(--volt); font-weight: 700;
+}
+
+.hero-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.btn-volt {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--volt); color: var(--void);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 16px 22px;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  position: relative;
+  transition: all 0.15s;
+}
+.btn-volt:hover {
+  background: var(--bone);
+  transform: translate(-2px,-2px);
+  box-shadow: 5px 5px 0 var(--plasma);
+}
+.btn-volt::before {
+  content: ''; width: 8px; height: 8px;
+  background: var(--void);
+  display: inline-block;
+}
+.btn-line {
+  font-family: 'JetBrains Mono', monospace;
+  background: transparent; color: var(--bone);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 16px 22px;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line-strong);
+  transition: all 0.15s;
+}
+.btn-line:hover { border-color: var(--volt); color: var(--volt); }
+
+.hero-foot {
+  margin-top: auto; padding-top: 50px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  gap: 0;
+}
+.hero-foot-item {
+  padding: 18px 0 0;
+  border-right: 1px solid var(--line);
+  padding-left: 12px;
+}
+.hero-foot-item:last-child { border-right: none; }
+.hero-foot-item:first-child { padding-left: 0; }
+.hero-foot-num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--bone);
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+.hero-foot-num .em { color: var(--volt); }
+.hero-foot-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; color: var(--mute);
+  letter-spacing: 1.5px; margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   TICKER - brand names scrolling
+═══════════════════════════════════════════ */
+.ticker {
+  position: relative;
+  background: var(--volt);
+  color: var(--void);
+  padding: 18px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--void);
+  border-bottom: 1px solid var(--void);
+}
+.ticker-track {
+  display: flex; gap: 60px;
+  animation: scroll 30s linear infinite;
+  white-space: nowrap;
+  width: max-content;
+}
+.ticker-item {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -1px;
+  display: flex; align-items: center; gap: 60px;
+}
+.ticker-item::after {
+  content: '✦';
+  font-size: 14px;
+  color: var(--plasma);
+}
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════════
+   GENERAL SECTIONS
+═══════════════════════════════════════════ */
+section {
+  position: relative; z-index: 1;
+  padding: 80px 18px;
+}
+
+.sec-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--volt);
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+.sec-tag::before {
+  content: '';
+  width: 30px; height: 1px; background: var(--volt);
+}
+
+.sec-h2 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 10vw, 64px);
+  line-height: 0.9; letter-spacing: -2px;
+  color: var(--bone);
+  margin-bottom: 18px;
+}
+.sec-h2 .italic {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  color: var(--volt); letter-spacing: -1px;
+}
+.sec-sub {
+  font-size: 15px; color: var(--mute);
+  line-height: 1.6; max-width: 460px;
+  margin-bottom: 40px;
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT / MANIFESTO
+═══════════════════════════════════════════ */
+.manifesto {
+  position: relative;
+  padding: 100px 18px 80px;
+}
+.manifesto-quote {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  font-size: clamp(28px, 8vw, 56px);
+  line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--bone);
+  margin: 30px 0;
+  position: relative;
+}
+.manifesto-quote::before {
+  content: '"';
+  position: absolute;
+  left: -8px; top: -40px;
+  font-size: 140px; color: var(--volt);
+  line-height: 1;
+  opacity: 0.6;
+}
+.manifesto-quote em {
+  color: var(--volt);
+  font-style: italic;
+}
+.manifesto-sig {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--mute);
+  letter-spacing: 1.5px;
+}
+.manifesto-sig::before {
+  content: ''; width: 40px; height: 1px;
+  background: var(--volt);
+}
+
+/* ═══════════════════════════════════════════
+   VISION / MISSION CARDS
+═══════════════════════════════════════════ */
+.vm-grid {
+  display: grid; gap: 14px;
+  margin-top: 40px;
+}
+.vm-card {
+  border: 1px solid var(--line-strong);
+  padding: 28px 22px;
+  position: relative;
+  background: var(--char);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.vm-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--volt);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+.vm-card:hover::before { transform: scaleY(1); }
+.vm-card:hover { background: var(--steel); }
+.vm-card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--volt);
+  letter-spacing: 2px; margin-bottom: 14px;
+}
+.vm-card h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -1.2px;
+  color: var(--bone);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+.vm-card h3 .italic {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  color: var(--volt);
+}
+.vm-card p {
+  font-size: 14px; color: var(--mute);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   SERVICES - giant numbered list
+═══════════════════════════════════════════ */
+.services { padding-bottom: 100px; }
+.svc-list { margin-top: 40px; }
+.svc-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center; gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+.svc-row::before {
+  content: ''; position: absolute;
+  left: 0; bottom: 0; height: 1px;
+  width: 0;
+  background: var(--volt);
+  transition: width 0.4s ease;
+}
+.svc-row:hover::before { width: 100%; }
+.svc-row:hover .svc-name { color: var(--volt); transform: translateX(8px); }
+.svc-row:hover .svc-arrow { color: var(--volt); }
+.svc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--mute);
+  letter-spacing: 1px;
+}
+.svc-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 5.5vw, 28px);
+  color: var(--bone);
+  letter-spacing: -0.8px;
+  transition: all 0.3s;
+  line-height: 1.1;
+}
+.svc-cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--mute);
+  letter-spacing: 1.5px;
+  display: block;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.svc-arrow {
+  color: var(--mute);
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+/* ═══════════════════════════════════════════
+   CLIENT WALL - flexing
+═══════════════════════════════════════════ */
+.clients-sec {
+  background: var(--char);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.client-wall {
+  display: grid; gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  margin-top: 40px;
+  grid-template-columns: repeat(2, 1fr);
+}
+.client-tile {
+  background: var(--ink);
+  padding: 28px 18px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+  min-height: 130px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+.client-tile:hover {
+  background: var(--volt);
+  color: var(--void);
+}
+.client-tile:hover .client-cat { color: var(--void); opacity: 0.7; }
+.client-tile:hover .client-name { color: var(--void); }
+.client-num {
+  position: absolute;
+  top: 10px; left: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--mute);
+  letter-spacing: 1px;
+}
+.client-tile:hover .client-num { color: var(--void); opacity: 0.5; }
+.client-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--bone);
+  letter-spacing: -0.8px;
+  margin-bottom: 6px;
+  transition: color 0.3s;
+}
+.client-cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--mute);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+/* ═══════════════════════════════════════════
+   PROCESS - timeline rail
+═══════════════════════════════════════════ */
+.process { background: var(--void); }
+.timeline {
+  position: relative;
+  margin-top: 50px;
+  padding-left: 32px;
+}
+.timeline::before {
+  content: ''; position: absolute;
+  left: 11px; top: 0; bottom: 0;
+  width: 1px; background: var(--line-strong);
+}
+.tl-item {
+  position: relative;
+  padding-bottom: 36px;
+}
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -32px; top: 4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--void);
+  border: 1.5px solid var(--volt);
+  display: grid; place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--volt);
+}
+.tl-item.active .tl-dot {
+  background: var(--volt);
+  color: var(--void);
+  box-shadow: 0 0 0 6px rgba(255,232,0,0.15);
+}
+.tl-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--volt);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.tl-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px; letter-spacing: -0.8px;
+  color: var(--bone);
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.tl-desc {
+  font-size: 13px;
+  color: var(--mute);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   COVERAGE - states
+═══════════════════════════════════════════ */
+.coverage {
+  background: var(--char);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.states-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-top: 40px;
+}
+.state-card {
+  border: 1px solid var(--line-strong);
+  padding: 24px 18px;
+  position: relative;
+  background: var(--ink);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.state-card:hover {
+  border-color: var(--volt);
+  background: var(--steel);
+}
+.state-card-corner {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 6px; height: 6px;
+  background: var(--neon);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--neon);
+  animation: pulse-live 1.8s infinite;
+}
+.state-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--volt);
+  letter-spacing: 1.5px; margin-bottom: 12px;
+}
+.state-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--bone);
+  letter-spacing: -0.6px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.state-cities {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--mute);
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════
+   PROJECTS GALLERY
+═══════════════════════════════════════════ */
+.gallery { padding-bottom: 100px; }
+.project-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 14px; margin-top: 40px;
+}
+.project-card {
+  background: var(--char);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+}
+.project-card:hover {
+  border-color: var(--volt);
+  transform: translateY(-3px);
+}
+.project-viz {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-strong);
+}
+.project-viz svg { width: 100%; height: 100%; display: block; }
+.project-overlay {
+  position: absolute;
+  top: 12px; left: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--volt);
+  letter-spacing: 1.5px;
+  background: rgba(5,5,5,0.7);
+  padding: 5px 9px;
+  backdrop-filter: blur(4px);
+}
+.project-watermark {
+  position: absolute;
+  inset: 0;
+  display: grid; place-items: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 70px;
+  letter-spacing: -3px;
+  color: rgba(255,232,0,0.06);
+  pointer-events: none;
+}
+.project-body { padding: 18px; }
+.project-cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--volt);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+.project-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--bone);
+  letter-spacing: -0.6px;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+.project-desc {
+  font-size: 12px;
+  color: var(--mute);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   BIG CTA - "let's wire it"
+═══════════════════════════════════════════ */
+.big-cta {
+  background: var(--volt);
+  color: var(--void);
+  padding: 80px 18px;
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid var(--void);
+  border-bottom: 2px solid var(--void);
+}
+.big-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 41px);
+  pointer-events: none;
+}
+.big-cta-content { position: relative; z-index: 2; }
+.big-cta-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--void);
+  margin-bottom: 14px;
+  display: inline-block;
+}
+.big-cta h2 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(40px, 12vw, 80px);
+  line-height: 0.9; letter-spacing: -3px;
+  color: var(--void);
+  margin-bottom: 24px;
+}
+.big-cta h2 .italic {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+}
+.big-cta-buttons {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-top: 28px;
+}
+.cta-call {
+  background: var(--void); color: var(--volt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 18px 22px;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 12px;
+  transition: all 0.15s;
+}
+.cta-call:hover {
+  background: var(--plasma);
+  color: var(--void);
+  transform: translate(-2px,-2px);
+  box-shadow: 5px 5px 0 var(--void);
+}
+.cta-call-icon {
+  width: 24px; height: 24px;
+  background: var(--volt); color: var(--void);
+  display: grid; place-items: center;
+  border-radius: 50%; font-size: 12px;
+}
+.cta-mail {
+  background: transparent; color: var(--void);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 18px 22px;
+  text-decoration: none;
+  border: 1.5px solid var(--void);
+  transition: all 0.15s;
+}
+.cta-mail:hover { background: var(--void); color: var(--volt); }
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact {
+  background: var(--void);
+}
+.contact-grid {
+  display: grid; gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  margin-top: 40px;
+}
+.contact-cell {
+  background: var(--ink);
+  padding: 24px 20px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 14px; align-items: center;
+  text-decoration: none;
+  transition: all 0.3s;
+  position: relative;
+}
+.contact-cell:hover { background: var(--char); }
+.contact-cell:hover .contact-val { color: var(--volt); }
+.contact-cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--mute);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.contact-val {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--bone);
+  word-break: break-word;
+  transition: color 0.3s;
+  letter-spacing: -0.3px;
+}
+.contact-cell-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--volt); font-size: 14px;
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background: var(--ink);
+  padding: 40px 20px 24px;
+  border-top: 1px solid var(--line);
+  position: relative; z-index: 1;
+}
+.foot-top {
+  display: grid; grid-template-columns: 1fr;
+  gap: 24px; margin-bottom: 30px;
+}
+.foot-brand {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.foot-brand-bolt {
+  width: 36px; height: 36px;
+  background: var(--volt);
+  clip-path: polygon(40% 0, 100% 0, 60% 50%, 100% 50%, 0 100%, 40% 50%, 0 50%);
+}
+.foot-brand-text {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 18px; color: var(--bone);
+  letter-spacing: -0.5px;
+}
+.foot-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--mute);
+  letter-spacing: 1px; line-height: 1.7;
+}
+.foot-bottom {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--mute);
+  letter-spacing: 1px;
+}
+.foot-bottom .heart { color: var(--plasma); }
+
+/* ═══════════════════════════════════════════
+   WHATSAPP FLOATING BUTTON
+═══════════════════════════════════════════ */
+.wa-float {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  right: 20px;
+  z-index: 200;
+  background: #25D366;
+  color: white;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  text-decoration: none;
+  font-size: 28px;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.45), 0 0 0 6px rgba(37,211,102,0.15);
+  transition: all 0.25s;
+  animation: wa-bob 3s ease-in-out infinite;
+}
+@keyframes wa-bob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.wa-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 32px rgba(37,211,102,0.6), 0 0 0 10px rgba(37,211,102,0.2);
+}
+.wa-float::before {
+  content: 'CHAT';
+  position: absolute;
+  right: 68px;
+  background: var(--void);
+  color: var(--volt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  padding: 6px 10px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+}
+.wa-float:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL CUE (hero bottom hint)
+═══════════════════════════════════════════ */
+.scroll-cue {
+  position: absolute;
+  bottom: 18px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  z-index: 3; pointer-events: none;
+  opacity: 0.5;
+}
+.scroll-cue-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; color: var(--mute);
+  letter-spacing: 1.5px;
+}
+.scroll-cue-line {
+  width: 1px; height: 24px;
+  background: var(--volt);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-cue-line::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0; right: 0; height: 50%;
+  background: var(--bone);
+  animation: scroll-trickle 2s ease-in-out infinite;
+}
+@keyframes scroll-trickle {
+  0% { top: -50%; }
+  100% { top: 100%; }
+}
+
+/* ═══════════════════════════════════════════
+   PROJECT PHOTO PLACEHOLDERS (image-ready)
+═══════════════════════════════════════════ */
+.project-viz.has-img {
+  background-size: cover;
+  background-position: center;
+  background-color: var(--char);
+}
+.project-viz.has-img svg { opacity: 0.4; mix-blend-mode: screen; }
+.project-viz.has-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(5,5,5,0.7) 100%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   RFP / CONTACT FORM
+═══════════════════════════════════════════ */
+.rfp-section {
+  background: var(--char);
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+.rfp-wrap {
+  margin-top: 40px;
+  display: grid; gap: 20px;
+}
+.rfp-form {
+  background: var(--ink);
+  border: 1px solid var(--line-strong);
+  padding: 28px 22px;
+  position: relative;
+}
+.rfp-form::before {
+  content: '// PROJECT_BRIEF.txt';
+  position: absolute;
+  top: -10px; left: 18px;
+  background: var(--char);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--volt);
+  letter-spacing: 1.5px;
+  padding: 2px 10px;
+}
+.rfp-field {
+  margin-bottom: 16px;
+}
+.rfp-field label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--mute);
+  letter-spacing: 1.5px; margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.rfp-field input,
+.rfp-field select,
+.rfp-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--bone);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 500;
+  padding: 8px 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.rfp-field input:focus,
+.rfp-field select:focus,
+.rfp-field textarea:focus {
+  border-bottom-color: var(--volt);
+}
+.rfp-field textarea {
+  resize: vertical; min-height: 70px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+.rfp-field select option {
+  background: var(--ink); color: var(--bone);
+}
+.rfp-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.rfp-submit {
+  width: 100%;
+  background: var(--volt);
+  color: var(--void);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 18px;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.rfp-submit:hover {
+  transform: translate(-2px,-2px);
+  box-shadow: 5px 5px 0 var(--plasma);
+}
+.rfp-aside {
+  padding: 0 4px;
+}
+.rfp-aside h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px; letter-spacing: -0.6px;
+  color: var(--bone);
+  margin-bottom: 14px;
+  line-height: 1.1;
+}
+.rfp-aside h3 .italic {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  color: var(--volt);
+}
+.rfp-aside ul {
+  list-style: none;
+  margin: 18px 0 0;
+}
+.rfp-aside li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--mute);
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
+}
+.rfp-aside li::before {
+  content: '✓';
+  color: var(--volt);
+  font-weight: 700;
+}
+.rfp-aside p {
+  font-size: 13px;
+  color: var(--mute);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (min-width: 720px) {
+  section { padding: 120px 50px; }
+  .hero { padding: 130px 50px 50px; }
+  .manifesto { padding: 120px 50px 100px; }
+  .hero-meta { grid-template-columns: 1fr 1fr 1fr; }
+  .vm-grid { grid-template-columns: 1fr 1fr; }
+  .client-wall { grid-template-columns: repeat(3, 1fr); }
+  .states-grid { grid-template-columns: repeat(4, 1fr); }
+  .project-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .contact-grid { grid-template-columns: repeat(3, 1fr); }
+  .foot-top { grid-template-columns: 2fr 1fr; }
+  .big-cta { padding: 120px 50px; }
+  .rfp-wrap { grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+  .rfp-form { padding: 36px 32px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-paper"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="brand-mark">
+    <div class="brand-bolt"></div>
+    <div class="brand-text">
+      SANGAM
+      <small>EST · 2014</small>
+    </div>
+  </a>
+  <div class="nav-status">
+    <span class="live-dot"></span> ONLINE
+  </div>
+  <a href="tel:9000364477" class="nav-cta">CALL NOW</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top">
+  <!-- Animated voltage lines -->
+  <div class="voltage-bg">
+    <svg viewBox="0 0 400 800" preserveAspectRatio="none">
+      <path class="voltage-path" d="M 0 100 L 80 100 L 100 80 L 160 80 L 180 120 L 260 120 L 280 90 L 400 90" />
+      <path class="voltage-path" d="M 0 250 L 60 250 L 90 220 L 200 220 L 220 260 L 310 260 L 340 230 L 400 230" />
+      <path class="voltage-path-2" d="M 0 400 L 120 400 L 150 370 L 240 370 L 270 410 L 350 410 L 400 380" />
+      <path class="voltage-path" d="M 0 550 L 90 550 L 130 520 L 220 520 L 250 560 L 330 560 L 400 530" />
+      <path class="voltage-path-2" d="M 0 680 L 110 680 L 140 650 L 230 650 L 260 690 L 360 690 L 400 660" />
+      <!-- Connection dots -->
+      <circle cx="100" cy="80" r="3" fill="#FFE800"/>
+      <circle cx="180" cy="120" r="3" fill="#FFE800"/>
+      <circle cx="280" cy="90" r="3" fill="#FFE800"/>
+      <circle cx="90" cy="220" r="3" fill="#FFE800"/>
+      <circle cx="220" cy="260" r="3" fill="#FFE800"/>
+      <circle cx="150" cy="370" r="3" fill="#FF5C00"/>
+      <circle cx="270" cy="410" r="3" fill="#FF5C00"/>
+      <circle cx="130" cy="520" r="3" fill="#FFE800"/>
+      <circle cx="250" cy="560" r="3" fill="#FFE800"/>
+    </svg>
+  </div>
+
+  <div class="spotlight" id="spotlight"></div>
+
+  <div class="hero-content">
+    <div class="hero-top-bar">
+      <span><span class="tick">▸</span> [SANGAM_ELECTRICALS.v11]</span>
+      <span>HYDERABAD ↔ INDIA</span>
+    </div>
+
+    <h1>
+      <span class="word">WE WIRE</span>
+      <span class="word italic">the brands</span>
+      <span class="word glitch" data-text="YOU LOVE.">YOU LOVE.</span>
+    </h1>
+
+    <div class="hero-meta">
+      <div class="hero-meta-block">
+        <label>// WHAT</label>
+        <p>Turnkey <strong>electrical, HVAC & fit-out</strong> contractors for retail and commercial projects.</p>
+      </div>
+      <div class="hero-meta-block">
+        <label>// WHO</label>
+        <p>Bulgari · Nykaa · Fossil · Subway · Ethos · <strong>The Sleep Co.</strong></p>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#services" class="btn-volt">SEE CAPABILITIES</a>
+      <a href="tel:9000364477" class="btn-line">📞 9000364477 ↗</a>
+    </div>
+
+    <div class="hero-foot">
+      <div class="hero-foot-item">
+        <div class="hero-foot-num">11<span class="em">+</span></div>
+        <div class="hero-foot-label">Years</div>
+      </div>
+      <div class="hero-foot-item">
+        <div class="hero-foot-num">04</div>
+        <div class="hero-foot-label">States</div>
+      </div>
+      <div class="hero-foot-item">
+        <div class="hero-foot-num">09</div>
+        <div class="hero-foot-label">Services</div>
+      </div>
+      <div class="hero-foot-item">
+        <div class="hero-foot-num">A<span class="em">+</span></div>
+        <div class="hero-foot-label">Tier</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span class="scroll-cue-label">SCROLL</span>
+    <div class="scroll-cue-line"></div>
+  </div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">NYKAA</div>
+    <div class="ticker-item">FOSSIL</div>
+    <div class="ticker-item">SUBWAY</div>
+    <div class="ticker-item">BULGARI</div>
+    <div class="ticker-item">ETHOS</div>
+    <div class="ticker-item">THE SLEEP CO.</div>
+    <div class="ticker-item">TISSOT</div>
+    <div class="ticker-item">SEIKO</div>
+    <div class="ticker-item">NYKAA</div>
+    <div class="ticker-item">FOSSIL</div>
+    <div class="ticker-item">SUBWAY</div>
+    <div class="ticker-item">BULGARI</div>
+    <div class="ticker-item">ETHOS</div>
+    <div class="ticker-item">THE SLEEP CO.</div>
+    <div class="ticker-item">TISSOT</div>
+    <div class="ticker-item">SEIKO</div>
+  </div>
+</div>
+
+<!-- ═══ MANIFESTO ═══ -->
+<section class="manifesto reveal" id="about">
+  <div class="sec-tag">↳ MANIFESTO / 001</div>
+  <div class="manifesto-quote">
+    A brand doesn't open a store. <em>It opens an experience.</em> We make sure every light, every outlet, every cable behind that experience —<em>works.</em>
+  </div>
+  <div class="manifesto-sig">SANGAM ELECTRICALS · SINCE 2014</div>
+</section>
+
+<!-- ═══ VISION + MISSION ═══ -->
+<section>
+  <div class="reveal">
+    <div class="sec-tag">↳ NORTH STAR / 002</div>
+    <h2 class="sec-h2">Vision <span class="italic">&</span><br>Mission.</h2>
+  </div>
+
+  <div class="vm-grid reveal">
+    <div class="vm-card">
+      <div class="vm-card-num">// V_001</div>
+      <h3>Become the <span class="italic">benchmark</span></h3>
+      <p>Leading provider of innovative and sustainable electrical solutions in our market — consistently exceeding what the industry calls "standard."</p>
+    </div>
+    <div class="vm-card">
+      <div class="vm-card-num">// M_001</div>
+      <h3>Service that <span class="italic">stays</span></h3>
+      <p>Highest-quality execution with exceptional service — turning a one-time client into a ten-year relationship. Every site. Every brand.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section class="services" id="services">
+  <div class="reveal">
+    <div class="sec-tag">↳ CAPABILITIES / 003</div>
+    <h2 class="sec-h2">Nine trades.<br><span class="italic">One contractor.</span></h2>
+    <p class="sec-sub">Every scope a retail or commercial fit-out demands — handled in-house, no sub-contracting chaos, one PM accountable end-to-end.</p>
+  </div>
+
+  <div class="svc-list reveal">
+    <div class="svc-row">
+      <div class="svc-num">/01</div>
+      <div>
+        <div class="svc-name">New Construction Wiring</div>
+        <span class="svc-cat">FOUNDATIONAL · GREENFIELD</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/02</div>
+      <div>
+        <div class="svc-name">Residential & Commercial Wiring</div>
+        <span class="svc-cat">OUTLETS · SWITCHES · LIGHTING</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/03</div>
+      <div>
+        <div class="svc-name">CCTV & Networking</div>
+        <span class="svc-cat">SECURITY · LOW VOLTAGE</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/04</div>
+      <div>
+        <div class="svc-name">HVAC Installations</div>
+        <span class="svc-cat">CLIMATE · AIRFLOW</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/05</div>
+      <div>
+        <div class="svc-name">Firefighting Systems</div>
+        <span class="svc-cat">SAFETY · COMPLIANCE</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/06</div>
+      <div>
+        <div class="svc-name">Plumbing</div>
+        <span class="svc-cat">WATER · DRAINAGE</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/07</div>
+      <div>
+        <div class="svc-name">Civil Service</div>
+        <span class="svc-cat">STRUCTURE · MASONRY</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/08</div>
+      <div>
+        <div class="svc-name">False Ceiling & POP Work</div>
+        <span class="svc-cat">FINISH · INTERIOR</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-num">/09</div>
+      <div>
+        <div class="svc-name">Glass Fixing</div>
+        <span class="svc-cat">FACADE · DISPLAY</span>
+      </div>
+      <div class="svc-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLIENT WALL ═══ -->
+<section class="clients-sec" id="clients">
+  <div class="reveal">
+    <div class="sec-tag">↳ ROSTER / 004</div>
+    <h2 class="sec-h2">Brands that <span class="italic">don't compromise.</span></h2>
+    <p class="sec-sub">A short list of names that picked us. Hover — they light up. So do the stores we built for them.</p>
+  </div>
+
+  <div class="client-wall reveal">
+    <div class="client-tile">
+      <span class="client-num">/01</span>
+      <div class="client-name">NYKAA</div>
+      <div class="client-cat">BEAUTY · RETAIL</div>
+    </div>
+    <div class="client-tile">
+      <span class="client-num">/02</span>
+      <div class="client-name">BULGARI</div>
+      <div class="client-cat">LUXURY · JEWELLERY</div>
+    </div>
+    <div class="client-tile">
+      <span class="client-num">/03</span>
+      <div class="client-name">FOSSIL</div>
+      <div class="client-cat">FASHION · WATCHES</div>
+    </div>
+    <div class="client-tile">
+      <span class="client-num">/04</span>
+      <div class="client-name">SUBWAY</div>
+      <div class="client-cat">F&B · QSR</div>
+    </div>
+    <div class="client-tile">
+      <span class="client-num">/05</span>
+      <div class="client-name">ETHOS</div>
+      <div class="client-cat">LUXURY · WATCHES</div>
+    </div>
+    <div class="client-tile">
+      <span class="client-num">/06</span>
+      <div class="client-name">SLEEP CO.</div>
+      <div class="client-cat">MATTRESS · D2C</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section class="process">
+  <div class="reveal">
+    <div class="sec-tag">↳ METHOD / 005</div>
+    <h2 class="sec-h2">From walk-through<br><span class="italic">to handover.</span></h2>
+    <p class="sec-sub">Same playbook on every site. That's why retail rollout managers keep our number on speed-dial.</p>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="tl-item active">
+      <div class="tl-dot">01</div>
+      <div class="tl-step">// PHASE_001</div>
+      <div class="tl-title">Site Survey</div>
+      <div class="tl-desc">We walk the site, study drawings, flag every constraint before quoting. No vague estimates, no surprise variations on day 14.</div>
+    </div>
+    <div class="tl-item active">
+      <div class="tl-dot">02</div>
+      <div class="tl-step">// PHASE_002</div>
+      <div class="tl-title">BOQ & Schedule</div>
+      <div class="tl-desc">Itemized quotation with brand-approved materials. A schedule built backward from your launch date — every milestone visible.</div>
+    </div>
+    <div class="tl-item active">
+      <div class="tl-dot">03</div>
+      <div class="tl-step">// PHASE_003</div>
+      <div class="tl-title">Execute & Coordinate</div>
+      <div class="tl-desc">Trained crew. Daily progress reports. Wiring, HVAC, firefighting, ceiling, glass — all coordinated under one accountable PM.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">04</div>
+      <div class="tl-step">// PHASE_004</div>
+      <div class="tl-title">Handover + Support</div>
+      <div class="tl-desc">Testing, sign-off, documentation. And we still answer the phone six months after the cheque clears — that's the promise.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COVERAGE ═══ -->
+<section class="coverage">
+  <div class="reveal">
+    <div class="sec-tag">↳ COVERAGE / 006</div>
+    <h2 class="sec-h2">Four states.<br><span class="italic">One team.</span></h2>
+    <p class="sec-sub">Active deployment across South & West India. Regional crews, single point-of-contact, zero coordination chaos.</p>
+  </div>
+
+  <div class="states-grid reveal">
+    <div class="state-card">
+      <div class="state-card-corner"></div>
+      <div class="state-tag">/HQ</div>
+      <div class="state-name">TELANGANA</div>
+      <div class="state-cities">HYDERABAD</div>
+    </div>
+    <div class="state-card">
+      <div class="state-card-corner"></div>
+      <div class="state-tag">/02</div>
+      <div class="state-name">ANDHRA PRADESH</div>
+      <div class="state-cities">VIZAG · VIJAYAWADA</div>
+    </div>
+    <div class="state-card">
+      <div class="state-card-corner"></div>
+      <div class="state-tag">/03</div>
+      <div class="state-name">MAHARASHTRA</div>
+      <div class="state-cities">MUMBAI · PUNE</div>
+    </div>
+    <div class="state-card">
+      <div class="state-card-corner"></div>
+      <div class="state-tag">/04</div>
+      <div class="state-name">KARNATAKA</div>
+      <div class="state-cities">BENGALURU</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS GALLERY ═══ -->
+<!--
+  TO ADD REAL PHOTOS LATER:
+  On any .project-viz div, add class "has-img" and inline style:
+    style="background-image:url('your-photo.jpg')"
+  Example:
+    <div class="project-viz has-img" style="background-image:url('bulgari.jpg')">
+  The SVG circuit graphic will still show on top with screen blend mode (looks great).
+-->
+<section class="gallery" id="work">
+  <div class="reveal">
+    <div class="sec-tag">↳ FIELD / 007</div>
+    <h2 class="sec-h2">Recent <span class="italic">work.</span></h2>
+    <p class="sec-sub">Selected fit-outs — what we did, where, for whom. Photos available on request.</p>
+  </div>
+
+  <div class="project-grid reveal">
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0a0a0a"/>
+              <stop offset="100%" stop-color="#1a2a3a"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g1)"/>
+          <line x1="0" y1="60" x2="300" y2="60" stroke="#FFE800" stroke-width="0.5" opacity="0.3"/>
+          <line x1="0" y1="120" x2="300" y2="120" stroke="#FFE800" stroke-width="0.5" opacity="0.3"/>
+          <circle cx="60" cy="60" r="4" fill="#FFE800"/>
+          <circle cx="150" cy="60" r="4" fill="#FFE800"/>
+          <circle cx="240" cy="60" r="4" fill="#FFE800"/>
+          <circle cx="100" cy="120" r="4" fill="#00FF85"/>
+          <circle cx="200" cy="120" r="4" fill="#00FF85"/>
+        </svg>
+        <div class="project-overlay">// SHOWROOM</div>
+        <div class="project-watermark">SLEEP</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">MATTRESS RETAIL</span>
+        <div class="project-title">The Sleep Company</div>
+        <div class="project-desc">Full electrical, accent lighting and exterior signage for D2C mattress showroom.</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1a0a05"/>
+              <stop offset="100%" stop-color="#3a2010"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g2)"/>
+          <rect x="40" y="50" width="50" height="80" fill="none" stroke="#FF5C00" stroke-width="1"/>
+          <rect x="125" y="50" width="50" height="80" fill="none" stroke="#FF5C00" stroke-width="1"/>
+          <rect x="210" y="50" width="50" height="80" fill="none" stroke="#FF5C00" stroke-width="1"/>
+          <circle cx="65" cy="90" r="3" fill="#FFE800"/>
+          <circle cx="150" cy="90" r="3" fill="#FFE800"/>
+          <circle cx="235" cy="90" r="3" fill="#FFE800"/>
+        </svg>
+        <div class="project-overlay">// BOUTIQUE</div>
+        <div class="project-watermark">WATCH</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">LUXURY WATCHES</span>
+        <div class="project-title">Tissot · Seiko · Ethos</div>
+        <div class="project-desc">Display lighting, showcase illumination, accent wiring for luxury watch boutique.</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a0a1a"/>
+              <stop offset="100%" stop-color="#5a1a3a"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g3)"/>
+          <path d="M 0 90 L 80 90 L 100 70 L 200 70 L 220 110 L 300 110" fill="none" stroke="#FFE800" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="100" cy="70" r="4" fill="#FFE800"/>
+          <circle cx="220" cy="110" r="4" fill="#FFE800"/>
+          <rect x="135" y="50" width="30" height="40" fill="none" stroke="#FF5C00" stroke-width="1"/>
+        </svg>
+        <div class="project-overlay">// RETAIL</div>
+        <div class="project-watermark">NYKAA</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">BEAUTY RETAIL</span>
+        <div class="project-title">Nykaa On Trend</div>
+        <div class="project-desc">Track lighting, fire-exit signage, complete electrical for beauty concept store.</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0a2a0a"/>
+              <stop offset="100%" stop-color="#1a5a1a"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g4)"/>
+          <line x1="0" y1="50" x2="300" y2="50" stroke="#00FF85" stroke-width="0.5"/>
+          <line x1="0" y1="90" x2="300" y2="90" stroke="#FFE800" stroke-width="0.5"/>
+          <line x1="0" y1="130" x2="300" y2="130" stroke="#FFE800" stroke-width="0.5"/>
+          <circle cx="80" cy="50" r="3" fill="#00FF85"/>
+          <circle cx="180" cy="50" r="3" fill="#00FF85"/>
+          <circle cx="60" cy="90" r="3" fill="#FFE800"/>
+          <circle cx="160" cy="90" r="3" fill="#FFE800"/>
+          <circle cx="260" cy="90" r="3" fill="#FFE800"/>
+        </svg>
+        <div class="project-overlay">// F&B</div>
+        <div class="project-watermark">QSR</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">QUICK-SERVICE</span>
+        <div class="project-title">Subway Outlet</div>
+        <div class="project-desc">Kitchen wiring, HVAC integration, signage circuits for QSR fit-out.</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1a1a2a"/>
+              <stop offset="100%" stop-color="#3a3a5a"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g5)"/>
+          <circle cx="150" cy="90" r="50" fill="none" stroke="#FFE800" stroke-width="0.5"/>
+          <circle cx="150" cy="90" r="30" fill="none" stroke="#FF5C00" stroke-width="0.5"/>
+          <circle cx="150" cy="90" r="3" fill="#FFE800"/>
+          <line x1="50" y1="90" x2="100" y2="90" stroke="#FFE800" stroke-width="0.5"/>
+          <line x1="200" y1="90" x2="250" y2="90" stroke="#FFE800" stroke-width="0.5"/>
+        </svg>
+        <div class="project-overlay">// FASHION</div>
+        <div class="project-watermark">FOSSIL</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">FASHION RETAIL</span>
+        <div class="project-title">Fossil Showroom</div>
+        <div class="project-desc">Brand-spec lighting, ceiling finish, end-to-end electrical execution.</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-viz">
+        <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a1a0a"/>
+              <stop offset="100%" stop-color="#5a3a1a"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="180" fill="url(#g6)"/>
+          <polygon points="150,40 200,90 150,140 100,90" fill="none" stroke="#FFE800" stroke-width="1"/>
+          <polygon points="150,55 185,90 150,125 115,90" fill="none" stroke="#FF5C00" stroke-width="0.5"/>
+          <circle cx="150" cy="90" r="3" fill="#FFE800"/>
+        </svg>
+        <div class="project-overlay">// LUXURY</div>
+        <div class="project-watermark">BVLG</div>
+      </div>
+      <div class="project-body">
+        <span class="project-cat">LUXURY JEWELLERY</span>
+        <div class="project-title">Bulgari Boutique</div>
+        <div class="project-desc">Premium electrical, finish work, lighting for luxury jewellery boutique.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ BIG CTA ═══ -->
+<div class="big-cta">
+  <div class="big-cta-content">
+    <div class="big-cta-tag">// 24/7 / SITE-READY</div>
+    <h2>Got a site?<br><span class="italic">Let's wire it.</span></h2>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:rgba(0,0,0,0.7);max-width:380px;line-height:1.7">
+      ONE CALL. WE QUOTE, SCHEDULE, EXECUTE. NO MIDDLEMEN. NO BS.
+    </p>
+    <div class="big-cta-buttons">
+      <a href="tel:9000364477" class="cta-call">
+        <span class="cta-call-icon">📞</span>
+        9000364477
+      </a>
+      <a href="mailto:sangamelectricals2022@gmail.com" class="cta-mail">✉ EMAIL US</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RFP / PROJECT BRIEF ═══ -->
+<section class="rfp-section" id="brief">
+  <div class="reveal">
+    <div class="sec-tag">↳ BRIEF / 008</div>
+    <h2 class="sec-h2">Send a <span class="italic">brief.</span></h2>
+    <p class="sec-sub">Faster than emailing a deck. Tell us the site, the brand, the deadline — we'll respond with a BOQ within 48 hours.</p>
+  </div>
+
+  <div class="rfp-wrap reveal">
+    <div class="rfp-aside">
+      <h3>Why send a <span class="italic">brief?</span></h3>
+      <p>RFPs and procurement teams — this is the fastest path to a quotation. Everything lands in our inbox, structured, ready to action.</p>
+      <ul>
+        <li>Same-day acknowledgement</li>
+        <li>BOQ delivered in 48 hours</li>
+        <li>Brand-approved materials</li>
+        <li>Single PM, end-to-end</li>
+        <li>Multi-state rollout capability</li>
+      </ul>
+    </div>
+
+    <form class="rfp-form" id="briefForm" onsubmit="sendBrief(event)">
+      <div class="rfp-row">
+        <div class="rfp-field">
+          <label>// NAME</label>
+          <input type="text" id="bName" placeholder="Your name" required />
+        </div>
+        <div class="rfp-field">
+          <label>// COMPANY</label>
+          <input type="text" id="bCompany" placeholder="Brand / Company" />
+        </div>
+      </div>
+
+      <div class="rfp-row">
+        <div class="rfp-field">
+          <label>// PHONE</label>
+          <input type="tel" id="bPhone" placeholder="+91 ..." required />
+        </div>
+        <div class="rfp-field">
+          <label>// CITY</label>
+          <input type="text" id="bCity" placeholder="Hyderabad, Mumbai..." />
+        </div>
+      </div>
+
+      <div class="rfp-field">
+        <label>// PROJECT TYPE</label>
+        <select id="bType">
+          <option value="Retail fit-out">Retail fit-out</option>
+          <option value="F&B / Restaurant">F&B / Restaurant</option>
+          <option value="Showroom / Boutique">Showroom / Boutique</option>
+          <option value="Office / Commercial">Office / Commercial</option>
+          <option value="Residential">Residential</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="rfp-field">
+        <label>// DEADLINE</label>
+        <input type="text" id="bDeadline" placeholder="Store opening date or target" />
+      </div>
+
+      <div class="rfp-field">
+        <label>// SCOPE / NOTES</label>
+        <textarea id="bScope" placeholder="Site size, scope (wiring / HVAC / firefighting / fit-out), any drawings ready..."></textarea>
+      </div>
+
+      <button type="submit" class="rfp-submit">▸ SEND BRIEF →</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <div class="sec-tag">↳ CONNECT / 009</div>
+    <h2 class="sec-h2">Talk to <span class="italic">us.</span></h2>
+    <p class="sec-sub">Phone is fastest. Email for RFPs and BOQs. We respond same day.</p>
+  </div>
+
+  <div class="contact-grid reveal">
+    <a class="contact-cell" href="tel:9000364477">
+      <div>
+        <div class="contact-cell-label">// DIRECT LINE</div>
+        <div class="contact-val">9000364477</div>
+      </div>
+      <div class="contact-cell-arrow">↗</div>
+    </a>
+    <a class="contact-cell" href="mailto:sangamelectricals2022@gmail.com">
+      <div>
+        <div class="contact-cell-label">// EMAIL</div>
+        <div class="contact-val">sangamelectricals2022@gmail.com</div>
+      </div>
+      <div class="contact-cell-arrow">↗</div>
+    </a>
+    <div class="contact-cell" style="cursor:default">
+      <div>
+        <div class="contact-cell-label">// SERVICE AREA</div>
+        <div class="contact-val">TG · AP · MH · KA</div>
+      </div>
+      <div class="contact-cell-arrow">●</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-top">
+    <div>
+      <div class="foot-brand">
+        <div class="foot-brand-bolt"></div>
+        <div class="foot-brand-text">SANGAM ELECTRICALS</div>
+      </div>
+      <p class="foot-tag">
+        ELECTRICAL CONTRACTORS · EST. 2014<br>
+        ENGINEERED FOR THE BRANDS<br>
+        THAT BUILD INDIA'S RETAIL.
+      </p>
+    </div>
+    <div>
+      <div class="foot-tag" style="margin-bottom:12px;color:var(--volt)">// QUICK_LINKS</div>
+      <p class="foot-tag">
+        <a href="#about" style="color:inherit;text-decoration:none;display:block;padding:3px 0">→ MANIFESTO</a>
+        <a href="#services" style="color:inherit;text-decoration:none;display:block;padding:3px 0">→ CAPABILITIES</a>
+        <a href="#clients" style="color:inherit;text-decoration:none;display:block;padding:3px 0">→ CLIENTS</a>
+        <a href="#work" style="color:inherit;text-decoration:none;display:block;padding:3px 0">→ RECENT WORK</a>
+        <a href="#contact" style="color:inherit;text-decoration:none;display:block;padding:3px 0">→ CONTACT</a>
+      </p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 · ALL RIGHTS RESERVED</span>
+    <span>WIRED WITH <span class="heart">⚡</span> IN HYDERABAD</span>
+  </div>
+</footer>
+
+<!-- ═══ WHATSAPP FLOAT ═══ -->
+<a class="wa-float" href="https://wa.me/919000364477?text=Hi%20Sangam%2C%20I%27d%20like%20to%20discuss%20an%20electrical%20project." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" width="30" height="30" fill="white">
+    <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.367.696 4.566 1.887 6.418L4 29l7.793-1.844A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.6c-1.81 0-3.582-.49-5.125-1.418l-.367-.22-4.617 1.094 1.117-4.484-.238-.379A9.6 9.6 0 1 1 16.001 24.6zm5.55-7.18c-.305-.152-1.797-.887-2.074-.988-.277-.102-.48-.152-.683.152-.203.305-.785.988-.961 1.191-.176.203-.355.227-.66.075-.305-.152-1.285-.473-2.45-1.508-.906-.808-1.519-1.804-1.695-2.109-.176-.305-.018-.469.133-.621.137-.137.305-.355.457-.532.152-.176.203-.305.305-.508.102-.203.05-.379-.025-.531-.075-.152-.683-1.648-.937-2.258-.247-.594-.5-.512-.683-.523-.176-.008-.379-.01-.582-.01-.203 0-.531.075-.81.379-.277.305-1.062 1.04-1.062 2.531s1.086 2.938 1.238 3.137c.152.203 2.137 3.262 5.176 4.574.723.313 1.286.5 1.726.64.725.231 1.385.198 1.906.12.582-.086 1.797-.734 2.05-1.445.254-.711.254-1.32.179-1.445-.075-.125-.277-.203-.582-.355z"/>
+  </svg>
+</a>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Spotlight follow (desktop only — saves battery on mobile)
+if (window.matchMedia('(hover: hover)').matches) {
+  const hero = document.querySelector('.hero');
+  const spot = document.getElementById('spotlight');
+  if (hero && spot) {
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      spot.style.left = (e.clientX - r.left) + 'px';
+      spot.style.top = (e.clientY - r.top) + 'px';
+      spot.style.opacity = '1';
+    });
+    hero.addEventListener('mouseleave', () => { spot.style.opacity = '0'; });
+  }
+}
+
+// Hide scroll cue after scrolling
+window.addEventListener('scroll', () => {
+  const cue = document.querySelector('.scroll-cue');
+  if (cue) {
+    cue.style.opacity = window.scrollY > 100 ? '0' : '0.5';
+    cue.style.transition = 'opacity 0.4s';
+  }
+}, { passive: true });
+
+// Project brief — compile into a mailto so it works without a backend
+function sendBrief(e) {
+  e.preventDefault();
+  const name = document.getElementById('bName').value.trim();
+  const company = document.getElementById('bCompany').value.trim();
+  const phone = document.getElementById('bPhone').value.trim();
+  const city = document.getElementById('bCity').value.trim();
+  const type = document.getElementById('bType').value;
+  const deadline = document.getElementById('bDeadline').value.trim();
+  const scope = document.getElementById('bScope').value.trim();
+
+  const subject = `Project Brief — ${company || name} — ${type}`;
+  const body =
+    `NAME: ${name}\n` +
+    `COMPANY: ${company}\n` +
+    `PHONE: ${phone}\n` +
+    `CITY: ${city}\n` +
+    `PROJECT TYPE: ${type}\n` +
+    `DEADLINE: ${deadline}\n\n` +
+    `SCOPE / NOTES:\n${scope}\n\n` +
+    `— Sent via sangamelectricals.com`;
+
+  const mailto = `mailto:sangamelectricals2022@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+</script>
+</body>
+</html>
