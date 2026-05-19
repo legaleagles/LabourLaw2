@@ -27,24 +27,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   background:rgba(10,22,40,0.96);backdrop-filter:blur(20px);
-  padding:12px 20px;display:flex;align-items:center;gap:10px;
+  padding:10px 14px;display:flex;align-items:center;gap:8px;
   border-bottom:1px solid rgba(200,150,12,0.2);
 }
-.nav-brand{font-family:'Playfair Display',serif;color:white;font-size:17px;font-weight:900;flex:1;letter-spacing:-0.3px;}
+.nav-brand{
+  font-family:'Playfair Display',serif;color:white;
+  font-size:15px;font-weight:900;flex:1;min-width:0;
+  letter-spacing:-0.3px;line-height:1.25;white-space:nowrap;
+}
 .nav-brand span{color:var(--gold-light);}
 .nav-pill{
-  color:rgba(255,255,255,0.6);font-size:11px;font-weight:600;
-  padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);
-  text-decoration:none;transition:all 0.2s;
+  color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;
+  padding:5px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);
+  text-decoration:none;transition:all 0.2s;white-space:nowrap;
 }
 .nav-pill:hover{color:white;border-color:rgba(255,255,255,0.4);}
 .nav-notes{
   background:linear-gradient(135deg,var(--violet),var(--violet2));
-  color:white;font-size:11px;font-weight:700;
-  padding:6px 13px;border-radius:20px;text-decoration:none;transition:all 0.2s;
+  color:white;font-size:10px;font-weight:700;
+  padding:6px 11px;border-radius:20px;text-decoration:none;
+  transition:all 0.2s;white-space:nowrap;
 }
 .nav-notes:hover{filter:brightness(1.12);transform:translateY(-1px);}
-.nav-yt{background:#FF0000;color:white;font-size:11px;font-weight:700;padding:6px 13px;border-radius:20px;text-decoration:none;}
+.nav-yt{background:#FF0000;color:white;font-size:10px;font-weight:700;padding:6px 11px;border-radius:20px;text-decoration:none;white-space:nowrap;}
 
 /* HERO */
 .hero{
@@ -184,22 +189,25 @@ nav{
 .notes-section .section-h{color:white;}
 .notes-section .section-p{color:rgba(255,255,255,0.4);}
 
-/* subject tab strip — horizontally scrollable */
+/* subject tab strip — 2-row grid on mobile, no hidden tabs */
 .notes-tabs{
-  display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
   margin-bottom:20px;position:relative;z-index:1;
 }
-.notes-tabs::-webkit-scrollbar{display:none;}
+@media(min-width:520px){
+  .notes-tabs{grid-template-columns:repeat(5,1fr);}
+}
 
 .ntab{
-  flex-shrink:0;display:flex;align-items:center;gap:7px;
-  padding:10px 18px;border-radius:50px;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  padding:10px 8px;border-radius:12px;
   border:1px solid rgba(255,255,255,0.1);
   background:rgba(255,255,255,0.04);
-  color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;
-  cursor:pointer;transition:all 0.25s;white-space:nowrap;
-  -webkit-user-select:none;user-select:none;
+  color:rgba(255,255,255,0.5);font-size:11px;font-weight:600;
+  cursor:pointer;transition:all 0.25s;text-align:center;
+  -webkit-user-select:none;user-select:none;line-height:1.3;
 }
 .ntab:hover:not(.ntab-soon){background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.2);}
 .ntab.active{
@@ -207,15 +215,20 @@ nav{
   border-color:transparent;color:white;
   box-shadow:0 4px 18px rgba(91,33,182,0.45);
 }
-.ntab-ready-dot{width:6px;height:6px;background:var(--green);border-radius:50%;}
+.ntab-ready-dot{width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0;}
 .ntab-soon{opacity:0.38;cursor:not-allowed;}
 .ntab-soon-label{font-size:9px;background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:8px;margin-left:2px;}
 
 /* panels */
 .notes-panels{position:relative;z-index:1;}
 .npanel{display:none;}
-.npanel.active{display:block;animation:panelIn 0.32s cubic-bezier(0.16,1,0.3,1);}
+.npanel.active{display:block !important;opacity:1 !important;visibility:visible !important;animation:panelIn 0.32s cubic-bezier(0.16,1,0.3,1);}
 @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.notes-section .reveal,.notes-section .reveal.visible{opacity:1 !important;transform:none !important;}
+/* Ensure notes hub always visible */
+.notes-section .notes-tabs,.notes-section .notes-panels{opacity:1 !important;transform:none !important;}
+
 
 /* panel header strip */
 .npanel-head{
@@ -273,6 +286,21 @@ nav{
 .unit-card-info-title{color:var(--violet3);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .unit-card-info ul{list-style:none;display:flex;flex-direction:column;gap:4px;}
 .unit-card-info li{color:rgba(255,255,255,0.5);font-size:12px;display:flex;align-items:flex-start;gap:6px;line-height:1.35;}
+
+/* download all button */
+.dl-all-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(34,197,94,0.08));
+  border:1px solid rgba(34,197,94,0.35);
+  border-radius:14px;padding:14px 16px;
+  color:#4ade80;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all 0.22s;text-align:center;
+  text-decoration:none;
+}
+.dl-all-btn:hover{background:linear-gradient(135deg,rgba(34,197,94,0.25),rgba(34,197,94,0.14));border-color:rgba(34,197,94,0.6);transform:translateY(-1px);}
+.dl-all-btn:active{transform:scale(0.98);}
+.dl-all-icon{font-size:18px;}
 
 /* coming soon panel */
 .npanel-soon{
@@ -352,7 +380,7 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">⚖ Law<span>Sticker</span> AI</div>
+  <div class="nav-brand"><span style="font-size:13px;opacity:0.85">⚖</span> Law<span>Sticker</span> AI</div>
   <a class="nav-pill" href="#subjects">Subjects</a>
   <a class="nav-notes" href="#notes">📄 Notes Hub</a>
   <a class="nav-yt" href="https://youtube.com/@lawstickerai" target="_blank">▶ YouTube</a>
@@ -501,107 +529,63 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
 ═══════════════════════════════════════════════ -->
 <section class="notes-section" id="notes">
 
-  <div class="tc reveal" style="position:relative;z-index:1;">
+  <div class="tc" style="position:relative;z-index:1;">
     <div class="section-eyebrow">Free Download</div>
     <div class="section-h">Notes Hub</div>
     <div class="section-p">Choose a subject. Choose a unit. Download exactly what you need — nothing more.</div>
   </div>
 
   <!-- Tab strip -->
-  <div class="notes-tabs reveal">
-    <button class="ntab active" id="tab-ipl" onclick="switchTab('ipl',this)">
-      <span class="ntab-ready-dot"></span> IP Law
-    </button>
-    <button class="ntab" id="tab-ll2" onclick="switchTab('ll2',this)">
-      <span class="ntab-ready-dot"></span> Labour II
-    </button>
-    <button class="ntab" id="tab-pil" onclick="switchTab('pil',this)">
-      <span class="ntab-ready-dot"></span> Intl. Law
-    </button>
-    <button class="ntab" id="tab-stat" onclick="switchTab('stat',this)">
-      <span class="ntab-ready-dot"></span> Statutes
-    </button>
-    <button class="ntab" id="tab-land" onclick="switchTab('land',this)">
-      <span class="ntab-ready-dot"></span> Land Laws
-    </button>
+  <div class="notes-tabs">
+    <button class="ntab active" id="tab-ipl" onclick="switchTab('ipl',this)"><span class="ntab-ready-dot"></span> ⚙️ IP Law</button>
+    <button class="ntab" id="tab-ll2" onclick="switchTab('ll2',this)"><span class="ntab-ready-dot"></span> 👷 Labour II</button>
+    <button class="ntab" id="tab-pil" onclick="switchTab('pil',this)"><span class="ntab-ready-dot"></span> 🌍 Intl. Law</button>
+    <button class="ntab" id="tab-stat" onclick="switchTab('stat',this)"><span class="ntab-ready-dot"></span> 📜 Statutes</button>
+    <button class="ntab" id="tab-land" onclick="switchTab('land',this)"><span class="ntab-ready-dot"></span> 🏡 Land Laws</button>
   </div>
 
-  <div class="notes-panels reveal reveal-delay-1">
+  <div class="notes-panels">
 
-    <!-- IPL -->
+    <!-- IP Law -->
     <div class="npanel active" id="panel-ipl">
       <div class="npanel-head">
-        <div class="npanel-icon">⚖️</div>
+        <div class="npanel-icon">⚙️</div>
         <div>
           <div class="npanel-title">Intellectual Property Law</div>
           <div class="npanel-sub">Paper V · 4th Semester · 5 units · Osmania University</div>
         </div>
         <div class="npanel-badge"><span class="npanel-badge-dot"></span>All 5 Ready</div>
       </div>
-
+      <button class="dl-all-btn" onclick="dlUnit('IPL',0)">
+        <span class="dl-all-icon">📥</span>
+        <span>Download All 5 Units — Intellectual Property Law (Full PDF)</span>
+      </button>
       <div class="units-grid">
-
         <div class="unit-card" onclick="dlUnit('IPL',1)">
-          <div class="unit-num">Unit 1</div>
-          <div class="unit-emoji">🌱</div>
+          <div class="unit-num">Unit 1</div><div class="unit-emoji">🌱</div>
           <div class="unit-name">Introduction to Intellectual Property</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',1)">⬇ Get</button>
-          </div>
+          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',1)">⬇ Get</button></div>
         </div>
-
         <div class="unit-card" onclick="dlUnit('IPL',2)">
-          <div class="unit-num">Unit 2</div>
-          <div class="unit-emoji">🌐</div>
-          <div class="unit-name">International IP Regime & Treaties</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',2)">⬇ Get</button>
-          </div>
+          <div class="unit-num">Unit 2</div><div class="unit-emoji">🌐</div>
+          <div class="unit-name">International IP Regime &amp; Treaties</div>
+          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',2)">⬇ Get</button></div>
         </div>
-
         <div class="unit-card" onclick="dlUnit('IPL',3)">
-          <div class="unit-num">Unit 3</div>
-          <div class="unit-emoji">✍️</div>
+          <div class="unit-num">Unit 3</div><div class="unit-emoji">✍️</div>
           <div class="unit-name">Law of Copyright</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',3)">⬇ Get</button>
-          </div>
+          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',3)">⬇ Get</button></div>
         </div>
-
         <div class="unit-card" onclick="dlUnit('IPL',4)">
-          <div class="unit-num">Unit 4</div>
-          <div class="unit-emoji">™️</div>
-          <div class="unit-name">Trademarks & Industrial Designs</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',4)">⬇ Get</button>
-          </div>
+          <div class="unit-num">Unit 4</div><div class="unit-emoji">™️</div>
+          <div class="unit-name">Trademarks &amp; Industrial Designs</div>
+          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',4)">⬇ Get</button></div>
         </div>
-
         <div class="unit-card" onclick="dlUnit('IPL',5)">
-          <div class="unit-num">Unit 5</div>
-          <div class="unit-emoji">🔬</div>
+          <div class="unit-num">Unit 5</div><div class="unit-emoji">🔬</div>
           <div class="unit-name">Law of Patents</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',5)">⬇ Get</button>
-          </div>
+          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',5)">⬇ Get</button></div>
         </div>
-
-        <div class="unit-card" onclick="dlUnit('IPL',0)">
-          <div class="unit-num">Full Notes</div>
-          <div class="unit-emoji">📚</div>
-          <div class="unit-name">All 5 Units — Complete PDF</div>
-          <div class="unit-footer">
-            <span class="unit-size">PDF</span>
-            <button class="unit-dl" onclick="event.stopPropagation();dlUnit('IPL',0)">⬇ Get</button>
-          </div>
-        </div>
-
-        <!-- What's inside — static info card -->
         <div class="unit-card-info">
           <div class="unit-card-info-title">Each unit includes</div>
           <ul>
@@ -609,11 +593,10 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
             <li>📄 Part B essays (15M)</li>
             <li>⚖️ Part C IRAC problems (10M)</li>
             <li>📌 Landmark cases</li>
-            <li>💡 Mnemonics & trap Qs</li>
+            <li>💡 Mnemonics &amp; trap Qs</li>
             <li>⭐ Star-rated topics</li>
           </ul>
         </div>
-
       </div>
     </div><!-- /panel-ipl -->
 
@@ -627,6 +610,10 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
         </div>
         <div class="npanel-badge"><span class="npanel-badge-dot"></span>All 5 Ready</div>
       </div>
+      <button class="dl-all-btn" onclick="dlUnit('LL2',0)">
+        <span class="dl-all-icon">📥</span>
+        <span>Download All 5 Units — Labour Law II (Full PDF)</span>
+      </button>
       <div class="units-grid">
         <div class="unit-card" onclick="dlUnit('LL2',1)">
           <div class="unit-num">Unit 1</div><div class="unit-emoji">💰</div>
@@ -653,11 +640,6 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
           <div class="unit-name">Factories Act &amp; Special Legislations</div>
           <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('LL2',5)">⬇ Get</button></div>
         </div>
-        <div class="unit-card" onclick="dlUnit('LL2',0)">
-          <div class="unit-num">Full Notes</div><div class="unit-emoji">📚</div>
-          <div class="unit-name">All 5 Units — Complete PDF</div>
-          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('LL2',0)">⬇ Get</button></div>
-        </div>
         <div class="unit-card-info">
           <div class="unit-card-info-title">Each unit includes</div>
           <ul>
@@ -672,7 +654,7 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
       </div>
     </div><!-- /panel-ll2 -->
 
-    <!-- PIL -->
+    <!-- Public International Law -->
     <div class="npanel" id="panel-pil">
       <div class="npanel-head">
         <div class="npanel-icon">🌍</div>
@@ -682,6 +664,10 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
         </div>
         <div class="npanel-badge"><span class="npanel-badge-dot"></span>All 5 Ready</div>
       </div>
+      <button class="dl-all-btn" onclick="dlUnit('PIL',0)">
+        <span class="dl-all-icon">📥</span>
+        <span>Download All 5 Units — Public International Law (Full PDF)</span>
+      </button>
       <div class="units-grid">
         <div class="unit-card" onclick="dlUnit('PIL',1)">
           <div class="unit-num">Unit 1</div><div class="unit-emoji">📖</div>
@@ -708,11 +694,6 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
           <div class="unit-name">International Organizations</div>
           <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('PIL',5)">⬇ Get</button></div>
         </div>
-        <div class="unit-card" onclick="dlUnit('PIL',0)">
-          <div class="unit-num">Full Notes</div><div class="unit-emoji">📚</div>
-          <div class="unit-name">All 5 Units — Complete PDF</div>
-          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('PIL',0)">⬇ Get</button></div>
-        </div>
         <div class="unit-card-info">
           <div class="unit-card-info-title">Each unit includes</div>
           <ul>
@@ -727,7 +708,7 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
       </div>
     </div><!-- /panel-pil -->
 
-    <!-- Statutes -->
+    <!-- Interpretation of Statutes -->
     <div class="npanel" id="panel-stat">
       <div class="npanel-head">
         <div class="npanel-icon">📜</div>
@@ -737,6 +718,10 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
         </div>
         <div class="npanel-badge"><span class="npanel-badge-dot"></span>All 5 Ready</div>
       </div>
+      <button class="dl-all-btn" onclick="dlUnit('STAT',0)">
+        <span class="dl-all-icon">📥</span>
+        <span>Download All 5 Units — Interpretation of Statutes (Full PDF)</span>
+      </button>
       <div class="units-grid">
         <div class="unit-card" onclick="dlUnit('STAT',1)">
           <div class="unit-num">Unit 1</div><div class="unit-emoji">📘</div>
@@ -763,11 +748,6 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
           <div class="unit-name">Repeal &amp; Amending Statutes</div>
           <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('STAT',5)">⬇ Get</button></div>
         </div>
-        <div class="unit-card" onclick="dlUnit('STAT',0)">
-          <div class="unit-num">Full Notes</div><div class="unit-emoji">📚</div>
-          <div class="unit-name">All 5 Units — Complete PDF</div>
-          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('STAT',0)">⬇ Get</button></div>
-        </div>
         <div class="unit-card-info">
           <div class="unit-card-info-title">Each unit includes</div>
           <ul>
@@ -792,6 +772,10 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
         </div>
         <div class="npanel-badge"><span class="npanel-badge-dot"></span>All 5 Ready</div>
       </div>
+      <button class="dl-all-btn" onclick="dlUnit('LAND',0)">
+        <span class="dl-all-icon">📥</span>
+        <span>Download All 5 Units — Land Laws (Full PDF)</span>
+      </button>
       <div class="units-grid">
         <div class="unit-card" onclick="dlUnit('LAND',1)">
           <div class="unit-num">Unit 1</div><div class="unit-emoji">📋</div>
@@ -817,11 +801,6 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
           <div class="unit-num">Unit 5</div><div class="unit-emoji">⚖️</div>
           <div class="unit-name">Alienation &amp; Dispute Resolution</div>
           <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('LAND',5)">⬇ Get</button></div>
-        </div>
-        <div class="unit-card" onclick="dlUnit('LAND',0)">
-          <div class="unit-num">Full Notes</div><div class="unit-emoji">📚</div>
-          <div class="unit-name">All 5 Units — Complete PDF</div>
-          <div class="unit-footer"><span class="unit-size">PDF</span><button class="unit-dl" onclick="event.stopPropagation();dlUnit('LAND',0)">⬇ Get</button></div>
         </div>
         <div class="unit-card-info">
           <div class="unit-card-info-title">Each unit includes</div>
