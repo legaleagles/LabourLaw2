@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPL Visual Study — June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1F3864; --gold:#C8A951; --teal:#1A6B72; --red:#C0392B; --green:#1E8449;
+  --orange:#E67E22; --purple:#6A1B9A;
+  --lnavy:#E8EEF7; --lgold:#FFF8E1; --lteal:#E0F2F1; --lred:#FDECEA;
+  --lgreen:#E9F7EF; --lorange:#FEF9E7;
+  --bg:#0D1117; --surface:#161B22; --surface2:#1C2430; --border:#30363D;
+  --text:#E6EDF3; --muted:#8B949E;
+  --glow-gold:rgba(200,169,81,0.3); --glow-teal:rgba(26,107,114,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── HEADER ── */
+.hero{background:linear-gradient(135deg,#0D1117 0%,#1A2535 50%,#0D1A2A 100%);padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--gold)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,169,81,0.15) 0%,transparent 60%)}
+.hero-badge{display:inline-block;background:rgba(200,169,81,0.15);border:1px solid var(--gold);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 14px;border-radius:20px;letter-spacing:2px;margin-bottom:16px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px}
+.hero h1 span{color:var(--gold)}
+.hero p{color:var(--muted);font-size:15px;max-width:500px;margin:0 auto 20px}
+.hero-stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--gold)}
+.stat-l{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* ── NAV ── */
+.nav-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:100;overflow-x:auto;white-space:nowrap}
+.nav-inner{display:inline-flex;gap:2px;padding:8px 0}
+.nav-btn{background:none;border:none;color:var(--muted);font-family:'Source Serif 4',serif;font-size:13px;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-btn:hover,.nav-btn.active{background:rgba(200,169,81,0.12);color:var(--gold)}
+.nav-unit{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--orange);margin:0 6px;opacity:.6}
+
+/* ── LAYOUT ── */
+.main{max-width:900px;margin:0 auto;padding:24px 16px 60px}
+.unit-section{display:none}
+.unit-section.active{display:block}
+.unit-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding:20px 24px;background:linear-gradient(135deg,var(--surface),var(--surface2));border-left:4px solid var(--gold);border-radius:0 12px 12px 0}
+.unit-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.unit-title{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-top:2px}
+
+/* ── TOPIC CARD ── */
+.topic-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:28px;overflow:hidden}
+.topic-header{padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s}
+.topic-header:hover{background:var(--surface2)}
+.topic-tag{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(200,169,81,0.15);color:var(--gold);padding:3px 10px;border-radius:4px;white-space:nowrap}
+.topic-title{font-family:'Playfair Display',serif;font-size:16px;color:#fff;flex:1}
+.stars{color:var(--gold);font-size:13px;white-space:nowrap}
+.chevron{color:var(--muted);font-size:18px;transition:transform .3s}
+.topic-header.open .chevron{transform:rotate(180deg)}
+.topic-body{display:none;padding:0 20px 20px}
+.topic-body.open{display:block}
+
+/* ── VISUAL ELEMENTS ── */
+
+/* Memory Hook */
+.memory-hook{background:linear-gradient(135deg,rgba(200,169,81,0.08),rgba(200,169,81,0.03));border:1px solid rgba(200,169,81,0.3);border-radius:10px;padding:16px 20px;margin-bottom:18px;position:relative}
+.memory-hook::before{content:'💡';position:absolute;top:-10px;left:16px;background:var(--bg);padding:0 6px;font-size:16px}
+.memory-hook-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+.memory-hook-text{font-size:15px;color:var(--text);line-height:1.6;font-style:italic}
+
+/* Visual Grid — 2 or 3 col */
+.vgrid{display:grid;gap:12px;margin-bottom:18px}
+.vgrid-2{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.vgrid-3{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.vgrid-4{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+
+/* Pill cards */
+.pill{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center;transition:transform .2s,border-color .2s}
+.pill:hover{transform:translateY(-2px)}
+.pill-icon{font-size:26px;margin-bottom:8px;display:block}
+.pill-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.pill-text{font-size:13px;color:var(--muted);line-height:1.5}
+.pill.navy{border-color:rgba(31,56,100,0.6);background:rgba(31,56,100,0.15)}
+.pill.teal{border-color:rgba(26,107,114,0.5);background:rgba(26,107,114,0.1)}
+.pill.gold{border-color:rgba(200,169,81,0.5);background:rgba(200,169,81,0.08)}
+.pill.red{border-color:rgba(192,57,43,0.5);background:rgba(192,57,43,0.08)}
+.pill.green{border-color:rgba(30,132,73,0.5);background:rgba(30,132,73,0.08)}
+
+/* Flow diagram */
+.flow{display:flex;align-items:center;gap:0;margin-bottom:18px;flex-wrap:wrap}
+.flow-step{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.4;flex:1;min-width:100px;text-align:center}
+.flow-step strong{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);margin-bottom:3px;letter-spacing:1px}
+.flow-arrow{color:var(--gold);font-size:20px;padding:0 4px;flex-shrink:0}
+@media(max-width:600px){.flow{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:13px}
+.comp-table th{background:var(--navy);color:#fff;padding:10px 12px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px}
+.comp-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.comp-table tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.comp-table tr:hover td{background:rgba(200,169,81,0.04)}
+.comp-key{font-weight:600;color:var(--gold);font-size:12px}
+
+/* Case story card */
+.case-card{border:1px solid rgba(200,169,81,0.25);border-radius:10px;overflow:hidden;margin-bottom:18px}
+.case-header{background:linear-gradient(135deg,rgba(31,56,100,0.6),rgba(26,107,114,0.3));padding:14px 18px;display:flex;gap:12px;align-items:flex-start}
+.case-icon{font-size:28px;flex-shrink:0}
+.case-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;margin-bottom:2px}
+.case-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold)}
+.case-body{padding:16px 18px;display:grid;gap:10px}
+.case-row{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:start;font-size:13px;line-height:1.6}
+.case-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:4px;text-align:center;margin-top:2px}
+.label-story{background:rgba(192,57,43,0.2);color:#e57373}
+.label-held{background:rgba(30,132,73,0.2);color:#66bb6a}
+.label-why{background:rgba(106,27,154,0.2);color:#ab47bc}
+.label-exam{background:rgba(200,169,81,0.2);color:var(--gold)}
+
+/* Section dividers */
+.section-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin:22px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(26,107,114,0.4),transparent)}
+
+/* Alert boxes */
+.box{border-radius:8px;padding:14px 16px;margin-bottom:14px;font-size:14px;line-height:1.6}
+.box-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.box.alert{background:rgba(192,57,43,0.08);border-left:3px solid var(--red)}
+.box.alert .box-label{color:var(--red)}
+.box.key{background:rgba(200,169,81,0.07);border-left:3px solid var(--gold)}
+.box.key .box-label{color:var(--gold)}
+.box.tip{background:rgba(31,56,100,0.15);border-left:3px solid var(--navy)}
+.box.tip .box-label{color:#7ca7d8}
+.box.recall{background:var(--navy);border:1px solid var(--gold)}
+.box.recall .box-label{color:var(--gold)}
+.box.recall .box-content{color:#d0dce8;font-size:13px}
+.box.twist{background:rgba(230,126,34,0.07);border-left:3px solid var(--orange)}
+.box.twist .box-label{color:var(--orange)}
+
+/* Spectrum bar */
+.spectrum{margin-bottom:18px}
+.spectrum-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px}
+.spectrum-bar{display:flex;border-radius:8px;overflow:hidden}
+.sp-seg{flex:1;padding:10px 8px;text-align:center;font-size:11px;line-height:1.4}
+.sp-seg:nth-child(1){background:#c0392b;color:#fff}
+.sp-seg:nth-child(2){background:#d35400;color:#fff}
+.sp-seg:nth-child(3){background:#f39c12;color:#000}
+.sp-seg:nth-child(4){background:#27ae60;color:#fff}
+.sp-seg:nth-child(5){background:#1a6b72;color:#fff}
+.sp-seg strong{display:block;font-weight:700;margin-bottom:2px}
+
+/* Timeline */
+.timeline{position:relative;padding-left:24px;margin-bottom:18px}
+.timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:linear-gradient(to bottom,var(--gold),var(--teal))}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);margin-bottom:2px}
+.tl-text{font-size:13px;color:var(--text);line-height:1.5}
+
+/* Section 3 exclusions visual */
+.excl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:18px}
+.excl-item{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.25);border-radius:8px;padding:10px;text-align:center}
+.excl-sec{font-family:'JetBrains Mono',monospace;font-size:12px;color:#e57373;font-weight:700;margin-bottom:4px}
+.excl-label{font-size:11px;color:var(--muted);line-height:1.4}
+.excl-icon{font-size:18px;margin-bottom:4px;display:block}
+
+/* Responsive */
+@media(max-width:500px){.case-row{grid-template-columns:1fr}.case-label{display:inline-block;margin-bottom:4px}}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">OSMANIA UNIVERSITY · LLB IV SEMESTER · JUNE 2026</div>
+  <h1>Intellectual<br><span>Property Law</span></h1>
+  <p>Visual Study Notes — All 16 Topics · 18 Landmark Cases · Tap a topic to study</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Units</div></div>
+    <div class="stat"><div class="stat-n">16</div><div class="stat-l">Topics</div></div>
+    <div class="stat"><div class="stat-n">18</div><div class="stat-l">Cases</div></div>
+    <div class="stat"><div class="stat-n">2026</div><div class="stat-l">June Exam</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <span class="nav-unit">UNIT I</span>
+    <button class="nav-btn active" onclick="showUnit('u1')">T1 Forms of IP</button>
+    <button class="nav-btn" onclick="showUnit('u2')">T2 New Forms</button>
+    <span class="nav-unit">UNIT II</span>
+    <button class="nav-btn" onclick="showUnit('u3')">T3 TRIPS</button>
+    <button class="nav-btn" onclick="showUnit('u4')">T4 WIPO & Paris</button>
+    <button class="nav-btn" onclick="showUnit('u5')">T5 Berne & PCT</button>
+    <span class="nav-unit">UNIT III</span>
+    <button class="nav-btn" onclick="showUnit('u6')">T6 Copyright</button>
+    <button class="nav-btn" onclick="showUnit('u7')">T7 Infringement</button>
+    <button class="nav-btn" onclick="showUnit('u8')">T8 Idea-Expression</button>
+    <button class="nav-btn" onclick="showUnit('u9')">T9 Moral Rights</button>
+    <span class="nav-unit">UNIT IV</span>
+    <button class="nav-btn" onclick="showUnit('u10')">T10 TM Infringement</button>
+    <button class="nav-btn" onclick="showUnit('u11')">T11 GI</button>
+    <button class="nav-btn" onclick="showUnit('u12')">T12 Registrable TM</button>
+    <span class="nav-unit">UNIT V</span>
+    <button class="nav-btn" onclick="showUnit('u13')">T13 Patentability</button>
+    <button class="nav-btn" onclick="showUnit('u14')">T14 Patentee Rights</button>
+    <button class="nav-btn" onclick="showUnit('u15')">T15 Compulsory Licensing</button>
+    <button class="nav-btn" onclick="showUnit('u16')">T16 Infringement</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════════════════════════
+     UNIT I · T1 · FORMS OF IP
+══════════════════════════════════════════════════════════════ -->
+<div id="u1" class="unit-section active">
+  <div class="unit-header">
+    <div>
+      <div class="unit-num">Unit I · Topic 1 · ★★★★★</div>
+      <div class="unit-title">Forms & Classification of Intellectual Property</div>
+    </div>
+  </div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Patents last 20, TMs forever, Copyright follows your life — IP is your mind's property, protected by time."</div>
+  </div>
+
+  <div class="section-title">Why IP Exists — 4 Theories</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill gold"><span class="pill-icon">⚒️</span><div class="pill-title">Labour Theory — Locke</div><div class="pill-text">You worked your mind → you own the result. Justifies copyright & patents.</div></div>
+    <div class="pill teal"><span class="pill-icon">📈</span><div class="pill-title">Utilitarian — Bentham</div><div class="pill-text">Temporary monopoly = incentive to innovate. Society benefits long-term. Basis of patent law.</div></div>
+    <div class="pill navy"><span class="pill-icon">🎭</span><div class="pill-title">Personality — Hegel</div><div class="pill-text">Creative work = expression of self. Law must protect this bond. Justifies moral rights (Sec.57).</div></div>
+    <div class="pill red"><span class="pill-icon">🤝</span><div class="pill-title">Social Contract — Rousseau</div><div class="pill-text">Society grants monopoly → creator discloses → enters public domain. The patent bargain.</div></div>
+  </div>
+
+  <div class="section-title">All 8 Forms of IP — The Complete Map</div>
+  <div class="vgrid vgrid-4">
+    <div class="pill navy"><span class="pill-icon">🔬</span><div class="pill-title">Patents</div><div class="pill-text">New inventions<br><strong>20 years</strong><br>Patents Act 1970</div></div>
+    <div class="pill teal"><span class="pill-icon">™️</span><div class="pill-title">Trademarks</div><div class="pill-text">Brand names/logos<br><strong>10yr renewable ∞</strong><br>TMA 1999</div></div>
+    <div class="pill gold"><span class="pill-icon">©️</span><div class="pill-title">Copyright</div><div class="pill-text">Creative expression<br><strong>Life + 60 yrs</strong><br>Copyright Act 1957</div></div>
+    <div class="pill green"><span class="pill-icon">🎨</span><div class="pill-title">Designs</div><div class="pill-text">Aesthetic features<br><strong>10 + 5 yrs</strong><br>Designs Act 2000</div></div>
+    <div class="pill navy"><span class="pill-icon">🌍</span><div class="pill-title">GI</div><div class="pill-text">Regional products<br><strong>10yr renewable ∞</strong><br>GI Act 1999</div></div>
+    <div class="pill teal"><span class="pill-icon">🌱</span><div class="pill-title">Plant Varieties</div><div class="pill-text">New crop varieties<br><strong>15/18 yrs</strong><br>PPV&FR Act 2001</div></div>
+    <div class="pill gold"><span class="pill-icon">💾</span><div class="pill-title">Semiconductor</div><div class="pill-text">Chip topography<br><strong>10 years</strong><br>SCLT Act 2000</div></div>
+    <div class="pill green"><span class="pill-icon">🔒</span><div class="pill-title">Trade Secrets</div><div class="pill-text">Confidential info<br><strong>∞ (if kept secret)</strong><br>Common Law</div></div>
+  </div>
+
+  <div class="section-title">IP vs Physical Property</div>
+  <table class="comp-table">
+    <tr><th>Feature</th><th>IP</th><th>Physical Property</th></tr>
+    <tr><td class="comp-key">Nature</td><td>INTANGIBLE — idea, expression, information</td><td>Tangible — touchable, physical</td></tr>
+    <tr><td class="comp-key">Rivalrous?</td><td>NON-RIVALROUS — AR Rahman's song enjoyed by crores simultaneously</td><td>Rivalrous — your car can't be in two places</td></tr>
+    <tr><td class="comp-key">Territory</td><td>Only where registered/protected</td><td>Physical presence creates rights</td></tr>
+    <tr><td class="comp-key">Duration</td><td>ALL expire eventually → public domain</td><td>Can last indefinitely</td></tr>
+    <tr><td class="comp-key">Loss by sharing?</td><td>NOT lost by sharing</td><td>Lost if physically taken</td></tr>
+  </table>
+
+  <div class="section-title">One Product — Multiple Protections (Coca-Cola Example)</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill gold"><span class="pill-icon">™️</span><div class="pill-title">Trademark</div><div class="pill-text">"Coca-Cola" name & logo</div></div>
+    <div class="pill navy"><span class="pill-icon">🫙</span><div class="pill-title">Design</div><div class="pill-text">The iconic contour bottle shape</div></div>
+    <div class="pill red"><span class="pill-icon">🔒</span><div class="pill-title">Trade Secret</div><div class="pill-text">The formula — never patented since 1886! (Avoids 20-yr expiry)</div></div>
+    <div class="pill teal"><span class="pill-icon">©️</span><div class="pill-title">Copyright</div><div class="pill-text">Jingles, advertising artwork</div></div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">IP = intangible creation of the mind. 4 theories: Labour/Utilitarian/Personality/Social Contract. 8 forms: Patent (20y), TM (10y ∞), Copyright (life+60y), Design (10+5y), GI (10y ∞), Plant Varieties (15/18y), SCLT (10y), Trade Secret (∞). Non-rivalrous, non-excludable without law. One product = multiple overlapping protections.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     UNIT I · T2 · NEW FORMS OF IP
+══════════════════════════════════════════════════════════════ -->
+<div id="u2" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit I · Topic 2 · ★★★★☆ — RISING STEEPLY</div>
+    <div class="unit-title">New Forms of Intellectual Property</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"When old IP laws don't fit new technology → Sui Generis (Latin: of its own kind) — build a new law designed for that specific thing."</div>
+  </div>
+
+  <div class="section-title">Plant Varieties — PPV&FR Act 2001</div>
+  <div class="vgrid vgrid-4">
+    <div class="pill navy"><span class="pill-icon">🆕</span><div class="pill-title">N — New</div><div class="pill-text">Not sold in India &gt;1 year before application</div></div>
+    <div class="pill teal"><span class="pill-icon">🔍</span><div class="pill-title">D — Distinct</div><div class="pill-text">Distinguishable from known varieties</div></div>
+    <div class="pill gold"><span class="pill-icon">⚖️</span><div class="pill-title">U — Uniform</div><div class="pill-text">Uniform in essential characteristics</div></div>
+    <div class="pill green"><span class="pill-icon">♾️</span><div class="pill-title">S — Stable</div><div class="pill-text">Characteristics unchanged after propagation</div></div>
+  </div>
+
+  <div class="vgrid vgrid-3">
+    <div class="pill gold"><span class="pill-icon">🧬</span><div class="pill-title">Breeder's Rights</div><div class="pill-text">Exclusive: produce, sell, import, export — 15 yrs (trees: 18 yrs)</div></div>
+    <div class="pill green"><span class="pill-icon">👨‍🌾</span><div class="pill-title">Farmer's Privilege</div><div class="pill-text">Can: save, sow, resow, exchange seeds<br>CANNOT: commercially sell branded seed</div></div>
+    <div class="pill teal"><span class="pill-icon">🏘️</span><div class="pill-title">Community Rights</div><div class="pill-text">Tribal communities get compensation if their TK contributed to variety</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">⚖️</div>
+      <div><div class="case-name">Monsanto Technology v. Nuziveedu Seeds</div><div class="case-meta">2019 · Supreme Court of India</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Monsanto held patents on Bt cotton gene (Cry2Ab). Indian companies paid "trait fees" (royalties). Andhra Pradesh capped fees → Monsanto terminated licences → sued Indian companies. Indian seed companies counter-challenged: once the gene is bred into a cotton plant, it becomes a plant variety — governed by PPV&FR Act, NOT Patents Act.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Section 3(j) of Patents Act bars plant patents. GM plant varieties = PPV&FR Act governs. Monsanto's patent monopoly cannot override farmers' rights.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>Protected 8 million cotton farmers in India. Challenged Monsanto's global business model of controlling seeds through patents.</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Bio-Piracy — India's 3 Famous Battles</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">🌿</span><div class="pill-title">Turmeric (1995)</div><div class="pill-text">US Patent for wound healing with turmeric. India cited Sanskrit texts as prior art. USPTO CANCELLED 1997.</div></div>
+    <div class="pill red"><span class="pill-icon">🌳</span><div class="pill-title">Neem (1992)</div><div class="pill-text">W.R. Grace got EPO patent for antifungal neem. India fought 13 years. EPO CANCELLED 2005.</div></div>
+    <div class="pill red"><span class="pill-icon">🌾</span><div class="pill-title">Basmati (1997)</div><div class="pill-text">RiceTec (Texas) patented "Basmati rice lines." India challenged. Most claims CANCELLED by USPTO.</div></div>
+  </div>
+
+  <div class="section-title">TKDL — India's Solution to Bio-Piracy</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill teal"><span class="pill-icon">📚</span><div class="pill-title">3,60,000 formulations</div><div class="pill-text">Ayurveda, Unani, Siddha, Yoga, Naturopathy</div></div>
+    <div class="pill gold"><span class="pill-icon">🌐</span><div class="pill-title">5 languages</div><div class="pill-text">English, French, German, Japanese, Spanish</div></div>
+    <div class="pill green"><span class="pill-icon">🏛️</span><div class="pill-title">13+ patent offices</div><div class="pill-text">EPO, USPTO, UK IPO — as prior art database</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🦠</div>
+      <div><div class="case-name">Diamond v. Chakrabarty</div><div class="case-meta">1980 · US Supreme Court</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Dr. Ananda Chakrabarty (Indian-American) at General Electric spent years engineering a Pseudomonas bacterium that could break down crude oil (4 different oil-degrading genes combined). No naturally occurring bacterium could do this. USPTO rejected the patent — "living things can't be patented."</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>5-4 decision: The distinction is NOT living vs non-living — it is NATURAL vs HUMAN-MADE. "Anything under the sun that is made by man" can be patented if it has markedly different characteristics from anything in nature.</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>India is more cautious: Section 3(c) bars naturally occurring substances. Non-naturally occurring micro-organisms may be patentable. Section 3(j) bars plants/animals.</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">AI & IP — The 2025-26 Hot Topic</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">🤖</span><div class="pill-title">AI as Author?</div><div class="pill-text">NO. Copyright Act needs a "person." Section 2(d)(vi): human who caused creation = author. Zero human input = no copyright.</div></div>
+    <div class="pill red"><span class="pill-icon">💡</span><div class="pill-title">AI as Inventor?</div><div class="pill-text">NO. DABUS case (2022): AI named as inventor; USPTO, EPO, UKIPO ALL rejected. Natural person required.</div></div>
+    <div class="pill gold"><span class="pill-icon">❓</span><div class="pill-title">AI Output Owned By?</div><div class="pill-text">Person who programmed/directed the AI — or their employer. Pure AI output with zero human creativity: NO copyright.</div></div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">New forms = sui generis (of its own kind). Plant Varieties: PPV&FR Act 2001, NDUS criteria, Breeder+Farmer+Community rights, Monsanto v. Nuziveedu (plants = PPV&FR not Patents Act). Biotech: Chakrabarty 1980 (human-made micro-organisms patentable). Bio-piracy: Turmeric(1997)/Neem(2005)/Basmati; TKDL=3.6L formulations, 13 offices. SCLT Act 2000 = chip layouts, 10 yrs. AI: cannot be author OR inventor; DABUS case settled this globally.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     UNIT II · T3 · TRIPS
+══════════════════════════════════════════════════════════════ -->
+<div id="u3" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit II · Topic 3 · ★★★★★ — HIGHEST FREQUENCY ESSAY</div>
+    <div class="unit-title">TRIPS Agreement, 1994</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"TRIPS = Trade + IP. WTO gave IP teeth for the first time. Violate IP → face trade sanctions."</div>
+  </div>
+
+  <div class="section-title">4 Core Principles</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">🤝</span><div class="pill-title">National Treatment — Art.3</div><div class="pill-text">Give foreigners the SAME protection you give your own nationals</div></div>
+    <div class="pill teal"><span class="pill-icon">🌐</span><div class="pill-title">MFN — Art.4</div><div class="pill-text">Any benefit to one country → automatically extend to ALL 164 WTO members</div></div>
+    <div class="pill gold"><span class="pill-icon">📏</span><div class="pill-title">Minimum Standards — Art.1</div><div class="pill-text">TRIPS sets the FLOOR. Countries can give MORE but never LESS.</div></div>
+    <div class="pill green"><span class="pill-icon">⚖️</span><div class="pill-title">Exhaustion — Art.6</div><div class="pill-text">TRIPS doesn't settle parallel imports. Each country decides. India chose international exhaustion.</div></div>
+  </div>
+
+  <div class="section-title">India's TRIPS Compliance Timeline</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1994</div><div class="tl-text">India signs WTO/TRIPS. Gets 10-year transition period as developing country.</div></div>
+    <div class="tl-item"><div class="tl-year">1999</div><div class="tl-text">Patents Amendment Act — MAILBOX system: pharma product patent applications stored pending 2005.</div></div>
+    <div class="tl-item"><div class="tl-year">2002</div><div class="tl-text">Patents Amendment Act — Patent term harmonised to 20 years.</div></div>
+    <div class="tl-item"><div class="tl-year">2005 ★</div><div class="tl-text">Patents Amendment Act — Product patents for ALL fields + <strong>Section 3(d)</strong> (anti-evergreening) + Bolar Exemption (Section 107A) inserted. FULL TRIPS COMPLIANCE.</div></div>
+  </div>
+
+  <div class="section-title">TRIPS Flexibilities — India's Access to Medicines Weapons</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">💊</span><div class="pill-title">Section 3(d)</div><div class="pill-text">New forms of known drugs must show ENHANCED THERAPEUTIC EFFICACY. Stops evergreening.</div></div>
+    <div class="pill teal"><span class="pill-icon">🏭</span><div class="pill-title">Bolar Exemption</div><div class="pill-text">Section 107A(a): Generics can test before patent expiry for regulatory approval. Day 1 generic entry.</div></div>
+    <div class="pill navy"><span class="pill-icon">📦</span><div class="pill-title">Compulsory Licensing</div><div class="pill-text">Art.31 TRIPS: Government can authorise generic production without patentee consent. Natco v. Bayer.</div></div>
+    <div class="pill gold"><span class="pill-icon">🌍</span><div class="pill-title">Parallel Imports</div><div class="pill-text">Section 107A(b): Import from wherever the patentee sells cheapest. International exhaustion.</div></div>
+    <div class="pill green"><span class="pill-icon">🎯</span><div class="pill-title">Doha Declaration</div><div class="pill-text">2001: TRIPS must be read in light of public health. LDCs got extended deadlines.</div></div>
+    <div class="pill red"><span class="pill-icon">🔬</span><div class="pill-title">Art.31bis</div><div class="pill-text">Export generics to LDCs that can't manufacture. Section 92A India.</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">💊</div>
+      <div><div class="case-name">Novartis AG v. Union of India</div><div class="case-meta">2013 · Supreme Court of India · THE MOST IMPORTANT CASE IN IPL</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Novartis (Swiss pharma) held patents globally for Gleevec/Glivec (imatinib mesylate) — a leukaemia drug. In India it applied to patent the BETA CRYSTALLINE FORM (a polymorph — same molecule, different solid arrangement). Gleevec = Rs.1,20,000/month. Indian generics (Veenat by Natco, Hyderabad) = Rs.8,000/month. 12,000+ Indian patients and millions globally depended on affordable generics. Novartis fought for 7 years. MSF, patient groups from Africa and South America filed amicus briefs.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Section 3(d) is TRIPS-COMPLIANT. TRIPS Art.27 requires patents for all fields but does NOT define "invention" — India has the right to define patentability. The beta crystalline form showed better BIOAVAILABILITY (absorption) but NOT better THERAPEUTIC EFFICACY (patient outcomes). Bioavailability ≠ Therapeutic Efficacy. Patent REJECTED.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>India supplies 80% of ARV medicines to developing nations. Preserved pharmacy of the world. Exposed "evergreening" — filing incremental patents to extend monopoly beyond 20 years. Brazil, Thailand, South Africa modelled their anti-evergreening laws on India's Section 3(d).</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>Worth 30-40% of any TRIPS essay. Write: (1) Facts + Rs.1.2L vs Rs.8K (2) Therapeutic efficacy ≠ bioavailability (3) TRIPS compliance (India defines "invention") (4) Global impact.</span></div>
+    </div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 ABSOLUTE RULE</div>
+    Section 3(d) requires THERAPEUTIC EFFICACY — not just improved bioavailability. Bioavailability = how much drug is absorbed. Therapeutic efficacy = whether the PATIENT GETS BETTER. These are different things. This distinction = the Novartis case holding.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">TRIPS = WTO Annex 1C, 1 Jan 1995, 164 members. 4 principles: National Treatment(Art.3), MFN(Art.4), Minimum Standards(Art.1), Exhaustion(Art.6). 7 areas: Copyright/TM/GI/Designs/Patents(20y)/IC Layouts/Trade Secrets. India: 1994 sign → 1999 mailbox → 2002 term → 2005 product patents+Sec.3(d)+Bolar. NOVARTIS 2013: beta crystalline form; bioavailability≠therapeutic efficacy; Sec.3(d) upheld; Rs.1.2L vs Rs.8K; evergreening exposed.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     T4 · WIPO & PARIS CONVENTION
+══════════════════════════════════════════════════════════════ -->
+<div id="u4" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit II · Topic 4 · ★★★★★ — Part A EVERY PAPER</div>
+    <div class="unit-title">WIPO & Paris Convention, 1883</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Paris Convention: National Treatment + Priority (12/6 months) + Common Rules. WIPO administers it. TRIPS incorporates it."</div>
+  </div>
+
+  <div class="section-title">WIPO in a Snapshot</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">🏛️</span><div class="pill-title">What</div><div class="pill-text">UN specialised agency. Geneva. 1967 Convention (1970 in force). 193 members. India: 1975.</div></div>
+    <div class="pill teal"><span class="pill-icon">📜</span><div class="pill-title">Administers</div><div class="pill-text">26+ treaties including Paris, Berne, PCT, Madrid (TM), Hague (Designs), WCT, WPPT</div></div>
+    <div class="pill gold"><span class="pill-icon">🌐</span><div class="pill-title">3 Global Systems</div><div class="pill-text">PCT (patents, 157 countries) · Madrid (TM, 113) · Hague (Designs, 91)</div></div>
+    <div class="pill green"><span class="pill-icon">🇮🇳</span><div class="pill-title">India's Role</div><div class="pill-text">Championed Development Agenda (2007). Ratified Marrakesh Treaty early. ISA/IN since 2013.</div></div>
+  </div>
+
+  <div class="section-title">Paris Convention — 3 Core Principles</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill navy"><span class="pill-icon">🤝</span><div class="pill-title">National Treatment — Art.2</div><div class="pill-text">Give foreigners the SAME IP protection as your own nationals. Samsung filing in India = treated like Indian company.</div></div>
+    <div class="pill gold"><span class="pill-icon">⏱️</span><div class="pill-title">Right of Priority — Art.4 ★</div><div class="pill-text"><strong>PATENTS: 12 months</strong><br><strong>TM + DESIGNS: 6 months</strong><br>File in India Day 0 → claim that date in all other countries within the window.</div></div>
+    <div class="pill teal"><span class="pill-icon">📋</span><div class="pill-title">Common Rules — Art.5</div><div class="pill-text">Patents can't be refused just because product not made domestically. Exhibition privilege. CL only after reasonable time.</div></div>
+  </div>
+
+  <div class="box key">
+    <div class="box-label">★ KEY POINT — Right of Priority (Exam-Ready Example)</div>
+    Wipro files a patent in India on 1 Jan 2025. They have until 1 Jan 2026 (12 months) to file in USA/Germany/Japan — all claiming 1 Jan 2025 as priority date. Even if a German company files the same invention in Germany on 15 Sept 2025, Wipro's India filing date defeats them.
+  </div>
+
+  <div class="section-title">Key Paris Convention Articles</div>
+  <table class="comp-table">
+    <tr><th>Article</th><th>What It Does</th><th>Indian Application</th></tr>
+    <tr><td class="comp-key">Art.6bis</td><td>Well-known marks protected even WITHOUT registration in that country</td><td>Section 11(2) TMA 1999. Dongre v. Whirlpool (1996 SC) — Whirlpool mark protected in India without registration.</td></tr>
+    <tr><td class="comp-key">Art.6quinquies</td><td>Telle Quelle ("as is"): Accept TM as registered in country of origin, subject to limited refusal grounds</td><td>Can't impose extra requirements on foreign TMs beyond domestic TMs</td></tr>
+    <tr><td class="comp-key">Art.8</td><td>Trade names protected in all member countries WITHOUT registration</td><td>Your company name used internationally is protected even without formal registration abroad</td></tr>
+    <tr><td class="comp-key">Art.10bis</td><td>All members must prevent unfair competition</td><td>International foundation for passing off actions in India</td></tr>
+  </table>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">WIPO: UN agency, Geneva, 193 members, India 1975, administers 26+ treaties, 3 registration systems (PCT/Madrid/Hague). PARIS CONVENTION: 1883, 179 members, India 1998, WIPO administers. 3 PRINCIPLES: National Treatment(Art.2) + Priority — PATENTS 12 MONTHS / TM+DESIGNS 6 MONTHS (Art.4) + Common Rules(Art.5). KEY ARTICLES: 6bis(well-known marks even unregistered → Dongre v. Whirlpool) · 6quinquies(telle quelle) · Art.8(trade names) · 10bis(unfair competition). TRIPS Art.2 incorporates Paris Convention.</div>
+  </div>
+</div>
+
+<!-- T5 · BERNE & PCT -->
+<div id="u5" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit II · Topic 5 · ★★★★☆</div>
+    <div class="unit-title">Berne Convention (1886) & PCT (1970)</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Victor Hugo's books were being pirated in Belgium. He fought for 10 years. In 1886, aged 84, he got the Berne Convention. Its ONE key principle: COPYRIGHT IS AUTOMATIC — no registration needed."</div>
+  </div>
+
+  <div class="section-title">Berne Convention — 6 Principles</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill gold"><span class="pill-icon">⚡</span><div class="pill-title">1. Automatic Protection ★</div><div class="pill-text">Copyright EXISTS on creation. No registration, no ©, no formality of any kind.</div></div>
+    <div class="pill teal"><span class="pill-icon">🌐</span><div class="pill-title">2. National Treatment</div><div class="pill-text">Foreign authors = same as domestic authors in every member country</div></div>
+    <div class="pill navy"><span class="pill-icon">⏰</span><div class="pill-title">3. Minimum Term</div><div class="pill-text">Life + 50 years minimum. India gives Life + 60 years (exceeds — permitted).</div></div>
+    <div class="pill green"><span class="pill-icon">🔗</span><div class="pill-title">4. Independence</div><div class="pill-text">Each country's protection is independent — doesn't depend on protection in country of origin</div></div>
+    <div class="pill red"><span class="pill-icon">🔄</span><div class="pill-title">5. Retroactivity</div><div class="pill-text">Works already in copyright when country joins Berne → continue to be protected</div></div>
+    <div class="pill teal"><span class="pill-icon">📝</span><div class="pill-title">6. No Formalities</div><div class="pill-text">No registration, no ©, no deposit needed — ever</div></div>
+  </div>
+
+  <div class="section-title">Berne vs TRIPS — Key Differences</div>
+  <table class="comp-table">
+    <tr><th>Feature</th><th>Berne</th><th>TRIPS</th></tr>
+    <tr><td class="comp-key">Year</td><td>1886</td><td>1995</td></tr>
+    <tr><td class="comp-key">Moral Rights</td><td>INCLUDED — Art.6bis (paternity + integrity)</td><td>EXCLUDED — TRIPS Art.9(1) explicitly removes Art.6bis</td></tr>
+    <tr><td class="comp-key">Computer Programs</td><td>Not expressly mentioned (extended by interpretation)</td><td>Expressly protected as literary works — Art.10(1)</td></tr>
+    <tr><td class="comp-key">Enforcement</td><td>No enforcement mechanism (WIPO has no sanctions)</td><td>WTO Dispute Settlement Body — trade sanctions possible</td></tr>
+    <tr><td class="comp-key">Databases</td><td>Not covered</td><td>Protected as compilations — Art.10(2)</td></tr>
+  </table>
+
+  <div class="section-title">PCT — How It Works (1 Application → 157 Countries)</div>
+  <div class="flow">
+    <div class="flow-step"><strong>FILE</strong>One PCT application at Indian Patent Office (Receiving Office)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>ISR by 18 MONTHS</strong>International Search Report: all prior art globally identified</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>PUBLICATION at 18 MONTHS</strong>Invention publicly disclosed on PATENTSCOPE</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>NATIONAL PHASE by 30/31 MONTHS</strong>Choose countries, pay national fees, submit translations</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>EACH COUNTRY GRANTS or REFUSES</strong>PCT creates application — NOT a patent</div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 ABSOLUTE RULE</div>
+    PCT does NOT create an "international patent." There is no such thing as a global patent. PCT creates a single international APPLICATION. Each national patent office independently decides whether to grant. If you write "PCT grants a patent" — you lose marks.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">BERNE: 1886, 181 members, India 1928, Victor Hugo championed. 6 principles: AUTOMATIC PROTECTION (most important) · national treatment · life+50y min (India +60y) · independence · retroactivity · no formalities. Art.6bis = paternity+integrity moral rights. TRIPS EXCLUDES Art.6bis. India's Sec.57 goes beyond TRIPS. PCT: 1970/1978, 157 states, India 1998. NOT a global patent — a global APPLICATION. ISR = 18 months. National phase = 30/31 months. India is ISA since 2013.</div>
+  </div>
+</div>
+
+<!-- T6 · COPYRIGHT OWNERSHIP -->
+<div id="u6" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit III · Topic 6 · ★★★★★</div>
+    <div class="unit-title">Copyright — Subject Matter, Ownership & Rights</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Copyright arises the MOMENT you create — no stamp, no registration, no ©. The song exists → copyright exists. The employee writes code at work → the EMPLOYER owns it."</div>
+  </div>
+
+  <div class="section-title">6 Categories of Copyright — Section 13</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill navy"><span class="pill-icon">📚</span><div class="pill-title">Literary Works</div><div class="pill-text">Books, articles, computer programs, source code, databases</div></div>
+    <div class="pill teal"><span class="pill-icon">🎭</span><div class="pill-title">Dramatic Works</div><div class="pill-text">Scripts, screenplays, plays, choreographic works</div></div>
+    <div class="pill gold"><span class="pill-icon">🎵</span><div class="pill-title">Musical Works</div><div class="pill-text">Musical composition — melody, notes, harmony. SEPARATE from sound recording.</div></div>
+    <div class="pill green"><span class="pill-icon">🎨</span><div class="pill-title">Artistic Works</div><div class="pill-text">Paintings, sculptures, photographs, maps, architecture</div></div>
+    <div class="pill navy"><span class="pill-icon">🎬</span><div class="pill-title">Cinematograph Films</div><div class="pill-text">The film as a whole — visuals + soundtrack together</div></div>
+    <div class="pill teal"><span class="pill-icon">🔊</span><div class="pill-title">Sound Recordings</div><div class="pill-text">The recording itself. SEPARATE from the musical work it records.</div></div>
+  </div>
+
+  <div class="section-title">Who Owns Copyright — Section 17 Decision Tree</div>
+  <table class="comp-table">
+    <tr><th>Situation</th><th>First Owner</th><th>Example</th></tr>
+    <tr><td class="comp-key">Individual creates</td><td>The AUTHOR</td><td>Sudha Murthy writes novel → she owns it</td></tr>
+    <tr><td class="comp-key">Created during employment (contract OF service)</td><td>The EMPLOYER</td><td>TCS programmer codes at work → TCS owns</td></tr>
+    <tr><td class="comp-key">Freelancer commissioned (contract FOR services)</td><td>The CREATOR, unless assigned</td><td>Freelance screenwriter → WRITER owns unless contract says otherwise</td></tr>
+    <tr><td class="comp-key">Portrait/Photo/Engraving commissioned + paid</td><td>The COMMISSIONER</td><td>Wedding client commissions photographer → CLIENT owns</td></tr>
+    <tr><td class="comp-key">Cinematograph film</td><td>The PRODUCER</td><td>Yash Raj Films → YRF owns Pathaan copyright</td></tr>
+    <tr><td class="comp-key">Sound recording</td><td>The PRODUCER of the recording</td><td>T-Series → T-Series owns Arijit Singh recording</td></tr>
+    <tr><td class="comp-key">Government work</td><td>The GOVERNMENT</td><td>ASI report → Government of India owns</td></tr>
+  </table>
+
+  <div class="box key">
+    <div class="box-label">★ KEY POINT — The Critical Distinction</div>
+    "Contract OF service" (employee) → EMPLOYER owns. "Contract FOR services" (freelancer) → CREATOR owns unless assigned. This is the most tested Part C scenario. A TCS employee writing a game at home on their own time = employee retains copyright.
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">📖</div>
+      <div><div class="case-name">Eastern Book Company v. D.B. Modak</div><div class="case-meta">2008 · Supreme Court of India</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>EBC publishes "Supreme Court Cases" (SCC) — they don't just print bare judgments. Their editors add headnotes (summaries of each case's ratio), cross-references, paragraph numbering, and footnotes. D.B. Modak (Lexis Nexis) copied EBC's editorial additions into their competing database. EBC sued for copyright infringement. The key question: do editorial additions to government documents (public domain) get copyright?</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Supreme Court judgments = public domain (Sec.52(1)(q)). BUT editorial additions enjoy copyright — only where they show MINIMUM CREATIVITY. Well-crafted headnotes showing legal judgment = copyrightable. Simple paragraph numbering = mechanical = NOT copyrightable. India adopts "MODICUM OF CREATIVITY" standard — NOT "sweat of brow."</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>"What is the standard of originality in Indian copyright?" → Modicum of creativity (Eastern Book Co. 2008). Mere labour/effort = NOT enough. Creative judgment + effort = copyrightable.</span></div>
+    </div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">Copyright = exclusive rights in original expression; automatic; no registration. Sec.13: 6 subject matters (literary/dramatic/musical/artistic/film/sound recording). ORIGINALITY = modicum of creativity, NOT sweat of brow (Eastern Book Co. 2008 SC). Sec.17 OWNERSHIP: author (general) / employer (employment) / creator (freelance, unless assigned) / commissioner who paid (portrait/photo) / producer (film+recording) / government (govt work). Sec.14 RIGHTS: reproduce/communicate/translate/adapt. Sec.19: Assignment MUST be in WRITING. DURATION: literary/artistic = Life+60y; films/recordings = 60y from publication.</div>
+  </div>
+</div>
+
+<!-- T7 · INFRINGEMENT -->
+<div id="u7" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit III · Topic 7 · ★★★★★ — Heavy Part C use</div>
+    <div class="unit-title">Copyright Infringement, Exceptions & Remedies</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"3 tests to prove infringement: SUBSTANTIAL (quality not quantity) + ACCESS (they had it) + ORDINARY OBSERVER (would a normal person say 'this was copied?')"</div>
+  </div>
+
+  <div class="section-title">3 Tests for Infringement</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">📏</span><div class="pill-title">1. Substantial Copying</div><div class="pill-text">QUALITY not quantity. Copying the "heart" of the work = infringement. 50 boring pages copied ≠ infringement. 2 key paragraphs with the plot twist = infringement.</div></div>
+    <div class="pill gold"><span class="pill-icon">👁️</span><div class="pill-title">2. Causal Connection</div><div class="pill-text">Defendant must have had ACCESS + actually copied. Independent creation of a similar work = NOT infringement, even if identical.</div></div>
+    <div class="pill teal"><span class="pill-icon">🧑‍⚖️</span><div class="pill-title">3. Ordinary Observer Test</div><div class="pill-text">Would an ordinary reasonable person say "this was copied from that"? NOT an expert test.</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🎭</div>
+      <div><div class="case-name">R.G. Anand v. M/s Delux Films</div><div class="case-meta">1978 · Supreme Court of India — The Foundational Indian Copyright Case</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>R.G. Anand wrote a Hindi play "Hum Hindustani" (We Indians) about inter-state provincialism — a man from one state loves a woman from another, families oppose on regional grounds. He showed it to filmmaker Mohan Sehgal. Sehgal later made the film "New Delhi" — also about inter-state regionalism and prejudice. Anand claimed the film copied his play.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>NO infringement. The THEME of inter-state regionalism = an IDEA, not expression. Copyright protects specific expression (characters, dialogues, scenes) — not general themes or social subjects. TEST: Would an ordinary person say the film was copied from the play? No — different characters, dialogues, scenes.</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>Use for BOTH infringement (T7) AND idea-expression (T8). "Similar themes ≠ infringement. The ordinary observer test."</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Section 52 — Fair Dealing Exceptions (What is NOT Infringement)</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill teal"><span class="pill-icon">🔬</span><div class="pill-title">Private/Research [52(1)(a)]</div><div class="pill-text">Fair dealing for private study, research, criticism, review — with acknowledgement. NOT commercial.</div></div>
+    <div class="pill navy"><span class="pill-icon">📺</span><div class="pill-title">News Reporting [52(1)(b)]</div><div class="pill-text">Reporting current events in newspaper or broadcast. DD News showing clips of PM's speech.</div></div>
+    <div class="pill gold"><span class="pill-icon">🏛️</span><div class="pill-title">Judicial Proceedings [52(1)(iv)]</div><div class="pill-text">Reproduction for judicial, legislative, or administrative proceedings.</div></div>
+    <div class="pill green"><span class="pill-icon">🏫</span><div class="pill-title">Educational Use [52(1)(j)]</div><div class="pill-text">Performance in educational institution. Teacher performing a play on annual day.</div></div>
+    <div class="pill teal"><span class="pill-icon">📚</span><div class="pill-title">Libraries [52(1)(o)]</div><div class="pill-text">Preservation copies; replacing damaged copies in libraries and archives.</div></div>
+    <div class="pill gold"><span class="pill-icon">💻</span><div class="pill-title">Computer Programs [52(1)(aa)]</div><div class="pill-text">Backup copies; studying functionality; decompilation for interoperability.</div></div>
+  </div>
+
+  <div class="section-title">Remedies — Civil vs Criminal</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill green"><span class="pill-icon">⚖️</span><div class="pill-title">Civil — Section 55</div><div class="pill-text">• Injunction (interim + permanent)<br>• Damages<br>• Account of profits<br>• Delivery up and destruction</div></div>
+    <div class="pill red"><span class="pill-icon">⛓️</span><div class="pill-title">Criminal — Section 63</div><div class="pill-text">• 6 months – 3 years imprisonment<br>• Rs.50,000 – Rs.2,00,000 fine<br>• Repeat offence: minimum 1 year<br>• Police can seize WITHOUT warrant (Sec.64)</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🔍</div>
+      <div><div class="case-name">Anton Pillar KG v. Manufacturing Processes Ltd.</div><div class="case-meta">1976 · UK Court of Appeal (Lord Denning MR)</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Anton Pillar KG (German electronics company) discovered their UK agent was secretly giving their confidential circuit diagrams to competitors. Problem: if they filed a standard court notice, the agent would immediately DESTROY all evidence — circuit diagrams, correspondence, customer lists. They needed to search the premises WITHOUT giving advance warning.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>3 conditions for ex parte search order WITHOUT NOTICE: (1) Extremely strong prima facie case; (2) Very serious damage potential; (3) Real, concrete possibility defendant WILL DESTROY evidence if given notice.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>Created the "Anton Pillar Order" — the nuclear weapon of IP enforcement. India: granted under Order 39 Rules 1-2 CPC + Section 151 CPC. Bollywood studios use these routinely against DVD pirates.</span></div>
+    </div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">Infringement (Sec.51) = doing what only owner can do, without licence. 3 TESTS: substantial copying (quality≠quantity) + causal connection (access+copying) + ordinary observer test. RG ANAND 1978 SC: theme of regionalism = IDEA not expression; ordinary observer test established. Sec.52 fair dealing: private/research · news reporting · judicial proceedings · educational · library · computer backup. CIVIL (Sec.55): injunction+damages+account of profits+delivery up. CRIMINAL (Sec.63): 6 months–3 years+fine. ANTON PILLAR 1976: ex parte search order; 3 conditions; India = Order 39 CPC + Sec.151 CPC.</div>
+  </div>
+</div>
+
+<!-- T8 · IDEA-EXPRESSION -->
+<div id="u8" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit III · Topic 8 · ★★★★☆ — 2025 Standalone Essay</div>
+    <div class="unit-title">Idea-Expression Dichotomy</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"The THEME of revenge is free for everyone — Shakespeare, Bollywood, Hollywood. What is protected is Shakespeare's specific words, characters, and scenes. Ideas belong to humanity. Only your unique expression belongs to you."</div>
+  </div>
+
+  <div class="section-title">The Spectrum — From Idea to Protected Expression</div>
+  <div class="spectrum">
+    <div class="spectrum-title">ABSTRACTION SPECTRUM (Left = not protected → Right = fully protected)</div>
+    <div class="spectrum-bar">
+      <div class="sp-seg"><strong>Abstract Idea</strong>Young lovers, families oppose</div>
+      <div class="sp-seg"><strong>General Theme</strong>Star-crossed lovers</div>
+      <div class="sp-seg"><strong>Elaborated Plot</strong>Specific setting, subplot</div>
+      <div class="sp-seg"><strong>Specific Scenes</strong>The balcony scene</div>
+      <div class="sp-seg"><strong>Exact Dialogue</strong>"What light through yonder window breaks"</div>
+    </div>
+  </div>
+
+  <div class="section-title">Two Related Doctrines</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill gold"><span class="pill-icon">🔀</span><div class="pill-title">Merger Doctrine</div><div class="pill-text">When there's only ONE way (or very few ways) to express an idea → the expression MERGES with the idea → NO copyright. Example: "Please enter your PIN" on an ATM. E=mc².</div></div>
+    <div class="pill teal"><span class="pill-icon">🎭</span><div class="pill-title">Scenes à Faire</div><div class="pill-text">"Scenes that must be done" — stock genre elements can't be copyrighted. Bollywood courtroom drama MUST have cross-examination. Horror MUST have creaking doors. No one owns genre conventions.</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">📊</div>
+      <div><div class="case-name">Baker v. Selden</div><div class="case-meta">1879 · US Supreme Court — Directly Influential on Indian Law</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Selden wrote a book explaining a new bookkeeping system with specifically designed blank accounting forms (columns, headers, ruled lines) needed to use the system. He got copyright in the book. Baker started selling similar accounting forms — because any double-entry bookkeeping system NATURALLY leads to similar forms. Selden's estate sued Baker for copying the forms.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Copyright in the BOOK is protected. But the blank FORMS needed to PRACTISE the accounting system are NOT protectable — that would give Selden a monopoly over the bookkeeping METHOD (which is an idea/system). Copyright in description of a system ≠ copyright in the system itself.</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>Digital age relevance: Microsoft can copyright its specific Word code — but cannot copyright the IDEA of a word processor. Adobe can copyright its specific Photoshop code — not the CONCEPT of photo editing. Same principle.</span></div>
+    </div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 ABSOLUTE RULE — TRIPS Art.9(2)</div>
+    "Copyright protection shall extend to expressions and not to ideas, procedures, methods of operation or mathematical concepts as such." — TRIPS Article 9(2). MUST cite this in every idea-expression answer.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">GOLDEN RULE: copyright = EXPRESSION not IDEAS. TRIPS Art.9(2) codifies this. THE SPECTRUM: abstract idea (free) → general theme (free) → specific plot (protected) → exact dialogue (fully protected). MERGER DOCTRINE: only one way to express idea → no copyright (ATM PIN instruction, E=mc²). SCENES À FAIRE: stock genre elements not protected. BAKER v. SELDEN 1879: copyright in bookkeeping book ≠ copyright in the forms needed to use the system. R.G. ANAND 1978: theme of regionalism = idea, not protectable.</div>
+  </div>
+</div>
+
+<!-- T9 · MORAL RIGHTS -->
+<div id="u9" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit III · Topic 9 · ★★★★☆ — Part A EVERY PAPER</div>
+    <div class="unit-title">Moral Rights — Section 57</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"You sold your novel to a publisher for ₹1 crore. They can publish it, adapt it, sell millions. But if they change the ending to the opposite of what you wrote, YOU CAN STILL SUE. Because moral rights survive even after you sell copyright."</div>
+  </div>
+
+  <div class="section-title">The Two Rights</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">✍️</span><div class="pill-title">Paternity Right — Section 57(1)(a)</div><div class="pill-text">Right to CLAIM AUTHORSHIP. Right to have your name on the work. Right to prevent FALSE attribution — stop others claiming they wrote YOUR work.</div></div>
+    <div class="pill teal"><span class="pill-icon">🛡️</span><div class="pill-title">Integrity Right — Section 57(1)(b)</div><div class="pill-text">Right to OBJECT to any distortion, mutilation, or modification — BEFORE OR AFTER assignment of copyright — if it is PREJUDICIAL TO YOUR HONOUR OR REPUTATION.</div></div>
+  </div>
+
+  <div class="section-title">Three Features That Make Moral Rights Special</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">💫</span><div class="pill-title">Survive Assignment</div><div class="pill-text">Even after selling ALL copyright → moral rights REMAIN with the author. They follow the person, not the property.</div></div>
+    <div class="pill gold"><span class="pill-icon">🔒</span><div class="pill-title">Inalienable</div><div class="pill-text">Cannot be contractually waived. Any clause saying "I waive all moral rights" = VOID. Law protects artists from being pressured.</div></div>
+    <div class="pill green"><span class="pill-icon">♾️</span><div class="pill-title">Perpetual</div><div class="pill-text">No expiry date. Last FOREVER. After death → exercised by legal heirs. Unlike economic rights (Life+60y).</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🗿</div>
+      <div><div class="case-name">Amar Nath Sehgal v. Union of India</div><div class="case-meta">2005 · Delhi High Court (Justice Pradeep Nandrajog)</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Amar Nath Sehgal (Padma Shri sculptor) was commissioned by the Government of India in the 1950s to create a monumental bronze mural (~140×40 feet) for Vigyan Bhawan — India's premier international conference centre. He spent years creating it depicting Indian mythology and culture. The Government owned both the physical mural and its economic copyright. Then in the 1970s-80s, during renovation, Government officials — WITHOUT TELLING SEHGAL — demolished the mural and DUMPED IT IN A WAREHOUSE where it sat, broken and deteriorating, for years. Sehgal, in his 80s, discovered this through a magazine article. He sued the Union of India itself.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Section 57 moral rights are INDEPENDENT of economic rights. Government ownership does NOT give it the right to demolish and mutilate the work prejudicially. Demolition + warehouse storage = violation of integrity right. Court awarded ₹5,00,000 damages AND directed the Government to RETURN THE MURAL to Sehgal for restoration.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>Most important Indian case on moral rights. Physical destruction of artwork = integrity right violation. Remedy can include PHYSICAL RETURN of the artwork — not just damages. India's Sec.57 goes beyond TRIPS (which excludes moral rights under Art.9(1)).</span></div>
+    </div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">Moral rights = Section 57, Copyright Act 1957. TWO RIGHTS: Paternity (claim authorship, prevent false attribution) + Integrity (object to distortion/mutilation prejudicial to honour — BEFORE OR AFTER assignment). THREE FEATURES: survive assignment + inalienable (waiver clause void) + perpetual (no expiry, heirs exercise). AMAR NATH SEHGAL 2005 Delhi HC: commissioned mural → Government demolished in warehouse → ₹5L damages + MURAL RETURNED. TRIPS Art.9(1) EXCLUDES moral rights. India's Sec.57 goes beyond TRIPS. Berne Art.6bis = international source.</div>
+  </div>
+</div>
+
+<!-- T10 · TM INFRINGEMENT vs PASSING OFF -->
+<div id="u10" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit IV · Topic 10 · ★★★★★ — OVERDUE for 2026</div>
+    <div class="unit-title">Trademark Infringement vs Passing Off</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"INFRINGEMENT needs a REGISTERED mark. PASSING OFF needs GOODWILL. Always advise BOTH — they are independent, and if registration fails, passing off survives."</div>
+  </div>
+
+  <div class="section-title">Classical Trinity of Passing Off — ALL THREE REQUIRED</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill navy"><span class="pill-icon">🌟</span><div class="pill-title">1. GOODWILL</div><div class="pill-text">Established business reputation. New business with zero reputation = no goodwill = no passing off. Must exist in the relevant territory.</div></div>
+    <div class="pill red"><span class="pill-icon">🎭</span><div class="pill-title">2. MISREPRESENTATION</div><div class="pill-text">False suggestion that defendant's goods ARE the plaintiff's — or associated with/endorsed by plaintiff. Intent irrelevant — innocent misrepresentation still counts.</div></div>
+    <div class="pill gold"><span class="pill-icon">💸</span><div class="pill-title">3. DAMAGE</div><div class="pill-text">Actual or likely damage to goodwill. Indian courts accept likelihood of future damage — proof of actual loss not always required.</div></div>
+  </div>
+
+  <div class="section-title">Infringement vs Passing Off — The Key Differences</div>
+  <table class="comp-table">
+    <tr><th>Feature</th><th>TM Infringement (Sec.29)</th><th>Passing Off (Common Law)</th></tr>
+    <tr><td class="comp-key">Registration</td><td>REQUIRED — only registered marks</td><td>NOT required — any mark with goodwill</td></tr>
+    <tr><td class="comp-key">Proof</td><td>Similarity + likelihood of confusion</td><td>Goodwill + Misrepresentation + Damage</td></tr>
+    <tr><td class="comp-key">Territory</td><td>Where TM is registered</td><td>Where goodwill exists</td></tr>
+    <tr><td class="comp-key">Transborder reputation</td><td>Generally irrelevant</td><td>RELEVANT — Dongre v. Whirlpool</td></tr>
+    <tr><td class="comp-key">Can they overlap?</td><td colspan="2" style="text-align:center;color:#66bb6a;font-weight:bold">YES — same act can be BOTH. Always plead both.</td></tr>
+  </table>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">💊</div>
+      <div><div class="case-name">Cadila Healthcare v. Cadila Pharmaceuticals</div><div class="case-meta">2001 · Supreme Court of India</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>After a family split, two Cadila companies co-existed. Cadila Healthcare registered FALCIGO for an anti-malarial injection. Cadila Pharmaceuticals launched FALCITAB for the same purpose (falciparum malaria). FALCIGO vs FALCITAB — visually different endings but both start with FALCI-. Cadila Healthcare sued for passing off. Stakes: mix-up between anti-malarial drugs can be fatal.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>HIGHER STANDARD of confusion for pharmaceutical trademarks. Medicines are dispensed under time pressure, to semi-literate patients, by busy pharmacists. A mix-up can be life-threatening. The FALCI- prefix similarity + both being anti-malarials = sufficient confusion risk. Injunction granted.</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>For any pharma trademark Part C: apply the Cadila stricter standard — phonetic + visual + nature of goods (drugs = higher risk) + class of purchasers (literate/semi-literate).</span></div>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🌊</div>
+      <div><div class="case-name">N.R. Dongre v. Whirlpool Corporation</div><div class="case-meta">1996 · Supreme Court of India</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Whirlpool (American appliances) was globally famous but had not started selling in India or registered its TM here. An Indian trader N.R. Dongre registered "WHIRLPOOL" in India and began selling appliances. Whirlpool sued for passing off — arguing that Indians knew their brand from international magazines like Time circulated in India, and from Indians who had used Whirlpool products abroad.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>TRANSBORDER REPUTATION DOCTRINE: A mark can have GOODWILL in India through international advertising and exposure — even WITHOUT any Indian sales or registration. Dongre's registration cancelled.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>Closed the door on "trademark squatting" — registering foreign brands before they enter India. Applied to protect McDonald's, Yahoo!, Dominos in India before they launched officially.</span></div>
+    </div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">TM = Sec.2(1)(zb): badge of origin. INFRINGEMENT = Sec.29: (1)identical+identical [29(1)] (2)identical+similar→confusion [29(2)(a)] (3)similar+identical→confusion [29(2)(b)] (4)well-known mark+any goods→dilution [29(4)]. PASSING OFF = common law; NO registration needed. CLASSICAL TRINITY = Goodwill+Misrepresentation+Damage. PERRY v.TRUEFITT 1842: origin of passing off. CADILA 2001 SC: FALCIGO/FALCITAB; higher pharma standard. DONGRE v.WHIRLPOOL 1996: transborder reputation. ALWAYS ADVISE BOTH infringement AND passing off.</div>
+  </div>
+</div>
+
+<!-- T11 · GI -->
+<div id="u11" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit IV · Topic 11 · ★★★★★ — Part A EVERY PAPER (100%)</div>
+    <div class="unit-title">Geographical Indications of Goods</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"A GI belongs to a PLACE — not to a person. You cannot sell Darjeeling Tea's GI to a factory in Assam. GI = community property, forever tied to geography."</div>
+  </div>
+
+  <div class="section-title">Famous Indian GIs — Know at Least 6</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill teal"><span class="pill-icon">🍵</span><div class="pill-title">Darjeeling Tea</div><div class="pill-text">West Bengal hills, 600-2000m altitude, muscatel flavour. India's most protected GI — 80+ countries.</div></div>
+    <div class="pill gold"><span class="pill-icon">🥻</span><div class="pill-title">Kanchipuram Silk</div><div class="pill-text">Tamil Nadu, pit-loom weaving, real zari. Machine imitations cannot use this name.</div></div>
+    <div class="pill navy"><span class="pill-icon">🫓</span><div class="pill-title">Tirupati Laddu</div><div class="pill-text">Tirumala temple, traditional recipe. Controversial because of temple identity.</div></div>
+    <div class="pill green"><span class="pill-icon">🥩</span><div class="pill-title">Hyderabad Haleem</div><div class="pill-text">First MEAT product GI in India (2010). 24-hour slow cooking in Hyderabad.</div></div>
+    <div class="pill red"><span class="pill-icon">🥭</span><div class="pill-title">Alphonso Mango</div><div class="pill-text">Ratnagiri & Sindhudurg, Maharashtra. Commands premium Rs.2,000+ per dozen internationally.</div></div>
+    <div class="pill teal"><span class="pill-icon">🧵</span><div class="pill-title">Pochampally Ikat</div><div class="pill-text">Pochampally village, Telangana. Traditional tie-dye weaving technique.</div></div>
+  </div>
+
+  <div class="section-title">GI vs Trademark — The Critical Differences</div>
+  <table class="comp-table">
+    <tr><th>Feature</th><th>Geographical Indication</th><th>Trademark</th></tr>
+    <tr><td class="comp-key">Ownership</td><td>COLLECTIVE — belongs to all producers in the region</td><td>INDIVIDUAL — one person/company</td></tr>
+    <tr><td class="comp-key">Can it be assigned?</td><td style="color:#ef5350;font-weight:bold">NO — ABSOLUTE RULE</td><td>Yes — freely assignable and licensable</td></tr>
+    <tr><td class="comp-key">Who can use it?</td><td>Any producer IN the region meeting specifications</td><td>Only the owner and authorised licensees</td></tr>
+    <tr><td class="comp-key">Purpose</td><td>Protects the region's reputation + consumers</td><td>Protects a brand's commercial identity</td></tr>
+    <tr><td class="comp-key">Registry</td><td>GI Registry, CHENNAI</td><td>TM Registry, MUMBAI</td></tr>
+  </table>
+
+  <div class="section-title">GI Registration Procedure</div>
+  <div class="flow">
+    <div class="flow-step"><strong>APPLY</strong>GI Registry, Chennai by Producers' Association (not individual)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>EXAMINE</strong>Distinctiveness, not generic, quality link to geography</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>GI JOURNAL</strong>3 months open for opposition</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>REGISTER</strong>10 years, renewable ∞</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><strong>AUTHORISED USERS</strong>Individual producers register separately to USE the GI</div>
+  </div>
+
+  <div class="section-title">TRIPS Protection — Art.22 vs Art.23</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">🌐</span><div class="pill-title">Article 22 — ALL Goods</div><div class="pill-text">Basic protection. Prevent MISLEADING use. "Indian Champagne-style sparkling wine" = OK (it's not Champagne but you can qualify it).</div></div>
+    <div class="pill gold"><span class="pill-icon">🍾</span><div class="pill-title">Article 23 — WINES & SPIRITS ONLY</div><div class="pill-text">ABSOLUTE protection — even "Champagne-style" is PROHIBITED. India campaigns to extend Art.23 to ALL products including Darjeeling Tea and Basmati rice.</div></div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 ABSOLUTE RULE — tested EVERY YEAR</div>
+    A GI CANNOT BE ASSIGNED. It is a COLLECTIVE RIGHT belonging to the geographical region. Any producer in the region who meets the specifications can use it. Unlike a trademark which can be sold to anyone anywhere, a GI is permanently tied to its place of origin.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">GI = Sec.2(1)(e) GI Act 1999: identifies goods from specific territory where quality/reputation ESSENTIALLY ATTRIBUTABLE to geographical origin. GI CANNOT BE ASSIGNED — collective right (KEY RULE). Registration: GI Registry Chennai by producers' association; 10 years renewable; Authorised Users register separately. TRIPS Art.22 (all goods, basic) vs Art.23 (wines/spirits only, absolute — India wants extended to all products). Tea Board v. ITC 2011 Calcutta HC: "Darjeeling Lounge" hotel service = permissible; GI protects GOODS not services. India: 635+ GIs.</div>
+  </div>
+</div>
+
+<!-- T12 · REGISTRABLE TM -->
+<div id="u12" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit IV · Topic 12 · ★★★★☆</div>
+    <div class="unit-title">Registrable Trademarks & Well-Known Marks</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"To register a TM: it must (1) be DRAWABLE and (2) be DISTINCTIVE — must be able to identify YOUR goods from everyone else's. SWEET for candy fails because it describes the product. KODAK for cameras succeeds because it's invented."</div>
+  </div>
+
+  <div class="section-title">Section 9 — Absolute Bars to Registration</div>
+  <div class="excl-grid">
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(1)(a)</div><div class="excl-label">Devoid of distinctive character (GOOD, BEST, QUALITY)</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(1)(b)</div><div class="excl-label">Descriptive of goods (SWEET for candy, COLD for refrigerators)</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(1)(c)</div><div class="excl-label">Customary/generic in trade (ASPIRIN, ESCALATOR)</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(2)(a)</div><div class="excl-label">Likely to deceive about nature/quality/origin</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(2)(b)</div><div class="excl-label">Contrary to public order or morality</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(2)(c)</div><div class="excl-label">National flag, state emblems, international organisation symbols</div></div>
+    <div class="excl-item"><div class="excl-icon">❌</div><div class="excl-sec">9(2)(d)</div><div class="excl-label">Likely to hurt religious susceptibilities of any class</div></div>
+  </div>
+
+  <div class="section-title">Non-Conventional Marks</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill gold"><span class="pill-icon">🟣</span><div class="pill-title">Colour Marks</div><div class="pill-text">Needs SECONDARY MEANING — consumers must identify the colour with your brand. Cadbury Purple (Pantone 2685C). T-Mobile Magenta. Tiffany Blue.</div></div>
+    <div class="pill teal"><span class="pill-icon">🫙</span><div class="pill-title">Shape Marks</div><div class="pill-text">Must NOT be purely functional. Coca-Cola contour bottle. Toblerone triangle. Ferrero Rocher gold sphere.</div></div>
+    <div class="pill navy"><span class="pill-icon">🔔</span><div class="pill-title">Sound Marks</div><div class="pill-text">Needs musical notation or precise description. Intel 5-note jingle. Nokia startup tune. MGM lion's roar.</div></div>
+    <div class="pill green"><span class="pill-icon">🏃</span><div class="pill-title">Motion Marks</div><div class="pill-text">Animated sequences. Lamborghini scissor-doors opening. MGM lion sequence.</div></div>
+    <div class="pill red"><span class="pill-icon">🌸</span><div class="pill-title">Smell Marks</div><div class="pill-text">Almost never accepted — no universally agreed representation method. Rose on tyres (UK, Sumitomo) = rare exception.</div></div>
+  </div>
+
+  <div class="section-title">Well-Known Marks — Section 2(1)(zg)</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">👑</span><div class="pill-title">Cross-Category Protection</div><div class="pill-text">AUDI (cars) → prevents AUDI for garments. APPLE (electronics) → prevents APPLE for food. Even UNRELATED goods are protected.</div></div>
+    <div class="pill gold"><span class="pill-icon">🌐</span><div class="pill-title">Transborder Recognition</div><div class="pill-text">Can be "well-known" in India even without Indian registration or sales. Dongre v. Whirlpool principle.</div></div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">TM registrable = graphically representable + capable of distinguishing. Sec.9 BARS: devoid of character · descriptive · generic · deceptive · immoral · prohibited signs · religious susceptibility. NON-CONVENTIONAL: colour(secondary meaning needed) · shape(non-functional) · sound(musical notation) · smell(rarely accepted) · motion. WELL-KNOWN TM = Sec.2(1)(zg): cross-category protection (Sec.11(2)) + transborder reputation. DAIMLER BENZ 1994 Delhi HC: three-pointed star on underwear = dilutes automobile TM. India's official WKTs: Amul, Bata, Tata, LIC, Google, YouTube.</div>
+  </div>
+</div>
+
+<!-- T13 · PATENTABILITY -->
+<div id="u13" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit V · Topic 13 · ★★★★★ — Highest Part C frequency</div>
+    <div class="unit-title">Patentability — Conditions & Section 3 Exclusions</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"To get a patent: NEW + CLEVER + USEFUL. Then check Section 3 — the list of things India absolutely refuses to patent (plants, drugs that aren't really new, software code, etc.)."</div>
+  </div>
+
+  <div class="section-title">3 Conditions — ALL Must Be Satisfied</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill navy"><span class="pill-icon">🆕</span><div class="pill-title">1. NOVELTY — Sec.2(1)(l)</div><div class="pill-text">Not in prior art ANYWHERE in the world before filing date. Even inventor's own prior publication destroys novelty (except Sec.31 grace period).</div></div>
+    <div class="pill gold"><span class="pill-icon">🧠</span><div class="pill-title">2. INVENTIVE STEP — Sec.2(1)(ja)</div><div class="pill-text">Not obvious to a "person skilled in the art" — a hypothetical expert with ALL current knowledge but only ORDINARY creative ability.</div></div>
+    <div class="pill green"><span class="pill-icon">🏭</span><div class="pill-title">3. INDUSTRIAL APPLICATION — Sec.2(1)(ac)</div><div class="pill-text">Can be made or used in some kind of industry. Pure theoretical concept with no practical use = not patentable.</div></div>
+  </div>
+
+  <div class="section-title">Section 3 — Absolute Exclusions (Override All 3 Conditions)</div>
+  <div class="excl-grid">
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(a)</div><div class="excl-label">Frivolous / violates natural laws (perpetual motion machine)</div></div>
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(b)</div><div class="excl-label">Contrary to law, morality, public health (bio-weapons)</div></div>
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(c)</div><div class="excl-label">Discovery of naturally occurring substance (mineral, bacterium found in soil)</div></div>
+    <div class="excl-item"><div class="excl-icon">💊</div><div class="excl-sec">3(d) ★</div><div class="excl-label">New form of known substance WITHOUT enhanced THERAPEUTIC EFFICACY (anti-evergreening)</div></div>
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(e)</div><div class="excl-label">Mere admixture of known compounds (no synergy)</div></div>
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(i)</div><div class="excl-label">Methods of treatment — surgical, therapeutic, diagnostic</div></div>
+    <div class="excl-item"><div class="excl-icon">🌱</div><div class="excl-sec">3(j) ★</div><div class="excl-label">Plants, animals, essentially biological processes (PPV&FR Act governs)</div></div>
+    <div class="excl-item"><div class="excl-icon">💻</div><div class="excl-sec">3(k) ★</div><div class="excl-label">Mathematical methods · business methods · computer programs PER SE · algorithms</div></div>
+    <div class="excl-item"><div class="excl-icon">🚫</div><div class="excl-sec">3(m)</div><div class="excl-label">Literary/dramatic/musical/artistic/aesthetic creations (Copyright Act covers these)</div></div>
+    <div class="excl-item"><div class="excl-icon">🌿</div><div class="excl-sec">3(p) ★</div><div class="excl-label">Traditional knowledge — turmeric, neem, basmati (belongs to communities, prior art)</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">⚗️</div>
+      <div><div class="case-name">Novartis AG v. Union of India</div><div class="case-meta">2013 · Supreme Court of India · Section 3(d) Case</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Novartis wanted to patent the BETA CRYSTALLINE FORM (polymorph) of imatinib mesylate for leukaemia. Gleevec = Rs.1,20,000/month. Indian generics = Rs.8,000/month. The beta crystalline form had better BIOAVAILABILITY (30% better absorbed into bloodstream). But Section 3(d) asks: is there enhanced THERAPEUTIC EFFICACY (better patient treatment outcomes)?</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Section 3(d) is TRIPS-compliant. Bioavailability (how much drug is absorbed) ≠ Therapeutic efficacy (whether patient gets better). Novartis proved bioavailability — NOT therapeutic efficacy. Patent REJECTED. India's pharmacy of the world status preserved.</span></div>
+    </div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">Patent = 20-year exclusive right from FILING DATE. Sec.2(1)(j): new product/process + inventive step + capable of industrial application. 3 CONDITIONS: Novelty(Sec.2(1)(l)) + Inventive Step(not obvious to person skilled in art, Sec.2(1)(ja)) + Industrial Application(Sec.2(1)(ac)). SEC.3 KEY EXCLUSIONS: 3(c) naturally occurring · 3(d) new form without enhanced THERAPEUTIC EFFICACY (not just bioavailability — Novartis 2013) · 3(j) plants/animals (PPV&FR Act) · 3(k) software/algorithms/business methods PER SE · 3(p) traditional knowledge. Product patent ≠ process patent: product = any process blocked; process = only that process blocked.</div>
+  </div>
+</div>
+
+<!-- T14 · PATENTEE RIGHTS -->
+<div id="u14" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit V · Topic 14 · ★★★★★</div>
+    <div class="unit-title">Rights & Obligations of the Patentee</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Patent = monopoly for 20 years in exchange for FULL DISCLOSURE. Four ceilings on that monopoly: CL (Section 84), Government use (100), Bolar (107A(a)), Parallel imports (107A(b))."</div>
+  </div>
+
+  <div class="section-title">Rights Under Section 48</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">📦</span><div class="pill-title">Product Patent</div><div class="pill-text">Prevent others from: MAKING · USING · OFFERING FOR SALE · SELLING · IMPORTING the product — by ANY method</div></div>
+    <div class="pill teal"><span class="pill-icon">⚙️</span><div class="pill-title">Process Patent</div><div class="pill-text">Prevent others from: USING the process + selling/importing product DIRECTLY OBTAINED by that process. Others can make same product by a DIFFERENT process.</div></div>
+  </div>
+
+  <div class="section-title">4 Limitations on Patent Rights</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill red"><span class="pill-icon">📋</span><div class="pill-title">Compulsory Licence — Sec.84</div><div class="pill-text">After 3 years from GRANT. Any ONE of 3 grounds. Controller can override patentee's monopoly.</div></div>
+    <div class="pill gold"><span class="pill-icon">🏛️</span><div class="pill-title">Government Use — Sec.100</div><div class="pill-text">Central Govt can use any patent for govt purposes without consent. Compensation must be paid.</div></div>
+    <div class="pill green"><span class="pill-icon">🔬</span><div class="pill-title">Bolar Exemption — Sec.107A(a) ★</div><div class="pill-text">Generic companies can MANUFACTURE a patented drug for regulatory testing BEFORE patent expiry. Day 1 generic entry. NOT infringement.</div></div>
+    <div class="pill teal"><span class="pill-icon">🌍</span><div class="pill-title">Parallel Imports — Sec.107A(b)</div><div class="pill-text">Importing from country where patentee sells at lower price = NOT infringement. International exhaustion.</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🫁</div>
+      <div><div class="case-name">F. Hoffmann-La Roche v. Cipla Ltd.</div><div class="case-meta">2008 · Delhi High Court (Justice S. Ravindra Bhat)</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Roche held Indian patent for erlotinib (Tarceva) — targeted lung cancer therapy. Tarceva = Rs.4,800/tablet (Rs.1,44,000/month). Cipla launched generic Erlocip at Rs.1,600/tablet — before Roche's patent expired. Roche applied for URGENT interim injunction to stop Cipla. Cancer patients' groups intervened.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>Interim injunction REFUSED. Balance of convenience: if injunction granted → cancer patients who can't afford Rs.4,800/tablet are denied life-saving treatment (irreversible harm = death). If refused → Roche loses some sales but can be compensated in damages later (reversible harm). PUBLIC INTEREST in affordable cancer medicine outweighs Roche's commercial interest.</span></div>
+      <div class="case-row"><span class="case-label label-exam">EXAM ANGLE</span><span>For any pharma patent injunction Part C: apply Roche v. Cipla — don't automatically grant injunction for registered patent. Balance of convenience + public interest in affordable medicines must be weighed.</span></div>
+    </div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 ABSOLUTE RULE — Most Tested Patent Fact</div>
+    PATENT INFRINGEMENT = NO CRIMINAL PENALTY in India. CIVIL REMEDIES ONLY: injunction + damages/account of profits + delivery up. This is DIFFERENT from Copyright (Sec.63: up to 3 years imprisonment) and Trademark (Sec.103 TMA: up to 3 years). Writing "file a criminal complaint" for patent infringement = wrong answer = lose marks.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">Sec.48 RIGHTS: product patent = prevent making/using/selling/importing by ANY process; process patent = prevent using process + selling/importing product directly obtained. Duration: 20 years from FILING DATE (Sec.53). Annual renewal fees required. OBLIGATIONS: Sec.10 full disclosure (complete spec: describe+best method+claims+abstract); Sec.83+Form 27 annual working statement. 4 LIMITATIONS: CL(Sec.84) + Govt use(Sec.100) + BOLAR(Sec.107A(a) — regulatory testing not infringement) + Parallel imports(Sec.107A(b)). NO CRIMINAL PENALTY for patent infringement. ROCHE v.CIPLA 2008: public interest in affordable cancer medicine → interim injunction REFUSED.</div>
+  </div>
+</div>
+
+<!-- T15 · COMPULSORY LICENSING -->
+<div id="u15" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit V · Topic 15 · ★★★★☆</div>
+    <div class="unit-title">Compulsory Licensing</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Natco's story: Bayer's cancer drug costs Rs.2.84 lakhs/month. Natco asked for permission — Bayer said no. Natco went to court. India's first compulsory licence. Rs.8,880/month. 97% cheaper."</div>
+  </div>
+
+  <div class="section-title">Section 84 — 3 Grounds (Any ONE suffices)</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill red"><span class="pill-icon">👥</span><div class="pill-title">Ground (a)</div><div class="pill-text">Reasonable requirements of the PUBLIC not satisfied. Bayer supplied 200 patients out of 8,842 needed = 2% of need.</div></div>
+    <div class="pill gold"><span class="pill-icon">💰</span><div class="pill-title">Ground (b)</div><div class="pill-text">Not available at REASONABLY AFFORDABLE PRICE. Rs.2.84L/month for a cancer drug = unaffordable for 99% of Indians.</div></div>
+    <div class="pill teal"><span class="pill-icon">🏭</span><div class="pill-title">Ground (c)</div><div class="pill-text">Not WORKED in India. Bayer was IMPORTING Nexavar, not manufacturing it. Importing ≠ working the patent in India.</div></div>
+  </div>
+
+  <div class="section-title">Section 90 — Conditions on Every CL</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">🔄</span><div class="pill-title">Non-Exclusive</div><div class="pill-text">Patentee keeps the patent and can grant other licences too</div></div>
+    <div class="pill teal"><span class="pill-icon">⛔</span><div class="pill-title">Non-Assignable</div><div class="pill-text">Compulsory licensee CANNOT sub-license or transfer the CL</div></div>
+    <div class="pill gold"><span class="pill-icon">💵</span><div class="pill-title">Royalty Must Be Paid</div><div class="pill-text">6% of net sales = Natco benchmark for all future CLs</div></div>
+    <div class="pill green"><span class="pill-icon">🇮🇳</span><div class="pill-title">Predominantly Domestic</div><div class="pill-text">For supply within India primarily. Exception: Section 92A (export to LDCs)</div></div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-icon">🔬</div>
+      <div><div class="case-name">Natco Pharma v. Bayer Corporation — India's First CL</div><div class="case-meta">2012 (Controller) / 2014 (upheld by Bombay HC & SC)</div></div>
+    </div>
+    <div class="case-body">
+      <div class="case-row"><span class="case-label label-story">STORY</span><span>Bayer held Indian Patent IN215758 for sorafenib tosylate (Nexavar) — used for kidney and liver cancer. Price: Rs.2,84,428/month (Rs.9,500/tablet). Bayer was IMPORTING Nexavar from Germany — not manufacturing in India. Need: 8,842 patients/year. Bayer supplied: ~200 patients (2%). Natco Pharma (Hyderabad) applied for CL November 2011, arguing all three Section 84 grounds.</span></div>
+      <div class="case-row"><span class="case-label label-held">HELD</span><span>India's first EVER compulsory licence granted. (1) All 3 Section 84 grounds satisfied independently; (2) Royalty = 6% of Natco's net sales (BENCHMARK); (3) Natco must sell at Rs.8,880/month (97% reduction); (4) Natco must supply 600 patients FREE/year; (5) IMPORTING ≠ working the patent in India.</span></div>
+      <div class="case-row"><span class="case-label label-why">WHY LANDMARK</span><span>First Indian CL. 6% royalty = benchmark for all future CLs. Importing ≠ working = landmark holding. Showed TRIPS flexibilities actually work in court. Encouraged other countries to pursue CLs for essential medicines.</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Section 92 & 92A — Emergency Routes</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill red"><span class="pill-icon">🚨</span><div class="pill-title">Section 92 — National Emergency</div><div class="pill-text">Government grants CL directly WITHOUT 3-year wait. For national emergency, extreme urgency, or public health crises. Used as threat during COVID-19 negotiations.</div></div>
+    <div class="pill teal"><span class="pill-icon">🌍</span><div class="pill-title">Section 92A — Export to LDCs</div><div class="pill-text">CL for export to countries that can't manufacture pharmaceuticals (LDCs). Implements TRIPS Art.31bis. India as pharmacy of the world exports affordable generics.</div></div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 TWO COMMON EXAM ERRORS</div>
+    (1) "3-year period runs from FILING" — WRONG. It runs from DATE OF GRANT. If patent was granted 1 Jan 2022, CL available from 1 Jan 2025. (2) "All 3 grounds must be proved" — WRONG. ANY ONE of the three Section 84 grounds is sufficient.
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">CL = authorisation to use patent without owner's consent in public interest. Sec.84: apply after 3 years from GRANT (not filing); any ONE of 3 grounds: (a)public need unmet (b)unaffordable price (c)not worked in India (importing≠working). Sec.90 conditions: non-exclusive+non-assignable+royalty(6%=benchmark)+predominantly domestic. Sec.92: national emergency, NO 3-year wait. Sec.92A: export to LDCs (TRIPS Art.31bis). NATCO v.BAYER 2012: first Indian CL; Nexavar Rs.2.84L→Rs.8,880; 6% royalty; 600 free patients; importing≠working.</div>
+  </div>
+</div>
+
+<!-- T16 · PATENT INFRINGEMENT -->
+<div id="u16" class="unit-section">
+  <div class="unit-header"><div>
+    <div class="unit-num">Unit V · Topic 16 · ★★★★☆</div>
+    <div class="unit-title">Patent Infringement & Remedies</div>
+  </div></div>
+
+  <div class="memory-hook">
+    <div class="memory-hook-label">Memory Hook</div>
+    <div class="memory-hook-text">"Patent infringement = civil case only. No handcuffs. No jail. Just injunction, damages, and delivery up. If you write 'file a criminal complaint' for patent infringement — you lose marks."</div>
+  </div>
+
+  <div class="section-title">Acts Constituting Infringement (Section 48)</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill red"><span class="pill-icon">📦</span><div class="pill-title">Product Patent Infringement</div><div class="pill-text">Without authorisation: MAKING · USING · OFFERING FOR SALE · SELLING · IMPORTING the patented product in India</div></div>
+    <div class="pill red"><span class="pill-icon">⚙️</span><div class="pill-title">Process Patent Infringement</div><div class="pill-text">Without authorisation: USING the patented process + selling/importing the product DIRECTLY OBTAINED by that process</div></div>
+  </div>
+
+  <div class="section-title">What is NOT Infringement — Defences</div>
+  <table class="comp-table">
+    <tr><th>Defence</th><th>Section</th><th>What It Covers</th></tr>
+    <tr><td class="comp-key">Bolar Exemption</td><td>107A(a)</td><td>Manufacturing for regulatory approval testing BEFORE patent expiry. Cipla making Roche's drug to get DCGI approval = NOT infringement.</td></tr>
+    <tr><td class="comp-key">Parallel Imports</td><td>107A(b)</td><td>Importing from country where patentee authorised sale at lower price = NOT infringement.</td></tr>
+    <tr><td class="comp-key">Prior Use</td><td>64(1)(k)</td><td>Person commercially using the invention in India BEFORE patent filing date can continue.</td></tr>
+    <tr><td class="comp-key">Experimental/Research Use</td><td>47(3)</td><td>Using patented invention for scientific research or experimentation = NOT infringement.</td></tr>
+    <tr><td class="comp-key">Government Use</td><td>100</td><td>Central/State Govt authorised use for government purposes = NOT infringement (with compensation).</td></tr>
+  </table>
+
+  <div class="section-title">Remedies — CIVIL ONLY</div>
+  <div class="vgrid vgrid-3">
+    <div class="pill green"><span class="pill-icon">🛑</span><div class="pill-title">Injunction</div><div class="pill-text">Interim (during trial) or permanent (after judgment). Primary remedy. For pharma: Roche v. Cipla public interest test applies.</div></div>
+    <div class="pill teal"><span class="pill-icon">💰</span><div class="pill-title">Damages OR Account of Profits</div><div class="pill-text">Plaintiff ELECTS one or the other — cannot claim both simultaneously. Account of profits = defendant pays ALL profits from infringement.</div></div>
+    <div class="pill gold"><span class="pill-icon">🗑️</span><div class="pill-title">Delivery Up & Destruction</div><div class="pill-text">All infringing goods delivered to plaintiff and destroyed. Prevents back-door re-entry to market.</div></div>
+  </div>
+
+  <div class="box alert">
+    <div class="box-label">🚨 THE SINGLE MOST TESTED PATENT FACT</div>
+    PATENT INFRINGEMENT → NO CRIMINAL PENALTY. Civil remedies only: injunction + damages OR account of profits + delivery up. Compare: Copyright infringement (Sec.63) = up to 3 years imprisonment. TM infringement (Sec.103 TMA) = up to 3 years imprisonment. Patents = NO imprisonment. NO fine. NO police. CIVIL COURT ONLY.
+  </div>
+
+  <div class="section-title">Section 64 & 106 — Two Additional Tools</div>
+  <div class="vgrid vgrid-2">
+    <div class="pill navy"><span class="pill-icon">⚖️</span><div class="pill-title">Sec.64 — Revocation Counter-Claim</div><div class="pill-text">Defendant in infringement suit can COUNTER-CLAIM for revocation of the patent (novelty/inventive step/Sec.3 grounds). This is Cipla's and Natco's standard defence strategy.</div></div>
+    <div class="pill teal"><span class="pill-icon">⚠️</span><div class="pill-title">Sec.106 — Groundless Threats</div><div class="pill-text">Patentee makes unjustified infringement threats without basis? Threatened party can sue for: declaration + injunction against threats + damages caused by threats.</div></div>
+  </div>
+
+  <div class="box recall">
+    <div class="box-label">⚡ QUICK RECALL</div>
+    <div class="box-content">INFRINGEMENT = Sec.48 acts without authorisation: making/using/selling/importing (product); using process or selling product directly from process (process patent). DEFENCES: Bolar(Sec.107A(a)—regulatory testing) · Parallel imports(Sec.107A(b)) · Prior use(Sec.64(1)(k)) · Experimental use(Sec.47(3)) · Govt use(Sec.100). REMEDIES (CIVIL ONLY, Sec.108): injunction(primary—apply Roche v.Cipla public interest test for pharma) + damages OR account of profits + delivery up. NO CRIMINAL PENALTY. Sec.64 revocation counter-claim. Sec.106 groundless threats.</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function showUnit(id) {
+  document.querySelectorAll('.unit-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Toggle topic cards (they're already open since we removed the collapsed state)
+document.querySelectorAll('.topic-header').forEach(h => {
+  h.addEventListener('click', () => {
+    h.classList.toggle('open');
+    h.nextElementSibling && h.nextElementSibling.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
