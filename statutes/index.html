@@ -48,7 +48,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 .topbar-badge { background: var(--gold); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
 
 /* BOTTOM NAV */
-#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid rgba(255,255,255,0.12); padding-bottom: env(safe-area-inset-bottom); }
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.12); padding-bottom: env(safe-area-inset-bottom); }
 .nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.4); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
 .nav-btn.active { color: var(--gold-light); }
 .nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
@@ -220,6 +220,85 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 .cheat-item:last-child { border-bottom: none; }
 .cheat-key { font-weight: 700; color: var(--navy); min-width: 90px; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 11px; }
 .cheat-val { color: var(--text); line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   VISUAL NOTES — SCREEN CSS
+═══════════════════════════════════════ */
+.notes-topnav{display:flex;gap:6px;overflow-x:auto;padding:12px 0 8px;scrollbar-width:none;position:sticky;top:53px;background:var(--cream);z-index:10;margin-bottom:8px;}
+.notes-topnav::-webkit-scrollbar{display:none;}
+.n-pill{flex-shrink:0;background:#fff;border:1.5px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.3px;}
+.n-pill.active{background:var(--navy);color:var(--gold-light);border-color:var(--navy);}
+.n-section{display:none;animation:fadeIn .25s ease;}
+.n-section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.n-section-title{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin:18px 0 10px;}
+.n-unit-label{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--gold-light);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:14px;}
+.n-hook{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;}
+.n-hook::before{content:'💡';position:absolute;right:12px;top:8px;font-size:32px;opacity:.15;}
+.n-hook-label{font-size:9px;font-weight:700;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.n-hook-text{font-size:14px;font-weight:600;color:#fff;line-height:1.55;}
+.n-grid{display:grid;gap:10px;margin-bottom:12px;}
+.n-grid-2{grid-template-columns:1fr 1fr;}
+.n-grid-3{grid-template-columns:1fr 1fr 1fr;}
+.n-grid-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.n-card{background:#fff;border-radius:13px;padding:14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.n-card.navy{border-top:3px solid var(--navy);}
+.n-card.gold{border-top:3px solid var(--gold);}
+.n-card.teal{border-top:3px solid var(--teal);}
+.n-card.red{border-top:3px solid var(--red);}
+.n-card.green{border-top:3px solid var(--green);}
+.n-card-icon{font-size:22px;margin-bottom:7px;display:block;}
+.n-card-title{font-size:12px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:4px;}
+.n-card-text{font-size:11px;color:var(--text-muted);line-height:1.55;}
+.n-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:12px;}
+.n-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;font-size:11px;font-weight:700;}
+.n-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.n-table tr:nth-child(even) td{background:#fdf8f0;}
+.n-flow{display:flex;align-items:stretch;gap:0;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;}
+.n-flow-step{flex-shrink:0;background:#fff;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:11px;font-weight:700;color:var(--teal);text-align:center;min-width:80px;line-height:1.35;position:relative;}
+.n-flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--teal);font-weight:900;z-index:1;}
+.n-flow-step:not(:last-child){margin-right:18px;}
+.n-case{background:#fff;border-radius:14px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;}
+.n-case-head{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;cursor:pointer;background:var(--gold-pale);border-bottom:1px solid var(--border);}
+.n-case-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.n-case-name{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;flex:1;}
+.n-case-meta{font-size:10px;color:var(--text-muted);margin-top:3px;}
+.n-case-body{display:none;padding:12px 14px;}
+.n-case.open .n-case-body{display:block;}
+.n-case-row{display:flex;gap:8px;margin-bottom:9px;align-items:flex-start;font-size:12px;line-height:1.55;}
+.n-case-row:last-child{margin-bottom:0;}
+.n-tag{flex-shrink:0;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:1px;text-transform:uppercase;letter-spacing:.5px;}
+.n-tag.story{background:#e8f0fe;color:#1a3a9c;}
+.n-tag.held{background:var(--green-light);color:var(--green);}
+.n-tag.why{background:#fff3e0;color:#b35a00;}
+.n-tag.exam{background:#fce4ec;color:#b0003a;}
+.n-alert{background:#fff8e0;border:1.5px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+.n-alert-label{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.n-alert p{font-size:12px;color:#6b4a00;line-height:1.55;margin:0;}
+.n-key-box{background:var(--navy);border-radius:12px;padding:13px 15px;margin-bottom:12px;}
+.n-key-label{font-size:9px;font-weight:700;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.n-key-box p{font-size:13px;color:#fff;line-height:1.55;margin:0;font-weight:500;}
+.n-recall{background:#f0f7f4;border:1.5px solid var(--teal);border-radius:13px;padding:14px 15px;margin-bottom:14px;}
+.n-recall-label{font-size:9px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.n-recall-text{font-size:12px;color:var(--text);line-height:1.8;}
+.n-excl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.n-excl-item{background:#fff;border-radius:10px;padding:11px 12px;box-shadow:var(--shadow);border-left:3px solid var(--red);}
+.n-excl-sec{border-left-color:var(--green);}
+.n-excl-icon{font-size:16px;margin-bottom:4px;display:block;}
+.n-excl-label{font-size:11px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:3px;}
+.n-spectrum{margin-bottom:14px;}
+.n-spectrum-label{font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.n-spectrum-bar{display:flex;border-radius:10px;overflow:hidden;height:38px;}
+.n-sp-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;text-align:center;padding:4px 6px;line-height:1.2;}
+.n-timeline{margin-bottom:14px;}
+.n-tl-item{display:flex;gap:12px;padding-bottom:16px;position:relative;}
+.n-tl-item::before{content:'';position:absolute;left:20px;top:26px;bottom:0;width:2px;background:var(--border);}
+.n-tl-item:last-child::before{display:none;}
+.n-tl-year{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--gold-light);font-family:'DM Mono',monospace;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;z-index:1;}
+.n-tl-text{padding-top:8px;}
+.n-tl-text strong{font-size:13px;color:var(--navy);display:block;margin-bottom:3px;}
+.n-tl-text span{font-size:12px;color:var(--text-muted);line-height:1.5;}
+
 </style>
 </head>
 <body>
@@ -288,6 +367,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
         <div class="qc-count">60+ Questions</div>
         <div class="qc-bar"></div>
       </div>
+    </div>
+    <div class="quick-card" style="grid-column:1/-1;background:var(--teal);border:none;cursor:pointer;" onclick="goScreen('notes')">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:28px;">🗺️</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">Visual Study Notes</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px;line-height:1.4;">All topics with diagrams, case cards, flowcharts and quick recall — for last-minute revision</div>
+        </div>
+        <span style="margin-left:auto;color:rgba(255,255,255,0.7);font-size:20px;">›</span>
+      </div>
+      <div class="qc-bar" style="background:rgba(255,255,255,0.3);"></div>
     </div>
 
     <div class="section-title">Exam Tips</div>
@@ -381,6 +471,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
     <div id="cheat-list"></div>
   </div>
 
+  <!-- VISUAL NOTES -->
+  <div class="screen" id="screen-notes">
+    <div id="notes-container"></div>
+  </div>
+
 </div><!-- end main -->
 
 <!-- BOTTOM NAV -->
@@ -391,6 +486,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
   <button class="nav-btn" id="nav-cases" onclick="goScreen('cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
   <button class="nav-btn" id="nav-quiz" onclick="goScreen('quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
   <button class="nav-btn" id="nav-cheat" onclick="goScreen('cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+  <button class="nav-btn" id="nav-notes" onclick="goScreen('notes')"><span class="nav-icon">🗺️</span><span class="nav-label">Visual</span></button>
 </div>
 
 <script>
@@ -1654,11 +1750,645 @@ window.addEventListener('load', () => {
   buildCases();
   buildCheat();
   buildVideos();
+  buildNotes();
   setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
     setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
   }, 2200);
 });
+
+// ═══════════════════════════════════════════════════════
+// VISUAL NOTES — DATA + BUILD
+// ═══════════════════════════════════════════════════════
+
+const NOTES_TOPICS = [
+  {id:'n-1', label:'Literal Rule', unit:'Unit II'},
+  {id:'n-2', label:'Golden Rule', unit:'Unit II'},
+  {id:'n-3', label:'Mischief Rule', unit:'Unit II'},
+  {id:'n-4', label:'Ejusdem Generis', unit:'Units I–III'},
+  {id:'n-5', label:'Noscitur a Sociis', unit:'Units I–III'},
+  {id:'n-6', label:'Penal Statutes', unit:'Unit III'},
+  {id:'n-7', label:'Taxing Statutes', unit:'Unit III'},
+  {id:'n-8', label:'Beneficial Construction', unit:'Unit III'},
+  {id:'n-9', label:'Harmonious Construction', unit:'Unit III'},
+  {id:'n-10', label:'Preamble', unit:'Unit IV'},
+  {id:'n-11', label:'Internal Aids', unit:'Unit IV'},
+  {id:'n-12', label:'External Aids', unit:'Unit IV'},
+  {id:'n-13', label:'Presumptions', unit:'Unit IV'},
+  {id:'n-14', label:'Effect of Repeal', unit:'Unit V'},
+  {id:'n-15', label:'Prospective vs Retrospective', unit:'Unit V'},
+  {id:'n-16', label:'Harmonious Construction (Conflict)', unit:'Unit V'},
+  {id:'n-17', label:'Classification of Statutes', unit:'Unit I'},
+  {id:'n-18', label:'GCA 1897', unit:'Unit I'},
+];
+
+const NOTES_CONTENT = {
+
+  'n-1': {
+    unit:'Unit II', title:'Literal / Grammatical Rule',
+    hook:'If Parliament wrote it clearly, courts must apply it — even if the result seems harsh or absurd.',
+    visual:`
+      <p class="n-section-title">Three Rules — Spectrum of Flexibility</p>
+      <div class="n-spectrum">
+        <div class="n-spectrum-label">Rule Flexibility (Least → Most)</div>
+        <div class="n-spectrum-bar">
+          <div class="n-sp-seg" style="background:var(--navy);flex:1;">Literal Rule<br><span style="font-size:9px;opacity:.8;">Plain Words Only</span></div>
+          <div class="n-sp-seg" style="background:var(--teal);flex:1;">Golden Rule<br><span style="font-size:9px;opacity:.8;">Avoid Absurdity</span></div>
+          <div class="n-sp-seg" style="background:var(--gold);flex:1;">Mischief Rule<br><span style="font-size:9px;opacity:.8;">Cure the Evil</span></div>
+        </div>
+      </div>
+      <p class="n-section-title">How the Literal Rule Works</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Read the Words</div>
+        <div class="n-flow-step">Plain, Natural, Grammatical Meaning</div>
+        <div class="n-flow-step">Apply — Even if Harsh</div>
+        <div class="n-flow-step">Never Modify</div>
+      </div>
+      <p class="n-section-title">Merits vs Demerits</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card green">
+          <span class="n-card-icon">✅</span>
+          <div class="n-card-title">Merits</div>
+          <div class="n-card-text">• Upholds parliamentary sovereignty<br>• Certainty &amp; predictability<br>• Prevents judicial legislation<br>• Easy to apply</div>
+        </div>
+        <div class="n-card red">
+          <span class="n-card-icon">⚠️</span>
+          <div class="n-card-title">Demerits</div>
+          <div class="n-card-text">• May produce absurd results<br>• Language is imprecise<br>• Ignores social purpose<br>• Can be circumvented</div>
+        </div>
+      </div>`,
+    cases:[
+      {name:'Sussex Peerage Case (1844)', meta:'Literal Rule — Foundation', story:'Claim to the peerage of Sussex required interpreting an Act governing succession. Chief Justice Tindal CJ held: if the words of the statute are precise and unambiguous, expound them in their natural and ordinary sense.', held:'Literal Rule applies — words in their plain, natural, ordinary and grammatical meaning. No inquiry into purpose or intent is necessary when language is clear.', why:'Foundational case for the Literal Rule in English and Indian courts. Tindal CJ\'s dictum is the defining statement of the rule.', exam:'Cite in any Literal Rule answer. "Sussex Peerage (1844) — Tindal CJ — words in their natural and ordinary sense." Contrast with Grey v Pearson (Golden Rule).'},
+      {name:'Fisher v. Bell (1961)', meta:'Literal Rule — Shop Window = Invitation to Treat', story:'A shopkeeper displayed flick knives in his shop window with price tags. Charged under an Act prohibiting "offering for sale" dangerous weapons. Defence: displaying goods in a shop window is an invitation to treat in contract law — NOT an offer. Court agreed.', held:'Displaying goods in a shop window is NOT an "offer for sale" in the technical contract law sense. It is only an invitation to treat. The shopkeeper was NOT GUILTY.', why:'Most famous illustration of the Literal Rule producing a result that defeats legislative purpose. Parliament was forced to amend the Act to add "expose for sale." Shows how clever drafting can exploit the Literal Rule.', exam:'For any Literal Rule problem or exam question on its weaknesses — this is the must-cite case. "Fisher v Bell (1961) — shop window display ≠ offer for sale — Literal Rule defeats purpose of statute."'},
+    ],
+    alert:'When two interpretations exist and you are asked which rule applies: Literal Rule = start ALWAYS. The other rules activate only when Literal Rule produces absurdity (Golden) or defeats the Act\'s purpose (Mischief).',
+    keybox:'The Literal Rule is the STARTING POINT for all statutory interpretation. Courts first give words their plain, ordinary, grammatical meaning. Only if this produces an absurd result (Golden Rule) or defeats the statutory purpose (Mischief Rule) does a court depart from the literal meaning.',
+    recall:'The Literal Rule requires courts to give statutory words their plain, ordinary, natural and grammatical meaning without addition, subtraction or modification, regardless of the outcome. This is the foundational rule of interpretation upheld in Sussex Peerage Case (1844) where Tindal CJ declared that unambiguous words must be expounded in their natural sense. Its merits are certainty, predictability, respect for parliamentary sovereignty and prevention of judicial legislation. Its demerits are that it may produce absurd, harsh or unjust results as demonstrated in Fisher v Bell (1961) where displaying flick knives in a shop window was held NOT to be "offering for sale" because the technical contract law meaning of "offer" did not cover shop window displays. Parliament corrected this by amending the Act to include "expose for sale." The Literal Rule is the starting point; the Golden Rule and Mischief Rule are corrective mechanisms used only when the Literal Rule fails.'
+  },
+
+  'n-2': {
+    unit:'Unit II', title:'Golden Rule',
+    hook:'Start with the plain words — but if the plain meaning produces an absurdity, modify it minimally, and no further.',
+    visual:`
+      <p class="n-section-title">The Golden Rule — Decision Process</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Step 1<br>Plain Meaning</div>
+        <div class="n-flow-step">Step 2<br>Does it produce ABSURDITY?</div>
+        <div class="n-flow-step">If YES → Modify Minimally</div>
+        <div class="n-flow-step">"But No Further"</div>
+      </div>
+      <p class="n-section-title">Two Applications</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy">
+          <span class="n-card-icon">🔍</span>
+          <div class="n-card-title">Narrow Application</div>
+          <div class="n-card-text">Word has TWO meanings — one producing absurdity, one sensible. Court selects the sensible meaning.</div>
+        </div>
+        <div class="n-card teal">
+          <span class="n-card-icon">✏️</span>
+          <div class="n-card-title">Wide Application</div>
+          <div class="n-card-text">Single natural meaning leads to manifest absurdity. Court modifies language itself — but ONLY to cure the absurdity.</div>
+        </div>
+      </div>
+      <p class="n-section-title">Literal vs Golden — Comparison</p>
+      <table class="n-table">
+        <tr><th>Feature</th><th>Literal Rule</th><th>Golden Rule</th></tr>
+        <tr><td>Starting point</td><td>Plain meaning</td><td>Plain meaning</td></tr>
+        <tr><td>Departure allowed?</td><td>Never</td><td>Only if absurdity</td></tr>
+        <tr><td>Modification</td><td>Not permitted</td><td>Minimally permitted</td></tr>
+        <tr><td>Key case</td><td>Sussex Peerage (1844)</td><td>Grey v. Pearson (1857)</td></tr>
+      </table>`,
+    cases:[
+      {name:'Grey v. Pearson (1857)', meta:'Golden Rule — Lord Wensleydale\'s Classic Statement', story:'Construction of a will where the word "or" produced an absurd result if given its literal grammatical meaning. Lord Wensleydale articulated the middle path between rigid literalism and unconstrained purposivism.', held:'"The grammatical and ordinary sense of words is to be adhered to, unless it leads to some absurdity, repugnance or inconsistency with the rest of the instrument, in which case the grammatical sense may be modified to avoid that absurdity and inconsistency, but no further."', why:'Lord Wensleydale\'s formulation is THE definitive statement of the Golden Rule. Used for 165+ years in every common law jurisdiction. "But no further" is the key limiting phrase.', exam:'Always open a Golden Rule answer with this dictum — quote it in full. Then cite R v Allen for the application. "Grey v Pearson (1857) — Lord Wensleydale — modify to cure absurdity, but no further."'},
+      {name:'R v. Allen (1872)', meta:'Golden Rule Applied — Bigamy Statute', story:'A man was charged with bigamy under an Act making it an offence to "marry" while already married. Defence: it is literally impossible to "marry" again — a second ceremony is void — so no offence can ever be committed. If the Literal Rule applied, bigamy could never be committed.', held:'The Golden Rule was applied. "Marry" was interpreted to mean "go through a ceremony of marriage" rather than "contract a valid marriage." This avoided the absurd result that the offence was impossible to commit.', why:'Classic illustration of the Wide Application of the Golden Rule — the single natural meaning (valid marriage) would make the offence impossible. The court modified the word to give the statute workable effect.', exam:'For "two applications of the Golden Rule" — R v Allen is the Wide Application example. The single meaning (valid marriage) = absurd (offence impossible). Modified to "ceremony of marriage" = sensible result.'},
+    ],
+    alert:'The Golden Rule DOES NOT allow courts to rewrite statutes. The modification must be the MINIMUM necessary to cure the absurdity — "no further." Courts cannot use the Golden Rule to substitute their preferred policy outcome.',
+    keybox:'The Golden Rule is a corrective mechanism, not a licence to rewrite statutes. It starts with the Literal Rule and departs from it ONLY when the plain meaning leads to absurdity, repugnance or inconsistency. The modification must be minimal — "no further" than necessary to cure the defect. Grey v Pearson (1857) — Lord Wensleydale.',
+    recall:'The Golden Rule of interpretation requires courts to give statutory words their ordinary grammatical meaning — but departs from this when the literal reading leads to absurdity, repugnance or inconsistency. This principle was authoritatively stated by Lord Wensleydale in Grey v Pearson (1857): the grammatical sense is adhered to "unless it leads to some absurdity... in which case the grammatical sense may be modified to avoid that absurdity, but no further." The Golden Rule has two applications: the narrow application (choose the sensible meaning where a word has two meanings) and the wide application (modify language to cure a manifest absurdity, as in R v Allen (1872) where "marry" was read as "go through a ceremony of marriage" to prevent the offence of bigamy from being impossible to commit). The Golden Rule is distinguished from the Literal Rule (which allows no departure) and the Mischief Rule (which focuses on the social purpose behind the Act, going further than just curing absurdity).'
+  },
+
+  'n-3': {
+    unit:'Unit II', title:'Mischief Rule — Heydon\'s Rule',
+    hook:'What disease was Parliament trying to cure? Interpret the statute so that the medicine actually works.',
+    visual:`
+      <p class="n-section-title">Heydon's Four Questions — Flow</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy">
+          <span class="n-card-icon">1️⃣</span>
+          <div class="n-card-title">Common Law Before</div>
+          <div class="n-card-text">What was the legal position BEFORE this Act was passed?</div>
+        </div>
+        <div class="n-card teal">
+          <span class="n-card-icon">2️⃣</span>
+          <div class="n-card-title">The Mischief</div>
+          <div class="n-card-text">What defect or MISCHIEF did the old law fail to address?</div>
+        </div>
+        <div class="n-card gold">
+          <span class="n-card-icon">3️⃣</span>
+          <div class="n-card-title">Parliament's Remedy</div>
+          <div class="n-card-text">What REMEDY did Parliament appoint to cure the defect?</div>
+        </div>
+        <div class="n-card green">
+          <span class="n-card-icon">4️⃣</span>
+          <div class="n-card-title">True Reason</div>
+          <div class="n-card-text">SUPPRESS the mischief and ADVANCE the remedy.</div>
+        </div>
+      </div>
+      <p class="n-section-title">Three Rules Compared</p>
+      <table class="n-table">
+        <tr><th>Feature</th><th>Literal</th><th>Golden</th><th>Mischief</th></tr>
+        <tr><td>Focus</td><td>Words</td><td>Words + Absurdity</td><td>Purpose + Mischief</td></tr>
+        <tr><td>Historical context</td><td>Ignored</td><td>Ignored</td><td>Central</td></tr>
+        <tr><td>Flexibility</td><td>Rigid</td><td>Limited</td><td>High</td></tr>
+        <tr><td>Key case</td><td>Sussex Peerage</td><td>Grey v Pearson</td><td>Heydon's Case</td></tr>
+      </table>`,
+    cases:[
+      {name:"Heydon's Case (1584)", meta:'Mischief Rule — Origin and Four Questions', story:'The Court of Exchequer in 1584 had to interpret a statute on leases and copyhold land in England. The existing common law was inadequate. The court devised a systematic approach: ask four questions about the mischief Parliament was targeting.', held:'Four-question test: (1) What was the common law before? (2) What was the mischief/defect the old law did not cure? (3) What remedy did Parliament appoint? (4) What was the true reason? → SUPPRESS THE MISCHIEF, ADVANCE THE REMEDY.', why:"The oldest formal rule of statutory interpretation — 440 years old and still applied. Every mischief rule answer must state Heydon's four questions in full.", exam:"Write ALL FOUR questions in every mischief rule answer — numbered. Then apply each to the problem facts. Conclude: 'Suppressing the mischief, the correct interpretation is...'"},
+      {name:'Smith v. Hughes (1960)', meta:'Mischief Rule Applied — Soliciting from Window', story:'Parliament passed the Street Offences Act 1959 to clean up London streets from prostitution. Six women were prosecuted for soliciting men — not from the street, but from INSIDE their premises through windows and balconies. Literal Rule defence: they were not "in a street or public place."', held:'Lord Parker CJ applied the Mischief Rule. The mischief = nuisance to members of the public on streets. That mischief was identical whether soliciting came from pavement or from a window. The women were GUILTY.', why:'Most important modern application of the Mischief Rule. Shows the rule prevailing over a technically correct Literal Rule argument. Standard exam case for soliciting-from-window problems.', exam:'In ANY soliciting-from-window problem: (1) Heydon\'s 4 questions; (2) Mischief = public nuisance on streets; (3) Smith v Hughes — same mischief inside or outside; (4) Conclude: GUILTY.'},
+    ],
+    alert:'In any exam problem involving soliciting from a window/balcony — ALWAYS use the Mischief Rule and cite Smith v Hughes (1960). The Literal Rule argument (not physically in a street) is the wrong answer even though it is technically arguable.',
+    keybox:'The Mischief Rule directs courts to identify the defect in the prior law (the mischief) and the remedy Parliament devised — then interpret the statute to suppress the mischief and advance the remedy. Heydon\'s Case (1584) formulated the four-question test. Smith v Hughes (1960) is its most famous application.',
+    recall:'The Mischief Rule — also known as Heydon\'s Rule or the Purposive Rule — is the oldest and most flexible rule of statutory interpretation, originating in Heydon\'s Case (1584). It directs courts to ask four questions: (1) What was the common law before the Act? (2) What was the mischief or defect for which the old law did not provide? (3) What remedy did Parliament resolve to cure the defect? (4) What was the true reason of that remedy? — and then to interpret the statute so as to suppress the mischief and advance the remedy. The rule was applied in Smith v Hughes (1960) where prostitutes soliciting men from inside their premises through windows were held guilty under the Street Offences Act 1959 — the mischief (public nuisance on streets) existed equally whether the soliciting came from the pavement or from inside a building. The Mischief Rule goes further than the Golden Rule: it does not merely cure absurdity but positively directs courts to achieve the legislative purpose, even if this means going beyond the literal text of the statute.'
+  },
+
+  'n-4': {
+    unit:'Units I–III', title:'Ejusdem Generis',
+    hook:'"Other animals" after "lions, tigers, leopards" means other wild animals — not your pet cat.',
+    visual:`
+      <p class="n-section-title">The Four Conditions — All Must Be Satisfied</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1️⃣</span><div class="n-card-title">Enumeration of Specific Items</div><div class="n-card-text">There must be a list of specific named things.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">2️⃣</span><div class="n-card-title">Common Genus</div><div class="n-card-text">The specific items must belong to a recognisable class or genus.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">3️⃣</span><div class="n-card-title">General Word Follows</div><div class="n-card-text">A general word ("and other...") must follow the specific list.</div></div>
+        <div class="n-card green"><span class="n-card-icon">4️⃣</span><div class="n-card-title">General Word Restricts</div><div class="n-card-text">The general word is restricted to same genus as the specific items.</div></div>
+      </div>
+      <p class="n-section-title">Classic Vegetables Problem — Decoded</p>
+      <table class="n-table">
+        <tr><th>Item</th><th>Genus?</th><th>Result</th></tr>
+        <tr><td>Potatoes, onions, garlic, ginger, turmeric</td><td>Savoury root/bulb/rhizome culinary plants</td><td>✅ Specifically listed — COVERED</td></tr>
+        <tr><td>Dry ginger</td><td>Same plant as listed ginger</td><td>✅ COVERED (same genus)</td></tr>
+        <tr><td>Coconuts, bananas</td><td>Fruits — different genus</td><td>❌ NOT covered</td></tr>
+        <tr><td>Mushrooms</td><td>Fungi — not plants</td><td>❌ NOT covered</td></tr>
+      </table>
+      <p class="n-section-title">Ejusdem Generis vs Noscitur a Sociis</p>
+      <table class="n-table">
+        <tr><th>Feature</th><th>Ejusdem Generis</th><th>Noscitur a Sociis</th></tr>
+        <tr><td>Applies to</td><td>General word after specific list</td><td>Any ambiguous word</td></tr>
+        <tr><td>Requires</td><td>List forming a genus</td><td>Surrounding context only</td></tr>
+        <tr><td>General word position</td><td>Must FOLLOW the specific list</td><td>Can be anywhere</td></tr>
+      </table>`,
+    cases:[
+      {name:"Ejusdem Generis — Vegetables & Sales Tax (Classic OU Problem)", meta:'Exam Problem Type — Appears Almost Every Year', story:'A Sales Tax Act exempts "potatoes, onions, garlic, ginger, turmeric, and other vegetables." A trader claims various items are exempt as "other vegetables." The court must apply ejusdem generis to each disputed item.', held:'The genus of the specific items = savoury root/bulb/rhizome culinary plants. "Other vegetables" is restricted to items of this genus. Dry ginger (same plant as listed ginger) is COVERED. Coconuts and bananas (fruits) are NOT covered. Mushrooms (fungi) are NOT covered.', why:'The most tested Part C problem in OU Interpretation of Statutes examinations. Ejusdem generis is the ONLY applicable rule. The dry ginger nuance scores extra marks.', exam:'IRAC: Issue = does [item] fall within "other vegetables"? Rule = ejusdem generis — 4 conditions. Apply = identify genus of specific items. Conclude = is disputed item of same genus? Dry ginger YES. Fruits/fungi NO.'},
+    ],
+    alert:'In any vegetables/sales tax problem, ALWAYS apply Ejusdem Generis. Write all 4 conditions. Identify the genus of the specific items FIRST, then check if the disputed item belongs to that genus. Never treat "other vegetables" as covering ALL vegetables.',
+    keybox:'Ejusdem Generis means "of the same kind." When general words follow a list of specific things, the general words are restricted to the same genus or class as the specific things. Four conditions must ALL be satisfied. The classic exam application: "other vegetables" after savoury culinary plants = restricted to same genus — not fruits, not fungi.',
+    recall:'Ejusdem Generis (Latin: "of the same kind") is a rule of statutory interpretation that limits the scope of general words that follow an enumeration of specific things. Four conditions must be satisfied: (1) there must be an enumeration of specific items; (2) the specific items must form a recognisable genus or class; (3) a general word must follow the specific enumeration; (4) the general word must be capable of restriction to the same genus. The rule is applied in the classic examination problem: a Sales Tax Act exempts "potatoes, onions, garlic, ginger, turmeric, and other vegetables." The genus of the specific items is savoury root/bulb/rhizome culinary plants. "Other vegetables" is restricted to this genus — dry ginger (same plant as listed ginger) is covered; coconuts and bananas (fruits) are not covered; mushrooms (fungi) are not covered. Ejusdem generis is distinguished from noscitur a sociis: ejusdem generis applies specifically where a general word follows a specific list, while noscitur a sociis applies to any ambiguous word in its context.'
+  },
+
+  'n-5': {
+    unit:'Units I–III', title:'Noscitur a Sociis',
+    hook:'"A word is known by the company it keeps" — an ambiguous word takes its meaning from the words around it.',
+    visual:`
+      <p class="n-section-title">How It Works</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Identify the Ambiguous Word</div>
+        <div class="n-flow-step">Look at Companion Words</div>
+        <div class="n-flow-step">Ambiguous Word Takes Their Colour</div>
+        <div class="n-flow-step">Apply Contextual Meaning</div>
+      </div>
+      <p class="n-section-title">Illustration</p>
+      <div class="n-card navy" style="margin-bottom:12px;">
+        <div class="n-card-title">Statute: "industries, factories, workshops, and other establishments"</div>
+        <div class="n-card-text">"Other establishments" — applying noscitur a sociis — must be of the same industrial/manufacturing character as industries, factories, workshops. <strong>Hospitals and schools are NOT covered.</strong> They are of a different character from the companion words.</div>
+      </div>
+      <p class="n-section-title">Noscitur vs Ejusdem — Key Distinction</p>
+      <table class="n-table">
+        <tr><th>Feature</th><th>Noscitur a Sociis</th><th>Ejusdem Generis</th></tr>
+        <tr><td>Applies to</td><td>ANY ambiguous word</td><td>GENERAL word after specific list</td></tr>
+        <tr><td>What it needs</td><td>Surrounding context</td><td>Enumeration forming a genus</td></tr>
+        <tr><td>Breadth</td><td>Broader, more flexible</td><td>More precise and structured</td></tr>
+        <tr><td>Word position</td><td>Anywhere</td><td>Must follow specific enumeration</td></tr>
+      </table>`,
+    cases:[],
+    alert:'Do NOT confuse noscitur a sociis with ejusdem generis in the exam. Noscitur = any ambiguous word takes colour from context. Ejusdem = general word after specific list restricted to same genus. The distinction table is frequently tested.',
+    keybox:'Noscitur a sociis — "a word is known by its associates" — is a rule of contextual interpretation. When a word in a statute is ambiguous, its meaning is determined by the words and context surrounding it. An ambiguous word takes its colour and character from the words it appears alongside. It is a broader and more flexible rule than ejusdem generis.',
+    recall:'Noscitur a sociis (Latin: "a word is known by its associates") is a principle of contextual interpretation holding that where a word in a statute is ambiguous or susceptible of more than one meaning, its meaning is to be ascertained by reference to the words associated with it in the same provision. Words in a statute take colour and character from their companions. The classic illustration: "industries, factories, workshops, and other establishments" — "other establishments" takes its meaning from the surrounding words (industrial/manufacturing enterprises) and therefore does not include hospitals or schools. Noscitur a sociis is distinguished from ejusdem generis: noscitur applies to any ambiguous word anywhere in its context, while ejusdem generis applies specifically where a general word follows a specific enumeration and restricts the general word to the genus of the specific items. Both are Internal Aids to interpretation.'
+  },
+
+  'n-6': {
+    unit:'Unit III', title:'Penal Statutes — Strict Construction',
+    hook:'When a penal statute is ambiguous and can mean guilty or not guilty — the accused ALWAYS wins.',
+    visual:`
+      <p class="n-section-title">Constitutional Foundation</p>
+      <div class="n-card navy" style="margin-bottom:12px;">
+        <span class="n-card-icon">🏛️</span>
+        <div class="n-card-title">Article 20(1) — Constitution of India</div>
+        <div class="n-card-text">No person shall be convicted of any offence except for violation of a law IN FORCE at the time of the act. No penalty GREATER than that prescribed at time of commission. Absolute bar on retrospective penal laws.</div>
+      </div>
+      <p class="n-section-title">Five Principles of Strict Construction</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1</span><div class="n-card-title">No Extension by Implication</div><div class="n-card-text">Penal liability cannot cover conduct not clearly within the statute.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">2</span><div class="n-card-title">Nulla Poena Sine Lege</div><div class="n-card-text">No punishment without law. Offences must be defined with clarity.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">3</span><div class="n-card-title">Ambiguity → Accused</div><div class="n-card-text">Two interpretations — the more favourable to accused MUST be adopted.</div></div>
+        <div class="n-card green"><span class="n-card-icon">4</span><div class="n-card-title">Defences = Liberal</div><div class="n-card-text">Exceptions, defences and provisos construed LIBERALLY for accused.</div></div>
+      </div>
+      <p class="n-section-title">Rule of Lenity — EXAM DECISION RULE</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Penal Statute</div>
+        <div class="n-flow-step">Two Interpretations</div>
+        <div class="n-flow-step">One = Guilty</div>
+        <div class="n-flow-step">One = Not Guilty</div>
+        <div class="n-flow-step">ACQUIT — Always</div>
+      </div>`,
+    cases:[
+      {name:'CIT v. Sodra Devi', meta:'Strict Construction — Penal and Taxing Statutes', story:'The Supreme Court of India laid down the foundational principle that both penal and taxing statutes share a common character: they impose burdens on individuals. Because of this burden, the language creating the burden must be clear and unambiguous before the burden can be imposed.', held:'Where a provision imposing penal liability or tax is susceptible of two interpretations — one imposing liability and one not — the interpretation favouring the accused or taxpayer must be adopted. Benefit of doubt ALWAYS goes to the individual, never to the State.', why:'Most cited case on strict construction in OU examinations. Applies to BOTH penal and taxing statutes. Establishes the Rule of Lenity in Indian law.', exam:'Cite in every Part A or Part B on strict construction. Cite in EVERY Part C problem where a penal statute is ambiguous. "CIT v Sodra Devi — benefit of doubt goes to accused/taxpayer." This is your anchor case.'},
+    ],
+    alert:'In ANY Part C problem where a penal statute has two possible interpretations — one leading to conviction and one to acquittal — ALWAYS choose acquittal. Rule of Lenity. Never deviate from this. Cite CIT v Sodra Devi.',
+    keybox:'Strict construction of penal statutes = Rule of Lenity. Where a penal provision is ambiguous and admits of two interpretations — the interpretation more favourable to the accused MUST be adopted. Article 20(1) is the constitutional foundation. CIT v Sodra Devi is the key Indian case.',
+    recall:'Penal statutes impose punishment, fine, forfeiture or other disability on individuals. Because of their severe consequences, courts apply strict construction — interpreting such statutes narrowly and in favour of the accused. The Rule of Lenity states: when a penal statute is susceptible of two interpretations, one imposing liability and one not, the court MUST adopt the interpretation more favourable to the accused — the benefit of doubt always goes to the accused, never to the prosecution. This rule is established in India by CIT v Sodra Devi where the Supreme Court held that both penal and taxing provisions require strict construction. The constitutional foundation is Article 20(1) which prohibits conviction for acts that were not offences at the time of commission and prohibits punishment greater than that prescribed at the time. Five principles govern strict construction: no extension by implication; nulla poena sine lege (no punishment without clear law); ambiguity resolved for the accused; defences and exceptions construed liberally; courts will not fill gaps in penal legislation.'
+  },
+
+  'n-7': {
+    unit:'Unit III', title:'Taxing Statutes — Strict Construction',
+    hook:'No tax by implication — if Parliament did not clearly say "tax this," courts will not read it in.',
+    visual:`
+      <p class="n-section-title">Three Cardinal Rules</p>
+      <div class="n-grid n-grid-3">
+        <div class="n-card navy"><span class="n-card-icon">❌</span><div class="n-card-title">No Tax Without Clear Words</div><div class="n-card-text">A tax can only be levied if there is clear and unambiguous statutory authority.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">💰</span><div class="n-card-title">Ambiguity → Taxpayer</div><div class="n-card-text">If charging provision is genuinely ambiguous — interpretation favouring taxpayer is adopted.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">🚫</span><div class="n-card-title">No Tax by Analogy</div><div class="n-card-text">Cannot extend the charging section by analogy, inference or implication.</div></div>
+      </div>
+      <p class="n-section-title">Structure of a Taxing Statute</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Charging Section<br>STRICT — defines who/what is taxed</div>
+        <div class="n-flow-step">Computation Section<br>How tax is calculated</div>
+        <div class="n-flow-step">Machinery Section<br>Assessment, collection, appeals</div>
+      </div>
+      <p class="n-section-title">Taxing vs Penal — Comparison</p>
+      <table class="n-table">
+        <tr><th>Feature</th><th>Taxing Statutes</th><th>Penal Statutes</th></tr>
+        <tr><td>Construction</td><td>STRICT — charging provisions</td><td>STRICT — penal provisions</td></tr>
+        <tr><td>Ambiguity favours</td><td>Taxpayer</td><td>Accused</td></tr>
+        <tr><td>No implication</td><td>No tax by implication</td><td>No punishment by implication</td></tr>
+      </table>`,
+    cases:[
+      {name:'CIT v. Sodra Devi', meta:'Strict Construction — Tax Statutes', story:'The Supreme Court established that taxing statutes, like penal statutes, impose burdens on individuals. A taxpayer cannot be subjected to a charge unless the charging provision clearly and unambiguously covers their case. Any doubt is resolved in favour of the taxpayer.', held:'Where a taxing provision is susceptible of two interpretations — one imposing tax and one not — the interpretation favouring the taxpayer must be adopted. No tax by implication.', why:'The foundational Indian Supreme Court case on strict construction of taxing statutes. Same principle as penal statute strict construction — double use in exam answers.', exam:'Cite for EVERY Part B or Part C on taxing statutes. "CIT v Sodra Devi — no tax by implication — ambiguity favours taxpayer."'},
+    ],
+    alert:'In any sales tax / income tax problem where the charging provision is ambiguous — the taxpayer wins. No tax by implication. Ambiguity in the CHARGING section = taxpayer benefits. NOTE: Exemptions are construed strictly too — the taxpayer must show they clearly fall within the exemption.',
+    keybox:'Taxing statutes are strictly construed. No tax can be levied unless the charging provision clearly and unambiguously covers the case. Ambiguity in the charging provision = taxpayer wins. No tax by implication, analogy or inference. CIT v Sodra Devi.',
+    recall:'Taxing statutes impose financial burdens on citizens and are therefore subject to strict construction — the same standard applied to penal statutes, though for different reasons. Three cardinal rules govern interpretation of taxing statutes: (1) no tax without clear words — a tax can only be levied if there is express and unambiguous statutory authority; (2) ambiguity in the charging provision is resolved in favour of the taxpayer; (3) no tax can be levied by analogy, inference or implication. The Supreme Court in CIT v Sodra Devi established that both penal and taxing provisions require strict construction and that where statutory language admits of doubt, benefit must go to the individual not to the State. A taxing statute has three components: the charging section (who is taxed and on what), the computation section (how tax is calculated), and the machinery section (assessment, collection, appeals). Strict construction applies primarily to the charging section; machinery provisions may be construed more liberally to ensure workability.'
+  },
+
+  'n-8': {
+    unit:'Unit III', title:'Beneficial Construction',
+    hook:'Welfare statutes protect the weak — courts must interpret them to give the greatest possible protection, never on technicalities.',
+    visual:`
+      <p class="n-section-title">Statutes Attracting Beneficial Construction</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card green"><span class="n-card-icon">👷</span><div class="n-card-title">Labour / Workers</div><div class="n-card-text">Industrial Disputes Act, Factories Act, Workmen's Compensation — construed in favour of workers.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">🛒</span><div class="n-card-title">Consumers</div><div class="n-card-text">Consumer Protection Act — 'consumer' defined broadly to protect buyers.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">🏠</span><div class="n-card-title">Tenants</div><div class="n-card-text">Rent Control Acts — construed in favour of tenants against landlords.</div></div>
+        <div class="n-card red"><span class="n-card-icon">👩‍⚖️</span><div class="n-card-title">Women &amp; Children</div><div class="n-card-text">Anti-dowry, maternity benefit, child protection laws — liberally construed.</div></div>
+      </div>
+      <p class="n-section-title">Beneficial vs Strict — Spectrum</p>
+      <div class="n-spectrum">
+        <div class="n-spectrum-bar">
+          <div class="n-sp-seg" style="background:var(--red);flex:1;">Strict<br>Penal/Tax</div>
+          <div class="n-sp-seg" style="background:#888;flex:1;">Neutral<br>Procedural</div>
+          <div class="n-sp-seg" style="background:var(--green);flex:1;">Liberal<br>Welfare</div>
+        </div>
+      </div>`,
+    cases:[
+      {name:'State of Punjab v. Qaiser Jehan Begum', meta:'Beneficial Construction — Welfare Statutes', story:'A social welfare statute was capable of two interpretations — one that denied benefits to the claimant and one that granted them. The Supreme Court was asked which interpretation to adopt. The Court applied beneficial construction.', held:'Where two interpretations of a welfare statute are possible, courts MUST adopt the interpretation that confers the greatest benefit on the class the statute was designed to protect. Technical objections that frustrate the protective purpose must be rejected.', why:'Leading Indian case on beneficial construction. Establishes the core principle that the beneficiary\'s interest governs when ambiguity exists in welfare legislation.', exam:'Cite in any beneficial construction answer. "Qaiser Jehan Begum — where two interpretations exist, adopt the one favouring the protected class." Contrast with strict construction (penal/tax) where ambiguity favours the accused/taxpayer.'},
+    ],
+    alert:'Beneficial construction does NOT give courts a licence to extend a welfare statute beyond its clear meaning or to add words Parliament did not include. Courts must still work within the text. The rule operates when there is genuine AMBIGUITY — not to override clear language.',
+    keybox:'Beneficial construction requires courts to interpret welfare statutes broadly and liberally to give the fullest effect to the protective purpose and secure the greatest benefit for the protected class. Where two interpretations are possible, the court must adopt the one more favourable to the beneficiary. (Qaiser Jehan Begum)',
+    recall:'Beneficial construction (also called liberal or remedial construction) applies to statutes enacted to protect disadvantaged classes — workers, consumers, tenants, women, children. The rule requires courts to interpret such statutes as broadly and liberally as necessary to give the fullest effect to the legislative intent and secure the greatest benefit to the protected class. The Supreme Court in State of Punjab v Qaiser Jehan Begum held that where two interpretations of a welfare statute are possible, courts must adopt the one that confers the greatest benefit on the class the statute was designed to protect. The types of statutes attracting beneficial construction include labour laws, Consumer Protection Act, rent control legislation, anti-dowry and women protection laws, and maternity benefit legislation. There is an important limitation: beneficial construction does not give courts a licence to extend the statute beyond its clear meaning or to add words Parliament did not use — courts must still work within the text of the Act and operate on genuine ambiguity, not use beneficial construction to override unambiguous language.'
+  },
+
+  'n-9': {
+    unit:'Unit III', title:'Harmonious Construction',
+    hook:'Parliament does not contradict itself — when two provisions clash, courts reconcile them both rather than striking one out.',
+    visual:`
+      <p class="n-section-title">Six Rules of Harmonious Construction</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1</span><div class="n-card-title">Read All Together</div><div class="n-card-text">All provisions of the statute must be read together to give each full effect.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">2</span><div class="n-card-title">No Redundancy</div><div class="n-card-text">No provision shall be made redundant or treated as surplusage.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">3</span><div class="n-card-title">Specific Over General</div><div class="n-card-text">Specific provision prevails over general provision (Generalia Specialibus Non Derogant).</div></div>
+        <div class="n-card green"><span class="n-card-icon">4</span><div class="n-card-title">Later Over Earlier</div><div class="n-card-text">If truly irreconcilable — later provision may prevail over earlier (last resort).</div></div>
+        <div class="n-card red"><span class="n-card-icon">5</span><div class="n-card-title">Lean Toward Harmony</div><div class="n-card-text">Courts avoid declaring provisions repugnant — every effort to reconcile first.</div></div>
+        <div class="n-card navy"><span class="n-card-icon">6</span><div class="n-card-title">Workable Statute</div><div class="n-card-text">Prefer construction that makes the statute workable as a coherent whole.</div></div>
+      </div>
+      <p class="n-section-title">Conflict Resolution Hierarchy</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Step 1<br>Harmonious Construction — Try to reconcile</div>
+        <div class="n-flow-step">Step 2<br>Generalia Specialibus — Specific prevails over general</div>
+        <div class="n-flow-step">Step 3<br>Implied Repeal — Later Act prevails (LAST RESORT)</div>
+      </div>`,
+    cases:[],
+    alert:'"Courts reconcile — they do not strike out." This phrase must appear in every harmonious construction answer. The court\'s first duty is always to find a reading where BOTH provisions operate. Only when absolutely impossible does the court move to implied repeal.',
+    keybox:'Harmonious Construction requires courts to read all provisions of a statute together so that each is given full effect. No provision should be rendered redundant or surplusage. When two provisions apparently conflict: first reconcile; if impossible, specific over general; if still impossible, later over earlier (last resort).',
+    recall:'Harmonious Construction is the doctrine that requires courts, when two provisions of the same statute appear to conflict, to interpret them so that both are given full effect — avoiding any repugnancy and ensuring no provision is rendered redundant. Parliament is presumed not to contradict itself. The rules of harmonious construction are: (1) all provisions read together; (2) no provision treated as surplusage; (3) specific provision prevails over general provision (Generalia Specialibus Non Derogant); (4) if truly irreconcilable, later provision may prevail over earlier; (5) courts lean toward harmony and avoid declaring provisions repugnant; (6) prefer the construction that makes the statute workable. When a provision is rendered useless by an interpretation it is treated as an error — the court adopts the interpretation that makes both provisions operative. The conflict resolution hierarchy is: harmonious construction first, then Generalia Specialibus (specific over general), and only as a last resort implied repeal (later Act prevails over earlier).'
+  },
+
+  'n-10': {
+    unit:'Unit IV', title:'Preamble as an Aid to Interpretation',
+    hook:'The Preamble is the Act\'s statement of intent — it resolves ambiguity but cannot override clear words.',
+    visual:`
+      <p class="n-section-title">Preamble — When It CAN and CANNOT Be Used</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card green">
+          <span class="n-card-icon">✅</span>
+          <div class="n-card-title">CAN Be Used</div>
+          <div class="n-card-text">• Resolve ambiguity in operative provisions<br>• Identify the mischief Parliament targeted<br>• Determine scope of the Act<br>• Choose between two possible interpretations</div>
+        </div>
+        <div class="n-card red">
+          <span class="n-card-icon">❌</span>
+          <div class="n-card-title">CANNOT Be Used</div>
+          <div class="n-card-text">• Override clear unambiguous operative language<br>• Expand the scope beyond what the words permit<br>• Create rights or liabilities independently</div>
+        </div>
+      </div>
+      <p class="n-section-title">Preamble vs Long Title vs Short Title</p>
+      <table class="n-table">
+        <tr><th>Aid</th><th>Location</th><th>Purpose</th><th>Weight</th></tr>
+        <tr><td>Preamble</td><td>Before enacting clause</td><td>States objects and reasons</td><td>High</td></tr>
+        <tr><td>Long Title</td><td>Above preamble</td><td>General description of Act</td><td>Moderate</td></tr>
+        <tr><td>Short Title</td><td>End of Act</td><td>Popular reference name</td><td>Low</td></tr>
+      </table>`,
+    cases:[],
+    alert:'The Preamble is an INTERNAL aid — it is part of the statute itself. Never call it an external aid. The key rule: Preamble HELPS when language is ambiguous — it CANNOT override clear and unambiguous operative provisions.',
+    keybox:'The Preamble is the introductory clause of a statute stating its objects and reasons. It is an INTERNAL aid to interpretation. It may be used to resolve ambiguity and determine legislative purpose — but it cannot override clear operative provisions. It guides; it does not govern.',
+    recall:'The preamble is the introductory part of a statute that declares the reasons, objects and purposes for which the Act was enacted. It is an internal aid to interpretation — it is part of the enacted statute itself. Courts may use the preamble to resolve ambiguity in operative provisions, to identify the mischief the statute was designed to cure, to determine whether a particular case falls within the scope of the Act, and to choose between two equally plausible interpretations. The preamble CANNOT be used to override clear and unambiguous operative provisions, to expand the scope of the Act beyond what its words permit, or to create rights and liabilities independently of the enacting text. The key rule: where the operative provisions are clear, the preamble cannot control their meaning. The preamble is a guide, not the governing provision. It is distinguished from the Long Title (general description of the Act — moderate interpretive weight) and the Short Title (citation reference — minimal interpretive weight).'
+  },
+
+  'n-11': {
+    unit:'Unit IV', title:'Internal Aids to Interpretation',
+    hook:'Courts look INSIDE the statute first — the Act\'s own parts are always the first and strongest guides to meaning.',
+    visual:`
+      <p class="n-section-title">10 Internal Aids — Priority Order</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1️⃣</span><div class="n-card-title">Operative Provisions</div><div class="n-card-text">The law itself — highest priority. Start here always.</div></div>
+        <div class="n-card navy"><span class="n-card-icon">2️⃣</span><div class="n-card-title">Definition Clauses</div><div class="n-card-text">BINDING — override ordinary dictionary meaning for that Act.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">3️⃣</span><div class="n-card-title">Preamble</div><div class="n-card-text">States objects and reasons — resolves ambiguity only.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">4️⃣</span><div class="n-card-title">Long Title</div><div class="n-card-text">General description — moderate weight.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">5️⃣</span><div class="n-card-title">Headings</div><div class="n-card-text">Guide to scope of sections — cannot override clear language.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">6️⃣</span><div class="n-card-title">Marginal Notes</div><div class="n-card-text">Guide only — not part of enacting clause — lowest weight.</div></div>
+        <div class="n-card green"><span class="n-card-icon">7️⃣</span><div class="n-card-title">Proviso</div><div class="n-card-text">"Provided that..." — qualifies main provision — cannot expand it.</div></div>
+        <div class="n-card green"><span class="n-card-icon">8️⃣</span><div class="n-card-title">Explanation</div><div class="n-card-text">Clarifies scope — amplifies — does not modify the main provision.</div></div>
+        <div class="n-card red"><span class="n-card-icon">9️⃣</span><div class="n-card-title">Schedules</div><div class="n-card-text">Same legal force as operative provisions. Body prevails in conflict.</div></div>
+        <div class="n-card red"><span class="n-card-icon">🔟</span><div class="n-card-title">Illustrations</div><div class="n-card-text">Exemplify the section — part of the Act — cannot extend it.</div></div>
+      </div>`,
+    cases:[],
+    alert:'Definition clauses are BINDING — they override the ordinary dictionary meaning for the purposes of that Act. "Unless the context otherwise requires" means context can displace the statutory definition, but only when necessary for the provision to make sense.',
+    keybox:'Internal aids are materials within the statute itself — preferred over external aids because they are part of Parliament\'s own enacted words. 10 internal aids in priority order: (1) Operative provisions → (2) Definition clauses → (3) Preamble → (4) Long Title → (5) Headings → (6) Marginal Notes → (7) Proviso → (8) Explanation → (9) Schedules → (10) Illustrations.',
+    recall:'Internal aids to interpretation are materials found within the four corners of the statute itself. They are preferred over external aids because they represent Parliament\'s own words as enacted. There are ten internal aids in descending order of priority: (1) operative provisions — the law itself, highest priority; (2) definition clauses — binding, override ordinary dictionary meanings; (3) preamble — states objects and reasons, resolves ambiguity; (4) long title — general description of the Act; (5) headings and chapter titles — guide to scope of sections; (6) marginal notes/sidenotes — guide only, not part of the enacting clause; (7) proviso ("Provided that...") — qualifies the immediately preceding provision, cannot expand it; (8) explanation — amplifies and clarifies, does not modify; (9) schedules — same legal force as operative provisions, body of Act prevails in conflict; (10) illustrations — exemplify the section, part of the Act, cannot extend the section beyond its words. Courts always use internal aids before resorting to external aids.'
+  },
+
+  'n-12': {
+    unit:'Unit IV', title:'External Aids to Interpretation',
+    hook:'When the statute\'s own words and internal aids still leave doubt — courts look outside for context and history.',
+    visual:`
+      <p class="n-section-title">Internal vs External — Hierarchy</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Start: Text of Statute</div>
+        <div class="n-flow-step">Internal Aids (within the Act)</div>
+        <div class="n-flow-step">External Aids ONLY if ambiguity remains</div>
+        <div class="n-flow-step">Persuasive — Never Binding</div>
+      </div>
+      <p class="n-section-title">Eight External Aids</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">📋</span><div class="n-card-title">Statement of Objects &amp; Reasons</div><div class="n-card-text">Shows mischief Parliament targeted — cannot interpret specific words.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">🏛️</span><div class="n-card-title">Parliamentary Debates</div><div class="n-card-text">Persuasive. Pepper v Hart (1993) — admissible if: ambiguous + clear ministerial statement + effect clear.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">📑</span><div class="n-card-title">Law Commission Reports</div><div class="n-card-text">Highly persuasive — identify mischief Parliament was curing.</div></div>
+        <div class="n-card green"><span class="n-card-icon">📖</span><div class="n-card-title">Dictionaries</div><div class="n-card-text">Oxford English Dictionary (ordinary words); Black's Law Dictionary (legal terms).</div></div>
+        <div class="n-card red"><span class="n-card-icon">🌐</span><div class="n-card-title">Foreign Decisions</div><div class="n-card-text">Persuasive for statutes based on foreign models. Not binding on Indian courts.</div></div>
+        <div class="n-card navy"><span class="n-card-icon">🤝</span><div class="n-card-title">International Treaties</div><div class="n-card-text">Where India ratified a treaty and enacted implementing legislation — treaty is an important external aid.</div></div>
+      </div>`,
+    cases:[
+      {name:'Pepper v. Hart (1993) — UK House of Lords', meta:'Parliamentary Debates as External Aid', story:'The case involved interpretation of the Finance Act in England. Counsel argued that a clear ministerial statement in Parliament during the Bill\'s passage showed exactly how the provision was meant to apply. The Revenue objected: Parliamentary debates are inadmissible!', held:'House of Lords overruled the previous prohibition and admitted Parliamentary debates (Hansard) as an external aid — but only under three strict conditions: (a) legislation is ambiguous, obscure or produces absurd result; (b) material consists of clear statements by Minister or promoter of Bill; (c) effect of those statements is clear.', why:'Landmark English case on use of Parliamentary materials as external aid. Three conditions are rigidly applied to prevent every case from turning into a debate about individual MPs\' speeches.', exam:'For External Aids Part A or Part B: "Pepper v Hart (1993) — Parliamentary debates admissible in England under three conditions: ambiguity + clear ministerial statement + clear effect." Note: Indian courts are more permissive — debates used with caution as persuasive material.'},
+    ],
+    alert:'External aids are PERSUASIVE — never BINDING. They cannot override the plain text of the statute. The hierarchy is: Text → Internal Aids → External Aids. External aids are a last resort, not a first option.',
+    keybox:'External aids are materials outside the four corners of the statute used to illuminate legislative intent when internal aids fail to resolve ambiguity. They are always persuasive and never binding. They cannot override clear statutory language. Hierarchy: Text → Internal Aids → External Aids.',
+    recall:'External aids to interpretation are materials found outside the four corners of the statute that courts consult when internal aids leave genuine ambiguity. They are secondary and supplementary — always persuasive, never binding, and cannot override the plain text of the statute. The eight main external aids are: (1) Statement of Objects and Reasons — shows mischief targeted, cannot interpret specific operative words; (2) Parliamentary Debates (Hansard) — persuasive; in England admissible under Pepper v Hart (1993) conditions: ambiguous legislation + clear ministerial statement + clear effect; in India admitted with caution; (3) Law Commission Reports — highly persuasive for identifying mischief; (4) Dictionaries — provide range of possible meanings; (5) Foreign decisions — persuasive for statutes based on foreign models; (6) International treaties — where India ratified and enacted implementing legislation; (7) Select Committee reports; (8) Standard textbooks for technical terms. The hierarchy is: text → internal aids → external aids. External aids are the last resort.'
+  },
+
+  'n-13': {
+    unit:'Unit IV', title:'Presumptions in Statutory Interpretation',
+    hook:'Courts start with several built-in assumptions about what Parliament intends — each can be overridden by clear language but not by implication.',
+    visual:`
+      <p class="n-section-title">Seven Key Presumptions</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1</span><div class="n-card-title">Against Retrospective Operation</div><div class="n-card-text">Statutes apply prospectively only. Art. 20(1) makes this absolute for penal statutes.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">2</span><div class="n-card-title">Against Disturbing Vested Rights</div><div class="n-card-text">Existing rights, titles and interests not extinguished without express language.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">3</span><div class="n-card-title">Against Ousting Court Jurisdiction</div><div class="n-card-text">Clear, unambiguous words required to exclude judicial review. Courts are reluctant to hold themselves excluded.</div></div>
+        <div class="n-card green"><span class="n-card-icon">4</span><div class="n-card-title">Against Absurdity</div><div class="n-card-text">Parliament does not intend absurd or unreasonable results. Basis of the Golden Rule.</div></div>
+        <div class="n-card red"><span class="n-card-icon">5</span><div class="n-card-title">Constitutionality</div><div class="n-card-text">Every statute presumed constitutionally valid. Courts strain to read statute consistently with Constitution before striking it down.</div></div>
+        <div class="n-card navy"><span class="n-card-icon">6</span><div class="n-card-title">Against Double Punishment</div><div class="n-card-text">No person punished twice for same offence — Art. 20(2) — double jeopardy.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">7</span><div class="n-card-title">Consistency with International Law</div><div class="n-card-text">Domestic statutes interpreted consistently with India's international treaty obligations.</div></div>
+      </div>`,
+    cases:[],
+    alert:'All presumptions are REBUTTABLE — they can be displaced by express and clear contrary language in the statute. They are aids to interpretation — default positions — not absolute rules. Write this in every presumptions answer.',
+    keybox:'Presumptions in statutory interpretation are rebuttable default positions that courts adopt in the absence of express provision — reflecting accumulated judicial wisdom about what Parliament normally intends. All seven can be displaced by clear, express contrary language.',
+    recall:'Presumptions in statutory interpretation are rebuttable assumptions courts make about parliamentary intent when a statute is silent or ambiguous. They represent accumulated judicial wisdom about what Parliament normally intends and serve as starting points for interpretation. Seven key presumptions: (1) against retrospective operation — statutes apply prospectively; Art. 20(1) makes this absolute for penal statutes; (2) against disturbing vested rights — existing rights not removed without express language; (3) against ousting court jurisdiction — clear language required to exclude judicial review; (4) against absurdity — Parliament does not intend unreasonable results, forming the basis of the Golden Rule; (5) constitutionality — every statute presumed valid; courts prefer constitutional interpretation before striking down; (6) against double punishment — no person punished twice for same offence (Art. 20(2)); (7) consistency with international law — domestic statutes interpreted consistently with treaty obligations. All presumptions are rebuttable by express, clear contrary language in the statute — they are aids to interpretation, not absolute rules.'
+  },
+
+  'n-14': {
+    unit:'Unit V', title:'Effect of Repeal — Section 6 GCA',
+    hook:'Repeal is not obliteration — it changes the law for the future but does not destroy the past.',
+    visual:`
+      <p class="n-section-title">Section 6 GCA — Five Savings (Memorise All Five)</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">1️⃣</span><div class="n-card-title">Prior Operation</div><div class="n-card-text">Prior operation of the repealed Act is unaffected.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">2️⃣</span><div class="n-card-title">Rights &amp; Liabilities</div><div class="n-card-text">Any right, privilege, obligation or liability already acquired or accrued.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">3️⃣</span><div class="n-card-title">Penalties Incurred</div><div class="n-card-text">Any penalty, forfeiture or punishment incurred in respect of the repealed Act.</div></div>
+        <div class="n-card green"><span class="n-card-icon">4️⃣</span><div class="n-card-title">Proceedings Continue</div><div class="n-card-text">Any investigation, legal proceeding or remedy — continues as if the repealing Act had NOT been passed.</div></div>
+        <div class="n-card red"><span class="n-card-icon">5️⃣</span><div class="n-card-title">Orders &amp; Rules</div><div class="n-card-text">Any appointment, order, scheme, rule, bye-law made under the repealed Act.</div></div>
+      </div>
+      <p class="n-section-title">Exception</p>
+      <div class="n-card gold" style="margin-bottom:12px;"><div class="n-card-title">Section 6 Does NOT Apply When</div><div class="n-card-text">The repealing Act shows a <strong>contrary intention</strong> — i.e., the new Act expressly provides that proceedings shall NOT continue or that the savings shall not apply.</div></div>
+      <p class="n-section-title">Types of Repeal</p>
+      <table class="n-table">
+        <tr><th>Type</th><th>Nature</th><th>Section 6?</th></tr>
+        <tr><td>Express Repeal</td><td>New Act explicitly states old Act is repealed</td><td>Yes — applies automatically</td></tr>
+        <tr><td>Implied Repeal</td><td>Later Act irreconcilably inconsistent with earlier</td><td>Yes — courts disfavour this but it applies</td></tr>
+      </table>`,
+    cases:[
+      {name:'General Clauses Act 1897 — Section 6', meta:'Repeal is Not Obliteration — The Safety Net Provision', story:'At common law, repeal of a statute destroyed it as if it had never existed — all rights, proceedings and penalties under the repealed Act were extinguished. This caused severe injustice. Parliament enacted Section 6 of the General Clauses Act 1897 to remedy this.', held:'Section 6 GCA reverses the harsh common law position: repeal does NOT extinguish prior operation, accrued rights, incurred penalties, ongoing proceedings, or existing orders and rules. All five are saved automatically unless the repealing Act shows contrary intention.', why:'The most practically important statutory provision for Interpretation of Statutes examinations. Every repeal problem at OU is answered by Section 6 GCA. "Repeal is not obliteration" — change for the future, not destruction of the past.', exam:'In ANY repeal problem: (1) State Section 6 GCA; (2) List all 5 savings; (3) Check: does the repealing Act show contrary intention? (4) Conclude: proceedings continue as if the repealing Act had not been passed. This is the complete answer to every repeal problem.'},
+    ],
+    alert:'NEVER say "the case dies because the Act was repealed." Section 6 GCA saves ALL pending proceedings unless the repealing Act expressly shows contrary intention. This is the ONLY answer to any repeal problem in the exam.',
+    keybox:'Section 6 GCA saves five things when a Central Act is repealed: prior operation; accrued rights and liabilities; incurred penalties; ongoing proceedings and remedies (which continue as if the Act had not been repealed); existing orders and rules. Exception: the repealing Act shows contrary intention.',
+    recall:'Repeal is the cancellation of a statute by a later statute. At common law, repeal extinguished the repealed Act as if it had never existed — destroying all rights, proceedings, and penalties. Section 6 of the General Clauses Act 1897 reversed this harsh position entirely. Section 6 provides that where a Central Act repeals any enactment, the repeal shall NOT affect: (1) prior operation of the repealed Act; (2) any right, privilege, obligation or liability already acquired or accrued; (3) any penalty, forfeiture or punishment incurred; (4) any investigation, legal proceeding or remedy in respect of such rights and penalties — which may be continued and enforced as if the repealing Act had not been passed; (5) any appointment, order, scheme, rule or bye-law made under the repealed Act. The only exception is where the repealing Act shows a contrary intention — expressly providing that proceedings shall not continue. Section 6 establishes that "repeal is not obliteration — it changes the law for the future but does not destroy the past." This is the complete answer to every repeal problem in OU examinations.'
+  },
+
+  'n-15': {
+    unit:'Unit V', title:'Prospective vs Retrospective Operation',
+    hook:'Statutes look forward by default — the past is protected unless Parliament clearly says otherwise, and even Parliament cannot criminalise the past.',
+    visual:`
+      <p class="n-section-title">The Default Rule</p>
+      <div class="n-card navy" style="margin-bottom:12px;"><span class="n-card-icon">➡️</span><div class="n-card-title">Prospective = Default</div><div class="n-card-text">All statutes presumed to operate from date of commencement FORWARD. Retrospective operation = exception requiring express provision or necessary implication.</div></div>
+      <p class="n-section-title">Article 20(1) — Constitutional Absolute Bar</p>
+      <div class="n-card red" style="margin-bottom:12px;"><span class="n-card-icon">🏛️</span><div class="n-card-title">No Ex Post Facto Criminal Law</div><div class="n-card-text">No person shall be convicted of any offence except for violation of a law IN FORCE at the time of the act. No penalty GREATER than that prescribed at time of commission. Absolute — cannot be waived by Parliament.</div></div>
+      <p class="n-section-title">Four Types of Retrospective Operation</p>
+      <table class="n-table">
+        <tr><th>Type</th><th>Valid?</th><th>Reason</th></tr>
+        <tr><td>Retrospective penal — increased punishment</td><td style="color:var(--red);font-weight:700;">INVALID</td><td>Art. 20(1) — absolute bar</td></tr>
+        <tr><td>Retrospective civil law</td><td style="color:var(--green);font-weight:700;">Valid if express</td><td>Parliament may affect civil rights retrospectively</td></tr>
+        <tr><td>Retrospective procedural law</td><td style="color:var(--green);font-weight:700;">Generally valid</td><td>Procedure applies to pending proceedings</td></tr>
+        <tr><td>Retrospective reduced punishment</td><td style="color:var(--green);font-weight:700;">Valid — beneficial</td><td>Art. 20(1) bars INCREASE only, not DECREASE</td></tr>
+      </table>`,
+    cases:[],
+    alert:'Article 20(1) bars retrospective INCREASE in punishment — NOT retrospective DECREASE. A beneficial amendment reducing punishment CAN apply to pending proceedings. This distinction is frequently tested in Part C problems.',
+    keybox:'Statutes operate prospectively by default. Retrospective operation requires express language or necessary implication. For penal statutes, Article 20(1) of the Constitution is an absolute constitutional prohibition on retrospective criminalisation or enhancement of punishment.',
+    recall:'The question of whether a statute operates prospectively (from the date of enactment forward) or retrospectively (from an earlier date, affecting past acts) is fundamental to statutory interpretation. The default position is prospective operation — all statutes are presumed to apply from their commencement date unless Parliament clearly provides otherwise. Retrospective operation is an exception requiring express provision or necessary implication. For penal statutes, Article 20(1) of the Constitution is an absolute prohibition: no person shall be convicted of any offence except for violation of a law in force at the time of the act, nor subjected to a penalty greater than prescribed at time of commission. This means retrospective penal laws increasing punishment are constitutionally void. However, Article 20(1) bars only retrospective INCREASE in punishment — not retrospective DECREASE. A beneficial amendment reducing punishment may therefore apply to pending proceedings. Procedural laws generally apply to pending proceedings immediately. Section 6 GCA ensures that repeal is also prospective in effect — the repealed Act continues to govern past rights and proceedings.'
+  },
+
+  'n-16': {
+    unit:'Unit V', title:'Conflict Resolution — Parent vs Subordinate Legislation',
+    hook:'Parliament can share its power to make law — but the delegate can never exceed the boundaries Parliament set.',
+    visual:`
+      <p class="n-section-title">Conflict Resolution Hierarchy</p>
+      <div class="n-flow">
+        <div class="n-flow-step">Same Statute Provisions Conflict</div>
+        <div class="n-flow-step">→ Harmonious Construction</div>
+        <div class="n-flow-step">General vs Special</div>
+        <div class="n-flow-step">→ Special Prevails</div>
+        <div class="n-flow-step">Two Parliamentary Acts</div>
+        <div class="n-flow-step">→ Later Impliedly Repeals Earlier (last resort)</div>
+      </div>
+      <p class="n-section-title">Parent Act vs Subordinate Legislation</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">🏛️</span><div class="n-card-title">Parent Act (Parliament)</div><div class="n-card-text">Supreme — delegates power to executive. Cannot be overridden by subordinate legislation.</div></div>
+        <div class="n-card teal"><span class="n-card-icon">📜</span><div class="n-card-title">Subordinate Legislation</div><div class="n-card-text">Rules, regulations, bye-laws, notifications. Valid only within the scope of the parent Act.</div></div>
+      </div>
+      <p class="n-section-title">Grounds for Invalidity of Subordinate Legislation</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-excl-item"><span class="n-excl-icon">🚫</span><span class="n-excl-label">Ultra Vires</span></div>
+        <div class="n-excl-item"><span class="n-excl-icon">⚖️</span><span class="n-excl-label">Unreasonableness</span></div>
+        <div class="n-excl-item"><span class="n-excl-icon">📋</span><span class="n-excl-label">Procedural Irregularity</span></div>
+        <div class="n-excl-item"><span class="n-excl-icon">🏛️</span><span class="n-excl-label">Constitutional Violation</span></div>
+        <div class="n-excl-item"><span class="n-excl-icon">😈</span><span class="n-excl-label">Mala Fides</span></div>
+        <div class="n-excl-item n-excl-sec"><span class="n-excl-icon">✅</span><span class="n-excl-label">Within scope + constitutional = VALID</span></div>
+      </div>`,
+    cases:[],
+    alert:'Subordinate legislation is ULTRA VIRES and VOID if it exceeds the scope of the parent Act — regardless of how sensible or practical the rule might be. The parent Act is always supreme. "Parent Act prevails" is the answer to any conflict between them.',
+    keybox:'When subordinate legislation (rules, regulations, bye-laws, notifications) conflicts with or exceeds the scope of the parent Act, it is ultra vires and void. The parent Act is supreme. Grounds for invalidity: ultra vires, unreasonableness, procedural irregularity, constitutional violation, mala fides.',
+    recall:'Conflict between statutory provisions is resolved through a hierarchy of rules. Where two provisions of the SAME statute conflict, courts first attempt harmonious construction — reading all provisions together so each is given effect. If a general provision and a special provision conflict on the same subject, the special provision prevails (Generalia Specialibus Non Derogant). If two Acts of Parliament are irreconcilably inconsistent, the later Act impliedly repeals the earlier to the extent of the inconsistency — but courts strongly disfavour implied repeal and use it as a last resort. Where a PARENT ACT conflicts with SUBORDINATE LEGISLATION (rules, regulations, bye-laws, notifications made under it), the parent Act is always supreme. Subordinate legislation that is inconsistent with, or goes beyond the scope of, the parent Act is ultra vires and void. Five grounds for invalidity of subordinate legislation: ultra vires (beyond the scope of the parent Act); unreasonableness (Wednesbury principles); procedural irregularity; constitutional violation (fundamental rights); mala fides (bad faith).'
+  },
+
+  'n-17': {
+    unit:'Unit I', title:'Classification of Statutes',
+    hook:'Identify the type of statute first — because the type determines the rule of interpretation that applies.',
+    visual:`
+      <p class="n-section-title">Classification by Subject Matter — Most Important for Exams</p>
+      <table class="n-table">
+        <tr><th>Type</th><th>Description</th><th>Rule of Interpretation</th></tr>
+        <tr><td><strong>Penal</strong></td><td>Impose punishment for offences</td><td>STRICT — Rule of Lenity</td></tr>
+        <tr><td><strong>Taxing</strong></td><td>Impose tax or levy</td><td>STRICT — No implication</td></tr>
+        <tr><td><strong>Remedial/Beneficial</strong></td><td>Provide benefits to a class</td><td>LIBERAL — Favour beneficiary</td></tr>
+        <tr><td><strong>Enabling</strong></td><td>Confer powers on authorities</td><td>Full effect to power</td></tr>
+        <tr><td><strong>Disabling</strong></td><td>Restrict existing rights</td><td>STRICT</td></tr>
+        <tr><td><strong>Codifying</strong></td><td>Replace existing common law</td><td>Interpreted on own terms</td></tr>
+        <tr><td><strong>Procedural</strong></td><td>Govern process and procedure</td><td>Generally retrospective</td></tr>
+      </table>
+      <p class="n-section-title">Classification by Duration</p>
+      <div class="n-grid n-grid-2">
+        <div class="n-card navy"><span class="n-card-icon">♾️</span><div class="n-card-title">Permanent Statutes</div><div class="n-card-text">Remain in force indefinitely until repealed. IPC, CPC, Indian Contract Act.</div></div>
+        <div class="n-card gold"><span class="n-card-icon">⏳</span><div class="n-card-title">Temporary Statutes</div><div class="n-card-text">Operative for a fixed period or until a specified event. Finance Acts, Emergency legislation.</div></div>
+      </div>`,
+    cases:[],
+    alert:'Always identify the classification of the statute BEFORE applying any rule of interpretation. The classification dictates the standard: penal/taxing = strict; beneficial/welfare = liberal; procedural = retrospective presumption.',
+    keybox:'Classification of statutes determines the applicable rule of interpretation. Key categories: Penal (strict — Rule of Lenity); Taxing (strict — no implication); Beneficial/Remedial (liberal — favour beneficiary); Enabling (full effect to power); Procedural (generally retrospective). Always classify first.',
+    recall:'Statutes can be classified based on duration (permanent or temporary), scope (public, private, personal), operation (prospective or retrospective), and subject matter. Classification by subject matter is most important for examination purposes because it determines the applicable rule of interpretation. Penal statutes (impose punishment) are strictly construed — the Rule of Lenity applies — ambiguity favours the accused. Taxing statutes (impose tax) are strictly construed — no tax by implication — ambiguity favours the taxpayer. Remedial and beneficial statutes (provide benefits to a class) are liberally construed — ambiguity favours the beneficiary. Enabling statutes (confer powers on authorities) are given full effect to the power granted. Disabling statutes (restrict rights) are strictly construed. Codifying statutes (replace common law) are interpreted on their own terms. Procedural statutes generally apply retrospectively to pending proceedings. Correct classification is the first step in any interpretation analysis.'
+  },
+
+  'n-18': {
+    unit:'Unit I', title:'General Clauses Act 1897',
+    hook:'The GCA is the law about laws — it gives standard rules and definitions that apply to every Central Act automatically.',
+    visual:`
+      <p class="n-section-title">Key Sections</p>
+      <table class="n-table">
+        <tr><th>Section</th><th>Subject</th><th>Key Rule</th></tr>
+        <tr><td><strong>Section 3</strong></td><td>General Definitions</td><td>'Person' includes companies; 'Month' = calendar month</td></tr>
+        <tr><td><strong>Section 6</strong></td><td>Effect of Repeal</td><td>Saves rights, liabilities, proceedings despite repeal (5 savings)</td></tr>
+        <tr><td><strong>Section 7</strong></td><td>Revival of Repealed Acts</td><td>NO automatic revival when repealing Act is itself repealed</td></tr>
+        <tr><td><strong>Section 8</strong></td><td>Amended Acts</td><td>References to old Act = references to amended Act</td></tr>
+        <tr><td><strong>Section 13</strong></td><td>Gender and Number</td><td>Masculine includes feminine; singular includes plural</td></tr>
+        <tr><td><strong>Section 14</strong></td><td>Powers</td><td>Power once conferred is not exhausted by first exercise</td></tr>
+        <tr><td><strong>Section 21</strong></td><td>Rules</td><td>Power to make rules includes power to amend or repeal them</td></tr>
+      </table>
+      <p class="n-section-title">Section 7 — No Automatic Revival</p>
+      <div class="n-card red" style="margin-bottom:12px;">
+        <span class="n-card-icon">⚠️</span>
+        <div class="n-card-title">Section 7 — Critical Rule</div>
+        <div class="n-card-text">When Act B (which repealed Act A) is itself repealed by Act C — Act A does NOT automatically revive. Express provision for revival is required. Without it, Act A remains dead.</div>
+      </div>`,
+    cases:[],
+    alert:'Section 6 GCA = the ONLY answer to any repeal problem. Section 7 GCA = NO automatic revival of a repealed Act. These are the two sections you MUST know perfectly. Write Section 6\'s five savings from memory in every repeal problem.',
+    keybox:'The General Clauses Act 1897 provides standard rules and definitions applicable to all Central Acts unless a contrary intention appears. Most important: Section 6 (five savings on repeal) and Section 7 (no automatic revival). Section 6 is tested in virtually every examination sitting.',
+    recall:'The General Clauses Act 1897 is a meta-statute — a law about laws — that provides standard rules, definitions and construction principles applicable to all Central Acts passed after its commencement, unless the specific Act provides otherwise or context requires otherwise. Its most important provisions: Section 3 (general definitions — "person" includes companies, "month" means calendar month, "writing" includes print); Section 6 (effect of repeal — five savings — prior operation, accrued rights, incurred penalties, pending proceedings, existing orders and rules are all preserved — the most examined section in the subject); Section 7 (no automatic revival — when Act B which repealed Act A is itself repealed, Act A does NOT automatically revive without express provision); Section 8 (references to old Act construed as references to amended Act); Section 13 (gender and number — masculine includes feminine; singular includes plural and vice versa); Section 14 (powers may be exercised from time to time — not exhausted by one exercise); Section 21 (power to make rules includes power to amend or repeal them). The GCA applies to all Central Acts as the default. A specific Act can provide otherwise.'
+  }
+
+};
+
+function buildNotes() {
+  const container = document.getElementById('notes-container');
+  if (!container) return;
+
+  // Top navigation pills
+  const navHtml = `<div class="notes-topnav" id="notes-topnav">
+    ${NOTES_TOPICS.map((t,i) => `<button class="n-pill${i===0?' active':''}" onclick="showNote('${t.id}',this)">${t.label}</button>`).join('')}
+  </div>`;
+
+  // Section containers
+  const sectionsHtml = NOTES_TOPICS.map((t,i) => {
+    const d = NOTES_CONTENT[t.id];
+    if (!d) return `<div class="n-section${i===0?' active':''}" id="${t.id}"><div class="n-hook"><div class="n-hook-label">Topic</div><div class="n-hook-text">${t.label}</div></div></div>`;
+
+    const casesHtml = (d.cases||[]).map(c => `
+      <div class="n-case" onclick="this.classList.toggle('open')">
+        <div class="n-case-head">
+          <span class="n-case-icon">⚖️</span>
+          <div>
+            <div class="n-case-name">${c.name}</div>
+            <div class="n-case-meta">${c.meta}</div>
+          </div>
+        </div>
+        <div class="n-case-body">
+          <div class="n-case-row"><span class="n-tag story">Story</span><span>${c.story}</span></div>
+          <div class="n-case-row"><span class="n-tag held">Held</span><span>${c.held}</span></div>
+          <div class="n-case-row"><span class="n-tag why">Why</span><span>${c.why}</span></div>
+          <div class="n-case-row"><span class="n-tag exam">Exam</span><span>${c.exam}</span></div>
+        </div>
+      </div>`).join('');
+
+    return `<div class="n-section${i===0?' active':''}" id="${t.id}">
+      <div class="n-unit-label"><span>📌</span>${d.unit} — ${d.title}</div>
+      <div class="n-hook">
+        <div class="n-hook-label">Memory Hook</div>
+        <div class="n-hook-text">${d.hook}</div>
+      </div>
+      ${d.visual||''}
+      ${casesHtml}
+      ${d.alert?`<div class="n-alert"><div class="n-alert-label">🚨 Never Get This Wrong</div><p>${d.alert}</p></div>`:''}
+      ${d.keybox?`<div class="n-key-box"><div class="n-key-label">⭐ Key Point</div><p>${d.keybox}</p></div>`:''}
+      <div class="n-recall">
+        <div class="n-recall-label">⚡ Quick Recall — Read This on Exam Morning</div>
+        <div class="n-recall-text">${d.recall}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = navHtml + sectionsHtml;
+}
+
+function showNote(id, btn) {
+  document.querySelectorAll('.n-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.n-pill').forEach(p => p.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if (sec) { sec.classList.add('active'); window.scrollTo(0,0); }
+  if (btn) btn.classList.add('active');
+}
+
 </script>
 </body>
 </html>
