@@ -94,7 +94,7 @@ body {
 #bottomnav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
   background: var(--navy);
-  display: grid; grid-template-columns: repeat(6, 1fr);
+  display: grid; grid-template-columns: repeat(7, 1fr);
   border-top: 1px solid rgba(255,255,255,0.1);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -564,6 +564,75 @@ body {
 .cheat-key { font-weight: 700; color: var(--navy); white-space: nowrap; min-width: 80px; }
 .cheat-val { color: var(--text-muted); line-height: 1.5; }
 .cheat-highlight { color: var(--gold); font-weight: 700; }
+/* ── VISUAL NOTES STYLES ── */
+.notes-topnav{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none;margin-bottom:4px;}
+.notes-topnav::-webkit-scrollbar{display:none;}
+.n-pill{background:white;border:1.5px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:700;padding:7px 14px;border-radius:20px;white-space:nowrap;cursor:pointer;transition:all .2s;letter-spacing:.3px;}
+.n-pill.active{background:var(--navy);color:white;border-color:var(--navy);}
+.n-section{display:none;animation:fadeUp .25s ease;}
+.n-section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.n-unit-label{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:var(--gold-light);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.n-section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:0 0 4px;line-height:1.3;}
+.n-hook{background:linear-gradient(135deg,#fffbf0,#fff8e7);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px;font-size:14px;line-height:1.6;color:var(--navy);font-style:italic;}
+.n-hook-label{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.n-hook-text{font-size:13px;line-height:1.65;color:var(--text);}
+.n-grid{display:grid;gap:10px;margin-bottom:14px;}
+.n-grid-2{grid-template-columns:1fr 1fr;}
+.n-grid-3{grid-template-columns:1fr 1fr 1fr;}
+.n-grid-4{grid-template-columns:1fr 1fr;}
+.n-card{background:white;border-radius:12px;padding:13px 12px;box-shadow:0 2px 12px rgba(15,32,68,.08);border-top:3px solid var(--border);}
+.n-card.navy{border-top-color:var(--navy);}
+.n-card.gold{border-top-color:var(--gold);}
+.n-card.teal{border-top-color:var(--teal);}
+.n-card.red{border-top-color:var(--red);}
+.n-card.green{border-top-color:var(--green);}
+.n-card-icon{font-size:22px;margin-bottom:6px;}
+.n-card-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.3;}
+.n-card-text{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.n-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:12px;border-radius:10px;overflow:hidden;}
+.n-table th{background:var(--navy);color:white;padding:8px 10px;text-align:left;font-weight:600;font-size:11px;letter-spacing:.3px;}
+.n-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.n-table tr:nth-child(even) td{background:#f9f8f4;}
+.n-table tr:last-child td{border-bottom:none;}
+.n-flow{display:flex;align-items:stretch;gap:0;margin-bottom:14px;overflow-x:auto;}
+.n-flow-step{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 10px;min-width:90px;text-align:center;font-size:11px;line-height:1.4;flex:1;position:relative;box-shadow:0 2px 8px rgba(15,32,68,.06);}
+.n-flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--gold);font-weight:900;z-index:1;}
+.n-flow-step strong{display:block;color:var(--navy);font-size:10px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+.n-case{background:white;border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);}
+.n-case-head{background:var(--navy);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.n-case-icon{font-size:20px;flex-shrink:0;}
+.n-case-name{color:white;font-weight:700;font-size:13px;flex:1;line-height:1.3;}
+.n-case-meta{color:var(--gold-light);font-size:10px;font-weight:700;white-space:nowrap;}
+.n-case-body{display:none;padding:0 14px 14px;}
+.n-case.open .n-case-body{display:block;padding-top:12px;}
+.n-case-row{margin-bottom:10px;}
+.n-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.n-tag.story{background:#e8f4fd;color:#1565c0;}
+.n-tag.held{background:var(--green-light);color:var(--green);}
+.n-tag.why{background:#fff8e1;color:#e65100;}
+.n-tag.exam{background:#fce4ec;color:#c62828;}
+.n-alert{background:#fff5f5;border:1.5px solid var(--red);border-radius:12px;padding:13px 14px;margin-bottom:14px;}
+.n-alert-label{font-size:10px;font-weight:700;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.n-key-box{background:var(--navy);border-radius:12px;padding:13px 14px;margin-bottom:14px;}
+.n-key-label{font-size:10px;font-weight:700;color:var(--gold-light);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.n-recall{background:linear-gradient(135deg,#f0f7ff,#e8f4e8);border:1.5px solid var(--teal);border-radius:12px;padding:14px;margin-bottom:14px;}
+.n-recall-label{font-size:10px;font-weight:700;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.n-recall-text{font-size:12px;line-height:1.8;color:var(--text);}
+.n-excl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.n-excl-item{background:white;border-radius:10px;padding:10px;box-shadow:0 2px 8px rgba(15,32,68,.07);}
+.n-excl-sec{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.5px;margin-bottom:3px;}
+.n-excl-icon{font-size:16px;margin-bottom:4px;}
+.n-excl-label{font-size:11px;font-weight:600;color:var(--navy);line-height:1.3;}
+.n-spectrum{margin-bottom:14px;}
+.n-spectrum-label{font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.n-spectrum-bar{display:flex;border-radius:8px;overflow:hidden;height:36px;}
+.n-sp-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;text-align:center;padding:2px 4px;line-height:1.2;}
+.n-timeline{margin-bottom:14px;}
+.n-tl-item{display:flex;gap:12px;margin-bottom:8px;align-items:flex-start;}
+.n-tl-year{background:var(--navy);color:var(--gold-light);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;font-family:'DM Mono',monospace;flex-shrink:0;margin-top:2px;}
+.n-tl-text{font-size:12px;line-height:1.5;color:var(--text);}
+
 </style>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
@@ -634,6 +703,18 @@ body {
         <div class="qc-count">Test yourself</div>
       </div>
     </div>
+
+    <div style="background:var(--teal);border-radius:14px;padding:16px 18px;margin:14px 0;cursor:pointer;box-shadow:var(--shadow);" onclick="goTo('screen-notes')">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:28px;">🗺️</span>
+        <div>
+          <div style="color:white;font-weight:700;font-size:15px;font-family:'Playfair Display',serif;">Visual Study Notes</div>
+          <div style="color:rgba(255,255,255,0.75);font-size:12px;margin-top:3px;line-height:1.4;">All topics with diagrams, case cards, flowcharts and quick recall — for last-minute revision</div>
+        </div>
+        <span style="color:rgba(255,255,255,0.5);font-size:20px;margin-left:auto;">›</span>
+      </div>
+    </div>
+
     <div class="section-title">Exam Tips</div>
     <div class="cheat-section open">
       <div class="cheat-header" onclick="toggleCheat(this)">
@@ -830,6 +911,8 @@ body {
     </div>
   </div>
 
+  <div id="screen-notes" class="screen"><div id="notes-container"></div></div>
+
 </div>
 
 <!-- BOTTOM NAV -->
@@ -851,6 +934,9 @@ body {
   </button>
   <button class="nav-btn" onclick="goScreen('cheat')" id="nav-cheat">
     <span class="nav-icon">📋</span><span class="nav-label">Cheat</span>
+  </button>
+  <button class="nav-btn" onclick="goTo('screen-notes')" id="nav-notes">
+    <span class="nav-icon">🗺️</span><span class="nav-label">Visual</span>
   </button>
 </div>
 
@@ -1948,7 +2034,24 @@ function goScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
-  document.getElementById('nav-' + id).classList.add('active');
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goTo(screenId) {
+  const screens = ['screen-home','screen-topics','screen-videos','screen-cases','screen-quiz','screen-cheat','screen-notes'];
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById(screenId);
+  if (el) el.classList.add('active');
+  const navMap = {
+    'screen-home':'nav-home','screen-topics':'nav-topics','screen-videos':'nav-videos',
+    'screen-cases':'nav-cases','screen-quiz':'nav-quiz','screen-cheat':'nav-cheat',
+    'screen-notes':'nav-notes'
+  };
+  const navEl = document.getElementById(navMap[screenId]);
+  if (navEl) navEl.classList.add('active');
   window.scrollTo(0, 0);
 }
 
@@ -2214,12 +2317,792 @@ function buildVideos() {
   });
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// VISUAL NOTES
+// ═══════════════════════════════════════════════════════════
+
+const NOTES_TOPICS = [
+  { id:'wages',    label:'⚖ Wages',         unit:'Unit 1' },
+  { id:'bonus',    label:'💰 Bonus',         unit:'Unit 1' },
+  { id:'minwage',  label:'📊 Min. Wages',    unit:'Unit 1' },
+  { id:'whitley',  label:'🏛 Whitley',       unit:'Unit 1' },
+  { id:'esi',      label:'🏥 ESI Act',       unit:'Unit 2' },
+  { id:'gratuity', label:'💼 Gratuity',      unit:'Unit 3' },
+  { id:'maternity',label:'👶 Maternity',     unit:'Unit 3' },
+  { id:'epf',      label:'🏦 EPF Act',       unit:'Unit 3' },
+  { id:'childlabour',label:'🚸 Child Labour',unit:'Unit 4' },
+  { id:'equalpay', label:'⚡ Equal Pay',     unit:'Unit 4' },
+  { id:'factories',label:'🏭 Factories Act', unit:'Unit 5' },
+  { id:'socsec',   label:'🛡 Social Security',unit:'Unit 2' },
+];
+
+const NOTES_CONTENT = {
+
+wages: `
+<div class="n-unit-label">📌 Unit 1 — Wages</div>
+<div class="n-section-title">Payment of Wages Act, 1936</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Wages must be paid in cash, on time, without unauthorised deductions — any rule to the contrary is void, even if the worker consented.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Wage Ladder — Three Tiers</div>
+<div class="n-spectrum">
+  <div class="n-spectrum-bar">
+    <div class="n-sp-seg" style="background:var(--gold);">MINIMUM<br>Bare Survival<br>Legal Floor</div>
+    <div class="n-sp-seg" style="background:var(--teal);">FAIR<br>Reasonable<br>Comfort</div>
+    <div class="n-sp-seg" style="background:var(--navy);">LIVING<br>Full Dignity<br>Art. 43 Ideal</div>
+  </div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 8px;">Wages Definition — Code on Wages 2019 S.2(y)</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card teal">
+    <div class="n-card-icon">✅</div>
+    <div class="n-card-title">INCLUDED</div>
+    <div class="n-card-text">Basic Pay · Dearness Allowance · Retaining Allowance</div>
+  </div>
+  <div class="n-card red">
+    <div class="n-card-icon">❌</div>
+    <div class="n-card-title">EXCLUDED</div>
+    <div class="n-card-text">Bonus · HRA · Overtime · PF contribution · Gratuity · Conveyance</div>
+  </div>
+</div>
+<div class="n-alert">
+  <div class="n-alert-label">🚨 50% Rule — Never Get This Wrong</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">If excluded payments together exceed 50% of total remuneration → the excess IS DEEMED WAGES. No exceptions.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Payment Rules — Section 6</div>
+<div class="n-flow">
+  <div class="n-flow-step"><strong>Mode</strong>Cash only — coins or currency. Cheque only with written consent.</div>
+  <div class="n-flow-step"><strong>Time</strong>Under 1000 workers → 7th. 1000+ workers → 10th.</div>
+  <div class="n-flow-step"><strong>Deductions</strong>Only S.7 authorised list. Ceiling: 50% of wages.</div>
+  <div class="n-flow-step"><strong>Breach</strong>Authority under S.15. Recovery + compensation.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Section 7 — Authorised Deductions</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">💸</div><div class="n-card-title">Fines — S.7(2)(a)</div><div class="n-card-text">Max 3% of wages/month. Must give notice. With authority approval.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">🚫</div><div class="n-card-title">Absence — S.7(2)(b)</div><div class="n-card-text">Proportionate deduction for days absent from duty.</div></div>
+  <div class="n-card red"><div class="n-card-icon">💥</div><div class="n-card-title">Damage — S.7(2)(c)</div><div class="n-card-text">After enquiry only. Max 75% wages. Proportionate to actual loss.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🏦</div><div class="n-card-title">PF + ESI — S.7(2)(j)(k)</div><div class="n-card-text">PF contribution per applicable rules. ESI: 0.75% of wages.</div></div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Bijay Cotton Mills v. State of Ajmer (1955)</div>
+    <div class="n-case-meta">Minimum Wages</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">A cotton mill in Ajmer challenged the Minimum Wages Act as a violation of Article 19(1)(g). The owners argued workers had 'willingly agreed' to lower wages. The Supreme Court demolished this — a hungry worker has no real freedom to negotiate. Starvation wages are not a willing agreement.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Minimum Wages Act is constitutionally valid. Fixing minimum wages is a reasonable restriction on Art.19(1)(g). Any agreement to work below minimum wages is null and void.</div></div>
+    <div class="n-case-row"><span class="n-tag why">Why Landmark</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">First SC case to uphold the Minimum Wages Act. Established that the State can override freedom of contract to protect workers from exploitation.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Use whenever employer argues worker 'consented' to below-minimum wages. Consent is no defence. Cite Art.19(6) — reasonable restriction.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">PUDR v. Union of India (1982)</div>
+    <div class="n-case-meta">Minimum Wages · Art.23</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Workers building Asian Games stadiums were paid below minimum wages. PIL exposed the conditions: migrants from Bihar and Rajasthan with no ESI, no safety, no legal wages.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Working below minimum wages = forced labour under Article 23. Directed payment of minimum wages + ESI coverage for all construction workers.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">This case is cited as 'PUDR v. UOI' in Part A short notes. Directly asked in Osmania 2023. Connect to Art.23 — economic compulsion = forced labour.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Reptakos Brett v. Workmen (1992)</div>
+    <div class="n-case-meta">Living Wage Formula</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Workers demanded revised minimum wages. Employer said existing wages covered food and shelter. SC said that is not enough — a minimum wage that cannot educate your children perpetuates poverty.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Five-component formula: (1) Food — 2700 cal/day; (2) Clothing — 72 yards/family/year; (3) Housing — 10% of wages; (4) Fuel &amp; Misc — 20%; (5) Education + Medical + Recreation — 25%.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Memorise all five components with figures — frequently asked as Part A short note. This is the arithmetic formula for minimum wage computation still used by wage boards.</div></div>
+  </div>
+</div>
+
+<div class="n-key-box">
+  <div class="n-key-label">★ Key Point</div>
+  <div style="font-size:13px;line-height:1.6;color:white;">Payment in food grains or kind = VOID under Section 6. Workers are entitled to cash regardless of any agreement. Food grains problem has been asked 4 times in Osmania papers — it is a gift question.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Payment of Wages Act 1936: wages = basic + DA (excludes bonus, HRA, OT, PF, gratuity, conveyance); paid in cash [S.6] — food grains void; time: 7th (under 1000) or 10th (1000+) of following month [S.5]; deductions only S.7 list, ceiling 50%. Code on Wages 2019 consolidates PWA + Min. Wages Act + Bonus Act + ERA: universal minimum wages (no scheduled-list restriction); National Floor Wage; 50% rule. Three wage tiers: minimum (legal floor — Bijay Cotton Mills: consent to below-min void), fair (industry capacity — Fair Wages Committee 1949), living (Art.43 ideal — Reptakos 5 components: food 2700 cal + clothing 72 yds + rent 10% + fuel 20% + education 25%). PUDR = below-minimum wages = forced labour Art.23.</div>
+</div>`,
+
+bonus: `
+<div class="n-unit-label">📌 Unit 1 — Bonus</div>
+<div class="n-section-title">Payment of Bonus Act, 1965</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Bonus is not a gift — it is a statutory right: 8.33% minimum is payable even in a loss year, and 20% is the unbreakable ceiling no matter how large the profit.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Four-Step Bonus Computation</div>
+<div class="n-flow">
+  <div class="n-flow-step"><strong>Step 1</strong>Gross Profit (Schedule I or II)</div>
+  <div class="n-flow-step"><strong>Step 2</strong>Available Surplus (GP − Prior Charges)</div>
+  <div class="n-flow-step"><strong>Step 3</strong>Allocable Surplus (60% Indian / 67% Foreign)</div>
+  <div class="n-flow-step"><strong>Step 4</strong>Bonus: Min 8.33% → Max 20%</div>
+</div>
+
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">📉</div><div class="n-card-title">MINIMUM BONUS — 8.33%</div><div class="n-card-text">Payable even without profit. Even in loss years. Absolute statutory obligation — Jalan Trading Co.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">📈</div><div class="n-card-title">MAXIMUM BONUS — 20%</div><div class="n-card-text">Hard ceiling. Cannot exceed regardless of how large the surplus. No exceptions ever.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">🇮🇳</div><div class="n-card-title">ALLOCABLE SURPLUS — 60%</div><div class="n-card-text">Indian companies: 60% of Available Surplus. Foreign companies: 67%.</div></div>
+  <div class="n-card red"><div class="n-card-icon">💰</div><div class="n-card-title">WAGE CEILING</div><div class="n-card-text">₹7,000/month OR minimum wage — whichever is HIGHER. Overtime excluded from wages for bonus.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Set-On and Set-Off — Section 15</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card green">
+    <div class="n-card-icon">🏦</div>
+    <div class="n-card-title">SET-ON (Good Year)</div>
+    <div class="n-card-text">Surplus exceeds 20% max → excess carried forward up to 4 years. Saving for rainy day. Future workers benefit.</div>
+  </div>
+  <div class="n-card red">
+    <div class="n-card-icon">📤</div>
+    <div class="n-card-title">SET-OFF (Bad Year)</div>
+    <div class="n-card-text">Allocable surplus insufficient → pay 8.33% from own funds → carry the shortfall as debit for next 4 years.</div>
+  </div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Eligibility and Disqualification</div>
+<table class="n-table">
+  <thead><tr><th>Concept</th><th>Rule</th></tr></thead>
+  <tbody>
+    <tr><td>Eligibility</td><td>30+ working days in accounting year + wages ≤ ₹21,000/month</td></tr>
+    <tr><td>Disqualification S.9(a)</td><td>Fraud / dishonest act against employer</td></tr>
+    <tr><td>Disqualification S.9(b)</td><td>Riotous or violent conduct on premises</td></tr>
+    <tr><td>Disqualification S.9(c)</td><td>Theft, misappropriation of property</td></tr>
+    <tr><td>Strike NOT disqualification</td><td>Jalan Trading — even illegal strike does not forfeit bonus</td></tr>
+    <tr><td>Payment deadline</td><td>Within 8 months from close of accounting year</td></tr>
+  </tbody>
+</table>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Millowners Association Bombay v. Rashtreeya Mill Mazdoor Sangh (1950)</div>
+    <div class="n-case-meta">Full Bench Formula</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">1950. Post-independence boom. Mill workers in Bombay demanded a share of enormous profits. Employers refused. Full Bench of Labour Appellate Tribunal (rare sitting) evolved a scientific formula: employer gets reasonable return first — depreciation, 6% on capital, 2% on working capital, taxes — then 60% of what remains is bonus.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Full Bench Formula: Available Surplus = Gross Profit minus prior charges. Allocable Surplus = 60% of Available Surplus. Codified in Payment of Bonus Act 1965.</div></div>
+    <div class="n-case-row"><span class="n-tag why">Why Landmark</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Created the scientific basis for bonus calculation. First time workers' share in profits was legally recognised and quantified.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Part A: name the case + state the four prior charges + say it was codified in Bonus Act 1965. Part B: explain all six steps of the formula with this case as foundation.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Jalan Trading Co. v. Mill Mazdoor Sabha (1967)</div>
+    <div class="n-case-meta">Minimum Bonus</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Jalan Trading made no profits in a year and refused to pay any bonus at all. Workers argued the Bonus Act required 8.33% even in loss years. Employer said this was unreasonable — how can we pay from losses?</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">SC upheld the statutory obligation. Minimum bonus 8.33% is payable even without profit. The set-off mechanism allows adjustment against future profits. Workers' minimum bonus right cannot be defeated by employer's financial misfortune.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Essential citation for any bonus Part C problem involving 'no profit' defence. The employer cannot use 'we made a loss' to escape minimum bonus.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Overtime Excluded — 2025 Part C Pattern</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">Section 2(21): Wages for bonus EXCLUDES overtime allowance. A worker who already received bonus cannot claim additional bonus on overtime hours. Employer's refusal is legally correct. Overtime pay has NEVER been part of bonus wages.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Bonus Act 1965: applies to factories + establishments with 20+ employees. Eligible: 30+ working days + wages ≤ ₹21,000/month. Bonus wages ceiling: ₹7,000/month or minimum wage (whichever higher) — OT, DA, HRA excluded. Formula (Full Bench — Millowners 1950): Gross Profit → Available Surplus (GP minus prior charges) → Allocable Surplus (60% Indian / 67% foreign) → Min 8.33% (payable even in loss — Jalan Trading) to Max 20%. Set-on [S.15]: good year, surplus above 20% → carry forward 4 years. Set-off: bad year → pay 8.33% from own funds → debit forward 4 years. Disqualification [S.9]: fraud, violence, theft (not strike). Payment within 8 months.</div>
+</div>`,
+
+minwage: `
+<div class="n-unit-label">📌 Unit 1 — Minimum Wages</div>
+<div class="n-section-title">Minimum Wages Act, 1948</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Two methods to fix minimum wages — Committee or Notification — but both lead to the same absolute floor that no employer can breach even by private agreement.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Two Fixation Methods</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">🤝</div><div class="n-card-title">Committee Method S.5(1)(a)</div><div class="n-card-text">Govt appoints tripartite committee (employers + workers + independents). Committee inquires, recommends. Govt notifies final wages.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">📰</div><div class="n-card-title">Notification Method S.5(1)(b)</div><div class="n-card-text">Govt publishes proposals in Gazette. Two months for objections. Final Gazette Notification after considering all objections.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">15th ILC 1957 Norms + Reptakos Additions</div>
+<table class="n-table">
+  <thead><tr><th>Component</th><th>Standard</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>Food</td><td>2700 calories/person/day</td><td>ILC 1957</td></tr>
+    <tr><td>Clothing</td><td>72 yards/family/year</td><td>ILC 1957</td></tr>
+    <tr><td>Housing</td><td>Min. govt. rent as benchmark</td><td>ILC 1957</td></tr>
+    <tr><td>Fuel &amp; Misc</td><td>20% of food expenditure</td><td>ILC 1957</td></tr>
+    <tr><td>Education + Medical + Recreation + Old Age</td><td>25% of minimum wage</td><td>Reptakos Brett 1992</td></tr>
+  </tbody>
+</table>
+
+<div class="n-grid n-grid-2">
+  <div class="n-card gold"><div class="n-card-icon">🔄</div><div class="n-card-title">Revision</div><div class="n-card-text">Mandatory at least once every 5 years. VDA (Variable DA) linked to CPI adjusted more frequently.</div></div>
+  <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">Section 25 — Contracting Out</div><div class="n-card-text">Any agreement to work below minimum wages is NULL AND VOID. Cannot be waived even by mutual consent.</div></div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Non-Payment = Forced Labour</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">Sanjit Roy v. State of Rajasthan (1983): payment below minimum wages = forced labour under Article 23 of the Constitution. Even State Government cannot pay below minimum wages on grounds of poverty or emergency.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Min. Wages Act 1948 (now in Code on Wages 2019 — applies to ALL, not just scheduled employments). Two fixation methods: Committee [S.5(1)(a)] — tripartite; Notification [S.5(1)(b)] — Gazette + 2 months objections. Revision mandatory every 5 years. Reptakos formula: food (2700 cal) + clothing (72 yds/family/yr) + rent (10% wages) + fuel (20% wages) + education/medical/recreation (25% wages). Agreement below min wages = void [S.25]. Non-payment = Art.23 forced labour (Sanjit Roy). Bijay Cotton Mills: worker's consent irrelevant — starvation is not freedom.</div>
+</div>`,
+
+whitley: `
+<div class="n-unit-label">📌 Unit 1 — Whitley Commission</div>
+<div class="n-section-title">Royal Commission on Labour in India, 1929</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">J.H. Whitley's 1931 report was colonial India's first acknowledgment that workers have rights — and 90 years later, the Code on Wages 2019 is still implementing his recommendations.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Historical Timeline</div>
+<div class="n-timeline">
+  <div class="n-tl-item"><div class="n-tl-year">1929</div><div class="n-tl-text">Royal Commission on Labour in India appointed. Chairman: J.H. Whitley (former Speaker, British House of Commons).</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1931</div><div class="n-tl-text">Whitley Report submitted. First comprehensive study of Indian labour conditions. First formal recognition of workers' rights.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1936</div><div class="n-tl-text">Payment of Wages Act — direct result of Whitley's recommendation on cash wages and illegal deductions.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1948</div><div class="n-tl-text">Minimum Wages Act + ESI Act — both based on Whitley's social security and wage fixation recommendations.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">2019</div><div class="n-tl-text">Code on Wages — modern codification of Whitley's entire framework in a single statute.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">10 Key Recommendations</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">💵</div><div class="n-card-title">1. Minimum Wages</div><div class="n-card-text">Statutory fixation for all industries — sufficient for bare necessities.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">⚖️</div><div class="n-card-title">2. Wage Boards</div><div class="n-card-text">Tripartite boards per industry — employers + workers + independent nominees.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">💴</div><div class="n-card-title">3. Payment of Wages</div><div class="n-card-text">Cash only. Regular payment. No illegal deductions. → Payment of Wages Act 1936.</div></div>
+  <div class="n-card green"><div class="n-card-icon">📊</div><div class="n-card-title">4. Dearness Allowance</div><div class="n-card-text">Cost of living allowance linked to cost of living indices.</div></div>
+  <div class="n-card red"><div class="n-card-icon">👩</div><div class="n-card-title">5. Women Workers</div><div class="n-card-text">Equal pay. No dangerous occupations. Maternity benefits.</div></div>
+  <div class="n-card navy"><div class="n-card-icon">🚸</div><div class="n-card-title">6. Child Labour</div><div class="n-card-text">Minimum age 14. No night work. Compulsory education.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">⏰</div><div class="n-card-title">7. Working Hours</div><div class="n-card-text">8 hrs/day. 48 hrs/week. Overtime wages. Weekly holiday.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🏥</div><div class="n-card-title">8. Social Security</div><div class="n-card-text">Workmen's compensation. Sickness benefits. Old age pension. → ESI Act 1948.</div></div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Whitley Commission = Royal Commission on Labour in India 1929 (appointed) / 1931 (report). Chairman: J.H. Whitley. First comprehensive study of Indian labour. 10 recommendations: (1) Statutory minimum wages; (2) Wage boards (tripartite); (3) Cash payment of wages; (4) DA linked to CPI; (5) Equal pay for women; (6) Minimum age 14, no night work; (7) 8 hrs/day, 48 hrs/week; (8) Social security (ESI, WC); (9) Trade union recognition; (10) Labour administration. Legislative impact: PWA 1936, Min. Wages Act 1948, ESI Act 1948, Factories Act 1948, Maternity Benefit Act 1961, ERA 1976, Code on Wages 2019. Criticisms: colonial bias; conservative; weak on trade unions; ignored agricultural sector.</div>
+</div>`,
+
+esi: `
+<div class="n-unit-label">📌 Unit 2 — ESI Act</div>
+<div class="n-section-title">Employees' State Insurance Act, 1948</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">ESI is India's most comprehensive social health insurance — 3.25% from employer + 0.75% from worker buys six benefits including full medical care for the entire family.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Applicability Thresholds</div>
+<table class="n-table">
+  <thead><tr><th>Type of Establishment</th><th>Threshold</th></tr></thead>
+  <tbody>
+    <tr><td>Factories using power</td><td>10 or more workers</td></tr>
+    <tr><td>Factories not using power</td><td>20 or more workers</td></tr>
+    <tr><td>Shops, hotels, cinemas, transport</td><td>10 or more persons</td></tr>
+    <tr><td>Wage ceiling for coverage</td><td>₹21,000/month (₹25,000 for persons with disability)</td></tr>
+    <tr><td>Part-time workers</td><td>COVERED if wages ≤ ₹21,000 — coverage is wages-based, not hours-based</td></tr>
+  </tbody>
+</table>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Contribution Flow</div>
+<div class="n-flow">
+  <div class="n-flow-step"><strong>Employer</strong>3.25% of wages paid into ESI Fund</div>
+  <div class="n-flow-step"><strong>Employee</strong>0.75% of wages deducted</div>
+  <div class="n-flow-step"><strong>State Govt</strong>1/8th of medical benefit expenditure</div>
+  <div class="n-flow-step"><strong>ESI Fund</strong>Central pool — all benefits paid from here</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Six Benefits — Section 46</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card teal"><div class="n-card-icon">🤒</div><div class="n-card-title">Sickness Benefit</div><div class="n-card-text">70% of wages for 91 days/year. Extended: 80% for up to 2 years for 34 serious diseases.</div></div>
+  <div class="n-card navy"><div class="n-card-icon">🤰</div><div class="n-card-title">Maternity Benefit</div><div class="n-card-text">100% wages for 26 weeks (1st/2nd child), 12 weeks (3rd+).</div></div>
+  <div class="n-card red"><div class="n-card-icon">🦽</div><div class="n-card-title">Disablement Benefit</div><div class="n-card-text">90% wages (temporary). Monthly pension (permanent). No minimum contribution period required.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">👨‍👩‍👧</div><div class="n-card-title">Dependants' Benefit</div><div class="n-card-text">Monthly pension to widow (3/5th rate) and each child (2/5th rate) on worker's death from injury.</div></div>
+  <div class="n-card green"><div class="n-card-icon">🏥</div><div class="n-card-title">Medical Benefit</div><div class="n-card-text">Full medical care — outpatient, inpatient, specialist. Covers insured person AND their family.</div></div>
+  <div class="n-card navy"><div class="n-card-icon">⚰️</div><div class="n-card-title">Funeral Expenses</div><div class="n-card-text">₹15,000 lump sum on death of insured person.</div></div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">ESI Corporation v. Apex Engineering Pvt. Ltd. (1998)</div>
+    <div class="n-case-meta">ESI Coverage</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Apex Engineering tried to exclude part-time, contractor, and casual workers from ESI coverage. ESI Corporation disagreed. SC gave a wide interpretation to 'employee' — any person working for wages in connection with work of a factory, regardless of employment mode or hours worked.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">ESI Act must be liberally construed. Definition of 'employee' includes all workers — part-time, casual, contract. Social security legislation must not be interpreted narrowly.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">This is the primary case for the 2025 Part C problem (part-time workers and ESI coverage). Coverage criterion = wages, not hours. Employer's refusal based on 'limited hours' is legally wrong.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Part-Time Workers Are Covered</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">ESI coverage is based on wages (≤₹21,000/month), NOT on number of hours worked per day or week. A part-time worker earning ₹8,000/month is an 'insured person' entitled to all six benefits. Employer has no defence for non-enrolment. Disablement benefit payable from Day 1 — no minimum contribution period.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">ESI Act 1948: applies to factories with 10+ workers + notified establishments 10+ workers. Employee = any person employed for wages ≤ ₹21,000/month — includes part-time, casual, contract (Apex Engineering). Contributions: employer 3.25% + employee 0.75% + State Govt 1/8th medical benefit. ESI Fund [S.26] — all contributions credited here. Six benefits [S.46]: sickness (70%, 91 days), maternity (100%, 26 weeks), disablement (90% wages, no min. contribution), dependants' (pension to widow + children), medical (full care + family), funeral (₹15,000). Employer default does NOT deprive employee of benefits. Social Security Code 2020 absorbs ESI Act and extends coverage to gig/platform workers.</div>
+</div>`,
+
+gratuity: `
+<div class="n-unit-label">📌 Unit 3 — Gratuity</div>
+<div class="n-section-title">Payment of Gratuity Act, 1972</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Gratuity is not a bounty — it is a right earned through years of loyal service, and Section 4(6) exhaustively lists the only grounds on which it can ever be forfeited.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Eligibility — The 5-Year Rule</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card teal"><div class="n-card-icon">✅</div><div class="n-card-title">5 Years REQUIRED</div><div class="n-card-text">Superannuation, retirement, resignation — must complete 5 continuous years of service.</div></div>
+  <div class="n-card red"><div class="n-card-icon">⚠️</div><div class="n-card-title">5 Years WAIVED</div><div class="n-card-text">Death or permanent disablement — gratuity is payable from Day One of service. No minimum period.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Gratuity Formula — Section 4(2)</div>
+<div class="n-flow">
+  <div class="n-flow-step"><strong>Last Wages</strong>Basic + DA only. No HRA, OT, bonus.</div>
+  <div class="n-flow-step"><strong>× 15/26</strong>15 working days per year, 26 working days per month.</div>
+  <div class="n-flow-step"><strong>× Years</strong>Completed years. Round up if last year &gt;6 months.</div>
+  <div class="n-flow-step"><strong>Max ₹20L</strong>2018 Amendment ceiling. Cannot exceed.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Forfeiture Grounds — Section 4(6) EXHAUSTIVE LIST</div>
+<div class="n-excl-grid">
+  <div class="n-excl-item"><div class="n-excl-sec">Wholly Forfeited</div><div class="n-excl-icon">🔴</div><div class="n-excl-label">Moral turpitude · Riotous conduct · Act of violence</div></div>
+  <div class="n-excl-item"><div class="n-excl-sec">Partially Forfeited</div><div class="n-excl-icon">🟡</div><div class="n-excl-label">Damage to employer property — only to extent of actual loss</div></div>
+  <div class="n-excl-item"><div class="n-excl-sec">NOT Valid — Ever</div><div class="n-excl-icon">🟢</div><div class="n-excl-label">Loss of reputation · Poor performance · Any other reason</div></div>
+  <div class="n-excl-item"><div class="n-excl-sec">Payment Timeline</div><div class="n-excl-icon">⏰</div><div class="n-excl-label">30 days — else 10% interest p.a. automatically applies</div></div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Lalappa Lingappa v. Laxmi Vishnu Textile Mills (1981)</div>
+    <div class="n-case-meta">Gratuity is a Right</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Lalappa spent the best years of his life working at the textile mill. On retirement, the management called his gratuity a 'bounty' — something they could give or withhold at pleasure. Lalappa disagreed and approached the courts.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Gratuity is NOT a bounty but a RIGHT earned through long and meritorious service. The word 'bounty' was firmly struck from the legal vocabulary of gratuity law.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Cite in every gratuity answer — Part A, B, or C. The foundational case establishing gratuity as a vested right.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Garment Export Promotion Council v. Appellate Authority (2004)</div>
+    <div class="n-case-meta">Section 4(6) Exhaustive</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">An employee terminated for serious misconduct had his gratuity forfeited citing 'damage to reputation'. The Council argued the misconduct was so serious that forfeiture was justified even without it being in Section 4(6).</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Section 4(6) is EXHAUSTIVE. Courts cannot add grounds not provided by Parliament. No matter how serious the misconduct, if it is not in S.4(6), gratuity cannot be forfeited.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Essential for the 2025 Part C pattern (loss of reputation). Loss of reputation is NOT in S.4(6). Therefore forfeiture is illegal. Employee gets full gratuity + 10% interest.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 2025 Part C — 'Loss of Reputation'</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">'Loss of reputation' is NOT listed in Section 4(6). Forfeiture on this ground is COMPLETELY ILLEGAL. Employee who served 10 years has an ABSOLUTE RIGHT to full gratuity. Employer must pay full gratuity + 10% per annum interest for wrongful delay.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Gratuity Act 1972: applies to factories/mines/shops with 10+ workers. Eligibility: 5 years continuous service (EXCEPTION: death/disablement = payable from Day 1). Formula: Last wages (basic + DA only) × 15/26 × completed years of service. Max: ₹20 lakhs (2018 amendment). Payment within 30 days — else 10% interest p.a. Forfeiture [S.4(6)] — EXHAUSTIVE: (a) wholly: moral turpitude, riotous conduct, violence; (b) partially: damage to property only to extent of loss. 'Loss of reputation', poor performance, strike = NOT valid grounds (Garment Export). Gratuity is a RIGHT not bounty (Lalappa Lingappa 1981).</div>
+</div>`,
+
+maternity: `
+<div class="n-unit-label">📌 Unit 3 — Maternity Benefit</div>
+<div class="n-section-title">Maternity Benefit Act, 1961</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Section 12 is absolute — any dismissal during maternity leave is void, not voidable, and the employer faces criminal liability whether or not the woman is permanently employed.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Maternity Leave Duration</div>
+<div class="n-spectrum">
+  <div class="n-spectrum-bar">
+    <div class="n-sp-seg" style="background:var(--navy);">1st &amp; 2nd Child<br>26 Weeks<br>100% wages</div>
+    <div class="n-sp-seg" style="background:var(--teal);">3rd Child+<br>12 Weeks<br>100% wages</div>
+    <div class="n-sp-seg" style="background:var(--gold);">Adoption<br>18 Weeks<br>from date of adoption</div>
+    <div class="n-sp-seg" style="background:var(--green);">Miscarriage/<br>MTP<br>6 Weeks</div>
+  </div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">All Benefits Under the Act</div>
+<table class="n-table">
+  <thead><tr><th>Benefit</th><th>Details</th></tr></thead>
+  <tbody>
+    <tr><td>Maternity Leave</td><td>26 weeks (1st/2nd child), 12 weeks (3rd+), 18 weeks (adoption)</td></tr>
+    <tr><td>Medical Bonus</td><td>₹3,500 if employer provides no pre/post natal care</td></tr>
+    <tr><td>Nursing Breaks</td><td>Two breaks/day until child is 15 months old</td></tr>
+    <tr><td>Crèche</td><td>Mandatory for establishments with 50+ employees. Four visits/day allowed.</td></tr>
+    <tr><td>Work from Home</td><td>If nature of work allows — employer may permit after leave</td></tr>
+    <tr><td>Dismissal Protection</td><td>Section 12: dismissal during maternity period = VOID. Criminal liability on employer.</td></tr>
+    <tr><td>Eligibility</td><td>80 days worked in preceding 12 months</td></tr>
+  </tbody>
+</table>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">B. Shah v. Presiding Officer (1977)</div>
+    <div class="n-case-meta">Sundays Included</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">When calculating maternity benefit, the employer counted only actual working days — excluding Sundays and public holidays. The worker challenged this. Pregnancy, she pointed out, does not pause on weekends.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Maternity benefit must be calculated including Sundays and holidays — not just working days. Benefit compensates for the entire period of absence, not just working hours.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Cite whenever calculation of maternity benefit arises. The formula is: all calendar days of leave × daily wage rate.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Municipal Corporation of Delhi v. Female Workers (Muster Roll) (2000)</div>
+    <div class="n-case-meta">Casual Workers Covered</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">MCD employed women on 'muster roll' — casual daily-wage workers for road sweeping and garbage collection. MCD denied them maternity benefit, arguing the Act applied only to 'regular employees'.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">SC (Majmudar J) — nature of employment (regular/casual) is irrelevant. Any woman employed for wages is entitled to maternity benefit. Art.42 (humane conditions of work) demands this interpretation.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Use whenever employer argues 'she is a contractual/muster-roll worker' to deny maternity benefit. The nature of appointment cannot defeat the right.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Night Shift Dismissal — 4× Asked in Osmania</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">Woman terminated for refusing night shift: S.66(1)(b) Factories Act prohibits women between 7 PM – 6 AM without State Govt permission. S.12 MBA — dismissal relating to pregnancy = void. Reinstatement + back wages. If pregnant: doubly void.</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">MBA 1961: applies to factories/mines/shops with 10+ workers. Eligibility: 80 days in preceding 12 months. Benefits: 26 weeks 100% wages (1st/2nd child), 12 weeks (3rd+), 18 weeks (adoption), 6 weeks (miscarriage). Medical bonus ₹3,500. Nursing breaks 2/day till 15 months. Crèche: 50+ employees (MBA) or 30+ women (Factories Act). Dismissal protection [S.12]: void + criminal liability. B. Shah: includes Sundays. MCD Female Workers: casual workers covered. Night shift: S.66 Factories Act protects — dismissal for refusal is unlawful.</div>
+</div>`,
+
+epf: `
+<div class="n-unit-label">📌 Unit 3 — EPF Act</div>
+<div class="n-section-title">EPF &amp; Miscellaneous Provisions Act, 1952</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">The EPF Act creates three interlocking schemes — savings, pension, insurance — and the 12% employer contribution split (3.67% EPF + 8.33% EPS) is the most tested calculation in the exam.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Three Schemes — The Core Structure</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">🏦</div><div class="n-card-title">EPF Scheme 1952</div><div class="n-card-text">Retirement savings — lump sum. Employee: 12%. Employer: 12% (3.67% EPF + 8.33% diverted to EPS). Annual interest declared by Govt (~8–8.5%).</div></div>
+  <div class="n-card teal"><div class="n-card-icon">👴</div><div class="n-card-title">EPS — Pension Scheme 1995</div><div class="n-card-text">Monthly pension on retirement or death. Source: 8.33% of employer's share + Central Govt 1.16%. Minimum 10 years pensionable service to get pension.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🛡️</div><div class="n-card-title">EDLI Scheme 1976</div><div class="n-card-text">Life insurance on death during service. Employer: 0.5%. Govt: 0.25%. Employee: NIL. Max insurance benefit: ₹7 lakhs.</div></div>
+  <div class="n-card red"><div class="n-card-icon">📅</div><div class="n-card-title">Deposit Deadline</div><div class="n-card-text">15th of following month. Delay = 12% interest + damages up to 25% of arrears.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">How the 12% Employer Contribution is Split</div>
+<div class="n-spectrum">
+  <div class="n-spectrum-bar">
+    <div class="n-sp-seg" style="background:var(--navy);flex:3.67;">EPF Account<br>3.67%<br>Retirement savings</div>
+    <div class="n-sp-seg" style="background:var(--teal);flex:8.33;">EPS (Pension)<br>8.33%<br>Monthly pension fund</div>
+  </div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">EPF Act 1952: applies to 20+ employee factories/establishments. Employees ≤ ₹15,000/month mandatorily covered. Three schemes: EPF (retirement lump sum — employee 12% + employer 12%, split 3.67%+8.33%); EPS 1995 (monthly pension — 8.33% employer + Govt 1.16%, needs 10 yrs service); EDLI 1976 (life insurance — employer 0.5%, Govt 0.25%, employee NIL, max ₹7 lakhs). Deposit by 15th of following month. Withdrawal: medical (6 months wages), marriage (50% after 7 yrs), housing (90% after 5 yrs). Lalappa Lingappa: gratuity is a right. B. Shah: maternity includes Sundays.</div>
+</div>`,
+
+childlabour: `
+<div class="n-unit-label">📌 Unit 4 — Child Labour</div>
+<div class="n-section-title">Child Labour (P&amp;R) Act, 1986 — As Amended 2016</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">After the 2016 Amendment, no child below 14 may work in ANY occupation — including domestic work — and parental consent is never a defence because the right is the child's, not the parent's to waive.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Three Age Groups — The Foundation</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">CHILD (Below 14) — COMPLETE BAN</div><div class="n-card-text">Cannot work in ANY occupation or process. Post-2016: domestic work specifically prohibited. Exception: own family enterprise, after school hours, non-hazardous only.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">⚠️</div><div class="n-card-title">ADOLESCENT (14–18) — REGULATED</div><div class="n-card-text">Can work but NOT in hazardous occupations listed in Schedule. No mines, explosives, or hazardous processes.</div></div>
+  <div class="n-card green"><div class="n-card-icon">✅</div><div class="n-card-title">ADULT (18+) — FULL RIGHTS</div><div class="n-card-text">Full labour law protection applies. ESI, PF, Bonus, Gratuity, Maternity — all applicable.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Constitutional Framework</div>
+<table class="n-table">
+  <thead><tr><th>Article</th><th>Type</th><th>Protection</th></tr></thead>
+  <tbody>
+    <tr><td>Art. 24</td><td>Fundamental Right</td><td>No child below 14 in factory/mine/hazardous employment</td></tr>
+    <tr><td>Art. 21A</td><td>Fundamental Right</td><td>Free &amp; compulsory education 6–14 years</td></tr>
+    <tr><td>Art. 21</td><td>Fundamental Right</td><td>Right to life — includes right to grow and learn (MC Mehta)</td></tr>
+    <tr><td>Art. 39(e)</td><td>DPSP</td><td>Tender age of children not to be abused</td></tr>
+    <tr><td>Art. 39(f)</td><td>DPSP</td><td>Children to be protected against exploitation</td></tr>
+  </tbody>
+</table>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">M.C. Mehta v. State of Tamil Nadu (1996)</div>
+    <div class="n-case-meta">Sivakasi Child Labour</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Sivakasi's matchstick and firecracker factories employed thousands of children, some as young as four. Explosions killed child workers regularly. MC Mehta filed a PIL exposing this and demanding comprehensive remedies — not just enforcement of existing law.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Employment of children below 14 violates Art.24 absolutely. SC issued template directions: (1) Withdraw every child from work; (2) Employer deposits ₹20,000 per child to Rehabilitation Fund; (3) Survey all working children; (4) Provide employment to one adult family member.</div></div>
+    <div class="n-case-row"><span class="n-tag why">Why Landmark</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">First case to impose rehabilitation obligations on employers — not just prosecution. Created the fund-based rehabilitation model. Led directly to the 2016 amendment.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Any Part B on child labour must cite this case. Give the ₹20,000 figure, the adult employment direction, and the Art.21 right to education link. Part C on child in factory = cite MC Mehta + Art.24.</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Bandhua Mukti Morcha v. Union of India (1984)</div>
+    <div class="n-case-meta">Bonded Child Labour</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Bonded Liberation Front filed PIL exposing children kept in debt bondage in Haryana stone quarries — paid starvation wages, prevented from leaving, denied education. Justice Bhagwati responded with a landmark constitutional ruling.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Bonded child labour simultaneously violates Art.21 (right to life with dignity), Art.23 (forced labour), and Art.24 (child labour). Directed immediate release and rehabilitation.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Cite for the constitutional basis of child labour prohibition — all three articles together. Also relevant for forced labour (Art.23) questions.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Parental Consent Is Never a Defence</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">Employing a child below 14 is illegal regardless of parental written consent. The prohibition is for the child's benefit — the child's right cannot be waived by the parent. Poverty may drive parents to consent but the State's interest in the child's education overrides parental consent. This is the direct answer to the 'employer shows parental consent letter' Part C problem (asked 3 times verbatim).</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Child Labour Act 1986 (amended 2016): below 14 = complete ban in ALL occupations including domestic work; exception: own family enterprise, after school, non-hazardous only. Adolescent (14–18): can work, not in hazardous Schedule. Penalties: 1st offence — 6 months to 2 years imprisonment OR ₹20,000 to ₹50,000 fine. Rehab Fund: ₹20,000 per child. Constitutional: Art.24 (FR — no child in factory/mine), Art.21A (FR — free education 6–14), Art.39(e)(f) (DPSP). MC Mehta 1996: ₹20,000/child to fund, adult employment, survey. Bandhua Mukti Morcha 1984: violates Art.21+23+24. Parental consent = NO defence.</div>
+</div>`,
+
+equalpay: `
+<div class="n-unit-label">📌 Unit 4 — Equal Remuneration</div>
+<div class="n-section-title">Equal Remuneration Act, 1976</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">The test for equal pay is functional — what do they actually do? — not nominal — what is their job title? A 'lady stenographer' doing identical work to a 'male stenographer' must receive identical pay.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Constitutional Foundation</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">⚖️</div><div class="n-card-title">Art. 14</div><div class="n-card-text">Equality before law — includes wage equality between employees doing same work.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">👥</div><div class="n-card-title">Art. 16</div><div class="n-card-text">Equality of opportunity in public employment — enforceable through Article 32.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🎯</div><div class="n-card-title">Art. 39(d)</div><div class="n-card-text">DPSP — State must secure equal pay for equal work for men and women.</div></div>
+  <div class="n-card green"><div class="n-card-icon">📜</div><div class="n-card-title">ERA 1976</div><div class="n-card-text">Statutory protection: S.4 (no less pay for same work), S.5 (no discrimination in recruitment/promotion).</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">The Functional Test — Step by Step</div>
+<div class="n-flow">
+  <div class="n-flow-step"><strong>Step 1</strong>Identify the actual duties performed — not the job title</div>
+  <div class="n-flow-step"><strong>Step 2</strong>Compare: is the work 'same or of similar nature'?</div>
+  <div class="n-flow-step"><strong>Step 3</strong>Is there a pay difference between employees?</div>
+  <div class="n-flow-step"><strong>Step 4</strong>Is the difference based on sex or artificial label?</div>
+  <div class="n-flow-step"><strong>Result</strong>If yes to all: S.4 ERA violated → equal pay + damages</div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Mackinnon Mackenzie v. Audrey D'Costa (1987)</div>
+    <div class="n-case-meta">Functional Test</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Audrey D'Costa was a 'confidential lady stenographer' paid ₹350/month. Her male counterparts, doing identical typing, shorthand, and filing work, were paid significantly more under a separate scale. The company's defence: 'lady stenographer' is a different category from 'male stenographer'.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">The 'lady stenographer' label was a sham classification created to justify lower pay. The test is FUNCTIONAL — what do they actually do? Duties were identical. ERA Section 4 violated.</div></div>
+    <div class="n-case-row"><span class="n-tag why">Why Landmark</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">First SC case to establish the functional test for equal pay. Employers cannot use job title tricks to pay women less. Substance of work, not label, determines pay parity.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">For every equal pay Part C problem: first apply the functional test, then conclude. Always distinguish between job title (irrelevant) and actual duties (what matters).</div></div>
+  </div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Randhir Singh v. Union of India (1982)</div>
+    <div class="n-case-meta">Constitutional Right</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Randhir Singh drove for Delhi Police. Drivers in other Central Govt departments doing identical work were paid more. Historical accident of departmental classification. SC held this violated his constitutional rights — not just a directive principle.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">'Equal pay for equal work' is a constitutional right derivable from Articles 14 and 16, enforceable through Article 32 — not merely a DPSP directive.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Use this to elevate equal pay from DPSP (non-enforceable) to constitutional RIGHT (enforceable). Critical for Part B essays on equal remuneration.</div></div>
+  </div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">ERA 1976 (now in Code on Wages 2019): S.4 — no lower pay for women for same/similar work; S.5 — no sex-based discrimination in recruitment/promotion; S.6 — advisory committees 50% women; S.8 — employer must maintain registers. TEST = FUNCTIONAL (actual duties, not job title). Mackinnon Mackenzie 1987: 'lady stenographer' label is sham — actual duties identical = S.4 violated. Randhir Singh 1982: equal pay is constitutional RIGHT under Art.14/16, enforceable through Art.32 (not just DPSP). Code on Wages 2019 absorbed ERA 1976. ILO Convention No.100 (1951) — equal pay — India ratified.</div>
+</div>`,
+
+factories: `
+<div class="n-unit-label">📌 Unit 5 — Factories Act</div>
+<div class="n-section-title">Factories Act, 1948</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Three chapters, three duties: Health (Ss.11–20) = clean and safe environment; Safety (Ss.21–41) = fence every dangerous machine; Welfare (Ss.42–49) = canteen, crèche, first aid based on worker count thresholds.</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Applicability</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">⚡</div><div class="n-card-title">With Power</div><div class="n-card-text">Factories using electrical or mechanical power: 10 or more workers.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">👐</div><div class="n-card-title">Without Power</div><div class="n-card-text">Factories not using power: 20 or more workers. Same rules once covered.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Health Provisions — Chapter III (Ss.11–20)</div>
+<table class="n-table">
+  <thead><tr><th>Section</th><th>Provision</th><th>Key Number</th></tr></thead>
+  <tbody>
+    <tr><td>S.11</td><td>Cleanliness — floors washed weekly with disinfectant</td><td>All factories</td></tr>
+    <tr><td>S.13</td><td>Ventilation — adequate fresh air, reasonable temperature</td><td>All factories</td></tr>
+    <tr><td>S.16</td><td>Overcrowding prevention</td><td>Min 14.2 cu.m per worker</td></tr>
+    <tr><td>S.17</td><td>Lighting — sufficient natural + artificial</td><td>All factories</td></tr>
+    <tr><td>S.18</td><td>Drinking water — wholesome at accessible points</td><td>All factories</td></tr>
+    <tr><td>S.19</td><td>Latrines — separate for men and women</td><td>All factories</td></tr>
+  </tbody>
+</table>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Welfare Provisions — Thresholds at a Glance</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card teal"><div class="n-card-icon">🏥</div><div class="n-card-title">First Aid — S.44</div><div class="n-card-text">1 box per 150 workers. Trained person must be in charge at all times.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🍽️</div><div class="n-card-title">Canteen — S.45</div><div class="n-card-text">Mandatory for 150+ workers. Subsidised meals. Managed by employer.</div></div>
+  <div class="n-card red"><div class="n-card-icon">👶</div><div class="n-card-title">Crèche — S.48</div><div class="n-card-text">Mandatory for 30+ women workers. Children below 6 years. 4 visits/day allowed.</div></div>
+  <div class="n-card navy"><div class="n-card-icon">🧑‍💼</div><div class="n-card-title">Welfare Officer — S.49</div><div class="n-card-text">Mandatory for 500+ workers. Trained welfare officer appointed by management.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Working Hours</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">⏰</div><div class="n-card-title">Adult Workers</div><div class="n-card-text">Max 9 hours/day. Max 48 hours/week. Overtime at double rate. Max 50 hours OT per quarter.</div></div>
+  <div class="n-card red"><div class="n-card-icon">🌙</div><div class="n-card-title">Women Workers — S.66</div><div class="n-card-text">Cannot work between 7 PM and 6 AM without State Govt permission. Night shift refusal is protected.</div></div>
+</div>
+
+<div class="n-case" onclick="this.classList.toggle('open')">
+  <div class="n-case-head">
+    <div class="n-case-icon">⚖️</div>
+    <div class="n-case-name">Consumer Education Research Centre v. Union of India (1995)</div>
+    <div class="n-case-meta">Right to Safe Working Conditions</div>
+  </div>
+  <div class="n-case-body">
+    <div class="n-case-row"><span class="n-tag story">Story</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Workers in asbestos industries suffered severe occupational diseases. PIL filed highlighting that employers provided no safety equipment, no medical monitoring, no compensation. Asbestosis and mesothelioma were destroying workers' lives.</div></div>
+    <div class="n-case-row"><span class="n-tag held">Held</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Right to health and safe working conditions = right to life under Article 21. Employers in hazardous industries have an absolute constitutional duty to protect worker health. This cannot be contracted away.</div></div>
+    <div class="n-case-row"><span class="n-tag exam">Exam Angle</span><div style="font-size:13px;line-height:1.7;color:var(--text);margin-top:4px;">Use for any Factories Act safety question to link statutory duties to constitutional obligation under Art.21. Particularly for occupational health and hazardous processes questions.</div></div>
+  </div>
+</div>
+
+<div class="n-alert">
+  <div class="n-alert-label">🚨 Wives After 7 PM — 2× Asked Verbatim</div>
+  <div style="font-size:13px;line-height:1.6;color:#8b0000;">Wives working in place of husbands after 7 PM in a textile factory: S.66(1)(b) prohibits women from working after 7 PM without State Govt permission. The wives qualify as 'workers' since they are performing manufacturing process. Occupier is guilty under S.92. Additionally — is this voluntary or forced labour under Art.23?</div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Factories Act 1948: 10+ workers (power) / 20+ (no power). HEALTH [Ss.11–20]: cleanliness, ventilation, 14.2 cu.m/worker, lighting, drinking water, latrines. SAFETY [Ss.21–41]: fence dangerous machinery (S.21), no work near moving parts without devices (S.22), young persons under supervision (S.23). WELFARE [Ss.42–49]: first aid 1/150 workers (S.44), canteen 150+ (S.45), crèche 30+ women (S.48), welfare officer 500+ (S.49). HOURS: 9 hrs/day, 48 hrs/week, OT = double wages, 30 min rest after 5 hrs. WOMEN: no night work 7 PM–6 AM [S.66(1)(b)]. Penalty [S.92]: imprisonment up to 2 years + fine up to ₹1 lakh. Consumer Education: safe conditions = Art.21 right to life.</div>
+</div>`,
+
+socsec: `
+<div class="n-unit-label">📌 Unit 2 — Social Security</div>
+<div class="n-section-title">Social Security, Social Insurance &amp; Social Assistance</div>
+<div class="n-hook">
+  <div class="n-hook-label">⚡ One-Line Hook</div>
+  <div class="n-hook-text">Social security is the umbrella; social insurance is the contributory form (you paid in, you get out); social assistance is the non-contributory form (state funds protect those who cannot contribute).</div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">The Three Concepts — Distinguished</div>
+<div class="n-spectrum">
+  <div class="n-spectrum-bar">
+    <div class="n-sp-seg" style="background:var(--navy);">SOCIAL SECURITY<br>(Broadest umbrella)<br>All state protection against economic risk</div>
+    <div class="n-sp-seg" style="background:var(--teal);">SOCIAL INSURANCE<br>(Contributory)<br>Worker + Employer + State contribute<br>ESI, EPF, Gratuity</div>
+    <div class="n-sp-seg" style="background:var(--green);">SOCIAL ASSISTANCE<br>(Non-contributory)<br>State funds from taxes<br>Old-age pension, disability grants</div>
+  </div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Four Methods of Social Security (ILO)</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card teal"><div class="n-card-icon">🏦</div><div class="n-card-title">1. Social Insurance</div><div class="n-card-text">Contributory. Workers + employers + state all contribute. Benefits are a right linked to contribution. Example: ESI Act, EPF.</div></div>
+  <div class="n-card navy"><div class="n-card-icon">🏛️</div><div class="n-card-title">2. Social Assistance</div><div class="n-card-text">Non-contributory. Funded by state from taxes. Means-tested. Example: old-age pension, NSAP, disability allowance.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">🤝</div><div class="n-card-title">3. Social Service</div><div class="n-card-text">Free public services — healthcare, education, housing. No contribution required. Universal in nature.</div></div>
+  <div class="n-card green"><div class="n-card-icon">💰</div><div class="n-card-title">4. Provident Fund</div><div class="n-card-text">Compulsory savings — EPF Act 1952. Worker and employer each contribute 12% of basic wages.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Constitutional Basis</div>
+<div class="n-grid n-grid-2">
+  <div class="n-card navy"><div class="n-card-icon">📜</div><div class="n-card-title">Art. 41 (DPSP)</div><div class="n-card-text">State shall make effective provision for right to work, education and public assistance in cases of unemployment, old age, sickness and disablement.</div></div>
+  <div class="n-card teal"><div class="n-card-icon">📜</div><div class="n-card-title">Art. 42 (DPSP)</div><div class="n-card-text">State shall make provision for securing just and humane conditions of work and maternity relief.</div></div>
+  <div class="n-card gold"><div class="n-card-icon">📜</div><div class="n-card-title">Art. 43 (DPSP)</div><div class="n-card-text">State shall endeavour to secure living wage, decent standard of life, and social and cultural opportunities for all workers.</div></div>
+</div>
+
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Key Social Security Legislation</div>
+<div class="n-timeline">
+  <div class="n-tl-item"><div class="n-tl-year">1948</div><div class="n-tl-text">ESI Act — first comprehensive social insurance. Sickness, maternity, disablement, medical for factory workers.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1952</div><div class="n-tl-text">EPF Act — compulsory retirement savings + pension + insurance (three schemes).</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1961</div><div class="n-tl-text">Maternity Benefit Act — 26 weeks (after 2017 amendment) paid maternity leave.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">1972</div><div class="n-tl-text">Payment of Gratuity Act — lump sum on long service. Right, not bounty.</div></div>
+  <div class="n-tl-item"><div class="n-tl-year">2020</div><div class="n-tl-text">Social Security Code — consolidates 9 Acts. First to cover gig workers, platform workers, and unorganised sector.</div></div>
+</div>
+
+<div class="n-recall">
+  <div class="n-recall-label">⚡ Quick Recall — Exam Morning</div>
+  <div class="n-recall-text">Social Security (umbrella) = all state measures protecting against economic risks (old age, sickness, injury, unemployment, death). Social Insurance (contributory) = ESI Act (3.25% + 0.75%), EPF Act (12%+12%), Gratuity (employer-funded on long service). Social Assistance (non-contributory) = state-funded old-age pension, disability allowance — no worker contribution needed. Constitutional: Art.41 (right to work/education/public assistance), Art.42 (humane conditions), Art.43 (living wage). Social Security Code 2020 absorbed 9 Acts — added gig/platform/unorganised worker coverage for the first time. Whitley Commission 1931 first formally recommended social security for Indian workers.</div>
+</div>`,
+
+};
+
+function buildNotes() {
+  const container = document.getElementById('notes-container');
+  if (!container) return;
+
+  // Top nav pills
+  let pillsHtml = '<div class="notes-topnav" id="notes-pills">';
+  NOTES_TOPICS.forEach((t, i) => {
+    pillsHtml += `<button class="n-pill${i===0?' active':''}" onclick="showNote('${t.id}',this)">${t.label}</button>`;
+  });
+  pillsHtml += '</div>';
+
+  // Sections
+  let sectionsHtml = '';
+  NOTES_TOPICS.forEach((t, i) => {
+    sectionsHtml += `<div class="n-section${i===0?' active':''}" id="note-${t.id}">${NOTES_CONTENT[t.id]||'<p style="color:var(--text-muted);padding:20px;text-align:center;">Content coming soon.</p>'}</div>`;
+  });
+
+  container.innerHTML = `
+    <div class="part-header" style="margin-bottom:14px;">
+      <div class="part-header-icon">🗺️</div>
+      <div class="part-header-text"><h2>Visual Study Notes</h2><p>Diagrams · Flowcharts · Case Cards · Quick Recall</p></div>
+    </div>
+    ${pillsHtml}
+    ${sectionsHtml}
+  `;
+}
+
+function showNote(id, el) {
+  document.querySelectorAll('.n-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.n-pill').forEach(p => p.classList.remove('active'));
+  const sec = document.getElementById('note-' + id);
+  if (sec) sec.classList.add('active');
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+
 // Splash
 window.addEventListener('load', () => {
   buildTopics();
   buildCases();
   buildCheat();
   buildVideos();
+  buildNotes();
   setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
     setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
