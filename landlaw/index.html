@@ -88,7 +88,7 @@ body {
 #bottomnav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
   background: var(--navy);
-  display: grid; grid-template-columns: repeat(6, 1fr);
+  display: grid; grid-template-columns: repeat(7, 1fr);
   border-top: 1px solid rgba(255,255,255,0.1);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -545,8 +545,656 @@ body {
 .cheat-key { font-weight: 700; color: var(--navy); white-space: nowrap; min-width: 100px; }
 .cheat-val { color: var(--text-muted); line-height: 1.5; }
 .cheat-highlight { color: var(--gold); font-weight: 700; }
+
+/* ═══════════════════════════════════════════════════════════
+   VISUAL NOTES STYLES
+   ═══════════════════════════════════════════════════════════ */
+.notes-topnav {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding-bottom: 4px; margin-bottom: 18px;
+  scrollbar-width: none;
+}
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill {
+  background: white; border: 1.5px solid var(--border);
+  color: var(--text-muted); font-size: 11px; font-weight: 700;
+  padding: 7px 14px; border-radius: 20px; white-space: nowrap;
+  cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.n-pill.active { background: var(--navy); color: white; border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; animation: nFadeIn 0.25s ease; }
+@keyframes nFadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.n-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; color: var(--navy);
+  margin-bottom: 4px; line-height: 1.3;
+}
+.n-unit-label {
+  font-size: 10px; font-weight: 700; color: var(--text-muted);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+}
+.n-hook {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3260 100%);
+  border-radius: 12px; padding: 16px;
+  margin-bottom: 14px;
+}
+.n-hook-label {
+  font-size: 9px; font-weight: 700; color: var(--gold-light);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+}
+.n-hook-text { color: white; font-size: 14px; line-height: 1.6; font-weight: 500; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: 1fr 1fr; }
+.n-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.n-grid-4 { grid-template-columns: 1fr 1fr; }
+.n-card {
+  background: white; border-radius: 12px; padding: 14px 12px;
+  box-shadow: var(--shadow); border-top: 3px solid var(--border);
+  text-align: center;
+}
+.n-card.navy { border-top-color: var(--navy); }
+.n-card.gold { border-top-color: var(--gold); }
+.n-card.teal { border-top-color: var(--teal); }
+.n-card.red { border-top-color: var(--red); }
+.n-card.green { border-top-color: var(--green); }
+.n-card-icon { font-size: 26px; margin-bottom: 6px; }
+.n-card-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 3px; line-height: 1.3; }
+.n-card-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; }
+.n-table th { background: var(--navy); color: white; padding: 8px 10px; text-align: left; font-size: 11px; font-weight: 700; }
+.n-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+.n-table tr:nth-child(even) td { background: #f8f7f3; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-flow { display: flex; gap: 0; margin-bottom: 14px; border-radius: 10px; overflow: hidden; }
+.n-flow-step {
+  flex: 1; background: var(--navy); padding: 10px 8px;
+  text-align: center; position: relative; font-size: 11px;
+  color: rgba(255,255,255,0.9); font-weight: 600; line-height: 1.4;
+}
+.n-flow-step:nth-child(2) { background: #1a3a6e; }
+.n-flow-step:nth-child(3) { background: var(--teal); }
+.n-flow-step:nth-child(4) { background: #0a5555; }
+.n-flow-step:nth-child(5) { background: #0d5c3e; }
+.n-flow-step:nth-child(6) { background: var(--green); }
+.n-flow-step span { display: block; font-size: 9px; color: rgba(255,255,255,0.65); margin-top: 3px; }
+.n-case {
+  background: white; border-radius: 12px; margin-bottom: 12px;
+  overflow: hidden; box-shadow: var(--shadow);
+  border-left: 4px solid var(--gold);
+}
+.n-case-head {
+  background: #fffbf0; padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+}
+.n-case-head:active { opacity: 0.8; }
+.n-case-icon { font-size: 20px; flex-shrink: 0; }
+.n-case-name { font-weight: 700; font-size: 13px; color: var(--navy); flex: 1; line-height: 1.3; }
+.n-case-meta { font-size: 10px; color: var(--gold); font-weight: 700; font-family: 'DM Mono', monospace; }
+.n-case-body { display: none; border-top: 1px solid #f0d882; }
+.n-case.open .n-case-body { display: block; }
+.n-case-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; writing-mode: vertical-rl;
+  text-orientation: mixed; padding: 10px 6px;
+  min-width: 26px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.n-tag.story { background: var(--navy); color: rgba(255,255,255,0.8); }
+.n-tag.held { background: var(--teal); color: rgba(255,255,255,0.9); }
+.n-tag.why { background: var(--gold); color: var(--navy); }
+.n-tag.exam { background: var(--green); color: white; }
+.n-case-row p { padding: 10px 12px; font-size: 12px; line-height: 1.6; color: var(--text); flex: 1; }
+.n-alert {
+  background: #fff5f5; border: 1.5px solid var(--red);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 12px;
+}
+.n-alert-label {
+  font-size: 9px; font-weight: 700; color: var(--red);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;
+}
+.n-alert p { font-size: 12px; color: #8b0000; line-height: 1.6; font-weight: 600; }
+.n-key-box {
+  background: #fffbf0; border: 1.5px solid var(--gold);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 12px;
+}
+.n-key-label {
+  font-size: 9px; font-weight: 700; color: var(--gold);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;
+}
+.n-key-box p { font-size: 12px; color: var(--navy); line-height: 1.6; font-weight: 600; }
+.n-recall {
+  background: var(--navy); border-radius: 12px;
+  padding: 16px; margin-bottom: 4px;
+}
+.n-recall-label {
+  font-size: 9px; font-weight: 700; color: var(--gold-light);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+}
+.n-recall-text {
+  color: rgba(255,255,255,0.88); font-size: 12px;
+  line-height: 1.8;
+}
+.n-excl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.n-excl-item {
+  background: white; border-radius: 10px; padding: 10px 12px;
+  box-shadow: var(--shadow); display: flex; gap: 8px; align-items: flex-start;
+}
+.n-excl-sec .n-excl-item { border-left: 3px solid var(--green); }
+.n-excl-sec:first-child .n-excl-item { border-left-color: var(--red); }
+.n-excl-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.n-excl-label { font-size: 11px; font-weight: 600; color: var(--navy); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; height: 36px; }
+.n-sp-seg {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: white; text-align: center;
+  padding: 2px 4px; line-height: 1.3;
+}
+.n-timeline { margin-bottom: 14px; }
+.n-tl-item {
+  display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start;
+}
+.n-tl-year {
+  background: var(--navy); color: var(--gold-light);
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700;
+  padding: 4px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+}
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.6; padding-top: 3px; }
+
 </style>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'>
+// ═══════════════════════════════════════════════════════════
+// VISUAL NOTES DATA & FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+const NOTES_TOPICS = [
+  { id:'n-eminent', label:'Eminent Domain', unit:'Unit 1 — Doctrines' },
+  { id:'n-escheat', label:'Escheat & Bona Vacantia', unit:'Unit 1 — Doctrines' },
+  { id:'n-torrens', label:'Torrens System', unit:'Unit 1 — Land Records' },
+  { id:'n-settlements', label:'Land Settlements', unit:'Unit 2 — Land Reforms' },
+  { id:'n-zamindari', label:'Zamindari Abolition', unit:'Unit 2 — Land Reforms' },
+  { id:'n-tenancy', label:'Tenancy Laws', unit:'Unit 2 — Land Reforms' },
+  { id:'n-larr', label:'LARR Act 2013', unit:'Unit 3 — Acquisition' },
+  { id:'n-sia', label:'SIA & Consent', unit:'Unit 3 — Acquisition' },
+  { id:'n-compensation', label:'Compensation & R&R', unit:'Unit 3 — Acquisition' },
+  { id:'n-ceiling', label:'Land Ceiling', unit:'Unit 4 — Ceiling' },
+  { id:'n-assigned', label:'Assigned Lands', unit:'Unit 4 — Assigned Lands' },
+  { id:'n-tribal', label:'Tribal Land Rights', unit:'Unit 5 — Tribal' },
+  { id:'n-fra', label:'Forest Rights Act', unit:'Unit 5 — Forest Rights' },
+];
+
+const NOTES_CONTENT = {
+  'n-eminent': `
+    <div class="n-section-title">Doctrine of Eminent Domain</div>
+    <div class="n-unit-label">Unit 1 — Doctrines &amp; Ownership</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">The State can take your land — but it must pay you fairly and prove the public needs it.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card navy"><div class="n-card-icon">🏛️</div><div class="n-card-title">Sovereign Power</div><div class="n-card-text">Only the State — not private parties</div></div>
+      <div class="n-card gold"><div class="n-card-icon">🎯</div><div class="n-card-title">Public Purpose</div><div class="n-card-text">Roads, schools, defence, housing</div></div>
+      <div class="n-card teal"><div class="n-card-icon">💰</div><div class="n-card-title">Just Compensation</div><div class="n-card-text">Fair market value — not arbitrary</div></div>
+    </div>
+    <div class="n-timeline">
+      <div class="n-tl-item"><div class="n-tl-year">Pre-1978</div><div class="n-tl-text">Articles 19(1)(f) + 31 — Property was a Fundamental Right — courts could strike down acquisitions</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1978</div><div class="n-tl-text">44th Amendment — Property removed from FR — Article 300A only — "no deprivation except by authority of law"</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">2013</div><div class="n-tl-text">LARR Act — rights-based acquisition — SIA + Consent + R&amp;R — compensation up to 8× market value</div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Somawanti v State of Punjab</div><div class="n-case-meta">1963 · Public Purpose</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Land acquired for housing colony — owners challenged claiming private builders were the real beneficiary</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Government declaration of public purpose is conclusive — courts cannot question it unless there is fraud or colourable exercise of power</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established that Government's declaration is presumptively valid — key protection for large infrastructure projects</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote when public purpose is challenged — "declaration is conclusive except for fraud or colourable exercise"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">K.T. Plantation v State of Karnataka</div><div class="n-case-meta">2011 · Article 300A</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Plantation land taken after 44th Amendment — owners argued no enforceable property right remained</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Article 300A is an enforceable constitutional right — not a fundamental right but courts can examine whether deprivation is by a valid, just law</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Confirmed that 44th Amendment did not make property completely unprotected — Article 300A still bites</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for property rights post-1978: "not FR but enforceable constitutional right — arbitrary deprivation still invalid"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Article 31 was REMOVED by the 44th Amendment 1978. The current provision is Article 300A — "no deprivation of property save by authority of law." Do NOT cite Article 31 in answers about current property rights.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Eminent Domain = Sovereign Power + Public Purpose + Just Compensation. Under LARR 2013, compensation is urban: 4× market value; rural: up to 8× market value. Article 300A requires the deprivation to be by a valid, just law.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Eminent Domain is the inherent sovereign power to compulsorily acquire private property for public use with just compensation. Before 1978 property was a Fundamental Right under Articles 19(1)(f) and 31. The 44th Constitutional Amendment 1978 removed property from Fundamental Rights and inserted Article 300A — no person shall be deprived of property save by authority of law. K.T. Plantation (2011) confirmed Article 300A is an enforceable constitutional right — courts can still examine whether deprivation is by a valid, just law. Somawanti (1963) held that the Government's declaration of public purpose is generally conclusive and can only be challenged on grounds of fraud or colourable exercise of power. Under LARR 2013 compensation is 2× market value in urban areas plus 100% solatium giving 4× total; in rural areas up to 4× market value plus 100% solatium giving up to 8× total. State of MP v Vishnu Prasad Sharma (1966) held just compensation means what a willing seller would accept from a willing buyer — actual market value.</div></div>
+  `,
+  'n-escheat': `
+    <div class="n-section-title">Doctrine of Escheat &amp; Bona Vacantia</div>
+    <div class="n-unit-label">Unit 1 — Doctrines &amp; Ownership</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">No property is ever truly ownerless — the State is always the last heir and ultimate repository.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">🪦</div><div class="n-card-title">Escheat</div><div class="n-card-text">Owner dies intestate without legal heirs → property vests in State. Section 29, HSA 1956.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🏚️</div><div class="n-card-title">Bona Vacantia</div><div class="n-card-text">Property abandoned or with no owner → passes to Government. Section 654, Companies Act (dissolved companies).</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>Escheat</th><th>Bona Vacantia</th></tr></thead><tbody>
+        <tr><td>Trigger</td><td>Owner dies intestate, no heirs</td><td>Property abandoned / no owner</td></tr>
+        <tr><td>Applies to</td><td>Individuals — natural persons</td><td>Individuals + Companies (s.654)</td></tr>
+        <tr><td>Key Section</td><td>Section 29, HSA 1956</td><td>Section 654, Companies Act</td></tr>
+        <tr><td>State's role</td><td>Ultimate heir — sovereign</td><td>Residuary claimant — sovereign</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Section 29 of the Hindu Succession Act 1956 is the exact section for Escheat. The examiner directly tests this section number. Also: the State does NOT take as an heir — it takes as sovereign, holding property for public good.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Escheat (death, no heirs, Section 29 HSA) vs Bona Vacantia (abandonment, ownerless — applies to companies too under Section 654 Companies Act). Both ensure no property remains permanently ownerless — the State is the ultimate residuary.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Escheat is the doctrine by which property of a person dying intestate without any legal heirs specified under the Hindu Succession Act 1956 vests in the State Government. The operative provision is Section 29 of the Hindu Succession Act 1956. Bona Vacantia — Latin for ownerless goods — refers to property that has no owner because it has been abandoned or because the owner (such as a dissolved company) no longer exists. For dissolved companies, Section 654 of the Companies Act applies. In both cases the State does not take as a legal heir but as a sovereign, holding the property for the benefit of the public. The key distinction: Escheat is triggered by death without heirs while Bona Vacantia is triggered by abandonment or non-existence of an owner. Both doctrines reflect the constitutional principle that all land ultimately belongs to the community and no land can be truly ownerless.</div></div>
+  `,
+  'n-torrens': `
+    <div class="n-section-title">Torrens System — Conclusive Land Titling</div>
+    <div class="n-unit-label">Unit 1 — Land Records &amp; Dharani</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">If the register says you own it, you own it — no court can say otherwise; the State itself guarantees it.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card navy"><div class="n-card-icon">🪞</div><div class="n-card-title">Mirror Principle</div><div class="n-card-text">Register = exact reflection of current title. No need to look elsewhere.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🪟</div><div class="n-card-title">Curtain Principle</div><div class="n-card-text">No need to investigate history behind the register. It is final and complete.</div></div>
+      <div class="n-card gold"><div class="n-card-icon">🛡️</div><div class="n-card-title">Insurance Principle</div><div class="n-card-text">If register has an error causing loss — State compensates the injured party.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>India Today (Deed Registration)</th><th>Torrens Target</th></tr></thead><tbody>
+        <tr><td>What is registered</td><td>The transaction (deed)</td><td>The title (ownership itself)</td></tr>
+        <tr><td>Effect</td><td>Presumptive — rebuttable in court</td><td>Conclusive — State guarantees</td></tr>
+        <tr><td>Fraud risk</td><td>High — fake chains of title possible</td><td>Low — register is final</td></tr>
+        <tr><td>Telangana step</td><td>Dharani Portal — moving toward Torrens</td><td>Full Torrens not yet achieved</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>India has NOT yet fully implemented the Torrens system. The Dharani Portal (Telangana, 2020) moves toward it but the Pattadar Pass Book is still PRESUMPTIVE title — not conclusive title. Do not state India has a Torrens system.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Torrens System (Australia, 1858, Sir Robert Torrens) — three principles: Mirror (register = title), Curtain (no need to look behind register), Insurance (State compensates if register is wrong). India's current system is deed-based and presumptive. Dharani Portal is the closest India has come to Torrens for agricultural land in Telangana.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Torrens System introduced by Sir Robert Torrens in Australia in 1858 is a land registration system where the register itself is conclusive proof of title. Its three principles are: Mirror (the register accurately reflects the current title), Curtain (no need to investigate the history of transactions before the register entry), and Insurance (if an error in the register causes loss to any person, the State compensates them). India currently uses a deed registration system under the Registration Act 1908 — transactions are registered but not title, giving only presumptive title that can be challenged in court. Telangana's Rights in Land and Pattadar Pass Books Act 2020 and the Dharani Portal represent India's most ambitious step toward Torrens-style integrated digital records with real-time mutation on registration. However, the Pattadar Pass Book still confers presumptive title only, not conclusive title. DILRMP (Digital India Land Records Modernisation Programme) and ULPIN (Unique Land Parcel Identification Number — 14-digit Bhu-Aadhar) are national-level digital reform initiatives.</div></div>
+  `,
+  'n-settlements': `
+    <div class="n-section-title">Land Revenue Settlements</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms History</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Three British systems, three different exploitations — the Ryot paid directly, the Zamindar collected and pocketed, and the village shared the burden.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card red"><div class="n-card-icon">🏰</div><div class="n-card-title">Zamindari</div><div class="n-card-text">Zamindar pays fixed sum to State, extracts unlimited rent from Ryots. Bengal, Bihar, UP. Cornwallis 1793.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🌾</div><div class="n-card-title">Ryotwari</div><div class="n-card-text">Ryot pays directly to State. No intermediary. Madras (Andhra), Bombay. Thomas Munro.</div></div>
+      <div class="n-card navy"><div class="n-card-icon">🏘️</div><div class="n-card-title">Mahalwari</div><div class="n-card-text">Village community pays collectively. NW India, Punjab, MP. Holt Mackenzie 1822.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>System</th><th>Revenue Paid By</th><th>Region</th><th>Post-Independence</th></tr></thead><tbody>
+        <tr><td>Zamindari</td><td>Zamindar → State (fixed forever)</td><td>Bengal, Bihar, UP</td><td>Abolished — separate legislation needed</td></tr>
+        <tr><td>Ryotwari</td><td>Ryot directly → State</td><td>Madras, Bombay (AP/TS)</td><td>Ryots became occupancy tenants → land owners</td></tr>
+        <tr><td>Mahalwari</td><td>Village collectively</td><td>NW India, Punjab, MP</td><td>Village headman system reformed</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP/Telangana was Ryotwari — direct Ryot-State relationship — no Zamindar intermediary to remove. This made post-independence land reforms simpler here than in Zamindari areas. First Amendment 1951 — Article 31A inserted to protect abolition laws from FR challenge.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">British India had three major land revenue systems. The Zamindari or Permanent Settlement (Cornwallis 1793) made Zamindars hereditary landlords in Bengal, Bihar and UP — they paid a fixed revenue to the State and collected unlimited rents from Ryots beneath them. The Ryotwari system introduced by Thomas Munro established a direct relationship between the cultivating Ryot and the State — no intermediary — prevalent in Madras Presidency including Andhra and in Bombay. The Mahalwari system (Holt Mackenzie 1822) settled revenue with the village community collectively — used in NW India, Punjab and MP. AP and Telangana were Ryotwari areas — cultivating Ryots paid revenue directly to the State — making post-independence land reforms simpler as there were no Zamindars to abolish. In Zamindari areas separate abolition legislation was required, which led to the First Constitutional Amendment 1951 inserting Articles 31A, 31B, and the Ninth Schedule.</div></div>
+  `,
+  'n-zamindari': `
+    <div class="n-section-title">Zamindari Abolition &amp; Constitutional Amendments</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Zamindars won in court — so Parliament changed the Constitution four times until they couldn't win anymore.</div></div>
+    <div class="n-timeline">
+      <div class="n-tl-item"><div class="n-tl-year">1793</div><div class="n-tl-text">Permanent Settlement — Zamindars as hereditary landlords — Bengal, Bihar</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1950</div><div class="n-tl-text">Bihar, UP, Madras pass Zamindari Abolition Acts — Zamindars challenge in court</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1952</div><div class="n-tl-text">Kameshwar Singh — SC strikes down Bihar Act — compensation formula discriminatory</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1951</div><div class="n-tl-text">1st Amendment — Articles 31A, 31B + Ninth Schedule — all abolition laws protected from FR challenge</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1978</div><div class="n-tl-text">44th Amendment — Property removed from Fundamental Rights entirely — Article 300A only</div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">State of Bihar v Kameshwar Singh</div><div class="n-case-meta">1952 · Zamindari Abolition</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Bihar passed a land reform law abolishing Zamindari. The Maharaja challenged it — compensation formula treated different Zamindars unequally, violating Article 14</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC struck down parts of the Bihar Land Reforms Act — compensation formula was discriminatory. Led directly to the First Constitutional Amendment</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Most important land reform case — forced Parliament to pass the First Amendment inserting Articles 31A, 31B and the Ninth Schedule, permanently protecting all abolition laws</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite as: "Kameshwar Singh directly caused the First Constitutional Amendment and the creation of the Ninth Schedule"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Kesavananda Bharati v State of Kerala</div><div class="n-case-meta">1973 · Basic Structure</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Swami Kesavananda challenged Kerala land reforms on his mutt's property — case expanded to the greatest constitutional question: can Parliament amend ANY part of the Constitution?</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>7-6 decision by 13-judge bench — Parliament can amend but cannot destroy the Basic Structure of the Constitution — democracy, secularism, judicial review cannot be abolished</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Basic Structure Doctrine — most important constitutional judgment — protects the soul of the Constitution even from Parliament's majority</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for constitutional limits: "Parliament has wide amending power but cannot abrogate the basic structure — Kesavananda Bharati 1973"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">IR Coelho v State of Tamil Nadu</div><div class="n-case-meta">2007 · Ninth Schedule</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Governments had inserted all kinds of laws into the Ninth Schedule — not just land reforms. IR Coelho challenged Tamil Nadu's laws inserted post-1973 as beyond Ninth Schedule protection</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>9-judge bench: Ninth Schedule laws inserted AFTER April 24, 1973 (Kesavananda date) can be examined for basic structure violations — not absolute immunity</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established the 1973 cut-off for absolute Ninth Schedule immunity — pre-1973 laws fully protected; post-1973 laws face basic structure scrutiny</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Key: the Ceiling Act 1973 is right on this boundary — courts CAN examine it for basic structure. Pre-1973 zamindari abolition acts — fully protected.</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Article 31B gives absolute immunity ONLY for laws inserted in the Ninth Schedule BEFORE April 24, 1973. Laws inserted AFTER that date (including the Ceiling Act 1973) can be examined for basic structure violations per IR Coelho (2007).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Zamindari abolition required four Constitutional Amendments because Zamindars kept winning in court. The Ninth Schedule (Article 31B), created by the 1st Amendment 1951, gives land reform laws immunity from Fundamental Rights challenge — but only absolute immunity for pre-April 1973 laws (IR Coelho 2007).</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Zamindari abolition was India's most urgent land reform — removing the hereditary landlord class that exploited Ryots under the Permanent Settlement of 1793. Post-independence abolition laws (Bihar, UP, AP 1950-51) were immediately challenged by Zamindars. The SC in Kameshwar Singh (1952) struck down Bihar's Act on the ground of discriminatory compensation — forcing Parliament to pass the First Constitutional Amendment 1951 inserting Articles 31A and 31B and creating the Ninth Schedule. Article 31A saves acquisition of estates from challenge under Articles 14 and 19. Article 31B gives laws listed in the Ninth Schedule immunity from all Fundamental Rights challenges. The Fourth Amendment 1955 reinforced this. The 25th Amendment 1971 replaced "compensation" with "amount" to further restrict courts. Finally the 44th Amendment 1978 removed property from Fundamental Rights entirely. IR Coelho (2007) established that post-April 24, 1973 Ninth Schedule laws can be examined for basic structure violations. Kesavananda Bharati (1973) — 13-judge bench — held Parliament cannot abrogate the basic structure of the Constitution.</div></div>
+  `,
+  'n-tenancy': `
+    <div class="n-section-title">Tenancy Laws — Security, Fair Rent &amp; Ownership</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Land reforms in three steps: first secure the tenant's stay, then cap the rent, then finally hand over the title.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">Stage 1<span>Security of Tenure</span></div>
+      <div class="n-flow-step">Stage 2<span>Fair Rent Cap</span></div>
+      <div class="n-flow-step">Stage 3<span>Ownership Conferment</span></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Stage</th><th>Objective</th><th>Key Provision</th></tr></thead><tbody>
+        <tr><td>Security of Tenure</td><td>Protect tenants from arbitrary eviction</td><td>Cannot be evicted except for non-payment or landlord's personal cultivation</td></tr>
+        <tr><td>Fair Rent</td><td>Cap rent at 1/4 to 1/5 of produce</td><td>Rent cannot exceed statutory maximum</td></tr>
+        <tr><td>Ownership</td><td>Cultivating tenant becomes land owner</td><td>Right of pre-emption + conferment after prescribed period</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Arbitrary eviction — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Rent above statutory cap — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">✅</div><div class="n-excl-label">Eviction for non-payment — permitted</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">✅</div><div class="n-excl-label">Landlord's genuine personal cultivation — permitted</div></div></div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The right of pre-emption means the tenant has the FIRST RIGHT TO PURCHASE if the landlord decides to sell. Landlords used "voluntary surrenders" and "personal cultivation" defences to circumvent protections — courts require genuine proof of personal cultivation need.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP (Telangana Area) Tenancy and Agricultural Lands Act 1950 + AP (Andhra Area) Tenancy Act 1956 — protected tenants: security of tenure, fair rent, right of pre-emption, eventual conferment of ownership. Three stages: Security → Fair Rent → Ownership.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Tenancy reforms — the second phase of land reforms after Zamindari abolition — aimed to protect the millions of actual cultivators who remained tenants even after intermediaries were removed. Three stages: Stage 1 — Security of Tenure — tenant cannot be evicted except for non-payment of rent or the landlord's genuine personal cultivation need; Stage 2 — Fair Rent — rent capped at one-fourth to one-fifth of produce; Stage 3 — Conferment of Ownership — cultivating tenant converts to landowner after a prescribed period of cultivation. AP (Telangana Area) Tenancy and Agricultural Lands Act 1950 and AP (Andhra Area) Tenancy Act 1956 provided the framework in this region. Protected tenants have a right of pre-emption — the first right to purchase if the landlord sells. Balmadies Plantations v State of Tamil Nadu (1972) upheld fair rent laws even where landlord's income was drastically reduced — social justice overrides profit expectations.</div></div>
+  `,
+  'n-larr': `
+    <div class="n-section-title">LARR Act 2013 — Scheme &amp; Salient Features</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">LARR 2013 replaced 119 years of colonial law — now the State must ask, study, compensate and rehabilitate before it takes your land.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">SIA [S.4]<span>6 months</span></div>
+      <div class="n-flow-step">Consent<span>80% / 70%</span></div>
+      <div class="n-flow-step">Prelim Notice<span>S.11</span></div>
+      <div class="n-flow-step">Final Decl<span>S.19 — 12 months</span></div>
+      <div class="n-flow-step">Award<span>S.25 — 12 months</span></div>
+      <div class="n-flow-step">R&amp;R Complete<span>Then Possession</span></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>Details</th></tr></thead><tbody>
+        <tr><td>SIA — Section 4</td><td>Mandatory — completed within 6 months</td></tr>
+        <tr><td>Consent (Private)</td><td>80% of affected families</td></tr>
+        <tr><td>Consent (PPP)</td><td>70% of affected families</td></tr>
+        <tr><td>Urban Compensation</td><td>2× market value + 100% solatium = <strong>4× total</strong></td></tr>
+        <tr><td>Rural Compensation</td><td>up to 4× market value + 100% solatium = <strong>up to 8× total</strong></td></tr>
+        <tr><td>R&amp;R Threshold Urban</td><td>100 or more families displaced</td></tr>
+        <tr><td>R&amp;R Threshold Rural</td><td>200 or more families displaced</td></tr>
+        <tr><td>Land Return — S.101</td><td>Unused 5 years → returned to owner or land bank</td></tr>
+        <tr><td>Urgency — S.40</td><td>Only defence, national security, natural calamity</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Indore Development Authority v Manoharlal</div><div class="n-case-meta">2020 · LARR S.24(2)</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Old 1894 Act acquisitions were pending when LARR 2013 came into force. Section 24(2) said old acquisitions lapse if award not made OR possession not taken and compensation not deposited. High Courts split on whether "or" meant either condition alone was enough</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>5-judge Constitution Bench (4-1): BOTH conditions must exist simultaneously — possession not taken AND compensation not paid. Either condition alone is insufficient for lapse</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Settled decades of conflicting High Court interpretations — protected thousands of ongoing acquisitions from lapsing on technical grounds</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always remember: S.24(2) lapse requires BOTH — possession not taken AND compensation not paid. "Or" means "and" per Indore DA</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Narmada Bachao Andolan v Union of India</div><div class="n-case-meta">2000 · R&amp;R &amp; Displacement</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Sardar Sarovar Dam would submerge hundreds of villages — NBA led by Medha Patkar challenged displacement of lakhs of tribal and rural families without adequate rehabilitation</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC upheld the dam (2-1 split) — valid public purpose — BUT directed: full R&amp;R must be completed BEFORE dam height can be raised. R&amp;R first — then displacement</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established that development can displace communities but R&amp;R must precede dispossession — laid foundation for LARR 2013's mandatory R&amp;R requirement</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "Development cannot justify displacement without proper rehabilitation — Article 21 right to livelihood includes right to adequate resettlement"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Under LARR 2013, R&amp;R must be COMPLETED before dispossession — not just planned or promised. Possession cannot be taken until the Award is made AND R&amp;R is complete. Section 24(2) lapse requires BOTH conditions — not either/or (Indore DA 2020).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>LARR 2013 replaced LA Act 1894. Came into force January 1, 2014. Constitutional basis: Entry 42 Concurrent List + Article 300A + Articles 39(b) and 21. Key numbers: SIA 6 months, objections 60 days, Final Declaration within 12 months of Preliminary Notification, Award within 12 months of Final Declaration, unused land returned after 5 years (Section 101).</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013 replaced the colonial Land Acquisition Act 1894. It came into force on January 1, 2014 and is based on Entry 42 of the Concurrent List, Article 300A, and Articles 39(b) and 21. The procedure: SIA under Section 4 completed within 6 months, then consent (80% for private companies, 70% for PPP projects), then Preliminary Notification under Section 11, objections within 60 days, Expert Group report within 2 months, Final Declaration under Section 19 within 12 months of Preliminary Notification, Award under Section 25 within 12 months of Final Declaration, R&amp;R completed, then possession. Compensation: urban 2× market value plus 100% solatium totalling 4×; rural up to 4× market value plus 100% solatium totalling up to 8×. R&amp;R triggers at 100 displaced families (urban) or 200 (rural). Section 101: unused land returned after 5 years. Section 40 urgency: only defence, national security, natural calamity. Indore DA (2020): Section 24(2) lapse requires BOTH possession not taken AND compensation not paid simultaneously.</div></div>
+  `,
+  'n-sia': `
+    <div class="n-section-title">Social Impact Assessment &amp; Consent</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Before the bulldozer arrives, the law now requires 6 months of listening — and then the community gets a vote.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">Notify SIA<span>S.4(1)</span></div>
+      <div class="n-flow-step">Study 6 months<span>Consult Gram Sabha</span></div>
+      <div class="n-flow-step">Expert Group<span>2 months report</span></div>
+      <div class="n-flow-step">Govt Decision<span>Proceed or not</span></div>
+      <div class="n-flow-step">Consent Ballot<span>80% / 70%</span></div>
+    </div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📊</div><div class="n-card-title">What SIA Studies</div><div class="n-card-text">Families displaced · Livelihood lost · Alternatives available · R&amp;R plan needed</div></div>
+      <div class="n-card gold"><div class="n-card-icon">⚠️</div><div class="n-card-title">When SIA NOT Required</div><div class="n-card-text">Urgency clause S.40 — defence, national security, natural calamity. 80%/70% consent obtained.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Project Type</th><th>Consent Required</th></tr></thead><tbody>
+        <tr><td>Private companies</td><td><strong>80%</strong> of affected families</td></tr>
+        <tr><td>PPP projects</td><td><strong>70%</strong> of affected families</td></tr>
+        <tr><td>Government purpose</td><td>No consent required</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>SIA must be completed within 6 MONTHS — not 3, not 12. Then the Expert Group has 2 MONTHS to submit its report. These two numbers are directly tested in the exam. SIA is waived only for Section 40 urgency OR when requisite consent is obtained — not for any other reason.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>SIA under Section 4 LARR 2013 — mandatory pre-acquisition study — 6 months completion — Gram Sabha consultation mandatory — Expert Group appraisal 2 months — then Government decision. Consent: 80% private, 70% PPP, zero for Government. Public purpose categories under Section 2(1) include strategic/defence, infrastructure, housing for poor, PPP, Government-funded institutions.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Social Impact Assessment under Section 4 of LARR Act 2013 is a mandatory pre-acquisition study that must be completed within 6 months before any compulsory land acquisition can proceed. The SIA studies: number of families to be displaced, extent of loss to livelihood and community, whether less displacing alternatives exist, and the R&amp;R plan needed. Consultation with the Gram Sabha and affected families is mandatory during the SIA process. An independent Expert Group appraises the SIA report within 2 months. The Government must then publish its decision. SIA is NOT required when the urgency clause under Section 40 is invoked (only for defence, national security, or natural calamity) or when the requisite consent is already obtained. Consent requirements: 80% of affected families for private company projects, 70% for PPP projects, none for Government projects. Chameli Singh v State of UP (1996) confirmed that housing for economically weaker sections and LIG is a valid public purpose — the right to shelter is part of Article 21.</div></div>
+  `,
+  'n-compensation': `
+    <div class="n-section-title">Compensation, R&amp;R &amp; Just Compensation</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">LARR 2013 says you get paid up to 8 times what your land is worth — and you also get a house, a job, and your village rebuilt.</div></div>
+    <div class="n-spectrum">
+      <div class="n-spectrum-label">Compensation Scale — Rural Land</div>
+      <div class="n-spectrum-bar">
+        <div class="n-sp-seg" style="background:#c0392b;flex:1;">Base Market Value ×1</div>
+        <div class="n-sp-seg" style="background:#e67e22;flex:1;">Multiplier up to ×4</div>
+        <div class="n-sp-seg" style="background:#d4ac0d;flex:1;">+100% Solatium</div>
+        <div class="n-sp-seg" style="background:#27ae60;flex:2;">Total up to 8×</div>
+      </div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>R&amp;R Entitlement</th><th>Amount / Detail</th></tr></thead><tbody>
+        <tr><td>House</td><td>300 sq ft urban / 50 sq m rural</td></tr>
+        <tr><td>One-time assistance</td><td>₹50,000</td></tr>
+        <tr><td>Subsistence allowance</td><td>₹3,000/month for 12 months</td></tr>
+        <tr><td>Transportation</td><td>₹50,000</td></tr>
+        <tr><td>Employment / cash</td><td>Job in project OR ₹5 lakh in lieu</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Olga Tellis v Bombay Municipal Corporation</div><div class="n-case-meta">1985 · Right to Livelihood</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>BMC decided to evict all pavement dwellers — Olga Tellis filed PIL. BMC argued they were illegal encroachers. SC examined whether eviction destroying livelihood violates Article 21</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Right to livelihood is an integral part of right to life under Article 21. Eviction must be preceded by offering alternative accommodation — bare eviction that destroys livelihood violates Article 21</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Expanded Article 21 to include economic rights — right to life is not mere animal existence but includes the right to a means of living</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for R&amp;R questions: "right to livelihood is part of right to life — eviction without alternative accommodation violates Article 21"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">State of MP v Vishnu Prasad Sharma</div><div class="n-case-meta">1966 · Just Compensation</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Agricultural land acquired — compensation based on government revenue records, far below actual market value. Owner challenged as inadequate.</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Just compensation = what a willing seller would accept from a willing buyer in an open market — actual market value. Administrative valuations below market rate do not constitute just compensation</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Defined "just compensation" standard — prevents Government from using artificially depressed circle rates to underpay landowners</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "Just compensation = willing seller + willing buyer in open market = actual market value"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>R&amp;R must be COMPLETED before possession is taken — not started, not promised — COMPLETED. Possession before R&amp;R completion violates LARR 2013. The house entitlement is 300 sq ft in urban areas and 50 sq m in rural areas.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Compensation under LARR 2013: urban = 2× market value + 100% solatium = 4× total. Rural = up to 4× market value + 100% solatium = up to 8× total. R&amp;R: must be complete before dispossession. Key entitlements: house + ₹50,000 one-time + ₹3,000/month subsistence for 12 months + ₹50,000 transport + job or ₹5 lakh.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Under LARR 2013 compensation for urban land is 2 times market value plus 100 percent solatium giving a total of 4 times market value. For rural land the multiplier ranges up to 4 times market value plus 100 percent solatium giving up to 8 times total. Vishnu Prasad Sharma (1966) established that just compensation means actual market value — what a willing seller accepts from a willing buyer. R&amp;R entitlements under the Second Schedule include: house (300 sq ft urban, 50 sq m rural), one-time financial assistance of Rs 50,000, subsistence allowance of Rs 3,000 per month for 12 months, transportation allowance of Rs 50,000, and employment in the project or Rs 5 lakh in lieu. R&amp;R must be fully completed before possession is taken — not merely planned. Olga Tellis v BMC (1985) established that the right to livelihood is part of the right to life under Article 21, making R&amp;R a constitutional requirement, not merely statutory. Narmada Bachao Andolan (2000) confirmed R&amp;R must precede displacement for development projects.</div></div>
+  `,
+  'n-ceiling': `
+    <div class="n-section-title">Land Ceiling Laws — Telangana Act 1973</div>
+    <div class="n-unit-label">Unit 4 — Ceiling on Agricultural Holdings</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Too much land in too few hands — the Ceiling Act breaks the concentration and redistributes it to those who actually work the land.</div></div>
+    <div class="n-spectrum">
+      <div class="n-spectrum-label">Ceiling Limits — Telangana LR Act 1973 (high productivity = lower ceiling)</div>
+      <div class="n-spectrum-bar">
+        <div class="n-sp-seg" style="background:#27ae60;flex:1;">Garden 10 acres</div>
+        <div class="n-sp-seg" style="background:#16a085;flex:1.8;">Double Crop 18 acres</div>
+        <div class="n-sp-seg" style="background:#2471a3;flex:2.7;">Irrigated 27 acres</div>
+        <div class="n-sp-seg" style="background:#1a252f;flex:5.4;">Dry Unirrigated 54 acres</div>
+      </div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Category</th><th>Ceiling</th></tr></thead><tbody>
+        <tr><td>Dry / Unirrigated — single crop</td><td><strong>54 acres</strong></td></tr>
+        <tr><td>Irrigated — single crop</td><td><strong>27 acres</strong></td></tr>
+        <tr><td>Irrigated — double crop / wetland</td><td><strong>18 acres</strong></td></tr>
+        <tr><td>Garden / Orchard / Plantation / Sugarcane</td><td><strong>10 acres</strong></td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-flow">
+      <div class="n-flow-step">Ceiling computed<span>Individual + family</span></div>
+      <div class="n-flow-step">Surplus declared<span>Vests in State</span></div>
+      <div class="n-flow-step">Free of encumbrance<span>All liens released</span></div>
+      <div class="n-flow-step">Redistributed<span>SC/ST/Women/Small farmers</span></div>
+      <div class="n-flow-step">Compensation<span>Below market rate</span></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Public charitable trusts — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Religious endowments — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Industrial use land — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Defence land — exempt</div></div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">IR Coelho v State of Tamil Nadu</div><div class="n-case-meta">2007 · Ninth Schedule &amp; Ceiling</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Various laws including the Ceiling Act were in the Ninth Schedule. IR Coelho challenged post-1973 laws — arguing Ninth Schedule is not an absolute shield after Kesavananda (April 24, 1973)</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>9-judge bench: Ninth Schedule laws inserted after April 24, 1973 can be examined by courts for basic structure violations. The Ceiling Act 1973 is right on this boundary.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established the 1973 cut-off — the Ceiling Act (1973) can technically be examined for basic structure violations though it is unlikely to fail that test</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Key: Ceiling Act 1973 is on the boundary — pre-1973 zamindari laws fully protected — ceiling act subject to basic structure scrutiny per IR Coelho</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Benami holdings are INCLUDED in the ceiling computation — you cannot escape the ceiling by registering land in another person's name. Adult children get a separate ceiling per major child. The Ceiling Act is in the Ninth Schedule but it was inserted in 1973 — making it subject to basic structure scrutiny per IR Coelho (2007).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Telangana Land Reforms (Ceiling on Agricultural Holdings) Act 1973 — implements Articles 39(b) and 39(c) DPSP. Ceiling limits: 54 (dry) / 27 (irrigated-single) / 18 (double crop) / 10 (garden/plantation). Surplus vests in State free of encumbrance. Constitutional protection: Article 31A + Article 31B + Ninth Schedule + Article 31C.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Telangana Land Reforms (Ceiling on Agricultural Holdings) Act 1973 implements the Directive Principles under Articles 39(b) and 39(c) — equitable distribution of material resources and prevention of concentration of wealth. Ceiling limits: dry unirrigated land 54 acres; irrigated single crop 27 acres; irrigated double crop or wetland 18 acres; garden, orchard, plantation and sugarcane 10 acres. Ceiling applies to individuals, family units, and HUFs collectively — benami holdings are included in the computation and adult children get a separate ceiling. Surplus land vests in the State free of all encumbrances and is redistributed to landless poor — SC, ST, women and small farmers — with compensation paid to the former owner at below-market rates. Exemptions: public charitable trusts, religious endowments, industrial use and defence land. Constitutional protection: Article 31A (saves from FR challenge), Article 31B + Ninth Schedule (immunity — but post-1973 laws subject to basic structure scrutiny per IR Coelho 2007), Article 31C (protects DPSP-implementing laws). IR Coelho (2007) 9-judge bench established that the 1973 Ceiling Act being inserted in the Ninth Schedule post-April 1973 means courts can examine it for basic structure violations.</div></div>
+  `,
+  'n-assigned': `
+    <div class="n-section-title">Assigned Lands — Prohibition of Transfers</div>
+    <div class="n-unit-label">Unit 4 — Assigned Lands Act 1977</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">The government gave land to the poorest of the poor — the Assigned Lands Act makes it impossible to take it back through debt or sale.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📜</div><div class="n-card-title">What is Assigned Land</div><div class="n-card-text">Government land distributed to landless poor — SC, ST, women — under welfare schemes. Includes ceiling surplus and poramboke lands.</div></div>
+      <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">All Transfers VOID</div><div class="n-card-text">Sale, gift, mortgage, lease, attachment — ALL void ab initio. Even bank mortgage is prohibited.</div></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Sale — void ab initio</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Gift — void ab initio</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Mortgage to bank — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Lease — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Attachment for debt — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🔄</div><div class="n-excl-label">Collector can resume — on violation</div></div></div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Even a NATIONALISED BANK cannot take assigned land as security — the mortgage is void ab initio. The bank gets no security interest whatsoever. The Collector can resume (take back) land transferred in violation. This is a direct exam problem: "bank advances loan on security of assigned land — held: void."</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Telangana Assigned Lands (Prohibition of Transfers) Act 1977 — ANY transfer of assigned land (sale, gift, exchange, mortgage, lease) is void ab initio. Collector can resume land on violation. The paradox: assigned land cannot be mortgaged so the beneficiary cannot raise agricultural credit through formal banking.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Telangana Assigned Lands (Prohibition of Transfers) Act 1977 protects government-assigned land given to landless poor — especially Scheduled Castes and Scheduled Tribes — from being sold, mortgaged or alienated in any manner. Assigned lands include ceiling surplus land redistributed as pattas, Bhoodan lands, and government poramboke lands granted as pattas. Under this Act any transfer of assigned land — whether by sale, gift, exchange, mortgage, or lease — is void ab initio and has no legal effect whatsoever. Even a nationalised bank cannot take assigned land as security — the mortgage is prohibited and void — the bank acquires no security interest. Attachment of assigned land for debt is also prohibited — creditors cannot seize it. If an assigned land is transferred in violation, the District Collector has the power to resume (take back) the land. The paradox created by this Act is that while it protects the beneficiary from exploitation, it also prevents the beneficiary from using the land as collateral to access formal agricultural credit from banks.</div></div>
+  `,
+  'n-tribal': `
+    <div class="n-section-title">Tribal Land Rights — Scheduled Areas</div>
+    <div class="n-unit-label">Unit 5 — Tribal Land Protection</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">In Scheduled Areas, a tribal can never validly sell land to a non-tribal — not even the Government can take it and give it to a private company.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">🏛️</div><div class="n-card-title">Constitutional Basis</div><div class="n-card-text">Article 244 + Fifth Schedule — Governor's special powers over Scheduled Areas</div></div>
+      <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">Core Prohibition</div><div class="n-card-text">AP Scheduled Areas Land Transfer Regulation 1959 — ST to non-ST transfer VOID ab initio</div></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Sale — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Gift — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Mortgage — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Lease — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🔄</div><div class="n-excl-label">District Collector — restores tribal land</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">⏱️</div><div class="n-excl-label">Limitation — 12 years from dispossession</div></div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Samatha v State of Andhra Pradesh</div><div class="n-case-meta">1997 · Tribal Land Rights</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>AP Government granted mining leases to private non-tribal companies in Scheduled Areas of Visakhapatnam. State argued the Regulation covered only private transfers — not Government grants.</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>5-judge bench (3-2): Government itself is a "person" under the Regulation — cannot transfer Scheduled Area land to private non-tribal companies. Only tribal cooperatives or State mining agencies can operate. 20% of profits must go to tribal development.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Most important tribal land case — extended protection even to Government — closed the loophole that Governments were using to circumvent the Regulation for mining interests</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite in Scheduled Areas questions: "Government itself cannot transfer tribal land to private companies — Samatha 1997 — only tribal cooperatives or State agencies"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Orissa Mining Corporation v Ministry of Environment</div><div class="n-case-meta">2013 · Gram Sabha Consent</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Vedanta Resources planned to mine bauxite on Niyamgiri Hills sacred to the Dongria Kondh tribe — environmental clearance given but tribal consent not obtained</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>12 Gram Sabhas of affected villages must be held — tribals themselves decide on mining affecting their religious and forest rights. All 12 voted against — project stopped.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Strongest judicial affirmation of Gram Sabha consent — tribal communities have an effective veto over projects affecting their sacred forests and cultural rights</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote for consent questions: "Forest clearance in tribal areas requires prior, free and informed consent of affected Gram Sabhas — Niyamgiri/Orissa Mining Corporation 2013"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The limitation period for tribal land restoration is 12 YEARS from dispossession — not 3, not 5. The petition is filed before the District Collector — not a civil court. Samatha (1997) makes the Government ITSELF subject to the prohibition — the Government cannot grant Scheduled Area land to private companies for mining.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP Scheduled Areas Land Transfer Regulation 1959 (under Article 244 + Fifth Schedule) — ST to non-ST transfer VOID ab initio — ALL modes prohibited. Samatha (1997): even Government cannot transfer to private non-tribals. PESA 1996: Gram Sabha consent mandatory before land acquisition in Scheduled Areas. Limitation: 12 years from dispossession.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The AP Scheduled Areas Land Transfer Regulation 1959, enacted under Article 244 and the Fifth Schedule of the Constitution, prohibits any transfer of land from a Scheduled Tribe member to a non-Scheduled Tribe person in a Scheduled Area — whether by sale, gift, mortgage, lease, or any other mode. Any such transfer is void ab initio and has no legal effect. The District Collector has power to restore the land to the tribal on petition filed within 12 years of dispossession. In the landmark Samatha v State of AP (1997) a 5-judge bench (3-2 majority) held that the Government itself is a person covered by the Regulation — the Government cannot transfer Scheduled Area land to private non-tribal companies for mining or any other purpose. Only tribal cooperatives or State mining agencies can operate in Scheduled Areas. PESA 1996 (Panchayats Extension to Scheduled Areas Act) requires mandatory Gram Sabha consent before any land acquisition in Scheduled Areas. Orissa Mining Corporation (2013) reinforced this — 12 Gram Sabhas voted against Vedanta mining in Niyamgiri Hills and the project was stopped.</div></div>
+  `,
+  'n-fra': `
+    <div class="n-section-title">Forest Rights Act 2006</div>
+    <div class="n-unit-label">Unit 5 — Forest Rights</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Colonial law made tribals encroachers on their own ancestral forest — FRA 2006 corrects 200 years of injustice and makes them its rightful owners.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📋</div><div class="n-card-title">Eligibility — ST</div><div class="n-card-text">Scheduled Tribes who reside in and depend on forest — 3 generations / 75 years before December 13, 2005</div></div>
+      <div class="n-card teal"><div class="n-card-icon">📋</div><div class="n-card-title">Eligibility — OTFD</div><div class="n-card-text">Other Traditional Forest Dwellers (non-ST) — must also show 3 generations / 75 years of forest dependency</div></div>
+    </div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card gold"><div class="n-card-icon">🌳</div><div class="n-card-title">Individual Rights (IFR)</div><div class="n-card-text">Cultivate forest land in occupation. Maximum 4 hectares. Heritable but NOT transferable.</div></div>
+      <div class="n-card green"><div class="n-card-icon">🏘️</div><div class="n-card-title">Community Rights</div><div class="n-card-text">Grazing, fishing, Minor Forest Produce — tendu leaves, bamboo, honey. Community forest management rights.</div></div>
+    </div>
+    <div class="n-flow">
+      <div class="n-flow-step">Gram Sabha<span>FRC — receives claims</span></div>
+      <div class="n-flow-step">SDLC<span>Sub-District — reviews</span></div>
+      <div class="n-flow-step">DLC<span>District — final authority</span></div>
+      <div class="n-flow-step">SLMC<span>State — monitors</span></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Wildlife First v Ministry of Forest</div><div class="n-case-meta">2019 · FRA Implementation Crisis</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>PIL argued tribals whose FRA claims were rejected should be immediately evicted. SC initially ordered all States to evict rejected claimants — potentially affecting millions of tribals. Nationwide outcry from tribal groups and State Governments</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC modified order — proper processing of FRA claims must be completed before any eviction. Summary rejection without proper Gram Sabha process is invalid. No eviction without due process under FRA</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Exposed the FRA implementation crisis — millions of claims wrongly rejected without proper process. Reaffirmed that FRA process must be genuinely followed before any eviction order</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "No eviction of forest dwellers until FRA claims properly processed through Gram Sabha, SDLC, and DLC — summary rejection violates FRA and Article 21"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Orissa Mining Corporation v Ministry of Environment</div><div class="n-case-meta">2013 · Gram Sabha Consent</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Vedanta Resources wanted to mine Niyamgiri Hills — sacred to the Dongria Kondh tribe. Environmental clearance given but Gram Sabha consent not obtained for tribal religious and community forest rights</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC directed 12 Gram Sabhas must be held — tribals decide on mining affecting their rights. All 12 voted against — project stopped completely</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Gram Sabha consent under FRA is not a formality — it is a genuine veto power. Tribal communities can stop projects affecting their forest and religious rights</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Forest clearance requires genuine prior informed Gram Sabha consent — not just consultation — the Gram Sabha can say no and the project is stopped</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The cut-off date under FRA 2006 is December 13, 2005 — not December 31 or any other date. Three generations means 75 years BEFORE this date. IFR maximum is 4 hectares — NOT 4 acres. Title under FRA is HERITABLE (passes to children) but NOT TRANSFERABLE (cannot be sold or gifted).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>FRA 2006 full name: Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act 2006. Cut-off: December 13, 2005. Eligibility: 3 generations (75 years) of forest occupation before cut-off. IFR max: 4 hectares. Title: heritable NOT transferable. Claim process: Gram Sabha → SDLC → DLC (final). No eviction without completing FRA process.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act 2006 acknowledges and corrects the historical injustice by which colonial and post-independence forest laws — especially the Indian Forest Act 1927 — treated tribal communities living in forests as encroachers. Eligibility: Scheduled Tribes and Other Traditional Forest Dwellers who have resided in and depended on the forest for at least 3 generations (75 years) before the cut-off date of December 13, 2005. Rights under Section 3: Individual Forest Rights (IFR) — maximum 4 hectares of forest land in occupation — heritable but not transferable; Community Rights — grazing, fishing, Minor Forest Produce including tendu leaves and bamboo; Community Forest Resource Rights — right to protect and manage community forest; Habitat Rights for Particularly Vulnerable Tribal Groups. Claim process: Gram Sabha (Forest Rights Committee) → Sub-Divisional Level Committee → District Level Committee (final authority) → State Level Monitoring Committee. Wildlife First (2019) — SC modified its own mass eviction order — proper FRA process must be completed before any eviction. Orissa Mining Corporation (2013) — 12 Gram Sabhas voted against Vedanta mining in Niyamgiri — project stopped. FRA title is heritable but NOT transferable.</div></div>
+  `
+};
+
+function buildNotes() {
+  const container = document.getElementById('notes-container');
+  // Header
+  container.insertAdjacentHTML('beforeend', `
+    <div class="part-header">
+      <div class="part-header-icon">🗺️</div>
+      <div class="part-header-text">
+        <h2>Visual Study Notes</h2>
+        <p>All topics · Diagrams · Case cards · Flowcharts · Quick recall</p>
+      </div>
+    </div>
+    <div class="notes-topnav" id="notes-pills"></div>
+    <div id="notes-sections"></div>
+  `);
+  const pillsEl = document.getElementById('notes-pills');
+  const sectionsEl = document.getElementById('notes-sections');
+  NOTES_TOPICS.forEach((t, i) => {
+    pillsEl.insertAdjacentHTML('beforeend', `
+      <div class="n-pill ${i===0?'active':''}" onclick="showNote('${t.id}', this)">${t.label}</div>
+    `);
+    sectionsEl.insertAdjacentHTML('beforeend', `
+      <div class="n-section ${i===0?'active':''}" id="${t.id}">
+        ${NOTES_CONTENT[t.id] || '<p style="color:var(--text-muted);padding:20px 0;">Content coming soon.</p>'}
+      </div>
+    `);
+  });
+}
+
+function showNote(id, pill) {
+  document.querySelectorAll('.n-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.n-section').forEach(s => s.classList.remove('active'));
+  pill.classList.add('active');
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+</script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 
@@ -612,6 +1260,14 @@ body {
         <div class="qc-label">Quick Quiz</div>
         <div class="qc-count">Test yourself</div>
       </div>
+    </div>
+    <div class="quick-card" style="background:var(--teal);border-radius:14px;padding:18px 16px;margin-top:10px;cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;border:none;" onclick="goScreen('notes')">
+      <div style="font-size:36px;flex-shrink:0;">🗺️</div>
+      <div>
+        <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:3px;">Visual Study Notes</div>
+        <div style="color:rgba(255,255,255,0.75);font-size:12px;line-height:1.5;">All topics with diagrams, case cards, flowcharts and quick recall — for last-minute revision</div>
+      </div>
+      <div style="color:rgba(255,255,255,0.5);font-size:22px;margin-left:auto;">›</div>
     </div>
     <div class="section-title">Exam Tips</div>
     <div class="cheat-section open">
@@ -769,6 +1425,9 @@ body {
     </div>
   </div>
 
+  <!-- VISUAL NOTES -->
+  <div id="screen-notes" class="screen"><div id="notes-container"></div></div>
+
 </div>
 
 <!-- BOTTOM NAV -->
@@ -790,6 +1449,9 @@ body {
   </button>
   <button class="nav-btn" onclick="goScreen('cheat')" id="nav-cheat">
     <span class="nav-icon">📋</span><span class="nav-label">Cheat</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('notes')" id="nav-notes">
+    <span class="nav-icon">🗺️</span><span class="nav-label">Visual</span>
   </button>
 </div>
 
@@ -1774,11 +2436,499 @@ window.addEventListener('load', () => {
   buildCases();
   buildCheat();
   buildVideos();
+  buildNotes();
   setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
     setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
   }, 2000);
 });
+
+// ═══════════════════════════════════════════════════════════
+// VISUAL NOTES DATA & FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+const NOTES_TOPICS = [
+  { id:'n-eminent', label:'Eminent Domain', unit:'Unit 1 — Doctrines' },
+  { id:'n-escheat', label:'Escheat & Bona Vacantia', unit:'Unit 1 — Doctrines' },
+  { id:'n-torrens', label:'Torrens System', unit:'Unit 1 — Land Records' },
+  { id:'n-settlements', label:'Land Settlements', unit:'Unit 2 — Land Reforms' },
+  { id:'n-zamindari', label:'Zamindari Abolition', unit:'Unit 2 — Land Reforms' },
+  { id:'n-tenancy', label:'Tenancy Laws', unit:'Unit 2 — Land Reforms' },
+  { id:'n-larr', label:'LARR Act 2013', unit:'Unit 3 — Acquisition' },
+  { id:'n-sia', label:'SIA & Consent', unit:'Unit 3 — Acquisition' },
+  { id:'n-compensation', label:'Compensation & R&R', unit:'Unit 3 — Acquisition' },
+  { id:'n-ceiling', label:'Land Ceiling', unit:'Unit 4 — Ceiling' },
+  { id:'n-assigned', label:'Assigned Lands', unit:'Unit 4 — Assigned Lands' },
+  { id:'n-tribal', label:'Tribal Land Rights', unit:'Unit 5 — Tribal' },
+  { id:'n-fra', label:'Forest Rights Act', unit:'Unit 5 — Forest Rights' },
+];
+
+const NOTES_CONTENT = {
+  'n-eminent': `
+    <div class="n-section-title">Doctrine of Eminent Domain</div>
+    <div class="n-unit-label">Unit 1 — Doctrines &amp; Ownership</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">The State can take your land — but it must pay you fairly and prove the public needs it.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card navy"><div class="n-card-icon">🏛️</div><div class="n-card-title">Sovereign Power</div><div class="n-card-text">Only the State — not private parties</div></div>
+      <div class="n-card gold"><div class="n-card-icon">🎯</div><div class="n-card-title">Public Purpose</div><div class="n-card-text">Roads, schools, defence, housing</div></div>
+      <div class="n-card teal"><div class="n-card-icon">💰</div><div class="n-card-title">Just Compensation</div><div class="n-card-text">Fair market value — not arbitrary</div></div>
+    </div>
+    <div class="n-timeline">
+      <div class="n-tl-item"><div class="n-tl-year">Pre-1978</div><div class="n-tl-text">Articles 19(1)(f) + 31 — Property was a Fundamental Right — courts could strike down acquisitions</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1978</div><div class="n-tl-text">44th Amendment — Property removed from FR — Article 300A only — "no deprivation except by authority of law"</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">2013</div><div class="n-tl-text">LARR Act — rights-based acquisition — SIA + Consent + R&amp;R — compensation up to 8× market value</div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Somawanti v State of Punjab</div><div class="n-case-meta">1963 · Public Purpose</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Land acquired for housing colony — owners challenged claiming private builders were the real beneficiary</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Government declaration of public purpose is conclusive — courts cannot question it unless there is fraud or colourable exercise of power</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established that Government's declaration is presumptively valid — key protection for large infrastructure projects</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote when public purpose is challenged — "declaration is conclusive except for fraud or colourable exercise"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">K.T. Plantation v State of Karnataka</div><div class="n-case-meta">2011 · Article 300A</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Plantation land taken after 44th Amendment — owners argued no enforceable property right remained</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Article 300A is an enforceable constitutional right — not a fundamental right but courts can examine whether deprivation is by a valid, just law</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Confirmed that 44th Amendment did not make property completely unprotected — Article 300A still bites</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for property rights post-1978: "not FR but enforceable constitutional right — arbitrary deprivation still invalid"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Article 31 was REMOVED by the 44th Amendment 1978. The current provision is Article 300A — "no deprivation of property save by authority of law." Do NOT cite Article 31 in answers about current property rights.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Eminent Domain = Sovereign Power + Public Purpose + Just Compensation. Under LARR 2013, compensation is urban: 4× market value; rural: up to 8× market value. Article 300A requires the deprivation to be by a valid, just law.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Eminent Domain is the inherent sovereign power to compulsorily acquire private property for public use with just compensation. Before 1978 property was a Fundamental Right under Articles 19(1)(f) and 31. The 44th Constitutional Amendment 1978 removed property from Fundamental Rights and inserted Article 300A — no person shall be deprived of property save by authority of law. K.T. Plantation (2011) confirmed Article 300A is an enforceable constitutional right — courts can still examine whether deprivation is by a valid, just law. Somawanti (1963) held that the Government's declaration of public purpose is generally conclusive and can only be challenged on grounds of fraud or colourable exercise of power. Under LARR 2013 compensation is 2× market value in urban areas plus 100% solatium giving 4× total; in rural areas up to 4× market value plus 100% solatium giving up to 8× total. State of MP v Vishnu Prasad Sharma (1966) held just compensation means what a willing seller would accept from a willing buyer — actual market value.</div></div>
+  `,
+  'n-escheat': `
+    <div class="n-section-title">Doctrine of Escheat &amp; Bona Vacantia</div>
+    <div class="n-unit-label">Unit 1 — Doctrines &amp; Ownership</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">No property is ever truly ownerless — the State is always the last heir and ultimate repository.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">🪦</div><div class="n-card-title">Escheat</div><div class="n-card-text">Owner dies intestate without legal heirs → property vests in State. Section 29, HSA 1956.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🏚️</div><div class="n-card-title">Bona Vacantia</div><div class="n-card-text">Property abandoned or with no owner → passes to Government. Section 654, Companies Act (dissolved companies).</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>Escheat</th><th>Bona Vacantia</th></tr></thead><tbody>
+        <tr><td>Trigger</td><td>Owner dies intestate, no heirs</td><td>Property abandoned / no owner</td></tr>
+        <tr><td>Applies to</td><td>Individuals — natural persons</td><td>Individuals + Companies (s.654)</td></tr>
+        <tr><td>Key Section</td><td>Section 29, HSA 1956</td><td>Section 654, Companies Act</td></tr>
+        <tr><td>State's role</td><td>Ultimate heir — sovereign</td><td>Residuary claimant — sovereign</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Section 29 of the Hindu Succession Act 1956 is the exact section for Escheat. The examiner directly tests this section number. Also: the State does NOT take as an heir — it takes as sovereign, holding property for public good.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Escheat (death, no heirs, Section 29 HSA) vs Bona Vacantia (abandonment, ownerless — applies to companies too under Section 654 Companies Act). Both ensure no property remains permanently ownerless — the State is the ultimate residuary.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Escheat is the doctrine by which property of a person dying intestate without any legal heirs specified under the Hindu Succession Act 1956 vests in the State Government. The operative provision is Section 29 of the Hindu Succession Act 1956. Bona Vacantia — Latin for ownerless goods — refers to property that has no owner because it has been abandoned or because the owner (such as a dissolved company) no longer exists. For dissolved companies, Section 654 of the Companies Act applies. In both cases the State does not take as a legal heir but as a sovereign, holding the property for the benefit of the public. The key distinction: Escheat is triggered by death without heirs while Bona Vacantia is triggered by abandonment or non-existence of an owner. Both doctrines reflect the constitutional principle that all land ultimately belongs to the community and no land can be truly ownerless.</div></div>
+  `,
+  'n-torrens': `
+    <div class="n-section-title">Torrens System — Conclusive Land Titling</div>
+    <div class="n-unit-label">Unit 1 — Land Records &amp; Dharani</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">If the register says you own it, you own it — no court can say otherwise; the State itself guarantees it.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card navy"><div class="n-card-icon">🪞</div><div class="n-card-title">Mirror Principle</div><div class="n-card-text">Register = exact reflection of current title. No need to look elsewhere.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🪟</div><div class="n-card-title">Curtain Principle</div><div class="n-card-text">No need to investigate history behind the register. It is final and complete.</div></div>
+      <div class="n-card gold"><div class="n-card-icon">🛡️</div><div class="n-card-title">Insurance Principle</div><div class="n-card-text">If register has an error causing loss — State compensates the injured party.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>India Today (Deed Registration)</th><th>Torrens Target</th></tr></thead><tbody>
+        <tr><td>What is registered</td><td>The transaction (deed)</td><td>The title (ownership itself)</td></tr>
+        <tr><td>Effect</td><td>Presumptive — rebuttable in court</td><td>Conclusive — State guarantees</td></tr>
+        <tr><td>Fraud risk</td><td>High — fake chains of title possible</td><td>Low — register is final</td></tr>
+        <tr><td>Telangana step</td><td>Dharani Portal — moving toward Torrens</td><td>Full Torrens not yet achieved</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>India has NOT yet fully implemented the Torrens system. The Dharani Portal (Telangana, 2020) moves toward it but the Pattadar Pass Book is still PRESUMPTIVE title — not conclusive title. Do not state India has a Torrens system.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Torrens System (Australia, 1858, Sir Robert Torrens) — three principles: Mirror (register = title), Curtain (no need to look behind register), Insurance (State compensates if register is wrong). India's current system is deed-based and presumptive. Dharani Portal is the closest India has come to Torrens for agricultural land in Telangana.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Torrens System introduced by Sir Robert Torrens in Australia in 1858 is a land registration system where the register itself is conclusive proof of title. Its three principles are: Mirror (the register accurately reflects the current title), Curtain (no need to investigate the history of transactions before the register entry), and Insurance (if an error in the register causes loss to any person, the State compensates them). India currently uses a deed registration system under the Registration Act 1908 — transactions are registered but not title, giving only presumptive title that can be challenged in court. Telangana's Rights in Land and Pattadar Pass Books Act 2020 and the Dharani Portal represent India's most ambitious step toward Torrens-style integrated digital records with real-time mutation on registration. However, the Pattadar Pass Book still confers presumptive title only, not conclusive title. DILRMP (Digital India Land Records Modernisation Programme) and ULPIN (Unique Land Parcel Identification Number — 14-digit Bhu-Aadhar) are national-level digital reform initiatives.</div></div>
+  `,
+  'n-settlements': `
+    <div class="n-section-title">Land Revenue Settlements</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms History</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Three British systems, three different exploitations — the Ryot paid directly, the Zamindar collected and pocketed, and the village shared the burden.</div></div>
+    <div class="n-grid n-grid-3">
+      <div class="n-card red"><div class="n-card-icon">🏰</div><div class="n-card-title">Zamindari</div><div class="n-card-text">Zamindar pays fixed sum to State, extracts unlimited rent from Ryots. Bengal, Bihar, UP. Cornwallis 1793.</div></div>
+      <div class="n-card teal"><div class="n-card-icon">🌾</div><div class="n-card-title">Ryotwari</div><div class="n-card-text">Ryot pays directly to State. No intermediary. Madras (Andhra), Bombay. Thomas Munro.</div></div>
+      <div class="n-card navy"><div class="n-card-icon">🏘️</div><div class="n-card-title">Mahalwari</div><div class="n-card-text">Village community pays collectively. NW India, Punjab, MP. Holt Mackenzie 1822.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>System</th><th>Revenue Paid By</th><th>Region</th><th>Post-Independence</th></tr></thead><tbody>
+        <tr><td>Zamindari</td><td>Zamindar → State (fixed forever)</td><td>Bengal, Bihar, UP</td><td>Abolished — separate legislation needed</td></tr>
+        <tr><td>Ryotwari</td><td>Ryot directly → State</td><td>Madras, Bombay (AP/TS)</td><td>Ryots became occupancy tenants → land owners</td></tr>
+        <tr><td>Mahalwari</td><td>Village collectively</td><td>NW India, Punjab, MP</td><td>Village headman system reformed</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP/Telangana was Ryotwari — direct Ryot-State relationship — no Zamindar intermediary to remove. This made post-independence land reforms simpler here than in Zamindari areas. First Amendment 1951 — Article 31A inserted to protect abolition laws from FR challenge.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">British India had three major land revenue systems. The Zamindari or Permanent Settlement (Cornwallis 1793) made Zamindars hereditary landlords in Bengal, Bihar and UP — they paid a fixed revenue to the State and collected unlimited rents from Ryots beneath them. The Ryotwari system introduced by Thomas Munro established a direct relationship between the cultivating Ryot and the State — no intermediary — prevalent in Madras Presidency including Andhra and in Bombay. The Mahalwari system (Holt Mackenzie 1822) settled revenue with the village community collectively — used in NW India, Punjab and MP. AP and Telangana were Ryotwari areas — cultivating Ryots paid revenue directly to the State — making post-independence land reforms simpler as there were no Zamindars to abolish. In Zamindari areas separate abolition legislation was required, which led to the First Constitutional Amendment 1951 inserting Articles 31A, 31B, and the Ninth Schedule.</div></div>
+  `,
+  'n-zamindari': `
+    <div class="n-section-title">Zamindari Abolition &amp; Constitutional Amendments</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Zamindars won in court — so Parliament changed the Constitution four times until they couldn't win anymore.</div></div>
+    <div class="n-timeline">
+      <div class="n-tl-item"><div class="n-tl-year">1793</div><div class="n-tl-text">Permanent Settlement — Zamindars as hereditary landlords — Bengal, Bihar</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1950</div><div class="n-tl-text">Bihar, UP, Madras pass Zamindari Abolition Acts — Zamindars challenge in court</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1952</div><div class="n-tl-text">Kameshwar Singh — SC strikes down Bihar Act — compensation formula discriminatory</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1951</div><div class="n-tl-text">1st Amendment — Articles 31A, 31B + Ninth Schedule — all abolition laws protected from FR challenge</div></div>
+      <div class="n-tl-item"><div class="n-tl-year">1978</div><div class="n-tl-text">44th Amendment — Property removed from Fundamental Rights entirely — Article 300A only</div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">State of Bihar v Kameshwar Singh</div><div class="n-case-meta">1952 · Zamindari Abolition</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Bihar passed a land reform law abolishing Zamindari. The Maharaja challenged it — compensation formula treated different Zamindars unequally, violating Article 14</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC struck down parts of the Bihar Land Reforms Act — compensation formula was discriminatory. Led directly to the First Constitutional Amendment</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Most important land reform case — forced Parliament to pass the First Amendment inserting Articles 31A, 31B and the Ninth Schedule, permanently protecting all abolition laws</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite as: "Kameshwar Singh directly caused the First Constitutional Amendment and the creation of the Ninth Schedule"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Kesavananda Bharati v State of Kerala</div><div class="n-case-meta">1973 · Basic Structure</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Swami Kesavananda challenged Kerala land reforms on his mutt's property — case expanded to the greatest constitutional question: can Parliament amend ANY part of the Constitution?</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>7-6 decision by 13-judge bench — Parliament can amend but cannot destroy the Basic Structure of the Constitution — democracy, secularism, judicial review cannot be abolished</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Basic Structure Doctrine — most important constitutional judgment — protects the soul of the Constitution even from Parliament's majority</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for constitutional limits: "Parliament has wide amending power but cannot abrogate the basic structure — Kesavananda Bharati 1973"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">IR Coelho v State of Tamil Nadu</div><div class="n-case-meta">2007 · Ninth Schedule</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Governments had inserted all kinds of laws into the Ninth Schedule — not just land reforms. IR Coelho challenged Tamil Nadu's laws inserted post-1973 as beyond Ninth Schedule protection</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>9-judge bench: Ninth Schedule laws inserted AFTER April 24, 1973 (Kesavananda date) can be examined for basic structure violations — not absolute immunity</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established the 1973 cut-off for absolute Ninth Schedule immunity — pre-1973 laws fully protected; post-1973 laws face basic structure scrutiny</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Key: the Ceiling Act 1973 is right on this boundary — courts CAN examine it for basic structure. Pre-1973 zamindari abolition acts — fully protected.</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Article 31B gives absolute immunity ONLY for laws inserted in the Ninth Schedule BEFORE April 24, 1973. Laws inserted AFTER that date (including the Ceiling Act 1973) can be examined for basic structure violations per IR Coelho (2007).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Zamindari abolition required four Constitutional Amendments because Zamindars kept winning in court. The Ninth Schedule (Article 31B), created by the 1st Amendment 1951, gives land reform laws immunity from Fundamental Rights challenge — but only absolute immunity for pre-April 1973 laws (IR Coelho 2007).</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Zamindari abolition was India's most urgent land reform — removing the hereditary landlord class that exploited Ryots under the Permanent Settlement of 1793. Post-independence abolition laws (Bihar, UP, AP 1950-51) were immediately challenged by Zamindars. The SC in Kameshwar Singh (1952) struck down Bihar's Act on the ground of discriminatory compensation — forcing Parliament to pass the First Constitutional Amendment 1951 inserting Articles 31A and 31B and creating the Ninth Schedule. Article 31A saves acquisition of estates from challenge under Articles 14 and 19. Article 31B gives laws listed in the Ninth Schedule immunity from all Fundamental Rights challenges. The Fourth Amendment 1955 reinforced this. The 25th Amendment 1971 replaced "compensation" with "amount" to further restrict courts. Finally the 44th Amendment 1978 removed property from Fundamental Rights entirely. IR Coelho (2007) established that post-April 24, 1973 Ninth Schedule laws can be examined for basic structure violations. Kesavananda Bharati (1973) — 13-judge bench — held Parliament cannot abrogate the basic structure of the Constitution.</div></div>
+  `,
+  'n-tenancy': `
+    <div class="n-section-title">Tenancy Laws — Security, Fair Rent &amp; Ownership</div>
+    <div class="n-unit-label">Unit 2 — Land Reforms</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Land reforms in three steps: first secure the tenant's stay, then cap the rent, then finally hand over the title.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">Stage 1<span>Security of Tenure</span></div>
+      <div class="n-flow-step">Stage 2<span>Fair Rent Cap</span></div>
+      <div class="n-flow-step">Stage 3<span>Ownership Conferment</span></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Stage</th><th>Objective</th><th>Key Provision</th></tr></thead><tbody>
+        <tr><td>Security of Tenure</td><td>Protect tenants from arbitrary eviction</td><td>Cannot be evicted except for non-payment or landlord's personal cultivation</td></tr>
+        <tr><td>Fair Rent</td><td>Cap rent at 1/4 to 1/5 of produce</td><td>Rent cannot exceed statutory maximum</td></tr>
+        <tr><td>Ownership</td><td>Cultivating tenant becomes land owner</td><td>Right of pre-emption + conferment after prescribed period</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Arbitrary eviction — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Rent above statutory cap — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">✅</div><div class="n-excl-label">Eviction for non-payment — permitted</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">✅</div><div class="n-excl-label">Landlord's genuine personal cultivation — permitted</div></div></div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The right of pre-emption means the tenant has the FIRST RIGHT TO PURCHASE if the landlord decides to sell. Landlords used "voluntary surrenders" and "personal cultivation" defences to circumvent protections — courts require genuine proof of personal cultivation need.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP (Telangana Area) Tenancy and Agricultural Lands Act 1950 + AP (Andhra Area) Tenancy Act 1956 — protected tenants: security of tenure, fair rent, right of pre-emption, eventual conferment of ownership. Three stages: Security → Fair Rent → Ownership.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Tenancy reforms — the second phase of land reforms after Zamindari abolition — aimed to protect the millions of actual cultivators who remained tenants even after intermediaries were removed. Three stages: Stage 1 — Security of Tenure — tenant cannot be evicted except for non-payment of rent or the landlord's genuine personal cultivation need; Stage 2 — Fair Rent — rent capped at one-fourth to one-fifth of produce; Stage 3 — Conferment of Ownership — cultivating tenant converts to landowner after a prescribed period of cultivation. AP (Telangana Area) Tenancy and Agricultural Lands Act 1950 and AP (Andhra Area) Tenancy Act 1956 provided the framework in this region. Protected tenants have a right of pre-emption — the first right to purchase if the landlord sells. Balmadies Plantations v State of Tamil Nadu (1972) upheld fair rent laws even where landlord's income was drastically reduced — social justice overrides profit expectations.</div></div>
+  `,
+  'n-larr': `
+    <div class="n-section-title">LARR Act 2013 — Scheme &amp; Salient Features</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">LARR 2013 replaced 119 years of colonial law — now the State must ask, study, compensate and rehabilitate before it takes your land.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">SIA [S.4]<span>6 months</span></div>
+      <div class="n-flow-step">Consent<span>80% / 70%</span></div>
+      <div class="n-flow-step">Prelim Notice<span>S.11</span></div>
+      <div class="n-flow-step">Final Decl<span>S.19 — 12 months</span></div>
+      <div class="n-flow-step">Award<span>S.25 — 12 months</span></div>
+      <div class="n-flow-step">R&amp;R Complete<span>Then Possession</span></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Feature</th><th>Details</th></tr></thead><tbody>
+        <tr><td>SIA — Section 4</td><td>Mandatory — completed within 6 months</td></tr>
+        <tr><td>Consent (Private)</td><td>80% of affected families</td></tr>
+        <tr><td>Consent (PPP)</td><td>70% of affected families</td></tr>
+        <tr><td>Urban Compensation</td><td>2× market value + 100% solatium = <strong>4× total</strong></td></tr>
+        <tr><td>Rural Compensation</td><td>up to 4× market value + 100% solatium = <strong>up to 8× total</strong></td></tr>
+        <tr><td>R&amp;R Threshold Urban</td><td>100 or more families displaced</td></tr>
+        <tr><td>R&amp;R Threshold Rural</td><td>200 or more families displaced</td></tr>
+        <tr><td>Land Return — S.101</td><td>Unused 5 years → returned to owner or land bank</td></tr>
+        <tr><td>Urgency — S.40</td><td>Only defence, national security, natural calamity</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Indore Development Authority v Manoharlal</div><div class="n-case-meta">2020 · LARR S.24(2)</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Old 1894 Act acquisitions were pending when LARR 2013 came into force. Section 24(2) said old acquisitions lapse if award not made OR possession not taken and compensation not deposited. High Courts split on whether "or" meant either condition alone was enough</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>5-judge Constitution Bench (4-1): BOTH conditions must exist simultaneously — possession not taken AND compensation not paid. Either condition alone is insufficient for lapse</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Settled decades of conflicting High Court interpretations — protected thousands of ongoing acquisitions from lapsing on technical grounds</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always remember: S.24(2) lapse requires BOTH — possession not taken AND compensation not paid. "Or" means "and" per Indore DA</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Narmada Bachao Andolan v Union of India</div><div class="n-case-meta">2000 · R&amp;R &amp; Displacement</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Sardar Sarovar Dam would submerge hundreds of villages — NBA led by Medha Patkar challenged displacement of lakhs of tribal and rural families without adequate rehabilitation</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC upheld the dam (2-1 split) — valid public purpose — BUT directed: full R&amp;R must be completed BEFORE dam height can be raised. R&amp;R first — then displacement</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established that development can displace communities but R&amp;R must precede dispossession — laid foundation for LARR 2013's mandatory R&amp;R requirement</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "Development cannot justify displacement without proper rehabilitation — Article 21 right to livelihood includes right to adequate resettlement"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Under LARR 2013, R&amp;R must be COMPLETED before dispossession — not just planned or promised. Possession cannot be taken until the Award is made AND R&amp;R is complete. Section 24(2) lapse requires BOTH conditions — not either/or (Indore DA 2020).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>LARR 2013 replaced LA Act 1894. Came into force January 1, 2014. Constitutional basis: Entry 42 Concurrent List + Article 300A + Articles 39(b) and 21. Key numbers: SIA 6 months, objections 60 days, Final Declaration within 12 months of Preliminary Notification, Award within 12 months of Final Declaration, unused land returned after 5 years (Section 101).</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013 replaced the colonial Land Acquisition Act 1894. It came into force on January 1, 2014 and is based on Entry 42 of the Concurrent List, Article 300A, and Articles 39(b) and 21. The procedure: SIA under Section 4 completed within 6 months, then consent (80% for private companies, 70% for PPP projects), then Preliminary Notification under Section 11, objections within 60 days, Expert Group report within 2 months, Final Declaration under Section 19 within 12 months of Preliminary Notification, Award under Section 25 within 12 months of Final Declaration, R&amp;R completed, then possession. Compensation: urban 2× market value plus 100% solatium totalling 4×; rural up to 4× market value plus 100% solatium totalling up to 8×. R&amp;R triggers at 100 displaced families (urban) or 200 (rural). Section 101: unused land returned after 5 years. Section 40 urgency: only defence, national security, natural calamity. Indore DA (2020): Section 24(2) lapse requires BOTH possession not taken AND compensation not paid simultaneously.</div></div>
+  `,
+  'n-sia': `
+    <div class="n-section-title">Social Impact Assessment &amp; Consent</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Before the bulldozer arrives, the law now requires 6 months of listening — and then the community gets a vote.</div></div>
+    <div class="n-flow">
+      <div class="n-flow-step">Notify SIA<span>S.4(1)</span></div>
+      <div class="n-flow-step">Study 6 months<span>Consult Gram Sabha</span></div>
+      <div class="n-flow-step">Expert Group<span>2 months report</span></div>
+      <div class="n-flow-step">Govt Decision<span>Proceed or not</span></div>
+      <div class="n-flow-step">Consent Ballot<span>80% / 70%</span></div>
+    </div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📊</div><div class="n-card-title">What SIA Studies</div><div class="n-card-text">Families displaced · Livelihood lost · Alternatives available · R&amp;R plan needed</div></div>
+      <div class="n-card gold"><div class="n-card-icon">⚠️</div><div class="n-card-title">When SIA NOT Required</div><div class="n-card-text">Urgency clause S.40 — defence, national security, natural calamity. 80%/70% consent obtained.</div></div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Project Type</th><th>Consent Required</th></tr></thead><tbody>
+        <tr><td>Private companies</td><td><strong>80%</strong> of affected families</td></tr>
+        <tr><td>PPP projects</td><td><strong>70%</strong> of affected families</td></tr>
+        <tr><td>Government purpose</td><td>No consent required</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>SIA must be completed within 6 MONTHS — not 3, not 12. Then the Expert Group has 2 MONTHS to submit its report. These two numbers are directly tested in the exam. SIA is waived only for Section 40 urgency OR when requisite consent is obtained — not for any other reason.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>SIA under Section 4 LARR 2013 — mandatory pre-acquisition study — 6 months completion — Gram Sabha consultation mandatory — Expert Group appraisal 2 months — then Government decision. Consent: 80% private, 70% PPP, zero for Government. Public purpose categories under Section 2(1) include strategic/defence, infrastructure, housing for poor, PPP, Government-funded institutions.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Social Impact Assessment under Section 4 of LARR Act 2013 is a mandatory pre-acquisition study that must be completed within 6 months before any compulsory land acquisition can proceed. The SIA studies: number of families to be displaced, extent of loss to livelihood and community, whether less displacing alternatives exist, and the R&amp;R plan needed. Consultation with the Gram Sabha and affected families is mandatory during the SIA process. An independent Expert Group appraises the SIA report within 2 months. The Government must then publish its decision. SIA is NOT required when the urgency clause under Section 40 is invoked (only for defence, national security, or natural calamity) or when the requisite consent is already obtained. Consent requirements: 80% of affected families for private company projects, 70% for PPP projects, none for Government projects. Chameli Singh v State of UP (1996) confirmed that housing for economically weaker sections and LIG is a valid public purpose — the right to shelter is part of Article 21.</div></div>
+  `,
+  'n-compensation': `
+    <div class="n-section-title">Compensation, R&amp;R &amp; Just Compensation</div>
+    <div class="n-unit-label">Unit 3 — Land Acquisition</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">LARR 2013 says you get paid up to 8 times what your land is worth — and you also get a house, a job, and your village rebuilt.</div></div>
+    <div class="n-spectrum">
+      <div class="n-spectrum-label">Compensation Scale — Rural Land</div>
+      <div class="n-spectrum-bar">
+        <div class="n-sp-seg" style="background:#c0392b;flex:1;">Base Market Value ×1</div>
+        <div class="n-sp-seg" style="background:#e67e22;flex:1;">Multiplier up to ×4</div>
+        <div class="n-sp-seg" style="background:#d4ac0d;flex:1;">+100% Solatium</div>
+        <div class="n-sp-seg" style="background:#27ae60;flex:2;">Total up to 8×</div>
+      </div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>R&amp;R Entitlement</th><th>Amount / Detail</th></tr></thead><tbody>
+        <tr><td>House</td><td>300 sq ft urban / 50 sq m rural</td></tr>
+        <tr><td>One-time assistance</td><td>₹50,000</td></tr>
+        <tr><td>Subsistence allowance</td><td>₹3,000/month for 12 months</td></tr>
+        <tr><td>Transportation</td><td>₹50,000</td></tr>
+        <tr><td>Employment / cash</td><td>Job in project OR ₹5 lakh in lieu</td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Olga Tellis v Bombay Municipal Corporation</div><div class="n-case-meta">1985 · Right to Livelihood</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>BMC decided to evict all pavement dwellers — Olga Tellis filed PIL. BMC argued they were illegal encroachers. SC examined whether eviction destroying livelihood violates Article 21</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Right to livelihood is an integral part of right to life under Article 21. Eviction must be preceded by offering alternative accommodation — bare eviction that destroys livelihood violates Article 21</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Expanded Article 21 to include economic rights — right to life is not mere animal existence but includes the right to a means of living</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite for R&amp;R questions: "right to livelihood is part of right to life — eviction without alternative accommodation violates Article 21"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">State of MP v Vishnu Prasad Sharma</div><div class="n-case-meta">1966 · Just Compensation</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Agricultural land acquired — compensation based on government revenue records, far below actual market value. Owner challenged as inadequate.</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>Just compensation = what a willing seller would accept from a willing buyer in an open market — actual market value. Administrative valuations below market rate do not constitute just compensation</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Defined "just compensation" standard — prevents Government from using artificially depressed circle rates to underpay landowners</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "Just compensation = willing seller + willing buyer in open market = actual market value"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>R&amp;R must be COMPLETED before possession is taken — not started, not promised — COMPLETED. Possession before R&amp;R completion violates LARR 2013. The house entitlement is 300 sq ft in urban areas and 50 sq m in rural areas.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Compensation under LARR 2013: urban = 2× market value + 100% solatium = 4× total. Rural = up to 4× market value + 100% solatium = up to 8× total. R&amp;R: must be complete before dispossession. Key entitlements: house + ₹50,000 one-time + ₹3,000/month subsistence for 12 months + ₹50,000 transport + job or ₹5 lakh.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">Under LARR 2013 compensation for urban land is 2 times market value plus 100 percent solatium giving a total of 4 times market value. For rural land the multiplier ranges up to 4 times market value plus 100 percent solatium giving up to 8 times total. Vishnu Prasad Sharma (1966) established that just compensation means actual market value — what a willing seller accepts from a willing buyer. R&amp;R entitlements under the Second Schedule include: house (300 sq ft urban, 50 sq m rural), one-time financial assistance of Rs 50,000, subsistence allowance of Rs 3,000 per month for 12 months, transportation allowance of Rs 50,000, and employment in the project or Rs 5 lakh in lieu. R&amp;R must be fully completed before possession is taken — not merely planned. Olga Tellis v BMC (1985) established that the right to livelihood is part of the right to life under Article 21, making R&amp;R a constitutional requirement, not merely statutory. Narmada Bachao Andolan (2000) confirmed R&amp;R must precede displacement for development projects.</div></div>
+  `,
+  'n-ceiling': `
+    <div class="n-section-title">Land Ceiling Laws — Telangana Act 1973</div>
+    <div class="n-unit-label">Unit 4 — Ceiling on Agricultural Holdings</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Too much land in too few hands — the Ceiling Act breaks the concentration and redistributes it to those who actually work the land.</div></div>
+    <div class="n-spectrum">
+      <div class="n-spectrum-label">Ceiling Limits — Telangana LR Act 1973 (high productivity = lower ceiling)</div>
+      <div class="n-spectrum-bar">
+        <div class="n-sp-seg" style="background:#27ae60;flex:1;">Garden 10 acres</div>
+        <div class="n-sp-seg" style="background:#16a085;flex:1.8;">Double Crop 18 acres</div>
+        <div class="n-sp-seg" style="background:#2471a3;flex:2.7;">Irrigated 27 acres</div>
+        <div class="n-sp-seg" style="background:#1a252f;flex:5.4;">Dry Unirrigated 54 acres</div>
+      </div>
+    </div>
+    <div class="n-table-wrap" style="margin-bottom:14px;">
+      <table class="n-table"><thead><tr><th>Category</th><th>Ceiling</th></tr></thead><tbody>
+        <tr><td>Dry / Unirrigated — single crop</td><td><strong>54 acres</strong></td></tr>
+        <tr><td>Irrigated — single crop</td><td><strong>27 acres</strong></td></tr>
+        <tr><td>Irrigated — double crop / wetland</td><td><strong>18 acres</strong></td></tr>
+        <tr><td>Garden / Orchard / Plantation / Sugarcane</td><td><strong>10 acres</strong></td></tr>
+      </tbody></table>
+    </div>
+    <div class="n-flow">
+      <div class="n-flow-step">Ceiling computed<span>Individual + family</span></div>
+      <div class="n-flow-step">Surplus declared<span>Vests in State</span></div>
+      <div class="n-flow-step">Free of encumbrance<span>All liens released</span></div>
+      <div class="n-flow-step">Redistributed<span>SC/ST/Women/Small farmers</span></div>
+      <div class="n-flow-step">Compensation<span>Below market rate</span></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Public charitable trusts — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Religious endowments — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Industrial use land — exempt</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🛡️</div><div class="n-excl-label">Defence land — exempt</div></div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">IR Coelho v State of Tamil Nadu</div><div class="n-case-meta">2007 · Ninth Schedule &amp; Ceiling</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Various laws including the Ceiling Act were in the Ninth Schedule. IR Coelho challenged post-1973 laws — arguing Ninth Schedule is not an absolute shield after Kesavananda (April 24, 1973)</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>9-judge bench: Ninth Schedule laws inserted after April 24, 1973 can be examined by courts for basic structure violations. The Ceiling Act 1973 is right on this boundary.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Established the 1973 cut-off — the Ceiling Act (1973) can technically be examined for basic structure violations though it is unlikely to fail that test</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Key: Ceiling Act 1973 is on the boundary — pre-1973 zamindari laws fully protected — ceiling act subject to basic structure scrutiny per IR Coelho</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Benami holdings are INCLUDED in the ceiling computation — you cannot escape the ceiling by registering land in another person's name. Adult children get a separate ceiling per major child. The Ceiling Act is in the Ninth Schedule but it was inserted in 1973 — making it subject to basic structure scrutiny per IR Coelho (2007).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Telangana Land Reforms (Ceiling on Agricultural Holdings) Act 1973 — implements Articles 39(b) and 39(c) DPSP. Ceiling limits: 54 (dry) / 27 (irrigated-single) / 18 (double crop) / 10 (garden/plantation). Surplus vests in State free of encumbrance. Constitutional protection: Article 31A + Article 31B + Ninth Schedule + Article 31C.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Telangana Land Reforms (Ceiling on Agricultural Holdings) Act 1973 implements the Directive Principles under Articles 39(b) and 39(c) — equitable distribution of material resources and prevention of concentration of wealth. Ceiling limits: dry unirrigated land 54 acres; irrigated single crop 27 acres; irrigated double crop or wetland 18 acres; garden, orchard, plantation and sugarcane 10 acres. Ceiling applies to individuals, family units, and HUFs collectively — benami holdings are included in the computation and adult children get a separate ceiling. Surplus land vests in the State free of all encumbrances and is redistributed to landless poor — SC, ST, women and small farmers — with compensation paid to the former owner at below-market rates. Exemptions: public charitable trusts, religious endowments, industrial use and defence land. Constitutional protection: Article 31A (saves from FR challenge), Article 31B + Ninth Schedule (immunity — but post-1973 laws subject to basic structure scrutiny per IR Coelho 2007), Article 31C (protects DPSP-implementing laws). IR Coelho (2007) 9-judge bench established that the 1973 Ceiling Act being inserted in the Ninth Schedule post-April 1973 means courts can examine it for basic structure violations.</div></div>
+  `,
+  'n-assigned': `
+    <div class="n-section-title">Assigned Lands — Prohibition of Transfers</div>
+    <div class="n-unit-label">Unit 4 — Assigned Lands Act 1977</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">The government gave land to the poorest of the poor — the Assigned Lands Act makes it impossible to take it back through debt or sale.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📜</div><div class="n-card-title">What is Assigned Land</div><div class="n-card-text">Government land distributed to landless poor — SC, ST, women — under welfare schemes. Includes ceiling surplus and poramboke lands.</div></div>
+      <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">All Transfers VOID</div><div class="n-card-text">Sale, gift, mortgage, lease, attachment — ALL void ab initio. Even bank mortgage is prohibited.</div></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Sale — void ab initio</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Gift — void ab initio</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Mortgage to bank — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Lease — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Attachment for debt — prohibited</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🔄</div><div class="n-excl-label">Collector can resume — on violation</div></div></div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>Even a NATIONALISED BANK cannot take assigned land as security — the mortgage is void ab initio. The bank gets no security interest whatsoever. The Collector can resume (take back) land transferred in violation. This is a direct exam problem: "bank advances loan on security of assigned land — held: void."</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>Telangana Assigned Lands (Prohibition of Transfers) Act 1977 — ANY transfer of assigned land (sale, gift, exchange, mortgage, lease) is void ab initio. Collector can resume land on violation. The paradox: assigned land cannot be mortgaged so the beneficiary cannot raise agricultural credit through formal banking.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Telangana Assigned Lands (Prohibition of Transfers) Act 1977 protects government-assigned land given to landless poor — especially Scheduled Castes and Scheduled Tribes — from being sold, mortgaged or alienated in any manner. Assigned lands include ceiling surplus land redistributed as pattas, Bhoodan lands, and government poramboke lands granted as pattas. Under this Act any transfer of assigned land — whether by sale, gift, exchange, mortgage, or lease — is void ab initio and has no legal effect whatsoever. Even a nationalised bank cannot take assigned land as security — the mortgage is prohibited and void — the bank acquires no security interest. Attachment of assigned land for debt is also prohibited — creditors cannot seize it. If an assigned land is transferred in violation, the District Collector has the power to resume (take back) the land. The paradox created by this Act is that while it protects the beneficiary from exploitation, it also prevents the beneficiary from using the land as collateral to access formal agricultural credit from banks.</div></div>
+  `,
+  'n-tribal': `
+    <div class="n-section-title">Tribal Land Rights — Scheduled Areas</div>
+    <div class="n-unit-label">Unit 5 — Tribal Land Protection</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">In Scheduled Areas, a tribal can never validly sell land to a non-tribal — not even the Government can take it and give it to a private company.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">🏛️</div><div class="n-card-title">Constitutional Basis</div><div class="n-card-text">Article 244 + Fifth Schedule — Governor's special powers over Scheduled Areas</div></div>
+      <div class="n-card red"><div class="n-card-icon">🚫</div><div class="n-card-title">Core Prohibition</div><div class="n-card-text">AP Scheduled Areas Land Transfer Regulation 1959 — ST to non-ST transfer VOID ab initio</div></div>
+    </div>
+    <div class="n-excl-grid">
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Sale — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Gift — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Mortgage — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">❌</div><div class="n-excl-label">Lease — ST to non-ST — void</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">🔄</div><div class="n-excl-label">District Collector — restores tribal land</div></div></div>
+      <div class="n-excl-sec"><div class="n-excl-item"><div class="n-excl-icon">⏱️</div><div class="n-excl-label">Limitation — 12 years from dispossession</div></div></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Samatha v State of Andhra Pradesh</div><div class="n-case-meta">1997 · Tribal Land Rights</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>AP Government granted mining leases to private non-tribal companies in Scheduled Areas of Visakhapatnam. State argued the Regulation covered only private transfers — not Government grants.</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>5-judge bench (3-2): Government itself is a "person" under the Regulation — cannot transfer Scheduled Area land to private non-tribal companies. Only tribal cooperatives or State mining agencies can operate. 20% of profits must go to tribal development.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Most important tribal land case — extended protection even to Government — closed the loophole that Governments were using to circumvent the Regulation for mining interests</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Always cite in Scheduled Areas questions: "Government itself cannot transfer tribal land to private companies — Samatha 1997 — only tribal cooperatives or State agencies"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Orissa Mining Corporation v Ministry of Environment</div><div class="n-case-meta">2013 · Gram Sabha Consent</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Vedanta Resources planned to mine bauxite on Niyamgiri Hills sacred to the Dongria Kondh tribe — environmental clearance given but tribal consent not obtained</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>12 Gram Sabhas of affected villages must be held — tribals themselves decide on mining affecting their religious and forest rights. All 12 voted against — project stopped.</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Strongest judicial affirmation of Gram Sabha consent — tribal communities have an effective veto over projects affecting their sacred forests and cultural rights</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote for consent questions: "Forest clearance in tribal areas requires prior, free and informed consent of affected Gram Sabhas — Niyamgiri/Orissa Mining Corporation 2013"</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The limitation period for tribal land restoration is 12 YEARS from dispossession — not 3, not 5. The petition is filed before the District Collector — not a civil court. Samatha (1997) makes the Government ITSELF subject to the prohibition — the Government cannot grant Scheduled Area land to private companies for mining.</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>AP Scheduled Areas Land Transfer Regulation 1959 (under Article 244 + Fifth Schedule) — ST to non-ST transfer VOID ab initio — ALL modes prohibited. Samatha (1997): even Government cannot transfer to private non-tribals. PESA 1996: Gram Sabha consent mandatory before land acquisition in Scheduled Areas. Limitation: 12 years from dispossession.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The AP Scheduled Areas Land Transfer Regulation 1959, enacted under Article 244 and the Fifth Schedule of the Constitution, prohibits any transfer of land from a Scheduled Tribe member to a non-Scheduled Tribe person in a Scheduled Area — whether by sale, gift, mortgage, lease, or any other mode. Any such transfer is void ab initio and has no legal effect. The District Collector has power to restore the land to the tribal on petition filed within 12 years of dispossession. In the landmark Samatha v State of AP (1997) a 5-judge bench (3-2 majority) held that the Government itself is a person covered by the Regulation — the Government cannot transfer Scheduled Area land to private non-tribal companies for mining or any other purpose. Only tribal cooperatives or State mining agencies can operate in Scheduled Areas. PESA 1996 (Panchayats Extension to Scheduled Areas Act) requires mandatory Gram Sabha consent before any land acquisition in Scheduled Areas. Orissa Mining Corporation (2013) reinforced this — 12 Gram Sabhas voted against Vedanta mining in Niyamgiri Hills and the project was stopped.</div></div>
+  `,
+  'n-fra': `
+    <div class="n-section-title">Forest Rights Act 2006</div>
+    <div class="n-unit-label">Unit 5 — Forest Rights</div>
+    <div class="n-hook"><div class="n-hook-label">⚡ One-Line Hook</div><div class="n-hook-text">Colonial law made tribals encroachers on their own ancestral forest — FRA 2006 corrects 200 years of injustice and makes them its rightful owners.</div></div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card navy"><div class="n-card-icon">📋</div><div class="n-card-title">Eligibility — ST</div><div class="n-card-text">Scheduled Tribes who reside in and depend on forest — 3 generations / 75 years before December 13, 2005</div></div>
+      <div class="n-card teal"><div class="n-card-icon">📋</div><div class="n-card-title">Eligibility — OTFD</div><div class="n-card-text">Other Traditional Forest Dwellers (non-ST) — must also show 3 generations / 75 years of forest dependency</div></div>
+    </div>
+    <div class="n-grid n-grid-2">
+      <div class="n-card gold"><div class="n-card-icon">🌳</div><div class="n-card-title">Individual Rights (IFR)</div><div class="n-card-text">Cultivate forest land in occupation. Maximum 4 hectares. Heritable but NOT transferable.</div></div>
+      <div class="n-card green"><div class="n-card-icon">🏘️</div><div class="n-card-title">Community Rights</div><div class="n-card-text">Grazing, fishing, Minor Forest Produce — tendu leaves, bamboo, honey. Community forest management rights.</div></div>
+    </div>
+    <div class="n-flow">
+      <div class="n-flow-step">Gram Sabha<span>FRC — receives claims</span></div>
+      <div class="n-flow-step">SDLC<span>Sub-District — reviews</span></div>
+      <div class="n-flow-step">DLC<span>District — final authority</span></div>
+      <div class="n-flow-step">SLMC<span>State — monitors</span></div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Wildlife First v Ministry of Forest</div><div class="n-case-meta">2019 · FRA Implementation Crisis</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>PIL argued tribals whose FRA claims were rejected should be immediately evicted. SC initially ordered all States to evict rejected claimants — potentially affecting millions of tribals. Nationwide outcry from tribal groups and State Governments</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC modified order — proper processing of FRA claims must be completed before any eviction. Summary rejection without proper Gram Sabha process is invalid. No eviction without due process under FRA</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Exposed the FRA implementation crisis — millions of claims wrongly rejected without proper process. Reaffirmed that FRA process must be genuinely followed before any eviction order</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Quote: "No eviction of forest dwellers until FRA claims properly processed through Gram Sabha, SDLC, and DLC — summary rejection violates FRA and Article 21"</p></div>
+      </div>
+    </div>
+    <div class="n-case" onclick="this.classList.toggle('open')">
+      <div class="n-case-head"><div class="n-case-icon">⚖️</div><div><div class="n-case-name">Orissa Mining Corporation v Ministry of Environment</div><div class="n-case-meta">2013 · Gram Sabha Consent</div></div></div>
+      <div class="n-case-body">
+        <div class="n-case-row"><div class="n-tag story">Story</div><p>Vedanta Resources wanted to mine Niyamgiri Hills — sacred to the Dongria Kondh tribe. Environmental clearance given but Gram Sabha consent not obtained for tribal religious and community forest rights</p></div>
+        <div class="n-case-row"><div class="n-tag held">Held</div><p>SC directed 12 Gram Sabhas must be held — tribals decide on mining affecting their rights. All 12 voted against — project stopped completely</p></div>
+        <div class="n-case-row"><div class="n-tag why">Why</div><p>Gram Sabha consent under FRA is not a formality — it is a genuine veto power. Tribal communities can stop projects affecting their forest and religious rights</p></div>
+        <div class="n-case-row"><div class="n-tag exam">Exam</div><p>Forest clearance requires genuine prior informed Gram Sabha consent — not just consultation — the Gram Sabha can say no and the project is stopped</p></div>
+      </div>
+    </div>
+    <div class="n-alert"><div class="n-alert-label">🚨 Never Get Wrong</div><p>The cut-off date under FRA 2006 is December 13, 2005 — not December 31 or any other date. Three generations means 75 years BEFORE this date. IFR maximum is 4 hectares — NOT 4 acres. Title under FRA is HERITABLE (passes to children) but NOT TRANSFERABLE (cannot be sold or gifted).</p></div>
+    <div class="n-key-box"><div class="n-key-label">★ Key Point</div><p>FRA 2006 full name: Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act 2006. Cut-off: December 13, 2005. Eligibility: 3 generations (75 years) of forest occupation before cut-off. IFR max: 4 hectares. Title: heritable NOT transferable. Claim process: Gram Sabha → SDLC → DLC (final). No eviction without completing FRA process.</p></div>
+    <div class="n-recall"><div class="n-recall-label">⚡ Exam Morning Recall</div><div class="n-recall-text">The Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act 2006 acknowledges and corrects the historical injustice by which colonial and post-independence forest laws — especially the Indian Forest Act 1927 — treated tribal communities living in forests as encroachers. Eligibility: Scheduled Tribes and Other Traditional Forest Dwellers who have resided in and depended on the forest for at least 3 generations (75 years) before the cut-off date of December 13, 2005. Rights under Section 3: Individual Forest Rights (IFR) — maximum 4 hectares of forest land in occupation — heritable but not transferable; Community Rights — grazing, fishing, Minor Forest Produce including tendu leaves and bamboo; Community Forest Resource Rights — right to protect and manage community forest; Habitat Rights for Particularly Vulnerable Tribal Groups. Claim process: Gram Sabha (Forest Rights Committee) → Sub-Divisional Level Committee → District Level Committee (final authority) → State Level Monitoring Committee. Wildlife First (2019) — SC modified its own mass eviction order — proper FRA process must be completed before any eviction. Orissa Mining Corporation (2013) — 12 Gram Sabhas voted against Vedanta mining in Niyamgiri — project stopped. FRA title is heritable but NOT transferable.</div></div>
+  `
+};
+
+function buildNotes() {
+  const container = document.getElementById('notes-container');
+  // Header
+  container.insertAdjacentHTML('beforeend', `
+    <div class="part-header">
+      <div class="part-header-icon">🗺️</div>
+      <div class="part-header-text">
+        <h2>Visual Study Notes</h2>
+        <p>All topics · Diagrams · Case cards · Flowcharts · Quick recall</p>
+      </div>
+    </div>
+    <div class="notes-topnav" id="notes-pills"></div>
+    <div id="notes-sections"></div>
+  `);
+  const pillsEl = document.getElementById('notes-pills');
+  const sectionsEl = document.getElementById('notes-sections');
+  NOTES_TOPICS.forEach((t, i) => {
+    pillsEl.insertAdjacentHTML('beforeend', `
+      <div class="n-pill ${i===0?'active':''}" onclick="showNote('${t.id}', this)">${t.label}</div>
+    `);
+    sectionsEl.insertAdjacentHTML('beforeend', `
+      <div class="n-section ${i===0?'active':''}" id="${t.id}">
+        ${NOTES_CONTENT[t.id] || '<p style="color:var(--text-muted);padding:20px 0;">Content coming soon.</p>'}
+      </div>
+    `);
+  });
+}
+
+function showNote(id, pill) {
+  document.querySelectorAll('.n-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.n-section').forEach(s => s.classList.remove('active'));
+  pill.classList.add('active');
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
 </script>
 </body>
 </html>
