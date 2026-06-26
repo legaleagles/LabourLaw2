@@ -383,6 +383,9 @@
     .insight-row { grid-template-columns: 1fr 1fr; }
   }
 </style>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+  data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
 </head>
 <body>
 
@@ -431,6 +434,12 @@
         <label id="l-rate">Today's Gold Rate <span class="hint" id="l-rate-hint">(₹ per gram for 24K)</span></label>
         <div class="prefix-wrap"><span class="prefix">₹</span>
           <input type="number" id="goldRate" value="9500">
+        </div>
+        <div style="margin-top:6px;font-size:11px;">
+          <a href="https://www.goodreturns.in/gold-rates/" target="_blank" id="rate-link"
+            style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
+            🔗 Check today's rate on GoodReturns →
+          </a>
         </div>
       </div>
     </div>
@@ -524,6 +533,12 @@
         <div class="prefix-wrap"><span class="prefix">₹</span>
           <input type="number" id="ex-goldRate" value="9500">
         </div>
+        <div style="margin-top:6px;font-size:11px;">
+          <a href="https://www.goodreturns.in/gold-rates/" target="_blank"
+            style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
+            🔗 Check today's rate on GoodReturns →
+          </a>
+        </div>
       </div>
       <div class="toggle-field">
         <div class="toggle-label" id="ex-l-making">VA / Making Rate
@@ -592,6 +607,12 @@
           <label id="cmp-l-rate">Gold Rate (₹/g 24K)</label>
           <div class="prefix-wrap"><span class="prefix">₹</span>
             <input type="number" id="cmp-rate" value="9500">
+          </div>
+          <div style="margin-top:6px;font-size:11px;">
+            <a href="https://www.goodreturns.in/gold-rates/" target="_blank"
+              style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
+              🔗 Check today's rate on GoodReturns →
+            </a>
           </div>
         </div>
       </div>
@@ -666,6 +687,37 @@
     <button class="reset-btn" onclick="reset()" id="reset-btn2">← New Comparison</button>
   </div>
 
+</div>
+
+<!-- Usage Stats Widget -->
+<div id="stats-bar" style="
+  background: linear-gradient(135deg, #1A0A00 0%, #2D1500 100%);
+  padding: 14px 20px; text-align: center; cursor: pointer;
+  border-top: 1px solid rgba(212,160,23,0.15);"
+  onclick="toggleStats()">
+  <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,0.45);margin-bottom:4px;" id="stats-eyebrow">📊 Your Usage Stats</div>
+  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;" id="stats-row">
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-visits">—</div>
+      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-visits-lbl">Visits</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-calcs">—</div>
+      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-calcs-lbl">Calculations</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-streak">—</div>
+      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-streak-lbl">Day Streak</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-last">—</div>
+      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-last-lbl">Last Visit</div>
+    </div>
+  </div>
+  <div id="stats-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,215,110,0.1);">
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;" id="stats-modes"></div>
+    <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,0.25);" id="stats-note">Stored locally on your device only · Never shared</div>
+  </div>
 </div>
 
 <footer>
@@ -1520,6 +1572,108 @@ function buildNegoPlaybook(ctx) {
   el.innerHTML = html;
   el.style.display = 'block';
 }
+
+// ══════════════════════════════════════════
+//  USAGE STATS (localStorage — device only)
+// ══════════════════════════════════════════
+const STATS_KEY = 'gold_calc_stats';
+
+function loadStats() {
+  try { return JSON.parse(localStorage.getItem(STATS_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveStats(s) {
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+function recordVisit() {
+  const s = loadStats();
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  s.visits = (s.visits || 0) + 1;
+  s.lastVisit = today;
+  // Streak logic
+  const prev = s.prevVisitDate;
+  if (prev) {
+    const diff = (new Date(today) - new Date(prev)) / 86400000;
+    s.streak = diff <= 1 ? (s.streak || 1) + (diff === 1 ? 1 : 0) : 1;
+  } else {
+    s.streak = 1;
+  }
+  s.prevVisitDate = today;
+  s.calcs = s.calcs || 0;
+  s.modes = s.modes || { buy: 0, exchange: 0, compare: 0 };
+  saveStats(s);
+}
+
+function recordCalc(mode) {
+  const s = loadStats();
+  s.calcs = (s.calcs || 0) + 1;
+  s.modes = s.modes || { buy: 0, exchange: 0, compare: 0 };
+  s.modes[mode] = (s.modes[mode] || 0) + 1;
+  saveStats(s);
+  renderStats();
+}
+
+function renderStats() {
+  const s = loadStats();
+  const l = lang;
+
+  // Labels
+  const labels = {
+    visits:  l==='te' ? 'సందర్శనలు'  : l==='hi' ? 'विज़िट'       : 'Visits',
+    calcs:   l==='te' ? 'లెక్కలు'     : l==='hi' ? 'गणनाएं'       : 'Calculations',
+    streak:  l==='te' ? 'రోజుల వరుస'  : l==='hi' ? 'दिन की स्ट्रीक': 'Day Streak',
+    last:    l==='te' ? 'చివరి సందర్శన': l==='hi' ? 'पिछली विज़िट'  : 'Last Visit',
+    eyebrow: l==='te' ? '📊 మీ వినియోగ గణాంకాలు' : l==='hi' ? '📊 आपके उपयोग आंकड़े' : '📊 Your Usage Stats',
+    note:    l==='te' ? 'మీ పరికరంలో మాత్రమే నిల్వ · ఎప్పుడూ పంచుకోబడదు' : l==='hi' ? 'सिर्फ आपके डिवाइस पर · कभी साझा नहीं' : 'Stored locally on your device only · Never shared',
+    buyLbl:  l==='te' ? '🛒 కొత్త కొనుగోలు' : l==='hi' ? '🛒 नई खरीद' : '🛒 Fresh Purchase',
+    exLbl:   l==='te' ? '🔄 మార్పిడి'       : l==='hi' ? '🔄 एक्सचेंज' : '🔄 Exchange',
+    cmpLbl:  l==='te' ? '⚖️ పోలిక'          : l==='hi' ? '⚖️ तुलना'    : '⚖️ Compare',
+  };
+
+  const el = id => document.getElementById(id);
+
+  el('stats-eyebrow').textContent = labels.eyebrow;
+  el('stat-visits').textContent   = (s.visits || 0).toLocaleString('en-IN');
+  el('stat-calcs').textContent    = (s.calcs  || 0).toLocaleString('en-IN');
+  el('stat-streak').textContent   = (s.streak || 0) + (l==='en'?'🔥':'🔥');
+  el('stat-last').textContent     = s.lastVisit
+    ? new Date(s.lastVisit).toLocaleDateString(l==='te'?'te-IN':l==='hi'?'hi-IN':'en-IN', {day:'numeric',month:'short'})
+    : '—';
+
+  el('stat-visits-lbl').textContent = labels.visits;
+  el('stat-calcs-lbl').textContent  = labels.calcs;
+  el('stat-streak-lbl').textContent = labels.streak;
+  el('stat-last-lbl').textContent   = labels.last;
+  el('stats-note').textContent      = labels.note;
+
+  const modes = s.modes || {};
+  el('stats-modes').innerHTML = [
+    [labels.buyLbl, modes.buy||0],
+    [labels.exLbl,  modes.exchange||0],
+    [labels.cmpLbl, modes.compare||0],
+  ].map(([name, count]) => `
+    <div style="background:rgba(245,215,110,0.07);border-radius:8px;padding:6px 12px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;color:var(--gold-light);">${count}</div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;">${name}</div>
+    </div>`).join('');
+}
+
+function toggleStats() {
+  const d = document.getElementById('stats-detail');
+  d.style.display = d.style.display === 'none' ? 'block' : 'none';
+}
+
+// Hook recordCalc into calculate()
+const _origCalculate = calculate;
+function calculate() {
+  _origCalculate();
+  recordCalc(currentMode);
+}
+
+// Init on load
+recordVisit();
+renderStats();
 
 // init
 applyLang();
