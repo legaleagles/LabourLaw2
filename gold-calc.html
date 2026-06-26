@@ -1079,6 +1079,7 @@ function calcBuy() {
     wastageAmt: wastage, wastagePct: wastageVal,
     hallmark, total
   });
+  recordCalc('buy');
 }
 
 function calcExchange() {
@@ -1139,6 +1140,7 @@ function calcExchange() {
     makingPct, wastageAmt: 0, wastagePct: 0, hallmark: 0,
     deductPct, deductionAmt: deduction, total: finalPayable
   });
+  recordCalc('exchange');
 }
 
 function calcCompare() {
@@ -1197,6 +1199,7 @@ function calcCompare() {
 
   document.getElementById('compare-result').style.display = 'block';
   document.getElementById('compare-result').scrollIntoView({behavior:'smooth'});
+  recordCalc('compare');
 }
 
 function toggleExplainer(id) {
@@ -1665,11 +1668,7 @@ function toggleStats() {
 }
 
 // Hook recordCalc into calculate()
-const _origCalculate = calculate;
-function calculate() {
-  _origCalculate();
-  recordCalc(currentMode);
-}
+// (called directly from calcBuy/calcExchange/calcCompare below)
 
 // Init on load
 recordVisit();
