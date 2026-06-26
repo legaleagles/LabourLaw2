@@ -695,28 +695,37 @@
   padding: 14px 20px; text-align: center; cursor: pointer;
   border-top: 1px solid rgba(212,160,23,0.15);"
   onclick="toggleStats()">
-  <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,0.45);margin-bottom:4px;" id="stats-eyebrow">📊 Your Usage Stats</div>
-  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;" id="stats-row">
+  <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,0.45);margin-bottom:10px;" id="stats-eyebrow">📊 Usage Stats</div>
+
+  <!-- Global visits (real, all users) -->
+  <div style="background:rgba(245,215,110,0.06);border:1px solid rgba(245,215,110,0.15);border-radius:12px;padding:10px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="text-align:left;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold-light);line-height:1;" id="stat-global-visits">⏳</div>
+      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.5);margin-top:3px;" id="stat-global-lbl">Total Visits</div>
+    </div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.25);text-align:right;" id="stats-global-note">🌐 All users · live</div>
+  </div>
+
+  <!-- Personal stats (this device) -->
+  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
     <div style="text-align:center;">
-      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-visits">—</div>
-      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-visits-lbl">Visits</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:rgba(245,215,110,0.7);" id="stat-calcs">—</div>
+      <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,215,110,0.35);" id="stat-calcs-lbl">Your Calculations</div>
     </div>
     <div style="text-align:center;">
-      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-calcs">—</div>
-      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-calcs-lbl">Calculations</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:rgba(245,215,110,0.7);" id="stat-streak">—</div>
+      <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,215,110,0.35);" id="stat-streak-lbl">Day Streak</div>
     </div>
     <div style="text-align:center;">
-      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-streak">—</div>
-      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-streak-lbl">Day Streak</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-light);" id="stat-last">—</div>
-      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.4);" id="stat-last-lbl">Last Visit</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:rgba(245,215,110,0.7);" id="stat-last">—</div>
+      <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,215,110,0.35);" id="stat-last-lbl">Your Last Visit</div>
     </div>
   </div>
-  <div id="stats-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,215,110,0.1);">
-    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;" id="stats-modes"></div>
-    <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,0.25);" id="stats-note">Stored locally on your device only · Never shared</div>
+
+  <!-- Expandable detail -->
+  <div id="stats-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,215,110,0.08);">
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;" id="stats-modes"></div>
+    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.2);" id="stats-personal-note">📱 Your device only</div>
   </div>
 </div>
 
@@ -963,6 +972,8 @@ function setLang(l) {
   });
   document.documentElement.lang = l === 'hi' ? 'hi' : l === 'te' ? 'te' : 'en';
   applyLang();
+  renderStats();
+  if (window._lastNegoCtx) _renderNegoPlaybook(window._lastNegoCtx);
 }
 
 // ══════════════════════════════════════════
@@ -1494,6 +1505,11 @@ const TIMING_TIPS = {
 };
 
 function buildNegoPlaybook(ctx) {
+  window._lastNegoCtx = ctx; // store for language re-render
+  _renderNegoPlaybook(ctx);
+}
+
+function _renderNegoPlaybook(ctx) {
   const l = lang;
   const nt = NEGO_T[l];
 
@@ -1591,18 +1607,14 @@ function saveStats(s) {
 
 function recordVisit() {
   const s = loadStats();
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  s.visits = (s.visits || 0) + 1;
-  s.lastVisit = today;
-  // Streak logic
+  const today = new Date().toISOString().slice(0, 10);
   const prev = s.prevVisitDate;
   if (prev) {
     const diff = (new Date(today) - new Date(prev)) / 86400000;
     s.streak = diff <= 1 ? (s.streak || 1) + (diff === 1 ? 1 : 0) : 1;
-  } else {
-    s.streak = 1;
-  }
+  } else { s.streak = 1; }
   s.prevVisitDate = today;
+  s.lastVisit = today;
   s.calcs = s.calcs || 0;
   s.modes = s.modes || { buy: 0, exchange: 0, compare: 0 };
   saveStats(s);
@@ -1617,41 +1629,52 @@ function recordCalc(mode) {
   renderStats();
 }
 
+// Global counter — CountAPI (free, no auth, shared across all users)
+async function fetchGlobalVisits() {
+  try {
+    const res = await fetch('https://api.counterapi.dev/v1/lawsticker/gold-calc-visits/up');
+    const data = await res.json();
+    const count = data.count || data.value || 0;
+    const el = document.getElementById('stat-global-visits');
+    if (el) el.textContent = count.toLocaleString('en-IN');
+  } catch(e) {
+    const el = document.getElementById('stat-global-visits');
+    if (el) el.textContent = '—';
+  }
+}
+
 function renderStats() {
   const s = loadStats();
   const l = lang;
-
-  // Labels
   const labels = {
-    visits:  l==='te' ? 'సందర్శనలు'  : l==='hi' ? 'विज़िट'       : 'Visits',
-    calcs:   l==='te' ? 'లెక్కలు'     : l==='hi' ? 'गणनाएं'       : 'Calculations',
-    streak:  l==='te' ? 'రోజుల వరుస'  : l==='hi' ? 'दिन की स्ट्रीक': 'Day Streak',
-    last:    l==='te' ? 'చివరి సందర్శన': l==='hi' ? 'पिछली विज़िट'  : 'Last Visit',
-    eyebrow: l==='te' ? '📊 మీ వినియోగ గణాంకాలు' : l==='hi' ? '📊 आपके उपयोग आंकड़े' : '📊 Your Usage Stats',
-    note:    l==='te' ? 'మీ పరికరంలో మాత్రమే నిల్వ · ఎప్పుడూ పంచుకోబడదు' : l==='hi' ? 'सिर्फ आपके डिवाइस पर · कभी साझा नहीं' : 'Stored locally on your device only · Never shared',
-    buyLbl:  l==='te' ? '🛒 కొత్త కొనుగోలు' : l==='hi' ? '🛒 नई खरीद' : '🛒 Fresh Purchase',
+    globalVisits: l==='te' ? 'మొత్తం సందర్శనలు'   : l==='hi' ? 'कुल विज़िट'          : 'Total Visits',
+    calcs:        l==='te' ? 'మీ లెక్కలు'           : l==='hi' ? 'आपकी गणनाएं'         : 'Your Calculations',
+    streak:       l==='te' ? 'రోజుల వరుస'           : l==='hi' ? 'दिन की स्ट्रीक'      : 'Day Streak',
+    last:         l==='te' ? 'మీ చివరి సందర్శన'     : l==='hi' ? 'आपकी पिछली विज़िट'   : 'Your Last Visit',
+    eyebrow:      l==='te' ? '📊 వినియోగ గణాంకాలు'  : l==='hi' ? '📊 उपयोग आंकड़े'      : '📊 Usage Stats',
+    globalNote:   l==='te' ? '🌐 అందరి సందర్శనలు'   : l==='hi' ? '🌐 सभी उपयोगकर्ता'   : '🌐 All users · live',
+    personalNote: l==='te' ? '📱 మీ పరికరంలో మాత్రమే': l==='hi' ? '📱 सिर्फ आपके डिवाइस': '📱 Your device only',
+    buyLbl:  l==='te' ? '🛒 కొత్త కొనుగోలు' : l==='hi' ? '🛒 नई खरीद'  : '🛒 Fresh Purchase',
     exLbl:   l==='te' ? '🔄 మార్పిడి'       : l==='hi' ? '🔄 एक्सचेंज' : '🔄 Exchange',
     cmpLbl:  l==='te' ? '⚖️ పోలిక'          : l==='hi' ? '⚖️ तुलना'    : '⚖️ Compare',
   };
 
   const el = id => document.getElementById(id);
-
-  el('stats-eyebrow').textContent = labels.eyebrow;
-  el('stat-visits').textContent   = (s.visits || 0).toLocaleString('en-IN');
-  el('stat-calcs').textContent    = (s.calcs  || 0).toLocaleString('en-IN');
-  el('stat-streak').textContent   = (s.streak || 0) + (l==='en'?'🔥':'🔥');
-  el('stat-last').textContent     = s.lastVisit
-    ? new Date(s.lastVisit).toLocaleDateString(l==='te'?'te-IN':l==='hi'?'hi-IN':'en-IN', {day:'numeric',month:'short'})
+  if(el('stats-eyebrow'))       el('stats-eyebrow').textContent       = labels.eyebrow;
+  if(el('stat-global-lbl'))     el('stat-global-lbl').textContent     = labels.globalVisits;
+  if(el('stats-global-note'))   el('stats-global-note').textContent   = labels.globalNote;
+  if(el('stat-calcs'))          el('stat-calcs').textContent          = (s.calcs||0).toLocaleString('en-IN');
+  if(el('stat-calcs-lbl'))      el('stat-calcs-lbl').textContent      = labels.calcs;
+  if(el('stat-streak'))         el('stat-streak').textContent         = (s.streak||0)+'🔥';
+  if(el('stat-streak-lbl'))     el('stat-streak-lbl').textContent     = labels.streak;
+  if(el('stat-last'))           el('stat-last').textContent           = s.lastVisit
+    ? new Date(s.lastVisit).toLocaleDateString(l==='te'?'te-IN':l==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'short'})
     : '—';
-
-  el('stat-visits-lbl').textContent = labels.visits;
-  el('stat-calcs-lbl').textContent  = labels.calcs;
-  el('stat-streak-lbl').textContent = labels.streak;
-  el('stat-last-lbl').textContent   = labels.last;
-  el('stats-note').textContent      = labels.note;
+  if(el('stat-last-lbl'))       el('stat-last-lbl').textContent       = labels.last;
+  if(el('stats-personal-note')) el('stats-personal-note').textContent = labels.personalNote;
 
   const modes = s.modes || {};
-  el('stats-modes').innerHTML = [
+  if(el('stats-modes')) el('stats-modes').innerHTML = [
     [labels.buyLbl, modes.buy||0],
     [labels.exLbl,  modes.exchange||0],
     [labels.cmpLbl, modes.compare||0],
@@ -1667,12 +1690,10 @@ function toggleStats() {
   d.style.display = d.style.display === 'none' ? 'block' : 'none';
 }
 
-// Hook recordCalc into calculate()
-// (called directly from calcBuy/calcExchange/calcCompare below)
-
 // Init on load
 recordVisit();
 renderStats();
+fetchGlobalVisits(); // async — fills in global count when ready
 
 // init
 applyLang();
