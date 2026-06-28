@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jewellery Suite Calculator — Gold, Silver & Diamond | LawSticker AI</title>
+<meta name="description" content="Calculate exact price of gold, silver and diamond jewellery with making charges, GST, wastage and negotiation tips. Free, trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@500&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --gold:#D4A017;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
+  --silver-metal:#94A3B8;--silver-pale:#F1F5F9;--silver-deep:#475569;
+  --diamond:#7C3AED;--diamond-pale:#F5F3FF;--diamond-deep:#5B21B6;
+  --maroon:#6B1C1C;--maroon2:#8B2323;
+  --ink:#1A1208;--ink-soft:#3D2B0E;--cream:#FEFCF5;
+  --muted:#8B95A8;--light:#E8EDF3;
+  --jade:#10B981;--jade-bg:#D1FAE5;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  /* active metal */
+  --ac:var(--gold);--ac-l:var(--gold-l);--ac-pale:var(--gold-pale);--ac-deep:var(--gold-deep);
+}
+[data-metal="silver"]{--ac:var(--silver-metal);--ac-l:#CBD5E1;--ac-pale:var(--silver-pale);--ac-deep:var(--silver-deep)}
+[data-metal="diamond"]{--ac:var(--diamond);--ac-l:#C4B5FD;--ac-pale:var(--diamond-pale);--ac-deep:var(--diamond-deep)}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;transition:background .3s}
+
+/* NAV */
+nav{background:var(--maroon);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:var(--gold-l);text-decoration:none;font-size:13px;font-weight:600;opacity:.7}
+.nav-back:hover{opacity:1}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gold-l);color:var(--gold-l);background:rgba(245,215,110,.1)}
+
+/* METAL SWITCHER */
+.metal-switch{display:flex;padding:6px;gap:4px;background:rgba(0,0,0,.06);border-radius:14px;margin:20px 16px 0;max-width:688px;margin-left:auto;margin-right:auto}
+.metal-btn{flex:1;padding:12px 8px;border:none;border-radius:10px;background:transparent;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
+.metal-btn .m-icon{font-size:20px;line-height:1}
+.metal-btn.active{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);color:var(--ink)}
+.metal-btn[data-m="gold"].active{color:var(--gold-deep)}
+.metal-btn[data-m="silver"].active{color:var(--silver-deep)}
+.metal-btn[data-m="diamond"].active{color:var(--diamond-deep)}
+
+/* CONTAINER */
+.container{max-width:720px;margin:0 auto;padding:16px 16px 60px}
+
+/* CARDS */
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--ac),transparent)}
+
+/* FIELDS */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--ac-pale);transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ac);background:#fff}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--ac-deep);pointer-events:none}
+.pfx input{padding-left:28px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
+.toggle-row:last-child{border-bottom:none}
+.tl{font-size:13px;font-weight:500;color:var(--ink)}
+.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.tog{position:relative;width:42px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-sl{position:absolute;inset:0;background:#D0C9B8;border-radius:22px;cursor:pointer;transition:.2s}
+.tog-sl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog input:checked+.tog-sl{background:var(--ac)}
+.tog input:checked+.tog-sl::before{transform:translateX(20px)}
+.inline-in{display:flex;align-items:center;gap:6px}
+.mini{width:86px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--ac-pale);text-align:right;font-family:inherit}
+.unit{font-size:12px;font-weight:700;color:var(--ac-deep)}
+
+/* GOODRETURNS LINK */
+.rate-link{display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--ac-deep);text-decoration:none}
+.rate-link:hover{text-decoration:underline}
+
+/* CALC BUTTON */
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l);border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(107,28,28,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+
+/* RESULTS */
+.result-hero{background:linear-gradient(135deg,var(--maroon),#2A0505);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.result-hero::before{content:'◆';position:absolute;font-size:110px;color:rgba(245,215,110,.05);right:-15px;top:-15px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-l);opacity:.6;margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--gold-l);line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+
+.insight-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--maroon);line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pill{padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600}
+.pill.g{background:var(--jade-bg);color:var(--jade)}
+.pill.r{background:var(--rose-bg);color:var(--rose)}
+.pill.a{background:#FDF0C0;color:var(--gold-deep)}
+
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--ac-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);border-bottom:1px solid rgba(0,0,0,.07)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.tot{background:var(--ink)}
+.brow.tot .bl{color:var(--gold-l);font-weight:700}
+.brow.tot .ba{color:var(--gold-l);font-size:15px}
+
+/* NEGOTIATION PLAYBOOK */
+.nego{border-radius:16px;overflow:hidden;border:1.5px solid rgba(212,160,23,.3);box-shadow:0 4px 20px rgba(0,0,0,.1);margin-bottom:14px}
+.nego-hdr{background:linear-gradient(135deg,#2A1200,#4A2000);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.nego-hdr-l{display:flex;align-items:center;gap:10px}
+.nego-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:2px}
+.nego-ttl{font-size:14px;font-weight:700;color:var(--gold-l)}
+.nego-score{background:rgba(245,215,110,.1);border:1px solid rgba(245,215,110,.2);border-radius:10px;padding:6px 10px;text-align:center}
+.nego-score .sn{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--gold-l);line-height:1}
+.nego-score .sl{font-size:8px;font-weight:700;letter-spacing:1.5px;color:rgba(245,215,110,.45);text-transform:uppercase;margin-top:1px}
+.nego-body{background:#fff}
+.nego-sav{background:linear-gradient(90deg,#0D3B22,#1A5C35);padding:11px 16px;display:flex;justify-content:space-between;align-items:center}
+.nego-sav .ns-l{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.5px}
+.nego-sav .ns-a{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#6FCF97}
+.nego-moves{padding:12px 12px 4px;display:flex;flex-direction:column;gap:8px}
+.move{border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
+.move-top{display:flex}
+.move-rank{background:var(--maroon);color:var(--gold-l);font-family:'Playfair Display',serif;font-size:17px;font-weight:900;padding:0 12px;display:flex;align-items:center;justify-content:center;min-width:42px;flex-shrink:0}
+.move-rank.med{background:#5C3D00}
+.move-rank.low{background:#1A3A2A}
+.move-cnt{flex:1;padding:10px 12px;background:var(--ac-pale)}
+.move-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.move-sav{font-size:11px;font-weight:700;color:var(--jade);margin-bottom:3px}
+.move-sav.na{color:var(--muted)}
+.move-desc{font-size:11px;color:var(--ink-soft);line-height:1.5}
+.move-script{background:#FFFBEB;border-top:1px dashed rgba(0,0,0,.1);padding:8px 12px;font-size:11px;font-style:italic;color:var(--gold-deep);line-height:1.5}
+.move-script::before{content:'💬 ';font-style:normal}
+.nego-timing{margin:4px 12px 12px;background:linear-gradient(135deg,#0A1628,#112244);border-radius:10px;padding:11px 13px}
+.nego-timing .te{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(100,160,255,.6);margin-bottom:5px}
+.t-tip{font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:4px}
+.t-tip span{color:#7EB8F7;font-weight:600}
+
+/* EXPLAINER */
+.expl{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:14px}
+.expl-hdr{background:var(--ac-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.expl-body{padding:14px 16px;font-size:12.5px;line-height:1.7;color:var(--ink-soft);display:none}
+.expl-body.open{display:block}
+.term{background:var(--ac-pale);border-left:3px solid var(--ac);padding:7px 11px;margin:8px 0;border-radius:0 7px 7px 0;font-size:12px}
+.term strong{color:var(--ac-deep)}
+
+/* RESET */
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+
+/* STATS */
+.stats-bar{background:linear-gradient(135deg,#1A0A00,#2D1500);padding:14px 18px;text-align:center;cursor:pointer;border-top:1px solid rgba(212,160,23,.12)}
+.stats-eye{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.4);margin-bottom:8px}
+.stats-global{background:rgba(245,215,110,.06);border:1px solid rgba(245,215,110,.12);border-radius:10px;padding:8px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.stats-global .sg-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold-l);line-height:1}
+.stats-global .sg-l{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,.4);margin-top:2px}
+.stats-global .sg-note{font-size:10px;color:rgba(255,255,255,.2)}
+.stats-personal{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.sp-item{text-align:center}
+.sp-item .sp-n{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:rgba(245,215,110,.6);line-height:1}
+.sp-item .sp-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,215,110,.3);margin-top:2px}
+.stats-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(245,215,110,.07)}
+.stats-modes{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.mode-chip{background:rgba(245,215,110,.06);border-radius:7px;padding:5px 10px;text-align:center}
+.mode-chip .mc-n{font-size:12px;font-weight:700;color:var(--gold-l)}
+.mode-chip .mc-l{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--gold-deep);text-decoration:none}
+
+#results{display:none}
+#results.visible{display:block}
+
+@media(max-width:400px){.row2{grid-template-columns:1fr}.insight-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body data-metal="gold">
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">💍 Jewellery Suite</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<!-- METAL SWITCHER -->
+<div class="metal-switch">
+  <button class="metal-btn active" data-m="gold" onclick="setMetal('gold')">
+    <span class="m-icon">🪙</span>
+    <span id="mb-gold">Gold</span>
+  </button>
+  <button class="metal-btn" data-m="silver" onclick="setMetal('silver')">
+    <span class="m-icon">🥈</span>
+    <span id="mb-silver">Silver</span>
+  </button>
+  <button class="metal-btn" data-m="diamond" onclick="setMetal('diamond')">
+    <span class="m-icon">💎</span>
+    <span id="mb-diamond">Diamond</span>
+  </button>
+</div>
+
+<div class="container">
+
+  <!-- ══ GOLD FORM ══ -->
+  <div id="form-gold">
+    <div class="card">
+      <div class="card-title" id="g-c1">Gold Details</div>
+      <div class="row2">
+        <div class="field">
+          <label id="g-l-wt">Weight <span class="hint">(grams)</span></label>
+          <div class="pfx"><span class="p">g</span><input type="number" id="g-weight" value="10" min="0.1" step="0.1"></div>
+        </div>
+        <div class="field">
+          <label id="g-l-pur">Purity</label>
+          <select id="g-purity">
+            <option value="24">24K — 99.9%</option>
+            <option value="22" selected>22K — 91.6%</option>
+            <option value="18">18K — 75%</option>
+            <option value="14">14K — 58.5%</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="g-l-rate">Today's Gold Rate <span class="hint" id="g-l-rate-h">(₹/g for 24K)</span></label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="g-rate" value="9500"></div>
+        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="g-rate-link">🔗 Check today's rate on GoodReturns →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="g-c2">Making / VA Charges</div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-mtype">Making Type <span class="sub" id="g-l-mtype-s">Flat % or ₹ per gram</span></div>
+        <select id="g-mtype" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
+          <option value="pct" id="g-opt-pct">% of gold value</option>
+          <option value="pgram" id="g-opt-pgram">₹ per gram</option>
+          <option value="none" id="g-opt-none">No Making (free)</option>
+        </select>
+      </div>
+      <div class="toggle-row" id="g-mval-row">
+        <div class="tl" id="g-l-mval">Making Rate <span class="sub" id="g-mval-hint">e.g. 6.95% from ad</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="g-mval" value="6.95" step="0.01"><span class="unit" id="g-munit">%</span></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-waste">Wastage <span class="sub" id="g-l-waste-s">Some shops add 2–5%</span></div>
+        <label class="tog"><input type="checkbox" id="g-waste-tog" onchange="document.getElementById('g-waste-row').style.display=this.checked?'flex':'none'"><span class="tog-sl"></span></label>
+      </div>
+      <div class="toggle-row" id="g-waste-row" style="display:none">
+        <div class="tl" id="g-l-wastep">Wastage % <span class="sub" id="g-l-wastep-s">On gold value</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="g-wastep" value="3" step="0.1"><span class="unit" style="color:var(--rose)">%</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="g-c3">Taxes & Exchange</div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-gst">GST on Gold <span class="sub" id="g-l-gst-s">Standard 3%</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="g-gst" value="3" step="0.1"><span class="unit">%</span></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-hall">Hallmarking <span class="sub" id="g-l-hall-s">BIS charge if any</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="g-hall" value="0" step="10"><span class="unit">₹</span></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-exch">Old Gold Exchange <span class="sub" id="g-l-exch-s">Toggle to add old gold credit</span></div>
+        <label class="tog"><input type="checkbox" id="g-exch-tog" onchange="document.getElementById('g-exch-rows').style.display=this.checked?'block':'none'"><span class="tog-sl"></span></label>
+      </div>
+      <div id="g-exch-rows" style="display:none">
+        <div class="toggle-row">
+          <div class="tl" id="g-l-owt">Old Gold Weight (g) <span class="sub" id="g-l-owt-s">What you're giving back</span></div>
+          <div class="inline-in"><input type="number" class="mini" id="g-owt" value="8" step="0.1"><span class="unit">g</span></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl" id="g-l-opur">Old Gold Purity</div>
+          <select id="g-opur" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
+            <option value="22" selected>22K</option><option value="24">24K</option><option value="18">18K</option>
+          </select>
+        </div>
+        <div class="toggle-row">
+          <div class="tl" id="g-l-oded">Deduction % <span class="sub" id="g-l-oded-s">0% = Zero Deduction offer</span></div>
+          <div class="inline-in"><input type="number" class="mini" id="g-oded" value="0" step="0.5"><span class="unit" style="color:var(--rose)">%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SILVER FORM ══ -->
+  <div id="form-silver" style="display:none">
+    <div class="card">
+      <div class="card-title" id="s-c1">Silver Details</div>
+      <div class="row2">
+        <div class="field">
+          <label id="s-l-wt">Weight <span class="hint">(grams)</span></label>
+          <div class="pfx"><span class="p">g</span><input type="number" id="s-weight" value="100" min="1" step="1"></div>
+        </div>
+        <div class="field">
+          <label id="s-l-pur">Purity</label>
+          <select id="s-purity">
+            <option value="999">999 — Fine Silver</option>
+            <option value="925" selected>925 — Sterling</option>
+            <option value="800">800 — German Silver</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="s-l-rate">Today's Silver Rate <span class="hint" id="s-l-rate-h">(₹/g for 999)</span></label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="s-rate" value="95"></div>
+        <a class="rate-link" href="https://www.goodreturns.in/silver-rates/" target="_blank" id="s-rate-link">🔗 Check today's rate on GoodReturns →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="s-c2">Making Charges</div>
+      <div class="toggle-row">
+        <div class="tl" id="s-l-mtype">Making Type <span class="sub" id="s-l-mtype-s">Flat ₹/gram is common for silver</span></div>
+        <select id="s-mtype" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
+          <option value="pgram" id="s-opt-pgram">₹ per gram</option>
+          <option value="pct" id="s-opt-pct">% of silver value</option>
+          <option value="fixed" id="s-opt-fixed">Fixed ₹ per piece</option>
+          <option value="none" id="s-opt-none">No Making</option>
+        </select>
+      </div>
+      <div class="toggle-row" id="s-mval-row">
+        <div class="tl" id="s-l-mval">Making Rate <span class="sub" id="s-mval-hint">Typical ₹50–200/g for silver</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="s-mval" value="100" step="1"><span class="unit" id="s-munit">₹/g</span></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="s-l-gst">GST on Silver <span class="sub" id="s-l-gst-s">3% on silver + making</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="s-gst" value="3" step="0.1"><span class="unit">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DIAMOND FORM ══ -->
+  <div id="form-diamond" style="display:none">
+    <div class="card">
+      <div class="card-title" id="d-c1">Diamond Details</div>
+      <div class="row2">
+        <div class="field">
+          <label id="d-l-ct">Diamond Weight <span class="hint">(carats)</span></label>
+          <div class="pfx"><span class="p">ct</span><input type="number" id="d-carat" value="0.5" min="0.1" step="0.1" style="padding-left:36px"></div>
+        </div>
+        <div class="field">
+          <label id="d-l-shape">Shape / Cut</label>
+          <select id="d-shape">
+            <option value="round">Round Brilliant</option>
+            <option value="princess">Princess</option>
+            <option value="oval">Oval</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label id="d-l-color">Colour Grade</label>
+          <select id="d-color">
+            <option value="1.3">D–F (Colourless)</option>
+            <option value="1.0" selected>G–H (Near Colourless)</option>
+            <option value="0.8">I–J (Slightly Tinted)</option>
+            <option value="0.6">K–M (Faint)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label id="d-l-clarity">Clarity</label>
+          <select id="d-clarity">
+            <option value="1.4">IF/VVS1</option>
+            <option value="1.2" selected>VS1/VS2</option>
+            <option value="1.0">SI1/SI2</option>
+            <option value="0.75">I1/I2</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="d-l-ppc">Approx. Diamond Price <span class="hint" id="d-l-ppc-h">(₹ per carat — check cert)</span></label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="d-ppc" value="49900" step="100"></div>
+        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="d-rate-link">🔗 Verify against IGI/GIA certificate →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="d-c2">Gold Setting</div>
+      <div class="row2">
+        <div class="field">
+          <label id="d-l-gwt">Setting Weight <span class="hint">(g)</span></label>
+          <div class="pfx"><span class="p">g</span><input type="number" id="d-gwt" value="3" min="0.5" step="0.5"></div>
+        </div>
+        <div class="field">
+          <label id="d-l-gpur">Setting Purity</label>
+          <select id="d-gpur">
+            <option value="18" selected>18K (most common)</option>
+            <option value="14">14K</option>
+            <option value="22">22K</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="d-l-grate">Gold Rate <span class="hint">(₹/g 24K)</span></label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="d-grate" value="9500"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="d-l-mval">Making Charges <span class="sub" id="d-l-mval-s">% on gold setting value</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="d-making" value="12" step="0.1"><span class="unit">%</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="d-c3">GST — Important</div>
+      <div class="toggle-row" style="border-bottom:none">
+        <div class="tl">GST on Gold Setting <span class="sub">3% on gold + making</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="d-ggst" value="3" step="0.1"><span class="unit">%</span></div>
+      </div>
+      <div style="background:#FEF3C7;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#92400E;line-height:1.55;" id="d-gst-note">
+        ⚠️ <strong>Hidden charge alert:</strong> Cut and polished diamonds attract <strong>GST @ 1.5%</strong> separately from the gold setting. Many shops bundle this silently. Ask for a split invoice.
+      </div>
+      <div class="toggle-row" style="margin-top:10px">
+        <div class="tl">GST on Diamond <span class="sub">1.5% on diamond value</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="d-dgst" value="1.5" step="0.1"><span class="unit">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Total Price →</button>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="result-hero">
+      <div class="r-label" id="r-label">You Pay</div>
+      <div class="r-amount" id="r-amount">₹0</div>
+      <div class="r-sub" id="r-sub"></div>
+    </div>
+    <div class="insight-row" id="r-insights"></div>
+    <div class="pills" id="r-pills"></div>
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Full Price Breakdown</div>
+      <div id="r-rows"></div>
+    </div>
+    <div class="nego" id="nego-wrap" style="display:none">
+      <div class="nego-hdr" onclick="document.getElementById('nego-body').style.display=document.getElementById('nego-body').style.display==='none'?'block':'none'">
+        <div class="nego-hdr-l">
+          <span style="font-size:22px">🤝</span>
+          <div><div class="nego-eye" id="nego-eye">Your Personalised</div><div class="nego-ttl" id="nego-ttl">Negotiation Playbook</div></div>
+        </div>
+        <div class="nego-score"><div class="sn" id="nego-score-num">—</div><div class="sl" id="nego-score-lbl">LEVERAGE</div></div>
+      </div>
+      <div class="nego-body" id="nego-body">
+        <div class="nego-sav">
+          <div><div class="ns-l" id="nego-sav-lbl">Potential Savings</div><div style="font-size:10px;color:rgba(255,255,255,.3)" id="nego-sav-sub">if all moves succeed</div></div>
+          <div class="ns-a" id="nego-sav-amt">₹0</div>
+        </div>
+        <div class="nego-moves" id="nego-moves"></div>
+        <div class="nego-timing">
+          <div class="te" id="nego-timing-eye">⏰ Timing & Strategy</div>
+          <div id="nego-timing-tips"></div>
+        </div>
+      </div>
+    </div>
+    <div class="expl">
+      <div class="expl-hdr" onclick="document.getElementById('expl-body').classList.toggle('open')">
+        <span id="expl-hdr-txt">📖 What Do These Terms Mean?</span><span>▾</span>
+      </div>
+      <div class="expl-body" id="expl-body"></div>
+    </div>
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← New Calculation</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" onclick="document.getElementById('stats-detail').style.display=document.getElementById('stats-detail').style.display==='none'?'block':'none'">
+  <div class="stats-eye" id="stats-eye">📊 Usage Stats</div>
+  <div class="stats-global">
+    <div><div class="sg-n" id="sg-visits">⏳</div><div class="sg-l" id="sg-lbl">Total Visits</div></div>
+    <div class="sg-note" id="sg-note">🌐 All users · live</div>
+  </div>
+  <div class="stats-personal">
+    <div class="sp-item"><div class="sp-n" id="sp-calcs">—</div><div class="sp-l" id="sp-calcs-l">Your Calcs</div></div>
+    <div class="sp-item"><div class="sp-n" id="sp-streak">—</div><div class="sp-l" id="sp-streak-l">Day Streak</div></div>
+    <div class="sp-item"><div class="sp-n" id="sp-last">—</div><div class="sp-l" id="sp-last-l">Last Visit</div></div>
+  </div>
+  <div class="stats-detail" id="stats-detail">
+    <div class="stats-modes" id="stats-modes"></div>
+    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.18)" id="sp-note">📱 Your device only</div>
+  </div>
+</div>
+
+<footer>
+  <span id="footer-txt">Jewellery Suite · Free · No login · Made in Hyderabad 🇮🇳</span> · <a href="calculators.html">All Calculators</a> · <a href="https://lawsticker-ai.com">LawSticker AI</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let lang = 'en';
+let metal = 'gold';
+let _lastCtx = null;
+
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const pf = k => ({24:1,22:.916,18:.75,14:.585,999:1,925:.925,800:.800}[k]||1);
+const el = id => document.getElementById(id);
+const s = (id,v) => { const e=el(id); if(e) e.textContent=v; };
+const h = (id,v) => { const e=el(id); if(e) e.innerHTML=v; };
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS
+// ══════════════════════════════════════════
+const T = {
+  en:{
+    navTitle:'💍 Jewellery Suite',
+    mbGold:'Gold',mbSilver:'Silver',mbDiamond:'Diamond',
+    gC1:'Gold Details',gLWt:'Weight',gLPur:'Purity',gLRate:"Today's Gold Rate",gLRateH:'(₹/g for 24K)',
+    gC2:'Making / VA Charges',gLMtype:'Making Type',gLMtypeS:'Flat % or ₹ per gram',
+    gLMval:'Making Rate',gMvalHint:'e.g. 6.95% from ad',gLWaste:'Wastage',gLWasteS:'Some shops add 2–5%',
+    gLWastep:'Wastage %',gLWastepS:'On gold value',
+    gC3:'Taxes & Exchange',gLGst:'GST on Gold',gLGstS:'Standard 3%',gLHall:'Hallmarking',gLHallS:'BIS charge if any',
+    gLExch:'Old Gold Exchange',gLExchS:'Toggle to add old gold credit',
+    gLOwt:'Old Gold Weight (g)',gLOwtS:"What you're giving back",gLOpur:'Old Gold Purity',
+    gLOded:'Deduction %',gLOdedS:'0% = Zero Deduction offer',
+    gOptPct:'% of gold value',gOptPgram:'₹ per gram',gOptNone:'No Making (free)',
+    gRateLink:'🔗 Check today\'s rate on GoodReturns →',
+    sC1:'Silver Details',sLWt:'Weight',sLPur:'Purity',sLRate:"Today's Silver Rate",sLRateH:'(₹/g for 999)',
+    sC2:'Making Charges',sLMtype:'Making Type',sLMtypeS:'Flat ₹/gram is common for silver',
+    sLMval:'Making Rate',sMvalHint:'Typical ₹50–200/g for silver',sLGst:'GST on Silver',sLGstS:'3% on silver + making',
+    sOptPgram:'₹ per gram',sOptPct:'% of silver value',sOptFixed:'Fixed ₹ per piece',sOptNone:'No Making',
+    sRateLink:'🔗 Check today\'s rate on GoodReturns →',
+    dC1:'Diamond Details',dLCt:'Diamond Weight',dLShape:'Shape / Cut',dLColor:'Colour Grade',dLClarity:'Clarity',
+    dLPpc:'Approx. Diamond Price',dLPpcH:'(₹ per carat — check cert)',
+    dC2:'Gold Setting',dLGwt:'Setting Weight',dLGpur:'Setting Purity',dLGrate:'Gold Rate',dLMval:'Making Charges',dLMvalS:'% on gold setting value',
+    dC3:'GST — Important',
+    dGstNote:'⚠️ <strong>Hidden charge alert:</strong> Cut and polished diamonds attract <strong>GST @ 1.5%</strong> separately from the gold setting. Many shops bundle this silently. Ask for a split invoice.',
+    dRateLink:'🔗 Verify against IGI/GIA certificate →',
+    calcBtn:'Calculate Total Price →',
+    rLabel:'You Pay',rBdHead:'Full Price Breakdown',
+    perGram:'Per Gram (all-in)',aboveBase:'Above Base Price',baseRate:'Base Rate/g',basePriceD:'Diamond Value',
+    pillNoMaking:'✓ No Making Charges',pillNoWastage:'✓ No Wastage',pillGood:'⭐ Good Deal',pillHigh:'⚠️ High surcharge',
+    pillZeroDed:'✓ Zero Deduction',pillHighDed:'⚠️ High deduction',
+    goldValLbl:'Gold Value',makingLbl:'Making / VA Charges',wastageLbl:'Wastage',
+    subTotalLbl:'Sub-total (before GST)',gstLbl:'GST',hallLbl:'Hallmarking',totalLbl:'TOTAL YOU PAY',
+    exchSection:'Old Gold Exchange',oldGoldVal:'Old Gold Market Value',deductLbl:'Deduction',netCredit:'Net Credit for Old Gold',
+    diaValLbl:'Diamond Value',diaGstLbl:'GST on Diamond (1.5%)',goldSetLbl:'Gold Setting Value',goldSetMaking:'Making on Setting',goldSetGst:'GST on Setting (3%)',
+    exHdr:'📖 What Do These Terms Mean?',resetBtn:'← New Calculation',
+    footerTxt:'Jewellery Suite · Free · No login · Made in Hyderabad 🇮🇳',
+    negoEye:'Your Personalised',negoTtl:'🤝 Negotiation Playbook',
+    negoScoreLbl:'LEVERAGE',negoSavLbl:'Potential Savings',negoSavSub:'if all moves succeed',
+    negoTimingEye:'⏰ Timing & Strategy',
+    statsEye:'📊 Usage Stats',sgLbl:'Total Visits',sgNote:'🌐 All users · live',
+    spCalcsL:'Your Calcs',spStreakL:'Day Streak',spLastL:'Last Visit',spNote:'📱 Your device only',
+    explainers:{
+      gold:[
+        ['Gold Rate (Spot Price)','The base price of pure 24K gold per gram, set daily by exchanges. All other calculations start from this.'],
+        ['Purity Adjustment','22K gold is 91.6% pure. If 24K = ₹9,500/g, then 22K = ₹9,500 × 0.916 = ₹8,702/g.'],
+        ['VA / Making Charges','Value Addition — same as Making Charges. Jeweller\'s craftsmanship fee. 6.95% is very low (normal: 10–25%).'],
+        ['Wastage','Metal lost in manufacturing. Some shops add 2–5% separately — challenge it.'],
+        ['GST','3% on gold + making. Government tax — mandatory, no shop can waive it.'],
+        ['Zero Deduction','Shops give full market value for old gold with no deduction — a genuine good deal when offered.'],
+      ],
+      silver:[
+        ['Silver Purity','999 = fine silver, 925 = sterling (most jewellery), 800 = German silver (lower purity).'],
+        ['Making Charges','Silver making is usually charged per gram (₹50–200) not %, because silver value is lower. Negotiate hard — 30–40% reduction is possible.'],
+        ['GST on Silver','3% on silver value + making charges. Same rate as gold.'],
+        ['Silver vs Gold Making','Making charges as % of total are much higher for silver because base metal value is low. Always ask for flat ₹/gram rate.'],
+      ],
+      diamond:[
+        ['4Cs','Cut, Colour, Clarity, Carat — the four factors determining diamond quality. Always ask for IGI or GIA certificate.'],
+        ['GST Split','Gold setting: 3% GST. Diamond: 1.5% GST. Total GST on a diamond ring is split — many shops don\'t show this.'],
+        ['Price per Carat','Not linear — a 1ct diamond costs much more than 2 × 0.5ct diamonds of same quality. Check Rapaport price list online.'],
+        ['Ready vs Custom','Ready jewellery has higher making. Custom (loose diamond + setting separately) saves 10–15% but takes time.'],
+        ['Certificate','IGI and GIA certified diamonds have published prices. An uncertified diamond has no verifiable price — avoid or negotiate hard.'],
+      ],
+    },
+    timing:[
+      ['Visit on weekdays','Tuesday and Wednesday have lowest footfall — staff are less rushed and more willing to negotiate.'],
+      ['End of month','Shops push to meet monthly targets in the last 3 days — leverage this.'],
+      ['Avoid festivals','Akshaya Tritiya and Dhanteras mean zero negotiation power. Go 1–2 weeks before or after.'],
+      ['Get 3 quotes first','Collect written quotes from 3 shops. Return to your preferred shop with the best — they almost always match.'],
+      ['Never reveal budget','Say "what can I get for ₹X" not "I have ₹X to spend" — the second locks you in.'],
+    ],
+    moves:{
+      makingHigh:(ctx,l)=>({title:`Cut Making from ${ctx.makingPct}% → 8%`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`You're paying ${ctx.makingPct}% — above average. Market norm is 8–12%. Mentioning competitor rates almost always brings it down.`,script:`"I checked — making charge in this area is around 8%. Can you match that? I'm ready to buy today."`}),
+      makingMed:(ctx,l)=>({title:`Push Making from ${ctx.makingPct}% → 5%`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`5% is achievable for plain designs (chains, bangles). Ask if the design is standard.`,script:`"Is this a standard design? I've seen 5% making for plain pieces elsewhere. Can you match that?"`}),
+      wastage:(ctx,l)=>({title:`Challenge the Wastage (${ctx.wastagePct}%)`,saving:ctx.wastageAmt,desc:`Wastage is often hidden profit. Good shops include it in making. Demand they remove wastage OR reduce making by same %.`,script:`"Most reputed jewellers include wastage inside making. Can you either remove it or reduce making by ${ctx.wastagePct}%?"`}),
+      bulk:(ctx,l)=>({title:`Bulk Buyer — Ask for Flat ₹/gram Rate`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`Buying ${ctx.weight}g is significant. Switch from "% making" to "flat ₹/gram" — ₹500–600/g is often better than 8%+ on expensive gold.`,script:`"For ${ctx.weight}g today, I'd prefer ₹550/g flat making instead of percentage. Fair for both of us."`}),
+      deduction:(ctx,l)=>({title:`Demand Zero Deduction on Old Gold`,saving:ctx.deductionAmt||0,desc:`If a shop offers zero deduction elsewhere, use it as leverage. Politely walk toward the door — deduction often disappears.`,script:`"Chennai Shopping Mall offers zero deduction right now. Can you match that? Otherwise I'll check there first."`}),
+      cash:(ctx,l)=>({title:`Offer Cash — Unlock Informal Discount`,saving:ctx.total*0.01,desc:`Jewellers pay 1.5–2% MDR on card transactions. Cash on ₹30,000+ can unlock an informal 1% discount.`,script:`"If I pay cash today, can you give me 1% off for saving your card charges?"`}),
+      freegift:(ctx,l)=>({title:`Ask for a Free Gold Coin or Gift`,saving:1500,desc:`On ₹50,000+ purchases jewellers have discretionary budgets — small gold coin (0.5–1g), silver article, or free lifetime polishing.`,script:`"I'm spending ₹${Math.round(ctx.total).toLocaleString('en-IN')} today — can you add a small gold coin as a loyalty gesture?"`}),
+      silverMaking:(ctx,l)=>({title:`Negotiate Silver Making Aggressively`,saving:ctx.baseVal*0.3,desc:`Silver making is the most negotiable charge in jewellery. 30–40% reduction is normal. Shops expect you to ask. Even ₹50/g less on 100g saves ₹5,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹${Math.max(50,ctx.makingRate-60)}/g? I'm buying ${ctx.weight}g today."`}),
+      silverPurity:(ctx,l)=>({title:`Verify Purity With BIS Hallmark`,saving:0,desc:`German silver (800) is sometimes sold as sterling (925). Always check for BIS hallmark stamp (925 or 999) on the piece physically.`,script:`"Can you show me the BIS hallmark on this piece? I want to confirm the purity before buying."`}),
+      diaGst:(ctx,l)=>({title:`Ask for Split GST Invoice`,saving:ctx.diaVal*0.015,desc:`Diamond GST (1.5%) and gold GST (3%) must be on separate line items by law. If the shop bundles them at 3%, you're overpaying. Demand a split invoice.`,script:`"Please show me the GST split — 3% on gold setting and 1.5% on diamond separately. I'd like a compliant invoice."`}),
+      diaCert:(ctx,l)=>({title:`Only Buy Certified Diamonds`,saving:0,desc:`Uncertified diamonds have no verifiable price — you could be paying 2x. IGI/GIA certified diamonds have published Rapaport prices. Check online before entering the shop.`,script:`"Does this diamond come with IGI or GIA certification? I'd like to see the cert before we proceed."`}),
+      diaLoose:(ctx,l)=>({title:`Consider Loose Diamond + Separate Setting`,saving:ctx.total*0.12,desc:`Buying a loose certified diamond and separate setting (not pre-made jewellery) saves 10–15% on making and gives you more choice.`,script:`"Can you show me loose certified diamonds separately from the setting? I'd like to compare the total cost."`}),
+    },
+  },
+  te:{
+    navTitle:'💍 ఆభరణాల సూట్',
+    mbGold:'బంగారు',mbSilver:'వెండి',mbDiamond:'వజ్రం',
+    gC1:'బంగారం వివరాలు',gLWt:'బరువు',gLPur:'స్వచ్ఛత',gLRate:'నేటి బంగారం రేటు',gLRateH:'(₹/g 24K కోసం)',
+    gC2:'మేకింగ్ / VA ఛార్జీలు',gLMtype:'మేకింగ్ రకం',gLMtypeS:'% లేదా గ్రాముకు ₹',
+    gLMval:'మేకింగ్ రేటు',gMvalHint:'ఉదా: ప్రకటనలో 6.95%',gLWaste:'వేస్టేజ్',gLWasteS:'కొన్ని దుకాణాలు 2–5% వేస్తాయి',
+    gLWastep:'వేస్టేజ్ %',gLWastepS:'బంగారం విలువపై',
+    gC3:'పన్నులు & మార్పిడి',gLGst:'బంగారంపై GST',gLGstS:'3% ప్రభుత్వ పన్ను',gLHall:'హాల్‌మార్కింగ్',gLHallS:'BIS ఛార్జ్ ఉంటే',
+    gLExch:'పాత బంగారం మార్పిడి',gLExchS:'పాత బంగారం క్రెడిట్ జోడించడానికి',
+    gLOwt:'పాత బంగారం బరువు (g)',gLOwtS:'మీరు తిరిగి ఇస్తున్నది',gLOpur:'పాత బంగారం స్వచ్ఛత',
+    gLOded:'తగ్గింపు %',gLOdedS:'0% = జీరో డిడక్షన్ ఆఫర్',
+    gOptPct:'% (బంగారం విలువపై)',gOptPgram:'₹ గ్రాముకు',gOptNone:'మేకింగ్ ఛార్జ్ లేదు',
+    gRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
+    sC1:'వెండి వివరాలు',sLWt:'బరువు',sLPur:'స్వచ్ఛత',sLRate:'నేటి వెండి రేటు',sLRateH:'(₹/g 999 కోసం)',
+    sC2:'మేకింగ్ ఛార్జీలు',sLMtype:'మేకింగ్ రకం',sLMtypeS:'వెండికి గ్రాముకు ₹ సాధారణం',
+    sLMval:'మేకింగ్ రేటు',sMvalHint:'సాధారణంగా ₹50–200/g',sLGst:'వెండిపై GST',sLGstS:'వెండి + మేకింగ్‌పై 3%',
+    sOptPgram:'₹ గ్రాముకు',sOptPct:'% వెండి విలువపై',sOptFixed:'వస్తువుకు నిర్ణీత ₹',sOptNone:'మేకింగ్ లేదు',
+    sRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
+    dC1:'వజ్రం వివరాలు',dLCt:'వజ్రం బరువు',dLShape:'ఆకృతి / కట్',dLColor:'రంగు గ్రేడ్',dLClarity:'స్పష్టత',
+    dLPpc:'అంచనా వజ్రం ధర',dLPpcH:'(₹ కేరట్‌కు — సర్టిఫికేట్ చూడండి)',
+    dC2:'బంగారు సెట్టింగ్',dLGwt:'సెట్టింగ్ బరువు',dLGpur:'సెట్టింగ్ స్వచ్ఛత',dLGrate:'బంగారం రేటు',dLMval:'మేకింగ్ ఛార్జీలు',dLMvalS:'బంగారు సెట్టింగ్ విలువపై %',
+    dC3:'GST — ముఖ్యమైనది',
+    dGstNote:'⚠️ <strong>దాచిన ఛార్జ్ హెచ్చరిక:</strong> కట్ చేసిన వజ్రాలపై <strong>GST 1.5%</strong> బంగారు సెట్టింగ్‌కు వేరుగా వేయాలి. చాలా దుకాణాలు దీన్ని దాచి వేస్తాయి. వేర్వేరు ఇన్వాయిస్ అడగండి.',
+    dRateLink:'🔗 IGI/GIA సర్టిఫికేట్‌తో సరిపోల్చండి →',
+    calcBtn:'మొత్తం ధర లెక్కించండి →',
+    rLabel:'మీరు చెల్లించాల్సిన మొత్తం',rBdHead:'పూర్తి ధర వివరాలు',
+    perGram:'గ్రాముకు (అన్నీ కలిపి)',aboveBase:'మూల ధరపై అదనం',baseRate:'మూల రేటు/g',basePriceD:'వజ్రం విలువ',
+    pillNoMaking:'✓ మేకింగ్ ఛార్జ్ లేదు',pillNoWastage:'✓ వేస్టేజ్ లేదు',pillGood:'⭐ మంచి డీల్',pillHigh:'⚠️ అధిక ఛార్జీలు',
+    pillZeroDed:'✓ జీరో తగ్గింపు',pillHighDed:'⚠️ అధిక తగ్గింపు',
+    goldValLbl:'బంగారం విలువ',makingLbl:'మేకింగ్ / VA ఛార్జీలు',wastageLbl:'వేస్టేజ్',
+    subTotalLbl:'ఉప-మొత్తం (GST ముందు)',gstLbl:'GST',hallLbl:'హాల్‌మార్కింగ్',totalLbl:'మీరు చెల్లించే మొత్తం',
+    exchSection:'పాత బంగారం మార్పిడి',oldGoldVal:'పాత బంగారం మార్కెట్ విలువ',deductLbl:'తగ్గింపు',netCredit:'పాత బంగారం నెట్ క్రెడిట్',
+    diaValLbl:'వజ్రం విలువ',diaGstLbl:'వజ్రంపై GST (1.5%)',goldSetLbl:'బంగారు సెట్టింగ్ విలువ',goldSetMaking:'సెట్టింగ్ మేకింగ్',goldSetGst:'సెట్టింగ్‌పై GST (3%)',
+    exHdr:'📖 ఈ పదాలు అర్థం ఏమిటి?',resetBtn:'← కొత్త లెక్క',
+    footerTxt:'ఆభరణాల సూట్ · ఉచితం · లాగిన్ అవసరం లేదు · హైదరాబాద్‌లో తయారైంది 🇮🇳',
+    negoEye:'మీ వ్యక్తిగత',negoTtl:'🤝 చర్చల వ్యూహం',
+    negoScoreLbl:'లాభం',negoSavLbl:'సాధ్యమైన ఆదా',negoSavSub:'అన్నీ సాధిస్తే',
+    negoTimingEye:'⏰ సమయం & వ్యూహం',
+    statsEye:'📊 వినియోగ గణాంకాలు',sgLbl:'మొత్తం సందర్శనలు',sgNote:'🌐 అందరి సందర్శనలు',
+    spCalcsL:'మీ లెక్కలు',spStreakL:'రోజుల వరుస',spLastL:'చివరి సందర్శన',spNote:'📱 మీ పరికరంలో మాత్రమే',
+    explainers:{
+      gold:[
+        ['బంగారం రేటు','ప్రతి రోజు మార్పిడిలో నిర్ణయించే 24K స్వచ్ఛమైన బంగారం ధర. అన్ని లెక్కలు దీనిపై ఆధారపడతాయి.'],
+        ['స్వచ్ఛత సర్దుబాటు','22K = 91.6% స్వచ్ఛం. 24K ₹9,500/g అయితే, 22K = ₹9,500 × 0.916 = ₹8,702/g.'],
+        ['VA / మేకింగ్ ఛార్జీలు','నగలు చేయడానికి జ్యువెలర్ వసూలు చేసే ఛార్జ్. 6.95% చాలా తక్కువ (సాధారణంగా 10–25%).'],
+        ['వేస్టేజ్','తయారీలో వృధా అయ్యే లోహం. కొన్ని దుకాణాలు 2–5% వేరుగా వేస్తాయి — ప్రశ్నించండి.'],
+        ['GST','బంగారు + మేకింగ్‌పై 3% ప్రభుత్వ పన్ను. తప్పనిసరి.'],
+        ['జీరో డిడక్షన్','పాత బంగారానికి పూర్తి మార్కెట్ విలువ ఇవ్వడం — నిజంగా మంచి ఆఫర్.'],
+      ],
+      silver:[
+        ['వెండి స్వచ్ఛత','999 = ఫైన్ సిల్వర్, 925 = స్టెర్లింగ్ (చాలా ఆభరణాలు), 800 = జర్మన్ సిల్వర్.'],
+        ['మేకింగ్ ఛార్జీలు','వెండికి సాధారణంగా గ్రాముకు ₹50–200 వేస్తారు. 30–40% తగ్గించడం సాధ్యమే.'],
+        ['వెండిపై GST','వెండి విలువ + మేకింగ్‌పై 3%.'],
+        ['వెండి vs బంగారు మేకింగ్','వెండి మూల విలువ తక్కువ కాబట్టి మేకింగ్ % చాలా ఎక్కువగా కనిపిస్తుంది. ఎప్పుడూ గ్రాముకు ₹ అడగండి.'],
+      ],
+      diamond:[
+        ['4Cs','కట్, కలర్, క్లారిటీ, కేరట్ — వజ్రం నాణ్యత నిర్ణయించే నాలుగు అంశాలు. IGI లేదా GIA సర్టిఫికేట్ అడగండి.'],
+        ['GST విభజన','బంగారు సెట్టింగ్: 3% GST. వజ్రం: 1.5% GST. చట్టప్రకారం వేరుగా ఉండాలి.'],
+        ['కేరట్‌కు ధర','రేఖీయంగా ఉండదు — 1ct వజ్రం రెండు 0.5ct వజ్రాల కంటే చాలా ఖరీదు.'],
+        ['సర్టిఫికేట్','IGI/GIA సర్టిఫికేట్ లేనిదే కొనకండి — ధర ధృవీకరించడం సాధ్యం కాదు.'],
+      ],
+    },
+    timing:[
+      ['వారాంతరం వెళ్ళండి','మంగళవారం, బుధవారాలలో తక్కువ మంది వస్తారు — చర్చకు అనువుగా ఉంటుంది.'],
+      ['నెల చివరిలో','చివరి 3 రోజులలో దుకాణాలు లక్ష్యాలు చేరుకోవాలని ఆతురత పడతాయి.'],
+      ['పండుగలు మానుకోండి','అక్షయ తృతీయ, ధంతేరాస్ — చర్చకు అవకాశం శూన్యం.'],
+      ['3 కోట్లు పొందండి','3 దుకాణాల నుండి రాత ధరలు పొందండి. అత్యుత్తమ ధరతో ఇష్టమైన దుకాణానికి తిరిగి వెళ్ళండి.'],
+      ['బడ్జెట్ చెప్పకండి','"₹X కు ఏమి వస్తుందో" అడగండి, "నా దగ్గర ₹X ఉంది" అని చెప్పకండి.'],
+    ],
+    moves:{
+      makingHigh:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 8%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`మీరు ${ctx.makingPct}% చెల్లిస్తున్నారు — సగటు కంటే ఎక్కువ. పోటీ దుకాణాల ధరలు చెప్పి అడిగితే తగ్గుతుంది.`,script:`"ఈ ప్రాంతంలో మేకింగ్ ఛార్జ్ 8% — మీరు ఇవ్వగలరా? నేను ఈరోజే కొనడానికి సిద్ధంగా ఉన్నాను."`}),
+      makingMed:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 5%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`సాదా డిజైన్లకు 5% సాధ్యమవుతుంది. ఈ ఆభరణం స్టాండర్డ్ డిజైన్ అని అడగండి.`,script:`"సాదా డిజైన్‌కు 5% మేకింగ్ ఇవ్వగలరా?"`}),
+      wastage:(ctx)=>({title:`వేస్టేజ్ (${ctx.wastagePct}%) తిరస్కరించండి`,saving:ctx.wastageAmt,desc:`వేస్టేజ్ తరచుగా దాచిన లాభం. వేస్టేజ్ తొలగించాలని లేదా అదే % మేకింగ్ తగ్గించాలని అడగండి.`,script:`"వేస్టేజ్ తొలగించగలరా లేదా మేకింగ్ ${ctx.wastagePct}% తగ్గించగలరా?"`}),
+      bulk:(ctx)=>({title:`పెద్ద కొనుగోలు — గ్రాముకు నిర్ణీత రేటు అడగండి`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g పెద్ద కొనుగోలు. % మేకింగ్ బదులు గ్రాముకు ₹ నిర్ణీత రేటు అడగండి.`,script:`"${ctx.weight}g కోసం గ్రాముకు ₹550 నిర్ణీత మేకింగ్ ఇవ్వండి."`}),
+      deduction:(ctx)=>({title:`పాత బంగారానికి జీరో తగ్గింపు అడగండి`,saving:ctx.deductionAmt||0,desc:`మరో దుకాణంలో జీరో తగ్గింపు ఆఫర్ ఉంటే దాన్ని లాభంగా వాడుకోండి.`,script:`"చెన్నై షాపింగ్ మాల్ జీరో తగ్గింపు ఇస్తోంది — మీరు ఇవ్వగలరా?"`}),
+      cash:(ctx)=>({title:`నగదు చెల్లింపు — అనధికారిక తగ్గింపు`,saving:ctx.total*0.01,desc:`కార్డ్ ఛార్జీలు ఆదా చేస్తే 1% తగ్గింపు సాధ్యం.`,script:`"నేను నగదు చెల్లిస్తే 1% తగ్గింపు ఇవ్వగలరా?"`}),
+      freegift:(ctx)=>({title:`ఉచిత బంగారు నాణెం అడగండి`,saving:1500,desc:`₹50,000+ కొనుగోళ్ళపై విచక్షణాత్మక బడ్జెట్ ఉంటుంది.`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} ఖర్చు చేస్తున్నాను — చిన్న నాణెం ఇవ్వగలరా?"`}),
+      silverMaking:(ctx)=>({title:`వెండి మేకింగ్ చర్చించండి`,saving:ctx.baseVal*0.3,desc:`వెండి మేకింగ్ అత్యంత చర్చించదగినది. 30–40% తగ్గింపు సాధ్యమే.`,script:`"మేకింగ్ ₹${Math.max(50,ctx.makingRate-60)}/g ఇవ్వగలరా?"`}),
+      silverPurity:(ctx)=>({title:`BIS హాల్‌మార్క్ తనిఖీ చేయండి`,saving:0,desc:`జర్మన్ సిల్వర్ (800) స్టెర్లింగ్ (925) గా అమ్మబడుతుంది. BIS హాల్‌మార్క్ తనిఖీ చేయండి.`,script:`"BIS హాల్‌మార్క్ చూపించగలరా?"`}),
+      diaGst:(ctx)=>({title:`వేర్వేరు GST ఇన్వాయిస్ అడగండి`,saving:ctx.diaVal*0.015,desc:`వజ్రం GST (1.5%) మరియు బంగారు GST (3%) చట్టప్రకారం వేర్వేరుగా ఉండాలి.`,script:`"బంగారు 3% మరియు వజ్రం 1.5% GST వేర్వేరుగా చూపించిన ఇన్వాయిస్ ఇవ్వగలరా?"`}),
+      diaCert:(ctx)=>({title:`సర్టిఫైడ్ వజ్రాలు మాత్రమే కొనండి`,saving:0,desc:`IGI/GIA సర్టిఫికేట్ లేకుండా ధర ధృవీకరించడం సాధ్యం కాదు.`,script:`"IGI లేదా GIA సర్టిఫికేట్ ఉందా?"`}),
+      diaLoose:(ctx)=>({title:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ పరిశీలించండి`,saving:ctx.total*0.12,desc:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ 10–15% ఆదా చేస్తుంది.`,script:`"లూజ్ సర్టిఫైడ్ వజ్రాలు వేర్వేరుగా చూపించగలరా?"`}),
+    },
+  },
+  hi:{
+    navTitle:'💍 ज्वेलरी सूट',
+    mbGold:'सोना',mbSilver:'चाँदी',mbDiamond:'हीरा',
+    gC1:'सोने की जानकारी',gLWt:'वजन',gLPur:'शुद्धता',gLRate:'आज की सोने की दर',gLRateH:'(₹/g 24K के लिए)',
+    gC2:'मेकिंग / VA शुल्क',gLMtype:'मेकिंग का प्रकार',gLMtypeS:'% या ₹ प्रति ग्राम',
+    gLMval:'मेकिंग दर',gMvalHint:'जैसे विज्ञापन में 6.95%',gLWaste:'वेस्टेज',gLWasteS:'कुछ दुकानें 2–5% लेती हैं',
+    gLWastep:'वेस्टेज %',gLWastepS:'सोने की कीमत पर',
+    gC3:'टैक्स और एक्सचेंज',gLGst:'सोने पर GST',gLGstS:'मानक 3%',gLHall:'हॉलमार्किंग',gLHallS:'BIS शुल्क यदि हो',
+    gLExch:'पुराना सोना एक्सचेंज',gLExchS:'पुराने सोने का क्रेडिट जोड़ने के लिए',
+    gLOwt:'पुराने सोने का वजन (g)',gLOwtS:'जो आप वापस दे रहे हैं',gLOpur:'पुराने सोने की शुद्धता',
+    gLOded:'कटौती %',gLOdedS:'0% = जीरो डिडक्शन ऑफर',
+    gOptPct:'% (सोने की कीमत पर)',gOptPgram:'₹ प्रति ग्राम',gOptNone:'मेकिंग शुल्क नहीं',
+    gRateLink:'🔗 GoodReturns पर आज की दर देखें →',
+    sC1:'चाँदी की जानकारी',sLWt:'वजन',sLPur:'शुद्धता',sLRate:'आज की चाँदी दर',sLRateH:'(₹/g 999 के लिए)',
+    sC2:'मेकिंग शुल्क',sLMtype:'मेकिंग का प्रकार',sLMtypeS:'चाँदी के लिए ₹/ग्राम सामान्य है',
+    sLMval:'मेकिंग दर',sMvalHint:'सामान्यतः ₹50–200/g',sLGst:'चाँदी पर GST',sLGstS:'चाँदी + मेकिंग पर 3%',
+    sOptPgram:'₹ प्रति ग्राम',sOptPct:'% चाँदी मूल्य पर',sOptFixed:'प्रति टुकड़ा निश्चित ₹',sOptNone:'मेकिंग नहीं',
+    sRateLink:'🔗 GoodReturns पर आज की दर देखें →',
+    dC1:'हीरे की जानकारी',dLCt:'हीरे का वजन',dLShape:'आकृति / कट',dLColor:'रंग ग्रेड',dLClarity:'स्पष्टता',
+    dLPpc:'अनुमानित हीरे की कीमत',dLPpcH:'(₹ प्रति कैरेट — सर्टिफिकेट देखें)',
+    dC2:'सोने की सेटिंग',dLGwt:'सेटिंग वजन',dLGpur:'सेटिंग शुद्धता',dLGrate:'सोने की दर',dLMval:'मेकिंग शुल्क',dLMvalS:'सोने की सेटिंग मूल्य पर %',
+    dC3:'GST — महत्वपूर्ण',
+    dGstNote:'⚠️ <strong>छुपा शुल्क सावधानी:</strong> कटे और पॉलिश किए हीरे पर <strong>GST @ 1.5%</strong> सोने की सेटिंग से अलग लगता है। कई दुकानें इसे छुपाती हैं। अलग इनवॉइस मांगें।',
+    dRateLink:'🔗 IGI/GIA सर्टिफिकेट से सत्यापित करें →',
+    calcBtn:'कुल कीमत की गणना करें →',
+    rLabel:'आप कितना देंगे',rBdHead:'पूरा मूल्य विवरण',
+    perGram:'प्रति ग्राम (सब मिलाकर)',aboveBase:'मूल कीमत से ऊपर',baseRate:'मूल दर/g',basePriceD:'हीरे का मूल्य',
+    pillNoMaking:'✓ मेकिंग शुल्क नहीं',pillNoWastage:'✓ वेस्टेज नहीं',pillGood:'⭐ अच्छा सौदा',pillHigh:'⚠️ अधिक शुल्क',
+    pillZeroDed:'✓ जीरो कटौती',pillHighDed:'⚠️ अधिक कटौती',
+    goldValLbl:'सोने का मूल्य',makingLbl:'मेकिंग / VA शुल्क',wastageLbl:'वेस्टेज',
+    subTotalLbl:'उपकुल (GST से पहले)',gstLbl:'GST',hallLbl:'हॉलमार्किंग',totalLbl:'कुल भुगतान',
+    exchSection:'पुराना सोना एक्सचेंज',oldGoldVal:'पुराने सोने का बाजार मूल्य',deductLbl:'कटौती',netCredit:'पुराने सोने का नेट क्रेडिट',
+    diaValLbl:'हीरे का मूल्य',diaGstLbl:'हीरे पर GST (1.5%)',goldSetLbl:'सोने की सेटिंग मूल्य',goldSetMaking:'सेटिंग मेकिंग',goldSetGst:'सेटिंग पर GST (3%)',
+    exHdr:'📖 इन शब्दों का अर्थ क्या है?',resetBtn:'← नई गणना',
+    footerTxt:'ज्वेलरी सूट · मुफ्त · कोई लॉगिन नहीं · हैदराबाद में बना 🇮🇳',
+    negoEye:'आपकी व्यक्तिगत',negoTtl:'🤝 मोलभाव रणनीति',
+    negoScoreLbl:'ताकत',negoSavLbl:'संभावित बचत',negoSavSub:'सभी सफल हों तो',
+    negoTimingEye:'⏰ समय और रणनीति',
+    statsEye:'📊 उपयोग आंकड़े',sgLbl:'कुल विज़िट',sgNote:'🌐 सभी उपयोगकर्ता',
+    spCalcsL:'आपकी गणनाएं',spStreakL:'दिन की स्ट्रीक',spLastL:'पिछली विज़िट',spNote:'📱 सिर्फ आपके डिवाइस पर',
+    explainers:{
+      gold:[
+        ['सोने की दर','रोज़ तय होने वाली 24K शुद्ध सोने की प्रति ग्राम कीमत।'],
+        ['शुद्धता समायोजन','22K = 91.6% शुद्ध। 24K ₹9,500/g तो 22K = ₹8,702/g।'],
+        ['VA / मेकिंग शुल्क','गहना बनाने का शिल्पकारी शुल्क। 6.95% बहुत कम है (सामान्यतः 10–25%)।'],
+        ['वेस्टेज','बनाते समय बर्बाद होने वाला धातु। कई दुकानें 2–5% अलग से लेती हैं।'],
+        ['GST','सोना + मेकिंग पर 3% सरकारी कर।'],
+        ['जीरो डिडक्शन','पुराने सोने का पूरा बाजार मूल्य मिलता है — वास्तव में अच्छा ऑफर।'],
+      ],
+      silver:[
+        ['चाँदी की शुद्धता','999 = शुद्ध चाँदी, 925 = स्टर्लिंग, 800 = जर्मन सिल्वर।'],
+        ['मेकिंग शुल्क','चाँदी के लिए ₹50–200/g सामान्य है। 30–40% कमी संभव है।'],
+        ['चाँदी पर GST','चाँदी + मेकिंग पर 3%।'],
+        ['चाँदी vs सोना मेकिंग','चाँदी की कम कीमत के कारण मेकिंग % बहुत ज़्यादा दिखती है। हमेशा ₹/ग्राम दर मांगें।'],
+      ],
+      diamond:[
+        ['4Cs','कट, रंग, स्पष्टता, कैरेट — IGI या GIA सर्टिफिकेट ज़रूरी।'],
+        ['GST विभाजन','सोने की सेटिंग: 3% GST। हीरा: 1.5% GST। कानूनन अलग होना चाहिए।'],
+        ['कैरेट प्रति कीमत','रैखिक नहीं — 1ct हीरा दो 0.5ct हीरों से बहुत महंगा।'],
+        ['सर्टिफिकेट','IGI/GIA प्रमाणित हीरे की प्रकाशित कीमत होती है। बिना सर्टिफिकेट के न खरीदें।'],
+      ],
+    },
+    timing:[
+      ['सप्ताह के बीच में जाएं','मंगलवार-बुधवार को कम भीड़ — मोलभाव के लिए बेहतर।'],
+      ['महीने के अंत में','आखिरी 3 दिन दुकानें लक्ष्य के लिए लचीली होती हैं।'],
+      ['त्योहारों से बचें','अक्षय तृतीया, धनतेरस पर मोलभाव की गुंजाइश शून्य।'],
+      ['3 कोट पहले लें','3 दुकानों से लिखित दर लें। सबसे अच्छे के साथ पसंदीदा दुकान जाएं।'],
+      ['बजट मत बताएं','"₹X में क्या मिलेगा?" पूछें, "मेरे पास ₹X है" मत कहें।'],
+    ],
+    moves:{
+      makingHigh:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 8% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`आप ${ctx.makingPct}% दे रहे हैं — औसत से ज़्यादा। प्रतिस्पर्धी दुकानों का हवाला दें।`,script:`"इस इलाके में मेकिंग 8% है। क्या आप मैच कर सकते हैं? मैं आज ही खरीदने के लिए तैयार हूं।"`}),
+      makingMed:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 5% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`सादे डिज़ाइन के लिए 5% संभव है।`,script:`"क्या यह स्टैंडर्ड डिज़ाइन है? 5% मेकिंग मिल सकती है?"`}),
+      wastage:(ctx)=>({title:`वेस्टेज (${ctx.wastagePct}%) को चुनौती दें`,saving:ctx.wastageAmt,desc:`वेस्टेज अक्सर छुपा मुनाफा है। इसे हटाने या मेकिंग कम करने की मांग करें।`,script:`"वेस्टेज हटाएं या मेकिंग ${ctx.wastagePct}% कम करें।"`}),
+      bulk:(ctx)=>({title:`बड़ी खरीद — फ्लैट ₹/ग्राम दर मांगें`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g बड़ी खरीद है। % मेकिंग की बजाय ₹/ग्राम फ्लैट मांगें।`,script:`"${ctx.weight}g के लिए ₹550/g फ्लैट मेकिंग दें।"`}),
+      deduction:(ctx)=>({title:`पुराने सोने पर जीरो कटौती मांगें`,saving:ctx.deductionAmt||0,desc:`दूसरी दुकान का जीरो डिडक्शन ऑफर लीवरेज के रूप में उपयोग करें।`,script:`"चेन्नई शॉपिंग मॉल जीरो डिडक्शन दे रहा है — आप भी दे सकते हैं?"`}),
+      cash:(ctx)=>({title:`नकद दें — अनौपचारिक छूट पाएं`,saving:ctx.total*0.01,desc:`₹30,000+ पर नकद देने पर 1% अनौपचारिक छूट संभव।`,script:`"नकद दूं तो 1% छूट मिल सकती है?"`}),
+      freegift:(ctx)=>({title:`मुफ्त सोने का सिक्का मांगें`,saving:1500,desc:`₹50,000+ पर जौहरियों के पास विवेकाधीन बजट होता है।`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} खर्च कर रहा हूं — छोटा सिक्का मिल सकता है?"`}),
+      silverMaking:(ctx)=>({title:`चाँदी की मेकिंग पर जोरदार मोलभाव करें`,saving:ctx.baseVal*0.3,desc:`चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है। 30–40% कमी सामान्य है।`,script:`"मेकिंग ₹${Math.max(50,ctx.makingRate-60)}/g हो सकती है?"`}),
+      silverPurity:(ctx)=>({title:`BIS हॉलमार्क से शुद्धता जांचें`,saving:0,desc:`जर्मन सिल्वर (800) को स्टर्लिंग (925) के रूप में बेचा जाता है।`,script:`"इस पीस पर BIS हॉलमार्क दिखा सकते हैं?"`}),
+      diaGst:(ctx)=>({title:`अलग GST इनवॉइस मांगें`,saving:ctx.diaVal*0.015,desc:`हीरा GST (1.5%) और सोना GST (3%) कानूनन अलग होना चाहिए।`,script:`"सोने पर 3% और हीरे पर 1.5% GST अलग दिखाएं।"`}),
+      diaCert:(ctx)=>({title:`केवल प्रमाणित हीरा खरीदें`,saving:0,desc:`IGI/GIA सर्टिफिकेट के बिना कीमत सत्यापित नहीं हो सकती।`,script:`"IGI या GIA सर्टिफिकेट है?"`}),
+      diaLoose:(ctx)=>({title:`लूज़ हीरा + अलग सेटिंग पर विचार करें`,saving:ctx.total*0.12,desc:`अलग लूज़ हीरा + सेटिंग खरीदने से 10–15% बचत।`,script:`"लूज़ सर्टिफाइड हीरे अलग दिखा सकते हैं?"`}),
+    },
+  }
+};
+
+// ══════════════════════════════════════════
+//  LANG & METAL SWITCHING
+// ══════════════════════════════════════════
+function applyLang() {
+  const t = T[lang];
+  s('nav-title',t.navTitle);
+  s('mb-gold',t.mbGold);s('mb-silver',t.mbSilver);s('mb-diamond',t.mbDiamond);
+  // gold
+  s('g-c1',t.gC1);s('g-l-wt',t.gLWt);s('g-l-pur',t.gLPur);s('g-l-rate',t.gLRate);s('g-l-rate-h',t.gLRateH);
+  s('g-c2',t.gC2);s('g-l-mtype',t.gLMtype);s('g-l-mtype-s',t.gLMtypeS);
+  s('g-l-mval',t.gLMval);s('g-mval-hint',t.gMvalHint);s('g-l-waste',t.gLWaste);s('g-l-waste-s',t.gLWasteS);
+  s('g-l-wastep',t.gLWastep);s('g-l-wastep-s',t.gLWastepS);
+  s('g-c3',t.gC3);s('g-l-gst',t.gLGst);s('g-l-gst-s',t.gLGstS);s('g-l-hall',t.gLHall);s('g-l-hall-s',t.gLHallS);
+  s('g-l-exch',t.gLExch);s('g-l-exch-s',t.gLExchS);
+  s('g-l-owt',t.gLOwt);s('g-l-owt-s',t.gLOwtS);s('g-l-opur',t.gLOpur);s('g-l-oded',t.gLOded);s('g-l-oded-s',t.gLOdedS);
+  el('g-opt-pct').textContent=t.gOptPct;el('g-opt-pgram').textContent=t.gOptPgram;el('g-opt-none').textContent=t.gOptNone;
+  s('g-rate-link',t.gRateLink);
+  // silver
+  s('s-c1',t.sC1);s('s-l-wt',t.sLWt);s('s-l-pur',t.sLPur);s('s-l-rate',t.sLRate);s('s-l-rate-h',t.sLRateH);
+  s('s-c2',t.sC2);s('s-l-mtype',t.sLMtype);s('s-l-mtype-s',t.sLMtypeS);
+  s('s-l-mval',t.sLMval);s('s-mval-hint',t.sMvalHint);s('s-l-gst',t.sLGst);s('s-l-gst-s',t.sLGstS);
+  el('s-opt-pgram').textContent=t.sOptPgram;el('s-opt-pct').textContent=t.sOptPct;el('s-opt-fixed').textContent=t.sOptFixed;el('s-opt-none').textContent=t.sOptNone;
+  s('s-rate-link',t.sRateLink);
+  // diamond
+  s('d-c1',t.dC1);s('d-l-ct',t.dLCt);s('d-l-shape',t.dLShape);s('d-l-color',t.dLColor);s('d-l-clarity',t.dLClarity);
+  s('d-l-ppc',t.dLPpc);s('d-l-ppc-h',t.dLPpcH);
+  s('d-c2',t.dC2);s('d-l-gwt',t.dLGwt);s('d-l-gpur',t.dLGpur);s('d-l-grate',t.dLGrate);s('d-l-mval',t.dLMval);s('d-l-mval-s',t.dLMvalS);
+  s('d-c3',t.dC3);h('d-gst-note',t.dGstNote);s('d-rate-link',t.dRateLink);
+  // shared
+  s('calc-btn',t.calcBtn);s('r-label',t.rLabel);s('r-bd-head',t.rBdHead);
+  s('expl-hdr-txt',t.exHdr);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
+  s('nego-eye',t.negoEye);s('nego-ttl',t.negoTtl);s('nego-score-lbl',t.negoScoreLbl);
+  s('nego-sav-lbl',t.negoSavLbl);s('nego-sav-sub',t.negoSavSub);s('nego-timing-eye',t.negoTimingEye);
+  s('stats-eye',t.statsEye);s('sg-lbl',t.sgLbl);s('sg-note',t.sgNote);
+  s('sp-calcs-l',t.spCalcsL);s('sp-streak-l',t.spStreakL);s('sp-last-l',t.spLastL);s('sp-note',t.spNote);
+  // rebuild explainer
+  buildExplainer();
+  // rebuild nego if exists
+  if(_lastCtx) buildNego(_lastCtx);
+  renderStats();
+}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
+  applyLang();
+}
+
+function setMetal(m){
+  metal=m;
+  document.body.dataset.metal=m;
+  document.querySelectorAll('.metal-btn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));
+  ['gold','silver','diamond'].forEach(x=>el('form-'+x).style.display=x===m?'':'none');
+  el('results').classList.remove('visible');
+  el('nego-wrap').style.display='none';
+  _lastCtx=null;
+  buildExplainer();
+  // update select styling
+  document.querySelectorAll('.field input, .field select, .mini').forEach(e=>{
+    e.style.background='var(--ac-pale)';
+  });
+}
+
+el('g-mtype').addEventListener('change',function(){
+  el('g-mval-row').style.display=this.value==='none'?'none':'flex';
+  el('g-munit').textContent=this.value==='pct'?'%':'₹/g';
+});
+el('s-mtype').addEventListener('change',function(){
+  el('s-mval-row').style.display=this.value==='none'?'none':'flex';
+  const u={pct:'%',pgram:'₹/g',fixed:'₹'};
+  el('s-munit').textContent=u[this.value]||'₹/g';
+});
+
+// ══════════════════════════════════════════
+//  CALCULATE
+// ══════════════════════════════════════════
+function calculate(){
+  if(metal==='gold') calcGold();
+  else if(metal==='silver') calcSilver();
+  else calcDiamond();
+}
+
+function calcGold(){
+  const t=T[lang];
+  const wt=parseFloat(el('g-weight').value)||0;
+  const pur=parseInt(el('g-purity').value);
+  const rate=parseFloat(el('g-rate').value)||0;
+  const mtype=el('g-mtype').value;
+  const mval=parseFloat(el('g-mval').value)||0;
+  const wOn=el('g-waste-tog').checked;
+  const wPct=wOn?(parseFloat(el('g-wastep').value)||0):0;
+  const gst=parseFloat(el('g-gst').value)||3;
+  const hall=parseFloat(el('g-hall').value)||0;
+  const exchOn=el('g-exch-tog').checked;
+  const owt=exchOn?(parseFloat(el('g-owt').value)||0):0;
+  const opur=parseInt(el('g-opur').value)||22;
+  const odedPct=exchOn?(parseFloat(el('g-oded').value)||0):0;
+
+  const baseRate=rate*pf(pur);
+  const goldVal=wt*baseRate;
+  let making=0;
+  if(mtype==='pct') making=goldVal*mval/100;
+  else if(mtype==='pgram') making=wt*mval;
+  const wastage=goldVal*wPct/100;
+  const preTax=goldVal+making+wastage;
+  const gstAmt=preTax*gst/100;
+  const subtotal=preTax+gstAmt+hall;
+
+  let oldGoldVal=0,deduction=0,oldCredit=0,finalTotal=subtotal;
+  if(exchOn){
+    oldGoldVal=owt*rate*pf(opur);
+    deduction=oldGoldVal*odedPct/100;
+    oldCredit=oldGoldVal-deduction;
+    finalTotal=Math.max(0,subtotal-oldCredit);
+  }
+
+  const surcharge=((subtotal-goldVal)/goldVal)*100;
+
+  el('r-amount').textContent=fmt(finalTotal);
+  el('r-sub').textContent=`${wt}g ${pur}K @ ₹${Math.round(rate).toLocaleString('en-IN')}/g`;
+  el('r-insights').innerHTML=`
+    <div class="ibox"><div class="iv">₹${Math.round(subtotal/wt).toLocaleString('en-IN')}</div><div class="il">${t.perGram}</div></div>
+    <div class="ibox"><div class="iv">${surcharge.toFixed(1)}%</div><div class="il">${t.aboveBase}</div></div>
+    <div class="ibox"><div class="iv">₹${Math.round(baseRate).toLocaleString('en-IN')}</div><div class="il">${t.baseRate}</div></div>`;
+
+  const pills=[];
+  if(mtype==='none') pills.push(`<div class="pill g">${t.pillNoMaking}</div>`);
+  if(!wOn) pills.push(`<div class="pill g">${t.pillNoWastage}</div>`);
+  if(surcharge<12) pills.push(`<div class="pill a">${t.pillGood}</div>`);
+  if(surcharge>20) pills.push(`<div class="pill r">${t.pillHigh}</div>`);
+  if(exchOn&&odedPct===0) pills.push(`<div class="pill g">${t.pillZeroDed}</div>`);
+  if(exchOn&&odedPct>5) pills.push(`<div class="pill r">${t.pillHighDed}</div>`);
+  el('r-pills').innerHTML=pills.join('');
+
+  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl} (${wt}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(goldVal)}</div></div>`;
+  if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}<span class="bs">${mtype==='pct'?mval+'%':fmt(mval)+'/g'}</span></div><div class="ba">+ ${fmt(making)}</div></div>`;
+  if(wastage>0) rows+=`<div class="brow neg"><div class="bl">${t.wastageLbl}<span class="bs">${wPct}%</span></div><div class="ba">+ ${fmt(wastage)}</div></div>`;
+  rows+=`<div class="brow"><div class="bl">${t.subTotalLbl}</div><div class="ba">${fmt(preTax)}</div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.gstLbl} @ ${gst}%</div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
+  if(hall>0) rows+=`<div class="brow neg"><div class="bl">${t.hallLbl}</div><div class="ba">+ ${fmt(hall)}</div></div>`;
+  if(exchOn){
+    rows+=`<div class="brow" style="background:#F0FFF4"><div class="bl" style="color:var(--jade)">${t.oldGoldVal} (${owt}g, ${opur}K)</div><div class="ba" style="color:var(--jade)">${fmt(oldGoldVal)}</div></div>`;
+    if(deduction>0) rows+=`<div class="brow neg"><div class="bl">${t.deductLbl} @ ${odedPct}%</div><div class="ba">− ${fmt(deduction)}</div></div>`;
+    rows+=`<div class="brow" style="background:#E8F5E9"><div class="bl" style="color:var(--jade)">${t.netCredit}</div><div class="ba" style="color:var(--jade)">− ${fmt(oldCredit)}</div></div>`;
+  }
+  rows+=`<div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(finalTotal)}</div></div>`;
+  el('r-rows').innerHTML=rows;
+
+  const ctx={mode:'gold',weight:wt,purity:pur,baseVal:goldVal,makingPct:mtype==='pct'?mval:0,
+    makingRate:mtype==='pgram'?mval:0,wastageAmt:wastage,wastagePct:wPct,hallmark:hall,
+    total:finalTotal,deductionAmt:deduction,surcharge};
+  _lastCtx=ctx;
+  buildNego(ctx);
+  showResults();
+  recordCalc('gold');
+}
+
+function calcSilver(){
+  const t=T[lang];
+  const wt=parseFloat(el('s-weight').value)||0;
+  const pur=parseInt(el('s-purity').value);
+  const rate=parseFloat(el('s-rate').value)||0;
+  const mtype=el('s-mtype').value;
+  const mval=parseFloat(el('s-mval').value)||0;
+  const gst=parseFloat(el('s-gst').value)||3;
+
+  const baseRate=rate*pf(pur);
+  const silverVal=wt*baseRate;
+  let making=0;
+  if(mtype==='pct') making=silverVal*mval/100;
+  else if(mtype==='pgram') making=wt*mval;
+  else if(mtype==='fixed') making=mval;
+  const preTax=silverVal+making;
+  const gstAmt=preTax*gst/100;
+  const total=preTax+gstAmt;
+  const surcharge=making>0?((making+gstAmt)/silverVal)*100:gst;
+
+  el('r-amount').textContent=fmt(total);
+  el('r-sub').textContent=`${wt}g ${pur} Silver @ ₹${Math.round(rate).toLocaleString('en-IN')}/g`;
+  el('r-insights').innerHTML=`
+    <div class="ibox"><div class="iv">₹${Math.round(total/wt).toLocaleString('en-IN')}</div><div class="il">${t.perGram}</div></div>
+    <div class="ibox"><div class="iv">${surcharge.toFixed(1)}%</div><div class="il">${t.aboveBase}</div></div>
+    <div class="ibox"><div class="iv">₹${Math.round(baseRate).toLocaleString('en-IN')}</div><div class="il">${t.baseRate}</div></div>`;
+
+  const pills=[];
+  if(mtype==='none') pills.push(`<div class="pill g">${t.pillNoMaking}</div>`);
+  el('r-pills').innerHTML=pills.join('');
+
+  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl.replace('Gold','Silver').replace('బంగారం','వెండి').replace('सोने','चाँदी')} (${wt}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(silverVal)}</div></div>`;
+  if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}</div><div class="ba">+ ${fmt(making)}</div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.gstLbl} @ ${gst}%</div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
+  rows+=`<div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
+  el('r-rows').innerHTML=rows;
+
+  const ctx={mode:'silver',weight:wt,baseVal:silverVal,makingPct:mtype==='pct'?mval:0,
+    makingRate:mtype==='pgram'?mval:0,total};
+  _lastCtx=ctx;
+  buildNego(ctx);
+  showResults();
+  recordCalc('silver');
+}
+
+function calcDiamond(){
+  const t=T[lang];
+  const carat=parseFloat(el('d-carat').value)||0;
+  const ppc=parseFloat(el('d-ppc').value)||0;
+  const colMult=parseFloat(el('d-color').value)||1;
+  const claMult=parseFloat(el('d-clarity').value)||1;
+  const gwt=parseFloat(el('d-gwt').value)||0;
+  const gpur=parseInt(el('d-gpur').value)||18;
+  const grate=parseFloat(el('d-grate').value)||0;
+  const making=parseFloat(el('d-making').value)||0;
+  const ggst=parseFloat(el('d-ggst').value)||3;
+  const dgst=parseFloat(el('d-dgst').value)||1.5;
+
+  const diaVal=carat*ppc;
+  const diaGstAmt=diaVal*dgst/100;
+  const goldSet=gwt*grate*pf(gpur);
+  const goldMaking=goldSet*making/100;
+  const goldPreTax=goldSet+goldMaking;
+  const goldGstAmt=goldPreTax*ggst/100;
+  const total=diaVal+diaGstAmt+goldPreTax+goldGstAmt;
+
+  el('r-amount').textContent=fmt(total);
+  el('r-sub').textContent=`${carat}ct Diamond + ${gwt}g ${gpur}K Setting`;
+  el('r-insights').innerHTML=`
+    <div class="ibox"><div class="iv">${fmt(diaVal)}</div><div class="il">${t.basePriceD}</div></div>
+    <div class="ibox"><div class="iv">${fmt(goldPreTax)}</div><div class="il">${t.goldSetLbl}</div></div>
+    <div class="ibox"><div class="iv">${fmt(diaGstAmt+goldGstAmt)}</div><div class="il">${t.gstLbl} Total</div></div>`;
+
+  el('r-pills').innerHTML=`<div class="pill r">⚠️ Always insist on IGI/GIA certificate</div>`;
+
+  el('r-rows').innerHTML=`
+    <div class="brow pos"><div class="bl">${t.diaValLbl} (${carat}ct × ₹${ppc.toLocaleString('en-IN')})</div><div class="ba">${fmt(diaVal)}</div></div>
+    <div class="brow neg"><div class="bl">${t.diaGstLbl}</div><div class="ba">+ ${fmt(diaGstAmt)}</div></div>
+    <div class="brow pos"><div class="bl">${t.goldSetLbl} (${gwt}g, ${gpur}K)</div><div class="ba">${fmt(goldSet)}</div></div>
+    <div class="brow neg"><div class="bl">${t.goldSetMaking} (${making}%)</div><div class="ba">+ ${fmt(goldMaking)}</div></div>
+    <div class="brow neg"><div class="bl">${t.goldSetGst}</div><div class="ba">+ ${fmt(goldGstAmt)}</div></div>
+    <div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
+
+  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making};
+  _lastCtx=ctx;
+  buildNego(ctx);
+  showResults();
+  recordCalc('diamond');
+}
+
+function showResults(){
+  el('results').classList.add('visible');
+  el('results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  NEGOTIATION PLAYBOOK
+// ══════════════════════════════════════════
+function buildNego(ctx){
+  const t=T[lang];
+  const moves=t.moves;
+  let applicable=[];
+
+  if(ctx.mode==='gold'){
+    if(ctx.makingPct>10) applicable.push({priority:'high',...moves.makingHigh(ctx)});
+    else if(ctx.makingPct>=5) applicable.push({priority:'med',...moves.makingMed(ctx)});
+    if(ctx.wastageAmt>0) applicable.push({priority:'high',...moves.wastage(ctx)});
+    if(ctx.weight>=20) applicable.push({priority:'high',...moves.bulk(ctx)});
+    if(ctx.deductionAmt>0) applicable.push({priority:'high',...moves.deduction(ctx)});
+    applicable.push({priority:'med',...moves.cash(ctx)});
+    if(ctx.total>=50000) applicable.push({priority:'low',...moves.freegift(ctx)});
+  } else if(ctx.mode==='silver'){
+    applicable.push({priority:'high',...moves.silverMaking(ctx)});
+    applicable.push({priority:'med',...moves.silverPurity(ctx)});
+    applicable.push({priority:'med',...moves.cash(ctx)});
+  } else {
+    applicable.push({priority:'high',...moves.diaGst(ctx)});
+    applicable.push({priority:'high',...moves.diaCert(ctx)});
+    applicable.push({priority:'med',...moves.diaLoose(ctx)});
+    applicable.push({priority:'med',...moves.cash(ctx)});
+  }
+
+  const score=Math.min(10,Math.round(
+    applicable.filter(m=>m.priority==='high').length*3+
+    applicable.filter(m=>m.priority==='med').length*1.5+
+    applicable.filter(m=>m.priority==='low').length*0.5));
+  const totalSav=applicable.reduce((a,m)=>a+Math.max(0,m.saving||0),0);
+  const scoreColor=score>=7?'#F5D76E':score>=4?'#FFA94D':'#6FCF97';
+
+  el('nego-score-num').textContent=score+'/10';
+  el('nego-score-num').style.color=scoreColor;
+  el('nego-sav-amt').textContent=fmt(totalSav);
+
+  const rk={high:'high',med:'med',low:'low'};
+  el('nego-moves').innerHTML=applicable.map((m,i)=>`
+    <div class="move">
+      <div class="move-top">
+        <div class="move-rank ${rk[m.priority]}">${i+1}</div>
+        <div class="move-cnt">
+          <div class="move-title">${m.title}</div>
+          <div class="move-sav ${(m.saving||0)<100?'na':''}">${(m.saving||0)>100?'💰 '+fmt(m.saving):(lang==='te'?'ఆర్థికేతర లాభం':lang==='hi'?'गैर-मौद्रिक लाभ':'Non-monetary benefit')}</div>
+          <div class="move-desc">${m.desc}</div>
+        </div>
+      </div>
+      <div class="move-script">${m.script}</div>
+    </div>`).join('');
+
+  el('nego-timing-tips').innerHTML=t.timing.map(([title,body])=>
+    `<div class="t-tip"><span>${title}:</span> ${body}</div>`).join('');
+
+  el('nego-wrap').style.display='block';
+}
+
+// ══════════════════════════════════════════
+//  EXPLAINER
+// ══════════════════════════════════════════
+function buildExplainer(){
+  const t=T[lang];
+  const terms=t.explainers[metal]||t.explainers.gold;
+  el('expl-body').innerHTML=terms.map(([term,def])=>
+    `<div class="term"><strong>${term}:</strong> ${def}</div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  RESET
+// ══════════════════════════════════════════
+function resetCalc(){
+  el('results').classList.remove('visible');
+  el('nego-wrap').style.display='none';
+  _lastCtx=null;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  STATS (localStorage + CountAPI)
+// ══════════════════════════════════════════
+const STATS_KEY='jewellery_suite_stats';
+const loadStats=()=>{try{return JSON.parse(localStorage.getItem(STATS_KEY))||{}}catch(e){return{}}};
+const saveStats=s=>{try{localStorage.setItem(STATS_KEY,JSON.stringify(s))}catch(e){}};
+
+function recordVisit(){
+  const st=loadStats();
+  const today=new Date().toISOString().slice(0,10);
+  const prev=st.prevVisitDate;
+  if(prev){
+    const diff=(new Date(today)-new Date(prev))/86400000;
+    st.streak=diff<=1?(st.streak||1)+(diff===1?1:0):1;
+  } else st.streak=1;
+  st.prevVisitDate=today;st.lastVisit=today;
+  st.calcs=st.calcs||0;
+  st.modes=st.modes||{gold:0,silver:0,diamond:0};
+  saveStats(st);
+}
+
+function recordCalc(mode){
+  const st=loadStats();
+  st.calcs=(st.calcs||0)+1;
+  st.modes=st.modes||{gold:0,silver:0,diamond:0};
+  st.modes[mode]=(st.modes[mode]||0)+1;
+  saveStats(st);
+  renderStats();
+}
+
+function renderStats(){
+  const st=loadStats();const t=T[lang];
+  if(el('sp-calcs')) el('sp-calcs').textContent=(st.calcs||0).toLocaleString('en-IN');
+  if(el('sp-streak')) el('sp-streak').textContent=(st.streak||0)+'🔥';
+  if(el('sp-last')) el('sp-last').textContent=st.lastVisit
+    ?new Date(st.lastVisit).toLocaleDateString(lang==='te'?'te-IN':lang==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'short'}):'—';
+  const modes=st.modes||{};
+  const modeNames={
+    gold: t.mbGold, silver: t.mbSilver, diamond: t.mbDiamond
+  };
+  if(el('stats-modes')) el('stats-modes').innerHTML=Object.entries(modes).map(([k,v])=>`
+    <div class="mode-chip"><div class="mc-n">${v}</div><div class="mc-l">${modeNames[k]||k}</div></div>`).join('');
+}
+
+async function fetchGlobalVisits(){
+  try{
+    const r=await fetch('https://api.counterapi.dev/v1/lawsticker/jewellery-suite-visits/up');
+    const d=await r.json();
+    if(el('sg-visits')) el('sg-visits').textContent=(d.count||d.value||0).toLocaleString('en-IN');
+  }catch(e){if(el('sg-visits'))el('sg-visits').textContent='—';}
+}
+
+// INIT
+recordVisit();
+applyLang();
+buildExplainer();
+fetchGlobalVisits();
+</script>
+</body>
+</html>

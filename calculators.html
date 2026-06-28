@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Calculators — LawSticker AI</title>
+<meta name="description" content="Free calculators for gold, silver, diamond, property, restaurant GST and more. In English, Telugu and Hindi. Know your numbers before you pay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy:    #0D1117;
+  --navy2:   #161B27;
+  --gold:    #D4A017;
+  --gold-l:  #F5D76E;
+  --teal:    #0D9488;
+  --cream:   #FEFCF5;
+  --mist:    #F3F4F6;
+  --silver:  #8B95A8;
+  --ink:     #1A1208;
+  --maroon:  #6B1C1C;
+  --jade:    #10B981;
+  --amber:   #B45309;
+  --purple:  #7C3AED;
+  --blue:    #0369A1;
+  --rose:    #BE185D;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-brand span{color:#fff}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 11px;border-radius:16px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gold);color:var(--gold);background:rgba(212,160,23,0.1)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:48px 20px 52px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(212,160,23,0.02) 40px,rgba(212,160,23,0.02) 41px)}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,0.5);margin-bottom:10px;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,48px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;position:relative}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.45);max-width:380px;margin:0 auto 32px;line-height:1.6;position:relative}
+.hero-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;position:relative}
+.hstat{text-align:center}
+.hstat-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--gold-l);line-height:1}
+.hstat-lbl{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:3px}
+
+/* FILTER TABS */
+.filter-wrap{background:#fff;border-bottom:1px solid rgba(0,0,0,0.06);padding:0 16px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;position:sticky;top:53px;z-index:90}
+.filter-wrap::-webkit-scrollbar{display:none}
+.filter-tab{padding:14px 16px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--silver);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.filter-tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+
+/* GRID */
+.grid-wrap{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+.grid-section{margin-bottom:36px}
+.grid-section-title{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--silver);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.grid-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(0,0,0,0.08),transparent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* CARDS */
+.calc-card{background:#fff;border-radius:16px;padding:18px 16px 16px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 1px 8px rgba(0,0,0,0.04);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc,var(--gold));border-radius:16px 16px 0 0}
+.calc-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.09)}
+.calc-card.coming{opacity:.5;pointer-events:none;cursor:default}
+.calc-card.full{grid-column:1/-1;flex-direction:row;align-items:flex-start;gap:14px}
+.calc-card.full .card-icon{font-size:32px;flex-shrink:0;margin-top:2px}
+.calc-card.full .card-body{flex:1;display:flex;flex-direction:column;gap:6px}
+.card-icon{font-size:26px;line-height:1}
+.card-cat{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cc,var(--gold))}
+.card-title{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
+.card-desc{font-size:12px;color:var(--silver);line-height:1.55;flex:1}
+.card-footer{display:flex;align-items:center;gap:8px;margin-top:4px}
+.badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.badge.live{background:rgba(16,185,129,.1);color:var(--jade)}
+.badge.new{background:rgba(212,160,23,.1);color:var(--amber)}
+.badge.soon{background:var(--mist);color:var(--silver)}
+.badge.hot{background:rgba(190,24,93,.1);color:var(--rose)}
+.card-cta{font-size:12px;font-weight:700;color:var(--cc,var(--gold))}
+
+/* BOTTOM STRIP */
+.bottom-strip{background:var(--navy);padding:20px;text-align:center}
+.bottom-strip p{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.7}
+.bottom-strip a{color:var(--gold);text-decoration:none}
+
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr}
+  .calc-card.full{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="https://lawsticker-ai.com"><span>LawSticker</span> AI</a>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow" id="h-eyebrow">Free · No login · Trilingual</div>
+  <h1 id="h-title">Know your numbers<br>before you <span class="g">pay.</span></h1>
+  <p class="hero-sub" id="h-sub">Calculators that show you every rupee — with negotiation tips backed by real data.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num" id="hs-tools">8</div><div class="hstat-lbl" id="hsl-tools">Calculators</div></div>
+    <div class="hstat"><div class="hstat-num" id="hs-visits">⏳</div><div class="hstat-lbl" id="hsl-visits">Total Visits</div></div>
+    <div class="hstat"><div class="hstat-num">3</div><div class="hstat-lbl" id="hsl-langs">Languages</div></div>
+  </div>
+</div>
+
+<div class="filter-wrap">
+  <button class="filter-tab active" onclick="filterCat('all')" id="ft-all">All</button>
+  <button class="filter-tab" onclick="filterCat('jewellery')" id="ft-jwl">💍 Jewellery</button>
+  <button class="filter-tab" onclick="filterCat('property')" id="ft-prop">🏠 Property</button>
+  <button class="filter-tab" onclick="filterCat('food')" id="ft-food">🍽️ Food</button>
+  <button class="filter-tab" onclick="filterCat('utility')" id="ft-util">⚡ Utility</button>
+  <button class="filter-tab" onclick="filterCat('law')" id="ft-law">⚖️ Law</button>
+</div>
+
+<div class="grid-wrap">
+
+  <!-- JEWELLERY -->
+  <div class="grid-section" data-cat="jewellery">
+    <div class="grid-section-title" id="gs-jwl">Jewellery</div>
+    <div class="grid">
+      <a class="calc-card full" href="jewellery-suite.html" style="--cc:var(--gold)">
+        <div class="card-icon">💍</div>
+        <div class="card-body">
+          <div class="card-cat" id="cc-jwl">Jewellery · Gold · Silver · Diamond</div>
+          <div class="card-title" id="ct-jwl">Jewellery Suite Calculator</div>
+          <div class="card-desc" id="cd-jwl">Gold, silver and diamond purchase — full price breakdown, GST, making charges, wastage, old gold exchange, plus personalised negotiation playbook for each metal.</div>
+          <div class="card-footer">
+            <span class="badge live" id="cb-jwl">✓ Live</span>
+            <span class="badge hot" id="cb-jwl2">Gold + Silver + Diamond</span>
+            <span class="card-cta" id="cta-jwl">Open →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PROPERTY -->
+  <div class="grid-section" data-cat="property">
+    <div class="grid-section-title" id="gs-prop">Property</div>
+    <div class="grid">
+      <div class="calc-card coming" style="--cc:var(--purple)">
+        <div class="card-icon">🏠</div>
+        <div class="card-cat" id="cc-stamp">Property</div>
+        <div class="card-title" id="ct-stamp">Stamp Duty Calculator</div>
+        <div class="card-desc" id="cd-stamp">Telangana stamp duty 4% + registration 0.5% + transfer duty 1.5% — exact cost before you sign.</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon1">Coming soon</span></div>
+      </div>
+      <div class="calc-card coming" style="--cc:var(--purple)">
+        <div class="card-icon">🏢</div>
+        <div class="card-cat" id="cc-flat">Property</div>
+        <div class="card-title" id="ct-flat">Flat Purchase Calculator</div>
+        <div class="card-desc" id="cd-flat">Under-construction vs ready-to-move GST, registration, builder charges — full cost with negotiation tips.</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon2">Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOD -->
+  <div class="grid-section" data-cat="food">
+    <div class="grid-section-title" id="gs-food">Food & Dining</div>
+    <div class="grid">
+      <div class="calc-card coming full" style="--cc:var(--teal)">
+        <div class="card-icon">🧾</div>
+        <div class="card-body">
+          <div class="card-cat" id="cc-rest">Food · GST</div>
+          <div class="card-title" id="ct-rest">Restaurant Bill Checker</div>
+          <div class="card-desc" id="cd-rest">Verify GST charges, validate GSTIN authenticity, detect illegal service charges — know exactly what you legally owe.</div>
+          <div class="card-footer"><span class="badge soon" id="cb-soon3">Coming soon</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UTILITY -->
+  <div class="grid-section" data-cat="utility">
+    <div class="grid-section-title" id="gs-util">Utilities</div>
+    <div class="grid">
+      <div class="calc-card coming" style="--cc:var(--amber)">
+        <div class="card-icon">⚡</div>
+        <div class="card-cat" id="cc-elec">Utility</div>
+        <div class="card-title" id="ct-elec">Electricity Bill</div>
+        <div class="card-desc" id="cd-elec">TSSPDCL slab-by-slab breakdown — verify before you pay.</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon4">Coming soon</span></div>
+      </div>
+      <div class="calc-card coming" style="--cc:var(--amber)">
+        <div class="card-icon">💰</div>
+        <div class="card-cat" id="cc-chit">Finance</div>
+        <div class="card-title" id="ct-chit">Chit Fund Calculator</div>
+        <div class="card-desc" id="cd-chit">Real returns vs FD — is your chit fund worth it?</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon5">Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAW -->
+  <div class="grid-section" data-cat="law">
+    <div class="grid-section-title" id="gs-law">Law & Legal</div>
+    <div class="grid">
+      <div class="calc-card coming" style="--cc:var(--blue)">
+        <div class="card-icon">⚖️</div>
+        <div class="card-cat" id="cc-court">Law</div>
+        <div class="card-title" id="ct-court">Court Fee Calculator</div>
+        <div class="card-desc" id="cd-court">Civil suit court fees by claim value — Telangana courts.</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon6">Coming soon</span></div>
+      </div>
+      <div class="calc-card coming" style="--cc:var(--blue)">
+        <div class="card-icon">📋</div>
+        <div class="card-cat" id="cc-limit">Law</div>
+        <div class="card-title" id="ct-limit">Limitation Date Calculator</div>
+        <div class="card-desc" id="cd-limit">Given filing date, calculate last date to appeal under Limitation Act.</div>
+        <div class="card-footer"><span class="badge soon" id="cb-soon7">Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-strip">
+  <p id="b-txt">All calculators are free, private and trilingual · <a href="https://lawsticker-ai.com">LawSticker AI</a> · Made in Hyderabad 🇮🇳</p>
+</div>
+
+<script>
+const T = {
+  en:{
+    hEyebrow:'Free · No login · Trilingual',
+    hTitle:'Know your numbers<br>before you <span class="g">pay.</span>',
+    hSub:'Calculators that show you every rupee — with negotiation tips backed by real data.',
+    hsTools:'Calculators',hsVisits:'Total Visits',hsLangs:'Languages',
+    ftAll:'All',ftJwl:'💍 Jewellery',ftProp:'🏠 Property',ftFood:'🍽️ Food',ftUtil:'⚡ Utility',ftLaw:'⚖️ Law',
+    gsJwl:'Jewellery',gsProp:'Property',gsFood:'Food & Dining',gsUtil:'Utilities',gsLaw:'Law & Legal',
+    ccJwl:'Jewellery · Gold · Silver · Diamond',ctJwl:'Jewellery Suite Calculator',
+    cdJwl:'Gold, silver and diamond purchase — full price breakdown, GST, making charges, wastage, old gold exchange, plus personalised negotiation playbook for each metal.',
+    cbJwl:'✓ Live',cbJwl2:'Gold + Silver + Diamond',ctaJwl:'Open →',
+    ccStamp:'Property',ctStamp:'Stamp Duty Calculator',cdStamp:'Telangana stamp duty 4% + registration 0.5% + transfer duty 1.5% — exact cost before you sign.',
+    ccFlat:'Property',ctFlat:'Flat Purchase Calculator',cdFlat:'Under-construction vs ready-to-move GST, registration, builder charges — full cost with negotiation tips.',
+    ccRest:'Food · GST',ctRest:'Restaurant Bill Checker',cdRest:'Verify GST charges, validate GSTIN authenticity, detect illegal service charges — know exactly what you legally owe.',
+    ccElec:'Utility',ctElec:'Electricity Bill',cdElec:'TSSPDCL slab-by-slab breakdown — verify before you pay.',
+    ccChit:'Finance',ctChit:'Chit Fund Calculator',cdChit:'Real returns vs FD — is your chit fund worth it?',
+    ccCourt:'Law',ctCourt:'Court Fee Calculator',cdCourt:'Civil suit court fees by claim value — Telangana courts.',
+    ccLimit:'Law',ctLimit:'Limitation Date Calculator',cdLimit:'Given filing date, calculate last date to appeal under Limitation Act.',
+    cbSoon:'Coming soon',
+    bTxt:'All calculators are free, private and trilingual · <a href="https://lawsticker-ai.com">LawSticker AI</a> · Made in Hyderabad 🇮🇳',
+  },
+  te:{
+    hEyebrow:'ఉచితం · లాగిన్ అవసరం లేదు · త్రిభాష',
+    hTitle:'చెల్లించే ముందు<br>మీ <span class="g">సంఖ్యలు</span> తెలుసుకోండి.',
+    hSub:'ప్రతి రూపాయి వివరాలు చూపించే కాలిక్యులేటర్లు — నిజమైన డేటాతో చర్చల చిట్కాలు.',
+    hsTools:'కాలిక్యులేటర్లు',hsVisits:'మొత్తం సందర్శనలు',hsLangs:'భాషలు',
+    ftAll:'అన్నీ',ftJwl:'💍 ఆభరణాలు',ftProp:'🏠 ఆస్తి',ftFood:'🍽️ తినుబండారాలు',ftUtil:'⚡ యుటిలిటీ',ftLaw:'⚖️ చట్టం',
+    gsJwl:'ఆభరణాలు',gsProp:'ఆస్తి',gsFood:'భోజనం & డైనింగ్',gsUtil:'యుటిలిటీలు',gsLaw:'చట్టం & న్యాయం',
+    ccJwl:'ఆభరణాలు · బంగారు · వెండి · వజ్రం',ctJwl:'ఆభరణాల సూట్ కాలిక్యులేటర్',
+    cdJwl:'బంగారు, వెండి మరియు వజ్రం కొనుగోలు — పూర్తి ధర వివరాలు, GST, మేకింగ్ ఛార్జీలు, పాత బంగారం మార్పిడి, చర్చల వ్యూహం.',
+    cbJwl:'✓ లైవ్',cbJwl2:'బంగారు + వెండి + వజ్రం',ctaJwl:'తెరవండి →',
+    ccStamp:'ఆస్తి',ctStamp:'స్టాంప్ డ్యూటీ కాలిక్యులేటర్',cdStamp:'తెలంగాణ స్టాంప్ డ్యూటీ 4% + రిజిస్ట్రేషన్ 0.5% + బదిలీ సుంకం 1.5%.',
+    ccFlat:'ఆస్తి',ctFlat:'ఫ్లాట్ కొనుగోలు కాలిక్యులేటర్',cdFlat:'నిర్మాణంలో vs రెడీ-టు-మూవ్ GST, రిజిస్ట్రేషన్, బిల్డర్ ఛార్జీలు — చర్చల చిట్కాలతో.',
+    ccRest:'తినుబండారాలు · GST',ctRest:'రెస్టారెంట్ బిల్ తనిఖీ',cdRest:'GST ఛార్జీలు సరిచూడండి, GSTIN నిజమైనదో తనిఖీ చేయండి, అక్రమ సర్వీస్ ఛార్జ్ గుర్తించండి.',
+    ccElec:'యుటిలిటీ',ctElec:'విద్యుత్ బిల్',cdElec:'TSSPDCL స్లాబ్ వారీగా వివరాలు — చెల్లించే ముందు తనిఖీ.',
+    ccChit:'ఫైనాన్స్',ctChit:'చిట్ ఫండ్ కాలిక్యులేటర్',cdChit:'FD కంటే మీ చిట్ ఫండ్ నిజంగా మంచి రాబడి ఇస్తుందా?',
+    ccCourt:'చట్టం',ctCourt:'కోర్టు ఫీజు కాలిక్యులేటర్',cdCourt:'వాదన విలువ ఆధారంగా కోర్టు ఫీజు — తెలంగాణ కోర్టులు.',
+    ccLimit:'చట్టం',ctLimit:'పరిమితి తేదీ కాలిక్యులేటర్',cdLimit:'దాఖలు తేదీ ఇచ్చి అప్పీల్ చేయడానికి చివరి తేదీ లెక్కించండి.',
+    cbSoon:'త్వరలో వస్తుంది',
+    bTxt:'అన్ని కాలిక్యులేటర్లు ఉచితం, గోప్యంగా మరియు త్రిభాషలో · <a href="https://lawsticker-ai.com">LawSticker AI</a> · హైదరాబాద్‌లో తయారైంది 🇮🇳',
+  },
+  hi:{
+    hEyebrow:'मुफ्त · कोई लॉगिन नहीं · तीन भाषाएं',
+    hTitle:'भुगतान से पहले<br>अपने <span class="g">नंबर</span> जानें।',
+    hSub:'हर रुपया दिखाने वाले कैलकुलेटर — असली डेटा से मोलभाव के सुझाव।',
+    hsTools:'कैलकुलेटर',hsVisits:'कुल विज़िट',hsLangs:'भाषाएं',
+    ftAll:'सभी',ftJwl:'💍 गहने',ftProp:'🏠 संपत्ति',ftFood:'🍽️ खाना',ftUtil:'⚡ यूटिलिटी',ftLaw:'⚖️ कानून',
+    gsJwl:'गहने',gsProp:'संपत्ति',gsFood:'खाना और डाइनिंग',gsUtil:'यूटिलिटीज़',gsLaw:'कानून और न्याय',
+    ccJwl:'गहने · सोना · चाँदी · हीरा',ctJwl:'ज्वेलरी सूट कैलकुलेटर',
+    cdJwl:'सोना, चाँदी और हीरा खरीद — पूरा मूल्य विवरण, GST, मेकिंग चार्ज, पुराना सोना एक्सचेंज, मोलभाव रणनीति।',
+    cbJwl:'✓ लाइव',cbJwl2:'सोना + चाँदी + हीरा',ctaJwl:'खोलें →',
+    ccStamp:'संपत्ति',ctStamp:'स्टैंप ड्यूटी कैलकुलेटर',cdStamp:'तेलंगाना स्टैंप ड्यूटी 4% + रजिस्ट्रेशन 0.5% + ट्रांसफर ड्यूटी 1.5%।',
+    ccFlat:'संपत्ति',ctFlat:'फ्लैट खरीद कैलकुलेटर',cdFlat:'निर्माणाधीन vs रेडी-टू-मूव GST, रजिस्ट्रेशन, बिल्डर चार्ज — मोलभाव सुझावों के साथ।',
+    ccRest:'खाना · GST',ctRest:'रेस्तरां बिल चेकर',cdRest:'GST चार्ज सत्यापित करें, GSTIN असली है जांचें, अवैध सर्विस चार्ज पकड़ें।',
+    ccElec:'यूटिलिटी',ctElec:'बिजली बिल',cdElec:'TSSPDCL स्लैब-वार विवरण — भुगतान से पहले जांचें।',
+    ccChit:'फाइनेंस',ctChit:'चिट फंड कैलकुलेटर',cdChit:'FD से बेहतर है आपका चिट फंड? सच्चा जवाब पाएं।',
+    ccCourt:'कानून',ctCourt:'कोर्ट फीस कैलकुलेटर',cdCourt:'दावे की राशि से कोर्ट फीस — तेलंगाना कोर्ट।',
+    ccLimit:'कानून',ctLimit:'सीमा तिथि कैलकुलेटर',cdLimit:'दाखिल तिथि दें, अपील की अंतिम तिथि जानें।',
+    cbSoon:'जल्द आ रहा है',
+    bTxt:'सभी कैलकुलेटर मुफ्त, निजी और त्रिभाषी · <a href="https://lawsticker-ai.com">LawSticker AI</a> · हैदराबाद में बना 🇮🇳',
+  }
+};
+
+let lang='en';
+const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+const h=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v};
+
+function applyLang(){
+  const t=T[lang];
+  s('h-eyebrow',t.hEyebrow); h('h-title',t.hTitle); s('h-sub',t.hSub);
+  s('hsl-tools',t.hsTools); s('hsl-visits',t.hsVisits); s('hsl-langs',t.hsLangs);
+  s('ft-all',t.ftAll); s('ft-jwl',t.ftJwl); s('ft-prop',t.ftProp);
+  s('ft-food',t.ftFood); s('ft-util',t.ftUtil); s('ft-law',t.ftLaw);
+  s('gs-jwl',t.gsJwl); s('gs-prop',t.gsProp); s('gs-food',t.gsFood);
+  s('gs-util',t.gsUtil); s('gs-law',t.gsLaw);
+  s('cc-jwl',t.ccJwl); s('ct-jwl',t.ctJwl); s('cd-jwl',t.cdJwl);
+  s('cb-jwl',t.cbJwl); s('cb-jwl2',t.cbJwl2); s('cta-jwl',t.ctaJwl);
+  s('cc-stamp',t.ccStamp); s('ct-stamp',t.ctStamp); s('cd-stamp',t.cdStamp);
+  s('cc-flat',t.ccFlat); s('ct-flat',t.ctFlat); s('cd-flat',t.cdFlat);
+  s('cc-rest',t.ccRest); s('ct-rest',t.ctRest); s('cd-rest',t.cdRest);
+  s('cc-elec',t.ccElec); s('ct-elec',t.ctElec); s('cd-elec',t.cdElec);
+  s('cc-chit',t.ccChit); s('ct-chit',t.ctChit); s('cd-chit',t.cdChit);
+  s('cc-court',t.ccCourt); s('ct-court',t.ctCourt); s('cd-court',t.cdCourt);
+  s('cc-limit',t.ccLimit); s('ct-limit',t.ctLimit); s('cd-limit',t.cdLimit);
+  ['cb-soon1','cb-soon2','cb-soon3','cb-soon4','cb-soon5','cb-soon6','cb-soon7'].forEach(id=>s(id,t.cbSoon));
+  h('b-txt',t.bTxt);
+}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
+  applyLang();
+}
+
+let activeCat='all';
+function filterCat(cat){
+  activeCat=cat;
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[onclick="filterCat('${cat}')"]`).classList.add('active');
+  document.querySelectorAll('.grid-section').forEach(sec=>{
+    sec.style.display=(cat==='all'||sec.dataset.cat===cat)?'':'none';
+  });
+}
+
+async function fetchVisits(){
+  try{
+    const r=await fetch('https://api.counterapi.dev/v1/lawsticker/calculators-visits/up');
+    const d=await r.json();
+    const el=document.getElementById('hs-visits');
+    if(el)el.textContent=(d.count||d.value||0).toLocaleString('en-IN');
+  }catch(e){
+    const el=document.getElementById('hs-visits');
+    if(el)el.textContent='—';
+  }
+}
+
+applyLang();
+fetchVisits();
+</script>
+</body>
+</html>
