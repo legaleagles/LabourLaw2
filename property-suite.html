@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Suite Calculator — Stamp Duty & Flat Purchase | LawSticker AI</title>
+<meta name="description" content="Calculate stamp duty, registration charges and flat purchase costs for all Indian states. Includes GST on under-construction flats, negotiation tips. Free, trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--navy2:#161B27;
+  --purple:#5B21B6;--purple-l:#C4B5FD;--purple-pale:#F5F3FF;--purple-deep:#4C1D95;
+  --teal:#0D9488;--teal-pale:#F0FDFA;--teal-deep:#115E59;
+  --ink:#1A1208;--ink-soft:#3D2B0E;--cream:#FEFCF5;
+  --muted:#8B95A8;--light:#E8EDF3;--mist:#F3F4F6;
+  --jade:#10B981;--jade-bg:#D1FAE5;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;
+  --gold:#D4A017;--gold-l:#F5D76E;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,0.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-back:hover{color:var(--purple-l)}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--purple-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--purple-l);color:var(--purple-l);background:rgba(196,181,253,.1)}
+
+/* MODE SWITCH */
+.mode-switch{display:flex;padding:5px;gap:4px;background:rgba(0,0,0,.06);border-radius:14px;margin:18px 16px 0;max-width:688px;margin-left:auto;margin-right:auto}
+.mode-btn{flex:1;padding:12px 8px;border:none;border-radius:10px;background:transparent;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
+.mode-btn .m-icon{font-size:22px;line-height:1}
+.mode-btn.active{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);color:var(--purple-deep)}
+
+/* CONTAINER */
+.container{max-width:720px;margin:0 auto;padding:16px 16px 60px}
+
+/* ALERT BOX */
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--purple-pale);border-left:3px solid var(--purple);color:var(--purple-deep)}
+.alert.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
+.alert.good{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
+.alert strong{font-weight:700}
+
+/* CARDS */
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--purple),transparent)}
+.card-title.teal{color:var(--teal-deep)}
+.card-title.teal::after{background:linear-gradient(to right,var(--teal),transparent)}
+
+/* FIELDS */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--purple-pale);transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--purple);background:#fff}
+.field.teal input,.field.teal select{background:var(--teal-pale)}
+.field.teal input:focus,.field.teal select:focus{border-color:var(--teal)}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--purple-deep);pointer-events:none}
+.pfx input{padding-left:28px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
+.toggle-row:last-child{border-bottom:none}
+.tl{font-size:13px;font-weight:500;color:var(--ink)}
+.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.tog{position:relative;width:42px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-sl{position:absolute;inset:0;background:#D0C9B8;border-radius:22px;cursor:pointer;transition:.2s}
+.tog-sl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog input:checked+.tog-sl{background:var(--purple)}
+.tog input:checked+.tog-sl::before{transform:translateX(20px)}
+.inline-in{display:flex;align-items:center;gap:6px}
+.mini{width:86px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--purple-pale);text-align:right;font-family:inherit}
+
+/* GENDER TABS */
+.gender-tabs{display:flex;gap:6px;margin-top:6px}
+.gender-tab{flex:1;padding:8px;border-radius:8px;border:1.5px solid #DDD5C0;background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s;text-align:center}
+.gender-tab.active{border-color:var(--purple);background:var(--purple-pale);color:var(--purple-deep)}
+
+/* CALC BUTTON */
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--purple-deep),var(--purple));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(91,33,182,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+
+/* RESULTS */
+#results{display:none}
+#results.visible{display:block}
+
+.result-hero{background:linear-gradient(135deg,var(--purple-deep),#2E1065);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.result-hero::before{content:'🏠';position:absolute;font-size:100px;opacity:.06;right:-10px;top:-10px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);opacity:.7;margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--purple-l);line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+.r-effrate{font-size:13px;font-weight:700;color:rgba(255,255,255,.6);margin-top:8px;padding:6px 12px;background:rgba(255,255,255,.08);border-radius:8px;display:inline-block}
+
+.insight-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--purple-deep);line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pill{padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600}
+.pill.g{background:var(--jade-bg);color:var(--jade)}
+.pill.r{background:var(--rose-bg);color:var(--rose)}
+.pill.a{background:var(--amber-bg);color:var(--amber)}
+.pill.p{background:var(--purple-pale);color:var(--purple-deep)}
+
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--purple-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple-deep);border-bottom:1px solid rgba(0,0,0,.07)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:var(--purple-l);font-weight:700}
+.brow.tot .ba{color:var(--purple-l);font-size:15px}
+.brow.sec{background:var(--purple-pale)}
+.brow.sec .bl{color:var(--purple-deep);font-weight:700;font-size:12px;letter-spacing:.5px}
+
+/* NEGOTIATION */
+.nego{border-radius:16px;overflow:hidden;border:1.5px solid rgba(91,33,182,.25);box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:14px}
+.nego-hdr{background:linear-gradient(135deg,#1E0A3C,#3B0764);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.nego-hdr-l{display:flex;align-items:center;gap:10px}
+.nego-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(196,181,253,.55);margin-bottom:2px}
+.nego-ttl{font-size:14px;font-weight:700;color:var(--purple-l)}
+.nego-score{background:rgba(196,181,253,.1);border:1px solid rgba(196,181,253,.2);border-radius:10px;padding:6px 10px;text-align:center}
+.nego-score .sn{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--purple-l);line-height:1}
+.nego-score .sl{font-size:8px;font-weight:700;letter-spacing:1.5px;color:rgba(196,181,253,.45);text-transform:uppercase;margin-top:1px}
+.nego-body{background:#fff}
+.nego-sav{background:linear-gradient(90deg,#0D3B22,#1A5C35);padding:11px 16px;display:flex;justify-content:space-between;align-items:center}
+.nego-sav .ns-l{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.5px}
+.nego-sav .ns-a{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#6FCF97}
+.nego-moves{padding:12px 12px 4px;display:flex;flex-direction:column;gap:8px}
+.move{border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
+.move-top{display:flex}
+.move-rank{background:var(--purple-deep);color:var(--purple-l);font-family:'Playfair Display',serif;font-size:17px;font-weight:900;padding:0 12px;display:flex;align-items:center;justify-content:center;min-width:42px;flex-shrink:0}
+.move-rank.med{background:var(--teal-deep)}
+.move-rank.low{background:#1A3A2A}
+.move-cnt{flex:1;padding:10px 12px;background:var(--purple-pale)}
+.move-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.move-sav{font-size:11px;font-weight:700;color:var(--jade);margin-bottom:3px}
+.move-sav.na{color:var(--muted)}
+.move-desc{font-size:11px;color:var(--ink-soft);line-height:1.5}
+.move-script{background:#FAF5FF;border-top:1px dashed rgba(91,33,182,.15);padding:8px 12px;font-size:11px;font-style:italic;color:var(--purple-deep);line-height:1.5}
+.move-script::before{content:'💬 ';font-style:normal}
+.nego-timing{margin:4px 12px 12px;background:linear-gradient(135deg,#0A1628,#112244);border-radius:10px;padding:11px 13px}
+.nego-timing .te{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(100,160,255,.6);margin-bottom:5px}
+.t-tip{font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:4px}
+.t-tip span{color:#7EB8F7;font-weight:600}
+
+/* EXPLAINER */
+.expl{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:14px}
+.expl-hdr{background:var(--purple-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple-deep);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.expl-body{padding:14px 16px;font-size:12.5px;line-height:1.7;color:var(--ink-soft);display:none}
+.expl-body.open{display:block}
+.term{background:var(--purple-pale);border-left:3px solid var(--purple);padding:7px 11px;margin:8px 0;border-radius:0 7px 7px 0;font-size:12px}
+.term strong{color:var(--purple-deep)}
+
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+
+/* STATS */
+.stats-bar{background:linear-gradient(135deg,#0D0520,#1A0A3A);padding:14px 18px;text-align:center;cursor:pointer;border-top:1px solid rgba(196,181,253,.1)}
+.stats-eye{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(196,181,253,.4);margin-bottom:8px}
+.stats-global{background:rgba(196,181,253,.06);border:1px solid rgba(196,181,253,.12);border-radius:10px;padding:8px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.sg-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--purple-l);line-height:1}
+.sg-l{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(196,181,253,.4);margin-top:2px}
+.sg-note{font-size:10px;color:rgba(255,255,255,.2)}
+.stats-personal{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.sp-item{text-align:center}
+.sp-n{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:rgba(196,181,253,.6);line-height:1}
+.sp-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(196,181,253,.3);margin-top:2px}
+.stats-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(196,181,253,.07)}
+.stats-modes{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.mode-chip{background:rgba(196,181,253,.06);border-radius:7px;padding:5px 10px;text-align:center}
+.mode-chip .mc-n{font-size:12px;font-weight:700;color:var(--purple-l)}
+.mode-chip .mc-l{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--purple-deep);text-decoration:none}
+
+@media(max-width:400px){.row2{grid-template-columns:1fr}.insight-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">🏠 Property Suite</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="mode-switch">
+  <button class="mode-btn active" data-m="stamp" onclick="setMode('stamp')">
+    <span class="m-icon">📋</span>
+    <span id="mb-stamp">Stamp Duty</span>
+  </button>
+  <button class="mode-btn" data-m="flat" onclick="setMode('flat')">
+    <span class="m-icon">🏢</span>
+    <span id="mb-flat">Flat Purchase</span>
+  </button>
+</div>
+
+<div class="container">
+
+  <!-- ══ STAMP DUTY FORM ══ -->
+  <div id="form-stamp">
+    <div class="alert info" id="stamp-info">
+      📌 <strong>How it works:</strong> Stamp duty is calculated on the higher of your agreement value and the government circle rate. Always check your local circle rate at the SRO office or state portal before registration.
+    </div>
+    <div class="card">
+      <div class="card-title" id="sd-c1">Property Details</div>
+      <div class="field">
+        <label id="sd-l-state">State</label>
+        <select id="sd-state" onchange="updateStateInfo()">
+          <option value="TG">Telangana</option>
+          <option value="AP">Andhra Pradesh</option>
+          <option value="MH">Maharashtra</option>
+          <option value="KA">Karnataka</option>
+          <option value="TN">Tamil Nadu</option>
+          <option value="DL">Delhi</option>
+          <option value="UP">Uttar Pradesh</option>
+          <option value="GJ">Gujarat</option>
+          <option value="RJ">Rajasthan</option>
+          <option value="HR">Haryana</option>
+          <option value="WB">West Bengal</option>
+          <option value="MP">Madhya Pradesh</option>
+          <option value="KL">Kerala</option>
+          <option value="PB">Punjab</option>
+          <option value="GA">Goa</option>
+          <option value="TS">Chhattisgarh</option>
+          <option value="OR">Odisha</option>
+          <option value="BR">Bihar</option>
+          <option value="AS">Assam</option>
+          <option value="JH">Jharkhand</option>
+        </select>
+      </div>
+      <div class="field" id="sd-city-field" style="display:none">
+        <label id="sd-l-city">City / Zone</label>
+        <select id="sd-city"></select>
+      </div>
+      <div class="field">
+        <label id="sd-l-proptype">Property Type</label>
+        <select id="sd-proptype">
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+          <option value="agricultural">Agricultural Land</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="sd-l-val">Property Value <span class="hint" id="sd-l-val-h">(Agreement or Circle Rate — whichever is higher)</span></label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="sd-val" value="5000000" step="100000"></div>
+      </div>
+      <div class="field">
+        <label id="sd-l-gender">Buyer Type</label>
+        <div class="gender-tabs">
+          <button class="gender-tab active" data-g="male" onclick="setGender('male')" id="gt-male">👨 Male</button>
+          <button class="gender-tab" data-g="female" onclick="setGender('female')" id="gt-female">👩 Female</button>
+          <button class="gender-tab" data-g="joint" onclick="setGender('joint')" id="gt-joint">👫 Joint</button>
+        </div>
+      </div>
+      <div id="sd-state-note" class="alert info" style="margin-top:12px;margin-bottom:0;display:none"></div>
+    </div>
+  </div>
+
+  <!-- ══ FLAT PURCHASE FORM ══ -->
+  <div id="form-flat" style="display:none">
+    <div class="alert warn" id="flat-info">
+      ⚠️ <strong>Key rule:</strong> Ready-to-move flats with Occupancy Certificate (OC) have <strong>ZERO GST</strong>. Under-construction flats attract 1% (affordable) or 5% (others) GST. This can save lakhs — always check OC status first.
+    </div>
+    <div class="card">
+      <div class="card-title" id="fp-c1">Property Details</div>
+      <div class="field">
+        <label id="fp-l-state">State</label>
+        <select id="fp-state">
+          <option value="TG">Telangana</option>
+          <option value="AP">Andhra Pradesh</option>
+          <option value="MH">Maharashtra</option>
+          <option value="KA">Karnataka</option>
+          <option value="TN">Tamil Nadu</option>
+          <option value="DL">Delhi</option>
+          <option value="UP">Uttar Pradesh</option>
+          <option value="GJ">Gujarat</option>
+          <option value="RJ">Rajasthan</option>
+          <option value="HR">Haryana</option>
+          <option value="WB">West Bengal</option>
+          <option value="MP">Madhya Pradesh</option>
+          <option value="KL">Kerala</option>
+          <option value="PB">Punjab</option>
+          <option value="GA">Goa</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label id="fp-l-area">Carpet Area <span class="hint">(sq ft)</span></label>
+          <input type="number" id="fp-area" value="1000" step="10">
+        </div>
+        <div class="field">
+          <label id="fp-l-city-type">City Type</label>
+          <select id="fp-citytype">
+            <option value="metro">Metro city</option>
+            <option value="nonmetro">Non-metro</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="fp-l-val">Agreement / Sale Price</label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="fp-val" value="5000000" step="100000" oninput="autoGstType()"></div>
+      </div>
+      <div class="field">
+        <label id="fp-l-status">Property Status</label>
+        <select id="fp-status" onchange="toggleGstSection()">
+          <option value="uc">Under Construction</option>
+          <option value="rtm">Ready-to-Move (OC received)</option>
+          <option value="resale">Resale / Secondary</option>
+        </select>
+      </div>
+    </div>
+    <div class="card" id="fp-gst-card">
+      <div class="card-title" id="fp-c2">GST Details</div>
+      <div class="alert good" id="fp-gst-note" style="margin-bottom:10px"></div>
+      <div class="toggle-row" id="fp-gst-row">
+        <div class="tl" id="fp-l-gstrate">GST Rate Applied <span class="sub" id="fp-l-gstrate-s">Auto-detected based on price</span></div>
+        <div class="inline-in"><input type="number" class="mini" id="fp-gstrate" value="5" step="0.5"><span style="font-size:12px;font-weight:700;color:var(--purple-deep)">%</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="fp-c3">Additional Charges</div>
+      <div class="toggle-row">
+        <div class="tl" id="fp-l-parking">Parking Charges <span class="sub" id="fp-l-parking-s">Often ₹2–5L, highly negotiable</span></div>
+        <div class="inline-in"><div class="pfx" style="flex:0"><span class="p">₹</span><input type="number" class="mini" id="fp-parking" value="300000" step="10000" style="width:100px;padding-left:24px;background:var(--purple-pale)"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="fp-l-maint">Maintenance Deposit <span class="sub" id="fp-l-maint-s">Negotiable — 12–24 months advance</span></div>
+        <div class="inline-in"><div class="pfx" style="flex:0"><span class="p">₹</span><input type="number" class="mini" id="fp-maint" value="100000" step="10000" style="width:100px;padding-left:24px;background:var(--purple-pale)"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="fp-l-club">Club Membership <span class="sub" id="fp-l-club-s">Optional — can often be waived</span></div>
+        <div class="inline-in"><div class="pfx" style="flex:0"><span class="p">₹</span><input type="number" class="mini" id="fp-club" value="50000" step="10000" style="width:100px;padding-left:24px;background:var(--purple-pale)"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="tl" id="fp-l-legal">Legal / Registration Misc <span class="sub" id="fp-l-legal-s">Advocate fees, franking etc.</span></div>
+        <div class="inline-in"><div class="pfx" style="flex:0"><span class="p">₹</span><input type="number" class="mini" id="fp-legal" value="25000" step="5000" style="width:100px;padding-left:24px;background:var(--purple-pale)"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="fp-c4">Buyer Type & Registration</div>
+      <div class="field">
+        <label id="fp-l-gender">Buyer Type</label>
+        <div class="gender-tabs">
+          <button class="gender-tab active" data-g="male" onclick="setGender2('male')" id="gt2-male">👨 Male</button>
+          <button class="gender-tab" data-g="female" onclick="setGender2('female')" id="gt2-female">👩 Female</button>
+          <button class="gender-tab" data-g="joint" onclick="setGender2('joint')" id="gt2-joint">👫 Joint</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Total Cost →</button>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="result-hero">
+      <div class="r-label" id="r-label">Total Registration Cost</div>
+      <div class="r-amount" id="r-amount">₹0</div>
+      <div class="r-sub" id="r-sub"></div>
+      <div class="r-effrate" id="r-effrate"></div>
+    </div>
+    <div class="insight-row" id="r-insights"></div>
+    <div class="pills" id="r-pills"></div>
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Full Cost Breakdown</div>
+      <div id="r-rows"></div>
+    </div>
+    <div class="nego" id="nego-wrap" style="display:none">
+      <div class="nego-hdr" onclick="document.getElementById('nego-body').style.display=document.getElementById('nego-body').style.display==='none'?'block':'none'">
+        <div class="nego-hdr-l">
+          <span style="font-size:22px">🤝</span>
+          <div><div class="nego-eye" id="nego-eye">Your Personalised</div><div class="nego-ttl" id="nego-ttl">Negotiation Playbook</div></div>
+        </div>
+        <div class="nego-score"><div class="sn" id="nego-score-num">—</div><div class="sl" id="nego-score-lbl">LEVERAGE</div></div>
+      </div>
+      <div class="nego-body" id="nego-body">
+        <div class="nego-sav">
+          <div><div class="ns-l" id="nego-sav-lbl">Potential Savings</div><div style="font-size:10px;color:rgba(255,255,255,.3)" id="nego-sav-sub">if all moves succeed</div></div>
+          <div class="ns-a" id="nego-sav-amt">₹0</div>
+        </div>
+        <div class="nego-moves" id="nego-moves"></div>
+        <div class="nego-timing">
+          <div class="te" id="nego-timing-eye">⏰ Timing & Strategy</div>
+          <div id="nego-timing-tips"></div>
+        </div>
+      </div>
+    </div>
+    <div class="expl">
+      <div class="expl-hdr" onclick="document.getElementById('expl-body').classList.toggle('open')">
+        <span id="expl-hdr-txt">📖 What Do These Terms Mean?</span><span>▾</span>
+      </div>
+      <div class="expl-body" id="expl-body"></div>
+    </div>
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← New Calculation</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" onclick="document.getElementById('stats-detail').style.display=document.getElementById('stats-detail').style.display==='none'?'block':'none'">
+  <div class="stats-eye" id="stats-eye">📊 Usage Stats</div>
+  <div class="stats-global">
+    <div><div class="sg-n" id="sg-visits">⏳</div><div class="sg-l" id="sg-lbl">Total Visits</div></div>
+    <div class="sg-note" id="sg-note">🌐 All users · live</div>
+  </div>
+  <div class="stats-personal">
+    <div class="sp-item"><div class="sp-n" id="sp-calcs">—</div><div class="sp-l" id="sp-calcs-l">Your Calcs</div></div>
+    <div class="sp-item"><div class="sp-n" id="sp-streak">—</div><div class="sp-l" id="sp-streak-l">Day Streak</div></div>
+  </div>
+  <div class="stats-detail" id="stats-detail">
+    <div class="stats-modes" id="stats-modes"></div>
+    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.18)" id="sp-note">📱 Your device only</div>
+  </div>
+</div>
+
+<footer>
+  <span id="footer-txt">Property Suite · Free · No login · Made in Hyderabad 🇮🇳</span> · <a href="calculators.html">All Calculators</a> · <a href="https://lawsticker-ai.com">LawSticker AI</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE DATA (verified from government sources, April 2026)
+// ══════════════════════════════════════════
+// Each state: { name, male, female, joint, regPct, regCap (0=no cap), transfer, notes, cities (optional) }
+// Sources: 99acres, LegiScore, sum.money, studio matrx, state IGR portals - April 2026
+const STATES = {
+  TG: { name:'Telangana',      male:4.0, female:4.0, joint:4.0, regPct:0.5, regCap:0, transfer:1.5, metro:['Hyderabad (GHMC)','Other areas'], metroAdj:{0:0,1:0}, note:'Transfer duty 1.5% applies. Total effective rate: 6% for all buyers. No gender concession.' },
+  AP: { name:'Andhra Pradesh', male:5.0, female:5.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'AP charges 5% stamp duty + 1% registration. No transfer duty.' },
+  MH: { name:'Maharashtra',    male:5.0, female:4.0, joint:5.0, regPct:1.0, regCap:30000, transfer:0, metro:['Mumbai (incl. metro cess)','Pune / Nagpur / Thane','Other Maharashtra'], metroAdj:{0:1,1:1,2:0}, metroMaleAdj:{0:0,1:1,2:0}, note:'Mumbai/Pune/Nagpur/Thane add 1% metro cess. Registration capped at ₹30,000.' },
+  KA: { name:'Karnataka',      male:5.0, female:5.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:['Bengaluru Urban (BDA/BBMP)','Bengaluru Rural','Other Karnataka'], metroAdj:{0:0,1:-2,2:-2}, note:'Bengaluru Urban: 5%. Bengaluru Rural and other Karnataka: 3%. No gender concession.' },
+  TN: { name:'Tamil Nadu',     male:7.0, female:7.0, joint:7.0, regPct:4.0, regCap:0, transfer:0, metro:[], note:'Tamil Nadu has the highest combined rate in India — 7% stamp duty + 4% registration = 11% total. No gender concession.' },
+  DL: { name:'Delhi',          male:6.0, female:4.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Women get 2% concession — the highest in India. Joint (male+female) gets 5%. Register in wife\'s name to save significantly.' },
+  UP: { name:'Uttar Pradesh',  male:7.0, female:6.0, joint:7.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'UP charges 7% for males, 6% for females. 1% registration on all. Labour cess may apply in some areas.' },
+  GJ: { name:'Gujarat',        male:4.9, female:4.9, joint:4.9, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Gujarat charges a uniform 4.9% with no gender concession. No transfer duty.' },
+  RJ: { name:'Rajasthan',      male:6.0, female:5.0, joint:6.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Rajasthan 6% for males, 5% for females. Note: some sources show 5%/4% — check locally as rates vary by circle.' },
+  HR: { name:'Haryana',        male:7.0, female:5.0, joint:6.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Haryana gives 2% concession for female buyers. Highest state-level gender concession after Delhi.' },
+  WB: { name:'West Bengal',    male:7.0, female:6.0, joint:7.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'West Bengal: 7% male / 6% female. 1% registration. Kolkata area may have additional surcharges.' },
+  MP: { name:'Madhya Pradesh', male:7.5, female:6.5, joint:7.5, regPct:1.0, regCap:0, transfer:0, metro:[], note:'MP has one of the higher stamp duty rates. 1% concession for female buyers.' },
+  KL: { name:'Kerala',         male:8.0, female:8.0, joint:8.0, regPct:2.0, regCap:0, transfer:0, metro:[], note:'Kerala has the highest stamp duty at 8%. No gender concession. 2% registration fee.' },
+  PB: { name:'Punjab',         male:7.0, female:5.0, joint:6.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Punjab offers 2% concession for females. 1% registration applies uniformly.' },
+  GA: { name:'Goa',            male:3.5, female:3.5, joint:3.5, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Goa has the lowest stamp duty in India at 3.5%. No gender concession.' },
+  TS: { name:'Chhattisgarh',   male:5.0, female:4.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'Chhattisgarh: 5% male / 4% female. 1% registration.' },
+  OR: { name:'Odisha',         male:5.0, female:4.0, joint:5.0, regPct:2.0, regCap:0, transfer:0, metro:[], note:'Odisha: 5% stamp duty + 2% registration. 1% concession for female buyers.' },
+  BR: { name:'Bihar',          male:6.3, female:5.7, joint:6.3, regPct:2.0, regCap:0, transfer:0, metro:[], note:'Bihar has 6.3% for males (5% duty + 1.3% other charges), 5.7% for females. 2% registration.' },
+  AS: { name:'Assam',          male:8.25,female:8.25,joint:8.25,regPct:1.0, regCap:0, transfer:0, metro:[], note:'Assam has high effective rates including cess. Verify locally before proceeding.' },
+  JH: { name:'Jharkhand',      male:4.0, female:4.0, joint:4.0, regPct:3.0, regCap:0, transfer:0, metro:[], note:'Jharkhand: 4% stamp duty + 3% registration = 7% total. No gender concession.' },
+};
+
+// Metro cities for GST affordable housing definition
+const METRO_CITIES = ['Mumbai','Delhi','Bengaluru','Chennai','Hyderabad','Kolkata','Mumbai MMR','Delhi NCR'];
+
+let lang = 'en';
+let mode = 'stamp';
+let gender = 'male';
+let gender2 = 'male';
+let _lastCtx = null;
+
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const fmtL = n => {
+  if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+'Cr';
+  if(n>=100000) return '₹'+(n/100000).toFixed(2)+'L';
+  return fmt(n);
+};
+const el = id => document.getElementById(id);
+const s = (id,v) => { const e=el(id); if(e) e.textContent=v; };
+const h = (id,v) => { const e=el(id); if(e) e.innerHTML=v; };
+
+// ══════════════════════════════════════════
+//  STATE DROPDOWN + CITY
+// ══════════════════════════════════════════
+function updateStateInfo() {
+  const stateCode = el('sd-state').value;
+  const st = STATES[stateCode];
+  const cityField = el('sd-city-field');
+  const citySelect = el('sd-city');
+  const note = el('sd-state-note');
+
+  if(st.metro && st.metro.length>0) {
+    cityField.style.display='block';
+    citySelect.innerHTML = st.metro.map((c,i)=>`<option value="${i}">${c}</option>`).join('');
+  } else {
+    cityField.style.display='none';
+  }
+  if(st.note) {
+    note.textContent = '📍 '+st.note;
+    note.style.display='block';
+  } else {
+    note.style.display='none';
+  }
+}
+
+function setGender(g) {
+  gender=g;
+  document.querySelectorAll('#form-stamp .gender-tab').forEach(b=>b.classList.toggle('active',b.dataset.g===g));
+}
+function setGender2(g) {
+  gender2=g;
+  document.querySelectorAll('#form-flat .gender-tab').forEach(b=>b.classList.toggle('active',b.dataset.g===g));
+}
+
+// ══════════════════════════════════════════
+//  GST AUTO-DETECT
+// ══════════════════════════════════════════
+function autoGstType() {
+  const val = parseFloat(el('fp-val').value)||0;
+  const status = el('fp-status').value;
+  const area = parseFloat(el('fp-area').value)||0;
+  const cityType = el('fp-citytype').value;
+  const areaLimit = cityType==='metro' ? 645 : 968; // 60 sqm = 645 sqft, 90 sqm = 968 sqft
+
+  if(status==='rtm'||status==='resale') {
+    el('fp-gstrate').value=0;
+    return;
+  }
+  // Affordable: <=45L AND area <= limit
+  if(val<=4500000 && area<=areaLimit) {
+    el('fp-gstrate').value=1;
+  } else {
+    el('fp-gstrate').value=5;
+  }
+}
+
+function toggleGstSection() {
+  const status = el('fp-status').value;
+  const gstCard = el('fp-gst-card');
+  const note = el('fp-gst-note');
+  const gstRow = el('fp-gst-row');
+  const t = T[lang];
+
+  if(status==='rtm') {
+    note.className='alert good';
+    note.innerHTML=t.gstRtmNote;
+    gstRow.style.display='none';
+    el('fp-gstrate').value=0;
+  } else if(status==='resale') {
+    note.className='alert good';
+    note.innerHTML=t.gstResaleNote;
+    gstRow.style.display='none';
+    el('fp-gstrate').value=0;
+  } else {
+    note.className='alert warn';
+    note.innerHTML=t.gstUcNote;
+    gstRow.style.display='flex';
+    autoGstType();
+  }
+}
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS
+// ══════════════════════════════════════════
+const T = {
+  en:{
+    navTitle:'🏠 Property Suite',
+    mbStamp:'Stamp Duty',mbFlat:'Flat Purchase',
+    stampInfo:'📌 <strong>How it works:</strong> Stamp duty is calculated on the higher of your agreement value and the government circle rate. Always check your local circle rate at the SRO office or state portal before registration.',
+    sdC1:'Property Details',sdLState:'State',sdLCity:'City / Zone',sdLProptype:'Property Type',
+    sdLVal:'Property Value',sdLValH:'(Agreement or Circle Rate — whichever is higher)',
+    sdLGender:'Buyer Type',gtMale:'👨 Male',gtFemale:'👩 Female',gtJoint:'👫 Joint',
+    flatInfo:'⚠️ <strong>Key rule:</strong> Ready-to-move flats with Occupancy Certificate (OC) have <strong>ZERO GST</strong>. Under-construction flats attract 1% (affordable) or 5% (others) GST. This can save lakhs — always check OC status first.',
+    fpC1:'Property Details',fpLState:'State',fpLArea:'Carpet Area',fpLCityType:'City Type',
+    fpLVal:'Agreement / Sale Price',fpLStatus:'Property Status',
+    fpC2:'GST Details',fpLGstrate:'GST Rate Applied',fpLGstrateS:'Auto-detected based on price',
+    fpC3:'Additional Charges',fpLParking:'Parking Charges',fpLParkingS:'Often ₹2–5L, highly negotiable',
+    fpLMaint:'Maintenance Deposit',fpLMaintS:'Negotiable — 12–24 months advance',
+    fpLClub:'Club Membership',fpLClubS:'Optional — can often be waived',
+    fpLLegal:'Legal / Registration Misc',fpLLegalS:'Advocate fees, franking etc.',
+    fpC4:'Buyer Type & Registration',fpLGender:'Buyer Type',
+    gstRtmNote:'✅ <strong>Great news:</strong> Ready-to-move flats with OC are <strong>exempt from GST</strong>. You only pay stamp duty and registration.',
+    gstResaleNote:'✅ <strong>Good news:</strong> Resale flats have <strong>no GST</strong>. Only stamp duty and registration apply.',
+    gstUcNote:'⚠️ <strong>GST applies</strong> on under-construction flats. Auto-detected below — 1% for affordable housing (≤₹45L + area limit), 5% for others.',
+    calcBtn:'Calculate Total Cost →',
+    rLabelStamp:'Total Registration Cost',rLabelFlat:'Total Purchase Cost',
+    rBdHead:'Full Cost Breakdown',
+    stampDuty:'Stamp Duty',regCharge:'Registration Charge',transferDuty:'Transfer Duty',
+    gstOnFlat:'GST on Flat',basePrice:'Base Price',
+    parking:'Parking Charges',maint:'Maintenance Deposit',club:'Club Membership',legal:'Legal / Misc Charges',
+    totalCost:'TOTAL COST',effRate:'Effective Rate',
+    perSqft:'Per Sq Ft',
+    pillWoman:'✅ Women concession applied',pillHighTN:'⚠️ Tamil Nadu has highest combined rate (11%)',pillGoa:'⭐ Goa — lowest stamp duty in India (3.5%)',
+    pillRtm:'✅ No GST (Ready-to-move)',pillUcGst:'⚠️ GST applies — consider ready-to-move alternatives',
+    pillAffordable:'✅ Affordable housing rate (1% GST)',
+    exHdr:'📖 What Do These Terms Mean?',resetBtn:'← New Calculation',
+    footerTxt:'Property Suite · Free · No login · Made in Hyderabad 🇮🇳',
+    negoEye:'Your Personalised',negoTtl:'🤝 Negotiation Playbook',
+    negoScoreLbl:'LEVERAGE',negoSavLbl:'Potential Savings',negoSavSub:'if all moves succeed',
+    negoTimingEye:'⏰ Before You Sign',
+    statsEye:'📊 Usage Stats',sgLbl:'Total Visits',sgNote:'🌐 All users · live',
+    spCalcsL:'Your Calcs',spStreakL:'Day Streak',spNote:'📱 Your device only',
+    explStamp:[
+      ['Stamp Duty','A state government tax on property transactions. Calculated as % of property value (or circle rate — whichever is higher). Makes the sale deed legally valid.'],
+      ['Registration Charge','Fee paid at the Sub-Registrar Office to officially record the ownership transfer. Usually 1% of property value (sometimes capped).'],
+      ['Transfer Duty','Charged in Telangana (1.5%) as an additional levy on top of stamp duty. Most other states don\'t have this.'],
+      ['Circle Rate (Guideline Value)','Government\'s minimum valuation for property in a specific area. Even if you buy at a lower price, stamp duty is calculated on circle rate if it\'s higher.'],
+      ['Women\'s Concession','Many states give 1–2% lower stamp duty when the property is registered in a woman\'s name. Delhi gives the highest: 2%. This can save ₹1–2 lakhs on a ₹1 crore property.'],
+      ['Section 80C Deduction','Stamp duty and registration charges paid on a first home purchase are deductible under Section 80C (up to ₹1.5L limit) — but only under the old tax regime.'],
+    ],
+    explFlat:[
+      ['GST on Under-Construction Flat','1% for affordable housing (≤₹45L and area ≤60 sqm in metros / 90 sqm in non-metros). 5% for all other residential flats. No ITC for buyers.'],
+      ['Zero GST on Ready-to-Move','If the developer has received the Occupancy Certificate (OC) before the sale, the flat is treated as immovable property — no GST at all. This is the biggest tax saving available.'],
+      ['Parking Negotiability','Parking is almost always separately priced and highly negotiable. Builders have 30–50% margin on parking charges. Never accept the first quote.'],
+      ['Maintenance Deposit','Builders ask 12–24 months in advance. This is negotiable — especially if you\'re an early buyer or paying full amount upfront.'],
+      ['RERA Registration','Under RERA, all under-construction projects must be registered. Check at rera.telangana.gov.in (TS) or your state\'s RERA portal before any payment.'],
+      ['OC vs CC','Occupancy Certificate (OC) = building is safe to occupy. Completion Certificate (CC) = construction matches approved plan. For GST exemption, OC is the key document.'],
+    ],
+    timing:[
+      ['Check RERA first','Before any payment, verify builder registration on your state\'s RERA portal. Unregistered projects are illegal if above threshold.'],
+      ['Buy at project launch','Launch prices are lowest. Builders need early buyers to show bank escrow compliance under RERA — use this as leverage for 5–10% off.'],
+      ['End of financial quarter','March 31 and September 30 are builder sales targets. Last 2 weeks of quarter = maximum flexibility on price and extras.'],
+      ['Register in wife\'s name','In Delhi (2% off), Haryana (2% off), Punjab, UP, WB (1% off) — registering in a woman\'s name saves real money on stamp duty.'],
+      ['Negotiate separately','Negotiate base price FIRST, then parking, then maintenance, then club — never together. Bundling lets builders hide discounts.'],
+      ['Get agreement before payment','Under RERA, no builder can take more than 10% of property cost before executing a written agreement for sale.'],
+    ],
+    moves:{
+      womanConcession:(ctx)=>({priority:'high',title:`Register in Wife's/Mother's Name — Save ${fmt(ctx.womanSaving)}`,saving:ctx.womanSaving,desc:`${ctx.stateName} offers ${ctx.womanDiscount}% concession for female buyers. On your property value, this saves ${fmt(ctx.womanSaving)} in stamp duty alone.`,script:`"We'd like to register the property in my wife's/mother's name to avail the ${ctx.womanDiscount}% stamp duty concession. Please prepare the documents accordingly."`}),
+      circleRate:(ctx)=>({priority:'high',title:'Verify Circle Rate Before Proceeding',saving:0,desc:'Stamp duty is on the higher of sale price and circle rate. If you\'re paying above circle rate, stamp duty is on your price. If below, it\'s on circle rate — check this BEFORE signing.',script:`"Can you confirm the current circle rate for this property from the SRO/IGR portal? I want to verify before we fix the stamp duty amount."`}),
+      parking:(ctx)=>({priority:'high',title:`Negotiate Parking Down from ${fmtL(ctx.parking)}`,saving:ctx.parking*0.3,desc:`Parking has 30–50% builder margin. It's priced separately under RERA and is completely negotiable. Never pay the first quoted price.`,script:`"The parking is priced at ${fmtL(ctx.parking)}. I've seen comparable projects charge ${fmtL(ctx.parking*0.6)}. Can we settle there? I'm ready to sign today."`}),
+      maint:(ctx)=>({priority:'med',title:`Reduce Maintenance Deposit`,saving:ctx.maint*0.4,desc:`12–24 months maintenance advance is standard but not fixed. Early buyers or full-payment buyers can often negotiate to 6 months, especially in projects with slow sales.`,script:`"We're paying the full amount. Can we reduce the maintenance advance to 6 months instead of 12? That would help us manage liquidity better."`}),
+      club:(ctx)=>({priority:'med',title:'Waive Club Membership',saving:ctx.club,desc:`Club membership is optional and cannot be forced under RERA. If you don't plan to use the club facilities, you can legally refuse or negotiate it out.`,script:`"We don't plan to use the club facilities regularly. Can we exclude the club membership from the agreement? RERA doesn't mandate it."`}),
+      rtmGst:(ctx)=>({priority:'high',title:'Consider Ready-to-Move — Save GST',saving:ctx.gstAmt,desc:`You're buying under-construction and paying ${fmt(ctx.gstAmt)} in GST. A ready-to-move flat (with OC) has zero GST — that savings directly offsets price difference.`,script:`"Is there an inventory of ready-to-move units available with OC issued? I'd like to compare the total cost — zero GST may make it financially comparable."`}),
+      reraCheck:(ctx)=>({priority:'high',title:'Verify RERA Registration',saving:0,desc:`Under RERA, no builder can take more than 10% before executing a written agreement. Check project at your state RERA portal before any payment.`,script:`"Before we proceed, can you share the RERA registration number? I'd like to verify it on the portal and review the project details."`}),
+      earlyBuyer:(ctx)=>({priority:'med',title:'Leverage Early Buyer Status',saving:ctx.basePrice*0.05,desc:`Builders need early buyers for RERA bank escrow compliance. In projects that launched recently (less than 20% sold), you have strong negotiating power — 5–8% off is realistic.`,script:`"I understand this project is in early stages. As an early buyer bringing committed funds, I'd like a 5% discount on the base price. This works for both of us."`}),
+      legalFees:(ctx)=>({priority:'low',title:'Ask Builder to Absorb Legal Fees',saving:ctx.legal*0.5,desc:`On purchases above ₹50L, builders often absorb documentation and franking charges as part of closing incentives. Worth asking.`,script:`"For a purchase of this size, can the documentation and legal processing fees be absorbed by the builder?"`}),
+    },
+  },
+  te:{
+    navTitle:'🏠 ఆస్తి సూట్',
+    mbStamp:'స్టాంప్ డ్యూటీ',mbFlat:'ఫ్లాట్ కొనుగోలు',
+    stampInfo:'📌 <strong>ఎలా పని చేస్తుంది:</strong> స్టాంప్ డ్యూటీ మీ అగ్రిమెంట్ విలువ మరియు ప్రభుత్వ సర్కిల్ రేటులో ఏది ఎక్కువగా ఉంటే దానిపై లెక్కిస్తారు. రిజిస్ట్రేషన్ ముందు SRO కార్యాలయం లేదా రాష్ట్ర పోర్టల్‌లో సర్కిల్ రేటు తనిఖీ చేయండి.',
+    sdC1:'ఆస్తి వివరాలు',sdLState:'రాష్ట్రం',sdLCity:'నగరం / జోన్',sdLProptype:'ఆస్తి రకం',
+    sdLVal:'ఆస్తి విలువ',sdLValH:'(అగ్రిమెంట్ లేదా సర్కిల్ రేటు — ఏది ఎక్కువైతే అది)',
+    sdLGender:'కొనుగోలుదారు రకం',gtMale:'👨 పురుషుడు',gtFemale:'👩 స్త్రీ',gtJoint:'👫 జాయింట్',
+    flatInfo:'⚠️ <strong>ముఖ్యమైన నియమం:</strong> OC (ఆక్యుపెన్సీ సర్టిఫికేట్) ఉన్న రెడీ-టు-మూవ్ ఫ్లాట్లకు <strong>GST సున్నా</strong>. నిర్మాణంలో ఉన్న ఫ్లాట్లకు 1% (అందుబాటు) లేదా 5% GST వస్తుంది.',
+    fpC1:'ఆస్తి వివరాలు',fpLState:'రాష్ట్రం',fpLArea:'కార్పెట్ విస్తీర్ణం',fpLCityType:'నగరం రకం',
+    fpLVal:'అగ్రిమెంట్ / అమ్మకపు ధర',fpLStatus:'ఆస్తి స్థితి',
+    fpC2:'GST వివరాలు',fpLGstrate:'GST రేటు వర్తించింది',fpLGstrateS:'ధర ఆధారంగా స్వయంచాలకంగా',
+    fpC3:'అదనపు ఛార్జీలు',fpLParking:'పార్కింగ్ ఛార్జీలు',fpLParkingS:'తరచుగా ₹2–5L, చాలా చర్చించదగినది',
+    fpLMaint:'మెయింటెనెన్స్ డిపాజిట్',fpLMaintS:'చర్చించదగినది — 12–24 నెలల అడ్వాన్స్',
+    fpLClub:'క్లబ్ సభ్యత్వం',fpLClubS:'ఐచ్ఛికం — తరచుగా రద్దు చేయించవచ్చు',
+    fpLLegal:'చట్టపర / రిజిస్ట్రేషన్ ఇతర ఖర్చులు',fpLLegalS:'అడ్వకేట్ రుసుం, ఫ్రాంకింగ్ మొదలైనవి',
+    fpC4:'కొనుగోలుదారు రకం & రిజిస్ట్రేషన్',fpLGender:'కొనుగోలుదారు రకం',
+    gstRtmNote:'✅ <strong>శుభవార్త:</strong> OC ఉన్న రెడీ-టు-మూవ్ ఫ్లాట్లకు <strong>GST వర్తించదు</strong>. స్టాంప్ డ్యూటీ మరియు రిజిస్ట్రేషన్ మాత్రమే.',
+    gstResaleNote:'✅ <strong>శుభవార్త:</strong> రీసేల్ ఫ్లాట్లకు <strong>GST లేదు</strong>. స్టాంప్ డ్యూటీ మరియు రిజిస్ట్రేషన్ మాత్రమే వర్తిస్తాయి.',
+    gstUcNote:'⚠️ <strong>GST వర్తిస్తుంది</strong> నిర్మాణంలో ఉన్న ఫ్లాట్లకు. అందుబాటు గృహానికి 1%, ఇతరులకు 5%.',
+    calcBtn:'మొత్తం ఖర్చు లెక్కించండి →',
+    rLabelStamp:'మొత్తం రిజిస్ట్రేషన్ ఖర్చు',rLabelFlat:'మొత్తం కొనుగోలు ఖర్చు',
+    rBdHead:'పూర్తి ఖర్చు వివరాలు',
+    stampDuty:'స్టాంప్ డ్యూటీ',regCharge:'రిజిస్ట్రేషన్ ఛార్జ్',transferDuty:'బదిలీ సుంకం',
+    gstOnFlat:'ఫ్లాట్‌పై GST',basePrice:'మూల ధర',
+    parking:'పార్కింగ్ ఛార్జీలు',maint:'మెయింటెనెన్స్ డిపాజిట్',club:'క్లబ్ సభ్యత్వం',legal:'చట్టపర ఖర్చులు',
+    totalCost:'మొత్తం ఖర్చు',effRate:'అసలు రేటు',perSqft:'చ.అడు.కు',
+    pillWoman:'✅ మహిళా రాయితీ వర్తించింది',pillHighTN:'⚠️ తమిళనాడులో అత్యధిక రేటు (11%)',pillGoa:'⭐ గోవా — భారతదేశంలో అత్యల్ప స్టాంప్ డ్యూటీ (3.5%)',
+    pillRtm:'✅ GST లేదు (రెడీ-టు-మూవ్)',pillUcGst:'⚠️ GST వర్తిస్తుంది — రెడీ-టు-మూవ్ పోల్చండి',
+    pillAffordable:'✅ అందుబాటు గృహ రేటు (1% GST)',
+    exHdr:'📖 ఈ పదాలు అర్థం ఏమిటి?',resetBtn:'← కొత్త లెక్క',
+    footerTxt:'ఆస్తి సూట్ · ఉచితం · హైదరాబాద్‌లో తయారైంది 🇮🇳',
+    negoEye:'మీ వ్యక్తిగత',negoTtl:'🤝 చర్చల వ్యూహం',
+    negoScoreLbl:'లాభం',negoSavLbl:'సాధ్యమైన ఆదా',negoSavSub:'అన్నీ సాధిస్తే',
+    negoTimingEye:'⏰ సంతకం చేయడానికి ముందు',
+    statsEye:'📊 వినియోగ గణాంకాలు',sgLbl:'మొత్తం సందర్శనలు',sgNote:'🌐 అందరి సందర్శనలు',
+    spCalcsL:'మీ లెక్కలు',spStreakL:'రోజుల వరుస',spNote:'📱 మీ పరికరంలో మాత్రమే',
+    explStamp:[
+      ['స్టాంప్ డ్యూటీ','ఆస్తి లావాదేవీలపై రాష్ట్ర ప్రభుత్వ పన్ను. అగ్రిమెంట్ విలువ లేదా సర్కిల్ రేటు — ఏది ఎక్కువైతే దానిపై % లెక్కిస్తారు. సేల్ డీడ్‌ను చట్టబద్ధంగా చేస్తుంది.'],
+      ['రిజిస్ట్రేషన్ ఛార్జ్','యాజమాన్య బదిలీని అధికారికంగా నమోదు చేయడానికి సబ్-రిజిస్ట్రార్ కార్యాలయంలో చెల్లించే ఫీజు. సాధారణంగా ఆస్తి విలువలో 1%.'],
+      ['బదిలీ సుంకం','తెలంగాణలో స్టాంప్ డ్యూటీపై అదనంగా 1.5% వేస్తారు. చాలా ఇతర రాష్ట్రాలలో ఇది లేదు.'],
+      ['సర్కిల్ రేటు','ప్రభుత్వం నిర్ణయించిన కనీస ఆస్తి విలువ. మీరు తక్కువ ధరకు కొన్నా స్టాంప్ డ్యూటీ సర్కిల్ రేటుపై లెక్కిస్తారు.'],
+      ['మహిళా రాయితీ','చాలా రాష్ట్రాలు మహిళా పేరుపై నమోదైతే 1–2% తక్కువ స్టాంప్ డ్యూటీ ఇస్తాయి. ఢిల్లీలో 2% — అత్యధికం.'],
+      ['సెక్షన్ 80C మినహాయింపు','మొదటి ఇల్లు కొన్నప్పుడు చెల్లించిన స్టాంప్ డ్యూటీ 80C కింద (₹1.5L పరిమితి వరకు) పాత పన్ను విధానంలో తగ్గింపు పొందవచ్చు.'],
+    ],
+    explFlat:[
+      ['నిర్మాణంలో ఫ్లాట్‌పై GST','అందుబాటు గృహానికి (≤₹45L మరియు విస్తీర్ణ పరిమితి) 1%. ఇతరులకు 5%. కొనుగోలుదారులకు ITC లభించదు.'],
+      ['రెడీ-టు-మూవ్‌పై GST సున్నా','డెవలపర్‌కు OC వచ్చిన తర్వాత అమ్మితే GST వర్తించదు. ఇది అతి పెద్ద పన్ను ఆదా అవకాశం.'],
+      ['పార్కింగ్ చర్చ','పార్కింగ్‌లో 30–50% బిల్డర్ మార్జిన్ ఉంటుంది. RERA కింద వేరుగా ధర నిర్ణయించబడుతుంది — ఎప్పుడూ మొదటి ధరను అంగీకరించకండి.'],
+      ['మెయింటెనెన్స్ డిపాజిట్','12–24 నెలల అడ్వాన్స్ అడుగుతారు. ముందు చెల్లించేవారికి లేదా తొందరగా కొనేవారికి 6 నెలలకు తగ్గించవచ్చు.'],
+      ['RERA నమోదు','RERA కింద నిర్మాణంలో ప్రాజెక్టులన్నీ తప్పనిసరిగా నమోదు అవ్వాలి. ఏ చెల్లింపుకు ముందైనా rera.telangana.gov.in లో తనిఖీ చేయండి.'],
+      ['OC vs CC','OC (ఆక్యుపెన్సీ సర్టిఫికేట్) = నివసించడానికి సురక్షితం. CC (కంప్లీషన్ సర్టిఫికేట్) = ప్లాన్ ప్రకారం నిర్మించారు. GST మినహాయింపుకు OC కీలకం.'],
+    ],
+    timing:[
+      ['ముందు RERA తనిఖీ చేయండి','ఏ చెల్లింపుకు ముందైనా మీ రాష్ట్ర RERA పోర్టల్‌లో బిల్డర్ నమోదు సరిచూడండి.'],
+      ['ప్రాజెక్ట్ లాంచ్ సమయంలో కొనండి','లాంచ్ ధరలు అత్యల్పంగా ఉంటాయి. RERA ఎస్క్రో కంప్లయన్స్ కోసం బిల్డర్లకు తొందరి కొనుగోలుదారులు అవసరం — 5–10% తగ్గింపు సాధ్యం.'],
+      ['ఆర్థిక త్రైమాసం చివరిలో','మార్చి 31 మరియు సెప్టెంబర్ 30 బిల్డర్ లక్ష్య తేదీలు. చివరి 2 వారాలలో గరిష్ట చర్చ అవకాశం.'],
+      ['భార్య పేరుపై నమోదు చేయండి','ఢిల్లీ (2% ఆదా), హరియాణా (2%), యూపీ, WB (1%) — మహిళా పేరుపై నమోదైతే స్టాంప్ డ్యూటీలో వాస్తవ ఆదా.'],
+      ['విడిగా చర్చించండి','ముందు మూల ధర, తర్వాత పార్కింగ్, తర్వాత మెయింటెనెన్స్ — ఒకేసారి కాకుండా. బండిల్ చేస్తే బిల్డర్లు తగ్గింపు దాచుతారు.'],
+      ['చెల్లింపు ముందు అగ్రిమెంట్ తీసుకోండి','RERA కింద ఏ బిల్డర్ అయినా రాత అగ్రిమెంట్ లేకుండా 10% కంటే ఎక్కువ తీసుకోలేరు.'],
+    ],
+    moves:{
+      womanConcession:(ctx)=>({priority:'high',title:`భార్య/తల్లి పేరుపై నమోదు — ${fmt(ctx.womanSaving)} ఆదా`,saving:ctx.womanSaving,desc:`${ctx.stateName}లో మహిళా కొనుగోలుదారులకు ${ctx.womanDiscount}% రాయితీ ఉంది. మీ ఆస్తి విలువపై స్టాంప్ డ్యూటీలో ${fmt(ctx.womanSaving)} ఆదా అవుతుంది.`,script:`"మా భార్య/తల్లి పేరుపై నమోదు చేయాలనుకుంటున్నాం — ${ctx.womanDiscount}% స్టాంప్ డ్యూటీ రాయితీ పొందాలని. దస్తావేజులు ఆ విధంగా తయారు చేయండి."`}),
+      circleRate:(ctx)=>({priority:'high',title:'ముందు సర్కిల్ రేటు తనిఖీ చేయండి',saving:0,desc:'స్టాంప్ డ్యూటీ మీ అమ్మకపు ధర మరియు సర్కిల్ రేటులో ఏది ఎక్కువైతే దానిపై వస్తుంది. సంతకం చేయడానికి ముందు తనిఖీ చేయండి.',script:`"ఈ ఆస్తికి ప్రస్తుత సర్కిల్ రేటు SRO/IGR పోర్టల్‌లో నిర్థారించగలరా?"`}),
+      parking:(ctx)=>({priority:'high',title:`పార్కింగ్ ${fmtL(ctx.parking)} నుండి తగ్గించండి`,saving:ctx.parking*0.3,desc:`పార్కింగ్‌లో 30–50% బిల్డర్ మార్జిన్ ఉంటుంది. RERA కింద వేరుగా ధర నిర్ణయించబడుతుంది — ఎప్పుడూ మొదటి ధరను అంగీకరించకండి.`,script:`"పార్కింగ్ ధర ${fmtL(ctx.parking)} ఉంది. సారూప్య ప్రాజెక్టులలో ${fmtL(ctx.parking*0.6)} వస్తోంది. ఇప్పుడే సంతకం చేస్తాను — అదే ఇవ్వగలరా?"`}),
+      maint:(ctx)=>({priority:'med',title:'మెయింటెనెన్స్ డిపాజిట్ తగ్గించండి',saving:ctx.maint*0.4,desc:`12–24 నెలల అడ్వాన్స్ స్థిరమైనది కాదు. పూర్తి మొత్తం చెల్లించేవారికి 6 నెలలకు తగ్గించవచ్చు.`,script:`"పూర్తి మొత్తం చెల్లిస్తున్నాం. మెయింటెనెన్స్ అడ్వాన్స్ 12 బదులు 6 నెలలకు తగ్గించగలరా?"`}),
+      club:(ctx)=>({priority:'med',title:'క్లబ్ సభ్యత్వం రద్దు చేయించండి',saving:ctx.club,desc:`క్లబ్ సభ్యత్వం RERA కింద తప్పనిసరి కాదు. ఉపయోగించని వారు చట్టబద్ధంగా తిరస్కరించవచ్చు.`,script:`"క్లబ్ సదుపాయాలు ఉపయోగించే ఆలోచన లేదు. అగ్రిమెంట్ నుండి క్లబ్ సభ్యత్వం తొలగించగలరా? RERA దీన్ని తప్పనిసరి చేయదు."`}),
+      rtmGst:(ctx)=>({priority:'high',title:'రెడీ-టు-మూవ్ పరిశీలించండి — GST ఆదా',saving:ctx.gstAmt,desc:`మీరు నిర్మాణంలో కొంటున్నారు మరియు ${fmt(ctx.gstAmt)} GST చెల్లిస్తున్నారు. OC ఉన్న రెడీ-టు-మూవ్ ఫ్లాట్‌లో GST సున్నా — ఆ ఆదా ధర వ్యత్యాసాన్ని భర్తీ చేయవచ్చు.`,script:`"OC ఉన్న రెడీ-టు-మూవ్ యూనిట్లు ఏమైనా ఉన్నాయా? GST సున్నా అయితే మొత్తం ఖర్చు పోల్చాలనుకుంటున్నాను."`}),
+      reraCheck:(ctx)=>({priority:'high',title:'RERA నమోదు తనిఖీ చేయండి',saving:0,desc:`RERA కింద ఏ బిల్డర్ అయినా రాత అగ్రిమెంట్ లేకుండా 10% కంటే ఎక్కువ తీసుకోలేరు. ఏ చెల్లింపుకు ముందైనా RERA పోర్టల్‌లో తనిఖీ చేయండి.`,script:`"ముందు RERA నమోదు నంబర్ ఇవ్వగలరా? పోర్టల్‌లో తనిఖీ చేసి ముందుకు వెళతాను."`}),
+      earlyBuyer:(ctx)=>({priority:'med',title:'తొందరి కొనుగోలుదారు లాభం',saving:ctx.basePrice*0.05,desc:`బిల్డర్లకు RERA ఎస్క్రో కంప్లయన్స్ కోసం తొందరి కొనుగోలుదారులు అవసరం. 20% కంటే తక్కువ అమ్మిన ప్రాజెక్టులలో 5–8% తగ్గింపు సాధ్యం.`,script:`"ఈ ప్రాజెక్ట్ తొందరి దశలో ఉంది. నిబద్ధమైన కొనుగోలుదారుగా మూల ధరపై 5% తగ్గింపు అడుగుతున్నాను."`}),
+      legalFees:(ctx)=>({priority:'low',title:'చట్టపర ఫీజులు బిల్డర్ భరించాలని అడగండి',saving:ctx.legal*0.5,desc:`₹50L పైన కొనుగోళ్ళలో బిల్డర్లు తరచుగా డాక్యుమెంటేషన్ ఛార్జీలు భరిస్తారు.`,script:`"ఈ పరిమాణం కొనుగోలుకు డాక్యుమెంటేషన్ మరియు చట్టపర ప్రాసెసింగ్ ఫీజులు బిల్డర్ భరించగలరా?"`}),
+    },
+  },
+  hi:{
+    navTitle:'🏠 प्रॉपर्टी सूट',
+    mbStamp:'स्टैंप ड्यूटी',mbFlat:'फ्लैट खरीद',
+    stampInfo:'📌 <strong>कैसे काम करता है:</strong> स्टैंप ड्यूटी आपके अनुबंध मूल्य और सरकारी सर्कल रेट में जो अधिक हो उस पर लगती है। रजिस्ट्रेशन से पहले SRO कार्यालय या राज्य पोर्टल पर सर्कल रेट जांचें।',
+    sdC1:'संपत्ति विवरण',sdLState:'राज्य',sdLCity:'शहर / क्षेत्र',sdLProptype:'संपत्ति का प्रकार',
+    sdLVal:'संपत्ति का मूल्य',sdLValH:'(अनुबंध या सर्कल रेट — जो अधिक हो)',
+    sdLGender:'खरीदार का प्रकार',gtMale:'👨 पुरुष',gtFemale:'👩 महिला',gtJoint:'👫 संयुक्त',
+    flatInfo:'⚠️ <strong>मुख्य नियम:</strong> OC (Occupancy Certificate) वाले रेडी-टू-मूव फ्लैट पर <strong>GST शून्य</strong> है। निर्माणाधीन फ्लैट पर 1% (किफायती) या 5% GST लगती है।',
+    fpC1:'संपत्ति विवरण',fpLState:'राज्य',fpLArea:'कार्पेट क्षेत्र',fpLCityType:'शहर का प्रकार',
+    fpLVal:'अनुबंध / बिक्री मूल्य',fpLStatus:'संपत्ति की स्थिति',
+    fpC2:'GST विवरण',fpLGstrate:'GST दर लागू',fpLGstrateS:'मूल्य के आधार पर स्वचालित',
+    fpC3:'अतिरिक्त शुल्क',fpLParking:'पार्किंग शुल्क',fpLParkingS:'अक्सर ₹2–5L, मोलभाव योग्य',
+    fpLMaint:'मेंटेनेंस डिपॉजिट',fpLMaintS:'12–24 महीने एडवांस — मोलभाव योग्य',
+    fpLClub:'क्लब सदस्यता',fpLClubS:'वैकल्पिक — अक्सर माफ करवाई जा सकती है',
+    fpLLegal:'कानूनी / पंजीकरण अन्य खर्च',fpLLegalS:'वकील शुल्क, फ्रैंकिंग आदि',
+    fpC4:'खरीदार का प्रकार और रजिस्ट्रेशन',fpLGender:'खरीदार का प्रकार',
+    gstRtmNote:'✅ <strong>अच्छी खबर:</strong> OC वाले रेडी-टू-मूव फ्लैट पर <strong>GST नहीं लगती</strong>। केवल स्टैंप ड्यूटी और रजिस्ट्रेशन।',
+    gstResaleNote:'✅ <strong>अच्छी खबर:</strong> रीसेल फ्लैट पर <strong>कोई GST नहीं</strong>। केवल स्टैंप ड्यूटी और रजिस्ट्रेशन।',
+    gstUcNote:'⚠️ <strong>GST लागू होती है</strong> निर्माणाधीन फ्लैट पर। किफायती आवास पर 1%, अन्य पर 5%।',
+    calcBtn:'कुल लागत की गणना करें →',
+    rLabelStamp:'कुल पंजीकरण लागत',rLabelFlat:'कुल खरीद लागत',
+    rBdHead:'पूरा लागत विवरण',
+    stampDuty:'स्टैंप ड्यूटी',regCharge:'रजिस्ट्रेशन शुल्क',transferDuty:'ट्रांसफर ड्यूटी',
+    gstOnFlat:'फ्लैट पर GST',basePrice:'मूल कीमत',
+    parking:'पार्किंग शुल्क',maint:'मेंटेनेंस डिपॉजिट',club:'क्लब सदस्यता',legal:'कानूनी खर्च',
+    totalCost:'कुल लागत',effRate:'प्रभावी दर',perSqft:'प्रति वर्ग फुट',
+    pillWoman:'✅ महिला रियायत लागू',pillHighTN:'⚠️ तमिलनाडु में सर्वाधिक संयुक्त दर (11%)',pillGoa:'⭐ गोवा — भारत में सबसे कम स्टैंप ड्यूटी (3.5%)',
+    pillRtm:'✅ GST नहीं (रेडी-टू-मूव)',pillUcGst:'⚠️ GST लागू — रेडी-टू-मूव विकल्प देखें',
+    pillAffordable:'✅ किफायती आवास दर (1% GST)',
+    exHdr:'📖 इन शब्दों का अर्थ क्या है?',resetBtn:'← नई गणना',
+    footerTxt:'प्रॉपर्टी सूट · मुफ्त · कोई लॉगिन नहीं · हैदराबाद में बना 🇮🇳',
+    negoEye:'आपकी व्यक्तिगत',negoTtl:'🤝 मोलभाव रणनीति',
+    negoScoreLbl:'ताकत',negoSavLbl:'संभावित बचत',negoSavSub:'सभी सफल हों तो',
+    negoTimingEye:'⏰ हस्ताक्षर से पहले',
+    statsEye:'📊 उपयोग आंकड़े',sgLbl:'कुल विज़िट',sgNote:'🌐 सभी उपयोगकर्ता',
+    spCalcsL:'आपकी गणनाएं',spStreakL:'दिन की स्ट्रीक',spNote:'📱 सिर्फ आपके डिवाइस पर',
+    explStamp:[
+      ['स्टैंप ड्यूटी','संपत्ति लेनदेन पर राज्य सरकार का कर। बिक्री मूल्य या सर्कल रेट — जो अधिक हो — पर % के रूप में। सेल डीड को कानूनी मान्यता देता है।'],
+      ['रजिस्ट्रेशन शुल्क','स्वामित्व हस्तांतरण को आधिकारिक रूप से दर्ज करने के लिए सब-रजिस्ट्रार कार्यालय में भुगतान। आमतौर पर संपत्ति मूल्य का 1%।'],
+      ['ट्रांसफर ड्यूटी','तेलंगाना में स्टैंप ड्यूटी के ऊपर 1.5% अतिरिक्त लेवी। अधिकांश अन्य राज्यों में नहीं है।'],
+      ['सर्कल रेट','किसी क्षेत्र के लिए सरकार द्वारा निर्धारित न्यूनतम संपत्ति मूल्य। कम कीमत पर खरीदने पर भी स्टैंप ड्यूटी सर्कल रेट पर लगती है।'],
+      ['महिला रियायत','कई राज्य महिला के नाम पर पंजीकरण पर 1–2% कम स्टैंप ड्यूटी देते हैं। दिल्ली में 2% — सर्वाधिक।'],
+      ['धारा 80C कटौती','पहले घर की खरीद पर चुकाई गई स्टैंप ड्यूटी 80C के तहत (₹1.5L सीमा तक) पुरानी कर व्यवस्था में कटौती योग्य है।'],
+    ],
+    explFlat:[
+      ['निर्माणाधीन फ्लैट पर GST','किफायती आवास (≤₹45L और क्षेत्र सीमा) पर 1%। अन्य पर 5%। खरीदारों को ITC नहीं मिलती।'],
+      ['रेडी-टू-मूव पर शून्य GST','यदि OC जारी हो चुकी है तो GST नहीं लगती। यह सबसे बड़ी कर बचत है।'],
+      ['पार्किंग मोलभाव','पार्किंग में 30–50% बिल्डर मार्जिन होता है। RERA के तहत अलग से कीमत तय होती है — पहली कीमत कभी न मानें।'],
+      ['मेंटेनेंस डिपॉजिट','12–24 महीने एडवांस मांगा जाता है। पूरी राशि देने वाले खरीदारों के लिए 6 महीने तक कम करवाना संभव है।'],
+      ['RERA पंजीकरण','RERA के तहत सभी निर्माणाधीन परियोजनाएं अनिवार्य रूप से पंजीकृत होनी चाहिए। किसी भी भुगतान से पहले राज्य RERA पोर्टल पर जांचें।'],
+      ['OC vs CC','OC = निवास के लिए सुरक्षित। CC = निर्माण योजना के अनुसार। GST छूट के लिए OC महत्वपूर्ण दस्तावेज़ है।'],
+    ],
+    timing:[
+      ['पहले RERA जांचें','किसी भी भुगतान से पहले राज्य RERA पोर्टल पर बिल्डर का पंजीकरण सत्यापित करें।'],
+      ['प्रोजेक्ट लॉन्च पर खरीदें','लॉन्च कीमतें सबसे कम होती हैं। RERA एस्क्रो अनुपालन के लिए बिल्डरों को शुरुआती खरीदार चाहिए — 5–10% छूट संभव।'],
+      ['वित्तीय तिमाही के अंत में','31 मार्च और 30 सितंबर बिल्डर लक्ष्य तिथियां हैं। आखिरी 2 हफ्ते में सबसे अधिक लचीलापन।'],
+      ['पत्नी के नाम पर रजिस्टर करें','दिल्ली (2% बचत), हरियाणा (2%), UP, WB (1%) — महिला के नाम पर स्टैंप ड्यूटी में असली बचत।'],
+      ['अलग-अलग मोलभाव करें','पहले बेस प्राइस, फिर पार्किंग, फिर मेंटेनेंस — एक साथ नहीं। बंडल से बिल्डर छूट छुपाते हैं।'],
+      ['भुगतान से पहले एग्रीमेंट लें','RERA के तहत कोई बिल्डर लिखित एग्रीमेंट के बिना 10% से अधिक नहीं ले सकता।'],
+    ],
+    moves:{
+      womanConcession:(ctx)=>({priority:'high',title:`पत्नी/माँ के नाम पर रजिस्टर — ${fmt(ctx.womanSaving)} बचाएं`,saving:ctx.womanSaving,desc:`${ctx.stateName} में महिला खरीदारों को ${ctx.womanDiscount}% रियायत मिलती है। आपकी संपत्ति मूल्य पर स्टैंप ड्यूटी में ${fmt(ctx.womanSaving)} बचत।`,script:`"हम संपत्ति पत्नी/माँ के नाम पर रजिस्टर करना चाहते हैं — ${ctx.womanDiscount}% स्टैंप ड्यूटी रियायत के लिए। कृपया दस्तावेज़ उसी तरह तैयार करें।"`}),
+      circleRate:(ctx)=>({priority:'high',title:'पहले सर्कल रेट जांचें',saving:0,desc:'स्टैंप ड्यूटी बिक्री मूल्य या सर्कल रेट — जो अधिक हो पर लगती है। हस्ताक्षर से पहले जांचें।',script:`"क्या आप SRO/IGR पोर्टल से इस संपत्ति का मौजूदा सर्कल रेट बता सकते हैं?"`}),
+      parking:(ctx)=>({priority:'high',title:`पार्किंग ${fmtL(ctx.parking)} से कम करवाएं`,saving:ctx.parking*0.3,desc:`पार्किंग में 30–50% बिल्डर मार्जिन होता है। RERA के तहत अलग से कीमत तय है — पहली कीमत कभी न मानें।`,script:`"पार्किंग ${fmtL(ctx.parking)} है। समान प्रोजेक्ट में ${fmtL(ctx.parking*0.6)} देख रहा हूं। आज साइन करने के लिए तैयार हूं — यही दे सकते हैं?"`}),
+      maint:(ctx)=>({priority:'med',title:'मेंटेनेंस डिपॉजिट कम करवाएं',saving:ctx.maint*0.4,desc:`12–24 महीने एडवांस निश्चित नहीं है। पूरी राशि देने वाले खरीदारों के लिए 6 महीने तक कम करना संभव।`,script:`"हम पूरी राशि दे रहे हैं। मेंटेनेंस एडवांस 12 की बजाय 6 महीने कर सकते हैं?"`}),
+      club:(ctx)=>({priority:'med',title:'क्लब सदस्यता माफ करवाएं',saving:ctx.club,desc:`क्लब सदस्यता RERA के तहत अनिवार्य नहीं है। जो उपयोग नहीं करेंगे वे कानूनी रूप से मना कर सकते हैं।`,script:`"हम क्लब सुविधाएं नियमित उपयोग नहीं करेंगे। क्या एग्रीमेंट से क्लब सदस्यता हटाई जा सकती है? RERA इसे अनिवार्य नहीं बनाता।"`}),
+      rtmGst:(ctx)=>({priority:'high',title:'रेडी-टू-मूव देखें — GST बचाएं',saving:ctx.gstAmt,desc:`आप निर्माणाधीन खरीद रहे हैं और ${fmt(ctx.gstAmt)} GST दे रहे हैं। OC वाले रेडी-टू-मूव में शून्य GST — यह बचत कीमत अंतर को संतुलित कर सकती है।`,script:`"क्या OC जारी रेडी-टू-मूव इकाइयां उपलब्ध हैं? शून्य GST से कुल लागत तुलना करना चाहता हूं।"`}),
+      reraCheck:(ctx)=>({priority:'high',title:'RERA पंजीकरण जांचें',saving:0,desc:`RERA के तहत बिल्डर लिखित एग्रीमेंट के बिना 10% से अधिक नहीं ले सकता। किसी भी भुगतान से पहले RERA पोर्टल पर जांचें।`,script:`"आगे बढ़ने से पहले RERA पंजीकरण संख्या साझा करें। पोर्टल पर जांच के बाद आगे बढ़ूंगा।"`}),
+      earlyBuyer:(ctx)=>({priority:'med',title:'शुरुआती खरीदार का लाभ उठाएं',saving:ctx.basePrice*0.05,desc:`बिल्डरों को RERA एस्क्रो अनुपालन के लिए शुरुआती खरीदार चाहिए। 20% से कम बिक्री वाले प्रोजेक्ट में 5–8% छूट संभव।`,script:`"मैं प्रतिबद्ध राशि के साथ शुरुआती खरीदार हूं। बेस प्राइस पर 5% छूट चाहता हूं।"`}),
+      legalFees:(ctx)=>({priority:'low',title:'कानूनी शुल्क बिल्डर से माफ करवाएं',saving:ctx.legal*0.5,desc:`₹50L से ऊपर की खरीद पर बिल्डर अक्सर दस्तावेज़ीकरण शुल्क खुद उठाते हैं।`,script:`"इतनी बड़ी खरीद के लिए दस्तावेज़ीकरण और कानूनी प्रसंस्करण शुल्क बिल्डर उठा सकता है?"`}),
+    },
+  }
+};
+
+// ══════════════════════════════════════════
+//  LANG / MODE
+// ══════════════════════════════════════════
+function applyLang() {
+  const t = T[lang];
+  s('nav-title',t.navTitle); s('mb-stamp',t.mbStamp); s('mb-flat',t.mbFlat);
+  h('stamp-info',t.stampInfo); h('flat-info',t.flatInfo);
+  s('sd-c1',t.sdC1); s('sd-l-state',t.sdLState); s('sd-l-city',t.sdLCity);
+  s('sd-l-proptype',t.sdLProptype); s('sd-l-val',t.sdLVal); s('sd-l-val-h',t.sdLValH);
+  s('sd-l-gender',t.sdLGender);
+  s('gt-male',t.gtMale); s('gt-female',t.gtFemale); s('gt-joint',t.gtJoint);
+  s('fp-c1',t.fpC1); s('fp-l-state',t.fpLState); s('fp-l-area',t.fpLArea);
+  s('fp-l-city-type',t.fpLCityType); s('fp-l-val',t.fpLVal); s('fp-l-status',t.fpLStatus);
+  s('fp-c2',t.fpC2); s('fp-l-gstrate',t.fpLGstrate); s('fp-l-gstrate-s',t.fpLGstrateS);
+  s('fp-c3',t.fpC3); s('fp-l-parking',t.fpLParking); s('fp-l-parking-s',t.fpLParkingS);
+  s('fp-l-maint',t.fpLMaint); s('fp-l-maint-s',t.fpLMaintS);
+  s('fp-l-club',t.fpLClub); s('fp-l-club-s',t.fpLClubS);
+  s('fp-l-legal',t.fpLLegal); s('fp-l-legal-s',t.fpLLegalS);
+  s('fp-c4',t.fpC4); s('fp-l-gender',t.fpLGender);
+  s('gt2-male',t.gtMale); s('gt2-female',t.gtFemale); s('gt2-joint',t.gtJoint);
+  s('calc-btn',t.calcBtn); s('r-bd-head',t.rBdHead);
+  s('expl-hdr-txt',t.exHdr); s('reset-btn',t.resetBtn); s('footer-txt',t.footerTxt);
+  s('nego-eye',t.negoEye); s('nego-ttl',t.negoTtl); s('nego-score-lbl',t.negoScoreLbl);
+  s('nego-sav-lbl',t.negoSavLbl); s('nego-sav-sub',t.negoSavSub); s('nego-timing-eye',t.negoTimingEye);
+  s('stats-eye',t.statsEye); s('sg-lbl',t.sgLbl); s('sg-note',t.sgNote);
+  s('sp-calcs-l',t.spCalcsL); s('sp-streak-l',t.spStreakL); s('sp-note',t.spNote);
+  buildExplainer();
+  if(_lastCtx) buildNego(_lastCtx);
+  renderStats();
+  toggleGstSection();
+}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
+  applyLang();
+}
+
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));
+  el('form-stamp').style.display=m==='stamp'?'':'none';
+  el('form-flat').style.display=m==='flat'?'':'none';
+  el('results').classList.remove('visible');
+  el('nego-wrap').style.display='none';
+  _lastCtx=null;
+  buildExplainer();
+}
+
+// ══════════════════════════════════════════
+//  CALCULATE
+// ══════════════════════════════════════════
+function calculate(){
+  if(mode==='stamp') calcStamp();
+  else calcFlat();
+}
+
+function getStampRate(stateCode, g, cityIdx) {
+  const st = STATES[stateCode];
+  let base = st[g] || st.male;
+  // city adjustments
+  if(st.metroAdj && cityIdx !== undefined) {
+    const adj = st.metroAdj[cityIdx] || 0;
+    base += adj;
+    // Maharashtra male specific
+    if(g==='male' && st.metroMaleAdj) base += (st.metroMaleAdj[cityIdx]||0);
+  }
+  return base;
+}
+
+function calcStamp(){
+  const t=T[lang];
+  const stateCode=el('sd-state').value;
+  const st=STATES[stateCode];
+  const val=parseFloat(el('sd-val').value)||0;
+  const proptype=el('sd-proptype').value;
+  const citySelect=el('sd-city');
+  const cityIdx=citySelect && st.metro && st.metro.length>0 ? parseInt(citySelect.value) : undefined;
+
+  const stampRate=getStampRate(stateCode,gender,cityIdx);
+  const regRate=st.regPct;
+  const transferRate=st.transfer||0;
+
+  const stampAmt=val*stampRate/100;
+  let regAmt=val*regRate/100;
+  if(st.regCap>0 && regAmt>st.regCap) regAmt=st.regCap;
+  const transferAmt=val*transferRate/100;
+  const total=stampAmt+regAmt+transferAmt;
+  const effRate=(total/val)*100;
+
+  // woman saving
+  const maleRate=getStampRate(stateCode,'male',cityIdx);
+  const femaleRate=getStampRate(stateCode,'female',cityIdx);
+  const womanDiscount=maleRate-femaleRate;
+  const womanSaving=val*womanDiscount/100;
+
+  el('r-label').textContent=t.rLabelStamp;
+  el('r-amount').textContent=fmt(total);
+  el('r-sub').textContent=`${st.name} · ${val.toLocaleString('en-IN')} property · ${gender}`;
+  el('r-effrate').textContent=`${t.effRate}: ${effRate.toFixed(2)}%`;
+
+  el('r-insights').innerHTML=`
+    <div class="ibox"><div class="iv">${fmt(stampAmt)}</div><div class="il">${t.stampDuty}</div></div>
+    <div class="ibox"><div class="iv">${fmt(regAmt)}</div><div class="il">${t.regCharge}</div></div>
+    <div class="ibox"><div class="iv">${effRate.toFixed(1)}%</div><div class="il">${t.effRate}</div></div>`;
+
+  const pills=[];
+  if(gender==='female'&&womanSaving>0) pills.push(`<div class="pill g">${t.pillWoman}</div>`);
+  if(stateCode==='TN') pills.push(`<div class="pill r">${t.pillHighTN}</div>`);
+  if(stateCode==='GA') pills.push(`<div class="pill g">${t.pillGoa}</div>`);
+  el('r-pills').innerHTML=pills.join('');
+
+  let rows=`<div class="brow pos"><div class="bl">${t.stampDuty}<span class="bs">${stampRate}% of ₹${val.toLocaleString('en-IN')}</span></div><div class="ba">${fmt(stampAmt)}</div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.regCharge}<span class="bs">${regRate}%${st.regCap>0?' (capped at ₹'+st.regCap.toLocaleString('en-IN')+')':''}</span></div><div class="ba">${fmt(regAmt)}</div></div>`;
+  if(transferAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.transferDuty}<span class="bs">${transferRate}%</span></div><div class="ba">${fmt(transferAmt)}</div></div>`;
+  rows+=`<div class="brow tot"><div class="bl">${t.totalCost}</div><div class="ba">${fmt(total)}</div></div>`;
+  if(womanSaving>0&&gender!=='female') rows+=`<div class="brow" style="background:#F0FFF4;margin-top:4px"><div class="bl" style="color:var(--jade);font-size:12px">💡 Register in wife's name → Save ${fmt(womanSaving)} (${womanDiscount}% concession in ${st.name})</div><div class="ba" style="color:var(--jade)">Save ${fmt(womanSaving)}</div></div>`;
+  el('r-rows').innerHTML=rows;
+
+  const ctx={mode:'stamp',stateName:st.name,stateCode,val,gender,stampAmt,regAmt,transferAmt,total,womanSaving,womanDiscount,effRate};
+  _lastCtx=ctx;
+  buildNego(ctx);
+  el('results').classList.add('visible');
+  el('results').scrollIntoView({behavior:'smooth'});
+  recordCalc('stamp');
+}
+
+function calcFlat(){
+  const t=T[lang];
+  const stateCode=el('fp-state').value;
+  const st=STATES[stateCode];
+  const val=parseFloat(el('fp-val').value)||0;
+  const area=parseFloat(el('fp-area').value)||0;
+  const status=el('fp-status').value;
+  const gstRate=parseFloat(el('fp-gstrate').value)||0;
+  const parking=parseFloat(el('fp-parking').value)||0;
+  const maint=parseFloat(el('fp-maint').value)||0;
+  const club=parseFloat(el('fp-club').value)||0;
+  const legal=parseFloat(el('fp-legal').value)||0;
+
+  const stampRate=getStampRate(stateCode,gender2,undefined);
+  const regRate=st.regPct;
+  const transferRate=st.transfer||0;
+
+  const gstAmt=val*gstRate/100;
+  const stampAmt=val*stampRate/100;
+  let regAmt=val*regRate/100;
+  if(st.regCap>0&&regAmt>st.regCap) regAmt=st.regCap;
+  const transferAmt=val*transferRate/100;
+  const regTotal=stampAmt+regAmt+transferAmt;
+  const total=val+gstAmt+regTotal+parking+maint+club+legal;
+  const effAbove=(total-val)/val*100;
+  const perSqft=area>0?total/area:0;
+
+  const maleRate=getStampRate(stateCode,'male',undefined);
+  const femaleRate=getStampRate(stateCode,'female',undefined);
+  const womanSaving=val*(maleRate-femaleRate)/100;
+
+  el('r-label').textContent=t.rLabelFlat;
+  el('r-amount').textContent=fmt(total);
+  el('r-sub').textContent=`${st.name} · ₹${val.toLocaleString('en-IN')} flat · ${area} sq ft`;
+  el('r-effrate').textContent=`${t.effRate}: ${effAbove.toFixed(1)}% above base price${perSqft>0?' · ₹'+Math.round(perSqft).toLocaleString('en-IN')+'/sqft':''}`;
+
+  el('r-insights').innerHTML=`
+    <div class="ibox"><div class="iv">${fmt(gstAmt)}</div><div class="il">${t.gstOnFlat}</div></div>
+    <div class="ibox"><div class="iv">${fmt(regTotal)}</div><div class="il">${t.stampDuty}+${t.regCharge}</div></div>
+    <div class="ibox"><div class="iv">${fmt(parking+maint+club+legal)}</div><div class="il">Extras</div></div>`;
+
+  const pills=[];
+  if(status==='rtm'||status==='resale') pills.push(`<div class="pill g">${t.pillRtm}</div>`);
+  if(status==='uc'&&gstRate>0) pills.push(`<div class="pill r">${t.pillUcGst}</div>`);
+  if(status==='uc'&&gstRate===1) pills.push(`<div class="pill g">${t.pillAffordable}</div>`);
+  if(gender2==='female'&&womanSaving>0) pills.push(`<div class="pill g">${t.pillWoman}</div>`);
+  el('r-pills').innerHTML=pills.join('');
+
+  let rows=`<div class="brow pos"><div class="bl">${t.basePrice}</div><div class="ba">${fmt(val)}</div></div>`;
+  if(gstAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.gstOnFlat}<span class="bs">${gstRate}% on agreement value</span></div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
+  rows+=`<div class="brow sec"><div class="bl">Registration Charges</div><div class="ba"></div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.stampDuty}<span class="bs">${stampRate}%</span></div><div class="ba">+ ${fmt(stampAmt)}</div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.regCharge}<span class="bs">${regRate}%${st.regCap>0?' capped':''}</span></div><div class="ba">+ ${fmt(regAmt)}</div></div>`;
+  if(transferAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.transferDuty}<span class="bs">${transferRate}%</span></div><div class="ba">+ ${fmt(transferAmt)}</div></div>`;
+  rows+=`<div class="brow sec"><div class="bl">Additional Charges</div><div class="ba"></div></div>`;
+  if(parking>0) rows+=`<div class="brow neg"><div class="bl">${t.parking}</div><div class="ba">+ ${fmt(parking)}</div></div>`;
+  if(maint>0) rows+=`<div class="brow neg"><div class="bl">${t.maint}</div><div class="ba">+ ${fmt(maint)}</div></div>`;
+  if(club>0) rows+=`<div class="brow neg"><div class="bl">${t.club}</div><div class="ba">+ ${fmt(club)}</div></div>`;
+  if(legal>0) rows+=`<div class="brow neg"><div class="bl">${t.legal}</div><div class="ba">+ ${fmt(legal)}</div></div>`;
+  rows+=`<div class="brow tot"><div class="bl">${t.totalCost}</div><div class="ba">${fmt(total)}</div></div>`;
+  el('r-rows').innerHTML=rows;
+
+  const ctx={mode:'flat',stateName:st.name,stateCode,val:val,basePrice:val,gstAmt,gstRate,status,parking,maint,club,legal,total,womanSaving,womanDiscount:maleRate-femaleRate,gender:gender2};
+  _lastCtx=ctx;
+  buildNego(ctx);
+  el('results').classList.add('visible');
+  el('results').scrollIntoView({behavior:'smooth'});
+  recordCalc('flat');
+}
+
+// ══════════════════════════════════════════
+//  NEGOTIATION
+// ══════════════════════════════════════════
+function buildNego(ctx){
+  const t=T[lang];
+  const moves=t.moves;
+  let applicable=[];
+
+  if(ctx.mode==='stamp'){
+    applicable.push({...moves.circleRate(ctx)});
+    if(ctx.womanSaving>500&&ctx.gender!=='female') applicable.push({...moves.womanConcession(ctx)});
+  } else {
+    applicable.push({...moves.reraCheck(ctx)});
+    if(ctx.status==='uc'&&ctx.gstAmt>0) applicable.push({...moves.rtmGst(ctx)});
+    if(ctx.womanSaving>500&&ctx.gender!=='female') applicable.push({...moves.womanConcession(ctx)});
+    if(ctx.parking>0) applicable.push({...moves.parking(ctx)});
+    applicable.push({...moves.earlyBuyer(ctx)});
+    if(ctx.maint>0) applicable.push({...moves.maint(ctx)});
+    if(ctx.club>0) applicable.push({...moves.club(ctx)});
+    if(ctx.legal>0) applicable.push({...moves.legalFees(ctx)});
+  }
+
+  const score=Math.min(10,Math.round(
+    applicable.filter(m=>m.priority==='high').length*3+
+    applicable.filter(m=>m.priority==='med').length*1.5+
+    applicable.filter(m=>m.priority==='low').length*0.5));
+  const totalSav=applicable.reduce((a,m)=>a+Math.max(0,m.saving||0),0);
+  const scoreColor=score>=7?'#C4B5FD':score>=4?'#FFA94D':'#6FCF97';
+
+  el('nego-score-num').textContent=score+'/10';
+  el('nego-score-num').style.color=scoreColor;
+  el('nego-sav-amt').textContent=fmt(totalSav);
+
+  el('nego-moves').innerHTML=applicable.map((m,i)=>`
+    <div class="move">
+      <div class="move-top">
+        <div class="move-rank ${m.priority==='high'?'':m.priority}">${i+1}</div>
+        <div class="move-cnt">
+          <div class="move-title">${m.title}</div>
+          <div class="move-sav ${(m.saving||0)<100?'na':''}">${(m.saving||0)>100?'💰 '+fmt(m.saving):(lang==='te'?'ఆర్థికేతర లాభం':lang==='hi'?'गैर-मौद्रिक लाभ':'Non-monetary benefit')}</div>
+          <div class="move-desc">${m.desc}</div>
+        </div>
+      </div>
+      <div class="move-script">${m.script}</div>
+    </div>`).join('');
+
+  el('nego-timing-tips').innerHTML=t.timing.map(([title,body])=>
+    `<div class="t-tip"><span>${title}:</span> ${body}</div>`).join('');
+
+  el('nego-wrap').style.display='block';
+}
+
+// ══════════════════════════════════════════
+//  EXPLAINER
+// ══════════════════════════════════════════
+function buildExplainer(){
+  const t=T[lang];
+  const terms=mode==='stamp'?t.explStamp:t.explFlat;
+  el('expl-body').innerHTML=terms.map(([term,def])=>
+    `<div class="term"><strong>${term}:</strong> ${def}</div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  RESET
+// ══════════════════════════════════════════
+function resetCalc(){
+  el('results').classList.remove('visible');
+  el('nego-wrap').style.display='none';
+  _lastCtx=null;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  STATS
+// ══════════════════════════════════════════
+const STATS_KEY='property_suite_stats';
+const loadStats=()=>{try{return JSON.parse(localStorage.getItem(STATS_KEY))||{}}catch(e){return{}}};
+const saveStats=d=>{try{localStorage.setItem(STATS_KEY,JSON.stringify(d))}catch(e){}};
+
+function recordVisit(){
+  const st=loadStats();
+  const today=new Date().toISOString().slice(0,10);
+  const prev=st.prevVisitDate;
+  if(prev){const diff=(new Date(today)-new Date(prev))/86400000;st.streak=diff<=1?(st.streak||1)+(diff===1?1:0):1;}
+  else st.streak=1;
+  st.prevVisitDate=today;st.lastVisit=today;
+  st.calcs=st.calcs||0;st.modes=st.modes||{stamp:0,flat:0};
+  saveStats(st);
+}
+
+function recordCalc(m){
+  const st=loadStats();
+  st.calcs=(st.calcs||0)+1;
+  st.modes=st.modes||{stamp:0,flat:0};
+  st.modes[m]=(st.modes[m]||0)+1;
+  saveStats(st);renderStats();
+}
+
+function renderStats(){
+  const st=loadStats();const t=T[lang];
+  if(el('sp-calcs'))el('sp-calcs').textContent=(st.calcs||0).toLocaleString('en-IN');
+  if(el('sp-streak'))el('sp-streak').textContent=(st.streak||0)+'🔥';
+  const modeNames={stamp:t.mbStamp,flat:t.mbFlat};
+  const modes=st.modes||{};
+  if(el('stats-modes'))el('stats-modes').innerHTML=Object.entries(modes).map(([k,v])=>`
+    <div class="mode-chip"><div class="mc-n">${v}</div><div class="mc-l">${modeNames[k]||k}</div></div>`).join('');
+}
+
+async function fetchGlobalVisits(){
+  try{
+    const r=await fetch('https://api.counterapi.dev/v1/lawsticker/property-suite-visits/up');
+    const d=await r.json();
+    if(el('sg-visits'))el('sg-visits').textContent=(d.count||d.value||0).toLocaleString('en-IN');
+  }catch(e){if(el('sg-visits'))el('sg-visits').textContent='—';}
+}
+
+// INIT
+updateStateInfo();
+toggleGstSection();
+recordVisit();
+applyLang();
+buildExplainer();
+fetchGlobalVisits();
+</script>
+</body>
+</html>
