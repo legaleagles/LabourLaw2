@@ -447,7 +447,10 @@ footer a{color:var(--purple-deep);text-decoration:none}
 // Each state: { name, male, female, joint, regPct, regCap (0=no cap), transfer, notes, cities (optional) }
 // Sources: 99acres, LegiScore, sum.money, studio matrx, state IGR portals - April 2026
 const STATES = {
-  TG: { name:'Telangana',      male:4.0, female:4.0, joint:4.0, regPct:0.5, regCap:0, transfer:1.5, metro:['Hyderabad (GHMC)','Other areas'], metroAdj:{0:0,1:0}, note:'Transfer duty 1.5% applies. Total effective rate: 6% for all buyers. No gender concession.' },
+  TG: { name:'Telangana',      male:4.0, female:4.0, joint:4.0, regPct:0.5, regCap:20000, transfer:1.5,
+        rural:{male:5.5,female:5.5,joint:5.5,regPct:2.0,regCap:0,transfer:0},
+        metro:['Urban (GHMC/Municipality/Town)','Rural (Gram Panchayat)'], metroAdj:{0:0,1:0},
+        note:'Urban (GHMC): 4% Stamp Duty + 1.5% Transfer Duty + 0.5% Registration (cap ₹20,000) = 6% total. Rural (GP): 5.5% Stamp Duty + 2% Registration = 7.5% total. No gender concession. Source: IGRS Telangana.' },
   AP: { name:'Andhra Pradesh', male:5.0, female:5.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:[], note:'AP charges 5% stamp duty + 1% registration. No transfer duty.' },
   MH: { name:'Maharashtra',    male:5.0, female:4.0, joint:5.0, regPct:1.0, regCap:30000, transfer:0, metro:['Mumbai (incl. metro cess)','Pune / Nagpur / Thane','Other Maharashtra'], metroAdj:{0:1,1:1,2:0}, metroMaleAdj:{0:0,1:1,2:0}, note:'Mumbai/Pune/Nagpur/Thane add 1% metro cess. Registration capped at ₹30,000.' },
   KA: { name:'Karnataka',      male:5.0, female:5.0, joint:5.0, regPct:1.0, regCap:0, transfer:0, metro:['Bengaluru Urban (BDA/BBMP)','Bengaluru Rural','Other Karnataka'], metroAdj:{0:0,1:-2,2:-2}, note:'Bengaluru Urban: 5%. Bengaluru Rural and other Karnataka: 3%. No gender concession.' },
@@ -575,11 +578,11 @@ const T = {
   en:{
     navTitle:'🏠 Property Suite',
     mbStamp:'Stamp Duty',mbFlat:'Flat Purchase',
-    stampInfo:'📌 <strong>How it works:</strong> Stamp duty is calculated on the higher of your agreement value and the government circle rate. Always check your local circle rate at the SRO office or state portal before registration.',
+    stampInfo:'📌 <strong>How it works:</strong> Stamp duty is calculated on the higher of your agreement value and the government circle rate (guidance value). For Telangana: Urban (GHMC) = 4% + 1.5% Transfer Duty + 0.5% Reg = 6% total. Rural (GP) = 5.5% + 2% Reg = 7.5% total. Results are estimates — always verify on your state\'s official IGR portal before payment.',
     sdC1:'Property Details',sdLState:'State',sdLCity:'City / Zone',sdLProptype:'Property Type',
     sdLVal:'Property Value',sdLValH:'(Agreement or Circle Rate — whichever is higher)',
     sdLGender:'Buyer Type',gtMale:'👨 Male',gtFemale:'👩 Female',gtJoint:'👫 Joint',
-    flatInfo:'⚠️ <strong>Key rule:</strong> Ready-to-move flats with Occupancy Certificate (OC) have <strong>ZERO GST</strong>. Under-construction flats attract 1% (affordable) or 5% (others) GST. This can save lakhs — always check OC status first.',
+    flatInfo:'⚠️ <strong>Key rules:</strong> (1) Ready-to-move flats with OC = <strong>ZERO GST</strong>. (2) Under-construction GST applies on <strong>2/3rd of agreement value</strong> — 1/3 is land cost which is GST-exempt. (3) Affordable housing (≤₹45L) = 1% GST, others = 5%. Results are estimates — verify with your builder and CA.',
     fpC1:'Property Details',fpLState:'State',fpLArea:'Carpet Area',fpLCityType:'City Type',
     fpLVal:'Agreement / Sale Price',fpLStatus:'Property Status',
     fpC2:'GST Details',fpLGstrate:'GST Rate Applied',fpLGstrateS:'Auto-detected based on price',
@@ -652,7 +655,7 @@ const T = {
     sdC1:'ఆస్తి వివరాలు',sdLState:'రాష్ట్రం',sdLCity:'నగరం / జోన్',sdLProptype:'ఆస్తి రకం',
     sdLVal:'ఆస్తి విలువ',sdLValH:'(అగ్రిమెంట్ లేదా సర్కిల్ రేటు — ఏది ఎక్కువైతే అది)',
     sdLGender:'కొనుగోలుదారు రకం',gtMale:'👨 పురుషుడు',gtFemale:'👩 స్త్రీ',gtJoint:'👫 జాయింట్',
-    flatInfo:'⚠️ <strong>ముఖ్యమైన నియమం:</strong> OC (ఆక్యుపెన్సీ సర్టిఫికేట్) ఉన్న రెడీ-టు-మూవ్ ఫ్లాట్లకు <strong>GST సున్నా</strong>. నిర్మాణంలో ఉన్న ఫ్లాట్లకు 1% (అందుబాటు) లేదా 5% GST వస్తుంది.',
+    flatInfo:'⚠️ <strong>ముఖ్యమైన నియమాలు:</strong> (1) OC ఉన్న రెడీ-టు-మూవ్ ఫ్లాట్లకు <strong>GST సున్నా</strong>. (2) నిర్మాణంలో ఉన్న ఫ్లాట్లకు GST <strong>అగ్రిమెంట్ విలువలో 2/3 వంతుపై మాత్రమే</strong> వస్తుంది — 1/3 భూమి వ్యయంపై GST వర్తించదు. (3) అందుబాటు గృహం (≤₹45L) = 1%, ఇతరులు = 5%. ఇవి అంచనాలు — మీ బిల్డర్ మరియు CA తో నిర్ధారించండి.',
     fpC1:'ఆస్తి వివరాలు',fpLState:'రాష్ట్రం',fpLArea:'కార్పెట్ విస్తీర్ణం',fpLCityType:'నగరం రకం',
     fpLVal:'అగ్రిమెంట్ / అమ్మకపు ధర',fpLStatus:'ఆస్తి స్థితి',
     fpC2:'GST వివరాలు',fpLGstrate:'GST రేటు వర్తించింది',fpLGstrateS:'ధర ఆధారంగా స్వయంచాలకంగా',
@@ -724,7 +727,7 @@ const T = {
     sdC1:'संपत्ति विवरण',sdLState:'राज्य',sdLCity:'शहर / क्षेत्र',sdLProptype:'संपत्ति का प्रकार',
     sdLVal:'संपत्ति का मूल्य',sdLValH:'(अनुबंध या सर्कल रेट — जो अधिक हो)',
     sdLGender:'खरीदार का प्रकार',gtMale:'👨 पुरुष',gtFemale:'👩 महिला',gtJoint:'👫 संयुक्त',
-    flatInfo:'⚠️ <strong>मुख्य नियम:</strong> OC (Occupancy Certificate) वाले रेडी-टू-मूव फ्लैट पर <strong>GST शून्य</strong> है। निर्माणाधीन फ्लैट पर 1% (किफायती) या 5% GST लगती है।',
+    flatInfo:'⚠️ <strong>मुख्य नियम:</strong> (1) OC वाले रेडी-टू-मूव फ्लैट पर <strong>GST शून्य</strong>. (2) निर्माणाधीन फ्लैट पर GST <strong>अनुबंध मूल्य के 2/3 पर लागू</strong> — 1/3 भूमि लागत GST-मुक्त है. (3) किफायती आवास (≤₹45L) = 1%, अन्य = 5%. ये अनुमान हैं — अपने बिल्डर और CA से सत्यापित करें.',
     fpC1:'संपत्ति विवरण',fpLState:'राज्य',fpLArea:'कार्पेट क्षेत्र',fpLCityType:'शहर का प्रकार',
     fpLVal:'अनुबंध / बिक्री मूल्य',fpLStatus:'संपत्ति की स्थिति',
     fpC2:'GST विवरण',fpLGstrate:'GST दर लागू',fpLGstrateS:'मूल्य के आधार पर स्वचालित',
@@ -851,15 +854,27 @@ function calculate(){
 
 function getStampRate(stateCode, g, cityIdx) {
   const st = STATES[stateCode];
+  // Telangana rural (cityIdx===1 = GP area)
+  if(stateCode==='TG' && cityIdx===1 && st.rural) {
+    return st.rural[g] || st.rural.male;
+  }
   let base = st[g] || st.male;
   // city adjustments
-  if(st.metroAdj && cityIdx !== undefined) {
+  if(st.metroAdj && cityIdx !== undefined && cityIdx!==1) {
     const adj = st.metroAdj[cityIdx] || 0;
     base += adj;
-    // Maharashtra male specific
     if(g==='male' && st.metroMaleAdj) base += (st.metroMaleAdj[cityIdx]||0);
   }
   return base;
+}
+
+function getStateParams(stateCode, cityIdx) {
+  const st = STATES[stateCode];
+  // Telangana rural gets different reg/transfer
+  if(stateCode==='TG' && cityIdx===1 && st.rural) {
+    return { regPct: st.rural.regPct, regCap: st.rural.regCap, transfer: st.rural.transfer };
+  }
+  return { regPct: st.regPct, regCap: st.regCap, transfer: st.transfer||0 };
 }
 
 function calcStamp(){
@@ -872,12 +887,11 @@ function calcStamp(){
   const cityIdx=citySelect && st.metro && st.metro.length>0 ? parseInt(citySelect.value) : undefined;
 
   const stampRate=getStampRate(stateCode,gender,cityIdx);
-  const regRate=st.regPct;
-  const transferRate=st.transfer||0;
+  const {regPct:regRate, regCap, transfer:transferRate} = getStateParams(stateCode, cityIdx);
 
   const stampAmt=val*stampRate/100;
   let regAmt=val*regRate/100;
-  if(st.regCap>0 && regAmt>st.regCap) regAmt=st.regCap;
+  if(regCap>0 && regAmt>regCap) regAmt=regCap;
   const transferAmt=val*transferRate/100;
   const total=stampAmt+regAmt+transferAmt;
   const effRate=(total/val)*100;
@@ -890,7 +904,7 @@ function calcStamp(){
 
   el('r-label').textContent=t.rLabelStamp;
   el('r-amount').textContent=fmt(total);
-  el('r-sub').textContent=`${st.name} · ${val.toLocaleString('en-IN')} property · ${gender}`;
+  el('r-sub').textContent=`${st.name}${cityIdx!==undefined&&st.metro?` · ${st.metro[cityIdx]}`:''}  · ${val.toLocaleString('en-IN')} · ${gender}`;
   el('r-effrate').textContent=`${t.effRate}: ${effRate.toFixed(2)}%`;
 
   el('r-insights').innerHTML=`
@@ -905,10 +919,11 @@ function calcStamp(){
   el('r-pills').innerHTML=pills.join('');
 
   let rows=`<div class="brow pos"><div class="bl">${t.stampDuty}<span class="bs">${stampRate}% of ₹${val.toLocaleString('en-IN')}</span></div><div class="ba">${fmt(stampAmt)}</div></div>`;
-  rows+=`<div class="brow neg"><div class="bl">${t.regCharge}<span class="bs">${regRate}%${st.regCap>0?' (capped at ₹'+st.regCap.toLocaleString('en-IN')+')':''}</span></div><div class="ba">${fmt(regAmt)}</div></div>`;
-  if(transferAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.transferDuty}<span class="bs">${transferRate}%</span></div><div class="ba">${fmt(transferAmt)}</div></div>`;
+  rows+=`<div class="brow neg"><div class="bl">${t.regCharge}<span class="bs">${regRate}%${regCap>0?' (capped at ₹'+regCap.toLocaleString('en-IN')+')':''}</span></div><div class="ba">${fmt(regAmt)}</div></div>`;
+  if(transferAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.transferDuty}<span class="bs">${transferRate}% — Urban areas only</span></div><div class="ba">${fmt(transferAmt)}</div></div>`;
   rows+=`<div class="brow tot"><div class="bl">${t.totalCost}</div><div class="ba">${fmt(total)}</div></div>`;
   if(womanSaving>0&&gender!=='female') rows+=`<div class="brow" style="background:#F0FFF4;margin-top:4px"><div class="bl" style="color:var(--jade);font-size:12px">💡 Register in wife's name → Save ${fmt(womanSaving)} (${womanDiscount}% concession in ${st.name})</div><div class="ba" style="color:var(--jade)">Save ${fmt(womanSaving)}</div></div>`;
+  rows+=`<div class="brow" style="background:#FFF7ED;border-top:2px solid #FED7AA"><div class="bl" style="color:#92400E;font-size:11px;line-height:1.5">⚠️ <strong>Estimate only.</strong> Actual charges depend on your property's exact guidance value (circle rate). Always verify on the official portal before payment.<br>${stateCode==='TG'?'🔗 <a href="https://registration.telangana.gov.in" target="_blank" style="color:#7C3AED">registration.telangana.gov.in</a>':stateCode==='MH'?'🔗 <a href="https://igrmaharashtra.gov.in" target="_blank" style="color:#7C3AED">igrmaharashtra.gov.in</a>':stateCode==='KA'?'🔗 <a href="https://igr.karnataka.gov.in" target="_blank" style="color:#7C3AED">igr.karnataka.gov.in</a>':stateCode==='TN'?'🔗 <a href="https://tnreginet.gov.in" target="_blank" style="color:#7C3AED">tnreginet.gov.in</a>':'🔗 Search "[your state] IGR stamp duty calculator" for official portal'}</div><div class="ba"></div></div>`;
   el('r-rows').innerHTML=rows;
 
   const ctx={mode:'stamp',stateName:st.name,stateCode,val,gender,stampAmt,regAmt,transferAmt,total,womanSaving,womanDiscount,effRate};
@@ -933,10 +948,12 @@ function calcFlat(){
   const legal=parseFloat(el('fp-legal').value)||0;
 
   const stampRate=getStampRate(stateCode,gender2,undefined);
-  const regRate=st.regPct;
-  const transferRate=st.transfer||0;
+  const {regPct:regRate, regCap, transfer:transferRate} = getStateParams(stateCode, undefined);
 
-  const gstAmt=val*gstRate/100;
+  // GST applies on 2/3rd of agreement value — 1/3 is treated as land cost, GST-exempt
+  // Source: GST Council notification, CBIC circular - applicable for under-construction only
+  const gstBase = (status==='uc') ? val * (2/3) : val;
+  const gstAmt = gstBase * gstRate / 100;
   const stampAmt=val*stampRate/100;
   let regAmt=val*regRate/100;
   if(st.regCap>0&&regAmt>st.regCap) regAmt=st.regCap;
@@ -968,7 +985,7 @@ function calcFlat(){
   el('r-pills').innerHTML=pills.join('');
 
   let rows=`<div class="brow pos"><div class="bl">${t.basePrice}</div><div class="ba">${fmt(val)}</div></div>`;
-  if(gstAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.gstOnFlat}<span class="bs">${gstRate}% on agreement value</span></div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
+  if(gstAmt>0) rows+=`<div class="brow neg"><div class="bl">${t.gstOnFlat}<span class="bs">${gstRate}% on ₹${Math.round(gstBase).toLocaleString('en-IN')} (2/3 of value — land portion exempt)</span></div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
   rows+=`<div class="brow sec"><div class="bl">Registration Charges</div><div class="ba"></div></div>`;
   rows+=`<div class="brow neg"><div class="bl">${t.stampDuty}<span class="bs">${stampRate}%</span></div><div class="ba">+ ${fmt(stampAmt)}</div></div>`;
   rows+=`<div class="brow neg"><div class="bl">${t.regCharge}<span class="bs">${regRate}%${st.regCap>0?' capped':''}</span></div><div class="ba">+ ${fmt(regAmt)}</div></div>`;
@@ -979,9 +996,11 @@ function calcFlat(){
   if(club>0) rows+=`<div class="brow neg"><div class="bl">${t.club}</div><div class="ba">+ ${fmt(club)}</div></div>`;
   if(legal>0) rows+=`<div class="brow neg"><div class="bl">${t.legal}</div><div class="ba">+ ${fmt(legal)}</div></div>`;
   rows+=`<div class="brow tot"><div class="bl">${t.totalCost}</div><div class="ba">${fmt(total)}</div></div>`;
+  rows+=`<div class="brow" style="background:#FFF7ED;border-top:2px solid #FED7AA"><div class="bl" style="color:#92400E;font-size:11px;line-height:1.5">⚠️ <strong>Estimate only.</strong> GST base, stamp duty and additional charges vary by builder agreement, property classification and local circle rate. Verify with your builder, CA and the state registration portal before any payment. Builder-to-builder terms differ significantly.</div><div class="ba"></div></div>`;
+  rows+=`<div class="brow tot"><div class="bl">${t.totalCost}</div><div class="ba">${fmt(total)}</div></div>`;
   el('r-rows').innerHTML=rows;
 
-  const ctx={mode:'flat',stateName:st.name,stateCode,val:val,basePrice:val,gstAmt,gstRate,status,parking,maint,club,legal,total,womanSaving,womanDiscount:maleRate-femaleRate,gender:gender2};
+  const ctx={mode:'flat',stateName:st.name,stateCode,val:val,basePrice:val,gstAmt,gstBase,gstRate,status,parking,maint,club,legal,total,womanSaving,womanDiscount:maleRate-femaleRate,gender:gender2};
   _lastCtx=ctx;
   buildNego(ctx);
   el('results').classList.add('visible');
