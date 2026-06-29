@@ -78,6 +78,7 @@ footer a{color:var(--amber-deep);text-decoration:none}
       <div class="field">
         <label id="l-state">State / Discom</label>
         <select id="el-state" onchange="updateCategories()">
+          <option value="TG_SOLAR">Telangana — Solar On-Grid (Net Metering)</option>
           <option value="TG">Telangana (TSSPDCL/TSNPDCL)</option>
           <option value="AP">Andhra Pradesh (APSPDCL/APNPDCL)</option>
           <option value="MH">Maharashtra (MSEDCL)</option>
@@ -106,6 +107,10 @@ footer a{color:var(--amber-deep);text-decoration:none}
         </select>
       </div>
     </div>
+    <div class="field" id="solar-field" style="display:none">
+      <label id="l-export">Solar Units Exported to Grid <span class="hint">(from your meter reading)</span></label>
+      <input type="number" id="el-export" value="100" min="0" step="1">
+    </div>
   </div>
 
   <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Bill →</button>
@@ -131,6 +136,8 @@ footer a{color:var(--amber-deep);text-decoration:none}
       </div>
     </div>
 
+    <div class="alert info" id="solar-note" style="display:none;margin-top:14px"></div>
+
     <div class="tip-box">
       <h3 id="tips-title">💡 Energy Saving Tips</h3>
       <div id="tips-list"></div>
@@ -144,6 +151,26 @@ footer a{color:var(--amber-deep);text-decoration:none}
 // Tariff data — simplified slab structures
 // Source: Official tariff orders 2024-25, state electricity regulatory commissions
 const TARIFFS = {
+  TG_SOLAR: {
+    cats: ['LT-1 Domestic (Solar Net Metering)'],
+    slabs: {
+      'LT-1 Domestic (Solar Net Metering)': {
+        fixed: 50,
+        energySlabs: [
+          {from:0,to:100,rate:1.45},
+          {from:101,to:200,rate:2.60},
+          {from:201,to:300,rate:3.50},
+          {from:301,to:400,rate:4.50},
+          {from:401,to:800,rate:6.00},
+          {from:801,to:Infinity,rate:7.00},
+        ],
+        exportRate: 2.50, // ₹ per unit exported to grid — TSERC net metering rate 2024
+        taxes: 0.05,
+        isSolar: true,
+        note: 'Solar On-Grid Net Metering — TSERC Net Metering Regulations 2017 (amended). Export rate ₹2.50/unit credited. Units consumed from grid billed at normal domestic slab rate. Net billing = Grid consumption charges − Solar export credit.',
+      },
+    },
+  },
   TG: {
     cats: ['LT-1 Domestic','LT-2 Non-Domestic','LT-5 Agricultural'],
     slabs: {
@@ -323,12 +350,15 @@ function updateCategories(){
   const state=document.getElementById('el-state').value;
   const cats=TARIFFS[state]?.cats||[];
   document.getElementById('el-cat').innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  // Show solar export field only for solar tariff
+  document.getElementById('solar-field').style.display=state==='TG_SOLAR'?'block':'none';
 }
 function calculate(){
   const state=document.getElementById('el-state').value;
   const cat=document.getElementById('el-cat').value;
   const units=parseInt(document.getElementById('el-units').value)||0;
   const months=parseInt(document.getElementById('el-months').value)||1;
+  const exportUnits=parseInt(document.getElementById('el-export').value)||0;
   const tariff=TARIFFS[state]?.slabs[cat];
   if(!tariff){alert('Tariff data not available');return;}
 
@@ -346,22 +376,47 @@ function calculate(){
     remaining-=usedInSlab;
   }
   const taxes=energyCharge*tariff.taxes;
-  const total=energyCharge+fixed+taxes;
+  const grossBill=energyCharge+fixed+taxes;
 
-  document.getElementById('r-amount').textContent='₹'+Math.round(total).toLocaleString('en-IN');
-  document.getElementById('r-sub').textContent=`${units} units · ${state} · ${cat} · ${months===1?'Monthly':'Bi-monthly'}`;
+  // Solar net metering credit
+  const exportCredit=tariff.isSolar?(exportUnits*(tariff.exportRate||2.50)):0;
+  const netBill=Math.max(0,grossBill-exportCredit);
+  const carriedForward=exportCredit>grossBill?exportCredit-grossBill:0;
 
-  document.getElementById('slab-rows').innerHTML=slabDetails.filter(s=>s.used>0).map((s,i)=>`
+  document.getElementById('r-amount').textContent='₹'+Math.round(netBill).toLocaleString('en-IN');
+  document.getElementById('r-sub').textContent=`${units} units consumed${tariff.isSolar?' · '+exportUnits+' units exported':''} · ${months===1?'Monthly':'Bi-monthly'}`;
+
+  let slabRows=slabDetails.filter(s=>s.used>0).map(s=>`
     <div class="slab-row">
       <span>${s.from}–${s.to}</span>
       <span>${s.used}</span>
       <span>₹${s.rate}/u</span>
       <span>₹${Math.round(s.charge).toLocaleString('en-IN')}</span>
-    </div>`).join('')+`
-    <div class="slab-row" style="background:#FFFBEB"><span>Fixed</span><span>—</span><span>—</span><span>₹${fixed}</span></div>
-    <div class="slab-row" style="background:#FFFBEB"><span>Tax (${(tariff.taxes*100).toFixed(0)}%)</span><span>—</span><span>—</span><span>₹${Math.round(taxes)}</span></div>`;
+    </div>`).join('');
+  slabRows+=`<div class="slab-row" style="background:#FFFBEB"><span>Fixed</span><span>—</span><span>—</span><span>₹${fixed}</span></div>`;
+  slabRows+=`<div class="slab-row" style="background:#FFFBEB"><span>Tax (${(tariff.taxes*100).toFixed(0)}%)</span><span>—</span><span>—</span><span>₹${Math.round(taxes)}</span></div>`;
 
-  document.getElementById('total-amt').textContent='₹'+Math.round(total).toLocaleString('en-IN');
+  if(tariff.isSolar){
+    slabRows+=`<div class="slab-row" style="background:#D1FAE5;color:#065F46"><span style="font-weight:700">Gross Bill</span><span>—</span><span>—</span><span>₹${Math.round(grossBill).toLocaleString('en-IN')}</span></div>`;
+    slabRows+=`<div class="slab-row" style="background:#D1FAE5;color:#065F46"><span>Solar Export Credit</span><span>${exportUnits} u</span><span>₹${tariff.exportRate}/u</span><span>−₹${Math.round(exportCredit).toLocaleString('en-IN')}</span></div>`;
+    if(carriedForward>0){
+      slabRows+=`<div class="slab-row" style="background:#EFF6FF;color:#1E3A8A"><span>Carried Forward Credit</span><span>—</span><span>—</span><span>₹${Math.round(carriedForward).toLocaleString('en-IN')}</span></div>`;
+    }
+  }
+
+  document.getElementById('slab-rows').innerHTML=slabRows;
+  document.getElementById('total-lbl').textContent=tariff.isSolar?'Net Payable (after solar credit)':'Total (energy + fixed + taxes)';
+  document.getElementById('total-amt').textContent='₹'+Math.round(netBill).toLocaleString('en-IN');
+
+  // Solar note
+  if(tariff.isSolar && tariff.note){
+    const noteEl=document.getElementById('solar-note');
+    if(noteEl){noteEl.textContent='ℹ️ '+tariff.note;noteEl.style.display='block';}
+  } else {
+    const noteEl=document.getElementById('solar-note');
+    if(noteEl) noteEl.style.display='none';
+  }
+
   document.getElementById('results').classList.add('visible');
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
 }
