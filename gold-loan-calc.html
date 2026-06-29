@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Loan Calculator — Muthoot, Manappuram, SBI, HDFC | LawSticker AI</title>
+<meta name="description" content="Calculate gold loan eligibility, compare lenders, check LTV ratio. Muthoot, Manappuram, SBI, HDFC rates. Free, trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--gold:#D4A017;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;--maroon:#6B1C1C;--maroon2:#8B2323;--ink:#1A1208;--ink-soft:#3D2B0E;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;--amber:#D97706;--amber-bg:#FEF3C7;--navy:#0D1117;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--maroon);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(212,160,23,.15)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:var(--gold-l);opacity:.6;text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(245,215,110,.2);background:transparent;color:rgba(245,215,110,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gold-l);color:var(--gold-l);background:rgba(245,215,110,.1)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--gold-pale);border-left:3px solid var(--gold);color:var(--gold-deep)}
+.alert.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
+.alert.good{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--gold),transparent)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--gold-pale);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold);background:#fff}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--gold-deep);pointer-events:none}
+.pfx input{padding-left:28px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
+.toggle-row:last-child{border-bottom:none}
+.tl{font-size:13px;font-weight:500;color:var(--ink)}
+.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.inline-in{display:flex;align-items:center;gap:6px}
+.mini{width:80px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--gold-pale);text-align:right;font-family:inherit}
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l);border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(107,28,28,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+#results{display:none}
+#results.visible{display:block}
+.result-hero{background:linear-gradient(135deg,var(--maroon),#2A0505);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.result-hero::before{content:'🪙';position:absolute;font-size:100px;opacity:.06;right:-10px;top:-10px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-l);opacity:.7;margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--gold-l);line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+.insight-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.ibox{background:#fff;border-radius:12px;padding:13px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--maroon);line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+/* Lender comparison grid */
+.lender-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.lender-card{background:#fff;border-radius:14px;padding:16px;border:1px solid rgba(0,0,0,.08);position:relative;overflow:hidden}
+.lender-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.lender-card.muthoot::before{background:#D4A017}
+.lender-card.manap::before{background:#2563EB}
+.lender-card.sbi::before{background:#2563EB}
+.lender-card.hdfc::before{background:#DC2626}
+.lender-card.kotak::before{background:#C2410C}
+.lender-card.iob::before{background:#059669}
+.lender-name{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.lender-rate{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);margin-bottom:2px}
+.lender-emi{font-size:11px;color:var(--muted)}
+.lender-badge{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:8px;font-size:9px;font-weight:700;text-transform:uppercase}
+.lender-badge.best{background:var(--jade-bg);color:#065F46}
+.lender-badge.ngo{background:var(--gold-pale);color:var(--gold-deep)}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--gold-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:var(--gold-l);font-weight:700}
+.brow.tot .ba{color:var(--gold-l);font-size:15px}
+.nego-box{background:linear-gradient(135deg,#1A0A00,#2D1500);border-radius:14px;padding:16px;margin-bottom:14px}
+.nego-box h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.55);margin-bottom:10px}
+.nego-tip{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.nego-tip:last-child{border-bottom:none}
+.nego-tip span{color:var(--gold-l);font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--gold-deep);text-decoration:none}
+@media(max-width:400px){.row2{grid-template-columns:1fr}.insight-row{grid-template-columns:1fr 1fr}.lender-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">🪙 Gold Loan Calculator</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="alert info" id="top-info">
+    🪙 <strong>RBI rule:</strong> Maximum LTV (Loan-to-Value) for gold loans is <strong>75%</strong> of gold value. No lender can legally give more. NBFCs are now restricted to 75% too (RBI circular 2024).
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="c1">Gold Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="l-wt">Gold Weight <span class="hint">(grams)</span></label>
+        <div class="pfx"><span class="p">g</span><input type="number" id="gl-weight" value="50" min="1" step="0.5" style="padding-left:28px"></div>
+      </div>
+      <div class="field">
+        <label id="l-pur">Purity</label>
+        <select id="gl-purity">
+          <option value="22" selected>22K (91.6%)</option>
+          <option value="24">24K (99.9%)</option>
+          <option value="18">18K (75%)</option>
+          <option value="20">20K (83.3%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label id="l-rate">Today's Gold Rate <span class="hint">(₹/g 24K)</span></label>
+      <div class="pfx"><span class="p">₹</span><input type="number" id="gl-rate" value="9500" step="100"></div>
+      <a href="https://www.goodreturns.in/gold-rates/" target="_blank" style="display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--gold-deep);text-decoration:none">🔗 Check today's rate on GoodReturns →</a>
+    </div>
+    <div class="toggle-row">
+      <div class="tl" id="l-ltv">LTV You Want <span class="sub" id="l-ltv-s">Max 75% per RBI — lower = better terms</span></div>
+      <div class="inline-in"><input type="number" class="mini" id="gl-ltv" value="70" min="50" max="75" step="5"><span style="font-size:12px;font-weight:700;color:var(--gold-deep)">%</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="c2">Loan Terms</div>
+    <div class="row2">
+      <div class="field">
+        <label id="l-tenure">Tenure <span class="hint">(months)</span></label>
+        <select id="gl-tenure">
+          <option value="3">3 months</option>
+          <option value="6">6 months</option>
+          <option value="12" selected>12 months</option>
+          <option value="24">24 months</option>
+          <option value="36">36 months</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="l-repay">Repayment Type</label>
+        <select id="gl-repay">
+          <option value="bullet">Bullet (pay at end)</option>
+          <option value="emi">Monthly EMI</option>
+          <option value="interest">Interest-only monthly</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate & Compare Lenders →</button>
+
+  <div id="results" class="">
+    <div class="result-hero">
+      <div class="r-label" id="r-label">Maximum Loan Eligible</div>
+      <div class="r-amount" id="r-amount">₹0</div>
+      <div class="r-sub" id="r-sub"></div>
+    </div>
+
+    <div class="insight-row">
+      <div class="ibox"><div class="iv" id="r-i1">₹0</div><div class="il" id="r-il1">Gold Value</div></div>
+      <div class="ibox"><div class="iv" id="r-i2">0%</div><div class="il" id="r-il2">LTV Applied</div></div>
+      <div class="ibox"><div class="iv" id="r-i3">₹0</div><div class="il" id="r-il3">Interest (12 mo)</div></div>
+    </div>
+
+    <div id="r-lender-title" style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px"></div>
+    <div class="lender-grid" id="r-lenders"></div>
+
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Loan Breakdown</div>
+      <div id="r-rows"></div>
+    </div>
+
+    <div class="nego-box">
+      <h3 id="nego-title">🤝 Negotiation Tips</h3>
+      <div id="nego-tips"></div>
+    </div>
+
+    <div class="alert warn" id="r-disclaimer"></div>
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← Recalculate</button>
+  </div>
+</div>
+<footer><span id="footer-txt">Gold Loan Calculator · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a> · <a href="jewellery-suite.html">Jewellery Suite</a></footer>
+
+<script>
+// Lender data — rates as of 2025-26
+// Sources: official lender websites, RBI data, Paisabazaar
+const LENDERS = [
+  {id:'muthoot', name:'Muthoot Finance', minRate:9.96, maxRate:26, processing:0.25, cls:'muthoot', badge:'ngo', badgeText:'Largest NBFC', specialty:'Highest loan amount, branches everywhere'},
+  {id:'manap',   name:'Manappuram',      minRate:9.90, maxRate:28, processing:0.25, cls:'manap',   badge:'ngo', badgeText:'Fast disbursal', specialty:'Auctions faster — be alert on defaults'},
+  {id:'sbi',     name:'SBI Gold Loan',   minRate:8.75, maxRate:9.60, processing:0.50, cls:'sbi',   badge:'best', badgeText:'Lowest Rate', specialty:'Lowest rate, slower process, 75% LTV strict'},
+  {id:'hdfc',    name:'HDFC Bank',        minRate:9.50, maxRate:17.86, processing:1.0, cls:'hdfc', badge:'ngo', badgeText:'Bank safety', specialty:'Transparent terms, good if you bank with HDFC'},
+  {id:'kotak',   name:'Kotak Mahindra',  minRate:10.0, maxRate:17, processing:1.0, cls:'kotak', badge:'ngo', badgeText:'Premium service', specialty:'Higher processing but better customer service'},
+  {id:'iob',     name:'Indian Overseas Bank',minRate:8.50,maxRate:9.0,processing:0.5,cls:'iob',badge:'best',badgeText:'PSB low rate',specialty:'Government bank, very low rate, stricter process'},
+];
+
+const pf=k=>({24:1,22:.916,18:.75,20:.833}[k]||.916);
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+let lang_='en';
+
+const T={
+  en:{navTitle:'🪙 Gold Loan Calculator',topInfo:'🪙 <strong>RBI rule:</strong> Maximum LTV for gold loans is <strong>75%</strong> of gold value. No lender can legally give more.',c1:'Gold Details',lWt:'Gold Weight',lPur:'Purity',lRate:"Today's Gold Rate",lLtv:'LTV You Want',lLtvS:'Max 75% per RBI — lower = better terms',c2:'Loan Terms',lTenure:'Tenure (months)',lRepay:'Repayment Type',calcBtn:'Calculate & Compare Lenders →',rLabel:'Maximum Loan Eligible',rIl1:'Gold Value',rIl2:'LTV Applied',rIl3:'Interest (annual)',rLenderTitle:'Lender Comparison — same loan amount',rBdHead:'Loan Breakdown',negoTitle:'🤝 Negotiation Tips',resetBtn:'← Recalculate',footerTxt:'Gold Loan Calculator · Free · LawSticker AI',
+  goldVal:'Gold Value',loanAmt:'Loan Amount (LTV%)',processingFee:'Processing Fee',interestAnnual:'Interest (Annual avg rate)',totalRepay:'Total Repayment',disclaimer:'⚠️ Interest rates shown are indicative ranges as of 2025-26. Actual rate depends on your credit profile, gold purity certification, and branch. Always get written offer letter before pledging gold. Compare at least 3 lenders.',
+  tips:[
+    ['Use certified hallmarked gold','BIS hallmarked gold gets better LTV and faster processing. Uncertified gold may be valued lower.'],
+    ['Negotiate processing fee','Processing fee (0.25–1%) is negotiable, especially for amounts above ₹5L. Many branches waive it for existing customers.'],
+    ['Choose bullet repayment for short-term','If you can repay in 3–6 months, bullet repayment saves processing and paperwork vs EMI.'],
+    ['Compare effective interest rate','Ask for the effective annual rate (not just flat rate). Some lenders quote monthly — multiply by 12 for annual.'],
+    ['Avoid auction risk','Gold auction happens if you default. Keep a 10% buffer — don't borrow the maximum. Give yourself room to repay.'],
+    ['PSB rates are lowest','SBI, IOB, PNB gold loans are cheapest (8.5–9.5%). NBFCs (Muthoot/Manappuram) are faster but more expensive.'],
+  ]},
+  te:{navTitle:'🪙 బంగారు రుణ కాలిక్యులేటర్',topInfo:'🪙 <strong>RBI నియమం:</strong> బంగారు రుణాలకు గరిష్ట LTV <strong>75%</strong>. ఏ రుణదాత కూడా చట్టబద్ధంగా ఇంతకంటే ఎక్కువ ఇవ్వలేరు.',c1:'బంగారం వివరాలు',lWt:'బంగారం బరువు',lPur:'స్వచ్ఛత',lRate:'నేటి బంగారం రేటు',lLtv:'మీకు కావాల్సిన LTV',lLtvS:'RBI ప్రకారం గరిష్టం 75% — తక్కువ = మెరుగైన నిబంధనలు',c2:'రుణ నిబంధనలు',lTenure:'వ్యవధి (నెలలు)',lRepay:'తిరిగి చెల్లింపు రకం',calcBtn:'లెక్కించి రుణదాతలను పోల్చండి →',rLabel:'గరిష్ట రుణ అర్హత',rIl1:'బంగారం విలువ',rIl2:'LTV వర్తించింది',rIl3:'వడ్డీ (వార్షిక)',rLenderTitle:'రుణదాత పోలిక',rBdHead:'రుణ వివరాలు',negoTitle:'🤝 చర్చల చిట్కాలు',resetBtn:'← మళ్ళీ లెక్కించండి',footerTxt:'బంగారు రుణ కాలిక్యులేటర్ · ఉచితం · LawSticker AI',
+  goldVal:'బంగారం విలువ',loanAmt:'రుణ మొత్తం (LTV%)',processingFee:'ప్రాసెసింగ్ ఫీజు',interestAnnual:'వడ్డీ (సగటు వార్షిక రేటు)',totalRepay:'మొత్తం తిరిగి చెల్లింపు',disclaimer:'⚠️ వడ్డీ రేట్లు 2025-26 నాటి అంచనాలు. అసలు రేటు మీ క్రెడిట్ ప్రొఫైల్ మరియు శాఖపై ఆధారపడుతుంది. బంగారం తాకట్టు పెట్టే ముందు రాత ఆఫర్ లెటర్ పొందండి.',
+  tips:[['BIS హాల్‌మార్క్ బంగారు వాడండి','హాల్‌మార్క్ బంగారానికి మెరుగైన LTV మరియు వేగవంతమైన ప్రాసెసింగ్ వస్తుంది.'],['ప్రాసెసింగ్ ఫీజు చర్చించండి','₹5L పైన రుణాలకు ప్రాసెసింగ్ ఫీజు (0.25–1%) చర్చించవచ్చు.'],['స్వల్పకాలికంగా బులెట్ రీపేమెంట్ ఎంచుకోండి','3–6 నెలల్లో తిరిగి చెల్లించగలిగితే బులెట్ రీపేమెంట్ EMI కంటే ఆదా అవుతుంది.'],['అసలు వడ్డీ రేటు అడగండి','ప్రభావవంతమైన వార్షిక రేటు అడగండి — నెలవారీ రేటు ఇస్తే 12 తో గుణించండి.'],['వేలం ప్రమాదం నివారించండి','డిఫాల్ట్ అయితే బంగారు వేలం జరుగుతుంది. గరిష్ట మొత్తం తీసుకోకండి.'],['PSB రేట్లు తక్కువ','SBI, IOB బంగారు రుణాలు చౌకగా ఉంటాయి (8.5–9.5%). Muthoot/Manappuram వేగంగా ఉంటాయి కానీ ఖరీదు.']],
+  },
+  hi:{navTitle:'🪙 गोल्ड लोन कैलकुलेटर',topInfo:'🪙 <strong>RBI नियम:</strong> गोल्ड लोन के लिए अधिकतम LTV <strong>75%</strong>। कोई भी ऋणदाता कानूनी रूप से इससे अधिक नहीं दे सकता।',c1:'सोने का विवरण',lWt:'सोने का वजन',lPur:'शुद्धता',lRate:'आज की सोने की दर',lLtv:'आप चाहते हैं LTV',lLtvS:'RBI अनुसार अधिकतम 75% — कम = बेहतर शर्तें',c2:'ऋण की शर्तें',lTenure:'अवधि (महीने)',lRepay:'पुनर्भुगतान का प्रकार',calcBtn:'गणना करें और ऋणदाताओं की तुलना करें →',rLabel:'अधिकतम ऋण पात्रता',rIl1:'सोने का मूल्य',rIl2:'LTV लागू',rIl3:'ब्याज (वार्षिक)',rLenderTitle:'ऋणदाता तुलना',rBdHead:'ऋण विवरण',negoTitle:'🤝 मोलभाव सुझाव',resetBtn:'← पुनर्गणना',footerTxt:'गोल्ड लोन कैलकुलेटर · मुफ्त · LawSticker AI',
+  goldVal:'सोने का मूल्य',loanAmt:'ऋण राशि (LTV%)',processingFee:'प्रसंस्करण शुल्क',interestAnnual:'ब्याज (वार्षिक औसत)',totalRepay:'कुल पुनर्भुगतान',disclaimer:'⚠️ ब्याज दरें 2025-26 के अनुमान हैं। वास्तविक दर आपके क्रेडिट प्रोफ़ाइल पर निर्भर करती है। सोना गिरवी रखने से पहले लिखित ऑफर लेटर प्राप्त करें।',
+  tips:[['BIS हॉलमार्क सोना उपयोग करें','हॉलमार्क सोने पर बेहतर LTV और तेज प्रसंस्करण मिलता है।'],['प्रसंस्करण शुल्क पर मोलभाव करें','₹5L से ऊपर के ऋण पर शुल्क माफ हो सकता है।'],['बुलेट रीपेमेंट चुनें','3–6 महीने में चुका सकते हैं तो बुलेट रीपेमेंट बेहतर।'],['प्रभावी दर पूछें','मासिक दर को 12 से गुणा करें — वार्षिक प्रभावी दर जानें।'],['नीलामी से बचें','डिफॉल्ट होने पर सोना नीलाम होता है। अधिकतम सीमा न लें।'],['PSB सस्ते हैं','SBI, IOB गोल्ड लोन सबसे सस्ते (8.5–9.5%)। Muthoot/Manappuram तेज लेकिन महंगे।']],
+  }
+};
+
+function setLang(l){
+  lang_=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  applyLang();
+}
+function applyLang(){
+  const t=T[lang_];
+  ['nav-title','top-info','c1','l-wt','l-pur','l-rate','l-ltv','l-ltv-s','c2','l-tenure','l-repay','calc-btn','r-label','r-il1','r-il2','r-il3','r-bd-head','nego-title','reset-btn','footer-txt'].forEach(id=>{
+    const e=document.getElementById(id);
+    const key=id.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
+    if(e&&t[key])e.textContent=t[key];
+  });
+  h('top-info',t.topInfo);
+}
+
+function calculate(){
+  const t=T[lang_];
+  const wt=parseFloat(document.getElementById('gl-weight').value)||0;
+  const pur=parseInt(document.getElementById('gl-purity').value)||22;
+  const rate=parseFloat(document.getElementById('gl-rate').value)||0;
+  const ltv=parseFloat(document.getElementById('gl-ltv').value)||70;
+  const tenure=parseInt(document.getElementById('gl-tenure').value)||12;
+  const repay=document.getElementById('gl-repay').value;
+
+  const goldVal=wt*rate*pf(pur);
+  const loanAmt=goldVal*ltv/100;
+
+  document.getElementById('r-amount').textContent=fmt(loanAmt);
+  document.getElementById('r-sub').textContent=`${wt}g ${pur}K · ₹${rate.toLocaleString('en-IN')}/g · ${ltv}% LTV`;
+  document.getElementById('r-i1').textContent=fmt(goldVal);
+  document.getElementById('r-i2').textContent=ltv+'%';
+
+  // Compute for each lender
+  const lenderData=LENDERS.map(l=>{
+    const avgRate=(l.minRate+l.minRate*1.2)/2; // conservative estimate of offered rate
+    const useRate=l.minRate; // best case for comparison
+    let monthlyPay=0,totalRepay=0,totalInterest=0;
+    const procFee=loanAmt*l.processing/100;
+    if(repay==='bullet'){
+      totalInterest=loanAmt*useRate/100/12*tenure;
+      totalRepay=loanAmt+totalInterest+procFee;
+      monthlyPay=0;
+    } else if(repay==='emi'){
+      const r=useRate/12/100;
+      const n=tenure;
+      monthlyPay=loanAmt*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+      totalRepay=monthlyPay*n+procFee;
+      totalInterest=totalRepay-loanAmt-procFee;
+    } else {
+      monthlyPay=loanAmt*useRate/12/100;
+      totalRepay=loanAmt+monthlyPay*tenure+procFee;
+      totalInterest=monthlyPay*tenure;
+    }
+    return {...l,useRate,procFee,monthlyPay,totalRepay,totalInterest};
+  });
+
+  const avgInterest=lenderData.reduce((a,l)=>a+l.totalInterest,0)/lenderData.length;
+  document.getElementById('r-i3').textContent=fmt(lenderData[2].totalInterest); // SBI as reference
+
+  document.getElementById('r-lender-title').textContent=t.rLenderTitle;
+  const sorted=[...lenderData].sort((a,b)=>a.totalRepay-b.totalRepay);
+  document.getElementById('r-lenders').innerHTML=sorted.map((l,i)=>`
+    <div class="lender-card ${l.cls}">
+      <div class="lender-name">${l.name}</div>
+      <div class="lender-rate">${l.useRate}% <span style="font-size:13px;font-weight:400;color:var(--muted)">p.a.</span></div>
+      <div class="lender-emi">${repay==='bullet'?'Bullet: '+fmt(l.totalRepay):repay==='emi'?'EMI: '+fmt(l.monthlyPay)+'/mo':'Int only: '+fmt(l.monthlyPay)+'/mo'}</div>
+      <div class="lender-emi" style="margin-top:2px">Total: ${fmt(l.totalRepay)}</div>
+      <span class="lender-badge ${i===0?'best':l.badge}">${i===0?'Cheapest':l.badgeText}</span>
+    </div>`).join('');
+
+  document.getElementById('r-rows').innerHTML=`
+    <div class="brow pos"><div class="bl">${t.goldVal}<span class="bs">${wt}g × ₹${rate.toLocaleString('en-IN')} × ${(pf(pur)*100).toFixed(1)}% purity</span></div><div class="ba">${fmt(goldVal)}</div></div>
+    <div class="brow"><div class="bl">${t.loanAmt}<span class="bs">${ltv}% of gold value</span></div><div class="ba">${fmt(loanAmt)}</div></div>
+    <div class="brow neg"><div class="bl">${t.processingFee}<span class="bs">Varies by lender (0.25–1%)</span></div><div class="ba">${fmt(sorted[0].procFee)} – ${fmt(sorted[sorted.length-1].procFee)}</div></div>
+    <div class="brow neg"><div class="bl">${t.interestAnnual}<span class="bs">Best rate shown (${sorted[0].name})</span></div><div class="ba">${fmt(sorted[0].totalInterest)}</div></div>
+    <div class="brow tot"><div class="bl">${t.totalRepay} (${sorted[0].name})</div><div class="ba">${fmt(sorted[0].totalRepay)}</div></div>`;
+
+  document.getElementById('nego-tips').innerHTML=t.tips.map(([title,body])=>`
+    <div class="nego-tip"><span>${title}:</span> ${body}</div>`).join('');
+
+  document.getElementById('r-disclaimer').textContent=t.disclaimer;
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+applyLang();
+</script>
+</body>
+</html>

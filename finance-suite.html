@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Suite — EMI, GST, FD, Income Tax, Fuel | LawSticker AI</title>
+<meta name="description" content="Free finance calculators — EMI, GST, FD/RD/PPF, Income Tax old vs new regime, Fuel cost. Trilingual, instant results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--mist:#F3F4F6;
+  --jade:#10B981;--jade-bg:#D1FAE5;--jade-deep:#065F46;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;--amber-deep:#78350F;
+  /* tab accent colors */
+  --emi:#2563EB;--emi-l:#93C5FD;--emi-pale:#EFF6FF;
+  --gst:#7C3AED;--gst-l:#C4B5FD;--gst-pale:#F5F3FF;
+  --fd:#059669;--fd-l:#6EE7B7;--fd-pale:#ECFDF5;
+  --tax:#DC2626;--tax-l:#FCA5A5;--tax-pale:#FEF2F2;
+  --fuel:#D97706;--fuel-l:#FCD34D;--fuel-pale:#FFFBEB;
+  /* active */
+  --ac:var(--emi);--ac-l:var(--emi-l);--ac-pale:var(--emi-pale);--ac-deep:#1E3A8A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:#fff}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:#fff;color:#fff;background:rgba(255,255,255,.12)}
+
+/* TAB SWITCHER */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--light);overflow-x:auto;scrollbar-width:none;position:sticky;top:53px;z-index:90}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:14px 16px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tab-btn.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tab-btn[data-t="emi"].active{--ac:var(--emi);color:var(--emi)}
+.tab-btn[data-t="gst"].active{--ac:var(--gst);color:var(--gst)}
+.tab-btn[data-t="fd"].active{--ac:var(--fd);color:var(--fd)}
+.tab-btn[data-t="tax"].active{--ac:var(--tax);color:var(--tax)}
+.tab-btn[data-t="fuel"].active{--ac:var(--fuel);color:var(--fuel)}
+
+/* CONTAINER */
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+
+/* CARDS */
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep,#1E3A8A);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--ac,var(--emi)),transparent)}
+
+/* FIELDS */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--ac-pale,var(--emi-pale));-webkit-appearance:none;transition:border-color .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ac,var(--emi));background:#fff}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--ac-deep,#1E3A8A);pointer-events:none}
+.pfx input{padding-left:28px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* SEGMENT CONTROL */
+.seg{display:flex;background:var(--mist);border-radius:10px;padding:3px;gap:3px;margin-bottom:14px}
+.seg-btn{flex:1;padding:8px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center}
+.seg-btn.active{background:#fff;color:var(--ac,var(--emi));box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+/* CALC BUTTON */
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--ac-deep,#1E3A8A),var(--ac,var(--emi)));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(37,99,235,.25);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+
+/* RESULT HERO */
+.result-hero{border-radius:16px;padding:20px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.rh-emi{background:linear-gradient(135deg,#1E3A8A,#2563EB)}
+.rh-gst{background:linear-gradient(135deg,#4C1D95,#7C3AED)}
+.rh-fd{background:linear-gradient(135deg,#065F46,#059669)}
+.rh-tax{background:linear-gradient(135deg,#7F1D1D,#DC2626)}
+.rh-fuel{background:linear-gradient(135deg,#78350F,#D97706)}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,44px);font-weight:900;color:#fff;line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px}
+
+/* INSIGHT ROW */
+.insight-row{display:grid;gap:10px;margin-bottom:14px}
+.insight-row.cols2{grid-template-columns:1fr 1fr}
+.insight-row.cols3{grid-template-columns:1fr 1fr 1fr}
+.ibox{background:#fff;border-radius:12px;padding:13px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* BREAKDOWN TABLE */
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--ac-pale,var(--emi-pale));padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep,#1E3A8A);border-bottom:1px solid rgba(0,0,0,.06)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink);text-align:right}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:rgba(255,255,255,.7);font-weight:700}
+.brow.tot .ba{color:#fff;font-size:15px}
+.brow.hi{background:var(--amber-bg)}
+.brow.hi .bl{color:var(--amber-deep)}
+.brow.hi .ba{color:var(--amber-deep)}
+
+/* AMORTISATION TABLE */
+.amort-table{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.amort-head{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--emi-pale);padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1E3A8A;gap:4px}
+.amort-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:9px 14px;border-top:1px solid var(--light);font-size:12px;gap:4px}
+.amort-row.yr{background:#EFF6FF;font-weight:700}
+.amort-show-btn{width:100%;padding:10px;background:transparent;border:1.5px solid var(--emi);border-radius:10px;color:var(--emi);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px}
+
+/* TAX COMPARISON */
+.tax-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.tax-card{border-radius:14px;padding:16px;text-align:center}
+.tax-card.old{background:linear-gradient(135deg,#7F1D1D,#991B1B)}
+.tax-card.new{background:linear-gradient(135deg,#065F46,#047857)}
+.tax-card .tc-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+.tax-card .tc-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px}
+.tax-card .tc-sub{font-size:11px;color:rgba(255,255,255,.45)}
+.tax-card .tc-badge{display:inline-block;margin-top:8px;padding:4px 10px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(255,255,255,.15);color:#fff}
+
+/* RESET */
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pill{padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600}
+.pill.g{background:var(--jade-bg);color:var(--jade-deep)}
+.pill.r{background:var(--rose-bg);color:var(--rose)}
+.pill.a{background:var(--amber-bg);color:var(--amber-deep)}
+
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--emi);text-decoration:none}
+
+@media(max-width:400px){
+  .row2,.row3{grid-template-columns:1fr}
+  .insight-row.cols3{grid-template-columns:1fr 1fr}
+  .tax-compare{grid-template-columns:1fr}
+  .amort-head,.amort-row{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">💳 Finance Suite</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-t="emi" onclick="setTab('emi')">💳 <span id="tb-emi">EMI</span></button>
+  <button class="tab-btn" data-t="gst" onclick="setTab('gst')">🧾 <span id="tb-gst">GST</span></button>
+  <button class="tab-btn" data-t="fd" onclick="setTab('fd')">🏦 <span id="tb-fd">FD / RD / PPF</span></button>
+  <button class="tab-btn" data-t="tax" onclick="setTab('tax')">📊 <span id="tb-tax">Income Tax</span></button>
+  <button class="tab-btn" data-t="fuel" onclick="setTab('fuel')">⛽ <span id="tb-fuel">Fuel Cost</span></button>
+</div>
+
+<div class="container">
+
+<!-- ══ EMI TAB ══ -->
+<div id="tab-emi">
+  <div class="card">
+    <div class="card-title" id="emi-c1" style="--ac:var(--emi);--ac-deep:#1E3A8A">Loan Details</div>
+    <div class="field">
+      <label id="emi-l-type">Loan Type</label>
+      <select id="emi-type" onchange="prefillEmi()">
+        <option value="home">Home Loan</option>
+        <option value="car">Car Loan</option>
+        <option value="personal">Personal Loan</option>
+        <option value="bike">Two-Wheeler Loan</option>
+        <option value="edu">Education Loan</option>
+        <option value="gold">Gold Loan</option>
+      </select>
+    </div>
+    <div class="field">
+      <label id="emi-l-amount">Loan Amount</label>
+      <div class="pfx" style="--ac-deep:#1E3A8A"><span class="p">₹</span>
+        <input type="number" id="emi-amount" value="2000000" step="10000">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="emi-l-rate">Interest Rate <span class="hint">% per year</span></label>
+        <input type="number" id="emi-rate" value="8.5" step="0.1" min="1">
+      </div>
+      <div class="field">
+        <label id="emi-l-tenure">Tenure <span class="hint">(years)</span></label>
+        <input type="number" id="emi-tenure" value="20" step="1" min="1" max="30">
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" id="emi-calc-btn" style="background:linear-gradient(135deg,#1E3A8A,#2563EB)" onclick="calcEmi()">Calculate EMI →</button>
+  <div id="emi-results" style="display:none">
+    <div class="result-hero rh-emi">
+      <div class="r-label" id="emi-r-label">Monthly EMI</div>
+      <div class="r-amount" id="emi-r-amount">₹0</div>
+      <div class="r-sub" id="emi-r-sub"></div>
+    </div>
+    <div class="insight-row cols3">
+      <div class="ibox"><div class="iv" id="emi-i1">₹0</div><div class="il" id="emi-il1">Principal</div></div>
+      <div class="ibox"><div class="iv" id="emi-i2">₹0</div><div class="il" id="emi-il2">Total Interest</div></div>
+      <div class="ibox"><div class="iv" id="emi-i3">₹0</div><div class="il" id="emi-il3">Total Payment</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" id="emi-bd-head" style="--ac-pale:var(--emi-pale);--ac-deep:#1E3A8A">Year-wise Summary</div>
+      <div class="amort-head"><span id="emi-ah1">Year</span><span id="emi-ah2">Principal</span><span id="emi-ah3">Interest</span><span id="emi-ah4">Balance</span></div>
+      <div id="emi-amort-rows"></div>
+    </div>
+    <button class="reset-btn" id="emi-reset" onclick="resetTab('emi')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ GST TAB ══ -->
+<div id="tab-gst" style="display:none">
+  <div class="seg" id="gst-seg">
+    <button class="seg-btn active" onclick="setGstMode('add')" id="gst-seg-add" style="--ac:var(--gst)">➕ Add GST</button>
+    <button class="seg-btn" onclick="setGstMode('remove')" id="gst-seg-rem" style="--ac:var(--gst)">➖ Remove GST</button>
+  </div>
+  <div class="card">
+    <div class="card-title" id="gst-c1" style="--ac:var(--gst);--ac-deep:#4C1D95">GST Calculation</div>
+    <div class="field">
+      <label id="gst-l-amount" id="gst-l-amount">Amount</label>
+      <div class="pfx" style="--ac-deep:#4C1D95"><span class="p">₹</span>
+        <input type="number" id="gst-amount" value="10000" step="100">
+      </div>
+    </div>
+    <div class="field">
+      <label id="gst-l-slab">GST Slab</label>
+      <select id="gst-slab">
+        <option value="0">0% — Essentials (rice, vegetables, books)</option>
+        <option value="5">5% — Household items, economy hotels</option>
+        <option value="12">12% — Standard goods, AC restaurants</option>
+        <option value="18" selected>18% — Most services, electronics</option>
+        <option value="28">28% — Luxury goods, cars, tobacco</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#4C1D95,#7C3AED)" onclick="calcGst()">Calculate GST →</button>
+  <div id="gst-results" style="display:none">
+    <div class="result-hero rh-gst">
+      <div class="r-label" id="gst-r-label">Amount with GST</div>
+      <div class="r-amount" id="gst-r-amount">₹0</div>
+      <div class="r-sub" id="gst-r-sub"></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" id="gst-bd-head" style="--ac-pale:var(--gst-pale);--ac-deep:#4C1D95">GST Breakdown</div>
+      <div id="gst-rows"></div>
+    </div>
+    <button class="reset-btn" onclick="resetTab('gst')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ FD TAB ══ -->
+<div id="tab-fd" style="display:none">
+  <div class="seg">
+    <button class="seg-btn active" onclick="setFdMode('fd')" id="fd-seg-fd" style="--ac:var(--fd)">🏦 FD</button>
+    <button class="seg-btn" onclick="setFdMode('rd')" id="fd-seg-rd" style="--ac:var(--fd)">📅 RD</button>
+    <button class="seg-btn" onclick="setFdMode('ppf')" id="fd-seg-ppf" style="--ac:var(--fd)">📋 PPF</button>
+  </div>
+  <div class="card">
+    <div class="card-title" id="fd-c1" style="--ac:var(--fd);--ac-deep:#065F46">Deposit Details</div>
+    <div class="field">
+      <label id="fd-l-amount">Amount <span class="hint" id="fd-amt-hint">(Lump sum)</span></label>
+      <div class="pfx" style="--ac-deep:#065F46"><span class="p">₹</span>
+        <input type="number" id="fd-amount" value="100000" step="1000">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="fd-l-rate">Interest Rate <span class="hint">% p.a.</span></label>
+        <input type="number" id="fd-rate" value="7" step="0.1" min="1">
+      </div>
+      <div class="field">
+        <label id="fd-l-tenure">Period <span class="hint">(years)</span></label>
+        <input type="number" id="fd-tenure" value="5" step="1" min="1" max="15">
+      </div>
+    </div>
+    <div class="field" id="fd-compound-field">
+      <label id="fd-l-compound">Compounding Frequency</label>
+      <select id="fd-compound">
+        <option value="4">Quarterly (Bank FD standard)</option>
+        <option value="12">Monthly</option>
+        <option value="2">Half-yearly</option>
+        <option value="1">Annually</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#065F46,#059669)" onclick="calcFd()">Calculate Maturity →</button>
+  <div id="fd-results" style="display:none">
+    <div class="result-hero rh-fd">
+      <div class="r-label" id="fd-r-label">Maturity Amount</div>
+      <div class="r-amount" id="fd-r-amount">₹0</div>
+      <div class="r-sub" id="fd-r-sub"></div>
+    </div>
+    <div class="insight-row cols3">
+      <div class="ibox"><div class="iv" id="fd-i1">₹0</div><div class="il" id="fd-il1">Invested</div></div>
+      <div class="ibox"><div class="iv" id="fd-i2">₹0</div><div class="il" id="fd-il2">Interest Earned</div></div>
+      <div class="ibox"><div class="iv" id="fd-i3">0%</div><div class="il" id="fd-il3">Effective Return</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" id="fd-bd-head" style="--ac-pale:var(--fd-pale);--ac-deep:#065F46">Year-wise Growth</div>
+      <div id="fd-rows"></div>
+    </div>
+    <button class="reset-btn" onclick="resetTab('fd')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ TAX TAB ══ -->
+<div id="tab-tax" style="display:none">
+  <div class="card">
+    <div class="card-title" id="tax-c1" style="--ac:var(--tax);--ac-deep:#7F1D1D">Income Details (FY 2024-25)</div>
+    <div class="field">
+      <label id="tax-l-income">Annual Gross Income</label>
+      <div class="pfx" style="--ac-deep:#7F1D1D"><span class="p">₹</span>
+        <input type="number" id="tax-income" value="1200000" step="10000">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="tax-l-80c">80C Investments <span class="hint">max ₹1.5L</span></label>
+        <div class="pfx" style="--ac-deep:#7F1D1D"><span class="p">₹</span>
+          <input type="number" id="tax-80c" value="150000" step="5000" max="150000">
+        </div>
+      </div>
+      <div class="field">
+        <label id="tax-l-hra">HRA Exemption</label>
+        <div class="pfx" style="--ac-deep:#7F1D1D"><span class="p">₹</span>
+          <input type="number" id="tax-hra" value="0" step="5000">
+        </div>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="tax-l-80d">80D Health Ins. <span class="hint">max ₹25K/50K</span></label>
+        <div class="pfx" style="--ac-deep:#7F1D1D"><span class="p">₹</span>
+          <input type="number" id="tax-80d" value="25000" step="5000">
+        </div>
+      </div>
+      <div class="field">
+        <label id="tax-l-hl">Home Loan Int. <span class="hint">80EEA/24b</span></label>
+        <div class="pfx" style="--ac-deep:#7F1D1D"><span class="p">₹</span>
+          <input type="number" id="tax-hl" value="0" step="10000">
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#7F1D1D,#DC2626)" onclick="calcTax()">Compare Old vs New →</button>
+  <div id="tax-results" style="display:none">
+    <div class="tax-compare" id="tax-compare-cards"></div>
+    <div class="pills" id="tax-pills"></div>
+    <div class="bdown">
+      <div class="bdown-head" id="tax-bd-head" style="--ac-pale:var(--tax-pale);--ac-deep:#7F1D1D">Detailed Comparison</div>
+      <div id="tax-rows"></div>
+    </div>
+    <button class="reset-btn" onclick="resetTab('tax')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ FUEL TAB ══ -->
+<div id="tab-fuel" style="display:none">
+  <div class="seg">
+    <button class="seg-btn active" onclick="setFuelMode('trip')" id="fuel-seg-trip" style="--ac:var(--fuel)">🗺️ Trip Cost</button>
+    <button class="seg-btn" onclick="setFuelMode('monthly')" id="fuel-seg-monthly" style="--ac:var(--fuel)">📅 Monthly Spend</button>
+  </div>
+  <div class="card">
+    <div class="card-title" id="fuel-c1" style="--ac:var(--fuel);--ac-deep:var(--amber-deep)">Trip / Vehicle Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="fuel-l-dist">Distance <span class="hint" id="fuel-dist-hint">(km)</span></label>
+        <input type="number" id="fuel-dist" value="300" step="10">
+      </div>
+      <div class="field">
+        <label id="fuel-l-mileage">Mileage <span class="hint">km/litre</span></label>
+        <input type="number" id="fuel-mileage" value="15" step="0.5" min="5">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="fuel-l-price">Fuel Price <span class="hint">₹/litre</span></label>
+        <div class="pfx" style="--ac-deep:var(--amber-deep)"><span class="p">₹</span>
+          <input type="number" id="fuel-price" value="103" step="0.5">
+        </div>
+      </div>
+      <div class="field">
+        <label id="fuel-l-type">Fuel Type</label>
+        <select id="fuel-type">
+          <option value="petrol">Petrol</option>
+          <option value="diesel">Diesel</option>
+          <option value="cng">CNG</option>
+          <option value="ev">Electric (₹/km)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" id="fuel-monthly-field" style="display:none">
+      <label id="fuel-l-days">Days per Month <span class="hint">you commute</span></label>
+      <input type="number" id="fuel-days" value="22" step="1" min="1" max="31">
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,var(--amber-deep),var(--amber))" onclick="calcFuel()">Calculate Fuel Cost →</button>
+  <div id="fuel-results" style="display:none">
+    <div class="result-hero rh-fuel">
+      <div class="r-label" id="fuel-r-label">Trip Fuel Cost</div>
+      <div class="r-amount" id="fuel-r-amount">₹0</div>
+      <div class="r-sub" id="fuel-r-sub"></div>
+    </div>
+    <div class="insight-row cols3">
+      <div class="ibox"><div class="iv" id="fuel-i1">0L</div><div class="il" id="fuel-il1">Fuel Needed</div></div>
+      <div class="ibox"><div class="iv" id="fuel-i2">₹0</div><div class="il" id="fuel-il2">Cost per km</div></div>
+      <div class="ibox"><div class="iv" id="fuel-i3">₹0</div><div class="il" id="fuel-il3">Monthly Est.</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="--ac-pale:var(--fuel-pale);--ac-deep:var(--amber-deep)" id="fuel-bd-head">Cost Breakdown</div>
+      <div id="fuel-rows"></div>
+    </div>
+    <button class="reset-btn" onclick="resetTab('fuel')">← Recalculate</button>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<footer>
+  <span id="footer-txt">Finance Suite · Free · No login · LawSticker AI</span> · <a href="calculators.html">All Calculators</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let lang='en', currentTab='emi', gstMode='add', fdMode='fd', fuelMode='trip';
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const fmtL=n=>{if(n>=10000000)return '₹'+(n/10000000).toFixed(2)+'Cr';if(n>=100000)return '₹'+(n/100000).toFixed(2)+'L';return fmt(n);}
+const el=id=>document.getElementById(id);
+const s=(id,v)=>{const e=el(id);if(e)e.textContent=v};
+const h=(id,v)=>{const e=el(id);if(e)e.innerHTML=v};
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS
+// ══════════════════════════════════════════
+const T={
+  en:{
+    navTitle:'💳 Finance Suite',
+    tbEmi:'EMI',tbGst:'GST',tbFd:'FD / RD / PPF',tbTax:'Income Tax',tbFuel:'Fuel Cost',
+    emiC1:'Loan Details',emiLType:'Loan Type',emiLAmount:'Loan Amount',emiLRate:'Interest Rate',emiLTenure:'Tenure (years)',
+    emiCalcBtn:'Calculate EMI →',emiRLabel:'Monthly EMI',emiIl1:'Principal',emiIl2:'Total Interest',emiIl3:'Total Payment',
+    emiAh1:'Year',emiAh2:'Principal Paid',emiAh3:'Interest Paid',emiAh4:'Balance',emiBdHead:'Year-wise Summary',emiReset:'← Recalculate',
+    gstC1:'GST Calculation',gstLAmount:'Amount',gstLSlab:'GST Slab',
+    gstSegAdd:'➕ Add GST',gstSegRem:'➖ Remove GST',
+    gstRLabelAdd:'Amount with GST',gstRLabelRem:'Base Amount (excl. GST)',
+    gstBdHead:'GST Breakdown',
+    gstBase:'Base Amount (excl. GST)',gstCgst:'CGST',gstSgst:'SGST',gstIgst:'IGST (inter-state)',gstTotal:'Total GST',gstFinal:'Final Amount',
+    fdC1:'Deposit Details',fdLAmount:'Amount',fdAmtHintFd:'(Lump sum)',fdAmtHintRd:'(Monthly instalment)',fdAmtHintPpf:'(Annual deposit)',
+    fdLRate:'Interest Rate',fdLTenure:'Period (years)',fdLCompound:'Compounding Frequency',
+    fdCalcBtn:'Calculate Maturity →',fdRLabel:'Maturity Amount',fdIl1:'Invested',fdIl2:'Interest Earned',fdIl3:'Effective Return',
+    fdBdHead:'Year-wise Growth',fdYr:'Year',fdDeposit:'Deposited',fdInterest:'Interest',fdBalance:'Balance',
+    taxC1:'Income Details (FY 2024-25)',taxLIncome:'Annual Gross Income',taxL80c:'80C Investments',taxLHra:'HRA Exemption',
+    taxL80d:'80D Health Ins.',taxLHl:'Home Loan Interest',
+    taxCalcBtn:'Compare Old vs New →',taxBdHead:'Detailed Comparison',
+    taxOldLbl:'Old Regime',taxNewLbl:'New Regime',taxSavings:'You save',taxOldBetter:'Old Regime is better',
+    taxIncome:'Gross Income',taxStdDed:'Standard Deduction',taxHra:'HRA Exemption',tax80c:'80C Deduction',
+    tax80d:'80D Deduction',taxHlInt:'Home Loan Interest',taxTaxableIncome:'Taxable Income',
+    taxGrossTax:'Gross Tax',taxRebate:'Rebate u/s 87A',taxCess:'Health & Ed. Cess (4%)',taxNetTax:'Net Tax Payable',
+    taxInHandOld:'In-hand (Old)',taxInHandNew:'In-hand (New)',
+    fuelC1:'Trip / Vehicle Details',fuelLDist:'Distance',fuelDistHintTrip:'(km one way)',fuelDistHintMonthly:'(km per day)',
+    fuelLMileage:'Mileage (km/litre)',fuelLPrice:'Fuel Price',fuelLType:'Fuel Type',fuelLDays:'Days per Month',
+    fuelCalcBtn:'Calculate Fuel Cost →',fuelRLabelTrip:'Trip Fuel Cost',fuelRLabelMonthly:'Monthly Fuel Cost',
+    fuelIl1:'Fuel Needed',fuelIl2:'Cost per km',fuelIl3:'Monthly Est.',
+    fuelBdHead:'Cost Breakdown',fuelLitres:'Litres Needed',fuelCost:'Fuel Cost',fuelCostKm:'Cost per km',fuelMonthly:'Monthly Estimate',fuelYearly:'Yearly Estimate',
+    footerTxt:'Finance Suite · Free · No login · LawSticker AI',
+  },
+  te:{
+    navTitle:'💳 ఫైనాన్స్ సూట్',
+    tbEmi:'EMI',tbGst:'GST',tbFd:'FD / RD / PPF',tbTax:'ఆదాయపు పన్ను',tbFuel:'ఇంధన ఖర్చు',
+    emiC1:'రుణ వివరాలు',emiLType:'రుణ రకం',emiLAmount:'రుణ మొత్తం',emiLRate:'వడ్డీ రేటు',emiLTenure:'వ్యవధి (సంవత్సరాలు)',
+    emiCalcBtn:'EMI లెక్కించండి →',emiRLabel:'నెలవారీ EMI',emiIl1:'అసలు',emiIl2:'మొత్తం వడ్డీ',emiIl3:'మొత్తం చెల్లింపు',
+    emiAh1:'సంవత్సరం',emiAh2:'చెల్లించిన అసలు',emiAh3:'చెల్లించిన వడ్డీ',emiAh4:'నిల్వ',emiBdHead:'సంవత్సరం వారీగా సారాంశం',emiReset:'← మళ్ళీ లెక్కించండి',
+    gstC1:'GST లెక్కింపు',gstLAmount:'మొత్తం',gstLSlab:'GST స్లాబ్',
+    gstSegAdd:'➕ GST జోడించండి',gstSegRem:'➖ GST తొలగించండి',
+    gstRLabelAdd:'GST తో మొత్తం',gstRLabelRem:'మూల మొత్తం (GST లేకుండా)',
+    gstBdHead:'GST వివరాలు',
+    gstBase:'మూల మొత్తం',gstCgst:'CGST',gstSgst:'SGST',gstIgst:'IGST',gstTotal:'మొత్తం GST',gstFinal:'చివరి మొత్తం',
+    fdC1:'డిపాజిట్ వివరాలు',fdLAmount:'మొత్తం',fdAmtHintFd:'(ఒకేసారి)',fdAmtHintRd:'(నెలవారీ)',fdAmtHintPpf:'(వార్షిక)',
+    fdLRate:'వడ్డీ రేటు',fdLTenure:'కాలం (సంవత్సరాలు)',fdLCompound:'వడ్డీ సమ్మేళన పౌనఃపున్యం',
+    fdCalcBtn:'పరిపక్వత లెక్కించండి →',fdRLabel:'పరిపక్వత మొత్తం',fdIl1:'పెట్టుబడి',fdIl2:'వడ్డీ ఆర్జన',fdIl3:'ప్రభావవంతమైన రాబడి',
+    fdBdHead:'సంవత్సర వృద్ధి',fdYr:'సంవత్సరం',fdDeposit:'డిపాజిట్',fdInterest:'వడ్డీ',fdBalance:'నిల్వ',
+    taxC1:'ఆదాయ వివరాలు (FY 2024-25)',taxLIncome:'వార్షిక స్థూల ఆదాయం',taxL80c:'80C పెట్టుబడులు',taxLHra:'HRA మినహాయింపు',
+    taxL80d:'80D ఆరోగ్య బీమా',taxLHl:'గృహ రుణ వడ్డీ',
+    taxCalcBtn:'పాత vs కొత్త పోల్చండి →',taxBdHead:'వివరణాత్మక పోలిక',
+    taxOldLbl:'పాత విధానం',taxNewLbl:'కొత్త విధానం',taxSavings:'మీరు ఆదా చేస్తారు',taxOldBetter:'పాత విధానం మెరుగు',
+    taxIncome:'స్థూల ఆదాయం',taxStdDed:'ప్రామాణిక తగ్గింపు',taxHra:'HRA మినహాయింపు',tax80c:'80C తగ్గింపు',
+    tax80d:'80D తగ్గింపు',taxHlInt:'గృహ రుణ వడ్డీ',taxTaxableIncome:'పన్ను విధించదగిన ఆదాయం',
+    taxGrossTax:'స్థూల పన్ను',taxRebate:'87A రాయితీ',taxCess:'ఆరోగ్య & విద్య సెస్ (4%)',taxNetTax:'చెల్లించాల్సిన నికర పన్ను',
+    taxInHandOld:'చేతిలో (పాత)',taxInHandNew:'చేతిలో (కొత్త)',
+    fuelC1:'ప్రయాణ / వాహన వివరాలు',fuelLDist:'దూరం',fuelDistHintTrip:'(కి.మీ. ఒకవైపు)',fuelDistHintMonthly:'(రోజుకు కి.మీ.)',
+    fuelLMileage:'మైలేజ్ (కి.మీ./లీటరు)',fuelLPrice:'ఇంధన ధర',fuelLType:'ఇంధన రకం',fuelLDays:'నెలలో రోజులు',
+    fuelCalcBtn:'ఇంధన ఖర్చు లెక్కించండి →',fuelRLabelTrip:'ప్రయాణ ఇంధన ఖర్చు',fuelRLabelMonthly:'నెలవారీ ఇంధన ఖర్చు',
+    fuelIl1:'కావాల్సిన లీటర్లు',fuelIl2:'కి.మీ.కు ఖర్చు',fuelIl3:'నెలవారీ అంచనా',
+    fuelBdHead:'ఖర్చు వివరాలు',fuelLitres:'కావాల్సిన లీటర్లు',fuelCost:'ఇంధన ఖర్చు',fuelCostKm:'కి.మీ.కు ఖర్చు',fuelMonthly:'నెలవారీ అంచనా',fuelYearly:'వార్షిక అంచనా',
+    footerTxt:'ఫైనాన్స్ సూట్ · ఉచితం · LawSticker AI',
+  },
+  hi:{
+    navTitle:'💳 फाइनेंस सूट',
+    tbEmi:'EMI',tbGst:'GST',tbFd:'FD / RD / PPF',tbTax:'आयकर',tbFuel:'ईंधन लागत',
+    emiC1:'ऋण विवरण',emiLType:'ऋण का प्रकार',emiLAmount:'ऋण राशि',emiLRate:'ब्याज दर',emiLTenure:'अवधि (वर्ष)',
+    emiCalcBtn:'EMI गणना करें →',emiRLabel:'मासिक EMI',emiIl1:'मूलधन',emiIl2:'कुल ब्याज',emiIl3:'कुल भुगतान',
+    emiAh1:'वर्ष',emiAh2:'मूलधन चुकाया',emiAh3:'ब्याज चुकाया',emiAh4:'शेष',emiBdHead:'वर्षवार सारांश',emiReset:'← पुनर्गणना',
+    gstC1:'GST गणना',gstLAmount:'राशि',gstLSlab:'GST स्लैब',
+    gstSegAdd:'➕ GST जोड़ें',gstSegRem:'➖ GST हटाएं',
+    gstRLabelAdd:'GST सहित राशि',gstRLabelRem:'मूल राशि (GST रहित)',
+    gstBdHead:'GST विवरण',
+    gstBase:'मूल राशि',gstCgst:'CGST',gstSgst:'SGST',gstIgst:'IGST',gstTotal:'कुल GST',gstFinal:'अंतिम राशि',
+    fdC1:'जमा विवरण',fdLAmount:'राशि',fdAmtHintFd:'(एकमुश्त)',fdAmtHintRd:'(मासिक किस्त)',fdAmtHintPpf:'(वार्षिक जमा)',
+    fdLRate:'ब्याज दर',fdLTenure:'अवधि (वर्ष)',fdLCompound:'चक्रवृद्धि आवृत्ति',
+    fdCalcBtn:'परिपक्वता गणना करें →',fdRLabel:'परिपक्वता राशि',fdIl1:'निवेश',fdIl2:'ब्याज कमाया',fdIl3:'प्रभावी रिटर्न',
+    fdBdHead:'वर्षवार वृद्धि',fdYr:'वर्ष',fdDeposit:'जमा',fdInterest:'ब्याज',fdBalance:'शेष',
+    taxC1:'आय विवरण (FY 2024-25)',taxLIncome:'वार्षिक सकल आय',taxL80c:'80C निवेश',taxLHra:'HRA छूट',
+    taxL80d:'80D स्वास्थ्य बीमा',taxLHl:'होम लोन ब्याज',
+    taxCalcBtn:'पुराना vs नया तुलना करें →',taxBdHead:'विस्तृत तुलना',
+    taxOldLbl:'पुरानी व्यवस्था',taxNewLbl:'नई व्यवस्था',taxSavings:'आपकी बचत',taxOldBetter:'पुरानी व्यवस्था बेहतर',
+    taxIncome:'सकल आय',taxStdDed:'मानक कटौती',taxHra:'HRA छूट',tax80c:'80C कटौती',
+    tax80d:'80D कटौती',taxHlInt:'होम लोन ब्याज',taxTaxableIncome:'कर योग्य आय',
+    taxGrossTax:'सकल कर',taxRebate:'87A छूट',taxCess:'स्वास्थ्य और शिक्षा उपकर (4%)',taxNetTax:'देय शुद्ध कर',
+    taxInHandOld:'इन-हैंड (पुराना)',taxInHandNew:'इन-हैंड (नया)',
+    fuelC1:'यात्रा / वाहन विवरण',fuelLDist:'दूरी',fuelDistHintTrip:'(किमी एक तरफ)',fuelDistHintMonthly:'(किमी प्रति दिन)',
+    fuelLMileage:'माइलेज (किमी/लीटर)',fuelLPrice:'ईंधन मूल्य',fuelLType:'ईंधन प्रकार',fuelLDays:'महीने में दिन',
+    fuelCalcBtn:'ईंधन लागत गणना करें →',fuelRLabelTrip:'यात्रा ईंधन लागत',fuelRLabelMonthly:'मासिक ईंधन लागत',
+    fuelIl1:'लीटर आवश्यक',fuelIl2:'प्रति किमी लागत',fuelIl3:'मासिक अनुमान',
+    fuelBdHead:'लागत विवरण',fuelLitres:'लीटर आवश्यक',fuelCost:'ईंधन लागत',fuelCostKm:'प्रति किमी लागत',fuelMonthly:'मासिक अनुमान',fuelYearly:'वार्षिक अनुमान',
+    footerTxt:'फाइनेंस सूट · मुफ्त · LawSticker AI',
+  }
+};
+
+// ══════════════════════════════════════════
+//  LANG
+// ══════════════════════════════════════════
+function applyLang(){
+  const t=T[lang];
+  s('nav-title',t.navTitle);
+  s('tb-emi',t.tbEmi);s('tb-gst',t.tbGst);s('tb-fd',t.tbFd);s('tb-tax',t.tbTax);s('tb-fuel',t.tbFuel);
+  s('emi-c1',t.emiC1);s('emi-l-type',t.emiLType);s('emi-l-amount',t.emiLAmount);
+  s('emi-l-rate',t.emiLRate);s('emi-l-tenure',t.emiLTenure);
+  s('emi-calc-btn',t.emiCalcBtn);s('emi-r-label',t.emiRLabel);
+  s('emi-il1',t.emiIl1);s('emi-il2',t.emiIl2);s('emi-il3',t.emiIl3);
+  s('emi-ah1',t.emiAh1);s('emi-ah2',t.emiAh2);s('emi-ah3',t.emiAh3);s('emi-ah4',t.emiAh4);
+  s('emi-bd-head',t.emiBdHead);s('emi-reset',t.emiReset);
+  s('gst-c1',t.gstC1);s('gst-l-amount',t.gstLAmount);s('gst-l-slab',t.gstLSlab);
+  s('gst-seg-add',t.gstSegAdd);s('gst-seg-rem',t.gstSegRem);
+  s('gst-bd-head',t.gstBdHead);
+  s('fd-c1',t.fdC1);s('fd-l-rate',t.fdLRate);s('fd-l-tenure',t.fdLTenure);s('fd-l-compound',t.fdLCompound);
+  s('fd-r-label',t.fdRLabel);s('fd-il1',t.fdIl1);s('fd-il2',t.fdIl2);s('fd-il3',t.fdIl3);
+  s('fd-bd-head',t.fdBdHead);
+  s('tax-c1',t.taxC1);s('tax-l-income',t.taxLIncome);s('tax-l-80c',t.taxL80c);
+  s('tax-l-hra',t.taxLHra);s('tax-l-80d',t.taxL80d);s('tax-l-hl',t.taxLHl);
+  s('tax-bd-head',t.taxBdHead);
+  s('fuel-c1',t.fuelC1);s('fuel-l-mileage',t.fuelLMileage);s('fuel-l-type',t.fuelLType);s('fuel-l-days',t.fuelLDays);
+  s('footer-txt',t.footerTxt);
+  updateFdLabels();updateFuelLabels();
+}
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  applyLang();
+}
+
+// ══════════════════════════════════════════
+//  TAB SWITCHING
+// ══════════════════════════════════════════
+function setTab(t){
+  currentTab=t;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  ['emi','gst','fd','tax','fuel'].forEach(id=>el('tab-'+id).style.display=id===t?'':'none');
+}
+
+// ══════════════════════════════════════════
+//  EMI CALCULATOR
+// ══════════════════════════════════════════
+const EMI_PRESETS={home:{amount:2000000,rate:8.5,tenure:20},car:{amount:800000,rate:9.5,tenure:5},personal:{amount:500000,rate:12,tenure:3},bike:{amount:120000,rate:10,tenure:3},edu:{amount:1000000,rate:8,tenure:10},gold:{amount:200000,rate:10,tenure:2}};
+function prefillEmi(){
+  const p=EMI_PRESETS[el('emi-type').value]||EMI_PRESETS.home;
+  el('emi-amount').value=p.amount;el('emi-rate').value=p.rate;el('emi-tenure').value=p.tenure;
+}
+function calcEmi(){
+  const P=parseFloat(el('emi-amount').value)||0;
+  const r=parseFloat(el('emi-rate').value)/12/100;
+  const n=parseInt(el('emi-tenure').value)*12;
+  if(!P||!r||!n)return;
+  const emi=P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  const totalPay=emi*n;
+  const totalInt=totalPay-P;
+
+  el('emi-r-amount').textContent=fmt(emi);
+  el('emi-r-sub').textContent=`${fmtL(P)} @ ${el('emi-rate').value}% for ${el('emi-tenure').value} yrs`;
+  el('emi-i1').textContent=fmtL(P);el('emi-i2').textContent=fmtL(totalInt);el('emi-i3').textContent=fmtL(totalPay);
+
+  // Year-wise amortisation
+  let bal=P,rows='';
+  const tenure=parseInt(el('emi-tenure').value);
+  for(let yr=1;yr<=tenure;yr++){
+    let yrPrincipal=0,yrInterest=0;
+    for(let m=0;m<12;m++){
+      const intPay=bal*r;
+      const prinPay=emi-intPay;
+      yrInterest+=intPay;yrPrincipal+=prinPay;
+      bal=Math.max(0,bal-prinPay);
+    }
+    rows+=`<div class="amort-row yr"><span>${yr}</span><span>${fmt(yrPrincipal)}</span><span>${fmt(yrInterest)}</span><span>${fmt(Math.max(0,bal))}</span></div>`;
+  }
+  el('emi-amort-rows').innerHTML=rows;
+  el('emi-results').style.display='block';
+  el('emi-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  GST CALCULATOR
+// ══════════════════════════════════════════
+let gstMode_='add';
+function setGstMode(m){
+  gstMode_=m;
+  el('gst-seg-add').classList.toggle('active',m==='add');
+  el('gst-seg-rem').classList.toggle('active',m==='remove');
+}
+function calcGst(){
+  const t=T[lang];
+  const amt=parseFloat(el('gst-amount').value)||0;
+  const rate=parseFloat(el('gst-slab').value)||0;
+  let base,gstAmt,final;
+  if(gstMode_==='add'){
+    base=amt;gstAmt=amt*rate/100;final=amt+gstAmt;
+    el('gst-r-label').textContent=t.gstRLabelAdd;
+    el('gst-r-amount').textContent=fmt(final);
+    el('gst-r-sub').textContent=`${fmt(base)} + ${rate}% GST`;
+  } else {
+    final=amt;base=amt/(1+rate/100);gstAmt=final-base;
+    el('gst-r-label').textContent=t.gstRLabelRem;
+    el('gst-r-amount').textContent=fmt(base);
+    el('gst-r-sub').textContent=`GST included: ${fmt(gstAmt)}`;
+  }
+  const half=gstAmt/2;
+  el('gst-rows').innerHTML=`
+    <div class="brow"><div class="bl">${t.gstBase}</div><div class="ba">${fmt(base)}</div></div>
+    <div class="brow neg"><div class="bl">${t.gstCgst} (${rate/2}%)<span class="bs">Central GST — intra-state</span></div><div class="ba">${fmt(half)}</div></div>
+    <div class="brow neg"><div class="bl">${t.gstSgst} (${rate/2}%)<span class="bs">State GST — intra-state</span></div><div class="ba">${fmt(half)}</div></div>
+    <div class="brow"><div class="bl">${t.gstIgst} (${rate}%)<span class="bs">Inter-state supply — replaces CGST+SGST</span></div><div class="ba">${fmt(gstAmt)}</div></div>
+    <div class="brow tot"><div class="bl">${t.gstFinal}</div><div class="ba">${fmt(final)}</div></div>`;
+  el('gst-results').style.display='block';
+  el('gst-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  FD / RD / PPF
+// ══════════════════════════════════════════
+let fdMode_='fd';
+function setFdMode(m){
+  fdMode_=m;
+  ['fd','rd','ppf'].forEach(x=>el('fd-seg-'+x).classList.toggle('active',x===m));
+  // PPF fixed 7.1%, lock 15 yrs
+  if(m==='ppf'){el('fd-rate').value=7.1;el('fd-tenure').value=15;el('fd-compound-field').style.display='none';}
+  else {el('fd-compound-field').style.display='block';}
+  updateFdLabels();
+}
+function updateFdLabels(){
+  const t=T[lang];
+  const hints={fd:t.fdAmtHintFd,rd:t.fdAmtHintRd,ppf:t.fdAmtHintPpf};
+  el('fd-l-amount').textContent=t.fdLAmount;
+  const hintEl=el('fd-amt-hint');if(hintEl)hintEl.textContent=hints[fdMode_]||'';
+}
+function calcFd(){
+  const t=T[lang];
+  const amt=parseFloat(el('fd-amount').value)||0;
+  const rate=parseFloat(el('fd-rate').value)/100;
+  const yrs=parseInt(el('fd-tenure').value)||1;
+  const n=parseInt(el('fd-compound').value)||4;
+  let maturity,totalDeposit,rows='',bal=0;
+
+  if(fdMode_==='fd'){
+    // FD compound interest
+    maturity=amt*Math.pow(1+rate/n,n*yrs);
+    totalDeposit=amt;
+    for(let yr=1;yr<=yrs;yr++){
+      const prev=yr===1?amt:amt*Math.pow(1+rate/n,n*(yr-1));
+      const curr=amt*Math.pow(1+rate/n,n*yr);
+      rows+=`<div class="brow"><div class="bl">${t.fdYr} ${yr}</div><div class="ba">${fmt(curr-prev)} / ${fmt(curr)}</div></div>`;
+    }
+  } else if(fdMode_==='rd'){
+    // RD: monthly instalment, compound quarterly
+    const monthly=amt;
+    totalDeposit=monthly*yrs*12;
+    const rateM=rate/12;
+    maturity=monthly*((Math.pow(1+rateM,yrs*12)-1)/rateM)*(1+rateM);
+    bal=0;
+    for(let yr=1;yr<=yrs;yr++){
+      const dep=monthly*12;
+      const prevBal=yr===1?0:monthly*((Math.pow(1+rateM,(yr-1)*12)-1)/rateM)*(1+rateM);
+      const currBal=monthly*((Math.pow(1+rateM,yr*12)-1)/rateM)*(1+rateM);
+      rows+=`<div class="brow"><div class="bl">${t.fdYr} ${yr}<span class="bs">Deposit: ${fmt(dep)}</span></div><div class="ba">${fmt(currBal-prevBal-dep)} int / ${fmt(currBal)}</div></div>`;
+    }
+  } else {
+    // PPF: annual compound at 7.1%
+    const annual=amt;totalDeposit=annual*yrs;
+    let ppfBal=0;
+    for(let yr=1;yr<=yrs;yr++){
+      ppfBal=(ppfBal+annual)*(1+rate);
+      rows+=`<div class="brow ${yr===15?'tot':''}"><div class="bl">${t.fdYr} ${yr}<span class="bs">${fmt(annual)} deposited</span></div><div class="ba">${fmt(ppfBal)}</div></div>`;
+    }
+    maturity=ppfBal;
+  }
+
+  const interest=maturity-totalDeposit;
+  const effReturn=(interest/totalDeposit/yrs)*100;
+  el('fd-r-amount').textContent=fmt(maturity);
+  el('fd-r-sub').textContent=`${fdMode_.toUpperCase()} · ${yrs} years · ${el('fd-rate').value}% p.a.`;
+  el('fd-i1').textContent=fmtL(totalDeposit);el('fd-i2').textContent=fmtL(interest);el('fd-i3').textContent=effReturn.toFixed(1)+'%';
+  el('fd-rows').innerHTML=rows;
+  el('fd-results').style.display='block';
+  el('fd-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  INCOME TAX (FY 2024-25)
+// ══════════════════════════════════════════
+function calcTaxOld(income,ded80c,hra,ded80d,hlInt){
+  const std=50000;
+  const taxable=Math.max(0,income-std-hra-Math.min(ded80c,150000)-Math.min(ded80d,50000)-Math.min(hlInt,200000));
+  let tax=0;
+  if(taxable<=250000) tax=0;
+  else if(taxable<=500000) tax=(taxable-250000)*0.05;
+  else if(taxable<=1000000) tax=12500+(taxable-500000)*0.20;
+  else tax=112500+(taxable-1000000)*0.30;
+  const rebate=taxable<=500000?tax:0;
+  const cess=(tax-rebate)*0.04;
+  return {taxable,tax,rebate,cess,net:tax-rebate+cess,std,deductions:std+hra+Math.min(ded80c,150000)+Math.min(ded80d,50000)+Math.min(hlInt,200000)};
+}
+function calcTaxNew(income){
+  // New regime FY 2024-25: std deduction ₹75,000
+  const std=75000;
+  const taxable=Math.max(0,income-std);
+  let tax=0;
+  if(taxable<=300000) tax=0;
+  else if(taxable<=700000) tax=(taxable-300000)*0.05;
+  else if(taxable<=1000000) tax=20000+(taxable-700000)*0.10;
+  else if(taxable<=1200000) tax=50000+(taxable-1000000)*0.15;
+  else if(taxable<=1500000) tax=80000+(taxable-1200000)*0.20;
+  else tax=140000+(taxable-1500000)*0.30;
+  const rebate=taxable<=700000?tax:0; // 87A rebate up to ₹7L under new regime
+  const cess=(tax-rebate)*0.04;
+  return {taxable,tax,rebate,cess,net:tax-rebate+cess,std,deductions:std};
+}
+function calcTax(){
+  const t=T[lang];
+  const income=parseFloat(el('tax-income').value)||0;
+  const d80c=parseFloat(el('tax-80c').value)||0;
+  const hra=parseFloat(el('tax-hra').value)||0;
+  const d80d=parseFloat(el('tax-80d').value)||0;
+  const hl=parseFloat(el('tax-hl').value)||0;
+  const old=calcTaxOld(income,d80c,hra,d80d,hl);
+  const nw=calcTaxNew(income);
+  const diff=old.net-nw.net;
+  const newBetter=nw.net<old.net;
+
+  el('tax-compare-cards').innerHTML=`
+    <div class="tax-card old">
+      <div class="tc-label">${t.taxOldLbl}</div>
+      <div class="tc-val">${fmt(old.net)}</div>
+      <div class="tc-sub">${t.taxInHandOld}: ${fmtL(income-old.net)}</div>
+      ${!newBetter?`<div class="tc-badge">✅ Better for you</div>`:''}
+    </div>
+    <div class="tax-card new">
+      <div class="tc-label">${t.taxNewLbl}</div>
+      <div class="tc-val">${fmt(nw.net)}</div>
+      <div class="tc-sub">${t.taxInHandNew}: ${fmtL(income-nw.net)}</div>
+      ${newBetter?`<div class="tc-badge">✅ Better for you</div>`:''}
+    </div>`;
+
+  const pills=[];
+  if(newBetter) pills.push(`<div class="pill g">✅ New regime saves you ${fmt(Math.abs(diff))}</div>`);
+  else pills.push(`<div class="pill a">💡 Old regime saves you ${fmt(Math.abs(diff))}</div>`);
+  if(d80c>=150000) pills.push(`<div class="pill g">✓ 80C maxed out</div>`);
+  el('tax-pills').innerHTML=pills.join('');
+
+  el('tax-rows').innerHTML=`
+    <div class="brow"><div class="bl"></div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:11px"><span style="color:#991B1B">${t.taxOldLbl}</span><span style="color:#047857">${t.taxNewLbl}</span></div></div>
+    <div class="brow"><div class="bl">${t.taxIncome}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>${fmtL(income)}</span><span>${fmtL(income)}</span></div></div>
+    <div class="brow pos"><div class="bl">${t.taxStdDed}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmtL(old.std)}</span><span>−${fmtL(nw.std)}</span></div></div>
+    ${hra>0?`<div class="brow pos"><div class="bl">${t.taxHra}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmtL(hra)}</span><span>N/A</span></div></div>`:''}
+    ${d80c>0?`<div class="brow pos"><div class="bl">${t.tax80c}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmtL(Math.min(d80c,150000))}</span><span>N/A</span></div></div>`:''}
+    ${d80d>0?`<div class="brow pos"><div class="bl">${t.tax80d}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmtL(Math.min(d80d,50000))}</span><span>N/A</span></div></div>`:''}
+    ${hl>0?`<div class="brow pos"><div class="bl">${t.taxHlInt}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmtL(Math.min(hl,200000))}</span><span>N/A</span></div></div>`:''}
+    <div class="brow hi"><div class="bl">${t.taxTaxableIncome}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>${fmtL(old.taxable)}</span><span>${fmtL(nw.taxable)}</span></div></div>
+    <div class="brow neg"><div class="bl">${t.taxGrossTax}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>${fmt(old.tax)}</span><span>${fmt(nw.tax)}</span></div></div>
+    ${(old.rebate>0||nw.rebate>0)?`<div class="brow pos"><div class="bl">${t.taxRebate}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>−${fmt(old.rebate)}</span><span>−${fmt(nw.rebate)}</span></div></div>`:''}
+    <div class="brow neg"><div class="bl">${t.taxCess}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>${fmt(old.cess)}</span><span>${fmt(nw.cess)}</span></div></div>
+    <div class="brow tot"><div class="bl">${t.taxNetTax}</div><div class="ba" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><span>${fmt(old.net)}</span><span>${fmt(nw.net)}</span></div></div>`;
+
+  el('tax-results').style.display='block';
+  el('tax-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  FUEL CALCULATOR
+// ══════════════════════════════════════════
+let fuelMode_='trip';
+function setFuelMode(m){
+  fuelMode_=m;
+  el('fuel-seg-trip').classList.toggle('active',m==='trip');
+  el('fuel-seg-monthly').classList.toggle('active',m==='monthly');
+  el('fuel-monthly-field').style.display=m==='monthly'?'block':'none';
+  updateFuelLabels();
+}
+function updateFuelLabels(){
+  const t=T[lang];
+  const lDist=el('fuel-l-dist');if(lDist)lDist.textContent=t.fuelLDist;
+  const hDist=el('fuel-dist-hint');if(hDist)hDist.textContent=fuelMode_==='trip'?t.fuelDistHintTrip:t.fuelDistHintMonthly;
+  el('calc-btn-fuel').textContent=t.fuelCalcBtn;
+}
+function calcFuel(){
+  const t=T[lang];
+  const dist=parseFloat(el('fuel-dist').value)||0;
+  const mileage=parseFloat(el('fuel-mileage').value)||1;
+  const price=parseFloat(el('fuel-price').value)||0;
+  const days=parseInt(el('fuel-days').value)||22;
+  const litres=dist/mileage;
+  const tripCost=litres*price;
+  const costPerKm=price/mileage;
+  let monthlyCost,yearlyCost;
+  if(fuelMode_==='trip'){
+    monthlyCost=tripCost*2*22; // rough estimate: 2 ways, 22 days
+    yearlyCost=monthlyCost*12;
+  } else {
+    monthlyCost=dist*2*days*costPerKm; // daily*2ways*days
+    yearlyCost=monthlyCost*12;
+  }
+  el('fuel-r-label').textContent=fuelMode_==='trip'?t.fuelRLabelTrip:t.fuelRLabelMonthly;
+  el('fuel-r-amount').textContent=fmt(fuelMode_==='trip'?tripCost:monthlyCost);
+  el('fuel-r-sub').textContent=`${dist}km · ${mileage}km/l · ₹${price}/l`;
+  el('fuel-i1').textContent=litres.toFixed(1)+'L';
+  el('fuel-i2').textContent='₹'+costPerKm.toFixed(2);
+  el('fuel-i3').textContent=fmt(monthlyCost);
+  el('fuel-rows').innerHTML=`
+    <div class="brow"><div class="bl">${t.fuelLitres}</div><div class="ba">${litres.toFixed(2)} L</div></div>
+    <div class="brow"><div class="bl">${t.fuelCost}</div><div class="ba">${fmt(tripCost)}</div></div>
+    <div class="brow"><div class="bl">${t.fuelCostKm}</div><div class="ba">₹${costPerKm.toFixed(2)}/km</div></div>
+    <div class="brow"><div class="bl">${t.fuelMonthly}<span class="bs">${fuelMode_==='monthly'?dist+'km×2×'+days+'days':'Estimated commute'}</span></div><div class="ba">${fmt(monthlyCost)}</div></div>
+    <div class="brow tot"><div class="bl">${t.fuelYearly}</div><div class="ba">${fmtL(yearlyCost)}</div></div>`;
+  el('fuel-results').style.display='block';
+  el('fuel-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  RESET
+// ══════════════════════════════════════════
+function resetTab(tab){
+  el(tab+'-results').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Fix fuel calc button id
+document.querySelector('#tab-fuel .calc-btn').id='calc-btn-fuel';
+
+applyLang();
+updateFdLabels();
+updateFuelLabels();
+</script>
+</body>
+</html>
