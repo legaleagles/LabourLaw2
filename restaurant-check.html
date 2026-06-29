@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Bill Checker — GST & Service Charge Validator | LawSticker AI</title>
+<meta name="description" content="Verify restaurant bill GST charges, check if service charge is legal, validate GSTIN. Free, trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--teal:#0D9488;--teal-l:#5EEAD4;--teal-pale:#F0FDFA;--teal-deep:#115E59;--ink:#1A1208;--ink-soft:#2D3748;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;--amber:#D97706;--amber-bg:#FEF3C7;--navy:#0D1117;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--teal-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--teal-l);color:var(--teal-l);background:rgba(94,234,212,.1)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--teal-pale);border-left:3px solid var(--teal);color:var(--teal-deep)}
+.alert.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
+.alert.good{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
+.alert.bad{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--teal),transparent)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--teal-pale);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal);background:#fff}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--teal-deep);pointer-events:none}
+.pfx input{padding-left:28px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
+.toggle-row:last-child{border-bottom:none}
+.tl{font-size:13px;font-weight:500;color:var(--ink)}
+.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.tog{position:relative;width:42px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-sl{position:absolute;inset:0;background:#D0C9B8;border-radius:22px;cursor:pointer;transition:.2s}
+.tog-sl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog input:checked+.tog-sl{background:var(--teal)}
+.tog input:checked+.tog-sl::before{transform:translateX(20px)}
+.inline-in{display:flex;align-items:center;gap:6px}
+.mini{width:80px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--teal-pale);text-align:right;font-family:inherit}
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(13,148,136,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+#results{display:none}
+#results.visible{display:block}
+.verdict{border-radius:16px;padding:20px;text-align:center;margin-bottom:14px}
+.verdict.ok{background:linear-gradient(135deg,#065F46,#047857)}
+.verdict.warn{background:linear-gradient(135deg,#92400E,#B45309)}
+.verdict.bad{background:linear-gradient(135deg,#7F1D1D,#991B1B)}
+.verdict-icon{font-size:36px;margin-bottom:8px}
+.verdict-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.verdict-sub{font-size:13px;color:rgba(255,255,255,.6)}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--teal-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal-deep)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.brow.ok .ba{color:var(--jade)}
+.brow.bad .ba{color:var(--rose)}
+.brow.warn .ba{color:var(--amber)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:var(--teal-l);font-weight:700}
+.brow.tot .ba{color:var(--teal-l);font-size:15px}
+.issue-list{padding:14px;display:flex;flex-direction:column;gap:8px}
+.issue{border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.6}
+.issue.bad{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D}
+.issue.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
+.issue.ok{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
+.issue strong{font-weight:700}
+.rights-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
+.rights-box h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(94,234,212,.6);margin-bottom:10px}
+.right-item{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.right-item:last-child{border-bottom:none}
+.right-item span{color:#5EEAD4;font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--teal-deep);text-decoration:none}
+@media(max-width:400px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">🧾 Restaurant Bill Checker</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="alert info" id="top-info">
+    ℹ️ <strong>Your rights:</strong> Service charge is <strong>NOT mandatory</strong> — you can legally refuse it. GST is mandatory but must be at correct rate (5% for restaurants without AC/liquor, 18% for AC restaurants).
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="c1">Bill Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="l-food">Food & Drinks Total</label>
+        <div class="pfx"><span class="p">₹</span><input type="number" id="food-total" value="1000" step="10"></div>
+      </div>
+      <div class="field">
+        <label id="l-resttype">Restaurant Type</label>
+        <select id="rest-type" onchange="updateGstRate()">
+          <option value="5">Non-AC / No Liquor (5% GST)</option>
+          <option value="18">AC or Liquor served (18% GST)</option>
+        </select>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <div class="tl" id="l-gstbilled">GST Charged on Bill <span class="sub" id="l-gstbilled-s">Amount shown on your bill</span></div>
+      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="gst-billed" value="50" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
+    </div>
+    <div class="toggle-row">
+      <div class="tl" id="l-sc">Service Charge on Bill <span class="sub" id="l-sc-s">Leave 0 if not charged</span></div>
+      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="sc-billed" value="100" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
+    </div>
+    <div class="toggle-row">
+      <div class="tl" id="l-other">Other Charges <span class="sub" id="l-other-s">Packaging, cover charge etc.</span></div>
+      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="other-billed" value="0" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
+    </div>
+    <div class="toggle-row">
+      <div class="tl" id="l-total-billed">Total Billed to You <span class="sub" id="l-total-billed-s">Grand total on your bill</span></div>
+      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="total-billed" value="1150" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Verify My Bill →</button>
+
+  <div id="results">
+    <div class="verdict" id="verdict-box">
+      <div class="verdict-icon" id="verdict-icon">✅</div>
+      <div class="verdict-title" id="verdict-title">Bill Looks Correct</div>
+      <div class="verdict-sub" id="verdict-sub">All charges verified</div>
+    </div>
+
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Bill Breakdown & Verification</div>
+      <div id="r-rows"></div>
+    </div>
+
+    <div id="issues-section" style="display:none">
+      <div class="bdown">
+        <div class="bdown-head" id="r-issues-head">Issues Found</div>
+        <div class="issue-list" id="r-issues"></div>
+      </div>
+    </div>
+
+    <div class="rights-box">
+      <h3 id="rights-title">Your Legal Rights at a Restaurant</h3>
+      <div id="rights-list"></div>
+    </div>
+
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← Check Another Bill</button>
+  </div>
+</div>
+<footer><span id="footer-txt">Restaurant Bill Checker · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<script>
+let lang='en';
+const T={
+  en:{
+    navTitle:'🧾 Restaurant Bill Checker',
+    topInfo:'ℹ️ <strong>Your rights:</strong> Service charge is <strong>NOT mandatory</strong> — you can legally refuse it (CCPA guidelines 2022). GST is mandatory but at correct rate only.',
+    c1:'Bill Details',lFood:'Food & Drinks Total',lResttype:'Restaurant Type',
+    lGstBilled:'GST Charged on Bill',lGstBilledS:'Amount shown on your bill',
+    lSc:'Service Charge on Bill',lScS:'Leave 0 if not charged',
+    lOther:'Other Charges',lOtherS:'Packaging, cover charge etc.',
+    lTotalBilled:'Total Billed to You',lTotalBilledS:'Grand total on your bill',
+    calcBtn:'Verify My Bill →',
+    rBdHead:'Bill Breakdown & Verification',rIssuesHead:'Issues Found',
+    rightsTitle:'Your Legal Rights at a Restaurant',
+    resetBtn:'← Check Another Bill',
+    footerTxt:'Restaurant Bill Checker · Free · LawSticker AI',
+    verdictOk:'Bill Looks Correct',verdictWarn:'Minor Issues Found',verdictBad:'Overcharged!',
+    verdictOkSub:'All charges verified against legal rates',
+    verdictWarnSub:'Some charges need clarification',
+    verdictBadSub:'You may be able to dispute this bill',
+    correctGst:'Correct GST Amount',yourGst:'GST on Your Bill',
+    overcharged:'Overpaid by',undercharged:'Underpaid by',correct:'Correct ✓',
+    serviceCharge:'Service Charge',foodTotal:'Food & Drinks',
+    gstRow:'GST',totalRow:'YOUR TOTAL',correctTotal:'CORRECT TOTAL',
+    rights:[
+      ['Service charge is voluntary','CCPA guidelines (July 2022) clearly state restaurants CANNOT force service charge. You can legally ask them to remove it from your bill.'],
+      ['Correct GST rates','Non-AC / no liquor restaurant: 5% GST. AC restaurant or one serving liquor: 18% GST. GST must be on food value only — not on service charge.'],
+      ['No GST on service charge','Many restaurants illegally apply GST on top of service charge too. GST must be calculated on food total only.'],
+      ['Complaint options','If overcharged: contact CCPA helpline 1800-11-4000 or file complaint at consumerhelpline.gov.in. Keep your bill as evidence.'],
+      ['Right to itemised bill','You have the right to an itemised bill showing each charge separately. Never pay a bundled amount without breakdown.'],
+    ],
+    issues:{
+      gstHigh:(diff)=>`GST overcharged by ₹${Math.round(diff).toLocaleString('en-IN')}. You were charged ₹X but should be ₹Y at the applicable rate.`,
+      gstLow:(diff)=>`GST appears undercharged by ₹${Math.round(diff).toLocaleString('en-IN')}. Check if the restaurant is GST-registered — unregistered restaurants cannot charge GST.`,
+      scIllegal:(amt)=>`Service charge of ₹${Math.round(amt).toLocaleString('en-IN')} is NOT mandatory. CCPA guidelines 2022 say you can refuse this. Politely ask them to remove it.`,
+      totalMismatch:(diff)=>`Your total doesn't add up — there is an unexplained difference of ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')}. Ask for an itemised breakdown.`,
+    },
+  },
+  te:{
+    navTitle:'🧾 రెస్టారెంట్ బిల్ తనిఖీ',
+    topInfo:'ℹ️ <strong>మీ హక్కులు:</strong> సర్వీస్ ఛార్జ్ <strong>తప్పనిసరి కాదు</strong> — మీరు చట్టబద్ధంగా తిరస్కరించవచ్చు (CCPA మార్గదర్శకాలు 2022). GST తప్పనిసరి కానీ సరైన రేటులో మాత్రమే.',
+    c1:'బిల్ వివరాలు',lFood:'ఆహారం & పానీయాల మొత్తం',lResttype:'రెస్టారెంట్ రకం',
+    lGstBilled:'బిల్‌లో వేసిన GST',lGstBilledS:'మీ బిల్‌లో చూపించిన మొత్తం',
+    lSc:'సర్వీస్ ఛార్జ్',lScS:'వేయకపోతే 0 వదలండి',
+    lOther:'ఇతర ఛార్జీలు',lOtherS:'ప్యాకేజింగ్, కవర్ ఛార్జ్ మొదలైనవి',
+    lTotalBilled:'మీకు వేసిన మొత్తం',lTotalBilledS:'బిల్‌లో గ్రాండ్ టోటల్',
+    calcBtn:'నా బిల్ తనిఖీ చేయండి →',
+    rBdHead:'బిల్ వివరాలు & తనిఖీ',rIssuesHead:'కనుగొన్న సమస్యలు',
+    rightsTitle:'రెస్టారెంట్‌లో మీ చట్టపర హక్కులు',
+    resetBtn:'← మరో బిల్ తనిఖీ చేయండి',
+    footerTxt:'రెస్టారెంట్ బిల్ తనిఖీ · ఉచితం · LawSticker AI',
+    verdictOk:'బిల్ సరిగ్గా ఉంది',verdictWarn:'చిన్న సమస్యలు కనుగొన్నారు',verdictBad:'అధిక ఛార్జ్ వేశారు!',
+    verdictOkSub:'అన్ని ఛార్జీలు చట్టపర రేట్లతో సరిపోయాయి',
+    verdictWarnSub:'కొన్ని ఛార్జీలు స్పష్టత అవసరం',
+    verdictBadSub:'మీరు ఈ బిల్‌ను వివాదానికి తీసుకెళ్ళవచ్చు',
+    correctGst:'సరైన GST మొత్తం',yourGst:'మీ బిల్‌లో GST',
+    overcharged:'అధికంగా చెల్లించారు',undercharged:'తక్కువ చెల్లించారు',correct:'సరైనది ✓',
+    serviceCharge:'సర్వీస్ ఛార్జ్',foodTotal:'ఆహారం & పానీయాలు',
+    gstRow:'GST',totalRow:'మీ మొత్తం',correctTotal:'సరైన మొత్తం',
+    rights:[
+      ['సర్వీస్ ఛార్జ్ స్వచ్ఛందం','CCPA మార్గదర్శకాలు (జూలై 2022) స్పష్టంగా రెస్టారెంట్లు సర్వీస్ ఛార్జ్ తప్పనిసరి చేయలేవని చెప్తున్నాయి. మీరు చట్టబద్ధంగా దాన్ని తొలగించమని అడగవచ్చు.'],
+      ['సరైన GST రేట్లు','AC లేని / మద్యం అందించని రెస్టారెంట్: 5% GST. AC లేదా మద్యం అందించే రెస్టారెంట్: 18% GST. GST ఆహారం విలువపై మాత్రమే వేయాలి.'],
+      ['సర్వీస్ ఛార్జ్‌పై GST వేయకూడదు','చాలా రెస్టారెంట్లు సర్వీస్ ఛార్జ్‌పై కూడా GST వేస్తాయి — ఇది చట్టవిరుద్ధం.'],
+      ['ఫిర్యాదు ఎంపికలు','అధిక ఛార్జ్ అయితే: CCPA హెల్ప్‌లైన్ 1800-11-4000 కు సంప్రదించండి లేదా consumerhelpline.gov.in లో ఫిర్యాదు చేయండి.'],
+      ['వివరణాత్మక బిల్ హక్కు','ప్రతి ఛార్జ్ వేరుగా చూపించే వివరణాత్మక బిల్ పొందే హక్కు మీకు ఉంది.'],
+    ],
+    issues:{
+      gstHigh:(diff)=>`GST అధికంగా వేశారు — ₹${Math.round(diff).toLocaleString('en-IN')} ఎక్కువ.`,
+      gstLow:(diff)=>`GST తక్కువగా వేశారు — రెస్టారెంట్ GST నమోదిత అవునో తనిఖీ చేయండి.`,
+      scIllegal:(amt)=>`సర్వీస్ ఛార్జ్ ₹${Math.round(amt).toLocaleString('en-IN')} తప్పనిసరి కాదు. CCPA 2022 ప్రకారం మీరు తిరస్కరించవచ్చు.`,
+      totalMismatch:(diff)=>`మొత్తం సరిపోవడం లేదు — ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')} వ్యత్యాసం. వివరణాత్మక బిల్ అడగండి.`,
+    },
+  },
+  hi:{
+    navTitle:'🧾 रेस्तरां बिल चेकर',
+    topInfo:'ℹ️ <strong>आपके अधिकार:</strong> सर्विस चार्ज <strong>अनिवार्य नहीं है</strong> — आप इसे कानूनी रूप से मना कर सकते हैं (CCPA दिशानिर्देश 2022). GST अनिवार्य है लेकिन सही दर पर।',
+    c1:'बिल विवरण',lFood:'खाना और पेय कुल',lResttype:'रेस्तरां का प्रकार',
+    lGstBilled:'बिल में GST',lGstBilledS:'आपके बिल में दिखाई गई राशि',
+    lSc:'सर्विस चार्ज',lScS:'नहीं है तो 0 छोड़ें',
+    lOther:'अन्य शुल्क',lOtherS:'पैकेजिंग, कवर चार्ज आदि',
+    lTotalBilled:'कुल बिल',lTotalBilledS:'बिल पर ग्रैंड टोटल',
+    calcBtn:'मेरा बिल जांचें →',
+    rBdHead:'बिल विवरण और सत्यापन',rIssuesHead:'समस्याएं मिलीं',
+    rightsTitle:'रेस्तरां में आपके कानूनी अधिकार',
+    resetBtn:'← दूसरा बिल जांचें',
+    footerTxt:'रेस्तरां बिल चेकर · मुफ्त · LawSticker AI',
+    verdictOk:'बिल सही लगता है',verdictWarn:'छोटी समस्याएं मिलीं',verdictBad:'अधिक शुल्क लिया गया!',
+    verdictOkSub:'सभी शुल्क कानूनी दरों से मेल खाते हैं',
+    verdictWarnSub:'कुछ शुल्कों को स्पष्टीकरण की ज़रूरत है',
+    verdictBadSub:'आप इस बिल पर विवाद कर सकते हैं',
+    correctGst:'सही GST राशि',yourGst:'आपके बिल में GST',
+    overcharged:'अधिक भुगतान',undercharged:'कम भुगतान',correct:'सही ✓',
+    serviceCharge:'सर्विस चार्ज',foodTotal:'खाना और पेय',
+    gstRow:'GST',totalRow:'आपका कुल',correctTotal:'सही कुल',
+    rights:[
+      ['सर्विस चार्ज स्वैच्छिक है','CCPA दिशानिर्देश (जुलाई 2022) स्पष्ट रूप से कहते हैं कि रेस्तरां सर्विस चार्ज अनिवार्य नहीं कर सकते। आप इसे हटाने के लिए कह सकते हैं।'],
+      ['सही GST दरें','गैर-AC / बिना शराब वाला रेस्तरां: 5% GST. AC या शराब परोसने वाला: 18% GST. GST केवल खाने की कीमत पर।'],
+      ['सर्विस चार्ज पर GST नहीं','GST केवल खाने की कीमत पर लगती है — सर्विस चार्ज पर नहीं। यह अवैध है।'],
+      ['शिकायत विकल्प','अधिक शुल्क पर: CCPA हेल्पलाइन 1800-11-4000 या consumerhelpline.gov.in पर शिकायत करें।'],
+      ['आइटमाइज्ड बिल का अधिकार','आपको प्रत्येक शुल्क अलग दिखाने वाला बिल पाने का अधिकार है।'],
+    ],
+    issues:{
+      gstHigh:(diff)=>`GST अधिक लिया — ₹${Math.round(diff).toLocaleString('en-IN')} ज़्यादा।`,
+      gstLow:(diff)=>`GST कम लिया — जांचें कि रेस्तरां GST पंजीकृत है या नहीं।`,
+      scIllegal:(amt)=>`सर्विस चार्ज ₹${Math.round(amt).toLocaleString('en-IN')} अनिवार्य नहीं। CCPA 2022 के तहत आप मना कर सकते हैं।`,
+      totalMismatch:(diff)=>`कुल मेल नहीं खाता — ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')} का अंतर है। आइटमाइज्ड बिल मांगें।`,
+    },
+  }
+};
+let lang_='en';
+const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+const h=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v};
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+
+function applyLang(){
+  const t=T[lang_];
+  s('nav-title',t.navTitle);h('top-info',t.topInfo);
+  s('c1',t.c1);s('l-food',t.lFood);s('l-resttype',t.lResttype);
+  s('l-gstbilled',t.lGstBilled);s('l-gstbilled-s',t.lGstBilledS);
+  s('l-sc',t.lSc);s('l-sc-s',t.lScS);
+  s('l-other',t.lOther);s('l-other-s',t.lOtherS);
+  s('l-total-billed',t.lTotalBilled);s('l-total-billed-s',t.lTotalBilledS);
+  s('calc-btn',t.calcBtn);s('r-bd-head',t.rBdHead);s('r-issues-head',t.rIssuesHead||'');
+  s('rights-title',t.rightsTitle);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
+  buildRights();
+}
+function setLang(l){
+  lang_=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  applyLang();
+}
+function updateGstRate(){
+  const rate=parseInt(document.getElementById('rest-type').value);
+  const food=parseFloat(document.getElementById('food-total').value)||0;
+  document.getElementById('gst-billed').value=Math.round(food*rate/100);
+}
+function buildRights(){
+  const t=T[lang_];
+  document.getElementById('rights-list').innerHTML=t.rights.map(([title,body])=>
+    `<div class="right-item"><span>${title}:</span> ${body}</div>`).join('');
+}
+function calculate(){
+  const t=T[lang_];
+  const food=parseFloat(document.getElementById('food-total').value)||0;
+  const restType=parseInt(document.getElementById('rest-type').value);
+  const gstBilled=parseFloat(document.getElementById('gst-billed').value)||0;
+  const scBilled=parseFloat(document.getElementById('sc-billed').value)||0;
+  const otherBilled=parseFloat(document.getElementById('other-billed').value)||0;
+  const totalBilled=parseFloat(document.getElementById('total-billed').value)||0;
+
+  const correctGst=food*restType/100;
+  const gstDiff=gstBilled-correctGst;
+  const correctTotal=food+correctGst+otherBilled; // SC excluded as optional
+  const totalDiff=totalBilled-(food+gstBilled+scBilled+otherBilled);
+
+  const issues=[];
+  let severity='ok';
+
+  if(Math.abs(gstDiff)>2){
+    if(gstDiff>0){issues.push({type:'bad',msg:t.issues.gstHigh(gstDiff)});severity='bad';}
+    else{issues.push({type:'warn',msg:t.issues.gstLow(-gstDiff)});if(severity!=='bad')severity='warn';}
+  }
+  if(scBilled>0){issues.push({type:'warn',msg:t.issues.scIllegal(scBilled)});if(severity==='ok')severity='warn';}
+  if(Math.abs(totalDiff)>5){issues.push({type:'bad',msg:t.issues.totalMismatch(totalDiff)});severity='bad';}
+
+  // verdict
+  const vbox=document.getElementById('verdict-box');
+  const vmap={ok:{cls:'ok',icon:'✅',title:t.verdictOk,sub:t.verdictOkSub},warn:{cls:'warn',icon:'⚠️',title:t.verdictWarn,sub:t.verdictWarnSub},bad:{cls:'bad',icon:'❌',title:t.verdictBad,sub:t.verdictBadSub}};
+  const v=vmap[severity];
+  vbox.className='verdict '+v.cls;
+  document.getElementById('verdict-icon').textContent=v.icon;
+  document.getElementById('verdict-title').textContent=v.title;
+  document.getElementById('verdict-sub').textContent=v.sub;
+
+  // breakdown
+  const gstStatus=Math.abs(gstDiff)<2?'ok':gstDiff>0?'bad':'warn';
+  document.getElementById('r-rows').innerHTML=`
+    <div class="brow"><div class="bl">${t.foodTotal}</div><div class="ba">${fmt(food)}</div></div>
+    <div class="brow ${gstStatus}"><div class="bl">${t.gstRow} (${restType}%)<span class="bs">${t.correctGst}: ${fmt(correctGst)} · ${t.yourGst}: ${fmt(gstBilled)}</span></div><div class="ba">${Math.abs(gstDiff)<2?t.correct:gstDiff>0?'⚠️ +'+fmt(gstDiff)+' '+t.overcharged:'✓ -'+fmt(-gstDiff)}</div></div>
+    ${scBilled>0?`<div class="brow warn"><div class="bl">${t.serviceCharge}<span class="bs">Not mandatory — CCPA 2022</span></div><div class="ba">⚠️ ${fmt(scBilled)}</div></div>`:''}
+    ${otherBilled>0?`<div class="brow"><div class="bl">${t.lOther||'Other'}</div><div class="ba">${fmt(otherBilled)}</div></div>`:''}
+    <div class="brow tot"><div class="bl">${t.correctTotal} (excl. service charge)</div><div class="ba">${fmt(correctTotal)}</div></div>
+    <div class="brow"><div class="bl">${t.totalRow}</div><div class="ba">${fmt(totalBilled)}</div></div>`;
+
+  // issues
+  const issuesSec=document.getElementById('issues-section');
+  if(issues.length>0){
+    issuesSec.style.display='block';
+    document.getElementById('r-issues').innerHTML=issues.map(i=>`<div class="issue ${i.type}">${i.msg}</div>`).join('');
+  } else issuesSec.style.display='none';
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+applyLang();
+</script>
+</body>
+</html>

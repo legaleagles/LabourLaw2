@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electricity Bill Calculator — TSSPDCL & All States | LawSticker AI</title>
+<meta name="description" content="Calculate electricity bill slab-by-slab for Telangana TSSPDCL and all major Indian states. Verify your bill before paying.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--amber:#D97706;--amber-l:#FCD34D;--amber-pale:#FFFBEB;--amber-deep:#92400E;--ink:#1A1208;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;--navy:#0D1117;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--amber-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--amber-l);color:var(--amber-l);background:rgba(252,211,77,.1)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--amber-pale);border-left:3px solid var(--amber);color:var(--amber-deep)}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--amber),transparent)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:#3D2B0E;margin-bottom:5px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--amber-pale);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--amber);background:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--amber-deep),var(--amber));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(217,119,6,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+#results{display:none}
+#results.visible{display:block}
+.result-hero{background:linear-gradient(135deg,var(--amber-deep),#78350F);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber-l);opacity:.7;margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--amber-l);line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+.slab-table{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.slab-head{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--amber-pale);padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber-deep)}
+.slab-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:11px 14px;border-top:1px solid var(--light);font-size:13px}
+.slab-row.active{background:#FFFBEB}
+.slab-row span:last-child{font-weight:700;color:var(--amber-deep)}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--navy);font-size:15px;font-weight:700}
+.total-row .tl{color:var(--amber-l)}
+.total-row .ta{color:var(--amber-l);font-family:'Playfair Display',serif;font-size:18px}
+.tip-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
+.tip-box h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(252,211,77,.6);margin-bottom:10px}
+.tip-item{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.tip-item:last-child{border-bottom:none}
+.tip-item span{color:#FCD34D;font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:#3D2B0E;cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--amber-deep);text-decoration:none}
+@media(max-width:400px){.row2{grid-template-columns:1fr}.slab-head,.slab-row{grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">⚡ Electricity Bill Calculator</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="alert info" id="top-info">⚡ Slab-by-slab calculation based on official tariff orders. Select your state and consumer category for accurate results.</div>
+
+  <div class="card">
+    <div class="card-title" id="c1">Meter Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="l-state">State / Discom</label>
+        <select id="el-state" onchange="updateCategories()">
+          <option value="TG">Telangana (TSSPDCL/TSNPDCL)</option>
+          <option value="AP">Andhra Pradesh (APSPDCL/APNPDCL)</option>
+          <option value="MH">Maharashtra (MSEDCL)</option>
+          <option value="KA">Karnataka (BESCOM)</option>
+          <option value="TN">Tamil Nadu (TNEB)</option>
+          <option value="DL">Delhi (BSES/TPDDL)</option>
+          <option value="UP">Uttar Pradesh (UPPCL)</option>
+          <option value="GJ">Gujarat (DGVCL/MGVCL)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="l-cat">Consumer Category</label>
+        <select id="el-cat"></select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="l-units">Units Consumed (kWh)</label>
+        <input type="number" id="el-units" value="200" min="0" step="1">
+      </div>
+      <div class="field">
+        <label id="l-months">Billing Period</label>
+        <select id="el-months">
+          <option value="1">Monthly</option>
+          <option value="2">Bi-monthly</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Bill →</button>
+
+  <div id="results">
+    <div class="result-hero">
+      <div class="r-label" id="r-label">Estimated Bill</div>
+      <div class="r-amount" id="r-amount">₹0</div>
+      <div class="r-sub" id="r-sub"></div>
+    </div>
+
+    <div class="slab-table">
+      <div class="slab-head">
+        <span id="sh-slab">Slab</span>
+        <span id="sh-units">Units</span>
+        <span id="sh-rate">Rate/unit</span>
+        <span id="sh-charge">Charge</span>
+      </div>
+      <div id="slab-rows"></div>
+      <div class="total-row">
+        <span class="tl" id="total-lbl">Total (incl. fixed + taxes)</span>
+        <span class="ta" id="total-amt">₹0</span>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <h3 id="tips-title">💡 Energy Saving Tips</h3>
+      <div id="tips-list"></div>
+    </div>
+
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← Recalculate</button>
+  </div>
+</div>
+<footer><span id="footer-txt">Electricity Bill Calculator · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<script>
+// Tariff data — simplified slab structures
+// Source: Official tariff orders 2024-25, state electricity regulatory commissions
+const TARIFFS = {
+  TG: {
+    cats: ['LT-1 Domestic','LT-2 Non-Domestic','LT-5 Agricultural'],
+    slabs: {
+      'LT-1 Domestic': {
+        fixed: 50, // ₹ per month
+        energySlabs: [
+          {from:0,to:100,rate:1.45},
+          {from:101,to:200,rate:2.60},
+          {from:201,to:300,rate:3.50},
+          {from:301,to:400,rate:4.50},
+          {from:401,to:800,rate:6.00},
+          {from:801,to:Infinity,rate:7.00},
+        ],
+        taxes:0.05, // 5% tax on energy charges
+        note:'Source: TSERC Tariff Order 2023-24. Rates per unit in ₹.',
+      },
+      'LT-2 Non-Domestic': {
+        fixed:75,
+        energySlabs:[{from:0,to:Infinity,rate:7.50}],
+        taxes:0.05,note:'Commercial category flat rate.',
+      },
+      'LT-5 Agricultural': {
+        fixed:0,
+        energySlabs:[{from:0,to:Infinity,rate:0}],
+        taxes:0,note:'Free power scheme for agricultural pumpsets up to 9HP.',
+      },
+    },
+  },
+  AP: {
+    cats:['Domestic (LT-1)','Commercial (LT-2)'],
+    slabs:{
+      'Domestic (LT-1)':{
+        fixed:50,
+        energySlabs:[
+          {from:0,to:50,rate:0},
+          {from:51,to:100,rate:1.50},
+          {from:101,to:200,rate:3.00},
+          {from:201,to:300,rate:4.50},
+          {from:301,to:Infinity,rate:6.50},
+        ],
+        taxes:0.05,note:'First 50 units free for domestic. Source: APERC Tariff Order 2023-24.',
+      },
+      'Commercial (LT-2)':{fixed:100,energySlabs:[{from:0,to:Infinity,rate:8.00}],taxes:0.05,note:'Commercial flat rate AP.'},
+    },
+  },
+  MH: {
+    cats:['Residential (LT-1)','Commercial (LT-2)'],
+    slabs:{
+      'Residential (LT-1)':{
+        fixed:100,
+        energySlabs:[
+          {from:0,to:100,rate:3.48},
+          {from:101,to:300,rate:5.22},
+          {from:301,to:500,rate:7.50},
+          {from:501,to:Infinity,rate:9.26},
+        ],
+        taxes:0.16,note:'Source: MERC Tariff Order. 16% tax on energy charges.',
+      },
+      'Commercial (LT-2)':{fixed:200,energySlabs:[{from:0,to:Infinity,rate:11.00}],taxes:0.16,note:'MSEDCL commercial rate.'},
+    },
+  },
+  KA: {
+    cats:['Domestic (LT-2)','Commercial (LT-3)'],
+    slabs:{
+      'Domestic (LT-2)':{
+        fixed:75,
+        energySlabs:[
+          {from:0,to:30,rate:0},
+          {from:31,to:100,rate:3.55},
+          {from:101,to:200,rate:5.50},
+          {from:201,to:Infinity,rate:7.15},
+        ],
+        taxes:0.06,note:'First 30 units free. Source: KERC Tariff Order 2023-24.',
+      },
+      'Commercial (LT-3)':{fixed:150,energySlabs:[{from:0,to:Infinity,rate:9.00}],taxes:0.06,note:'BESCOM commercial.'},
+    },
+  },
+  TN: {
+    cats:['Domestic (LT-1)','Commercial (LT-2)'],
+    slabs:{
+      'Domestic (LT-1)':{
+        fixed:45,
+        energySlabs:[
+          {from:0,to:100,rate:0},
+          {from:101,to:200,rate:1.50},
+          {from:201,to:500,rate:3.00},
+          {from:501,to:Infinity,rate:4.50},
+        ],
+        taxes:0.16,note:'First 100 units free. Source: TNERC.',
+      },
+      'Commercial (LT-2)':{fixed:100,energySlabs:[{from:0,to:Infinity,rate:9.50}],taxes:0.16,note:'TNEB commercial.'},
+    },
+  },
+  DL: {
+    cats:['Domestic','Commercial'],
+    slabs:{
+      'Domestic':{
+        fixed:125,
+        energySlabs:[
+          {from:0,to:200,rate:3.00},
+          {from:201,to:400,rate:4.50},
+          {from:401,to:Infinity,rate:6.50},
+        ],
+        taxes:0.08,note:'Source: DERC Tariff Order 2023-24.',
+      },
+      'Commercial':{fixed:250,energySlabs:[{from:0,to:Infinity,rate:9.00}],taxes:0.08,note:'Delhi commercial.'},
+    },
+  },
+  UP: {
+    cats:['Domestic (LMV-1)','Commercial (LMV-2)'],
+    slabs:{
+      'Domestic (LMV-1)':{
+        fixed:80,
+        energySlabs:[
+          {from:0,to:100,rate:3.35},
+          {from:101,to:150,rate:4.30},
+          {from:151,to:300,rate:5.50},
+          {from:301,to:500,rate:6.00},
+          {from:501,to:Infinity,rate:6.50},
+        ],
+        taxes:0.05,note:'Source: UPERC Tariff Order.',
+      },
+      'Commercial (LMV-2)':{fixed:150,energySlabs:[{from:0,to:Infinity,rate:8.50}],taxes:0.05,note:'UPPCL commercial.'},
+    },
+  },
+  GJ: {
+    cats:['Domestic (LTP)','Commercial'],
+    slabs:{
+      'Domestic (LTP)':{
+        fixed:60,
+        energySlabs:[
+          {from:0,to:50,rate:1.90},
+          {from:51,to:250,rate:2.90},
+          {from:251,to:Infinity,rate:4.90},
+        ],
+        taxes:0.05,note:'Source: GERC Tariff Order.',
+      },
+      'Commercial':{fixed:150,energySlabs:[{from:0,to:Infinity,rate:8.00}],taxes:0.05,note:'Gujarat commercial.'},
+    },
+  },
+};
+
+let lang_='en';
+const T={
+  en:{navTitle:'⚡ Electricity Bill Calculator',topInfo:'⚡ Slab-by-slab calculation based on official tariff orders. Rates are indicative — verify with your discom for exact figures.',c1:'Meter Details',lState:'State / Discom',lCat:'Consumer Category',lUnits:'Units Consumed (kWh)',lMonths:'Billing Period',calcBtn:'Calculate Bill →',rLabel:'Estimated Bill',shSlab:'Slab',shUnits:'Units',shRate:'Rate/unit',shCharge:'Charge',totalLbl:'Total (energy + fixed + taxes)',resetBtn:'← Recalculate',footerTxt:'Electricity Bill Calculator · Free · LawSticker AI',tipsTitle:'💡 Energy Saving Tips',tips:['Switch to LED bulbs — saves 80% vs incandescent on lighting.','Set AC to 24°C instead of 18°C — saves ~24% on cooling.','Use 5-star BEE rated appliances — compressory saves 30% vs 1-star.','Switch off at socket — standby power can be 10% of your bill.','Check for billing errors — if units jump unusually, request meter testing.','Apply for BESCOM/TSSPDCL solar rooftop scheme — reduce bill to near zero.']},
+  te:{navTitle:'⚡ విద్యుత్ బిల్ కాలిక్యులేటర్',topInfo:'⚡ అధికారిక టారిఫ్ ఆదేశాల ఆధారంగా స్లాబ్-వారీగా లెక్క. ఖచ్చితమైన అంకెలకు మీ DISCOM ని సంప్రదించండి.',c1:'మీటర్ వివరాలు',lState:'రాష్ట్రం / DISCOM',lCat:'వినియోగదారు వర్గం',lUnits:'వినియోగించిన యూనిట్లు (kWh)',lMonths:'బిల్లింగ్ కాలం',calcBtn:'బిల్ లెక్కించండి →',rLabel:'అంచనా బిల్',shSlab:'స్లాబ్',shUnits:'యూనిట్లు',shRate:'రేటు/యూనిట్',shCharge:'ఛార్జ్',totalLbl:'మొత్తం (శక్తి + స్థిర + పన్నులు)',resetBtn:'← మళ్ళీ లెక్కించండి',footerTxt:'విద్యుత్ బిల్ కాలిక్యులేటర్ · ఉచితం · LawSticker AI',tipsTitle:'💡 విద్యుత్ ఆదా చిట్కాలు',tips:['LED బల్బులకు మారండి — సాధారణ బల్బులకంటే 80% ఆదా.','AC 24°C పై పెట్టండి — శీతలీకరణలో ~24% ఆదా.','5-స్టార్ BEE రేటెడ్ ఉపకరణాలు వాడండి — 30% ఆదా.','సాకెట్ వద్ద స్విచ్ ఆఫ్ చేయండి — స్టాండ్‌బై పవర్ బిల్లు 10% వరకు ఉంటుంది.','బిల్లింగ్ తప్పులు తనిఖీ చేయండి — యూనిట్లు అసాధారణంగా పెరిగితే మీటర్ పరీక్ష కోసం అడగండి.','TSSPDCL సోలార్ రూఫ్‌టాప్ పథకానికి దరఖాస్తు చేయండి.']},
+  hi:{navTitle:'⚡ बिजली बिल कैलकुलेटर',topInfo:'⚡ आधिकारिक टैरिफ आदेशों पर आधारित स्लैब-वार गणना। सटीक आंकड़ों के लिए अपने DISCOM से जांचें।',c1:'मीटर विवरण',lState:'राज्य / DISCOM',lCat:'उपभोक्ता श्रेणी',lUnits:'उपभोग की गई यूनिट (kWh)',lMonths:'बिलिंग अवधि',calcBtn:'बिल की गणना करें →',rLabel:'अनुमानित बिल',shSlab:'स्लैब',shUnits:'यूनिट',shRate:'दर/यूनिट',shCharge:'शुल्क',totalLbl:'कुल (ऊर्जा + स्थिर + कर)',resetBtn:'← पुनर्गणना',footerTxt:'बिजली बिल कैलकुलेटर · मुफ्त · LawSticker AI',tipsTitle:'💡 बिजली बचाने के सुझाव',tips:['LED बल्ब लगाएं — साधारण बल्ब से 80% बचत.','AC 24°C पर रखें — ~24% की बचत.','5-स्टार BEE रेटेड उपकरण — 30% बचत.','सॉकेट पर बंद करें — स्टैंडबाय पावर 10% तक हो सकती है.','बिलिंग त्रुटियां जांचें — असामान्य यूनिट वृद्धि पर मीटर परीक्षण मांगें.','सोलर रूफटॉप योजना के लिए आवेदन करें।']},
+};
+
+function applyLang(){
+  const t=T[lang_];
+  document.getElementById('nav-title').textContent=t.navTitle;
+  document.getElementById('top-info').textContent=t.topInfo;
+  document.getElementById('c1').textContent=t.c1;
+  document.getElementById('l-state').textContent=t.lState;
+  document.getElementById('l-cat').textContent=t.lCat;
+  document.getElementById('l-units').textContent=t.lUnits;
+  document.getElementById('l-months').textContent=t.lMonths;
+  document.getElementById('calc-btn').textContent=t.calcBtn;
+  document.getElementById('r-label').textContent=t.rLabel;
+  document.getElementById('sh-slab').textContent=t.shSlab;
+  document.getElementById('sh-units').textContent=t.shUnits;
+  document.getElementById('sh-rate').textContent=t.shRate;
+  document.getElementById('sh-charge').textContent=t.shCharge;
+  document.getElementById('total-lbl').textContent=t.totalLbl;
+  document.getElementById('reset-btn').textContent=t.resetBtn;
+  document.getElementById('footer-txt').textContent=t.footerTxt;
+  document.getElementById('tips-title').textContent=t.tipsTitle;
+  document.getElementById('tips-list').innerHTML=t.tips.map(tip=>`<div class="tip-item">• ${tip}</div>`).join('');
+}
+function setLang(l){
+  lang_=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  applyLang();
+}
+function updateCategories(){
+  const state=document.getElementById('el-state').value;
+  const cats=TARIFFS[state]?.cats||[];
+  document.getElementById('el-cat').innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+function calculate(){
+  const state=document.getElementById('el-state').value;
+  const cat=document.getElementById('el-cat').value;
+  const units=parseInt(document.getElementById('el-units').value)||0;
+  const months=parseInt(document.getElementById('el-months').value)||1;
+  const tariff=TARIFFS[state]?.slabs[cat];
+  if(!tariff){alert('Tariff data not available');return;}
+
+  const fixed=tariff.fixed*months;
+  let energyCharge=0;
+  const slabDetails=[];
+  let remaining=units;
+  for(const slab of tariff.energySlabs){
+    if(remaining<=0)break;
+    const slabUnits=slab.to===Infinity?remaining:Math.min(remaining,slab.to-slab.from+1);
+    const usedInSlab=Math.min(slabUnits,remaining);
+    const charge=usedInSlab*slab.rate;
+    energyCharge+=charge;
+    slabDetails.push({from:slab.from,to:slab.to===Infinity?units:slab.to,rate:slab.rate,used:usedInSlab,charge});
+    remaining-=usedInSlab;
+  }
+  const taxes=energyCharge*tariff.taxes;
+  const total=energyCharge+fixed+taxes;
+
+  document.getElementById('r-amount').textContent='₹'+Math.round(total).toLocaleString('en-IN');
+  document.getElementById('r-sub').textContent=`${units} units · ${state} · ${cat} · ${months===1?'Monthly':'Bi-monthly'}`;
+
+  document.getElementById('slab-rows').innerHTML=slabDetails.filter(s=>s.used>0).map((s,i)=>`
+    <div class="slab-row">
+      <span>${s.from}–${s.to}</span>
+      <span>${s.used}</span>
+      <span>₹${s.rate}/u</span>
+      <span>₹${Math.round(s.charge).toLocaleString('en-IN')}</span>
+    </div>`).join('')+`
+    <div class="slab-row" style="background:#FFFBEB"><span>Fixed</span><span>—</span><span>—</span><span>₹${fixed}</span></div>
+    <div class="slab-row" style="background:#FFFBEB"><span>Tax (${(tariff.taxes*100).toFixed(0)}%)</span><span>—</span><span>—</span><span>₹${Math.round(taxes)}</span></div>`;
+
+  document.getElementById('total-amt').textContent='₹'+Math.round(total).toLocaleString('en-IN');
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+updateCategories();
+applyLang();
+</script>
+</body>
+</html>

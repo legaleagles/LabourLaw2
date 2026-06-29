@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Court Fee Calculator — Civil Suits | LawSticker AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--blue:#1D4ED8;--blue-l:#93C5FD;--blue-pale:#EFF6FF;--blue-deep:#1E3A8A;--ink:#1A1208;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--navy:#0D1117;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--blue-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--blue-l);color:var(--blue-l);background:rgba(147,197,253,.1)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--blue-pale);border-left:3px solid var(--blue);color:var(--blue-deep)}
+.alert.warn{background:#FEF3C7;border-left:3px solid #D97706;color:#78350F}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--blue),transparent)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:#1E3A8A;margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--blue-pale);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--blue);background:#fff}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--blue-deep);pointer-events:none}
+.pfx input{padding-left:28px}
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--blue-deep),var(--blue));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(29,78,216,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+#results{display:none}
+#results.visible{display:block}
+.result-hero{background:linear-gradient(135deg,var(--blue-deep),#1E40AF);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--blue-l);opacity:.7;margin-bottom:4px}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--blue-l);line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--blue-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue-deep)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:#1E3A8A;font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:var(--blue-l);font-weight:700}
+.brow.tot .ba{color:var(--blue-l);font-size:15px}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:#1E3A8A;cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--blue-deep);text-decoration:none}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">⚖️ Court Fee Calculator</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="alert info" id="top-info">⚖️ Court fees are governed by the Court Fees Act 1870 and state amendments. Telangana follows the A.P. Court Fees and Suits Valuation Act 1956. Verify with your advocate before filing.</div>
+
+  <div class="card">
+    <div class="card-title" id="c1">Suit Details</div>
+    <div class="field">
+      <label id="l-state">State / Court</label>
+      <select id="cf-state">
+        <option value="TG">Telangana</option>
+        <option value="AP">Andhra Pradesh</option>
+        <option value="MH">Maharashtra</option>
+        <option value="KA">Karnataka</option>
+        <option value="DL">Delhi</option>
+        <option value="UP">Uttar Pradesh</option>
+      </select>
+    </div>
+    <div class="field">
+      <label id="l-suit-type">Suit Type</label>
+      <select id="cf-suittype">
+        <option value="money">Money Recovery / Debt</option>
+        <option value="property">Property / Immovable Property</option>
+        <option value="injunction">Injunction (Temporary / Permanent)</option>
+        <option value="declaration">Declaration Suit</option>
+        <option value="divorce">Matrimonial (Divorce / Maintenance)</option>
+        <option value="probate">Probate / Letters of Administration</option>
+      </select>
+    </div>
+    <div class="field" id="claim-field">
+      <label id="l-claim">Claim / Suit Value <span class="hint">(₹)</span></label>
+      <div class="pfx"><span class="p">₹</span><input type="number" id="cf-claim" value="500000" step="10000"></div>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Court Fee →</button>
+
+  <div id="results">
+    <div class="result-hero">
+      <div class="r-label" id="r-label">Court Fee Payable</div>
+      <div class="r-amount" id="r-amount">₹0</div>
+      <div class="r-sub" id="r-sub"></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Fee Breakdown</div>
+      <div id="r-rows"></div>
+    </div>
+    <div class="alert warn" id="r-disclaimer"></div>
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← New Calculation</button>
+  </div>
+</div>
+<footer><span id="footer-txt">Court Fee Calculator · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<script>
+// Court fee schedules — simplified slab approach
+// Source: Court Fees Act 1870, AP Court Fees & Suits Valuation Act 1956 (as applicable to TG)
+// These are indicative. Actual fees depend on court level, nature of relief, and state amendments.
+const COURT_FEES = {
+  TG: {
+    money: (val) => {
+      // Schedule I, Article 1 - Plaints for money
+      if(val<=5000) return {fee:Math.max(17.50,val*0.0175),basis:'₹1.75 per ₹100 (min ₹17.50)'};
+      if(val<=10000) return {fee:87.50+(val-5000)*0.02,basis:'₹87.50 + ₹2 per ₹100 above ₹5,000'};
+      if(val<=25000) return {fee:187.50+(val-10000)*0.025,basis:'₹187.50 + ₹2.50 per ₹100 above ₹10,000'};
+      if(val<=50000) return {fee:562.50+(val-25000)*0.035,basis:'₹562.50 + ₹3.50 per ₹100 above ₹25,000'};
+      if(val<=100000) return {fee:1437.50+(val-50000)*0.04,basis:'₹1,437.50 + ₹4 per ₹100 above ₹50,000'};
+      if(val<=250000) return {fee:3437.50+(val-100000)*0.045,basis:'₹3,437.50 + ₹4.50 per ₹100 above ₹1L'};
+      if(val<=500000) return {fee:10187.50+(val-250000)*0.05,basis:'+ ₹5 per ₹100 above ₹2.5L'};
+      const fee=Math.min(10187.50+(val-250000)*0.05,75000);
+      return {fee,basis:'Capped at ₹75,000 for money suits in Telangana'};
+    },
+    property: (val) => {
+      // Property suits — similar to money with cap
+      const base=COURT_FEES.TG.money(val);
+      return {fee:base.fee,basis:base.basis+' (property suits same slab as money)'};
+    },
+    injunction: (_) => ({fee:200,basis:'Fixed fee: ₹200 for injunction suits (Schedule II, Article 17)'}),
+    declaration: (_) => ({fee:75,basis:'Fixed fee: ₹75 for declaration suits without consequential relief'}),
+    divorce: (_) => ({fee:50,basis:'Fixed fee: ₹50 for matrimonial suits (Schedule II, Article 19)'}),
+    probate: (val) => ({fee:Math.min(val*0.02,10000),basis:'2% of estate value, max ₹10,000'}),
+  },
+  AP: {
+    money:(val)=>COURT_FEES.TG.money(val),
+    property:(val)=>COURT_FEES.TG.property(val),
+    injunction:(_)=>({fee:200,basis:'Fixed ₹200 (AP Court Fees Act)'}),
+    declaration:(_)=>({fee:75,basis:'Fixed ₹75'}),
+    divorce:(_)=>({fee:50,basis:'Fixed ₹50'}),
+    probate:(val)=>({fee:Math.min(val*0.02,10000),basis:'2% max ₹10,000'}),
+  },
+  MH:{
+    money:(val)=>{
+      if(val<=50000) return {fee:val*0.02,basis:'2% on first ₹50,000'};
+      if(val<=500000) return {fee:1000+(val-50000)*0.025,basis:'₹1,000 + 2.5% above ₹50,000'};
+      const fee=Math.min(1000+(val-50000)*0.025,300000);
+      return {fee,basis:'Maharashtra — capped at ₹3,00,000'};
+    },
+    property:(val)=>COURT_FEES.MH.money(val),
+    injunction:(_)=>({fee:300,basis:'Fixed ₹300 Maharashtra'}),
+    declaration:(_)=>({fee:300,basis:'Fixed ₹300'}),
+    divorce:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    probate:(val)=>({fee:Math.min(val*0.02,50000),basis:'2% max ₹50,000'}),
+  },
+  KA:{
+    money:(val)=>{
+      if(val<=10000) return {fee:val*0.02,basis:'2% Karnataka'};
+      if(val<=100000) return {fee:200+(val-10000)*0.025,basis:'₹200 + 2.5% above ₹10,000'};
+      const fee=Math.min(200+(val-10000)*0.025,100000);
+      return {fee,basis:'Karnataka — indicative'};
+    },
+    property:(val)=>COURT_FEES.KA.money(val),
+    injunction:(_)=>({fee:300,basis:'Fixed ₹300 Karnataka'}),
+    declaration:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    divorce:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    probate:(val)=>({fee:Math.min(val*0.02,25000),basis:'2% max ₹25,000'}),
+  },
+  DL:{
+    money:(val)=>{
+      if(val<=50000) return {fee:val*0.04,basis:'4% Delhi'};
+      const fee=Math.min(2000+(val-50000)*0.05,75000);
+      return {fee,basis:'₹2,000 + 5% above ₹50,000, cap ₹75,000'};
+    },
+    property:(val)=>COURT_FEES.DL.money(val),
+    injunction:(_)=>({fee:200,basis:'Fixed ₹200 Delhi'}),
+    declaration:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    divorce:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    probate:(val)=>({fee:Math.min(val*0.02,30000),basis:'2% max ₹30,000'}),
+  },
+  UP:{
+    money:(val)=>{
+      if(val<=5000) return {fee:val*0.04,basis:'4% UP'};
+      const fee=Math.min(200+(val-5000)*0.05,100000);
+      return {fee,basis:'₹200 + 5% above ₹5,000, cap ₹1,00,000'};
+    },
+    property:(val)=>COURT_FEES.UP.money(val),
+    injunction:(_)=>({fee:200,basis:'Fixed ₹200 UP'}),
+    declaration:(_)=>({fee:100,basis:'Fixed ₹100'}),
+    divorce:(_)=>({fee:50,basis:'Fixed ₹50'}),
+    probate:(val)=>({fee:Math.min(val*0.02,25000),basis:'2% max ₹25,000'}),
+  },
+};
+
+let lang_='en';
+const T={
+  en:{navTitle:'⚖️ Court Fee Calculator',topInfo:'⚖️ Court fees are governed by Court Fees Act 1870 and state amendments. These are indicative — verify with your advocate before filing.',c1:'Suit Details',lState:'State / Court',lSuitType:'Suit Type',lClaim:'Claim / Suit Value',calcBtn:'Calculate Court Fee →',rLabel:'Court Fee Payable',rBdHead:'Fee Breakdown',resetBtn:'← New Calculation',footerTxt:'Court Fee Calculator · Free · LawSticker AI',courtFee:'Court Fee (Ad Valorem)',processService:'Process Service Fee (est.)',stampPaper:'Vakalatnama Stamp (est.)',total:'TOTAL ESTIMATED',disclaimer:'⚠️ These figures are estimates based on published schedules. Actual court fee may vary based on the exact nature of relief, court level (District Court vs High Court), and any recent state amendments. Always verify with your advocate or at the filing counter before submitting.'},
+  te:{navTitle:'⚖️ కోర్టు ఫీజు కాలిక్యులేటర్',topInfo:'⚖️ కోర్టు ఫీజులు కోర్టు ఫీజుల చట్టం 1870 మరియు రాష్ట్ర సవరణల ద్వారా నిర్ణయించబడతాయి. ఇవి అంచనాలు — దాఖలు చేయడానికి ముందు మీ అడ్వకేట్‌తో ధృవీకరించండి.',c1:'వ్యాజ్యం వివరాలు',lState:'రాష్ట్రం / కోర్టు',lSuitType:'వ్యాజ్యం రకం',lClaim:'క్లెయిమ్ / వ్యాజ్యం విలువ',calcBtn:'కోర్టు ఫీజు లెక్కించండి →',rLabel:'చెల్లించాల్సిన కోర్టు ఫీజు',rBdHead:'ఫీజు వివరాలు',resetBtn:'← కొత్త లెక్క',footerTxt:'కోర్టు ఫీజు కాలిక్యులేటర్ · ఉచితం · LawSticker AI',courtFee:'కోర్టు ఫీజు (Ad Valorem)',processService:'ప్రాసెస్ సర్వీస్ ఫీజు (అంచనా)',stampPaper:'వకాలత్నామా స్టాంప్ (అంచనా)',total:'మొత్తం అంచనా',disclaimer:'⚠️ ఇవి ప్రచురించిన షెడ్యూళ్ళ ఆధారంగా అంచనాలు. దాఖలు చేయడానికి ముందు మీ అడ్వకేట్ లేదా ఫైలింగ్ కౌంటర్‌తో ధృవీకరించండి.'},
+  hi:{navTitle:'⚖️ कोर्ट फीस कैलकुलेटर',topInfo:'⚖️ कोर्ट फीस कोर्ट फीस अधिनियम 1870 और राज्य संशोधनों द्वारा शासित है। ये अनुमान हैं — दाखिल करने से पहले अपने वकील से सत्यापित करें।',c1:'मुकदमे का विवरण',lState:'राज्य / न्यायालय',lSuitType:'मुकदमे का प्रकार',lClaim:'दावा / मुकदमे का मूल्य',calcBtn:'कोर्ट फीस गणना करें →',rLabel:'देय कोर्ट फीस',rBdHead:'शुल्क विवरण',resetBtn:'← नई गणना',footerTxt:'कोर्ट फीस कैलकुलेटर · मुफ्त · LawSticker AI',courtFee:'कोर्ट फीस (Ad Valorem)',processService:'प्रक्रिया सेवा शुल्क (अनुमान)',stampPaper:'वकालतनामा स्टाम्प (अनुमान)',total:'कुल अनुमान',disclaimer:'⚠️ ये आंकड़े प्रकाशित अनुसूचियों पर आधारित अनुमान हैं। दाखिल करने से पहले अपने वकील या फाइलिंग काउंटर से सत्यापित करें।'},
+};
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+function setLang(l){lang_=l;document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));applyLang();}
+function applyLang(){
+  const t=T[lang_];
+  ['nav-title','top-info','c1','l-state','l-suit-type','l-claim','calc-btn','r-label','r-bd-head','reset-btn','footer-txt'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=t[id.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]||'';});
+}
+function calculate(){
+  const t=T[lang_];
+  const state=document.getElementById('cf-state').value;
+  const suitType=document.getElementById('cf-suittype').value;
+  const claim=parseFloat(document.getElementById('cf-claim').value)||0;
+  const {fee,basis}=COURT_FEES[state]?.[suitType]?.(claim)||{fee:0,basis:'Not available'};
+  const processService=Math.min(500+Math.floor(claim/100000)*50,2000);
+  const stamp=100;
+  const total=fee+processService+stamp;
+
+  document.getElementById('r-amount').textContent=fmt(total);
+  document.getElementById('r-sub').textContent=`${state} · ${suitType} · ₹${claim.toLocaleString('en-IN')} claim`;
+  document.getElementById('r-rows').innerHTML=`
+    <div class="brow"><div class="bl">${t.courtFee}<span class="bs">${basis}</span></div><div class="ba">${fmt(fee)}</div></div>
+    <div class="brow"><div class="bl">${t.processService}</div><div class="ba">~${fmt(processService)}</div></div>
+    <div class="brow"><div class="bl">${t.stampPaper}</div><div class="ba">~${fmt(stamp)}</div></div>
+    <div class="brow tot"><div class="bl">${t.total}</div><div class="ba">${fmt(total)}</div></div>`;
+  document.getElementById('r-disclaimer').textContent=t.disclaimer;
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+applyLang();
+</script>
+</body>
+</html>

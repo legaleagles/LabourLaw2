@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limitation Date Calculator — Limitation Act 1963 | LawSticker AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--indigo:#4338CA;--indigo-l:#A5B4FC;--indigo-pale:#EEF2FF;--indigo-deep:#312E81;--ink:#1A1208;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;--amber:#D97706;--amber-bg:#FEF3C7;--navy:#0D1117;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--indigo-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--indigo-l);color:var(--indigo-l);background:rgba(165,180,252,.1)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--indigo-pale);border-left:3px solid var(--indigo);color:var(--indigo-deep)}
+.alert.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
+.alert.danger{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D}
+.alert.ok{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--indigo-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--indigo),transparent)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--indigo-deep);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--indigo-pale);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--indigo);background:#fff}
+.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--indigo-deep),var(--indigo));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(67,56,202,.3);transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+#results{display:none}
+#results.visible{display:block}
+.date-hero{background:linear-gradient(135deg,var(--indigo-deep),#3730A3);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px}
+.d-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--indigo-l);opacity:.7;margin-bottom:6px}
+.d-date{font-family:'Playfair Display',serif;font-size:clamp(24px,6vw,38px);font-weight:900;color:var(--indigo-l);line-height:1}
+.d-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+.days-left{display:inline-block;margin-top:10px;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700}
+.days-left.ok{background:rgba(16,185,129,.2);color:#6EE7B7}
+.days-left.warn{background:rgba(217,119,6,.2);color:#FCD34D}
+.days-left.danger{background:rgba(220,38,38,.2);color:#FCA5A5}
+.days-left.expired{background:rgba(220,38,38,.3);color:#FCA5A5}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{background:var(--indigo-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--indigo-deep)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--indigo-deep);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
+.brow .ba{font-weight:700;color:var(--ink)}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--indigo-deep);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--indigo-deep);text-decoration:none}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">📅 Limitation Date Calculator</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="alert info" id="top-info">📅 Calculate the last date to file a suit or appeal under the Limitation Act 1963. Missing the limitation date means your case is permanently barred.</div>
+
+  <div class="card">
+    <div class="card-title" id="c1">Case Details</div>
+    <div class="field">
+      <label id="l-suit">Type of Suit / Appeal</label>
+      <select id="lim-suit" onchange="updateInfo()">
+        <optgroup label="Civil Suits">
+          <option value="money_contract" data-years="3">Money suit — contract / breach (Art. 55)</option>
+          <option value="money_tort" data-years="3">Money suit — tort / injury (Art. 72)</option>
+          <option value="property_possession" data-years="12">Possession of immovable property (Art. 65)</option>
+          <option value="property_title" data-years="12">Declaration of title to property (Art. 65)</option>
+          <option value="recovery_mortgage" data-years="12">Redemption / enforcement of mortgage (Art. 61)</option>
+          <option value="specific_performance" data-years="3">Specific performance of contract (Art. 54)</option>
+          <option value="injunction" data-years="3">Injunction (Art. 57/58)</option>
+          <option value="set_aside_decree" data-years="3">Set aside a decree (Art. 59)</option>
+          <option value="compensation_wrong" data-years="1">Compensation for wrong (Art. 75)</option>
+        </optgroup>
+        <optgroup label="Appeals">
+          <option value="appeal_district" data-years="0" data-days="30">Appeal to District Court (Order 41 CPC)</option>
+          <option value="appeal_hc" data-years="0" data-days="90">Appeal to High Court (Art. 116)</option>
+          <option value="appeal_sc" data-years="0" data-days="90">Appeal to Supreme Court (Art. 132)</option>
+          <option value="revision" data-years="0" data-days="90">Revision to High Court (Art. 131)</option>
+        </optgroup>
+        <optgroup label="Criminal">
+          <option value="criminal_revision" data-years="0" data-days="90">Criminal Revision (Sec. 397 CrPC)</option>
+          <option value="criminal_appeal" data-years="0" data-days="30">Criminal Appeal from Sessions (Art. 115)</option>
+        </optgroup>
+        <optgroup label="Consumer / Other">
+          <option value="consumer_district" data-years="2">Consumer complaint — District Forum (Sec. 69 CPA)</option>
+          <option value="consumer_state" data-years="0" data-days="30">Consumer appeal — State Commission</option>
+          <option value="cheque_dishonour" data-years="0" data-days="30">Cheque dishonour complaint — Sec. 138 NI Act</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label id="l-startdate">Cause of Action / Event Date <span class="hint">(when it happened)</span></label>
+      <input type="date" id="lim-startdate">
+    </div>
+    <div class="field" id="covid-field">
+      <label id="l-covid">COVID-19 Exclusion Period <span class="hint">(Mar 15 2020 – Oct 3 2021 excluded by SC)</span></label>
+      <select id="lim-covid">
+        <option value="yes">Include COVID exclusion (recommended)</option>
+        <option value="no">Don't include</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Last Date →</button>
+
+  <div id="results">
+    <div class="date-hero">
+      <div class="d-label" id="r-label">Last Date to File</div>
+      <div class="d-date" id="r-date">—</div>
+      <div class="d-sub" id="r-sub"></div>
+      <div class="days-left" id="r-days"></div>
+    </div>
+    <div class="alert" id="r-status"></div>
+    <div class="bdown">
+      <div class="bdown-head" id="r-bd-head">Calculation Details</div>
+      <div id="r-rows"></div>
+    </div>
+    <div class="alert warn" id="r-disclaimer"></div>
+    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← New Calculation</button>
+  </div>
+</div>
+<footer><span id="footer-txt">Limitation Date Calculator · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<script>
+let lang_='en';
+const COVID_DAYS=567; // March 15 2020 to Oct 3 2021 = 567 days per SC order
+const T={
+  en:{navTitle:'📅 Limitation Date Calculator',topInfo:'📅 Calculate last date to file under Limitation Act 1963. Missing limitation means your case is permanently barred — always consult an advocate.',c1:'Case Details',lSuit:'Type of Suit / Appeal',lStartdate:'Cause of Action / Event Date',lCovid:'COVID-19 Exclusion',calcBtn:'Calculate Last Date →',rLabel:'Last Date to File',rBdHead:'Calculation Details',resetBtn:'← New Calculation',footerTxt:'Limitation Date Calculator · Free · LawSticker AI',disclaimer:'⚠️ This is an indicative calculation only. Limitation periods can be extended by condonation of delay, fraud, disability, acknowledgment of debt etc. Courts have discretion. Always verify with a qualified advocate before filing.',eventDate:'Cause of Action Date',limitPeriod:'Limitation Period',rawLastDate:'Raw Last Date',covidAdded:'COVID Exclusion Added',finalDate:'LAST DATE TO FILE',daysRemaining:'Days Remaining',expired:'LIMITATION EXPIRED',daysAgo:'days ago',daysLeft:'days remaining',urgent:'days — URGENT',},
+  te:{navTitle:'📅 పరిమితి తేదీ కాలిక్యులేటర్',topInfo:'📅 పరిమితి చట్టం 1963 కింద దాఖలు చేయడానికి చివరి తేదీ లెక్కించండి. పరిమితి తప్పిపోతే మీ కేసు శాశ్వతంగా నిషేధించబడుతుంది.',c1:'కేసు వివరాలు',lSuit:'వ్యాజ్యం / అప్పీల్ రకం',lStartdate:'కారణం / సంఘటన తేదీ',lCovid:'COVID-19 మినహాయింపు',calcBtn:'చివరి తేదీ లెక్కించండి →',rLabel:'దాఖలు చేయడానికి చివరి తేదీ',rBdHead:'లెక్కింపు వివరాలు',resetBtn:'← కొత్త లెక్క',footerTxt:'పరిమితి తేదీ కాలిక్యులేటర్ · ఉచితం · LawSticker AI',disclaimer:'⚠️ ఇది అంచనా లెక్క మాత్రమే. పరిమితి కాలాలు మోసం, వైకల్యం, అప్పు అంగీకారం మొదలైన వాటి ద్వారా పొడిగించవచ్చు. దాఖలు చేయడానికి ముందు అడ్వకేట్‌తో ధృవీకరించండి.',eventDate:'కారణం తేదీ',limitPeriod:'పరిమితి కాలం',rawLastDate:'మూల చివరి తేదీ',covidAdded:'COVID మినహాయింపు జోడించారు',finalDate:'దాఖలు చేయడానికి చివరి తేదీ',daysRemaining:'మిగిలిన రోజులు',expired:'పరిమితి గడువు ముగిసింది',daysAgo:'రోజుల క్రితం',daysLeft:'రోజులు మిగిలాయి',urgent:'రోజులు — అత్యవసరం',},
+  hi:{navTitle:'📅 सीमा तिथि कैलकुलेटर',topInfo:'📅 परिसीमा अधिनियम 1963 के तहत दाखिल करने की अंतिम तिथि गणना करें। सीमा चूकने पर मामला स्थायी रूप से वर्जित हो जाता है।',c1:'मामले का विवरण',lSuit:'मुकदमे / अपील का प्रकार',lStartdate:'कारण / घटना तिथि',lCovid:'COVID-19 बहिष्करण',calcBtn:'अंतिम तिथि गणना करें →',rLabel:'दाखिल करने की अंतिम तिथि',rBdHead:'गणना विवरण',resetBtn:'← नई गणना',footerTxt:'सीमा तिथि कैलकुलेटर · मुफ्त · LawSticker AI',disclaimer:'⚠️ यह केवल अनुमानित गणना है। सीमा अवधि धोखाधड़ी, विकलांगता, ऋण स्वीकृति आदि से बढ़ाई जा सकती है। दाखिल करने से पहले वकील से सत्यापित करें।',eventDate:'कारण तिथि',limitPeriod:'परिसीमा अवधि',rawLastDate:'कच्ची अंतिम तिथि',covidAdded:'COVID बहिष्करण जोड़ा',finalDate:'दाखिल करने की अंतिम तिथि',daysRemaining:'शेष दिन',expired:'परिसीमा समाप्त',daysAgo:'दिन पहले',daysLeft:'दिन शेष',urgent:'दिन — अत्यावश्यक',},
+};
+
+function setLang(l){lang_=l;document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));applyLang();}
+function applyLang(){
+  const t=T[lang_];
+  document.getElementById('nav-title').textContent=t.navTitle;
+  document.getElementById('top-info').textContent=t.topInfo;
+  document.getElementById('c1').textContent=t.c1;
+  document.getElementById('l-suit').textContent=t.lSuit;
+  document.getElementById('l-startdate').textContent=t.lStartdate;
+  document.getElementById('l-covid').textContent=t.lCovid;
+  document.getElementById('calc-btn').textContent=t.calcBtn;
+  document.getElementById('r-label').textContent=t.rLabel;
+  document.getElementById('r-bd-head').textContent=t.rBdHead;
+  document.getElementById('reset-btn').textContent=t.resetBtn;
+  document.getElementById('footer-txt').textContent=t.footerTxt;
+}
+
+function updateInfo(){} // placeholder for future per-suit notes
+
+// Set default date to today
+document.getElementById('lim-startdate').value = new Date().toISOString().split('T')[0];
+
+function calculate(){
+  const t=T[lang_];
+  const sel=document.getElementById('lim-suit');
+  const opt=sel.options[sel.selectedIndex];
+  const years=parseInt(opt.dataset.years)||0;
+  const days=parseInt(opt.dataset.days)||0;
+  const startStr=document.getElementById('lim-startdate').value;
+  const covidOn=document.getElementById('lim-covid').value==='yes';
+  if(!startStr){alert('Please enter a date');return;}
+
+  const startDate=new Date(startStr);
+  let lastDate=new Date(startDate);
+  if(years>0){lastDate.setFullYear(lastDate.getFullYear()+years);}
+  else{lastDate.setDate(lastDate.getDate()+days);}
+
+  const rawLastDate=new Date(lastDate);
+  const covidExtra=covidOn?COVID_DAYS:0;
+  if(covidOn) lastDate.setDate(lastDate.getDate()+COVID_DAYS);
+
+  const today=new Date();
+  const diffMs=lastDate-today;
+  const daysLeft=Math.ceil(diffMs/86400000);
+  const expired=daysLeft<0;
+  const urgent=daysLeft>=0&&daysLeft<=30;
+
+  const fmtDate=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  const limText=years>0?`${years} year${years>1?'s':''}`:days===30?'30 days':days===90?'90 days':`${days} days`;
+
+  document.getElementById('r-date').textContent=fmtDate(lastDate);
+  document.getElementById('r-sub').textContent=`${opt.text} · From ${fmtDate(startDate)}`;
+
+  const dEl=document.getElementById('r-days');
+  if(expired){dEl.className='days-left expired';dEl.textContent=`${t.expired} (${Math.abs(daysLeft)} ${t.daysAgo})`;}
+  else if(urgent){dEl.className='days-left warn';dEl.textContent=`⚠️ ${daysLeft} ${t.urgent}`;}
+  else{dEl.className='days-left ok';dEl.textContent=`✅ ${daysLeft} ${t.daysLeft}`;}
+
+  const sEl=document.getElementById('r-status');
+  if(expired){sEl.className='alert danger';sEl.textContent='❌ Limitation period has expired. Filing now will require a Condonation of Delay application under Section 5 of Limitation Act. Court may or may not condone. Seek urgent legal advice.';}
+  else if(urgent){sEl.className='alert warn';sEl.textContent=`⚠️ Only ${daysLeft} days left! File immediately. Prepare all documents now and consult your advocate urgently.`;}
+  else{sEl.className='alert ok';sEl.textContent=`✅ You have ${daysLeft} days remaining. Don't wait until the last day — court filing counters often close early or have queues.`;}
+
+  document.getElementById('r-rows').innerHTML=`
+    <div class="brow"><div class="bl">${t.eventDate}</div><div class="ba">${fmtDate(startDate)}</div></div>
+    <div class="brow"><div class="bl">${t.limitPeriod}<span class="bs">${opt.text}</span></div><div class="ba">${limText}</div></div>
+    <div class="brow"><div class="bl">${t.rawLastDate}</div><div class="ba">${fmtDate(rawLastDate)}</div></div>
+    ${covidOn?`<div class="brow" style="background:#EEF2FF"><div class="bl" style="color:#312E81">${t.covidAdded}<span class="bs">SC suo motu order — In Re: Cognizance for Extension of Limitation</span></div><div class="ba" style="color:#312E81">+${COVID_DAYS} days</div></div>`:''}
+    <div class="brow" style="background:#0D1117"><div class="bl" style="color:#A5B4FC;font-weight:700">${t.finalDate}</div><div class="ba" style="color:#A5B4FC;font-size:15px">${fmtDate(lastDate)}</div></div>`;
+
+  document.getElementById('r-disclaimer').textContent=t.disclaimer;
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+applyLang();
+</script>
+</body>
+</html>
