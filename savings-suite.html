@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money & Savings Suite — SIP, Salary, HRA, Retirement | LawSticker AI</title>
+<meta name="description" content="Free calculators — SIP returns, CTC to in-hand salary, salary hike %, HRA exemption, retirement corpus needed. Trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --grn:#047857;--grnl:#6EE7B7;--grnp:#ECFDF5;
+  --ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;
+  --jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;--amber-deep:#78350F;--navy:#0D1117;
+  --sip:#047857;--sipl:#6EE7B7;--sipp:#ECFDF5;
+  --sal:#2563EB;--sall:#93C5FD;--salp:#EFF6FF;
+  --hra:#7C3AED;--hral:#C4B5FD;--hrap:#F5F3FF;
+  --ret:#B45309;--retl:#FCD34D;--retp:#FFFBEB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--grnl)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer}
+.nav-lang.active{border-color:var(--grnl);color:var(--grnl);background:rgba(110,231,183,.1)}
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--light);overflow-x:auto;scrollbar-width:none;position:sticky;top:53px;z-index:90}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:12px 14px;border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab-btn.active.t-sip{color:var(--sip);border-bottom-color:var(--sip)}
+.tab-btn.active.t-sal{color:var(--sal);border-bottom-color:var(--sal)}
+.tab-btn.active.t-hra{color:var(--hra);border-bottom-color:var(--hra)}
+.tab-btn.active.t-ret{color:var(--ret);border-bottom-color:var(--ret)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--sipp);border-left:3px solid var(--sip);color:#065F46}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);-webkit-appearance:none}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;pointer-events:none}
+.pfx input{padding-left:30px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.seg{display:flex;background:#F3F4F6;border-radius:10px;padding:3px;gap:3px;margin-bottom:14px}
+.seg-btn{flex:1;padding:8px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg-btn.active{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.calc-btn{width:100%;padding:14px;color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:18px}
+.calc-btn:active{transform:scale(.98)}
+.result-hero{border-radius:16px;padding:20px 18px;text-align:center;margin-bottom:14px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:4px;color:rgba(255,255,255,.8)}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,40px);font-weight:900;color:#fff;line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px}
+.irow{display:grid;gap:10px;margin-bottom:14px}
+.irow.c2{grid-template-columns:1fr 1fr}
+.irow.c3{grid-template-columns:1fr 1fr 1fr}
+.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.06)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.brow .ba{font-weight:700;text-align:right}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.hi{background:var(--amber-bg)}
+.brow.hi .bl,.brow.hi .ba{color:var(--amber-deep)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:rgba(255,255,255,.7);font-weight:700}
+.brow.tot .ba{color:#fff;font-size:15px}
+.tips-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
+.tips-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(110,231,183,.55);margin-bottom:10px}
+.tip-item{font-size:12px;color:rgba(255,255,255,.72);line-height:1.6;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.tip-item:last-child{border-bottom:none}
+.tip-item span{color:#6EE7B7;font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--grn);text-decoration:none}
+@media(max-width:400px){.row2,.row3{grid-template-columns:1fr}.irow.c3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">💰 Money & Savings</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="tab-bar">
+  <button class="tab-btn active t-sip" data-t="sip" onclick="setTab('sip')">📈 <span id="tb-sip">SIP Returns</span></button>
+  <button class="tab-btn t-sal" data-t="sal" onclick="setTab('sal')">💵 <span id="tb-sal">CTC → In-Hand</span></button>
+  <button class="tab-btn t-hra" data-t="hra" onclick="setTab('hra')">🏠 <span id="tb-hra">HRA Exemption</span></button>
+  <button class="tab-btn t-ret" data-t="ret" onclick="setTab('ret')">🌅 <span id="tb-ret">Retirement Corpus</span></button>
+</div>
+<div class="container">
+
+<!-- ══ SIP ══ -->
+<div id="tab-sip">
+  <div class="alert info" id="sip-info">📈 Returns shown are illustrative based on your assumed rate — actual mutual fund returns are market-linked and not guaranteed. Past performance does not guarantee future results.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--sip)" id="sip-c1">Investment Details</div>
+    <div class="seg">
+      <button class="seg-btn active" onclick="setSipMode('sip')" id="sip-seg-sip">Monthly SIP</button>
+      <button class="seg-btn" onclick="setSipMode('lump')" id="sip-seg-lump">Lump Sum</button>
+      <button class="seg-btn" onclick="setSipMode('both')" id="sip-seg-both">SIP + Lump Sum</button>
+    </div>
+    <div class="row2" id="sip-amt-row">
+      <div class="field" id="sip-monthly-field">
+        <label id="sip-l-monthly">Monthly SIP Amount</label>
+        <div class="pfx"><span class="p" style="color:var(--sip)">₹</span><input type="number" id="sip-monthly" value="10000" step="500" style="background:var(--sipp)"></div>
+      </div>
+      <div class="field" id="sip-lump-field" style="display:none">
+        <label id="sip-l-lump">Lump Sum Amount</label>
+        <div class="pfx"><span class="p" style="color:var(--sip)">₹</span><input type="number" id="sip-lump" value="100000" step="5000" style="background:var(--sipp)"></div>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="sip-l-rate">Expected Return <span class="hint">% p.a.</span></label>
+        <input type="number" id="sip-rate" value="12" step="0.5" min="1" max="30" style="background:var(--sipp)">
+      </div>
+      <div class="field">
+        <label id="sip-l-years">Investment Period <span class="hint">years</span></label>
+        <input type="number" id="sip-years" value="15" step="1" min="1" max="40" style="background:var(--sipp)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="sip-l-stepup">Annual Step-up <span class="hint">% increase in SIP yearly (optional)</span></label>
+      <input type="number" id="sip-stepup" value="0" step="1" min="0" max="30" style="background:var(--sipp)">
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#065F46,#047857)" onclick="calcSip()">Calculate Returns →</button>
+  <div id="sip-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#065F46,#059669)">
+      <div class="r-label" id="sip-r-label">Maturity Value</div>
+      <div class="r-amount" id="sip-r-amount">₹0</div>
+      <div class="r-sub" id="sip-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="sip-i1" style="color:var(--sip)">₹0</div><div class="il" id="sip-il1">Invested</div></div>
+      <div class="ibox"><div class="iv" id="sip-i2" style="color:var(--jade)">₹0</div><div class="il" id="sip-il2">Wealth Gained</div></div>
+      <div class="ibox"><div class="iv" id="sip-i3" style="color:var(--amber)">0x</div><div class="il" id="sip-il3">Multiplier</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--sipp);color:var(--sip)" id="sip-bd-head">Year-wise Growth</div>
+      <div id="sip-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="sip-tips-eye">💡 SIP Tips</div><div id="sip-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('sip')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ SALARY ══ -->
+<div id="tab-sal" style="display:none">
+  <div class="alert info" id="sal-info">💵 This is a standard breakup estimate. Actual deductions vary by company policy, state, and specific salary structure. Verify with your HR.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--sal)" id="sal-c1">CTC Details</div>
+    <div class="field">
+      <label id="sal-l-ctc">Annual CTC <span class="hint">(Cost to Company)</span></label>
+      <div class="pfx"><span class="p" style="color:var(--sal)">₹</span><input type="number" id="sal-ctc" value="1200000" step="10000" style="background:var(--salp)"></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="sal-l-basic">Basic % of CTC</label>
+        <input type="number" id="sal-basicpct" value="40" min="20" max="60" style="background:var(--salp)">
+      </div>
+      <div class="field">
+        <label id="sal-l-pf">Employer PF % <span class="hint">(of basic)</span></label>
+        <input type="number" id="sal-pfpct" value="12" min="0" max="12" style="background:var(--salp)">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="sal-l-bonus">Annual Bonus <span class="hint">(included in CTC)</span></label>
+        <div class="pfx"><span class="p" style="color:var(--sal)">₹</span><input type="number" id="sal-bonus" value="50000" step="5000" style="background:var(--salp)"></div>
+      </div>
+      <div class="field">
+        <label id="sal-l-regime">Tax Regime</label>
+        <select id="sal-regime" style="background:var(--salp)">
+          <option value="new">New Regime</option>
+          <option value="old">Old Regime</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#1E3A8A,#2563EB)" onclick="calcSalary()">Calculate In-Hand Salary →</button>
+  <div id="sal-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#1E3A8A,#1D4ED8)">
+      <div class="r-label" id="sal-r-label">Monthly In-Hand</div>
+      <div class="r-amount" id="sal-r-amount">₹0</div>
+      <div class="r-sub" id="sal-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="sal-i1" style="color:var(--sal)">₹0</div><div class="il" id="sal-il1">Basic/Month</div></div>
+      <div class="ibox"><div class="iv" id="sal-i2" style="color:var(--rose)">₹0</div><div class="il" id="sal-il2">Total Deductions</div></div>
+      <div class="ibox"><div class="iv" id="sal-i3" style="color:var(--jade)">₹0</div><div class="il" id="sal-il3">Annual In-Hand</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--salp);color:var(--sal)" id="sal-bd-head">Salary Breakdown</div>
+      <div id="sal-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="sal-tips-eye">💡 Salary Structuring Tips</div><div id="sal-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('sal')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ HRA ══ -->
+<div id="tab-hra" style="display:none">
+  <div class="alert info" id="hra-info">🏠 HRA exemption is the minimum of three values as per Income Tax rules. Only applicable under the Old Tax Regime — New Regime does not allow HRA exemption.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--hra)" id="hra-c1">Salary & Rent Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="hra-l-basic">Basic + DA <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--hra)">₹</span><input type="number" id="hra-basic" value="30000" step="500" style="background:var(--hrap)"></div>
+      </div>
+      <div class="field">
+        <label id="hra-l-hra">HRA Received <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--hra)">₹</span><input type="number" id="hra-received" value="15000" step="500" style="background:var(--hrap)"></div>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="hra-l-rent">Rent Paid <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--hra)">₹</span><input type="number" id="hra-rent" value="18000" step="500" style="background:var(--hrap)"></div>
+      </div>
+      <div class="field">
+        <label id="hra-l-city">City Type</label>
+        <select id="hra-city" style="background:var(--hrap)">
+          <option value="metro">Metro (Delhi, Mumbai, Kolkata, Chennai)</option>
+          <option value="nonmetro">Non-Metro</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#4C1D95,#7C3AED)" onclick="calcHra()">Calculate HRA Exemption →</button>
+  <div id="hra-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#4C1D95,#6D28D9)">
+      <div class="r-label" id="hra-r-label">HRA Exemption (Tax-Free)</div>
+      <div class="r-amount" id="hra-r-amount">₹0</div>
+      <div class="r-sub" id="hra-r-sub"></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--hrap);color:var(--hra)" id="hra-bd-head">HRA Calculation (Least of 3)</div>
+      <div id="hra-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="hra-tips-eye">💡 HRA Tips — Maximise Your Exemption</div><div id="hra-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('hra')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ RETIREMENT ══ -->
+<div id="tab-ret" style="display:none">
+  <div class="alert info" id="ret-info">🌅 This estimates the corpus needed assuming inflation continues at the assumed rate. Actual needs depend on lifestyle, healthcare costs, and unforeseen expenses — review periodically.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--ret)" id="ret-c1">Retirement Planning</div>
+    <div class="row2">
+      <div class="field">
+        <label id="ret-l-age">Current Age</label>
+        <input type="number" id="ret-age" value="30" min="18" max="60" style="background:var(--retp)">
+      </div>
+      <div class="field">
+        <label id="ret-l-retage">Retirement Age</label>
+        <input type="number" id="ret-retage" value="60" min="40" max="75" style="background:var(--retp)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="ret-l-expense">Current Monthly Expense</label>
+      <div class="pfx"><span class="p" style="color:var(--ret)">₹</span><input type="number" id="ret-expense" value="40000" step="1000" style="background:var(--retp)"></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="ret-l-inflation">Inflation <span class="hint">% p.a.</span></label>
+        <input type="number" id="ret-inflation" value="6" step="0.5" style="background:var(--retp)">
+      </div>
+      <div class="field">
+        <label id="ret-l-postret">Post-Retirement Return <span class="hint">% p.a.</span></label>
+        <input type="number" id="ret-postret" value="7" step="0.5" style="background:var(--retp)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="ret-l-lifeexp">Life Expectancy <span class="hint">years after retirement</span></label>
+      <input type="number" id="ret-lifeexp" value="25" min="10" max="40" style="background:var(--retp)">
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#78350F,#B45309)" onclick="calcRet()">Calculate Corpus Needed →</button>
+  <div id="ret-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#78350F,#B45309)">
+      <div class="r-label" id="ret-r-label">Retirement Corpus Needed</div>
+      <div class="r-amount" id="ret-r-amount">₹0</div>
+      <div class="r-sub" id="ret-r-sub"></div>
+    </div>
+    <div class="irow c2">
+      <div class="ibox"><div class="iv" id="ret-i1" style="color:var(--ret)">₹0</div><div class="il" id="ret-il1">Monthly Expense at Retirement</div></div>
+      <div class="ibox"><div class="iv" id="ret-i2" style="color:var(--jade)">₹0</div><div class="il" id="ret-il2">Monthly SIP Needed Now</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--retp);color:var(--ret)" id="ret-bd-head">Retirement Plan Breakdown</div>
+      <div id="ret-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="ret-tips-eye">💡 Retirement Planning Tips</div><div id="ret-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('ret')">← Recalculate</button>
+  </div>
+</div>
+
+</div>
+<footer><span id="footer-txt">Money & Savings Suite · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a> · <a href="finance-suite.html">Finance Suite</a></footer>
+<script>
+const R=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const RL=n=>{if(n>=10000000)return '₹'+(n/10000000).toFixed(2)+'Cr';if(n>=100000)return '₹'+(n/100000).toFixed(2)+'L';return R(n);};
+const el=id=>document.getElementById(id);
+const s=(id,v)=>{const e=el(id);if(e)e.textContent=v};
+const h=(id,v)=>{const e=el(id);if(e)e.innerHTML=v};
+let lang='en', sipMode='sip';
+
+const T={en:{},te:{},hi:{}};
+T.en={navTitle:'💰 Money & Savings',tbSip:'SIP Returns',tbSal:'CTC → In-Hand',tbHra:'HRA Exemption',tbRet:'Retirement Corpus',
+  sipInfo:'📈 Returns shown are illustrative based on your assumed rate — actual mutual fund returns are market-linked and not guaranteed.',
+  sipC1:'Investment Details',sipSegSip:'Monthly SIP',sipSegLump:'Lump Sum',sipSegBoth:'SIP + Lump Sum',
+  sipLMonthly:'Monthly SIP Amount',sipLLump:'Lump Sum Amount',sipLRate:'Expected Return',sipLYears:'Investment Period',
+  sipLStepup:'Annual Step-up % increase in SIP yearly (optional)',
+  sipCalcBtn:'Calculate Returns →',sipRLabel:'Maturity Value',
+  sipIl1:'Invested',sipIl2:'Wealth Gained',sipIl3:'Multiplier',sipBdHead:'Year-wise Growth',sipTipsEye:'💡 SIP Tips',
+  sipTips:[
+    ['Step-up SIP beats flat SIP significantly','Increasing your SIP by 10% annually (matching salary hikes) can grow your corpus by 40-60% more over 15-20 years vs flat SIP.'],
+    ['Equity SIPs need minimum 7-10 years','Short-term market volatility evens out over longer periods. SIPs under 5 years carry meaningful risk of being below expectations.'],
+    ['Do not stop SIP during market falls','Falling markets mean you buy more units at lower prices — this is when SIP compounding works hardest in your favour.'],
+    ['Direct plans save 0.5-1% expense ratio annually','Over 20 years, this difference alone can add 15-20% more to your final corpus compared to regular plans.'],
+    ['LTCG tax applies above ₹1.25L gains per year','Equity mutual fund gains above ₹1.25 lakh in a financial year are taxed at 12.5% (LTCG, FY 2024-25 rules).'],
+  ],
+  salInfo:'💵 This is a standard breakup estimate. Actual deductions vary by company policy. Verify with your HR.',
+  salC1:'CTC Details',salLCtc:'Annual CTC (Cost to Company)',salLBasic:'Basic % of CTC',salLPf:'Employer PF % (of basic)',
+  salLBonus:'Annual Bonus (included in CTC)',salLRegime:'Tax Regime',
+  salCalcBtn:'Calculate In-Hand Salary →',salRLabel:'Monthly In-Hand',
+  salIl1:'Basic/Month',salIl2:'Total Deductions',salIl3:'Annual In-Hand',salBdHead:'Salary Breakdown',salTipsEye:'💡 Salary Structuring Tips',
+  salTips:[
+    ['Lower basic % means lower PF, higher in-hand','Basic determines PF contribution. 40% basic is standard, but some companies allow negotiating 30-35% basic for higher take-home now (lower PF corpus later).'],
+    ['NPS employer contribution is tax-free up to 10%','If your company offers NPS as part of CTC restructuring, employer contribution up to 10% of basic is tax-exempt — ask HR about this option.'],
+    ['Meal cards / fuel allowance reduce taxable income','Up to ₹26,400/year in meal vouchers and reimbursement-based allowances reduce your taxable salary legally.'],
+    ['New regime vs old regime — recalculate every year','Budget changes tax slabs frequently. Compare both regimes at the start of each financial year, not just once.'],
+    ['Gratuity and PF are CTC components you never see monthly','A significant chunk of CTC (PF employer share + gratuity provision) is deferred — your monthly in-hand will always be notably less than CTC/12.'],
+  ],
+  hraInfo:'🏠 HRA exemption is the minimum of three values. Only applicable under Old Tax Regime.',
+  hraC1:'Salary & Rent Details',hraLBasic:'Basic + DA (per month)',hraLHra:'HRA Received (per month)',
+  hraLRent:'Rent Paid (per month)',hraLCity:'City Type',
+  hraCalcBtn:'Calculate HRA Exemption →',hraRLabel:'HRA Exemption (Tax-Free)',
+  hraBdHead:'HRA Calculation (Least of 3)',hraTipsEye:'💡 HRA Tips — Maximise Your Exemption',
+  hraTips:[
+    ['HRA exemption only under Old Regime','If you have shifted to the New Tax Regime, HRA exemption does not apply at all — your full HRA becomes taxable.'],
+    ['Rent receipts required above ₹3,000/month','For monthly rent above ₹3,000, you need actual rent receipts. Above ₹1 lakh/year, landlord PAN is mandatory.'],
+    ['Paying rent to parents is valid — with conditions','You can pay rent to parents and claim HRA if they own the house and declare it as rental income in their ITR. Keep bank transfer records.'],
+    ['No HRA if you own the house you live in','HRA exemption requires you to be a tenant. If you live in your own house, you cannot claim HRA exemption even if HRA is part of salary.'],
+    ['Metro cities get 50% of basic, others get 40%','Delhi, Mumbai, Kolkata, Chennai are classified as metro for HRA — all other cities (including Hyderabad, Bengaluru) use the 40% calculation.'],
+  ],
+  retInfo:'🌅 This estimates corpus needed assuming inflation continues at the assumed rate. Review periodically as circumstances change.',
+  retC1:'Retirement Planning',retLAge:'Current Age',retLRetage:'Retirement Age',retLExpense:'Current Monthly Expense',
+  retLInflation:'Inflation',retLPostret:'Post-Retirement Return',retLLifeexp:'Life Expectancy (years after retirement)',
+  retCalcBtn:'Calculate Corpus Needed →',retRLabel:'Retirement Corpus Needed',
+  retIl1:'Monthly Expense at Retirement',retIl2:'Monthly SIP Needed Now',retBdHead:'Retirement Plan Breakdown',retTipsEye:'💡 Retirement Planning Tips',
+  retTips:[
+    ['Start early — even small amounts compound massively','₹5,000/month from age 25 can outgrow ₹15,000/month started at age 40, purely due to extra compounding years.'],
+    ['Healthcare costs rise faster than general inflation','Medical inflation in India runs 12-15% annually — significantly higher than general 6% inflation. Factor in health insurance separately.'],
+    ['Do not rely solely on EPF/NPS for retirement','EPF and NPS alone rarely cover full retirement needs for a comfortable lifestyle. Supplement with equity mutual funds for long-term growth.'],
+    ['Reduce equity exposure gradually after 50','Shift from equity-heavy to balanced/debt-heavy allocation in the 5-10 years before retirement to protect accumulated corpus from market crashes.'],
+    ['Plan for a 25-30 year retirement, not 15','Life expectancy in India has risen significantly. Planning for only 15 years post-retirement often leads to running out of money in later years.'],
+  ],
+  footerTxt:'Money & Savings Suite · Free · LawSticker AI',
+};
+T.te={navTitle:'💰 డబ్బు & పొదుపు',tbSip:'SIP రాబడి',tbSal:'CTC → చేతిలో',tbHra:'HRA మినహాయింపు',tbRet:'రిటైర్మెంట్ కార్పస్',
+  sipInfo:'📈 చూపిన రాబడి మీ అంచనా రేటు ఆధారంగా — వాస్తవ మ్యూచువల్ ఫండ్ రాబడి మార్కెట్‌తో ముడిపడి ఉంటుంది.',
+  sipC1:'పెట్టుబడి వివరాలు',sipSegSip:'నెలవారీ SIP',sipSegLump:'లంప్‌సమ్',sipSegBoth:'SIP + లంప్‌సమ్',
+  sipLMonthly:'నెలవారీ SIP మొత్తం',sipLLump:'లంప్‌సమ్ మొత్తం',sipLRate:'అంచనా రాబడి',sipLYears:'పెట్టుబడి కాలం',
+  sipLStepup:'వార్షిక స్టెప్-అప్ % (ఐచ్ఛికం)',
+  sipCalcBtn:'రాబడి లెక్కించండి →',sipRLabel:'పరిపక్వత విలువ',
+  sipIl1:'పెట్టుబడి',sipIl2:'సంపద పెరుగుదల',sipIl3:'గుణకం',sipBdHead:'సంవత్సర వారీగా వృద్ధి',sipTipsEye:'💡 SIP చిట్కాలు',
+  sipTips:[['స్టెప్-అప్ SIP ఫ్లాట్ SIP కంటే మెరుగు','ప్రతి సంవత్సరం 10% పెంచితే 15-20 ఏళ్ళలో 40-60% ఎక్కువ కార్పస్.'],['ఈక్విటీ SIP లకు కనీసం 7-10 సంవత్సరాలు అవసరం','దీర్ఘకాలంలో మార్కెట్ హెచ్చుతగ్గులు సర్దుకుంటాయి.'],['మార్కెట్ పడిపోయినప్పుడు SIP ఆపకండి','తక్కువ ధరలో ఎక్కువ యూనిట్లు కొనుగోలు చేస్తారు — ఇదే SIP శక్తి.'],['డైరెక్ట్ ప్లాన్లు వార్షికంగా 0.5-1% ఆదా చేస్తాయి','20 సంవత్సరాలలో ఇది 15-20% ఎక్కువ కార్పస్‌గా మారుతుంది.'],['సంవత్సరానికి ₹1.25L పైన లాభాలపై LTCG పన్ను','ఈక్విటీ మ్యూచువల్ ఫండ్ లాభాలు ₹1.25L పైన 12.5% పన్ను.']],
+  salInfo:'💵 ఇది ప్రామాణిక బ్రేక్‌అప్ అంచనా. వాస్తవ తగ్గింపులు కంపెనీ పాలసీని బట్టి మారతాయి.',
+  salC1:'CTC వివరాలు',salLCtc:'వార్షిక CTC',salLBasic:'CTC లో బేసిక్ %',salLPf:'యజమాని PF % (బేసిక్‌పై)',
+  salLBonus:'వార్షిక బోనస్ (CTC లో చేర్చబడింది)',salLRegime:'పన్ను విధానం',
+  salCalcBtn:'చేతిలో జీతం లెక్కించండి →',salRLabel:'నెలవారీ చేతిలో',
+  salIl1:'బేసిక్/నెల',salIl2:'మొత్తం తగ్గింపులు',salIl3:'వార్షిక చేతిలో',salBdHead:'జీతం వివరాలు',salTipsEye:'💡 జీతం నిర్మాణ చిట్కాలు',
+  salTips:[['తక్కువ బేసిక్ % అంటే తక్కువ PF, ఎక్కువ చేతిలో','40% బేసిక్ సాధారణం, కానీ కొన్ని కంపెనీలు 30-35% అనుమతిస్తాయి.'],['NPS యజమాని వాటా 10% వరకు పన్ను రహితం','మీ కంపెనీ NPS అందిస్తే HR ని అడగండి.'],['మీల్ కార్డులు పన్ను విధించదగిన ఆదాయాన్ని తగ్గిస్తాయి','సంవత్సరానికి ₹26,400 వరకు మీల్ వోచర్లు చట్టబద్ధంగా తగ్గిస్తాయి.'],['కొత్త vs పాత విధానం — ప్రతి సంవత్సరం పోల్చండి','బడ్జెట్ తరచుగా పన్ను స్లాబ్‌లు మారుస్తుంది.'],['గ్రాచ్యుటీ మరియు PF నెలవారీ కనిపించని CTC భాగాలు','CTC లో గణనీయమైన భాగం వాయిదా వేయబడుతుంది.']],
+  hraInfo:'🏠 HRA మినహాయింపు మూడు విలువలలో కనిష్టం. పాత పన్ను విధానంలో మాత్రమే వర్తిస్తుంది.',
+  hraC1:'జీతం & అద్దె వివరాలు',hraLBasic:'బేసిక్ + DA (నెలకు)',hraLHra:'అందుకున్న HRA (నెలకు)',
+  hraLRent:'చెల్లించిన అద్దె (నెలకు)',hraLCity:'నగరం రకం',
+  hraCalcBtn:'HRA మినహాయింపు లెక్కించండి →',hraRLabel:'HRA మినహాయింపు (పన్ను రహితం)',
+  hraBdHead:'HRA లెక్కింపు (3లో కనిష్టం)',hraTipsEye:'💡 HRA చిట్కాలు — మినహాయింపు పెంచుకోండి',
+  hraTips:[['HRA మినహాయింపు పాత విధానంలో మాత్రమే','కొత్త పన్ను విధానానికి మారితే HRA మినహాయింపు వర్తించదు.'],['నెలకు ₹3,000 పైన అద్దె రసీదులు అవసరం','సంవత్సరానికి ₹1 లక్షకు పైగా ఉంటే ఇంటి యజమాని PAN తప్పనిసరి.'],['తల్లిదండ్రులకు అద్దె చెల్లించవచ్చు — షరతులతో','వారు ఇల్లు యజమానులైతే మరియు ITR లో అద్దె ఆదాయంగా చూపిస్తే.'],['మీ సొంత ఇంట్లో నివసిస్తే HRA లేదు','HRA మినహాయింపుకు మీరు అద్దెదారుగా ఉండాలి.'],['మెట్రో నగరాలకు బేసిక్ లో 50%, ఇతరులకు 40%','ఢిల్లీ, ముంబై, కోల్‌కతా, చెన్నై మెట్రో — హైదరాబాద్ సహా మిగతావి 40%.']],
+  retInfo:'🌅 ఇది అంచనా ద్రవ్యోల్బణ రేటు కొనసాగుతుందని భావించి లెక్కిస్తుంది.',
+  retC1:'రిటైర్మెంట్ ప్రణాళిక',retLAge:'ప్రస్తుత వయసు',retLRetage:'రిటైర్మెంట్ వయసు',retLExpense:'ప్రస్తుత నెలవారీ ఖర్చు',
+  retLInflation:'ద్రవ్యోల్బణం',retLPostret:'రిటైర్మెంట్ తర్వాత రాబడి',retLLifeexp:'జీవిత కాల అంచనా (రిటైర్మెంట్ తర్వాత సంవత్సరాలు)',
+  retCalcBtn:'అవసరమైన కార్పస్ లెక్కించండి →',retRLabel:'రిటైర్మెంట్ కార్పస్ అవసరం',
+  retIl1:'రిటైర్మెంట్ వద్ద నెలవారీ ఖర్చు',retIl2:'ఇప్పుడు అవసరమైన నెలవారీ SIP',retBdHead:'రిటైర్మెంట్ ప్రణాళిక వివరాలు',retTipsEye:'💡 రిటైర్మెంట్ ప్రణాళిక చిట్కాలు',
+  retTips:[['ముందుగా ప్రారంభించండి — చిన్న మొత్తాలు భారీగా వృద్ధి చెందుతాయి','25 వయసు నుండి ₹5,000/నెల 40 వయసులో ప్రారంభించిన ₹15,000/నెల కంటే మెరుగు.'],['ఆరోగ్య ఖర్చులు సాధారణ ద్రవ్యోల్బణం కంటే వేగంగా పెరుగుతాయి','భారతదేశంలో వైద్య ద్రవ్యోల్బణం వార్షికంగా 12-15%.'],['రిటైర్మెంట్‌కు EPF/NPS మాత్రమే ఆధారపడకండి','సౌకర్యవంతమైన జీవనశైలికి ఈక్విటీ మ్యూచువల్ ఫండ్లతో అనుబంధించండి.'],['50 తర్వాత ఈక్విటీ క్రమంగా తగ్గించండి','రిటైర్మెంట్‌కు 5-10 సంవత్సరాల ముందు బ్యాలెన్స్‌డ్/డెట్‌కు మారండి.'],['15 కాకుండా 25-30 సంవత్సరాల రిటైర్మెంట్‌కు ప్రణాళిక వేయండి','భారతదేశంలో జీవిత కాలం గణనీయంగా పెరిగింది.']],
+  footerTxt:'డబ్బు & పొదుపు సూట్ · ఉచితం · LawSticker AI',
+};
+T.hi={navTitle:'💰 पैसा और बचत',tbSip:'SIP रिटर्न',tbSal:'CTC → इन-हैंड',tbHra:'HRA छूट',tbRet:'सेवानिवृत्ति कोष',
+  sipInfo:'📈 दिखाया गया रिटर्न आपकी मान्य दर पर आधारित है — वास्तविक म्यूचुअल फंड रिटर्न बाज़ार से जुड़ा है।',
+  sipC1:'निवेश विवरण',sipSegSip:'मासिक SIP',sipSegLump:'एकमुश्त',sipSegBoth:'SIP + एकमुश्त',
+  sipLMonthly:'मासिक SIP राशि',sipLLump:'एकमुश्त राशि',sipLRate:'अपेक्षित रिटर्न',sipLYears:'निवेश अवधि',
+  sipLStepup:'वार्षिक स्टेप-अप % (वैकल्पिक)',
+  sipCalcBtn:'रिटर्न गणना करें →',sipRLabel:'परिपक्वता मूल्य',
+  sipIl1:'निवेशित',sipIl2:'धन वृद्धि',sipIl3:'गुणक',sipBdHead:'वर्षवार वृद्धि',sipTipsEye:'💡 SIP सुझाव',
+  sipTips:[['स्टेप-अप SIP फ्लैट SIP से बेहतर है','हर साल 10% बढ़ाने से 15-20 साल में 40-60% अधिक कोष।'],['इक्विटी SIP को कम से कम 7-10 साल चाहिए','लंबी अवधि में बाज़ार उतार-चढ़ाव संतुलित हो जाता है।'],['बाज़ार गिरने पर SIP न रोकें','कम कीमत पर ज़्यादा यूनिट खरीदते हैं।'],['डायरेक्ट प्लान सालाना 0.5-1% बचाते हैं','20 साल में यह 15-20% अधिक कोष बनाता है।'],['सालाना ₹1.25L से अधिक लाभ पर LTCG कर','इक्विटी फंड लाभ ₹1.25L से अधिक पर 12.5% कर।']],
+  salInfo:'💵 यह मानक ब्रेकअप अनुमान है। वास्तविक कटौती कंपनी नीति पर निर्भर करती है।',
+  salC1:'CTC विवरण',salLCtc:'वार्षिक CTC',salLBasic:'CTC का मूल %',salLPf:'नियोक्ता PF % (मूल पर)',
+  salLBonus:'वार्षिक बोनस (CTC में शामिल)',salLRegime:'कर व्यवस्था',
+  salCalcBtn:'इन-हैंड वेतन गणना करें →',salRLabel:'मासिक इन-हैंड',
+  salIl1:'मूल/माह',salIl2:'कुल कटौती',salIl3:'वार्षिक इन-हैंड',salBdHead:'वेतन विवरण',salTipsEye:'💡 वेतन संरचना सुझाव',
+  salTips:[['कम मूल % = कम PF, अधिक इन-हैंड','40% मूल मानक है, लेकिन कुछ कंपनियां 30-35% की अनुमति देती हैं।'],['NPS नियोक्ता योगदान 10% तक कर-मुक्त','HR से NPS विकल्प के बारे में पूछें।'],['मील कार्ड कर योग्य आय कम करते हैं','सालाना ₹26,400 तक मील वाउचर वैध रूप से कम करते हैं।'],['नई vs पुरानी व्यवस्था — हर साल तुलना करें','बजट अक्सर कर स्लैब बदलता है।'],['ग्रेच्युटी और PF मासिक न दिखने वाले CTC हिस्से हैं','CTC का बड़ा हिस्सा स्थगित होता है।']],
+  hraInfo:'🏠 HRA छूट तीन मूल्यों में न्यूनतम है। केवल पुरानी कर व्यवस्था में लागू।',
+  hraC1:'वेतन और किराया विवरण',hraLBasic:'मूल + DA (प्रति माह)',hraLHra:'प्राप्त HRA (प्रति माह)',
+  hraLRent:'भुगतान किया किराया (प्रति माह)',hraLCity:'शहर का प्रकार',
+  hraCalcBtn:'HRA छूट गणना करें →',hraRLabel:'HRA छूट (कर-मुक्त)',
+  hraBdHead:'HRA गणना (3 में न्यूनतम)',hraTipsEye:'💡 HRA सुझाव — अधिकतम छूट पाएं',
+  hraTips:[['HRA छूट केवल पुरानी व्यवस्था में','नई कर व्यवस्था में HRA छूट लागू नहीं होती।'],['₹3,000/माह से ऊपर किराया रसीद आवश्यक','₹1 लाख/वर्ष से ऊपर मकान मालिक PAN अनिवार्य।'],['माता-पिता को किराया दे सकते हैं — शर्तों के साथ','वे मकान मालिक हों और ITR में किराया आय दिखाएं।'],['अपने घर में रहने पर HRA नहीं','HRA छूट के लिए किरायेदार होना आवश्यक है।'],['मेट्रो शहरों में मूल का 50%, अन्य में 40%','दिल्ली, मुंबई, कोलकाता, चेन्नई मेट्रो — हैदराबाद सहित अन्य 40%।']],
+  retInfo:'🌅 यह मान्य मुद्रास्फीति दर जारी रहने का अनुमान लगाता है।',
+  retC1:'सेवानिवृत्ति योजना',retLAge:'वर्तमान आयु',retLRetage:'सेवानिवृत्ति आयु',retLExpense:'वर्तमान मासिक खर्च',
+  retLInflation:'मुद्रास्फीति',retLPostret:'सेवानिवृत्ति बाद रिटर्न',retLLifeexp:'जीवन प्रत्याशा (सेवानिवृत्ति के बाद वर्ष)',
+  retCalcBtn:'आवश्यक कोष गणना करें →',retRLabel:'सेवानिवृत्ति कोष आवश्यक',
+  retIl1:'सेवानिवृत्ति पर मासिक खर्च',retIl2:'अभी आवश्यक मासिक SIP',retBdHead:'सेवानिवृत्ति योजना विवरण',retTipsEye:'💡 सेवानिवृत्ति योजना सुझाव',
+  retTips:[['जल्दी शुरू करें — छोटी राशि भी बड़ा कोष बनाती है','25 की उम्र से ₹5,000/माह 40 की उम्र में शुरू ₹15,000/माह से बेहतर।'],['स्वास्थ्य लागत सामान्य मुद्रास्फीति से तेज़ बढ़ती है','भारत में चिकित्सा मुद्रास्फीति सालाना 12-15%।'],['केवल EPF/NPS पर निर्भर न रहें','आरामदायक जीवनशैली के लिए इक्विटी फंड जोड़ें।'],['50 के बाद इक्विटी धीरे-धीरे कम करें','सेवानिवृत्ति से 5-10 साल पहले बैलेंस्ड में शिफ्ट करें।'],['15 नहीं, 25-30 साल की सेवानिवृत्ति की योजना बनाएं','भारत में जीवन प्रत्याशा काफी बढ़ी है।']],
+  footerTxt:'पैसा और बचत सूट · मुफ्त · LawSticker AI',
+};
+
+function applyLang(){
+  const t=T[lang];
+  s('nav-title',t.navTitle);s('tb-sip',t.tbSip);s('tb-sal',t.tbSal);s('tb-hra',t.tbHra);s('tb-ret',t.tbRet);
+  s('sip-info',t.sipInfo);s('sip-c1',t.sipC1);s('sip-seg-sip',t.sipSegSip);s('sip-seg-lump',t.sipSegLump);s('sip-seg-both',t.sipSegBoth);
+  s('sip-l-monthly',t.sipLMonthly);s('sip-l-lump',t.sipLLump);s('sip-l-rate',t.sipLRate);s('sip-l-years',t.sipLYears);s('sip-l-stepup',t.sipLStepup);
+  s('sip-r-label',t.sipRLabel);s('sip-il1',t.sipIl1);s('sip-il2',t.sipIl2);s('sip-il3',t.sipIl3);s('sip-bd-head',t.sipBdHead);s('sip-tips-eye',t.sipTipsEye);
+  s('sal-info',t.salInfo);s('sal-c1',t.salC1);s('sal-l-ctc',t.salLCtc);s('sal-l-basic',t.salLBasic);s('sal-l-pf',t.salLPf);
+  s('sal-l-bonus',t.salLBonus);s('sal-l-regime',t.salLRegime);
+  s('sal-r-label',t.salRLabel);s('sal-il1',t.salIl1);s('sal-il2',t.salIl2);s('sal-il3',t.salIl3);s('sal-bd-head',t.salBdHead);s('sal-tips-eye',t.salTipsEye);
+  s('hra-info',t.hraInfo);s('hra-c1',t.hraC1);s('hra-l-basic',t.hraLBasic);s('hra-l-hra',t.hraLHra);
+  s('hra-l-rent',t.hraLRent);s('hra-l-city',t.hraLCity);
+  s('hra-r-label',t.hraRLabel);s('hra-bd-head',t.hraBdHead);s('hra-tips-eye',t.hraTipsEye);
+  s('ret-info',t.retInfo);s('ret-c1',t.retC1);s('ret-l-age',t.retLAge);s('ret-l-retage',t.retLRetage);
+  s('ret-l-expense',t.retLExpense);s('ret-l-inflation',t.retLInflation);s('ret-l-postret',t.retLPostret);s('ret-l-lifeexp',t.retLLifeexp);
+  s('ret-r-label',t.retRLabel);s('ret-il1',t.retIl1);s('ret-il2',t.retIl2);s('ret-bd-head',t.retBdHead);s('ret-tips-eye',t.retTipsEye);
+  s('footer-txt',t.footerTxt);
+  document.querySelectorAll('.calc-btn').forEach((btn,i)=>{
+    const keys=['sipCalcBtn','salCalcBtn','hraCalcBtn','retCalcBtn'];
+    if(t[keys[i]])btn.textContent=t[keys[i]];
+  });
+  ['sip','sal','hra','ret'].forEach(tab=>{if(el(tab+'-results').style.display!=='none')buildTips(tab);});
+}
+function setLang(l){lang=l;document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));applyLang();}
+function setTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));['sip','sal','hra','ret'].forEach(id=>el('tab-'+id).style.display=id===t?'':'none');}
+function setSipMode(m){
+  sipMode=m;
+  ['sip','lump','both'].forEach(x=>el('sip-seg-'+x).classList.toggle('active',x===m));
+  el('sip-monthly-field').style.display=(m==='sip'||m==='both')?'block':'none';
+  el('sip-lump-field').style.display=(m==='lump'||m==='both')?'block':'none';
+}
+function buildTips(tab){const t=T[lang];const tips=t[tab+'Tips']||[];h(tab+'-tips',tips.map(([title,body])=>`<div class="tip-item"><span>${title}:</span> ${body}</div>`).join(''));}
+function resetTab(tab){el(tab+'-results').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+
+// ── SIP ──
+function calcSip(){
+  const t=T[lang];
+  const monthly=parseFloat(el('sip-monthly').value)||0;
+  const lump=parseFloat(el('sip-lump').value)||0;
+  const rate=parseFloat(el('sip-rate').value)||12;
+  const years=parseInt(el('sip-years').value)||15;
+  const stepup=parseFloat(el('sip-stepup').value)||0;
+  const r=rate/12/100;
+
+  let sipAmt=0, totalInvested=0, rows='', balance=0;
+  let currentMonthly=(sipMode==='lump')?0:monthly;
+  const lumpVal=(sipMode==='sip')?0:lump;
+  balance=lumpVal;
+  totalInvested=lumpVal;
+
+  for(let yr=1;yr<=years;yr++){
+    let yearInvested=0;
+    for(let m=0;m<12;m++){
+      balance=balance*(1+r)+currentMonthly;
+      yearInvested+=currentMonthly;
+    }
+    totalInvested+=yearInvested;
+    rows+=`<div class="brow"><div class="bl">Year ${yr}<span class="bs">SIP: ${R(currentMonthly)}/mo</span></div><div class="ba" style="color:var(--sip)">${RL(balance)}</div></div>`;
+    currentMonthly=currentMonthly*(1+stepup/100);
+  }
+
+  const maturity=balance;
+  const gain=maturity-totalInvested;
+  const multiplier=(maturity/totalInvested).toFixed(1);
+
+  s('sip-r-amount',RL(maturity));
+  s('sip-r-sub',`${years} yrs · ${rate}% p.a.${stepup>0?' · '+stepup+'% step-up':''}`);
+  s('sip-i1',RL(totalInvested));s('sip-i2',RL(gain));s('sip-i3',multiplier+'x');
+  h('sip-rows',rows);
+  buildTips('sip');
+  el('sip-results').style.display='block';
+  el('sip-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── SALARY ──
+function calcSalary(){
+  const t=T[lang];
+  const ctc=parseFloat(el('sal-ctc').value)||0;
+  const basicPct=parseFloat(el('sal-basicpct').value)||40;
+  const pfPct=parseFloat(el('sal-pfpct').value)||12;
+  const bonus=parseFloat(el('sal-bonus').value)||0;
+  const regime=el('sal-regime').value;
+
+  const fixedCtc=ctc-bonus;
+  const basicAnnual=fixedCtc*basicPct/100;
+  const basicMonthly=basicAnnual/12;
+  const empPf=basicAnnual*pfPct/100;
+  const emprPf=basicAnnual*0.12; // employer always 12%
+  const gratuity=basicAnnual*4.81/100; // approx 15/26/12
+
+  const grossAnnual=fixedCtc-emprPf-gratuity;
+  const grossMonthly=grossAnnual/12;
+
+  // simple tax estimate
+  const stdDed=regime==='new'?75000:50000;
+  const taxableIncome=Math.max(0,grossAnnual-stdDed-empPf);
+  let tax=0;
+  if(regime==='new'){
+    if(taxableIncome<=300000)tax=0;
+    else if(taxableIncome<=700000)tax=(taxableIncome-300000)*0.05;
+    else if(taxableIncome<=1000000)tax=20000+(taxableIncome-700000)*0.10;
+    else if(taxableIncome<=1200000)tax=50000+(taxableIncome-1000000)*0.15;
+    else if(taxableIncome<=1500000)tax=80000+(taxableIncome-1200000)*0.20;
+    else tax=140000+(taxableIncome-1500000)*0.30;
+    if(taxableIncome<=700000)tax=0;
+  } else {
+    if(taxableIncome<=250000)tax=0;
+    else if(taxableIncome<=500000)tax=(taxableIncome-250000)*0.05;
+    else if(taxableIncome<=1000000)tax=12500+(taxableIncome-500000)*0.20;
+    else tax=112500+(taxableIncome-1000000)*0.30;
+    if(taxableIncome<=500000)tax=0;
+  }
+  const cess=tax*0.04;
+  const totalTax=tax+cess;
+  const monthlyTax=totalTax/12;
+
+  const inHandMonthly=grossMonthly-(empPf/12)-monthlyTax;
+  const inHandAnnual=inHandMonthly*12+bonus;
+
+  s('sal-r-amount',R(inHandMonthly));
+  s('sal-r-sub',`CTC ${RL(ctc)} · ${regime} regime · Basic ${basicPct}%`);
+  s('sal-i1',R(basicMonthly));
+  s('sal-i2',R(empPf/12+monthlyTax));
+  s('sal-i3',RL(inHandAnnual));
+
+  h('sal-rows',`
+    <div class="brow"><div class="bl">Annual CTC</div><div class="ba">${RL(ctc)}</div></div>
+    <div class="brow"><div class="bl">Basic Salary (${basicPct}%)<span class="bs">Monthly</span></div><div class="ba">${R(basicMonthly)}</div></div>
+    <div class="brow neg"><div class="bl">Employee PF Deduction</div><div class="ba">−${R(empPf/12)}/mo</div></div>
+    <div class="brow neg"><div class="bl">Employer PF (in CTC, not in-hand)</div><div class="ba">${R(emprPf/12)}/mo</div></div>
+    <div class="brow neg"><div class="bl">Gratuity Provision (in CTC)</div><div class="ba">${R(gratuity/12)}/mo</div></div>
+    <div class="brow hi"><div class="bl">Taxable Income (annual)</div><div class="ba">${RL(taxableIncome)}</div></div>
+    <div class="brow neg"><div class="bl">Income Tax (incl. cess)</div><div class="ba">−${R(monthlyTax)}/mo</div></div>
+    <div class="brow tot"><div class="bl">MONTHLY IN-HAND</div><div class="ba">${R(inHandMonthly)}</div></div>
+    <div class="brow" style="background:#F0FFF4"><div class="bl" style="color:var(--jade)">Annual Bonus (separate)</div><div class="ba" style="color:var(--jade)">${R(bonus)}</div></div>
+  `);
+  buildTips('sal');
+  el('sal-results').style.display='block';
+  el('sal-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── HRA ──
+function calcHra(){
+  const t=T[lang];
+  const basic=parseFloat(el('hra-basic').value)||0;
+  const hraReceived=parseFloat(el('hra-received').value)||0;
+  const rent=parseFloat(el('hra-rent').value)||0;
+  const city=el('hra-city').value;
+
+  const v1=hraReceived;
+  const v2=rent-(basic*0.10);
+  const v3=basic*(city==='metro'?0.50:0.40);
+  const exemption=Math.max(0,Math.min(v1,v2,v3));
+  const taxable=hraReceived-exemption;
+
+  s('hra-r-amount',R(exemption));
+  s('hra-r-sub',`${city} city · Basic ${R(basic)} · Rent ${R(rent)}`);
+  h('hra-rows',`
+    <div class="brow"><div class="bl">A) Actual HRA Received</div><div class="ba">${R(v1)}</div></div>
+    <div class="brow"><div class="bl">B) Rent Paid − 10% of Basic<span class="bs">${R(rent)} − ${R(basic*0.10)}</span></div><div class="ba">${R(v2)}</div></div>
+    <div class="brow"><div class="bl">C) ${city==='metro'?'50%':'40%'} of Basic<span class="bs">${city} city rate</span></div><div class="ba">${R(v3)}</div></div>
+    <div class="brow hi"><div class="bl">Exemption = Least of A, B, C</div><div class="ba">${R(exemption)}</div></div>
+    <div class="brow neg"><div class="bl">Taxable HRA</div><div class="ba">${R(taxable)}</div></div>
+    <div class="brow tot"><div class="bl">TAX-FREE HRA (Annual)</div><div class="ba">${RL(exemption*12)}</div></div>
+  `);
+  buildTips('hra');
+  el('hra-results').style.display='block';
+  el('hra-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── RETIREMENT ──
+function calcRet(){
+  const t=T[lang];
+  const age=parseFloat(el('ret-age').value)||30;
+  const retAge=parseFloat(el('ret-retage').value)||60;
+  const expense=parseFloat(el('ret-expense').value)||40000;
+  const inflation=parseFloat(el('ret-inflation').value)||6;
+  const postRet=parseFloat(el('ret-postret').value)||7;
+  const lifeExp=parseFloat(el('ret-lifeexp').value)||25;
+
+  const yearsToRet=retAge-age;
+  const expenseAtRet=expense*Math.pow(1+inflation/100,yearsToRet);
+  const annualExpenseAtRet=expenseAtRet*12;
+
+  // Real rate of return post retirement
+  const realRate=((1+postRet/100)/(1+inflation/100))-1;
+  const corpusNeeded= realRate>0
+    ? annualExpenseAtRet*((1-Math.pow(1+realRate,-lifeExp))/realRate)
+    : annualExpenseAtRet*lifeExp;
+
+  // SIP needed assuming 12% pre-retirement growth
+  const preRate=0.12/12;
+  const months=yearsToRet*12;
+  const sipNeeded=corpusNeeded*preRate/((Math.pow(1+preRate,months)-1)*(1+preRate));
+
+  s('ret-r-amount',RL(corpusNeeded));
+  s('ret-r-sub',`At age ${retAge} · ${yearsToRet} years to save · ${lifeExp} years post-retirement`);
+  s('ret-i1',R(expenseAtRet));
+  s('ret-i2',R(sipNeeded));
+
+  h('ret-rows',`
+    <div class="brow"><div class="bl">Current Monthly Expense</div><div class="ba">${R(expense)}</div></div>
+    <div class="brow hi"><div class="bl">Monthly Expense at Retirement<span class="bs">After ${yearsToRet} years of ${inflation}% inflation</span></div><div class="ba">${R(expenseAtRet)}</div></div>
+    <div class="brow"><div class="bl">Annual Expense at Retirement</div><div class="ba">${RL(annualExpenseAtRet)}</div></div>
+    <div class="brow"><div class="bl">Years in Retirement</div><div class="ba">${lifeExp} years</div></div>
+    <div class="brow tot"><div class="bl">TOTAL CORPUS NEEDED</div><div class="ba">${RL(corpusNeeded)}</div></div>
+    <div class="brow" style="background:#F0FFF4"><div class="bl" style="color:var(--jade)">Monthly SIP Needed (@ 12% pre-retirement)</div><div class="ba" style="color:var(--jade)">${R(sipNeeded)}</div></div>
+  `);
+  buildTips('ret');
+  el('ret-results').style.display='block';
+  el('ret-results').scrollIntoView({behavior:'smooth'});
+}
+
+applyLang();
+</script>
+</body>
+</html>

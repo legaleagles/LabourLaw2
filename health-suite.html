@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Calculator Suite — BMI, Pregnancy, Medicine Dose, Calorie | LawSticker AI</title>
+<meta name="description" content="Free health calculators — BMI, ideal weight, pregnancy due date, child medicine dosage, daily calorie and water intake. Trilingual, informational only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --teal:#0D9488;--teal-l:#5EEAD4;--teal-pale:#F0FDFA;--teal-deep:#115E59;
+  --ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;
+  --jade:#10B981;--jade-bg:#D1FAE5;--jade-deep:#065F46;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;--amber-deep:#78350F;
+  --navy:#0D1117;
+  --bmi:#0D9488;--bmil:#5EEAD4;--bmip:#F0FDFA;
+  --preg:#DB2777;--pregl:#F9A8D4;--pregp:#FDF2F8;
+  --med:#2563EB;--medl:#93C5FD;--medp:#EFF6FF;
+  --cal:#D97706;--call:#FCD34D;--calp:#FFFBEB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--teal-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--teal-l);color:var(--teal-l);background:rgba(94,234,212,.1)}
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--light);overflow-x:auto;scrollbar-width:none;position:sticky;top:53px;z-index:90}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:12px 14px;border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.tab-btn.active.t-bmi{color:var(--bmi);border-bottom-color:var(--bmi)}
+.tab-btn.active.t-preg{color:var(--preg);border-bottom-color:var(--preg)}
+.tab-btn.active.t-med{color:var(--med);border-bottom-color:var(--med)}
+.tab-btn.active.t-cal{color:var(--cal);border-bottom-color:var(--cal)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.alert{border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.6;margin-bottom:14px}
+.alert.info{background:var(--teal-pale);border-left:3px solid var(--teal);color:var(--teal-deep)}
+.alert.med-warn{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D;font-weight:600}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);-webkit-appearance:none}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;pointer-events:none}
+.pfx input{padding-left:34px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.seg{display:flex;background:#F3F4F6;border-radius:10px;padding:3px;gap:3px;margin-bottom:14px}
+.seg-btn{flex:1;padding:8px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg-btn.active{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.calc-btn{width:100%;padding:14px;color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:18px}
+.calc-btn:active{transform:scale(.98)}
+.result-hero{border-radius:16px;padding:20px 18px;text-align:center;margin-bottom:14px}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:4px;color:rgba(255,255,255,.8)}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,40px);font-weight:900;color:#fff;line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px}
+.bmi-gauge{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:14px 0 4px}
+.bmi-seg{flex:1;position:relative}
+.bmi-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;box-shadow:0 0 0 2px rgba(0,0,0,.3)}
+.irow{display:grid;gap:10px;margin-bottom:14px}
+.irow.c2{grid-template-columns:1fr 1fr}
+.irow.c3{grid-template-columns:1fr 1fr 1fr}
+.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.06)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.brow .ba{font-weight:700;text-align:right}
+.brow.hi{background:var(--amber-bg)}
+.brow.hi .bl,.brow.hi .ba{color:var(--amber-deep)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:rgba(255,255,255,.7);font-weight:700}
+.brow.tot .ba{color:#fff;font-size:15px}
+.tips-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
+.tips-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(94,234,212,.55);margin-bottom:10px}
+.tip-item{font-size:12px;color:rgba(255,255,255,.72);line-height:1.6;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.tip-item:last-child{border-bottom:none}
+.tip-item span{color:#5EEAD4;font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--teal-deep);text-decoration:none}
+@media(max-width:400px){.row2,.row3{grid-template-columns:1fr}.irow.c3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">🩺 Health Suite</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="tab-bar">
+  <button class="tab-btn active t-bmi" data-t="bmi" onclick="setTab('bmi')">⚖️ <span id="tb-bmi">BMI</span></button>
+  <button class="tab-btn t-preg" data-t="preg" onclick="setTab('preg')">🤰 <span id="tb-preg">Pregnancy</span></button>
+  <button class="tab-btn t-med" data-t="med" onclick="setTab('med')">💊 <span id="tb-med">Child Medicine</span></button>
+  <button class="tab-btn t-cal" data-t="cal" onclick="setTab('cal')">🍽️ <span id="tb-cal">Calorie & Water</span></button>
+</div>
+<div class="container">
+
+<!-- ══ BMI ══ -->
+<div id="tab-bmi">
+  <div class="alert info" id="bmi-info">⚖️ BMI is a screening tool, not a diagnosis. It does not account for muscle mass, bone density, or body composition. Use as a general guide only.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--bmi)" id="bmi-c1">Your Details</div>
+    <div class="row3">
+      <div class="field">
+        <label id="bmi-l-age">Age</label>
+        <input type="number" id="bmi-age" value="30" min="2" max="120" style="background:var(--bmip)">
+      </div>
+      <div class="field">
+        <label id="bmi-l-gender">Gender</label>
+        <select id="bmi-gender" style="background:var(--bmip)">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="bmi-l-height">Height <span class="hint">cm</span></label>
+        <input type="number" id="bmi-height" value="170" min="50" max="250" style="background:var(--bmip)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="bmi-l-weight">Weight <span class="hint">kg</span></label>
+      <div class="pfx"><span class="p" style="color:var(--bmi)">kg</span><input type="number" id="bmi-weight" value="65" min="2" max="300" step="0.5" style="background:var(--bmip)"></div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#115E59,#0D9488)" onclick="calcBmi()">Calculate BMI →</button>
+  <div id="bmi-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#115E59,#0F766E)">
+      <div class="r-label" id="bmi-r-label">Your BMI</div>
+      <div class="r-amount" id="bmi-r-amount">0</div>
+      <div class="r-sub" id="bmi-r-sub"></div>
+      <div class="bmi-gauge">
+        <div class="bmi-seg" style="background:#3B82F6"></div>
+        <div class="bmi-seg" style="background:#10B981"></div>
+        <div class="bmi-seg" style="background:#F59E0B"></div>
+        <div class="bmi-seg" style="background:#EF4444"></div>
+        <div id="bmi-marker-wrap" style="position:relative;width:100%"></div>
+      </div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="bmi-i1" style="color:var(--bmi)">0 kg</div><div class="il" id="bmi-il1">Ideal Weight Range</div></div>
+      <div class="ibox"><div class="iv" id="bmi-i2" style="color:var(--amber)">0 kg</div><div class="il" id="bmi-il2">To Reach Normal BMI</div></div>
+      <div class="ibox"><div class="iv" id="bmi-i3" style="color:var(--jade)">0</div><div class="il" id="bmi-il3">BMR (kcal/day)</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--bmip);color:var(--bmi)" id="bmi-bd-head">BMI Categories (WHO Asian Cutoffs)</div>
+      <div id="bmi-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="bmi-tips-eye">💡 Health Tips</div><div id="bmi-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('bmi')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ PREGNANCY ══ -->
+<div id="tab-preg" style="display:none">
+  <div class="alert info" id="preg-info">🤰 Estimated due date is calculated using Naegele's Rule. Only about 5% of babies arrive exactly on the due date — this is an estimate, not a guarantee. Always follow your doctor's assessment.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--preg)" id="preg-c1">Pregnancy Details</div>
+    <div class="seg">
+      <button class="seg-btn active" onclick="setPregMode('lmp')" id="preg-seg-lmp" style="--ac:var(--preg)">Last Period Date</button>
+      <button class="seg-btn" onclick="setPregMode('conception')" id="preg-seg-conc" style="--ac:var(--preg)">Conception Date</button>
+    </div>
+    <div class="field">
+      <label id="preg-l-date">Date</label>
+      <input type="date" id="preg-date" style="background:var(--pregp)">
+    </div>
+    <div class="field">
+      <label id="preg-l-cycle">Average Cycle Length <span class="hint">days (default 28)</span></label>
+      <input type="number" id="preg-cycle" value="28" min="20" max="45" style="background:var(--pregp)">
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#9D174D,#DB2777)" onclick="calcPreg()">Calculate Due Date →</button>
+  <div id="preg-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#9D174D,#BE185D)">
+      <div class="r-label" id="preg-r-label">Estimated Due Date</div>
+      <div class="r-amount" id="preg-r-amount" style="font-size:28px">—</div>
+      <div class="r-sub" id="preg-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="preg-i1" style="color:var(--preg)">0</div><div class="il" id="preg-il1">Weeks Pregnant</div></div>
+      <div class="ibox"><div class="iv" id="preg-i2" style="color:var(--jade)">0</div><div class="il" id="preg-il2">Trimester</div></div>
+      <div class="ibox"><div class="iv" id="preg-i3" style="color:var(--amber)">0</div><div class="il" id="preg-il3">Days to Go</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--pregp);color:var(--preg)" id="preg-bd-head">Pregnancy Milestones</div>
+      <div id="preg-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="preg-tips-eye">💡 Pregnancy Care Tips</div><div id="preg-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('preg')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ MEDICINE ══ -->
+<div id="tab-med" style="display:none">
+  <div class="alert med-warn" id="med-warn">🚨 <strong>This is informational only — NOT a substitute for a doctor's prescription.</strong> Medicine dosage depends on the child's specific condition, brand formulation, and medical history. Always consult a pediatrician or pharmacist before giving any medicine to a child.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--med)" id="med-c1">Child Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="med-l-weight">Child's Weight <span class="hint">kg</span></label>
+        <input type="number" id="med-weight" value="15" min="2" max="60" step="0.5" style="background:var(--medp)">
+      </div>
+      <div class="field">
+        <label id="med-l-age">Age <span class="hint">years</span></label>
+        <input type="number" id="med-age" value="4" min="0" max="18" step="0.5" style="background:var(--medp)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="med-l-type">Medicine Type</label>
+      <select id="med-type" style="background:var(--medp)">
+        <option value="paracetamol">Paracetamol (Fever/Pain) — 10-15 mg/kg/dose</option>
+        <option value="ibuprofen">Ibuprofen — 5-10 mg/kg/dose</option>
+        <option value="ors">ORS (Oral Rehydration Solution)</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#1E3A8A,#2563EB)" onclick="calcMed()">Calculate Reference Dose →</button>
+  <div id="med-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#1E3A8A,#1D4ED8)">
+      <div class="r-label" id="med-r-label">Reference Dose Range</div>
+      <div class="r-amount" id="med-r-amount" style="font-size:26px">—</div>
+      <div class="r-sub" id="med-r-sub"></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--medp);color:var(--med)" id="med-bd-head">Dosage Reference (Verify With Doctor)</div>
+      <div id="med-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="med-tips-eye">💡 Child Medicine Safety Tips</div><div id="med-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('med')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ CALORIE ══ -->
+<div id="tab-cal" style="display:none">
+  <div class="alert info" id="cal-info">🍽️ Calculated using Mifflin-St Jeor equation — the most accurate BMR formula in current use. Water intake is a general guideline; individual needs vary with climate and activity.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--cal)" id="cal-c1">Your Details</div>
+    <div class="row3">
+      <div class="field">
+        <label id="cal-l-age">Age</label>
+        <input type="number" id="cal-age" value="30" min="10" max="100" style="background:var(--calp)">
+      </div>
+      <div class="field">
+        <label id="cal-l-gender">Gender</label>
+        <select id="cal-gender" style="background:var(--calp)">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="cal-l-height">Height <span class="hint">cm</span></label>
+        <input type="number" id="cal-height" value="170" style="background:var(--calp)">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="cal-l-weight">Weight <span class="hint">kg</span></label>
+        <input type="number" id="cal-weight" value="65" step="0.5" style="background:var(--calp)">
+      </div>
+      <div class="field">
+        <label id="cal-l-activity">Activity Level</label>
+        <select id="cal-activity" style="background:var(--calp)">
+          <option value="1.2">Sedentary (desk job, no exercise)</option>
+          <option value="1.375">Light (exercise 1-3 days/week)</option>
+          <option value="1.55" selected>Moderate (exercise 3-5 days/week)</option>
+          <option value="1.725">Active (exercise 6-7 days/week)</option>
+          <option value="1.9">Very Active (physical job + exercise)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label id="cal-l-goal">Goal</label>
+      <select id="cal-goal" style="background:var(--calp)">
+        <option value="maintain">Maintain Weight</option>
+        <option value="lose">Lose Weight (moderate)</option>
+        <option value="gain">Gain Weight (moderate)</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#78350F,#D97706)" onclick="calcCal()">Calculate Daily Needs →</button>
+  <div id="cal-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#78350F,#B45309)">
+      <div class="r-label" id="cal-r-label">Daily Calorie Target</div>
+      <div class="r-amount" id="cal-r-amount">0 kcal</div>
+      <div class="r-sub" id="cal-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="cal-i1" style="color:var(--cal)">0</div><div class="il" id="cal-il1">BMR</div></div>
+      <div class="ibox"><div class="iv" id="cal-i2" style="color:var(--jade)">0 L</div><div class="il" id="cal-il2">Water/Day</div></div>
+      <div class="ibox"><div class="iv" id="cal-i3" style="color:var(--med)">0 g</div><div class="il" id="cal-il3">Protein/Day</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--calp);color:var(--cal)" id="cal-bd-head">Daily Breakdown</div>
+      <div id="cal-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="cal-tips-eye">💡 Nutrition Tips</div><div id="cal-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('cal')">← Recalculate</button>
+  </div>
+</div>
+
+</div>
+<footer><span id="footer-txt">Health Suite · Free · Informational Only · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<script>
+const R=n=>Math.round(n).toLocaleString('en-IN');
+const el=id=>document.getElementById(id);
+const s=(id,v)=>{const e=el(id);if(e)e.textContent=v};
+const h=(id,v)=>{const e=el(id);if(e)e.innerHTML=v};
+let lang='en', pregMode='lmp';
+
+const T={
+  en:{navTitle:'🩺 Health Suite',tbBmi:'BMI',tbPreg:'Pregnancy',tbMed:'Child Medicine',tbCal:'Calorie & Water',
+    bmiInfo:'⚖️ BMI is a screening tool, not a diagnosis. It does not account for muscle mass or body composition.',
+    bmiC1:'Your Details',bmiLAge:'Age',bmiLGender:'Gender',bmiLHeight:'Height',bmiLWeight:'Weight',
+    bmiCalcBtn:'Calculate BMI →',bmiRLabel:'Your BMI',
+    bmiIl1:'Ideal Weight Range',bmiIl2:'To Reach Normal BMI',bmiIl3:'BMR (kcal/day)',
+    bmiBdHead:'BMI Categories (WHO Asian Cutoffs)',
+    bmiTipsEye:'💡 Health Tips',
+    bmiCats:[['Underweight','< 18.5','#3B82F6'],['Normal','18.5 – 22.9','#10B981'],['Overweight','23.0 – 24.9','#F59E0B'],['Obese','≥ 25.0','#EF4444']],
+    bmiTips:[
+      ['Asian BMI cutoffs are different','WHO uses lower BMI cutoffs for Asian populations (23 = overweight, not 25) because health risks like diabetes appear at lower BMI for Indians.'],
+      ['BMI does not measure body fat directly','Athletes with high muscle mass may show "overweight" BMI despite low body fat. Waist circumference is a better indicator alongside BMI.'],
+      ['Sustainable weight loss is 0.5-1 kg/week','Faster loss usually means muscle loss, not fat loss, and is hard to sustain. A 500 kcal daily deficit achieves this safely.'],
+      ['BMR is calories burned at complete rest','Your actual daily need (TDEE) is BMR × activity multiplier — check the Calorie tab for your full daily target.'],
+    ],
+  },
+  preg:{},
+};
+T.en.pregInfo='🤰 Estimated due date uses Naegele\'s Rule. Only ~5% of babies arrive exactly on the due date.';
+T.en.pregC1='Pregnancy Details';T.en.pregSegLmp='Last Period Date';T.en.pregSegConc='Conception Date';
+T.en.pregLDate='Date';T.en.pregLCycle='Average Cycle Length (days)';
+T.en.pregCalcBtn='Calculate Due Date →';T.en.pregRLabel='Estimated Due Date';
+T.en.pregIl1='Weeks Pregnant';T.en.pregIl2='Trimester';T.en.pregIl3='Days to Go';
+T.en.pregBdHead='Pregnancy Milestones';T.en.pregTipsEye='💡 Pregnancy Care Tips';
+T.en.pregTips=[
+  ['First trimester — folic acid is critical','400-800 mcg folic acid daily reduces neural tube defect risk significantly. Start before conception if planning.'],
+  ['Second trimester check — anomaly scan','The detailed anomaly scan (TIFFA) is typically done between weeks 18-22. Do not miss this appointment.'],
+  ['Third trimester — kick counts matter','From week 28, track baby movements daily. Reduced movement should be reported to your doctor immediately.'],
+  ['Iron and calcium supplementation','Pregnancy significantly increases iron and calcium needs. Your doctor will typically prescribe supplements from the second trimester.'],
+  ['Government schemes for pregnant women','PMMVY (Pradhan Mantri Matru Vandana Yojana) gives ₹5,000 cash benefit for first child. JSY provides cash assistance for institutional delivery.'],
+];
+T.en.medWarn='🚨 This is informational only — NOT a substitute for a doctor\'s prescription. Always consult a pediatrician before giving any medicine.';
+T.en.medC1='Child Details';T.en.medLWeight='Child\'s Weight (kg)';T.en.medLAge='Age (years)';T.en.medLType='Medicine Type';
+T.en.medCalcBtn='Calculate Reference Dose →';T.en.medRLabel='Reference Dose Range';
+T.en.medBdHead='Dosage Reference (Verify With Doctor)';T.en.medTipsEye='💡 Child Medicine Safety Tips';
+T.en.medTips=[
+  ['Never exceed 4 doses in 24 hours','For paracetamol, the maximum is typically 4 doses (60-75 mg/kg/day) in 24 hours, spaced 4-6 hours apart.'],
+  ['Use the syringe that comes with the medicine','Kitchen spoons are NOT accurate. Always use the calibrated syringe/cup provided with pediatric medicine.'],
+  ['Check concentration on the bottle','Pediatric syrups come in different concentrations (e.g. 125mg/5ml vs 250mg/5ml) — always verify before dosing.'],
+  ['Fever below 100.4°F may not need medicine','Mild fever is the body fighting infection. Consult a doctor before medicating very young infants (under 3 months) with any fever.'],
+  ['Never give aspirin to children','Aspirin in children under 16 is linked to Reye\'s syndrome, a rare but serious condition. Use paracetamol or ibuprofen instead.'],
+];
+T.en.calInfo='🍽️ Calculated using Mifflin-St Jeor equation. Water intake is a general guideline.';
+T.en.calC1='Your Details';T.en.calLAge='Age';T.en.calLGender='Gender';T.en.calLHeight='Height (cm)';
+T.en.calLWeight='Weight (kg)';T.en.calLActivity='Activity Level';T.en.calLGoal='Goal';
+T.en.calCalcBtn='Calculate Daily Needs →';T.en.calRLabel='Daily Calorie Target';
+T.en.calIl1='BMR';T.en.calIl2='Water/Day';T.en.calIl3='Protein/Day';
+T.en.calBdHead='Daily Breakdown';T.en.calTipsEye='💡 Nutrition Tips';
+T.en.calTips=[
+  ['Protein needs increase with activity','Sedentary adults need ~0.8g/kg body weight. Active individuals need 1.2-1.6g/kg for muscle maintenance and recovery.'],
+  ['Water needs rise in Indian climate','In hot/humid climates common across India, water needs can be 15-20% higher than standard guidelines, especially outdoors.'],
+  ['A 500 kcal deficit = ~0.5kg loss/week','This is the safest, most sustainable rate. Larger deficits often lead to muscle loss and rebound weight gain.'],
+  ['Spread protein across meals','Eating 20-30g protein per meal (rather than all at dinner) improves muscle synthesis and satiety throughout the day.'],
+];
+T.en.footerTxt='Health Suite · Free · Informational Only · LawSticker AI';
+
+// TELUGU
+T.te={navTitle:'🩺 ఆరోగ్య సూట్',tbBmi:'BMI',tbPreg:'గర్భం',tbMed:'పిల్లల మందు',tbCal:'క్యాలరీ & నీరు',
+  bmiInfo:'⚖️ BMI ఒక స్క్రీనింగ్ సాధనం మాత్రమే, నిర్ధారణ కాదు. కండర ద్రవ్యరాశి లేదా శరీర కూర్పును పరిగణించదు.',
+  bmiC1:'మీ వివరాలు',bmiLAge:'వయసు',bmiLGender:'లింగం',bmiLHeight:'ఎత్తు',bmiLWeight:'బరువు',
+  bmiCalcBtn:'BMI లెక్కించండి →',bmiRLabel:'మీ BMI',
+  bmiIl1:'ఆదర్శ బరువు పరిధి',bmiIl2:'సాధారణ BMI కు',bmiIl3:'BMR (kcal/రోజు)',
+  bmiBdHead:'BMI వర్గాలు (WHO ఆసియా ప్రమాణాలు)',
+  bmiTipsEye:'💡 ఆరోగ్య చిట్కాలు',
+  bmiCats:[['తక్కువ బరువు','< 18.5','#3B82F6'],['సాధారణం','18.5 – 22.9','#10B981'],['అధిక బరువు','23.0 – 24.9','#F59E0B'],['ఊబకాయం','≥ 25.0','#EF4444']],
+  bmiTips:[['ఆసియా BMI ప్రమాణాలు వేరు','WHO ఆసియన్లకు తక్కువ BMI ప్రమాణాలు వాడుతుంది (23 = అధిక బరువు) ఎందుకంటే తక్కువ BMI వద్దే మధుమేహం ప్రమాదాలు కనిపిస్తాయి.'],['BMI శరీర కొవ్వును నేరుగా కొలవదు','ఎక్కువ కండర ద్రవ్యరాశి ఉన్న అథ్లెట్లు తక్కువ కొవ్వు ఉన్నా "అధిక బరువు" BMI చూపించవచ్చు.'],['స్థిరమైన బరువు తగ్గింపు వారానికి 0.5-1 కిలో','వేగంగా తగ్గితే కండరాలు కోల్పోతారు. రోజుకు 500 కేలరీల లోటు సురక్షితం.'],['BMR అంటే పూర్తి విశ్రాంతిలో ఖర్చయ్యే కేలరీలు','మీ నిజమైన రోజువారీ అవసరం (TDEE) BMR × యాక్టివిటీ గుణకం — క్యాలరీ ట్యాబ్ చూడండి.']],
+};
+T.te.pregInfo='🤰 అంచనా డెలివరీ తేదీ నేగెలే నియమం ఆధారంగా. కేవలం ~5% శిశువులు ఖచ్చితమైన తేదీన పుడతారు.';
+T.te.pregC1='గర్భం వివరాలు';T.te.pregSegLmp='చివరి పీరియడ్ తేదీ';T.te.pregSegConc='గర్భధారణ తేదీ';
+T.te.pregLDate='తేదీ';T.te.pregLCycle='సగటు చక్రం పొడవు (రోజులు)';
+T.te.pregCalcBtn='డెలివరీ తేదీ లెక్కించండి →';T.te.pregRLabel='అంచనా డెలివరీ తేదీ';
+T.te.pregIl1='గర్భం వారాలు';T.te.pregIl2='త్రైమాసికం';T.te.pregIl3='మిగిలిన రోజులు';
+T.te.pregBdHead='గర్భధారణ మైలురాళ్ళు';T.te.pregTipsEye='💡 గర్భధారణ సంరక్షణ చిట్కాలు';
+T.te.pregTips=[['మొదటి త్రైమాసికం — ఫోలిక్ యాసిడ్ ముఖ్యం','రోజుకు 400-800 mcg ఫోలిక్ యాసిడ్ న్యూరల్ ట్యూబ్ లోపాల ప్రమాదాన్ని తగ్గిస్తుంది.'],['రెండవ త్రైమాసికం — అనామలీ స్కాన్','వివరణాత్మక అనామలీ స్కాన్ (TIFFA) సాధారణంగా 18-22 వారాల మధ్య చేస్తారు.'],['మూడవ త్రైమాసికం — కిక్ కౌంట్స్ ముఖ్యం','28వ వారం నుండి శిశువు కదలికలను రోజూ గమనించండి.'],['ఐరన్ మరియు కాల్షియం సప్లిమెంట్లు','గర్భధారణ ఐరన్ మరియు కాల్షియం అవసరాలను గణనీయంగా పెంచుతుంది.'],['గర్భిణీ స్త్రీలకు ప్రభుత్వ పథకాలు','PMMVY మొదటి బిడ్డకు ₹5,000 నగదు ప్రయోజనం ఇస్తుంది. JSY సంస్థాగత డెలివరీకి సహాయం అందిస్తుంది.']];
+T.te.medWarn='🚨 ఇది సమాచారం మాత్రమే — వైద్యుని ప్రిస్క్రిప్షన్‌కు ప్రత్యామ్నాయం కాదు. ఏ మందు ఇచ్చే ముందు పీడియాట్రిషియన్‌ని సంప్రదించండి.';
+T.te.medC1='పిల్లల వివరాలు';T.te.medLWeight='పిల్లల బరువు (kg)';T.te.medLAge='వయసు (సంవత్సరాలు)';T.te.medLType='మందు రకం';
+T.te.medCalcBtn='రిఫరెన్స్ డోస్ లెక్కించండి →';T.te.medRLabel='రిఫరెన్స్ డోస్ పరిధి';
+T.te.medBdHead='డోస్ రిఫరెన్స్ (వైద్యునితో ధృవీకరించండి)';T.te.medTipsEye='💡 పిల్లల మందు భద్రతా చిట్కాలు';
+T.te.medTips=[['24 గంటల్లో 4 డోసుల కంటే ఎక్కువ ఇవ్వకండి','పారాసెటమాల్‌కు గరిష్టంగా 24 గంటల్లో 4 డోసులు (60-75 mg/kg/day).'],['మందుతో వచ్చే సిరంజి వాడండి','వంటగది చెంచాలు ఖచ్చితమైనవి కావు. ఎల్లప్పుడూ క్యాలిబ్రేటెడ్ సిరంజి వాడండి.'],['బాటిల్‌పై గాఢత తనిఖీ చేయండి','పీడియాట్రిక్ సిరప్‌లు వేర్వేరు గాఢతలలో వస్తాయి — డోస్ ముందు ధృవీకరించండి.'],['100.4°F కంటే తక్కువ జ్వరానికి మందు అవసరం లేకపోవచ్చు','చిన్న జ్వరం శరీరం ఇన్ఫెక్షన్‌తో పోరాడుతున్నట్టు. 3 నెలల లోపు శిశువులకు వైద్యుని సంప్రదించండి.'],['పిల్లలకు ఆస్పిరిన్ ఇవ్వకండి','16 సంవత్సరాల లోపు పిల్లలలో ఆస్పిరిన్ రే సిండ్రోమ్‌తో ముడిపడి ఉంది.']];
+T.te.calInfo='🍽️ మిఫ్లిన్-సెయింట్ జియోర్ సమీకరణం ఆధారంగా లెక్కించబడింది.';
+T.te.calC1='మీ వివరాలు';T.te.calLAge='వయసు';T.te.calLGender='లింగం';T.te.calLHeight='ఎత్తు (cm)';
+T.te.calLWeight='బరువు (kg)';T.te.calLActivity='యాక్టివిటీ స్థాయి';T.te.calLGoal='లక్ష్యం';
+T.te.calCalcBtn='రోజువారీ అవసరాలు లెక్కించండి →';T.te.calRLabel='రోజువారీ క్యాలరీ లక్ష్యం';
+T.te.calIl1='BMR';T.te.calIl2='నీరు/రోజు';T.te.calIl3='ప్రోటీన్/రోజు';
+T.te.calBdHead='రోజువారీ వివరాలు';T.te.calTipsEye='💡 పోషకాహార చిట్కాలు';
+T.te.calTips=[['యాక్టివిటీతో ప్రోటీన్ అవసరాలు పెరుగుతాయి','నిశ్చల పెద్దలకు ~0.8g/kg శరీర బరువు అవసరం. యాక్టివ్ వ్యక్తులకు 1.2-1.6g/kg అవసరం.'],['భారతీయ వాతావరణంలో నీటి అవసరాలు పెరుగుతాయి','వేడి/తేమ వాతావరణంలో నీటి అవసరాలు 15-20% ఎక్కువగా ఉండవచ్చు.'],['500 కేలరీల లోటు = వారానికి ~0.5kg తగ్గుదల','ఇది సురక్షితమైన, స్థిరమైన రేటు.'],['భోజనాలలో ప్రోటీన్ పంచండి','భోజనానికి 20-30g ప్రోటీన్ తినడం కండర సంశ్లేషణను మెరుగుపరుస్తుంది.']];
+T.te.footerTxt='ఆరోగ్య సూట్ · ఉచితం · సమాచారం మాత్రమే · LawSticker AI';
+
+// HINDI
+T.hi={navTitle:'🩺 स्वास्थ्य सूट',tbBmi:'BMI',tbPreg:'गर्भावस्था',tbMed:'बाल औषधि',tbCal:'कैलोरी और पानी',
+  bmiInfo:'⚖️ BMI एक स्क्रीनिंग टूल है, निदान नहीं। यह मांसपेशी द्रव्यमान या शरीर संरचना को ध्यान में नहीं रखता।',
+  bmiC1:'आपका विवरण',bmiLAge:'आयु',bmiLGender:'लिंग',bmiLHeight:'ऊंचाई',bmiLWeight:'वजन',
+  bmiCalcBtn:'BMI गणना करें →',bmiRLabel:'आपका BMI',
+  bmiIl1:'आदर्श वजन सीमा',bmiIl2:'सामान्य BMI तक',bmiIl3:'BMR (kcal/दिन)',
+  bmiBdHead:'BMI श्रेणियां (WHO एशियाई मानदंड)',
+  bmiTipsEye:'💡 स्वास्थ्य सुझाव',
+  bmiCats:[['कम वजन','< 18.5','#3B82F6'],['सामान्य','18.5 – 22.9','#10B981'],['अधिक वजन','23.0 – 24.9','#F59E0B'],['मोटापा','≥ 25.0','#EF4444']],
+  bmiTips:[['एशियाई BMI मानदंड अलग हैं','WHO एशियाई आबादी के लिए कम BMI सीमा उपयोग करता है (23 = अधिक वजन) क्योंकि कम BMI पर ही मधुमेह का खतरा दिखता है।'],['BMI शरीर की चर्बी सीधे नहीं मापता','अधिक मांसपेशी द्रव्यमान वाले एथलीट कम चर्बी होने पर भी "अधिक वजन" दिखा सकते हैं।'],['स्थायी वजन घटाना प्रति सप्ताह 0.5-1 किलो है','तेज़ कमी आमतौर पर मांसपेशी हानि का कारण बनती है। 500 kcal की दैनिक कमी सुरक्षित है।'],['BMR पूर्ण आराम में जलने वाली कैलोरी है','आपकी वास्तविक दैनिक आवश्यकता (TDEE) BMR × गतिविधि गुणक है — कैलोरी टैब देखें।']],
+};
+T.hi.pregInfo='🤰 अनुमानित नियत तारीख नेगेले के नियम पर आधारित है। केवल ~5% बच्चे ठीक नियत तारीख पर आते हैं।';
+T.hi.pregC1='गर्भावस्था विवरण';T.hi.pregSegLmp='अंतिम मासिक तारीख';T.hi.pregSegConc='गर्भाधान तारीख';
+T.hi.pregLDate='तारीख';T.hi.pregLCycle='औसत चक्र अवधि (दिन)';
+T.hi.pregCalcBtn='नियत तारीख गणना करें →';T.hi.pregRLabel='अनुमानित नियत तारीख';
+T.hi.pregIl1='गर्भावस्था सप्ताह';T.hi.pregIl2='तिमाही';T.hi.pregIl3='शेष दिन';
+T.hi.pregBdHead='गर्भावस्था मील के पत्थर';T.hi.pregTipsEye='💡 गर्भावस्था देखभाल सुझाव';
+T.hi.pregTips=[['पहली तिमाही — फोलिक एसिड महत्वपूर्ण','प्रतिदिन 400-800 mcg फोलिक एसिड न्यूरल ट्यूब दोष के जोखिम को कम करता है।'],['दूसरी तिमाही जांच — एनोमली स्कैन','विस्तृत एनोमली स्कैन (TIFFA) आमतौर पर सप्ताह 18-22 के बीच किया जाता है।'],['तीसरी तिमाही — किक काउंट महत्वपूर्ण','सप्ताह 28 से बच्चे की हलचल रोज़ ट्रैक करें।'],['आयरन और कैल्शियम सप्लीमेंट','गर्भावस्था आयरन और कैल्शियम की आवश्यकता काफी बढ़ा देती है।'],['गर्भवती महिलाओं के लिए सरकारी योजनाएं','PMMVY पहले बच्चे के लिए ₹5,000 नकद लाभ देती है। JSY संस्थागत प्रसव के लिए सहायता प्रदान करती है।']];
+T.hi.medWarn='🚨 यह केवल जानकारी के लिए है — डॉक्टर के नुस्खे का विकल्प नहीं। कोई भी दवा देने से पहले बाल रोग विशेषज्ञ से सलाह लें।';
+T.hi.medC1='बच्चे का विवरण';T.hi.medLWeight='बच्चे का वजन (kg)';T.hi.medLAge='आयु (वर्ष)';T.hi.medLType='दवा का प्रकार';
+T.hi.medCalcBtn='संदर्भ खुराक गणना करें →';T.hi.medRLabel='संदर्भ खुराक सीमा';
+T.hi.medBdHead='खुराक संदर्भ (डॉक्टर से सत्यापित करें)';T.hi.medTipsEye='💡 बाल औषधि सुरक्षा सुझाव';
+T.hi.medTips=[['24 घंटे में 4 खुराक से अधिक न दें','पैरासिटामोल के लिए अधिकतम 24 घंटे में 4 खुराक (60-75 mg/kg/day)।'],['दवा के साथ आने वाली सिरिंज उपयोग करें','रसोई के चम्मच सटीक नहीं हैं। हमेशा कैलिब्रेटेड सिरिंज उपयोग करें।'],['बोतल पर सांद्रता जांचें','बाल चिकित्सा सिरप अलग-अलग सांद्रता में आते हैं — खुराक से पहले सत्यापित करें।'],['100.4°F से कम बुखार को दवा की जरूरत नहीं हो सकती','हल्का बुखार शरीर के संक्रमण से लड़ने का संकेत है। 3 महीने से कम उम्र के शिशुओं के लिए डॉक्टर से सलाह लें।'],['बच्चों को एस्पिरिन न दें','16 वर्ष से कम उम्र के बच्चों में एस्पिरिन रेय सिंड्रोम से जुड़ी है।']];
+T.hi.calInfo='🍽️ मिफ्लिन-सेंट जियोर समीकरण का उपयोग करके गणना की गई।';
+T.hi.calC1='आपका विवरण';T.hi.calLAge='आयु';T.hi.calLGender='लिंग';T.hi.calLHeight='ऊंचाई (cm)';
+T.hi.calLWeight='वजन (kg)';T.hi.calLActivity='गतिविधि स्तर';T.hi.calLGoal='लक्ष्य';
+T.hi.calCalcBtn='दैनिक आवश्यकताएं गणना करें →';T.hi.calRLabel='दैनिक कैलोरी लक्ष्य';
+T.hi.calIl1='BMR';T.hi.calIl2='पानी/दिन';T.hi.calIl3='प्रोटीन/दिन';
+T.hi.calBdHead='दैनिक विवरण';T.hi.calTipsEye='💡 पोषण सुझाव';
+T.hi.calTips=[['गतिविधि के साथ प्रोटीन आवश्यकता बढ़ती है','गतिहीन वयस्कों को ~0.8g/kg शरीर वजन चाहिए। सक्रिय व्यक्तियों को 1.2-1.6g/kg चाहिए।'],['भारतीय जलवायु में पानी की आवश्यकता बढ़ती है','गर्म/आर्द्र जलवायु में पानी की आवश्यकता मानक से 15-20% अधिक हो सकती है।'],['500 kcal की कमी = ~0.5kg/सप्ताह हानि','यह सबसे सुरक्षित, टिकाऊ दर है।'],['भोजन में प्रोटीन फैलाएं','प्रति भोजन 20-30g प्रोटीन खाने से मांसपेशी संश्लेषण बेहतर होता है।']];
+T.hi.footerTxt='स्वास्थ्य सूट · मुफ्त · केवल जानकारी के लिए · LawSticker AI';
+
+function applyLang(){
+  const t=T[lang];
+  s('nav-title',t.navTitle);s('tb-bmi',t.tbBmi);s('tb-preg',t.tbPreg);s('tb-med',t.tbMed);s('tb-cal',t.tbCal);
+  s('bmi-info',t.bmiInfo);s('bmi-c1',t.bmiC1);s('bmi-l-age',t.bmiLAge);s('bmi-l-gender',t.bmiLGender);
+  s('bmi-l-height',t.bmiLHeight);s('bmi-l-weight',t.bmiLWeight);s('bmi-r-label',t.bmiRLabel);
+  s('bmi-il1',t.bmiIl1);s('bmi-il2',t.bmiIl2);s('bmi-il3',t.bmiIl3);s('bmi-bd-head',t.bmiBdHead);s('bmi-tips-eye',t.bmiTipsEye);
+  s('preg-info',t.pregInfo);s('preg-c1',t.pregC1);s('preg-seg-lmp',t.pregSegLmp);s('preg-seg-conc',t.pregSegConc);
+  s('preg-l-date',t.pregLDate);s('preg-l-cycle',t.pregLCycle);s('preg-r-label',t.pregRLabel);
+  s('preg-il1',t.pregIl1);s('preg-il2',t.pregIl2);s('preg-il3',t.pregIl3);s('preg-bd-head',t.pregBdHead);s('preg-tips-eye',t.pregTipsEye);
+  s('med-warn',t.medWarn);s('med-c1',t.medC1);s('med-l-weight',t.medLWeight);s('med-l-age',t.medLAge);s('med-l-type',t.medLType);
+  s('med-r-label',t.medRLabel);s('med-bd-head',t.medBdHead);s('med-tips-eye',t.medTipsEye);
+  s('cal-info',t.calInfo);s('cal-c1',t.calC1);s('cal-l-age',t.calLAge);s('cal-l-gender',t.calLGender);
+  s('cal-l-height',t.calLHeight);s('cal-l-weight',t.calLWeight);s('cal-l-activity',t.calLActivity);s('cal-l-goal',t.calLGoal);
+  s('cal-r-label',t.calRLabel);s('cal-il1',t.calIl1);s('cal-il2',t.calIl2);s('cal-il3',t.calIl3);
+  s('cal-bd-head',t.calBdHead);s('cal-tips-eye',t.calTipsEye);
+  s('footer-txt',t.footerTxt);
+  document.querySelectorAll('.calc-btn').forEach((btn,i)=>{
+    const keys=['bmiCalcBtn','pregCalcBtn','medCalcBtn','calCalcBtn'];
+    if(t[keys[i]])btn.textContent=t[keys[i]];
+  });
+  ['bmi','preg','med','cal'].forEach(tab=>{if(el(tab+'-results').style.display!=='none')buildTips(tab);});
+}
+function setLang(l){lang=l;document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));applyLang();}
+function setTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));['bmi','preg','med','cal'].forEach(id=>el('tab-'+id).style.display=id===t?'':'none');}
+function setPregMode(m){pregMode=m;el('preg-seg-lmp').classList.toggle('active',m==='lmp');el('preg-seg-conc').classList.toggle('active',m==='conception');}
+function buildTips(tab){const t=T[lang];const tips=t[tab+'Tips']||[];h(tab+'-tips',tips.map(([title,body])=>`<div class="tip-item"><span>${title}:</span> ${body}</div>`).join(''));}
+function resetTab(tab){el(tab+'-results').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+
+// ── BMI ──
+function calcBmi(){
+  const t=T[lang];
+  const age=parseFloat(el('bmi-age').value)||30;
+  const gender=el('bmi-gender').value;
+  const heightCm=parseFloat(el('bmi-height').value)||170;
+  const weight=parseFloat(el('bmi-weight').value)||65;
+  const heightM=heightCm/100;
+  const bmi=weight/(heightM*heightM);
+
+  let cat='',color='';
+  if(bmi<18.5){cat=t.bmiCats[0][0];color=t.bmiCats[0][2];}
+  else if(bmi<23){cat=t.bmiCats[1][0];color=t.bmiCats[1][2];}
+  else if(bmi<25){cat=t.bmiCats[2][0];color=t.bmiCats[2][2];}
+  else{cat=t.bmiCats[3][0];color=t.bmiCats[3][2];}
+
+  const idealLow=18.5*heightM*heightM;
+  const idealHigh=22.9*heightM*heightM;
+  const toNormal=bmi>22.9?weight-idealHigh:bmi<18.5?idealLow-weight:0;
+
+  const bmr=gender==='male'
+    ? 10*weight+6.25*heightCm-5*age+5
+    : 10*weight+6.25*heightCm-5*age-161;
+
+  s('bmi-r-amount',bmi.toFixed(1));
+  s('bmi-r-sub',`${cat} · Height ${heightCm}cm · Weight ${weight}kg`);
+  const pct=Math.min(100,Math.max(0,(bmi/35)*100));
+  el('bmi-marker-wrap').innerHTML=`<div class="bmi-marker" style="left:${pct}%"></div>`;
+
+  s('bmi-i1',`${idealLow.toFixed(0)}-${idealHigh.toFixed(0)} kg`);
+  s('bmi-i2',toNormal>0?`${toNormal.toFixed(1)} kg`:'✓ In Range');
+  s('bmi-i3',R(bmr));
+
+  h('bmi-rows',t.bmiCats.map(([name,range])=>
+    `<div class="brow ${cat===name?'hi':''}"><div class="bl">${name}</div><div class="ba">${range}</div></div>`).join(''));
+  buildTips('bmi');
+  el('bmi-results').style.display='block';
+  el('bmi-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── PREGNANCY ──
+function calcPreg(){
+  const t=T[lang];
+  const dateStr=el('preg-date').value;
+  const cycle=parseInt(el('preg-cycle').value)||28;
+  if(!dateStr){alert('Please select a date');return;}
+  const inputDate=new Date(dateStr);
+
+  let lmp;
+  if(pregMode==='lmp'){
+    lmp=new Date(inputDate);
+    if(cycle!==28) lmp.setDate(lmp.getDate()+(cycle-28));
+  } else {
+    lmp=new Date(inputDate);
+    lmp.setDate(lmp.getDate()-14);
+  }
+
+  const dueDate=new Date(lmp);
+  dueDate.setDate(dueDate.getDate()+280);
+
+  const today=new Date();
+  const daysPregnant=Math.floor((today-lmp)/86400000);
+  const weeksPregnant=Math.floor(daysPregnant/7);
+  const daysRemainder=daysPregnant%7;
+  const daysToGo=Math.max(0,Math.floor((dueDate-today)/86400000));
+
+  let trimester='';
+  if(weeksPregnant<13) trimester=lang==='te'?'1వ':lang==='hi'?'1ली':'1st';
+  else if(weeksPregnant<27) trimester=lang==='te'?'2వ':lang==='hi'?'2री':'2nd';
+  else trimester=lang==='te'?'3వ':lang==='hi'?'3री':'3rd';
+
+  const fmtDate=d=>d.toLocaleDateString(lang==='te'?'te-IN':lang==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'long',year:'numeric'});
+
+  s('preg-r-amount',fmtDate(dueDate));
+  s('preg-r-sub',`LMP: ${fmtDate(lmp)} · Cycle: ${cycle} days`);
+  s('preg-i1',`${weeksPregnant}w ${daysRemainder}d`);
+  s('preg-i2',trimester);
+  s('preg-i3',daysToGo);
+
+  const milestones=[
+    [6,'Heartbeat detectable via ultrasound'],
+    [12,'End of first trimester — miscarriage risk drops significantly'],
+    [20,'Anatomy scan — gender can be determined'],
+    [24,'Viability milestone — survival possible with NICU care'],
+    [28,'Third trimester begins — kick counting starts'],
+    [37,'Full term — baby is considered ready'],
+    [40,'Due date'],
+  ];
+  h('preg-rows',milestones.map(([wk,desc])=>{
+    const passed=weeksPregnant>=wk;
+    return `<div class="brow ${passed?'':'hi'}"><div class="bl">Week ${wk}<span class="bs">${desc}</span></div><div class="ba">${passed?'✓ Done':'Upcoming'}</div></div>`;
+  }).join(''));
+  buildTips('preg');
+  el('preg-results').style.display='block';
+  el('preg-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── CHILD MEDICINE ──
+function calcMed(){
+  const t=T[lang];
+  const weight=parseFloat(el('med-weight').value)||0;
+  const age=parseFloat(el('med-age').value)||0;
+  const type=el('med-type').value;
+
+  let doseLow,doseHigh,unit,maxDay,freq;
+  if(type==='paracetamol'){
+    doseLow=weight*10;doseHigh=weight*15;unit='mg';maxDay=weight*75;freq='Every 4-6 hours, max 4 doses/24hrs';
+  } else if(type==='ibuprofen'){
+    doseLow=weight*5;doseHigh=weight*10;unit='mg';maxDay=weight*30;freq='Every 6-8 hours, max 3-4 doses/24hrs';
+  } else {
+    doseLow=weight*10;doseHigh=weight*10;unit='ml per loose stool';maxDay=0;freq='After each loose motion, as needed';
+  }
+
+  s('med-r-amount',type==='ors'?`${doseLow.toFixed(0)} ml`:`${doseLow.toFixed(0)}-${doseHigh.toFixed(0)} mg`);
+  s('med-r-sub',`${weight}kg child · ${age} years · ${type}`);
+
+  let rows=`<div class="brow"><div class="bl">Child Weight</div><div class="ba">${weight} kg</div></div>`;
+  if(type!=='ors'){
+    rows+=`<div class="brow hi"><div class="bl">Reference Dose Range<span class="bs">${freq}</span></div><div class="ba">${doseLow.toFixed(0)}-${doseHigh.toFixed(0)} mg per dose</div></div>`;
+    rows+=`<div class="brow"><div class="bl">Maximum per 24 hours</div><div class="ba">${maxDay.toFixed(0)} mg</div></div>`;
+  } else {
+    rows+=`<div class="brow hi"><div class="bl">ORS per loose stool<span class="bs">${freq}</span></div><div class="ba">${doseLow.toFixed(0)} ml</div></div>`;
+  }
+  rows+=`<div class="brow tot"><div class="bl">⚠️ ALWAYS CONFIRM WITH DOCTOR</div><div class="ba">Before giving</div></div>`;
+  h('med-rows',rows);
+  buildTips('med');
+  el('med-results').style.display='block';
+  el('med-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── CALORIE ──
+function calcCal(){
+  const t=T[lang];
+  const age=parseFloat(el('cal-age').value)||30;
+  const gender=el('cal-gender').value;
+  const heightCm=parseFloat(el('cal-height').value)||170;
+  const weight=parseFloat(el('cal-weight').value)||65;
+  const activity=parseFloat(el('cal-activity').value)||1.55;
+  const goal=el('cal-goal').value;
+
+  const bmr=gender==='male'
+    ? 10*weight+6.25*heightCm-5*age+5
+    : 10*weight+6.25*heightCm-5*age-161;
+  const tdee=bmr*activity;
+  let target=tdee;
+  if(goal==='lose') target=tdee-500;
+  else if(goal==='gain') target=tdee+500;
+
+  const waterL=(weight*0.033).toFixed(1);
+  const proteinG=(weight*1.2).toFixed(0);
+
+  s('cal-r-amount',`${R(target)} kcal`);
+  s('cal-r-sub',`${gender} · ${age}y · ${weight}kg · ${goal}`);
+  s('cal-i1',R(bmr));
+  s('cal-i2',waterL+' L');
+  s('cal-i3',proteinG+' g');
+
+  h('cal-rows',`
+    <div class="brow"><div class="bl">BMR (Basal Metabolic Rate)</div><div class="ba">${R(bmr)} kcal</div></div>
+    <div class="brow"><div class="bl">TDEE (with activity)</div><div class="ba">${R(tdee)} kcal</div></div>
+    <div class="brow hi"><div class="bl">Daily Target (${goal})</div><div class="ba">${R(target)} kcal</div></div>
+    <div class="brow"><div class="bl">Water Intake</div><div class="ba">${waterL} litres</div></div>
+    <div class="brow"><div class="bl">Protein Intake</div><div class="ba">${proteinG} g</div></div>
+    <div class="brow tot"><div class="bl">Weekly Change Expected</div><div class="ba">${goal==='maintain'?'0 kg':goal==='lose'?'-0.5 kg':'+0.5 kg'}</div></div>
+  `);
+  buildTips('cal');
+  el('cal-results').style.display='block';
+  el('cal-results').scrollIntoView({behavior:'smooth'});
+}
+
+el('preg-date').value=new Date().toISOString().split('T')[0];
+applyLang();
+</script>
+</body>
+</html>
