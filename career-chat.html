@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Navigator — Chat | LawSticker AI</title>
+<meta name="description" content="An interactive guide for law students — talk through judiciary, litigation, corporate law, civil services and academia paths.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --ink:#0A0E1A; --ink2:#10162A;
+  --gold:#C9A227; --gold-l:#E8CD6F; --gold-dim:#7A6420;
+  --parchment:#F4ECD8; --parchment-dim:rgba(244,236,216,.55);
+  --brass:#8B6F2E;
+  --line:rgba(201,162,39,.18);
+  --jade:#5EAD8B; --rose:#C9716B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;
+  background:var(--ink); color:var(--parchment);
+  -webkit-font-smoothing:antialiased;
+  height:100vh; display:flex; flex-direction:column; overflow:hidden;
+}
+.bg-texture{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 700px 500px at 15% 0%, rgba(201,162,39,.06), transparent 60%),radial-gradient(ellipse 600px 500px at 100% 100%, rgba(162,59,59,.05), transparent 55%)}
+
+/* NAV */
+nav{
+  position:relative; z-index:10; flex-shrink:0;
+  padding:12px 16px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:var(--parchment-dim); text-decoration:none; font-size:13px; font-weight:600}
+.nav-back:hover{color:var(--gold-l)}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);display:flex;align-items:center;gap:6px}
+.nav-langs{display:flex; gap:4px}
+.nav-lang{padding:4px 10px; border-radius:14px; border:1px solid rgba(201,162,39,.25); background:transparent; color:rgba(244,236,216,.4); font-family:inherit; font-size:11px; font-weight:600; cursor:pointer; transition:all .2s}
+.nav-lang.active{border-color:var(--gold); color:var(--ink); background:var(--gold)}
+
+/* CHAT AREA */
+.chat-scroll{
+  flex:1; overflow-y:auto; position:relative; z-index:2;
+  padding:20px 16px 16px;
+}
+.chat-inner{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+.msg{display:flex; gap:10px; opacity:0; animation:msgIn .45s ease forwards}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.avatar{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  background:linear-gradient(135deg,var(--gold-dim),var(--brass));
+}
+.msg.user .avatar{background:rgba(201,162,39,.18)}
+.bubble{
+  background:rgba(244,236,216,.055); border:1px solid rgba(244,236,216,.08);
+  border-radius:4px 16px 16px 16px; padding:13px 16px; font-size:14px; line-height:1.65;
+  color:var(--parchment-dim); max-width:480px;
+}
+.msg.user .bubble{
+  background:rgba(201,162,39,.12); border-color:rgba(201,162,39,.22);
+  border-radius:16px 4px 16px 16px; color:var(--gold-l); font-weight:600;
+}
+.bubble.typing{padding:14px 18px}
+.typing-dots{display:inline-flex;gap:4px}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.4;animation:dot 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+/* INFO CARD (rich bubble) */
+.info-card{
+  background:linear-gradient(180deg, rgba(201,162,39,.07), rgba(201,162,39,.02));
+  border:1px solid rgba(201,162,39,.25); border-radius:4px 16px 16px 16px;
+  padding:18px 18px 14px; max-width:520px;
+}
+.ic-eyebrow{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:6px}
+.ic-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--parchment);margin-bottom:10px}
+.ic-section{margin-bottom:12px}
+.ic-section:last-child{margin-bottom:0}
+.ic-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:5px}
+.ic-text{font-size:13px;line-height:1.65;color:var(--parchment-dim)}
+.ic-divider{height:1px;background:rgba(201,162,39,.15);margin:12px 0}
+.ic-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.ic-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;background:rgba(244,236,216,.06);color:var(--parchment-dim);border:1px solid rgba(244,236,216,.1)}
+.ic-pill.gold{background:rgba(201,162,39,.15);color:var(--gold-l);border-color:rgba(201,162,39,.3)}
+.ic-pill.jade{background:rgba(94,173,139,.15);color:var(--jade);border-color:rgba(94,173,139,.3)}
+.ic-pill.rose{background:rgba(201,113,107,.15);color:var(--rose);border-color:rgba(201,113,107,.3)}
+
+/* CHOICE BUBBLES */
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;padding-left:40px}
+.choice-btn{
+  background:rgba(244,236,216,.04); border:1px solid rgba(201,162,39,.3);
+  color:var(--parchment); font-family:inherit; font-size:13px; font-weight:600;
+  padding:10px 16px; border-radius:20px; cursor:pointer; transition:all .2s;
+  opacity:0; animation:choiceIn .35s ease forwards;
+}
+.choice-btn:nth-child(1){animation-delay:.05s}
+.choice-btn:nth-child(2){animation-delay:.12s}
+.choice-btn:nth-child(3){animation-delay:.19s}
+.choice-btn:nth-child(4){animation-delay:.26s}
+.choice-btn:nth-child(5){animation-delay:.33s}
+.choice-btn:nth-child(6){animation-delay:.40s}
+@keyframes choiceIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.choice-btn:hover{background:rgba(201,162,39,.15);border-color:var(--gold);transform:translateY(-1px)}
+.choice-btn:active{transform:scale(.97)}
+.choice-btn.secondary{border-style:dashed;opacity:.7}
+
+/* progress breadcrumb */
+.breadcrumb{
+  max-width:640px;margin:0 auto 4px;padding:0 0 4px;
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.crumb{font-size:10px;font-weight:600;color:var(--gold-dim);background:rgba(201,162,39,.08);padding:3px 9px;border-radius:10px;border:1px solid rgba(201,162,39,.15)}
+
+footer{
+  position:relative;z-index:5;flex-shrink:0;
+  text-align:center;padding:10px;font-size:10px;color:rgba(244,236,216,.25);
+  border-top:1px solid var(--line);
+}
+footer a{color:var(--gold-dim);text-decoration:none}
+
+@media(max-width:420px){
+  .choices{padding-left:0}
+  .bubble,.info-card{max-width:88vw}
+}
+</style>
+</head>
+<body>
+<div class="bg-texture"></div>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="career.html">←</a>
+    <div class="nav-title">⚖️ <span id="navTitle">The Navigator</span></div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="chat-scroll" id="chatScroll">
+  <div class="chat-inner" id="chatInner"></div>
+</div>
+
+<footer>
+  <span id="footerTxt">Informational guidance only · Verify with official sources</span> · <a href="https://lawsticker-ai.com">LawSticker AI</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let lang = 'en';
+let history = []; // breadcrumb trail of labels
+let msgId = 0;
+const chatInner = document.getElementById('chatInner');
+const chatScroll = document.getElementById('chatScroll');
+
+function scrollDown(){ requestAnimationFrame(()=>{ chatScroll.scrollTop = chatScroll.scrollHeight; }); }
+
+function botMsg(html, delay){
+  return new Promise(resolve=>{
+    const typingEl = document.createElement('div');
+    typingEl.className='msg';
+    typingEl.innerHTML = `<div class="avatar">⚖️</div><div class="bubble typing"><span class="typing-dots"><span></span><span></span><span></span></span></div>`;
+    chatInner.appendChild(typingEl);
+    scrollDown();
+    setTimeout(()=>{
+      typingEl.remove();
+      const el = document.createElement('div');
+      el.className='msg';
+      el.innerHTML = `<div class="avatar">⚖️</div><div class="bubble">${html}</div>`;
+      chatInner.appendChild(el);
+      scrollDown();
+      resolve();
+    }, delay || 700);
+  });
+}
+function botCard(html){
+  return new Promise(resolve=>{
+    const el = document.createElement('div');
+    el.className='msg';
+    el.innerHTML = `<div class="avatar">⚖️</div><div class="info-card">${html}</div>`;
+    chatInner.appendChild(el);
+    scrollDown();
+    setTimeout(resolve, 100);
+  });
+}
+function userMsg(text){
+  const el = document.createElement('div');
+  el.className='msg user';
+  el.innerHTML = `<div class="avatar">🎓</div><div class="bubble">${text}</div>`;
+  chatInner.appendChild(el);
+  scrollDown();
+}
+function showChoices(options, container){
+  return new Promise(resolve=>{
+    const wrap = document.createElement('div');
+    wrap.className='choices';
+    options.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn' + (opt.secondary ? ' secondary' : '');
+      btn.textContent = opt.label;
+      btn.onclick = ()=>{
+        wrap.querySelectorAll('button').forEach(b=>b.disabled=true);
+        wrap.style.opacity='.35'; wrap.style.pointerEvents='none';
+        userMsg(opt.label);
+        resolve(opt.value);
+      };
+      wrap.appendChild(btn);
+    });
+    chatInner.appendChild(wrap);
+    scrollDown();
+  });
+}
+function addCrumb(label){
+  history.push(label);
+  renderCrumbs();
+}
+function renderCrumbs(){
+  let bc = document.getElementById('breadcrumb');
+  if(!bc){
+    bc = document.createElement('div');
+    bc.className='breadcrumb';
+    bc.id='breadcrumb';
+    chatInner.parentNode.insertBefore(bc, chatInner);
+  }
+  bc.innerHTML = history.map(h=>`<span class="crumb">${h}</span>`).join('');
+}
+function clearChat(){
+  chatInner.innerHTML='';
+  history=[];
+  const bc=document.getElementById('breadcrumb');
+  if(bc) bc.remove();
+}
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS (UI strings + content data)
+// ══════════════════════════════════════════
+const T = {
+en: {
+  navTitle:'The Navigator', footerTxt:'Informational guidance only · Verify with official sources',
+  greet:'Welcome, counsellor-in-training. I\'m here to help you think through your path in law — judiciary, litigation, corporate, civil services, or academia.<br><br>First — what stage are you at right now?',
+  stageOpts:[
+    {label:'1st–2nd year', value:'early'},
+    {label:'3rd–4th year', value:'mid'},
+    {label:'Final year', value:'final'},
+    {label:'Already graduated', value:'grad'},
+  ],
+  stageCrumb:{early:'1st–2nd year',mid:'3rd–4th year',final:'Final year',grad:'Graduated'},
+  askInterest:'Good. And what pulls at you most right now? Be honest — "not sure yet" is a completely valid answer at your stage.',
+  interestOpts:[
+    {label:'⚖️ Judiciary', value:'judiciary'},
+    {label:'🏛️ Litigation', value:'litigation'},
+    {label:'💼 Corporate Law', value:'corporate'},
+    {label:'🏢 Civil Services', value:'civil'},
+    {label:'📚 Academia', value:'academia'},
+    {label:'🤔 Not sure — show me everything', value:'unsure', secondary:true},
+  ],
+  interestCrumb:{judiciary:'Judiciary',litigation:'Litigation',corporate:'Corporate',civil:'Civil Services',academia:'Academia',unsure:'Exploring'},
+  afterCard:'What would you like to do next?',
+  endOpts:[
+    {label:'← Explore a different path', value:'restart_interest'},
+    {label:'↻ Start over completely', value:'restart_all'},
+    {label:'🧮 See related calculators', value:'calculators'},
+  ],
+  restartGreet:'No problem — let\'s look at this from another angle.',
+  bridge:'Where would you like to look next?',
+},
+te: {
+  navTitle:'నావిగేటర్', footerTxt:'సమాచార మార్గదర్శకత్వం మాత్రమే · అధికారిక మూలాలతో ధృవీకరించండి',
+  greet:'స్వాగతం, భావి న్యాయవాది. న్యాయశాస్త్రంలో మీ మార్గం గురించి ఆలోచించడంలో నేను సహాయం చేస్తాను — జ్యుడీషియరీ, లిటిగేషన్, కార్పొరేట్, సివిల్ సర్వీసెస్, లేదా అకడెమియా.<br><br>మొదట — మీరు ప్రస్తుతం ఏ దశలో ఉన్నారు?',
+  stageOpts:[
+    {label:'1వ–2వ సంవత్సరం', value:'early'},
+    {label:'3వ–4వ సంవత్సరం', value:'mid'},
+    {label:'చివరి సంవత్సరం', value:'final'},
+    {label:'ఇప్పటికే గ్రాడ్యుయేట్', value:'grad'},
+  ],
+  stageCrumb:{early:'1వ–2వ సంవత్సరం',mid:'3వ–4వ సంవత్సరం',final:'చివరి సంవత్సరం',grad:'గ్రాడ్యుయేట్'},
+  askInterest:'మంచిది. ఇప్పుడు మిమ్మల్ని ఎక్కువగా ఆకర్షించేది ఏది? నిజాయితీగా చెప్పండి — మీ దశలో "ఇంకా తెలియదు" అనేది పూర్తిగా సరైన సమాధానం.',
+  interestOpts:[
+    {label:'⚖️ జ్యుడీషియరీ', value:'judiciary'},
+    {label:'🏛️ లిటిగేషన్', value:'litigation'},
+    {label:'💼 కార్పొరేట్ లా', value:'corporate'},
+    {label:'🏢 సివిల్ సర్వీసెస్', value:'civil'},
+    {label:'📚 అకడెమియా', value:'academia'},
+    {label:'🤔 తెలియదు — అన్నీ చూపించండి', value:'unsure', secondary:true},
+  ],
+  interestCrumb:{judiciary:'జ్యుడీషియరీ',litigation:'లిటిగేషన్',corporate:'కార్పొరేట్',civil:'సివిల్ సర్వీసెస్',academia:'అకడెమియా',unsure:'అన్వేషణ'},
+  afterCard:'తర్వాత మీరు ఏమి చేయాలనుకుంటున్నారు?',
+  endOpts:[
+    {label:'← వేరే మార్గం అన్వేషించండి', value:'restart_interest'},
+    {label:'↻ పూర్తిగా మళ్ళీ ప్రారంభించండి', value:'restart_all'},
+    {label:'🧮 సంబంధిత కాలిక్యులేటర్లు చూడండి', value:'calculators'},
+  ],
+  restartGreet:'పర్వాలేదు — దీన్ని మరో కోణం నుండి చూద్దాం.',
+  bridge:'తర్వాత మీరు ఎక్కడ చూడాలనుకుంటున్నారు?',
+},
+hi: {
+  navTitle:'नेविगेटर', footerTxt:'केवल जानकारी मार्गदर्शन · आधिकारिक स्रोतों से सत्यापित करें',
+  greet:'स्वागत है, भावी वकील। मैं कानून में आपके रास्ते के बारे में सोचने में मदद करने के लिए यहां हूं — न्यायपालिका, मुकदमेबाजी, कॉर्पोरेट, सिविल सेवाएं, या अकादमिक।<br><br>पहले — आप अभी किस चरण में हैं?',
+  stageOpts:[
+    {label:'1st–2nd वर्ष', value:'early'},
+    {label:'3rd–4th वर्ष', value:'mid'},
+    {label:'अंतिम वर्ष', value:'final'},
+    {label:'पहले से स्नातक', value:'grad'},
+  ],
+  stageCrumb:{early:'1st–2nd वर्ष',mid:'3rd–4th वर्ष',final:'अंतिम वर्ष',grad:'स्नातक'},
+  askInterest:'अच्छा। अब आपको सबसे ज़्यादा क्या आकर्षित करता है? ईमानदार रहें — आपके चरण में "अभी पता नहीं" एक पूरी तरह से वैध उत्तर है।',
+  interestOpts:[
+    {label:'⚖️ न्यायपालिका', value:'judiciary'},
+    {label:'🏛️ मुकदमेबाजी', value:'litigation'},
+    {label:'💼 कॉर्पोरेट लॉ', value:'corporate'},
+    {label:'🏢 सिविल सेवाएं', value:'civil'},
+    {label:'📚 अकादमिक', value:'academia'},
+    {label:'🤔 पता नहीं — सब दिखाएं', value:'unsure', secondary:true},
+  ],
+  interestCrumb:{judiciary:'न्यायपालिका',litigation:'मुकदमेबाजी',corporate:'कॉर्पोरेट',civil:'सिविल सेवाएं',academia:'अकादमिक',unsure:'खोज रहे हैं'},
+  afterCard:'आगे आप क्या करना चाहेंगे?',
+  endOpts:[
+    {label:'← दूसरा रास्ता देखें', value:'restart_interest'},
+    {label:'↻ पूरी तरह फिर से शुरू करें', value:'restart_all'},
+    {label:'🧮 संबंधित कैलकुलेटर देखें', value:'calculators'},
+  ],
+  restartGreet:'कोई बात नहीं — इसे दूसरे नज़रिए से देखते हैं।',
+  bridge:'आगे आप कहां देखना चाहेंगे?',
+},
+};
+
+// ══════════════════════════════════════════
+//  PATH CONTENT — by interest, varies slightly by stage
+// ══════════════════════════════════════════
+const PATHS = {
+en: {
+  judiciary: {
+    eyebrow:'Path I — Judiciary',
+    title:'Becoming a Civil Judge',
+    eligibility: (stage)=>({
+      early:'You\'re not yet eligible to apply, but this is exactly the right time to start reading judgments daily and building your foundation in CPC, CrPC, Evidence Act, and Constitutional Law — the core papers in every state judiciary exam.',
+      mid:'Same as above — not eligible yet, but 2 years out. This is prime preparation time. Many successful candidates start serious prelims prep in 3rd year.',
+      final:'You\'ll be eligible the moment your LLB degree is conferred (provisional certificates are usually accepted). Watch for notifications closely — start mock prelims now.',
+      grad:'You are very likely eligible right now — check the specific state\'s age bracket (commonly 21–35, with relaxation for reserved categories) and confirm your LLB is recognised by the Bar Council.',
+    }[stage] || ''),
+    pattern:'<strong>Prelims</strong> (objective, screening) → <strong>Mains</strong> (descriptive, law + language) → <strong>Interview</strong> (viva-voce). Most states follow this 3-stage structure, including TSJS and APJS.',
+    reality:'This is one of the most competitive exams in the legal field — ratios of 1:300 to 1:700+ are common in good years. Most successful candidates clear it on their 2nd or 3rd attempt, not the first. Persistence matters more than raw brilliance here.',
+    pills:['CPC','CrPC','Evidence Act','Constitution','Local Laws'],
+    nextSteps:'Start with bare acts — read them cover to cover before any commentary. Join a structured test series closer to your final year. Track TSJS/APJS notifications on official websites — they don\'t follow a fixed annual calendar.',
+  },
+  litigation: {
+    eyebrow:'Path II — Litigation',
+    title:'Independent Practice at the Bar',
+    eligibility: (stage)=>({
+      early:'You can\'t enroll with the Bar Council yet, but you can start mooting, attend court proceedings as an observer, and build relationships — litigation runs heavily on networks and mentorship.',
+      mid:'Still 1-2 years out from enrollment, but this is when internships under practicing advocates matter most. Choose seniors whose practice area genuinely interests you.',
+      final:'Almost there. Start identifying seniors you\'d want to work under — the relationship you build in your final year often becomes your first job.',
+      grad:'You can enroll with your State Bar Council now (AIBE — All India Bar Examination — is required within 2 years of enrollment to continue practicing). Time to find a senior and begin.',
+    }[stage] || ''),
+    pattern:'Enroll with State Bar Council → Clear AIBE within 2 years → Work as a junior under a senior advocate (typically 1-3 years) → Build independent practice gradually.',
+    reality:'Be honest with yourself: the first 2-3 years of independent practice are financially lean for almost everyone, including those who go on to build strong careers. Stipends under seniors are often modest. This path rewards patience and genuine interest in the courtroom.',
+    pills:['AIBE','Bar Council','Mentor Senior','Patience'],
+    nextSteps:'Seek out a senior whose work you respect, not just one who pays well early on. Specialise gradually — civil, criminal, family, or constitutional practice each demand different temperaments.',
+  },
+  corporate: {
+    eyebrow:'Path III — Corporate Law',
+    title:'Law Firms & In-House Counsel',
+    eligibility: (stage)=>({
+      early:'Perfect time to start. Corporate law recruiters weigh internships heavily — aim for 3-4 meaningful internships across your degree, not just one at the end.',
+      mid:'This is your internship-heavy phase. Target at least one internship at a firm in your area of interest (M&A, IP, banking, etc.) before final year.',
+      final:'Campus placements (if your college has them) or direct applications happen now. Polish your CV around the specific practice area you want, not a generic "I want corporate law" pitch.',
+      grad:'Direct applications to firms or in-house legal teams. Without campus placement, your internship track record and any publications/CLAT-PG (for LLM) become your strongest credentials.',
+    }[stage] || ''),
+    pattern:'Internships (multiple, strategic) → Campus placement or lateral application → Associate role at a firm or legal team → Specialisation over 3-5 years.',
+    reality:'NLU graduates have a structural advantage in campus placements, but it is not the only door — strong internship records, drafting samples, and networking through legal events can open firm doors for non-NLU students too. Corporate law rewards specificity: knowing exactly which practice area you want stands out.',
+    pills:['Internships','Drafting Skills','Networking','Specialisation'],
+    nextSteps:'Build a portfolio of drafting work — even mock contracts and memos count. Attend legal conclaves and webinars where firms scout talent. Follow specific practice groups (M&A, IP, banking) rather than "corporate law" broadly.',
+  },
+  civil: {
+    eyebrow:'Path IV — Civil Services',
+    title:'UPSC & State PCS with a Law Background',
+    eligibility: (stage)=>({
+      early:'Any bachelor\'s degree qualifies for UPSC CSE, including LLB. You have time — this is good news. Start building a current affairs habit now; it compounds over years.',
+      mid:'Same eligibility position, with the added advantage that you can start considering Law as your optional subject, leveraging what you\'re already studying.',
+      final:'You\'ll be eligible to apply once your degree is conferred. Age limit is typically 21-32 for general category (relaxation for reserved categories) — confirm current limits before applying.',
+      grad:'You are eligible now. Law is a genuinely strong optional subject choice if you\'ve enjoyed your LLB coursework — it overlaps significantly with the General Studies papers too.',
+    }[stage] || ''),
+    pattern:'Prelims (2 objective papers) → Mains (9 descriptive papers, including 2 optional papers if Law is chosen) → Interview (Personality Test).',
+    reality:'This is NOT a law-specific exam — General Studies, current affairs, and essay writing carry significant weight. Choosing Law as optional gives you a head start on 2 papers, but the bulk of preparation is general. Multi-year preparation (often 2-4 attempts) is the norm, not the exception.',
+    pills:['UPSC CSE','Law Optional','GS Papers','Current Affairs'],
+    nextSteps:'Start a daily newspaper habit now, regardless of your current stage — this single habit compounds more than any last-minute cramming. If choosing Law optional, your LLB syllabus overlaps meaningfully with constitutional and administrative law sections.',
+  },
+  academia: {
+    eyebrow:'Path V — Academia',
+    title:'Teaching the Next Generation of Lawyers',
+    eligibility: (stage)=>({
+      early:'You\'re early, which is genuinely good for this path. Strong academic performance now (and an LLM later) matters more here than almost any other path.',
+      mid:'Start thinking about which subject area genuinely interests you intellectually — your eventual LLM specialisation should follow that interest, not job market trends.',
+      final:'Plan your LLM applications now if academia is the goal. Many positions prefer or require a postgraduate law degree, and NET/SET become relevant soon after.',
+      grad:'NET (UGC) or SET (state-level) qualifies you for Assistant Professor eligibility. An LLM is increasingly expected, sometimes required, by colleges and especially by NLUs.',
+    }[stage] || ''),
+    pattern:'LLB → LLM (specialisation) → NET/SET qualification → Assistant Professor role → optionally PhD for higher academic positions and research-focused roles.',
+    reality:'Academic salaries, especially starting out, are modest compared to corporate law — but the path offers something rare: genuine intellectual engagement with the law and direct impact on shaping future lawyers. It rewards those who love research and teaching for its own sake, not as a fallback option.',
+    pills:['LLM','NET/SET','Research','PhD (optional)'],
+    nextSteps:'Identify your area of genuine intellectual interest during your LLB itself — this guides your LLM choice. Start building a research and writing habit; published papers, even in student journals, strengthen later academic applications meaningfully.',
+  },
+},
+};
+
+// Generate TE and HI by structural translation of keys (kept in English internally for content fidelity,
+// but UI navigation fully trilingual). For full content trilingual support, we provide Telugu and Hindi
+// versions of the path content as well:
+PATHS.te = {
+  judiciary:{
+    eyebrow:'మార్గం I — జ్యుడీషియరీ', title:'సివిల్ జడ్జి కావడం',
+    eligibility:(stage)=>({
+      early:'మీరు ఇంకా దరఖాస్తు చేయడానికి అర్హులు కాదు, కానీ ఇది తీర్పులు రోజూ చదవడం మరియు CPC, CrPC, ఎవిడెన్స్ యాక్ట్, రాజ్యాంగ చట్టంలో పునాది నిర్మించడం ప్రారంభించడానికి సరైన సమయం.',
+      mid:'పైవిధంగానే — ఇంకా అర్హత లేదు, కానీ 2 సంవత్సరాలు దూరంలో ఉన్నారు. ఇది ప్రధాన తయారీ సమయం.',
+      final:'మీ LLB డిగ్రీ లభించిన వెంటనే అర్హత పొందుతారు. నోటిఫికేషన్లను నిశితంగా గమనించండి.',
+      grad:'మీరు ఇప్పుడే అర్హులైయుండే అవకాశం ఉంది — నిర్దిష్ట రాష్ట్ర వయసు పరిమితి (సాధారణంగా 21–35) తనిఖీ చేయండి.',
+    }[stage]||''),
+    pattern:'<strong>ప్రిలిమ్స్</strong> (ఆబ్జెక్టివ్) → <strong>మెయిన్స్</strong> (వివరణాత్మక) → <strong>ఇంటర్వ్యూ</strong>. చాలా రాష్ట్రాలు ఈ 3-దశల నిర్మాణాన్ని అనుసరిస్తాయి, TSJS మరియు APJS సహా.',
+    reality:'ఇది న్యాయరంగంలో అత్యంత పోటీతత్వ పరీక్షలలో ఒకటి — మంచి సంవత్సరాలలో 1:300 నుండి 1:700+ నిష్పత్తులు సాధారణం. చాలా మంది విజయవంతమైన అభ్యర్థులు 2వ లేదా 3వ ప్రయత్నంలో క్లియర్ చేస్తారు.',
+    pills:['CPC','CrPC','ఎవిడెన్స్ యాక్ట్','రాజ్యాంగం','లోకల్ లాస్'],
+    nextSteps:'బేర్ యాక్ట్‌లతో ప్రారంభించండి — ఏదైనా కామెంటరీ ముందు పూర్తిగా చదవండి. చివరి సంవత్సరానికి దగ్గరగా నిర్మాణాత్మక టెస్ట్ సిరీస్‌లో చేరండి.',
+  },
+  litigation:{
+    eyebrow:'మార్గం II — లిటిగేషన్', title:'బార్‌లో స్వతంత్ర ప్రాక్టీస్',
+    eligibility:(stage)=>({
+      early:'మీరు ఇంకా బార్ కౌన్సిల్‌లో నమోదు చేయలేరు, కానీ మూటింగ్ ప్రారంభించవచ్చు, కోర్టు ప్రొసీడింగ్‌లను పరిశీలకులుగా హాజరు కావచ్చు.',
+      mid:'నమోదు నుండి ఇంకా 1-2 సంవత్సరాలు దూరంలో ఉన్నారు, కానీ ఇది ఆచరిస్తున్న న్యాయవాదుల కింద ఇంటర్న్‌షిప్‌లు అత్యంత ముఖ్యమైన సమయం.',
+      final:'దాదాపు చేరుకున్నారు. మీరు ఎవరి కింద పనిచేయాలనుకుంటున్నారో సీనియర్లను గుర్తించడం ప్రారంభించండి.',
+      grad:'మీరు ఇప్పుడు మీ స్టేట్ బార్ కౌన్సిల్‌లో నమోదు చేసుకోవచ్చు (AIBE 2 సంవత్సరాల్లో అవసరం).',
+    }[stage]||''),
+    pattern:'స్టేట్ బార్ కౌన్సిల్‌లో నమోదు → 2 సంవత్సరాల్లో AIBE క్లియర్ → సీనియర్ న్యాయవాది కింద జూనియర్‌గా పని (సాధారణంగా 1-3 సంవత్సరాలు) → క్రమంగా స్వతంత్ర ప్రాక్టీస్ నిర్మించడం.',
+    reality:'మీతో నిజాయితీగా ఉండండి: స్వతంత్ర ప్రాక్టీస్ మొదటి 2-3 సంవత్సరాలు దాదాపు అందరికీ ఆర్థికంగా బలహీనంగా ఉంటాయి. ఈ మార్గం సహనం మరియు కోర్టు గదిలో నిజమైన ఆసక్తికి ప్రతిఫలమిస్తుంది.',
+    pills:['AIBE','బార్ కౌన్సిల్','సీనియర్ మెంటార్','సహనం'],
+    nextSteps:'మీరు గౌరవించే పనిచేసే సీనియర్‌ని వెతకండి, ముందుగా ఎక్కువ చెల్లించేవారిని కాదు. క్రమంగా స్పెషలైజ్ చేయండి.',
+  },
+  corporate:{
+    eyebrow:'మార్గం III — కార్పొరేట్ లా', title:'లా ఫర్మ్‌లు & ఇన్-హౌస్ కౌన్సెల్',
+    eligibility:(stage)=>({
+      early:'ప్రారంభించడానికి సరైన సమయం. కార్పొరేట్ లా రిక్రూటర్లు ఇంటర్న్‌షిప్‌లకు ఎక్కువ ప్రాధాన్యత ఇస్తారు — మీ డిగ్రీ అంతటా 3-4 అర్థవంతమైన ఇంటర్న్‌షిప్‌లను లక్ష్యంగా పెట్టుకోండి.',
+      mid:'ఇది మీ ఇంటర్న్‌షిప్-భారీ దశ. చివరి సంవత్సరానికి ముందు మీ ఆసక్తి ఉన్న ప్రాంతంలో కనీసం ఒక ఫర్మ్‌లో ఇంటర్న్‌షిప్ లక్ష్యంగా పెట్టుకోండి.',
+      final:'క్యాంపస్ ప్లేస్‌మెంట్‌లు లేదా డైరెక్ట్ అప్లికేషన్‌లు ఇప్పుడు జరుగుతాయి. మీ CV ను నిర్దిష్ట ప్రాక్టీస్ ప్రాంతం చుట్టూ మెరుగుపరచండి.',
+      grad:'ఫర్మ్‌లు లేదా ఇన్-హౌస్ లీగల్ టీమ్‌లకు డైరెక్ట్ అప్లికేషన్‌లు. క్యాంపస్ ప్లేస్‌మెంట్ లేకుండా, మీ ఇంటర్న్‌షిప్ ట్రాక్ రికార్డ్ బలమైన అర్హతగా మారుతుంది.',
+    }[stage]||''),
+    pattern:'ఇంటర్న్‌షిప్‌లు (బహుళ, వ్యూహాత్మక) → క్యాంపస్ ప్లేస్‌మెంట్ లేదా లేటరల్ అప్లికేషన్ → ఫర్మ్ లేదా లీగల్ టీమ్‌లో అసోసియేట్ పాత్ర → 3-5 సంవత్సరాలలో స్పెషలైజేషన్.',
+    reality:'NLU గ్రాడ్యుయేట్లకు క్యాంపస్ ప్లేస్‌మెంట్‌లలో నిర్మాణాత్మక ప్రయోజనం ఉంది, కానీ ఇది ఏకైక ద్వారం కాదు — బలమైన ఇంటర్న్‌షిప్ రికార్డులు నాన్-NLU విద్యార్థులకు కూడా ఫర్మ్ తలుపులు తెరవగలవు.',
+    pills:['ఇంటర్న్‌షిప్‌లు','డ్రాఫ్టింగ్ నైపుణ్యాలు','నెట్‌వర్కింగ్','స్పెషలైజేషన్'],
+    nextSteps:'డ్రాఫ్టింగ్ పని పోర్ట్‌ఫోలియో నిర్మించండి — మాక్ కాంట్రాక్టులు కూడా లెక్కిస్తాయి. లీగల్ కాంక్లేవ్‌లకు హాజరు కండి.',
+  },
+  civil:{
+    eyebrow:'మార్గం IV — సివిల్ సర్వీసెస్', title:'లా నేపథ్యంతో UPSC & స్టేట్ PCS',
+    eligibility:(stage)=>({
+      early:'LLB సహా ఏదైనా బ్యాచిలర్ డిగ్రీ UPSC CSE కు అర్హత పొందుతుంది. మీకు సమయం ఉంది — ఇది మంచి వార్త.',
+      mid:'అదే అర్హత స్థితి, లా ను మీ ఐచ్ఛిక సబ్జెక్ట్‌గా పరిగణించే అదనపు ప్రయోజనంతో.',
+      final:'మీ డిగ్రీ లభించిన తర్వాత దరఖాస్తు చేయడానికి అర్హులు అవుతారు. వయసు పరిమితి సాధారణంగా జనరల్ కేటగిరీకి 21-32.',
+      grad:'మీరు ఇప్పుడు అర్హులు. మీరు మీ LLB కోర్సు వర్క్ ఆనందించినట్లయితే లా నిజంగా బలమైన ఐచ్ఛిక సబ్జెక్ట్ ఎంపిక.',
+    }[stage]||''),
+    pattern:'ప్రిలిమ్స్ (2 ఆబ్జెక్టివ్ పేపర్లు) → మెయిన్స్ (9 వివరణాత్మక పేపర్లు, లా ఎంచుకుంటే 2 ఐచ్ఛిక పేపర్లతో సహా) → ఇంటర్వ్యూ.',
+    reality:'ఇది లా-నిర్దిష్ట పరీక్ష కాదు — జనరల్ స్టడీస్, కరెంట్ అఫైర్స్ మరియు వ్యాస రచనకు గణనీయమైన ప్రాధాన్యత ఉంటుంది. బహుళ-సంవత్సరాల తయారీ (తరచుగా 2-4 ప్రయత్నాలు) ప్రమాణం.',
+    pills:['UPSC CSE','లా ఐచ్ఛికం','GS పేపర్లు','కరెంట్ అఫైర్స్'],
+    nextSteps:'మీ ప్రస్తుత దశతో సంబంధం లేకుండా ఇప్పుడే రోజువారీ వార్తాపత్రిక అలవాటు ప్రారంభించండి.',
+  },
+  academia:{
+    eyebrow:'మార్గం V — అకడెమియా', title:'తదుపరి తరం న్యాయవాదులకు బోధించడం',
+    eligibility:(stage)=>({
+      early:'మీరు ప్రారంభంలో ఉన్నారు, ఇది ఈ మార్గానికి నిజంగా మంచిది. ఇప్పుడు బలమైన అకడెమిక్ పనితీరు (మరియు తర్వాత LLM) దాదాపు ఏ ఇతర మార్గం కంటే ఇక్కడ ఎక్కువ ముఖ్యం.',
+      mid:'మేధోపరంగా మిమ్మల్ని నిజంగా ఆకర్షించే సబ్జెక్ట్ ప్రాంతం గురించి ఆలోచించడం ప్రారంభించండి.',
+      final:'అకడెమియా లక్ష్యం అయితే ఇప్పుడే మీ LLM దరఖాస్తులను ప్లాన్ చేయండి.',
+      grad:'NET (UGC) లేదా SET (రాష్ట్ర-స్థాయి) మిమ్మల్ని అసిస్టెంట్ ప్రొఫెసర్ అర్హతకు అర్హులను చేస్తుంది. LLM ఎక్కువగా ఆశించబడుతుంది.',
+    }[stage]||''),
+    pattern:'LLB → LLM (స్పెషలైజేషన్) → NET/SET అర్హత → అసిస్టెంట్ ప్రొఫెసర్ పాత్ర → ఐచ్ఛికంగా ఉన్నత అకడెమిక్ స్థానాలకు PhD.',
+    reality:'అకడెమిక్ జీతాలు, ముఖ్యంగా ప్రారంభంలో, కార్పొరేట్ లాతో పోలిస్తే తక్కువగా ఉంటాయి — కానీ ఈ మార్గం అరుదైనదాన్ని అందిస్తుంది: చట్టంతో నిజమైన మేధోపరమైన నిమగ్నత.',
+    pills:['LLM','NET/SET','పరిశోధన','PhD (ఐచ్ఛికం)'],
+    nextSteps:'మీ LLB సమయంలోనే మీ నిజమైన మేధోపరమైన ఆసక్తి ప్రాంతాన్ని గుర్తించండి. పరిశోధన మరియు రచన అలవాటు నిర్మించడం ప్రారంభించండి.',
+  },
+};
+PATHS.hi = {
+  judiciary:{
+    eyebrow:'पथ I — न्यायपालिका', title:'सिविल जज बनना',
+    eligibility:(stage)=>({
+      early:'आप अभी आवेदन के योग्य नहीं हैं, लेकिन यह रोज़ाना फैसले पढ़ना शुरू करने और CPC, CrPC, साक्ष्य अधिनियम, संवैधानिक कानून में नींव बनाने का सही समय है।',
+      mid:'ऊपर जैसा ही — अभी योग्य नहीं, लेकिन 2 साल दूर हैं। यह मुख्य तैयारी का समय है।',
+      final:'आपकी LLB डिग्री मिलते ही आप योग्य हो जाएंगे। अधिसूचनाओं पर बारीकी से नज़र रखें।',
+      grad:'आप अभी संभवतः योग्य हैं — विशिष्ट राज्य की आयु सीमा (आमतौर पर 21–35) जांचें।',
+    }[stage]||''),
+    pattern:'<strong>प्रीलिम्स</strong> (वस्तुनिष्ठ) → <strong>मेन्स</strong> (वर्णनात्मक) → <strong>इंटरव्यू</strong>। अधिकांश राज्य इस 3-चरण संरचना का पालन करते हैं, TSJS और APJS सहित।',
+    reality:'यह कानूनी क्षेत्र की सबसे प्रतिस्पर्धी परीक्षाओं में से एक है — अच्छे वर्षों में 1:300 से 1:700+ अनुपात आम हैं। अधिकांश सफल उम्मीदवार 2री या 3री कोशिश में पास करते हैं।',
+    pills:['CPC','CrPC','साक्ष्य अधिनियम','संविधान','स्थानीय कानून'],
+    nextSteps:'बेयर एक्ट्स से शुरू करें — किसी भी टिप्पणी से पहले पूरा पढ़ें। अंतिम वर्ष के करीब संरचित टेस्ट सीरीज़ में शामिल हों।',
+  },
+  litigation:{
+    eyebrow:'पथ II — मुकदमेबाजी', title:'बार में स्वतंत्र प्रैक्टिस',
+    eligibility:(stage)=>({
+      early:'आप अभी बार काउंसिल में नामांकन नहीं कर सकते, लेकिन मूटिंग शुरू कर सकते हैं, अदालती कार्यवाही में पर्यवेक्षक के रूप में भाग ले सकते हैं।',
+      mid:'नामांकन से अभी 1-2 साल दूर हैं, लेकिन यह वह समय है जब प्रैक्टिसिंग एडवोकेट्स के तहत इंटर्नशिप सबसे ज़्यादा मायने रखती है।',
+      final:'लगभग पहुंच गए। उन सीनियर्स की पहचान शुरू करें जिनके तहत आप काम करना चाहेंगे।',
+      grad:'आप अभी अपने स्टेट बार काउंसिल में नामांकन कर सकते हैं (AIBE 2 साल में आवश्यक)।',
+    }[stage]||''),
+    pattern:'स्टेट बार काउंसिल में नामांकन → 2 साल में AIBE पास करें → सीनियर एडवोकेट के तहत जूनियर के रूप में काम (आमतौर पर 1-3 साल) → धीरे-धीरे स्वतंत्र प्रैक्टिस बनाएं।',
+    reality:'अपने आप से ईमानदार रहें: स्वतंत्र प्रैक्टिस के पहले 2-3 साल लगभग सभी के लिए आर्थिक रूप से कमज़ोर होते हैं। यह रास्ता धैर्य और अदालत कक्ष में वास्तविक रुचि को पुरस्कृत करता है।',
+    pills:['AIBE','बार काउंसिल','सीनियर मेंटर','धैर्य'],
+    nextSteps:'ऐसे सीनियर की तलाश करें जिनके काम का आप सम्मान करते हैं, सिर्फ ज़्यादा पैसे देने वाले की नहीं। धीरे-धीरे विशेषज्ञता हासिल करें।',
+  },
+  corporate:{
+    eyebrow:'पथ III — कॉर्पोरेट लॉ', title:'लॉ फर्म और इन-हाउस काउंसल',
+    eligibility:(stage)=>({
+      early:'शुरू करने का सही समय। कॉर्पोरेट लॉ भर्तीकर्ता इंटर्नशिप को बहुत महत्व देते हैं — अपनी डिग्री के दौरान 3-4 सार्थक इंटर्नशिप का लक्ष्य रखें।',
+      mid:'यह आपका इंटर्नशिप-भारी चरण है। अंतिम वर्ष से पहले अपनी रुचि के क्षेत्र में कम से कम एक फर्म में इंटर्नशिप का लक्ष्य रखें।',
+      final:'कैंपस प्लेसमेंट या सीधे आवेदन अब होते हैं। अपने CV को विशिष्ट प्रैक्टिस क्षेत्र के इर्द-गिर्द निखारें।',
+      grad:'फर्मों या इन-हाउस लीगल टीमों को सीधे आवेदन। कैंपस प्लेसमेंट के बिना, आपका इंटर्नशिप ट्रैक रिकॉर्ड सबसे मज़बूत योग्यता बन जाता है।',
+    }[stage]||''),
+    pattern:'इंटर्नशिप (कई, रणनीतिक) → कैंपस प्लेसमेंट या लेटरल आवेदन → फर्म या लीगल टीम में एसोसिएट भूमिका → 3-5 वर्षों में विशेषज्ञता।',
+    reality:'NLU स्नातकों को कैंपस प्लेसमेंट में संरचनात्मक लाभ है, लेकिन यह एकमात्र दरवाज़ा नहीं है — मज़बूत इंटर्नशिप रिकॉर्ड गैर-NLU छात्रों के लिए भी फर्म के दरवाज़े खोल सकते हैं।',
+    pills:['इंटर्नशिप','ड्राफ्टिंग कौशल','नेटवर्किंग','विशेषज्ञता'],
+    nextSteps:'ड्राफ्टिंग कार्य का पोर्टफोलियो बनाएं — मॉक कॉन्ट्रैक्ट भी मायने रखते हैं। कानूनी सम्मेलनों में भाग लें।',
+  },
+  civil:{
+    eyebrow:'पथ IV — सिविल सेवाएं', title:'कानूनी पृष्ठभूमि के साथ UPSC और राज्य PCS',
+    eligibility:(stage)=>({
+      early:'LLB सहित कोई भी स्नातक डिग्री UPSC CSE के लिए योग्य है। आपके पास समय है — यह अच्छी खबर है।',
+      mid:'वही योग्यता स्थिति, कानून को अपने वैकल्पिक विषय के रूप में मानने के अतिरिक्त लाभ के साथ।',
+      final:'आपकी डिग्री मिलते ही आप आवेदन के योग्य हो जाएंगे। आयु सीमा आमतौर पर सामान्य श्रेणी के लिए 21-32 है।',
+      grad:'आप अभी योग्य हैं। यदि आपने अपने LLB कोर्सवर्क का आनंद लिया है तो कानून वास्तव में एक मज़बूत वैकल्पिक विषय विकल्प है।',
+    }[stage]||''),
+    pattern:'प्रीलिम्स (2 वस्तुनिष्ठ पेपर) → मेन्स (9 वर्णनात्मक पेपर, कानून चुनने पर 2 वैकल्पिक पेपर सहित) → इंटरव्यू।',
+    reality:'यह कानून-विशिष्ट परीक्षा नहीं है — सामान्य अध्ययन, समसामयिक मामले और निबंध लेखन का महत्वपूर्ण भार है। बहु-वर्षीय तैयारी (अक्सर 2-4 प्रयास) आदर्श है।',
+    pills:['UPSC CSE','कानून वैकल्पिक','GS पेपर','समसामयिक मामले'],
+    nextSteps:'अपने वर्तमान चरण की परवाह किए बिना अभी दैनिक समाचार पत्र पढ़ने की आदत शुरू करें।',
+  },
+  academia:{
+    eyebrow:'पथ V — अकादमिक', title:'अगली पीढ़ी के वकीलों को पढ़ाना',
+    eligibility:(stage)=>({
+      early:'आप शुरुआती हैं, जो इस रास्ते के लिए वास्तव में अच्छा है। अभी मज़बूत अकादमिक प्रदर्शन (और बाद में LLM) यहां लगभग किसी भी अन्य रास्ते से ज़्यादा मायने रखता है।',
+      mid:'उस विषय क्षेत्र के बारे में सोचना शुरू करें जो आपको वास्तव में बौद्धिक रूप से दिलचस्प लगता है।',
+      final:'यदि अकादमिक लक्ष्य है तो अभी अपने LLM आवेदनों की योजना बनाएं।',
+      grad:'NET (UGC) या SET (राज्य-स्तर) आपको असिस्टेंट प्रोफेसर योग्यता के लिए योग्य बनाता है। LLM तेज़ी से अपेक्षित है।',
+    }[stage]||''),
+    pattern:'LLB → LLM (विशेषज्ञता) → NET/SET योग्यता → असिस्टेंट प्रोफेसर भूमिका → वैकल्पिक रूप से उच्च अकादमिक पदों के लिए PhD।',
+    reality:'अकादमिक वेतन, विशेष रूप से शुरुआत में, कॉर्पोरेट लॉ की तुलना में मामूली होते हैं — लेकिन यह रास्ता कुछ दुर्लभ प्रदान करता है: कानून के साथ वास्तविक बौद्धिक जुड़ाव।',
+    pills:['LLM','NET/SET','अनुसंधान','PhD (वैकल्पिक)'],
+    nextSteps:'अपने LLB के दौरान ही अपनी वास्तविक बौद्धिक रुचि का क्षेत्र पहचानें। अनुसंधान और लेखन की आदत बनाना शुरू करें।',
+  },
+};
+
+// ══════════════════════════════════════════
+//  RENDER PATH CARD
+// ══════════════════════════════════════════
+function renderPathCard(interestKey, stage){
+  const t = T[lang];
+  const p = PATHS[lang][interestKey];
+  if(!p) return '';
+  const elig = p.eligibility(stage);
+  return `
+    <div class="ic-eyebrow">${p.eyebrow}</div>
+    <div class="ic-title">${p.title}</div>
+    <div class="ic-section">
+      <div class="ic-label">${lang==='te'?'మీ అర్హత స్థితి':lang==='hi'?'आपकी योग्यता स्थिति':'Your Eligibility Right Now'}</div>
+      <div class="ic-text">${elig}</div>
+    </div>
+    <div class="ic-divider"></div>
+    <div class="ic-section">
+      <div class="ic-label">${lang==='te'?'సాధారణ ప్యాటర్న్':lang==='hi'?'सामान्य पैटर्न':'The General Pattern'}</div>
+      <div class="ic-text">${p.pattern}</div>
+    </div>
+    <div class="ic-divider"></div>
+    <div class="ic-section">
+      <div class="ic-label">${lang==='te'?'వాస్తవ మాట':lang==='hi'?'सच्ची बात':'A Reality Check'}</div>
+      <div class="ic-text">${p.reality}</div>
+      <div class="ic-pills">${p.pills.map(pl=>`<span class="ic-pill gold">${pl}</span>`).join('')}</div>
+    </div>
+    <div class="ic-divider"></div>
+    <div class="ic-section">
+      <div class="ic-label">${lang==='te'?'తదుపరి అడుగులు':lang==='hi'?'अगले कदम':'Practical Next Steps'}</div>
+      <div class="ic-text">${p.nextSteps}</div>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+//  MAIN FLOW
+// ══════════════════════════════════════════
+let currentStage = null;
+
+async function startFlow(){
+  clearChat();
+  const t = T[lang];
+  await botMsg(t.greet, 600);
+  const stageVal = await showChoices(t.stageOpts);
+  currentStage = stageVal;
+  addCrumb(t.stageCrumb[stageVal]);
+  await interestStep();
+}
+
+async function interestStep(){
+  const t = T[lang];
+  await botMsg(t.askInterest, 600);
+  const interestVal = await showChoices(t.interestOpts);
+
+  if(interestVal === 'unsure'){
+    addCrumb(t.interestCrumb.unsure);
+    await showAllSummary();
+    return;
+  }
+
+  addCrumb(t.interestCrumb[interestVal]);
+  await showPathDetail(interestVal);
+}
+
+async function showAllSummary(){
+  const t = T[lang];
+  await botMsg(lang==='te' ? 'పర్వాలేదు — ఇక్కడ అన్ని ఐదు మార్గాల సంక్షిప్త వీక్షణ ఉంది. ఏది మిమ్మల్ని ఆకర్షిస్తుందో గమనించండి, ఆపై లోతుగా వెళ్దాం.' :
+    lang==='hi' ? 'कोई बात नहीं — यहां सभी पांच रास्तों का संक्षिप्त विवरण है। देखें कि आपको क्या आकर्षित करता है, फिर हम गहराई में जाएंगे।' :
+    'No problem — here\'s a quick look at all five paths. Notice which one pulls at you, then we\'ll go deeper.', 600);
+
+  for(const key of ['judiciary','litigation','corporate','civil','academia']){
+    const p = PATHS[lang][key];
+    await botCard(`<div class="ic-eyebrow">${p.eyebrow}</div><div class="ic-title">${p.title}</div><div class="ic-text">${p.reality.split('.')[0]}.</div>`);
+    await new Promise(r=>setTimeout(r, 200));
+  }
+
+  await botMsg(t.bridge, 500);
+  const interestVal = await showChoices(T[lang].interestOpts.filter(o=>o.value!=='unsure'));
+  addCrumb(T[lang].interestCrumb[interestVal]);
+  await showPathDetail(interestVal);
+}
+
+async function showPathDetail(interestKey){
+  const t = T[lang];
+  await new Promise(r=>setTimeout(r, 300));
+  await botCard(renderPathCard(interestKey, currentStage));
+  await new Promise(r=>setTimeout(r, 400));
+  await botMsg(t.afterCard, 500);
+  const choice = await showChoices(t.endOpts);
+
+  if(choice === 'restart_interest'){
+    await botMsg(t.restartGreet, 500);
+    await interestStep();
+  } else if(choice === 'restart_all'){
+    await startFlow();
+  } else if(choice === 'calculators'){
+    window.location.href = 'calculators.html';
+  }
+}
+
+// ══════════════════════════════════════════
+//  LANG SWITCH
+// ══════════════════════════════════════════
+function setLang(l){
+  lang = l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active', ['en','te','hi'][i]===l));
+  document.getElementById('navTitle').textContent = T[l].navTitle;
+  document.getElementById('footerTxt').textContent = T[l].footerTxt;
+  document.documentElement.lang = l;
+  try{ localStorage.setItem('career_lang', l); }catch(e){}
+  startFlow();
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+(function(){
+  let saved = 'en';
+  try{ saved = localStorage.getItem('career_lang') || 'en'; }catch(e){}
+  lang = saved;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active', ['en','te','hi'][i]===saved));
+  document.getElementById('navTitle').textContent = T[saved].navTitle;
+  document.getElementById('footerTxt').textContent = T[saved].footerTxt;
+  startFlow();
+})();
+</script>
+</body>
+</html>
