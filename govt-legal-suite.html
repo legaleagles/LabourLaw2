@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Government & Legal Calculator Suite — PF, Gratuity, TDS, NPS, RTI | LawSticker AI</title>
+<meta name="description" content="Free calculators for EPF/PF balance, gratuity, TDS, NPS pension, RTI fee. All government rules hardcoded. Trilingual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --gov:#0F4C81;--gov-l:#90CAF9;--gov-pale:#E3F2FD;--gov-deep:#0D3663;
+  --ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;
+  --jade:#10B981;--jade-bg:#D1FAE5;--jade-deep:#065F46;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;--amber-deep:#78350F;
+  --navy:#0D1117;
+  /* tab accents */
+  --pf:#0F4C81;--pfl:#90CAF9;--pfp:#E3F2FD;
+  --gr:#065F46;--grl:#6EE7B7;--grp:#ECFDF5;
+  --td:#7C3AED;--tdl:#C4B5FD;--tdp:#F5F3FF;
+  --np:#B45309;--npl:#FCD34D;--npp:#FFFBEB;
+  --rt:#BE185D;--rtl:#F9A8D4;--rtp:#FFF1F2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gov-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gov-l);color:var(--gov-l);background:rgba(144,202,249,.1)}
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--light);overflow-x:auto;scrollbar-width:none;position:sticky;top:53px;z-index:90}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:12px 14px;border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.tab-btn.active.t-pf{color:var(--pf);border-bottom-color:var(--pf)}
+.tab-btn.active.t-gr{color:var(--gr);border-bottom-color:var(--gr)}
+.tab-btn.active.t-td{color:var(--td);border-bottom-color:var(--td)}
+.tab-btn.active.t-np{color:var(--np);border-bottom-color:var(--np)}
+.tab-btn.active.t-rt{color:var(--rt);border-bottom-color:var(--rt)}
+.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);-webkit-appearance:none;transition:border-color .2s}
+.pfx{position:relative}
+.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;pointer-events:none}
+.pfx input{padding-left:28px}
+.sfx input{padding-right:36px}
+.sfx .s{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;pointer-events:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule-box{border-radius:10px;padding:10px 12px;font-size:11px;line-height:1.6;margin-bottom:14px;border-left:3px solid}
+.rule-box.law{background:var(--gov-pale);border-color:var(--gov);color:var(--gov-deep)}
+.calc-btn{width:100%;padding:14px;color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:18px;transition:transform .1s}
+.calc-btn:active{transform:scale(.98)}
+.result-hero{border-radius:16px;padding:20px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:4px;color:rgba(255,255,255,.8)}
+.r-amount{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,42px);font-weight:900;color:#fff;line-height:1}
+.r-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px}
+.irow{display:grid;gap:10px;margin-bottom:14px}
+.irow.c2{grid-template-columns:1fr 1fr}
+.irow.c3{grid-template-columns:1fr 1fr 1fr}
+.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
+.ibox .iv{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1;margin-bottom:3px}
+.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.bdown-head{padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.06)}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--light);font-size:13px}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
+.brow .bl .bs{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.brow .ba{font-weight:700;text-align:right}
+.brow.pos .ba{color:var(--jade)}
+.brow.neg .ba{color:var(--rose)}
+.brow.tot{background:var(--navy)}
+.brow.tot .bl{color:rgba(255,255,255,.7);font-weight:700}
+.brow.tot .ba{color:#fff;font-size:15px}
+.brow.hi{background:var(--amber-bg)}
+.brow.hi .bl{color:var(--amber-deep)}
+.brow.hi .ba{color:var(--amber-deep)}
+.tips-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
+.tips-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(144,202,249,.55);margin-bottom:10px}
+.tip-item{font-size:12px;color:rgba(255,255,255,.72);line-height:1.6;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.tip-item:last-child{border-bottom:none}
+.tip-item span{color:#90CAF9;font-weight:600}
+.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--gov);text-decoration:none}
+@media(max-width:400px){.row2{grid-template-columns:1fr}.irow.c3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="calculators.html">← Calculators</a>
+    <div class="nav-title" id="nav-title">🏛️ Govt & Legal Suite</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+<div class="tab-bar">
+  <button class="tab-btn active t-pf" data-t="pf" onclick="setTab('pf')">🏦 <span id="tb-pf">EPF / PF</span></button>
+  <button class="tab-btn t-gr" data-t="gr" onclick="setTab('gr')">🤝 <span id="tb-gr">Gratuity</span></button>
+  <button class="tab-btn t-td" data-t="td" onclick="setTab('td')">🧾 <span id="tb-td">TDS</span></button>
+  <button class="tab-btn t-np" data-t="np" onclick="setTab('np')">🌅 <span id="tb-np">NPS Pension</span></button>
+  <button class="tab-btn t-rt" data-t="rt" onclick="setTab('rt')">📋 <span id="tb-rt">RTI / Consumer</span></button>
+</div>
+<div class="container">
+
+<!-- ══ PF TAB ══ -->
+<div id="tab-pf">
+  <div class="rule-box law" id="pf-rule">📌 EPF rule: Employee contributes 12% of Basic+DA. Employer contributes 12% — split as 3.67% to EPF + 8.33% to EPS. Current EPF interest rate: <strong>8.25% p.a.</strong> (FY 2023-24). Rules are configured — just enter your salary details.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--pf)" id="pf-c1">Your Details<span style="display:none"></span></div>
+    <div class="row2">
+      <div class="field">
+        <label id="pf-l-basic">Basic + DA <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--pf)">₹</span><input type="number" id="pf-basic" value="30000" step="500" style="background:#E3F2FD"></div>
+      </div>
+      <div class="field">
+        <label id="pf-l-years">Years of Service</label>
+        <input type="number" id="pf-years" value="10" min="1" max="35" step="1" style="background:#E3F2FD">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="pf-l-existing">Existing PF Balance <span class="hint">(if any)</span></label>
+        <div class="pfx"><span class="p" style="color:var(--pf)">₹</span><input type="number" id="pf-existing" value="0" step="1000" style="background:#E3F2FD"></div>
+      </div>
+      <div class="field">
+        <label id="pf-l-hike">Avg Annual Salary Hike <span class="hint">%</span></label>
+        <div class="sfx" style="position:relative"><input type="number" id="pf-hike" value="8" step="1" min="0" max="30" style="background:#E3F2FD;padding-right:30px"><span class="s" style="color:var(--pf)">%</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#0D3663,#0F4C81)" onclick="calcPf()">Calculate PF Corpus →</button>
+  <div id="pf-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#0D3663,#1565C0)">
+      <div class="r-label" id="pf-r-label">Total PF Corpus at Retirement</div>
+      <div class="r-amount" id="pf-r-amount">₹0</div>
+      <div class="r-sub" id="pf-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="pf-i1" style="color:var(--pf)">₹0</div><div class="il" id="pf-il1">Your Contribution</div></div>
+      <div class="ibox"><div class="iv" id="pf-i2" style="color:var(--gr)">₹0</div><div class="il" id="pf-il2">Employer Share</div></div>
+      <div class="ibox"><div class="iv" id="pf-i3" style="color:var(--amber)">₹0</div><div class="il" id="pf-il3">Interest Earned</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--pfp);color:var(--pf)" id="pf-bd-head">Year-wise Growth</div>
+      <div id="pf-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="pf-tips-eye">💡 PF Tips — Know Your Rights</div><div id="pf-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('pf')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ GRATUITY TAB ══ -->
+<div id="tab-gr" style="display:none">
+  <div class="rule-box law" id="gr-rule">📌 Gratuity Act 1972: Eligible after 5 years of continuous service. Formula: <strong>(Basic+DA) × Years × 15 / 26</strong>. Maximum tax-free gratuity: ₹20 lakhs (revised 2024). Configured — just enter your details.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--gr)" id="gr-c1">Employment Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="gr-l-basic">Last Basic + DA <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--gr)">₹</span><input type="number" id="gr-basic" value="50000" step="500" style="background:var(--grp)"></div>
+      </div>
+      <div class="field">
+        <label id="gr-l-years">Years of Service</label>
+        <input type="number" id="gr-years" value="10" min="1" max="40" step="1" style="background:var(--grp)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="gr-l-org">Organisation Type</label>
+      <select id="gr-org" style="background:var(--grp)">
+        <option value="covered">Covered under Gratuity Act (10+ employees)</option>
+        <option value="notcovered">Not covered (ex-gratia)</option>
+        <option value="govt">Government / PSU employee</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#065F46,#059669)" onclick="calcGratuity()">Calculate Gratuity →</button>
+  <div id="gr-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#065F46,#047857)">
+      <div class="r-label" id="gr-r-label">Gratuity Amount</div>
+      <div class="r-amount" id="gr-r-amount">₹0</div>
+      <div class="r-sub" id="gr-r-sub"></div>
+    </div>
+    <div class="irow c2">
+      <div class="ibox"><div class="iv" id="gr-i1" style="color:var(--gr)">₹0</div><div class="il" id="gr-il1">Tax-Free Amount</div></div>
+      <div class="ibox"><div class="iv" id="gr-i2" style="color:var(--rose)">₹0</div><div class="il" id="gr-il2">Taxable (if any)</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--grp);color:var(--gr)" id="gr-bd-head">Gratuity Breakdown</div>
+      <div id="gr-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="gr-tips-eye">💡 Gratuity Tips — Protect What You Earned</div><div id="gr-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('gr')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ TDS TAB ══ -->
+<div id="tab-td" style="display:none">
+  <div class="rule-box law" id="td-rule">📌 TDS rates are fixed by Income Tax Act. Configured as per FY 2024-25 rates. Enter payment details — TDS amount and net payable calculated automatically.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--td)" id="td-c1">Payment Details</div>
+    <div class="field">
+      <label id="td-l-type">Payment / Income Type</label>
+      <select id="td-type" onchange="updateTdsRate()" style="background:var(--tdp)">
+        <option value="192,10,30">Salary (Sec 192) — per tax slab</option>
+        <option value="194A,10,20">Interest from Bank FD (Sec 194A) — 10%</option>
+        <option value="194B,30,30">Lottery / Winnings (Sec 194B) — 30%</option>
+        <option value="194C,1,2">Contractor Payment (Sec 194C) — 1% individual, 2% company</option>
+        <option value="194H,5,5">Commission / Brokerage (Sec 194H) — 5%</option>
+        <option value="194I,10,10">Rent of Land/Building (Sec 194I) — 10%</option>
+        <option value="194IA,1,1">Purchase of Property >₹50L (Sec 194IA) — 1%</option>
+        <option value="194J,10,10">Professional / Technical Fee (Sec 194J) — 10%</option>
+        <option value="194M,5,5">Payment by Individual to Professional (Sec 194M) — 5%</option>
+        <option value="194Q,0.1,0.1">Purchase of Goods >₹50L (Sec 194Q) — 0.1%</option>
+      </select>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="td-l-amount">Gross Payment Amount</label>
+        <div class="pfx"><span class="p" style="color:var(--td)">₹</span><input type="number" id="td-amount" value="100000" step="1000" style="background:var(--tdp)"></div>
+      </div>
+      <div class="field">
+        <label id="td-l-payee">Payee Type</label>
+        <select id="td-payee" onchange="updateTdsRate()" style="background:var(--tdp)">
+          <option value="individual">Individual / HUF</option>
+          <option value="company">Company / Firm</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label id="td-l-pan">PAN Status</label>
+      <select id="td-pan" onchange="updateTdsRate()" style="background:var(--tdp)">
+        <option value="yes">PAN available</option>
+        <option value="no">PAN not available (rate doubles — Sec 206AA)</option>
+      </select>
+    </div>
+    <div class="rule-box law" id="td-rate-display" style="margin-bottom:0">TDS Rate: <strong id="td-rate-val">10%</strong></div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#4C1D95,#7C3AED)" onclick="calcTds()">Calculate TDS →</button>
+  <div id="td-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#4C1D95,#6D28D9)">
+      <div class="r-label" id="td-r-label">TDS to Deduct</div>
+      <div class="r-amount" id="td-r-amount">₹0</div>
+      <div class="r-sub" id="td-r-sub"></div>
+    </div>
+    <div class="irow c2">
+      <div class="ibox"><div class="iv" id="td-i1" style="color:var(--td)">₹0</div><div class="il" id="td-il1">Gross Amount</div></div>
+      <div class="ibox"><div class="iv" id="td-i2" style="color:var(--jade)">₹0</div><div class="il" id="td-il2">Net Payable</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--tdp);color:var(--td)" id="td-bd-head">TDS Breakdown</div>
+      <div id="td-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="td-tips-eye">💡 TDS Tips — Save & Comply</div><div id="td-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('td')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ NPS TAB ══ -->
+<div id="tab-np" style="display:none">
+  <div class="rule-box law" id="np-rule">📌 NPS: Employee contributes 10% of Basic+DA. Government employees — govt contributes 14%. Private sector — employer contributes 10%. Annuity purchase mandatory on 40% of corpus at retirement. Returns assumed at 10% p.a. (equity-heavy Tier I).</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--np)" id="np-c1">NPS Details</div>
+    <div class="row2">
+      <div class="field">
+        <label id="np-l-basic">Basic + DA <span class="hint">per month</span></label>
+        <div class="pfx"><span class="p" style="color:var(--np)">₹</span><input type="number" id="np-basic" value="40000" step="500" style="background:var(--npp)"></div>
+      </div>
+      <div class="field">
+        <label id="np-l-age">Current Age</label>
+        <input type="number" id="np-age" value="30" min="18" max="59" step="1" style="background:var(--npp)">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label id="np-l-sector">Sector</label>
+        <select id="np-sector" style="background:var(--npp)">
+          <option value="govt">Central Govt (14% employer)</option>
+          <option value="private">Private (10% employer)</option>
+          <option value="voluntary">Voluntary (self only)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="np-l-return">Expected Return <span class="hint">% p.a.</span></label>
+        <div class="sfx" style="position:relative"><input type="number" id="np-return" value="10" step="0.5" min="6" max="14" style="background:var(--npp);padding-right:30px"><span class="s" style="color:var(--np)">%</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#78350F,#D97706)" onclick="calcNps()">Calculate NPS Pension →</button>
+  <div id="np-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#78350F,#B45309)">
+      <div class="r-label" id="np-r-label">Estimated Monthly Pension</div>
+      <div class="r-amount" id="np-r-amount">₹0</div>
+      <div class="r-sub" id="np-r-sub"></div>
+    </div>
+    <div class="irow c3">
+      <div class="ibox"><div class="iv" id="np-i1" style="color:var(--np)">₹0</div><div class="il" id="np-il1">Total Corpus</div></div>
+      <div class="ibox"><div class="iv" id="np-i2" style="color:var(--jade)">₹0</div><div class="il" id="np-il2">Lump Sum (60%)</div></div>
+      <div class="ibox"><div class="iv" id="np-i3" style="color:var(--rose)">₹0</div><div class="il" id="np-il3">Annuity (40%)</div></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--npp);color:var(--np)" id="np-bd-head">NPS Breakdown</div>
+      <div id="np-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="np-tips-eye">💡 NPS Tips — Maximise Your Pension</div><div id="np-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('np')">← Recalculate</button>
+  </div>
+</div>
+
+<!-- ══ RTI TAB ══ -->
+<div id="tab-rt" style="display:none">
+  <div class="rule-box law" id="rt-rule">📌 RTI Act 2005: Application fee ₹10. Additional info fee ₹2/page. First appeal: FREE. Second appeal to CIC/SIC: FREE. BPL applicants: fully exempt. Consumer court filing fee varies by claim value.</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--rt)" id="rt-c1">Select What You Need</div>
+    <div class="field">
+      <label id="rt-l-type">Type of Application</label>
+      <select id="rt-type" onchange="updateRtiFields()" style="background:var(--rtp)">
+        <optgroup label="RTI — Right to Information">
+          <option value="rti_app">RTI Application (Sec 6)</option>
+          <option value="rti_first">RTI First Appeal (Sec 19(1))</option>
+          <option value="rti_second">RTI Second Appeal to CIC/SIC (Sec 19(3))</option>
+        </optgroup>
+        <optgroup label="Consumer Court">
+          <option value="consumer_district">Consumer Complaint — District Commission</option>
+          <option value="consumer_state">Consumer Appeal — State Commission</option>
+          <option value="consumer_national">Consumer Appeal — National Commission</option>
+        </optgroup>
+        <optgroup label="Other Legal">
+          <option value="motor_accident">Motor Accident Claim (MACT)</option>
+          <option value="labour_court">Labour Court / Industrial Tribunal</option>
+        </optgroup>
+      </select>
+    </div>
+    <div id="rt-pages-field" style="display:none">
+      <div class="field">
+        <label id="rt-l-pages">Number of Pages / Documents Requested</label>
+        <input type="number" id="rt-pages" value="10" min="1" style="background:var(--rtp)">
+      </div>
+    </div>
+    <div id="rt-claim-field" style="display:none">
+      <div class="field">
+        <label id="rt-l-claim">Claim / Dispute Value</label>
+        <div class="pfx"><span class="p" style="color:var(--rt)">₹</span><input type="number" id="rt-claim" value="100000" step="1000" style="background:var(--rtp)"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label id="rt-l-bpl">Are you a BPL (Below Poverty Line) cardholder?</label>
+      <select id="rt-bpl" style="background:var(--rtp)">
+        <option value="no">No</option>
+        <option value="yes">Yes — BPL card holder (RTI fee exempt)</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc-btn" style="background:linear-gradient(135deg,#881337,#BE185D)" onclick="calcRti()">Calculate Fee →</button>
+  <div id="rt-results" style="display:none">
+    <div class="result-hero" style="background:linear-gradient(135deg,#881337,#9D174D)">
+      <div class="r-label" id="rt-r-label">Fee Payable</div>
+      <div class="r-amount" id="rt-r-amount">₹0</div>
+      <div class="r-sub" id="rt-r-sub"></div>
+    </div>
+    <div class="bdown">
+      <div class="bdown-head" style="background:var(--rtp);color:var(--rt)" id="rt-bd-head">Fee Breakdown</div>
+      <div id="rt-rows"></div>
+    </div>
+    <div class="tips-box"><div class="tips-eye" id="rt-tips-eye">💡 RTI / Consumer Rights Tips</div><div id="rt-tips"></div></div>
+    <button class="reset-btn" onclick="resetTab('rt')">← Recalculate</button>
+  </div>
+</div>
+
+</div><!-- end container -->
+<footer><span id="footer-txt">Govt & Legal Suite · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+
+<script>
+const fmt = n => 'Rs.' + Math.round(n).toLocaleString('en-IN');
+const fmtRs = n => { if(n>=10000000) return 'Rs.'+(n/10000000).toFixed(2)+'Cr'; if(n>=100000) return 'Rs.'+(n/100000).toFixed(2)+'L'; return fmt(n); };
+const el = id => document.getElementById(id);
+const s = (id,v) => { const e=el(id); if(e) e.textContent=v; };
+const h = (id,v) => { const e=el(id); if(e) e.innerHTML=v; };
+// Use ₹ symbol
+const R = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const RL = n => { if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+'Cr'; if(n>=100000) return '₹'+(n/100000).toFixed(2)+'L'; return R(n); };
+
+let lang = 'en', currentTab = 'pf';
+
+const EPF_RATE = 8.25; // FY 2023-24
+
+// ── TDS rate lookup ──
+function updateTdsRate() {
+  const typeVal = el('td-type').value;
+  const parts = typeVal.split(',');
+  const indRate = parseFloat(parts[1]);
+  const compRate = parseFloat(parts[2]);
+  const payee = el('td-payee').value;
+  const pan = el('td-pan').value;
+  let rate = payee === 'company' ? compRate : indRate;
+  if(pan === 'no') rate = Math.max(rate * 2, 20);
+  el('td-rate-val').textContent = rate + '%';
+}
+
+function updateRtiFields() {
+  const type = el('rt-type').value;
+  el('rt-pages-field').style.display = type === 'rti_app' ? 'block' : 'none';
+  el('rt-claim-field').style.display = (type.startsWith('consumer') || type === 'motor_accident') ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS
+// ══════════════════════════════════════════
+const T = {
+  en: {
+    navTitle:'🏛️ Govt & Legal Suite',
+    tbPf:'EPF / PF', tbGr:'Gratuity', tbTd:'TDS', tbNp:'NPS Pension', tbRt:'RTI / Consumer',
+    pfRule:'📌 EPF: Employee 12% + Employer 3.67% (EPF) + 8.33% (EPS) of Basic+DA. Current rate: <strong>8.25% p.a.</strong> (FY 2023-24). Rules are pre-configured.',
+    pfC1:'Your Details', pfLBasic:'Basic + DA (per month)', pfLYears:'Years of Service',
+    pfLExisting:'Existing PF Balance', pfLHike:'Avg Annual Salary Hike %',
+    pfCalcBtn:'Calculate PF Corpus →', pfRLabel:'Total PF Corpus',
+    pfIl1:'Your Contribution', pfIl2:'Employer Share', pfIl3:'Interest Earned',
+    pfBdHead:'Year-wise PF Growth',
+    pfTipsEye:'💡 PF Tips — Know Your Rights',
+    pfTips:[
+      ['Check your UAN passbook monthly','Login at unifiedportal-mem.epfindia.gov.in — verify employer is depositing your PF. Employers who delay deposits must pay penal interest.'],
+      ['Nominate your family members','Ensure nominee is updated in EPFO portal. Unnominated PF causes massive delays for family in emergencies.'],
+      ['Do not withdraw PF early','PF withdrawn before 5 years is fully taxable. After 5 years — tax-free. The compounding at 8.25% is extremely difficult to beat.'],
+      ['Transfer PF when changing jobs','Use Form 13 or UAN portal to transfer, not withdraw. Withdrawal breaks compounding and triggers tax.'],
+      ['VPF — voluntary extra contribution','You can contribute more than 12% voluntarily (VPF). Same 8.25% rate, fully tax-exempt under 80C. Best risk-free instrument available.'],
+    ],
+    grRule:'📌 Payment of Gratuity Act 1972: Formula = (Basic+DA) × 15/26 × Years. Eligible after 5 years. Tax-free up to ₹20 lakhs.',
+    grC1:'Employment Details', grLBasic:'Last Basic + DA (per month)', grLYears:'Years of Service', grLOrg:'Organisation Type',
+    grCalcBtn:'Calculate Gratuity →', grRLabel:'Gratuity Amount',
+    grIl1:'Tax-Free Amount', grIl2:'Taxable (if any)',
+    grBdHead:'Gratuity Breakdown',
+    grTipsEye:'💡 Gratuity Tips — Protect What You Earned',
+    grTips:[
+      ['5 years = 240 days rule','If your last year has 240+ working days, it counts as a full year. Leaving at 4 years 8 months may still qualify as 5 years.'],
+      ['Employer cannot deduct arbitrarily','Gratuity can only be forfeited for wilful omission/damage. Resignation, retrenchment, or retirement — full amount is your right.'],
+      ['File Form I within 30 days','Submit Form I (gratuity claim) within 30 days of becoming eligible. Employer must pay within 30 days of receipt or pay interest.'],
+      ['Controlling Authority if denied','If employer refuses, file complaint before the Controlling Authority (usually Labour Commissioner) — it is free and fast.'],
+      ['No ceiling on actual payment','The ₹20L ceiling is only for tax exemption. Employer can pay more — the excess is taxable as salary income.'],
+    ],
+    tdRule:'📌 TDS rates as per Income Tax Act FY 2024-25. No PAN = double rate (min 20%) under Sec 206AA.',
+    tdC1:'Payment Details', tdLType:'Payment / Income Type', tdLAmount:'Gross Payment Amount',
+    tdLPayee:'Payee Type', tdLPan:'PAN Status',
+    tdCalcBtn:'Calculate TDS →', tdRLabel:'TDS to Deduct',
+    tdIl1:'Gross Amount', tdIl2:'Net Payable',
+    tdBdHead:'TDS Breakdown',
+    tdTipsEye:'💡 TDS Tips — Deduct Right, Claim Right',
+    tdTips:[
+      ['Deduct on payment OR credit — whichever is earlier','Common mistake: deducting TDS only when payment is made. The liability starts when you credit the amount in your books.'],
+      ['Deposit by 7th of next month','TDS deducted in any month must reach the govt by 7th of the following month. March deductions — by 30th April. Late deposit = 1.5% per month interest + penalty.'],
+      ['Form 15G / 15H saves TDS','If total income is below taxable limit, payee can submit Form 15G (individuals) or 15H (seniors) — no TDS deducted at all.'],
+      ['File TDS return quarterly','24Q (salary), 26Q (non-salary) must be filed quarterly. Late filing = ₹200/day penalty. Missing = ₹10,000–₹1L penalty.'],
+      ['Claim full TDS credit in ITR','All TDS deducted is visible in Form 26AS and AIS. Always reconcile before filing ITR — unclaimed TDS = lost money.'],
+    ],
+    npRule:'📌 NPS: 10% employee + 10/14% employer. Equity-heavy Tier I returns historically 10–12% p.a. At retirement: 60% lump sum (tax-free), 40% annuity (pension). Additional deduction u/s 80CCD(1B): ₹50,000.',
+    npC1:'NPS Details', npLBasic:'Basic + DA (per month)', npLAge:'Current Age',
+    npLSector:'Sector', npLReturn:'Expected Return % p.a.',
+    npCalcBtn:'Calculate NPS Pension →', npRLabel:'Estimated Monthly Pension',
+    npIl1:'Total Corpus', npIl2:'Lump Sum (60%)', npIl3:'Annuity (40%)',
+    npBdHead:'NPS Projection',
+    npTipsEye:'💡 NPS Tips — Build a Better Retirement',
+    npTips:[
+      ['80CCD(1B) — extra ₹50,000 deduction','Over and above 80C ₹1.5L limit, NPS gives additional ₹50,000 tax deduction. At 30% slab that saves ₹15,600 per year in tax.'],
+      ['Active choice — choose equity-heavy','Default scheme is conservative. Switch to Active Choice — LC75 or Aggressive — for higher long-term returns.'],
+      ['Partial withdrawal allowed','After 3 years you can withdraw up to 25% of your own contributions for specific purposes (education, medical, home purchase) — tax-free.'],
+      ['Annuity rate matters','Shop for annuity provider at retirement — rates vary 50–80 bps across LIC, SBI, HDFC Life. Compare before locking in 40%.'],
+      ['Tier II for liquid savings','NPS Tier II has no lock-in and better returns than savings account. Govt employees get extra 80C benefit on Tier II too.'],
+    ],
+    rtRule:'📌 RTI Act 2005: Application fee ₹10. Additional pages ₹2 each. First appeal: FREE. BPL holders: fully exempt. Consumer court fees vary by claim.',
+    rtC1:'Select What You Need', rtLType:'Type of Application', rtLPages:'Pages / Documents Requested',
+    rtLClaim:'Claim / Dispute Value', rtLBpl:'BPL Cardholder?',
+    rtCalcBtn:'Calculate Fee →', rtRLabel:'Fee Payable',
+    rtBdHead:'Fee Breakdown',
+    rtTipsEye:'💡 RTI / Consumer Rights Tips',
+    rtTips:[
+      ['RTI — identify the right PIO','Address RTI to the Public Information Officer (PIO) of the specific department. Wrong address = return, wasting 30 days.'],
+      ['First appeal is FREE and fast','If PIO does not reply in 30 days or gives unsatisfactory reply, first appeal to Appellate Authority is free — file immediately.'],
+      ['Consumer court — limitation is 2 years','Consumer complaints must be filed within 2 years of deficiency of service. After 2 years you need condonation of delay.'],
+      ['Consumer court — no lawyer required','For claims up to ₹50L in District Commission you can appear yourself. Saves ₹10,000–₹50,000 in legal fees.'],
+      ['Keep all evidence digitally','Emails, WhatsApp messages, bills, delivery photos — screenshot and preserve before filing. Consumer courts accept digital evidence.'],
+    ],
+    footerTxt:'Govt & Legal Suite · Free · LawSticker AI',
+  },
+  te: {
+    navTitle:'🏛️ ప్రభుత్వ & న్యాయ సూట్',
+    tbPf:'EPF / PF', tbGr:'గ్రాచ్యుటీ', tbTd:'TDS', tbNp:'NPS పెన్షన్', tbRt:'RTI / కన్సూమర్',
+    pfRule:'📌 EPF: ఉద్యోగి 12% + యజమాని 3.67% (EPF) + 8.33% (EPS). ప్రస్తుత రేటు: <strong>8.25% వార్షిక</strong>.',
+    pfC1:'మీ వివరాలు', pfLBasic:'బేసిక్ + DA (నెలకు)', pfLYears:'సేవా సంవత్సరాలు',
+    pfLExisting:'ప్రస్తుత PF నిల్వ', pfLHike:'సగటు వార్షిక జీతం పెరుగుదల %',
+    pfCalcBtn:'PF కార్పస్ లెక్కించండి →', pfRLabel:'మొత్తం PF కార్పస్',
+    pfIl1:'మీ వాటా', pfIl2:'యజమాని వాటా', pfIl3:'వడ్డీ ఆర్జన',
+    pfBdHead:'సంవత్సర వారీగా PF వృద్ధి',
+    pfTipsEye:'💡 PF చిట్కాలు — మీ హక్కులు తెలుసుకోండి',
+    pfTips:[['UAN పాస్‌బుక్ నెలవారీ తనిఖీ చేయండి','unifiedportal-mem.epfindia.gov.in లో లాగిన్ చేసి యజమాని PF జమ చేస్తున్నారో తనిఖీ చేయండి.'],['నామినీని నమోదు చేయండి','EPFO పోర్టల్‌లో నామినీ నమోదు చేయండి — ఇది చేయకపోతే అత్యవసర సమయంలో కుటుంబం ఇబ్బంది పడతారు.'],['5 సంవత్సరాల ముందు PF తీసుకోకండి','5 సంవత్సరాల ముందు తీసుకుంటే పూర్తి పన్ను వస్తుంది. 8.25% రేటు అధిగమించడం కష్టం.'],['ఉద్యోగం మారినప్పుడు PF బదిలీ చేయండి','Form 13 లేదా UAN పోర్టల్ ద్వారా బదిలీ చేయండి — ఉపసంహరించుకోకండి.'],['VPF — అదనంగా పెట్టుబడి','12% కంటే ఎక్కువ VPF గా వేయవచ్చు. అదే 8.25% రేటు, పూర్తి పన్ను మినహాయింపు.']],
+    grRule:'📌 గ్రాచ్యుటీ చట్టం 1972: సూత్రం = (బేసిక్+DA) × 15/26 × సంవత్సరాలు. 5 సంవత్సరాల తర్వాత అర్హత. ₹20 లక్షల వరకు పన్ను రహితం.',
+    grC1:'ఉద్యోగ వివరాలు', grLBasic:'చివరి బేసిక్ + DA (నెలకు)', grLYears:'సేవా సంవత్సరాలు', grLOrg:'సంస్థ రకం',
+    grCalcBtn:'గ్రాచ్యుటీ లెక్కించండి →', grRLabel:'గ్రాచ్యుటీ మొత్తం',
+    grIl1:'పన్ను రహిత మొత్తం', grIl2:'పన్ను విధించదగిన మొత్తం',
+    grBdHead:'గ్రాచ్యుటీ వివరాలు',
+    grTipsEye:'💡 గ్రాచ్యుటీ చిట్కాలు — మీరు సంపాదించింది రక్షించుకోండి',
+    grTips:[['5 సంవత్సరాలు = 240 రోజుల నియమం','చివరి సంవత్సరంలో 240+ పని దినాలు ఉంటే పూర్తి సంవత్సరంగా లెక్కిస్తారు.'],['యజమాని ఇష్టారీతిగా కోత వేయలేరు','ఉద్దేశపూర్వక నష్టం లేకుండా గ్రాచ్యుటీ తగ్గించలేరు.'],['30 రోజుల్లో Form I దాఖలు చేయండి','అర్హత పొందిన 30 రోజుల్లో Form I దాఖలు చేయండి.'],['అనుమతించకపోతే నియంత్రణ అధికారికి','యజమాని నిరాకరిస్తే లేబర్ కమిషనర్ దగ్గర ఉచితంగా ఫిర్యాదు చేయండి.'],['₹20L పరిమితి పన్ను మినహాయింపుకు మాత్రమే','యజమాని ఎక్కువ చెల్లించవచ్చు — అదనపు మొత్తం జీతంగా పన్ను విధించబడుతుంది.']],
+    tdRule:'📌 TDS రేట్లు FY 2024-25 ప్రకారం. PAN లేకుంటే రెట్టింపు రేటు (కనీసం 20%) సెక్షన్ 206AA కింద.',
+    tdC1:'చెల్లింపు వివరాలు', tdLType:'చెల్లింపు / ఆదాయం రకం', tdLAmount:'స్థూల చెల్లింపు మొత్తం',
+    tdLPayee:'చెల్లింపు పొందే వ్యక్తి రకం', tdLPan:'PAN స్థితి',
+    tdCalcBtn:'TDS లెక్కించండి →', tdRLabel:'కోత వేయాల్సిన TDS',
+    tdIl1:'స్థూల మొత్తం', tdIl2:'నికర చెల్లింపు',
+    tdBdHead:'TDS వివరాలు',
+    tdTipsEye:'💡 TDS చిట్కాలు — సరిగ్గా కోత వేయండి, క్లెయిమ్ చేయండి',
+    tdTips:[['చెల్లింపు లేదా క్రెడిట్ — ఏది ముందు వస్తే దానిపై TDS','సాధారణ తప్పు: చెల్లింపు చేసినప్పుడు మాత్రమే TDS వేయడం. మీ పుస్తకాలలో క్రెడిట్ చేసినప్పుడే బాధ్యత మొదలవుతుంది.'],['తదుపరి నెల 7వ తేదీ లోపు జమ చేయండి','ఆలస్య జమకు నెలకు 1.5% వడ్డీ + పెనాల్టీ.'],['Form 15G/15H — TDS నివారణ','మొత్తం ఆదాయం పన్ను పరిమితి దిగువన ఉంటే Form 15G/15H ఇవ్వండి.'],['త్రైమాసికంగా TDS రిటర్న్ దాఖలు','26Q నాన్-శాలరీ కోసం త్రైమాసికంగా దాఖలు — ఆలస్యానికి రోజుకు ₹200 పెనాల్టీ.'],['ITR లో పూర్తి TDS క్రెడిట్ క్లెయిమ్ చేయండి','Form 26AS మరియు AIS లో అన్ని TDS వివరాలు ఉంటాయి. ITR దాఖలు ముందు సరిపోల్చండి.']],
+    npRule:'📌 NPS: ఉద్యోగి 10% + కేంద్ర ప్రభుత్వం 14% / ప్రైవేట్ 10%. పదవీ విరమణలో: 60% లంప్‌సమ్ (పన్ను రహితం), 40% వార్షిక పెన్షన్.',
+    npC1:'NPS వివరాలు', npLBasic:'బేసిక్ + DA (నెలకు)', npLAge:'ప్రస్తుత వయసు',
+    npLSector:'రంగం', npLReturn:'అంచనా రాబడి % వార్షిక',
+    npCalcBtn:'NPS పెన్షన్ లెక్కించండి →', npRLabel:'అంచనా నెలవారీ పెన్షన్',
+    npIl1:'మొత్తం కార్పస్', npIl2:'లంప్‌సమ్ (60%)', npIl3:'వార్షిక (40%)',
+    npBdHead:'NPS అంచనా',
+    npTipsEye:'💡 NPS చిట్కాలు — మెరుగైన పదవీ విరమణ',
+    npTips:[['80CCD(1B) — అదనపు ₹50,000 తగ్గింపు','80C పరిమితికి మించి NPS లో ₹50,000 అదనపు పన్ను మినహాయింపు. 30% స్లాబ్ లో ₹15,600 ఆదా.'],['యాక్టివ్ ఛాయిస్ ఎంచుకోండి','డిఫాల్ట్ పథకం రక్షణాత్మకంగా ఉంటుంది. దీర్ఘకాలిక రాబడికి LC75 లేదా అగ్రెసివ్ ఎంచుకోండి.'],['పాక్షిక ఉపసంహరణ అనుమతించబడింది','3 సంవత్సరాల తర్వాత నిర్దిష్ట అవసరాలకు మీ స్వంత వాటాలో 25% ఉపసంహరించుకోవచ్చు.'],['పదవీ విరమణలో వార్షిక ప్రదాత పోల్చండి','LIC, SBI, HDFC Life రేట్లు 50–80 bps వ్యత్యాసం ఉంటుంది. 40% లాక్ చేయడానికి ముందు పోల్చండి.'],['Tier II లిక్విడ్ పొదుపు కోసం','NPS Tier II కు లాక్-ఇన్ లేదు, పొదుపు ఖాతా కంటే మెరుగైన రాబడి.']],
+    rtRule:'📌 RTI చట్టం 2005: దరఖాస్తు ఫీజు ₹10. అదనపు పేజీలు ₹2 చొప్పున. మొదటి అప్పీల్: ఉచితం. BPL కార్డుదారులు: పూర్తి మినహాయింపు.',
+    rtC1:'మీకు ఏమి కావాలో ఎంచుకోండి', rtLType:'దరఖాస్తు రకం', rtLPages:'పేజీలు / పత్రాలు',
+    rtLClaim:'వివాదం విలువ', rtLBpl:'BPL కార్డుదారులా?',
+    rtCalcBtn:'ఫీజు లెక్కించండి →', rtRLabel:'చెల్లించాల్సిన ఫీజు',
+    rtBdHead:'ఫీజు వివరాలు',
+    rtTipsEye:'💡 RTI / కన్సూమర్ హక్కుల చిట్కాలు',
+    rtTips:[['సరైన PIO గుర్తించండి','నిర్దిష్ట విభాగంలో పబ్లిక్ ఇన్ఫర్మేషన్ ఆఫీసర్‌కు RTI పంపండి.'],['మొదటి అప్పీల్ ఉచితం మరియు వేగవంతం','PIO 30 రోజుల్లో సమాధానం ఇవ్వకపోతే మొదటి అప్పీల్ వెంటనే దాఖలు చేయండి.'],['కన్సూమర్ కోర్టు — పరిమితి 2 సంవత్సరాలు','సేవలో లోపం జరిగిన 2 సంవత్సరాల లోపు ఫిర్యాదు దాఖలు చేయండి.'],['₹50L వరకు న్యాయవాది అవసరం లేదు','జిల్లా కమిషన్‌లో మీరు స్వయంగా వాదించవచ్చు — లక్షల రూపాయల ఫీజు ఆదా.'],['అన్ని సాక్ష్యాలు డిజిటల్‌గా భద్రపరచండి','ఈమెయిల్, WhatsApp సందేశాలు, బిల్లులు — స్క్రీన్‌షాట్ తీసుకొని భద్రపరచండి.']],
+    footerTxt:'ప్రభుత్వ & న్యాయ సూట్ · ఉచితం · LawSticker AI',
+  },
+  hi: {
+    navTitle:'🏛️ सरकार और कानून सूट',
+    tbPf:'EPF / PF', tbGr:'ग्रेच्युटी', tbTd:'TDS', tbNp:'NPS पेंशन', tbRt:'RTI / उपभोक्ता',
+    pfRule:'📌 EPF: कर्मचारी 12% + नियोक्ता 3.67% (EPF) + 8.33% (EPS). वर्तमान दर: <strong>8.25% वार्षिक</strong>.',
+    pfC1:'आपका विवरण', pfLBasic:'मूल + DA (प्रति माह)', pfLYears:'सेवा वर्ष',
+    pfLExisting:'मौजूदा PF शेष', pfLHike:'औसत वार्षिक वेतन वृद्धि %',
+    pfCalcBtn:'PF कोष गणना करें →', pfRLabel:'कुल PF कोष',
+    pfIl1:'आपका योगदान', pfIl2:'नियोक्ता हिस्सा', pfIl3:'ब्याज अर्जित',
+    pfBdHead:'वर्षवार PF वृद्धि',
+    pfTipsEye:'💡 PF सुझाव — अपने अधिकार जानें',
+    pfTips:[['UAN पासबुक मासिक जांचें','unifiedportal-mem.epfindia.gov.in पर लॉगिन करके जांचें कि नियोक्ता PF जमा कर रहा है।'],['नामांकन अपडेट करें','EPFO पोर्टल पर नामांकन अपडेट रखें — बिना नामांकन के परिवार को देरी होती है।'],['5 साल से पहले PF न निकालें','5 साल पहले निकासी पर पूरा कर लगता है। 8.25% दर को पीटना मुश्किल है।'],['नौकरी बदलने पर PF ट्रांसफर करें','Form 13 या UAN पोर्टल से ट्रांसफर करें — निकासी नहीं।'],['VPF — स्वैच्छिक अतिरिक्त योगदान','12% से अधिक VPF में डाल सकते हैं। वही 8.25% दर, पूरी 80C छूट।']],
+    grRule:'📌 ग्रेच्युटी अधिनियम 1972: सूत्र = (मूल+DA) × 15/26 × वर्ष। 5 वर्ष बाद पात्रता। ₹20 लाख तक कर-मुक्त।',
+    grC1:'रोजगार विवरण', grLBasic:'अंतिम मूल + DA (प्रति माह)', grLYears:'सेवा वर्ष', grLOrg:'संगठन प्रकार',
+    grCalcBtn:'ग्रेच्युटी गणना करें →', grRLabel:'ग्रेच्युटी राशि',
+    grIl1:'कर-मुक्त राशि', grIl2:'कर योग्य (यदि कोई)',
+    grBdHead:'ग्रेच्युटी विवरण',
+    grTipsEye:'💡 ग्रेच्युटी सुझाव — अपनी कमाई बचाएं',
+    grTips:[['5 साल = 240 दिन नियम','अंतिम वर्ष में 240+ कार्य दिवस हों तो पूर्ण वर्ष माना जाता है।'],['नियोक्ता मनमाने कटौती नहीं कर सकता','जानबूझकर नुकसान के बिना ग्रेच्युटी जब्त नहीं हो सकती।'],['30 दिन में Form I दाखिल करें','पात्रता के 30 दिन में Form I जमा करें — नियोक्ता 30 दिन में भुगतान करे।'],['इनकार पर Controlling Authority','Labour Commissioner के पास मुफ्त और तेज शिकायत करें।'],['₹20L सीमा केवल कर छूट के लिए','नियोक्ता अधिक भी दे सकता है — अतिरिक्त वेतन के रूप में कर योग्य।']],
+    tdRule:'📌 TDS दरें FY 2024-25 के अनुसार। PAN नहीं = दोगुना दर (न्यूनतम 20%) धारा 206AA के तहत।',
+    tdC1:'भुगतान विवरण', tdLType:'भुगतान / आय का प्रकार', tdLAmount:'सकल भुगतान राशि',
+    tdLPayee:'भुगतान प्राप्तकर्ता', tdLPan:'PAN स्थिति',
+    tdCalcBtn:'TDS गणना करें →', tdRLabel:'काटी जाने वाली TDS',
+    tdIl1:'सकल राशि', tdIl2:'शुद्ध देय',
+    tdBdHead:'TDS विवरण',
+    tdTipsEye:'💡 TDS सुझाव — सही काटें, सही क्लेम करें',
+    tdTips:[['भुगतान या क्रेडिट — जो पहले हो','सामान्य गलती: केवल भुगतान पर TDS काटना। बहीखाते में क्रेडिट होते ही दायित्व शुरू होता है।'],['अगले महीने की 7 तारीख तक जमा करें','देरी पर प्रति माह 1.5% ब्याज + जुर्माना।'],['Form 15G/15H — TDS बचाएं','कुल आय कर सीमा से कम हो तो 15G/15H जमा करें।'],['त्रैमासिक TDS रिटर्न दाखिल करें','26Q त्रैमासिक — देरी पर ₹200/दिन जुर्माना।'],['ITR में पूरा TDS क्रेडिट क्लेम करें','Form 26AS और AIS में मिलान करें — बिना क्लेम TDS = पैसा गया।']],
+    npRule:'📌 NPS: कर्मचारी 10% + केंद्र सरकार 14% / निजी 10%। सेवानिवृत्ति पर: 60% एकमुश्त (कर-मुक्त), 40% वार्षिकी (पेंशन)।',
+    npC1:'NPS विवरण', npLBasic:'मूल + DA (प्रति माह)', npLAge:'वर्तमान आयु',
+    npLSector:'क्षेत्र', npLReturn:'अपेक्षित रिटर्न % प्रति वर्ष',
+    npCalcBtn:'NPS पेंशन गणना करें →', npRLabel:'अनुमानित मासिक पेंशन',
+    npIl1:'कुल कोष', npIl2:'एकमुश्त (60%)', npIl3:'वार्षिकी (40%)',
+    npBdHead:'NPS अनुमान',
+    npTipsEye:'💡 NPS सुझाव — बेहतर सेवानिवृत्ति',
+    npTips:[['80CCD(1B) — अतिरिक्त ₹50,000 कटौती','80C सीमा के ऊपर NPS में ₹50,000 अतिरिक्त छूट। 30% स्लैब में ₹15,600 बचत।'],['Active Choice चुनें','LC75 या Aggressive चुनें — दीर्घकालिक रिटर्न के लिए।'],['आंशिक निकासी की अनुमति','3 साल बाद विशेष उद्देश्यों के लिए 25% निकाल सकते हैं।'],['वार्षिकी प्रदाता तुलना करें','LIC, SBI, HDFC Life की दरों में 50–80 bps अंतर — 40% लॉक करने से पहले तुलना करें।'],['Tier II — तरल बचत के लिए','कोई लॉक-इन नहीं, बचत खाते से बेहतर रिटर्न।']],
+    rtRule:'📌 RTI अधिनियम 2005: आवेदन शुल्क ₹10। अतिरिक्त पृष्ठ ₹2 प्रत्येक। पहली अपील: मुफ्त। BPL: पूर्ण छूट।',
+    rtC1:'आवश्यकता चुनें', rtLType:'आवेदन का प्रकार', rtLPages:'पृष्ठ / दस्तावेज',
+    rtLClaim:'विवाद राशि', rtLBpl:'BPL कार्डधारक?',
+    rtCalcBtn:'शुल्क गणना करें →', rtRLabel:'देय शुल्क',
+    rtBdHead:'शुल्क विवरण',
+    rtTipsEye:'💡 RTI / उपभोक्ता अधिकार सुझाव',
+    rtTips:[['सही PIO की पहचान करें','संबंधित विभाग के PIO को RTI भेजें।'],['पहली अपील मुफ्त और तेज','PIO 30 दिन में जवाब न दे तो तुरंत अपील करें।'],['उपभोक्ता — 2 साल की सीमा','सेवा में खामी के 2 साल के भीतर शिकायत करें।'],['₹50L तक वकील जरूरी नहीं','जिला आयोग में खुद पेश हो सकते हैं।'],['सभी सबूत डिजिटल रखें','ईमेल, WhatsApp, बिल — स्क्रीनशॉट लें।']],
+    footerTxt:'सरकार और कानून सूट · मुफ्त · LawSticker AI',
+  }
+};
+
+// ══════════════════════════════════════════
+//  LANG & TAB
+// ══════════════════════════════════════════
+function applyLang() {
+  const t = T[lang];
+  s('nav-title',t.navTitle);
+  s('tb-pf',t.tbPf);s('tb-gr',t.tbGr);s('tb-td',t.tbTd);s('tb-np',t.tbNp);s('tb-rt',t.tbRt);
+  h('pf-rule',t.pfRule);s('pf-c1',t.pfC1);s('pf-l-basic',t.pfLBasic);s('pf-l-years',t.pfLYears);
+  s('pf-l-existing',t.pfLExisting);s('pf-l-hike',t.pfLHike);
+  s('pf-r-label',t.pfRLabel);s('pf-il1',t.pfIl1);s('pf-il2',t.pfIl2);s('pf-il3',t.pfIl3);
+  s('pf-bd-head',t.pfBdHead);s('pf-tips-eye',t.pfTipsEye);
+  h('gr-rule',t.grRule);s('gr-c1',t.grC1);s('gr-l-basic',t.grLBasic);s('gr-l-years',t.grLYears);s('gr-l-org',t.grLOrg);
+  s('gr-r-label',t.grRLabel);s('gr-il1',t.grIl1);s('gr-il2',t.grIl2);s('gr-bd-head',t.grBdHead);s('gr-tips-eye',t.grTipsEye);
+  h('td-rule',t.tdRule);s('td-c1',t.tdC1);s('td-l-type',t.tdLType);s('td-l-amount',t.tdLAmount);
+  s('td-l-payee',t.tdLPayee);s('td-l-pan',t.tdLPan);
+  s('td-r-label',t.tdRLabel);s('td-il1',t.tdIl1);s('td-il2',t.tdIl2);s('td-bd-head',t.tdBdHead);s('td-tips-eye',t.tdTipsEye);
+  h('np-rule',t.npRule);s('np-c1',t.npC1);s('np-l-basic',t.npLBasic);s('np-l-age',t.npLAge);
+  s('np-l-sector',t.npLSector);s('np-l-return',t.npLReturn);
+  s('np-r-label',t.npRLabel);s('np-il1',t.npIl1);s('np-il2',t.npIl2);s('np-il3',t.npIl3);
+  s('np-bd-head',t.npBdHead);s('np-tips-eye',t.npTipsEye);
+  h('rt-rule',t.rtRule);s('rt-c1',t.rtC1);s('rt-l-type',t.rtLType);s('rt-l-pages',t.rtLPages);
+  s('rt-l-claim',t.rtLClaim);s('rt-l-bpl',t.rtLBpl);
+  s('rt-r-label',t.rtRLabel);s('rt-bd-head',t.rtBdHead);s('rt-tips-eye',t.rtTipsEye);
+  s('footer-txt',t.footerTxt);
+  // calc buttons
+  s('pf-calc-btn',t.pfCalcBtn);s('gr-calc-btn',t.grCalcBtn);
+  s('td-calc-btn',t.tdCalcBtn);s('np-calc-btn',t.npCalcBtn);s('rt-calc-btn',t.rtCalcBtn);
+  // rebuild tips if results visible
+  ['pf','gr','td','np','rt'].forEach(tab => {
+    if(el(tab+'-results').style.display!=='none') buildTips(tab);
+  });
+}
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  applyLang();
+}
+function setTab(t){
+  currentTab=t;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  ['pf','gr','td','np','rt'].forEach(id=>el('tab-'+id).style.display=id===t?'':'none');
+}
+function buildTips(tab) {
+  const t = T[lang];
+  const tips = t[tab+'Tips'] || [];
+  h(tab+'-tips', tips.map(([title,body])=>`<div class="tip-item"><span>${title}:</span> ${body}</div>`).join(''));
+}
+function resetTab(tab){el(tab+'-results').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+
+// ══════════════════════════════════════════
+//  CALCULATORS
+// ══════════════════════════════════════════
+
+// ── EPF / PF ──
+function calcPf(){
+  const t = T[lang];
+  const basic0 = parseFloat(el('pf-basic').value)||0;
+  const years  = parseInt(el('pf-years').value)||1;
+  const existing = parseFloat(el('pf-existing').value)||0;
+  const hike   = parseFloat(el('pf-hike').value)||0;
+  const rate   = EPF_RATE/100;
+  const empPct = 0.12, empRPct = 0.0367;
+
+  let bal = existing, totalEmp=0, totalEmpr=0, totalInt=0, rows='';
+  let basic = basic0;
+  for(let yr=1; yr<=years; yr++){
+    const annEmp  = basic*12*empPct;
+    const annEmpr = basic*12*empRPct;
+    const annContrib = annEmp+annEmpr;
+    const interest = (bal+annContrib/2)*rate;
+    totalEmp+=annEmp; totalEmpr+=annEmpr; totalInt+=interest;
+    bal = bal+annContrib+interest;
+    rows+=`<div class="brow"><div class="bl">Year ${yr}<span class="bs">Basic ₹${Math.round(basic).toLocaleString('en-IN')}/mo</span></div><div class="ba" style="color:var(--pf)">${RL(bal)}</div></div>`;
+    basic = basic*(1+hike/100);
+  }
+  el('pf-r-amount').textContent=RL(bal);
+  el('pf-r-sub').textContent=`${years} yrs · ${EPF_RATE}% EPF interest · ${hike}% annual hike`;
+  el('pf-i1').textContent=RL(totalEmp);el('pf-i2').textContent=RL(totalEmpr);el('pf-i3').textContent=RL(totalInt);
+  h('pf-rows',rows);
+  buildTips('pf');
+  el('pf-results').style.display='block';
+  el('pf-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── GRATUITY ──
+function calcGratuity(){
+  const t = T[lang];
+  const basic = parseFloat(el('gr-basic').value)||0;
+  const years = parseFloat(el('gr-years').value)||0;
+  const org   = el('gr-org').value;
+  const TAX_FREE_LIMIT = 2000000;
+
+  let gratuity=0, formula='';
+  if(org==='covered'){
+    gratuity = (basic*15/26)*years;
+    formula  = `(₹${basic.toLocaleString('en-IN')} × 15/26) × ${years} years`;
+  } else if(org==='govt'){
+    gratuity = (basic/2)*years;
+    formula  = `(₹${basic.toLocaleString('en-IN')} × 1/2) × ${years} years`;
+  } else {
+    gratuity = (basic*15/30)*years;
+    formula  = `(₹${basic.toLocaleString('en-IN')} × 15/30) × ${years} years — ex-gratia`;
+  }
+
+  const eligible = years>=5;
+  const taxFree  = Math.min(gratuity, TAX_FREE_LIMIT);
+  const taxable  = Math.max(0, gratuity-TAX_FREE_LIMIT);
+
+  el('gr-r-amount').textContent = eligible ? R(gratuity) : '0 — Not Eligible';
+  el('gr-r-sub').textContent    = eligible ? `${years} years service · ${org}` : `Need 5 years minimum (${years} years done)`;
+  el('gr-i1').textContent = R(taxFree);
+  el('gr-i2').textContent = taxable>0 ? R(taxable) : 'Nil';
+  h('gr-rows',`
+    <div class="brow"><div class="bl">Basic + DA<span class="bs">Last drawn</span></div><div class="ba">${R(basic)}/mo</div></div>
+    <div class="brow"><div class="bl">Service Period</div><div class="ba">${years} years</div></div>
+    <div class="brow"><div class="bl">Formula Applied<span class="bs">${formula}</span></div><div class="ba">${eligible?R(gratuity):'Not eligible'}</div></div>
+    <div class="brow pos"><div class="bl">Tax-Free (up to ₹20L)</div><div class="ba">${R(taxFree)}</div></div>
+    ${taxable>0?`<div class="brow neg"><div class="bl">Taxable Portion</div><div class="ba">${R(taxable)}</div></div>`:''}
+    <div class="brow tot"><div class="bl">GRATUITY PAYABLE</div><div class="ba">${eligible?R(gratuity):'₹0'}</div></div>
+    ${!eligible?`<div class="brow hi"><div class="bl">⚠️ Minimum 5 years required. You have ${years} years.</div><div class="ba"></div></div>`:''}
+  `);
+  buildTips('gr');
+  el('gr-results').style.display='block';
+  el('gr-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── TDS ──
+function calcTds(){
+  const t = T[lang];
+  const typeVal = el('td-type').value;
+  const parts   = typeVal.split(',');
+  const sec     = parts[0];
+  const indRate = parseFloat(parts[1]);
+  const compRate= parseFloat(parts[2]);
+  const amount  = parseFloat(el('td-amount').value)||0;
+  const payee   = el('td-payee').value;
+  const pan     = el('td-pan').value;
+
+  let rate = payee==='company'?compRate:indRate;
+  let panNote='';
+  if(pan==='no'){ rate=Math.max(rate*2,20); panNote='Rate doubled (Sec 206AA — no PAN)'; }
+
+  const tdsAmt = amount*rate/100;
+  const netPay = amount-tdsAmt;
+
+  el('td-r-amount').textContent=R(tdsAmt);
+  el('td-r-sub').textContent=`${sec} · ${rate}% · ${payee}${pan==='no'?' · No PAN':''}`;
+  el('td-i1').textContent=R(amount);el('td-i2').textContent=R(netPay);
+  h('td-rows',`
+    <div class="brow"><div class="bl">Section<span class="bs">${sec}</span></div><div class="ba">${sec.replace('194','Sec 194').replace('192','Sec 192')}</div></div>
+    <div class="brow"><div class="bl">TDS Rate<span class="bs">${panNote||'Normal rate'}</span></div><div class="ba">${rate}%</div></div>
+    <div class="brow"><div class="bl">Gross Amount</div><div class="ba">${R(amount)}</div></div>
+    <div class="brow neg"><div class="bl">TDS Deduction</div><div class="ba">− ${R(tdsAmt)}</div></div>
+    <div class="brow tot"><div class="bl">NET PAID TO PAYEE</div><div class="ba">${R(netPay)}</div></div>
+    <div class="brow"><div class="bl">Deposit Deadline<span class="bs">7th of following month (30 Apr for March)</span></div><div class="ba" style="color:var(--amber)">Govt by 7th</div></div>
+  `);
+  buildTips('td');
+  el('td-results').style.display='block';
+  el('td-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── NPS ──
+function calcNps(){
+  const t = T[lang];
+  const basic    = parseFloat(el('np-basic').value)||0;
+  const age      = parseInt(el('np-age').value)||30;
+  const sector   = el('np-sector').value;
+  const retRate  = parseFloat(el('np-return').value)||10;
+  const retAge   = 60;
+  const years    = retAge-age;
+  const empPct   = 0.10;
+  const emprPct  = sector==='govt'?0.14:sector==='private'?0.10:0;
+  const annuityRate = 0.065; // assumed 6.5% annuity rate
+
+  const monthlyContrib = basic*(empPct+emprPct);
+  const r = retRate/12/100;
+  const n = years*12;
+  const corpus = monthlyContrib*((Math.pow(1+r,n)-1)/r)*(1+r);
+
+  const lumpSum  = corpus*0.60;
+  const annuityCorpus = corpus*0.40;
+  const monthlyPension = annuityCorpus*annuityRate/12;
+
+  el('np-r-amount').textContent=R(monthlyPension);
+  el('np-r-sub').textContent=`${years} years · ${retRate}% p.a. · ${sector} · Corpus: ${RL(corpus)}`;
+  el('np-i1').textContent=RL(corpus);el('np-i2').textContent=RL(lumpSum);el('np-i3').textContent=RL(annuityCorpus);
+  h('np-rows',`
+    <div class="brow"><div class="bl">Monthly Contribution<span class="bs">Employee ${(empPct*100).toFixed(0)}% + Employer ${(emprPct*100).toFixed(0)}%</span></div><div class="ba">${R(monthlyContrib)}/mo</div></div>
+    <div class="brow"><div class="bl">Investment Period</div><div class="ba">${years} years</div></div>
+    <div class="brow"><div class="bl">Expected Return</div><div class="ba">${retRate}% p.a.</div></div>
+    <div class="brow pos"><div class="bl">Total NPS Corpus at 60</div><div class="ba">${RL(corpus)}</div></div>
+    <div class="brow pos"><div class="bl">Lump Sum (60%) — Tax-Free</div><div class="ba">${RL(lumpSum)}</div></div>
+    <div class="brow"><div class="bl">Annuity (40%) — For Pension<span class="bs">Assumed 6.5% annuity rate</span></div><div class="ba">${RL(annuityCorpus)}</div></div>
+    <div class="brow tot"><div class="bl">ESTIMATED MONTHLY PENSION</div><div class="ba">${R(monthlyPension)}</div></div>
+    <div class="brow"><div class="bl">Extra Tax Saving u/s 80CCD(1B)<span class="bs">₹50,000 additional deduction</span></div><div class="ba" style="color:var(--jade)">Up to ₹15,600/yr</div></div>
+  `);
+  buildTips('np');
+  el('np-results').style.display='block';
+  el('np-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── RTI / CONSUMER ──
+function calcRti(){
+  const t = T[lang];
+  const type  = el('rt-type').value;
+  const bpl   = el('rt-bpl').value;
+  const pages = parseInt(el('rt-pages').value)||0;
+  const claim = parseFloat(el('rt-claim').value)||0;
+  let rows='', total=0, label='', sub='';
+
+  if(type==='rti_app'){
+    if(bpl==='yes'){
+      total=0; label='RTI Application';
+      rows=`<div class="brow pos"><div class="bl">Application Fee — BPL Exempt</div><div class="ba">₹0</div></div>
+            <div class="brow pos"><div class="bl">Additional Pages (${pages} × ₹2) — BPL Exempt</div><div class="ba">₹0</div></div>`;
+      sub='BPL exemption applies — attach BPL card copy';
+    } else {
+      const pageFee=pages*2;
+      total=10+pageFee; label='RTI Application';
+      rows=`<div class="brow neg"><div class="bl">Application Fee (Sec 6)</div><div class="ba">₹10</div></div>
+            <div class="brow neg"><div class="bl">Additional Pages (${pages} × ₹2)</div><div class="ba">₹${pageFee}</div></div>`;
+      sub='Pay by IPO / DD / Court Fee Stamp / online (central govt)';
+    }
+  } else if(type==='rti_first'){
+    total=0; label='RTI First Appeal (Sec 19(1))';
+    rows=`<div class="brow pos"><div class="bl">First Appeal Fee</div><div class="ba" style="color:var(--jade)">FREE</div></div>
+          <div class="brow"><div class="bl">File within<span class="bs">30 days of PIO's reply / deemed refusal</span></div><div class="ba">30 days</div></div>`;
+    sub='Address to First Appellate Authority in same department';
+  } else if(type==='rti_second'){
+    total=0; label='RTI Second Appeal — CIC/SIC';
+    rows=`<div class="brow pos"><div class="bl">Second Appeal / Complaint Fee</div><div class="ba" style="color:var(--jade)">FREE</div></div>
+          <div class="brow"><div class="bl">File within<span class="bs">90 days of First Appellate Authority order</span></div><div class="ba">90 days</div></div>`;
+    sub='File online at cic.gov.in or state SIC portal';
+  } else if(type==='consumer_district'){
+    // Consumer Protection Act 2019
+    let fee=0;
+    if(claim<=500000) fee=0;
+    else if(claim<=2000000) fee=200;
+    else if(claim<=5000000) fee=400;
+    else if(claim<=10000000) fee=1000;
+    else fee=2000;
+    total=fee; label='District Consumer Commission';
+    rows=`<div class="brow"><div class="bl">Claim Value</div><div class="ba">${R(claim)}</div></div>
+          <div class="brow neg"><div class="bl">Filing Fee<span class="bs">Consumer Protection Act 2019</span></div><div class="ba">${fee===0?'FREE':R(fee)}</div></div>`;
+    sub=claim<=500000?'Claims up to ₹5L — FREE filing':'Paid filing';
+  } else if(type==='consumer_state'){
+    total=1000; label='State Consumer Commission';
+    rows=`<div class="brow neg"><div class="bl">Filing Fee<span class="bs">Appeal to State Commission</span></div><div class="ba">₹1,000</div></div>`;
+    sub='For claims ₹1Cr–₹10Cr or appeals from District Commission';
+  } else if(type==='consumer_national'){
+    total=5000; label='National Consumer Commission';
+    rows=`<div class="brow neg"><div class="bl">Filing Fee<span class="bs">NCDRC — National Commission</span></div><div class="ba">₹5,000</div></div>`;
+    sub='For claims above ₹10Cr or appeals from State Commission';
+  } else if(type==='motor_accident'){
+    total=0; label='Motor Accident Claim (MACT)';
+    rows=`<div class="brow pos"><div class="bl">MACT Claim Filing Fee</div><div class="ba" style="color:var(--jade)">FREE</div></div>
+          <div class="brow"><div class="bl">Limitation Period<span class="bs">File within 6 months of accident</span></div><div class="ba">6 months</div></div>`;
+    sub='No court fee for Motor Accident Claims Tribunal';
+  } else {
+    total=0; label='Labour Court';
+    rows=`<div class="brow pos"><div class="bl">Labour Court Filing</div><div class="ba" style="color:var(--jade)">Nominal / FREE</div></div>`;
+    sub='Usually nominal fee — varies by state';
+  }
+
+  rows+=`<div class="brow tot"><div class="bl">${label} — Total Fee</div><div class="ba">${total===0?'FREE':R(total)}</div></div>`;
+  el('rt-r-amount').textContent=total===0?'FREE':R(total);
+  el('rt-r-sub').textContent=`${label}${sub?' · '+sub:''}`;
+  h('rt-rows',rows);
+  buildTips('rt');
+  el('rt-results').style.display='block';
+  el('rt-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── button IDs (inline buttons in HTML need IDs) ──
+// done via onclick in HTML — just set button text
+function setCalcBtnText(){
+  const t=T[lang];
+  document.querySelectorAll('.calc-btn').forEach((btn,i)=>{
+    const keys=['pfCalcBtn','grCalcBtn','tdCalcBtn','npCalcBtn','rtCalcBtn'];
+    if(t[keys[i]]) btn.textContent=t[keys[i]];
+  });
+}
+
+// INIT
+updateRtiFields();
+updateTdsRate();
+applyLang();
+setCalcBtnText();
+</script>
+</body>
+</html>
