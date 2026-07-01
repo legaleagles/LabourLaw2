@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bare Act Quick Reference — IPC, CrPC, CPC, Evidence, Contract, Constitution | LawSticker AI</title>
+<meta name="description" content="Instant bare act section search — IPC, CrPC, CPC, Evidence Act, Contract Act, Constitution. Section number, heading, one-line gist. Free.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
+  --ipc:#DC2626;--crpc:#2563EB;--cpc:#059669;--evi:#7C3AED;--con:#D97706;--ica:#0891B2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l)}
+.container{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+
+/* SEARCH */
+.search-wrap{position:sticky;top:53px;z-index:50;background:var(--cream);padding:12px 0 8px}
+.search-box{
+  display:flex;align-items:center;gap:10px;
+  background:#fff;border:2px solid var(--light);border-radius:14px;
+  padding:0 16px;transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--gold)}
+.search-icon{font-size:16px;color:var(--muted);flex-shrink:0}
+.search-input{
+  flex:1;padding:13px 0;border:none;outline:none;font-family:inherit;
+  font-size:15px;background:transparent;color:var(--ink);
+}
+.search-input::placeholder{color:var(--muted)}
+.search-clear{background:none;border:none;cursor:pointer;padding:4px;color:var(--muted);font-size:18px;line-height:1;display:none}
+.search-clear.show{display:block}
+
+/* ACT FILTER TABS */
+.act-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 0 12px;margin-bottom:4px}
+.act-tabs::-webkit-scrollbar{display:none}
+.act-tab{
+  flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--light);
+  background:#fff;font-family:inherit;font-size:11px;font-weight:700;
+  color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.act-tab.active{color:#fff;border-color:transparent}
+.act-tab[data-cat="all"].active{background:var(--navy)}
+.act-tab[data-cat="IPC"].active{background:var(--ipc)}
+.act-tab[data-cat="CrPC"].active{background:var(--crpc)}
+.act-tab[data-cat="CPC"].active{background:var(--cpc)}
+.act-tab[data-cat="Evidence"].active{background:var(--evi)}
+.act-tab[data-cat="Constitution"].active{background:var(--con)}
+.act-tab[data-cat="Contract"].active{background:var(--ica)}
+
+/* RESULT COUNT */
+.result-meta{font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:600}
+
+/* SECTION CARDS */
+.section-list{display:flex;flex-direction:column;gap:10px}
+.sec-card{
+  background:#fff;border-radius:14px;padding:16px;
+  border:1px solid rgba(0,0,0,.07);border-left:3px solid transparent;
+  box-shadow:0 1px 6px rgba(0,0,0,.04);transition:all .2s;
+  cursor:pointer;
+}
+.sec-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.sec-card[data-cat="IPC"]{border-left-color:var(--ipc)}
+.sec-card[data-cat="CrPC"]{border-left-color:var(--crpc)}
+.sec-card[data-cat="CPC"]{border-left-color:var(--cpc)}
+.sec-card[data-cat="Evidence"]{border-left-color:var(--evi)}
+.sec-card[data-cat="Constitution"]{border-left-color:var(--con)}
+.sec-card[data-cat="Contract"]{border-left-color:var(--ica)}
+.sec-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.sec-ref{display:flex;align-items:center;gap:8px}
+.sec-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:8px;color:#fff;flex-shrink:0}
+.sec-badge[data-cat="IPC"]{background:var(--ipc)}
+.sec-badge[data-cat="CrPC"]{background:var(--crpc)}
+.sec-badge[data-cat="CPC"]{background:var(--cpc)}
+.sec-badge[data-cat="Evidence"]{background:var(--evi)}
+.sec-badge[data-cat="Constitution"]{background:var(--con)}
+.sec-badge[data-cat="Contract"]{background:var(--ica)}
+.sec-num{font-size:13px;font-weight:700;color:var(--ink-soft)}
+.sec-head{font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;flex:1}
+.sec-gist{font-size:13px;color:var(--ink-soft);line-height:1.65}
+.sec-copy{background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:8px;font-size:14px;color:var(--muted);transition:all .2s;flex-shrink:0}
+.sec-copy:hover{background:var(--light);color:var(--ink)}
+
+/* HIGHLIGHT */
+.hl{background:rgba(201,162,39,.25);border-radius:3px;padding:0 2px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-text{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--ink-soft)}
+.empty-sub{font-size:13px}
+
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--gold-deep);text-decoration:none}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
+    <div class="nav-title">📖 Bare Act Reference</div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="search" class="search-input" id="searchInput"
+        placeholder="Search section, keyword, or act... (e.g. 302, rape, contract, bail)"
+        oninput="onSearch()" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="act-tabs" id="actTabs">
+      <button class="act-tab active" data-cat="all" onclick="setFilter('all')">All Acts</button>
+      <button class="act-tab" data-cat="IPC" onclick="setFilter('IPC')">🔴 IPC</button>
+      <button class="act-tab" data-cat="CrPC" onclick="setFilter('CrPC')">🔵 CrPC</button>
+      <button class="act-tab" data-cat="CPC" onclick="setFilter('CPC')">🟢 CPC</button>
+      <button class="act-tab" data-cat="Evidence" onclick="setFilter('Evidence')">🟣 Evidence</button>
+      <button class="act-tab" data-cat="Constitution" onclick="setFilter('Constitution')">🟠 Constitution</button>
+      <button class="act-tab" data-cat="Contract" onclick="setFilter('Contract')">🔷 Contract</button>
+    </div>
+    <div class="result-meta" id="resultMeta"></div>
+  </div>
+  <div class="section-list" id="sectionList">
+    <div class="empty"><div class="empty-icon">⚖️</div><div class="empty-text">Loading sections...</div></div>
+  </div>
+</div>
+
+<footer>
+  📖 Bare Act Reference · 91 sections across 6 Acts · <a href="https://lawsticker-ai.com/daily-fact.html">Daily Legal Fact</a> · <a href="https://lawsticker-ai.com/calculators.html">Calculators</a> · <a href="https://lawsticker-ai.com">LawSticker AI</a>
+</footer>
+
+<script>
+const CDN = 'https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/bare-acts.json';
+let allSections = [];
+let filtered = [];
+let currentFilter = 'all';
+let searchQ = '';
+
+async function loadSections(){
+  try{
+    const res = await fetch(CDN + '?v=' + Date.now());
+    if(!res.ok) throw new Error();
+    allSections = await res.json();
+  } catch(e){
+    // inline fallback — small subset
+    allSections = [
+      {act:'Indian Penal Code',short:'IPC',sec:'302',head:'Punishment for murder',gist:'Death or imprisonment for life + fine.',cat:'IPC'},
+      {act:'Indian Penal Code',short:'IPC',sec:'420',head:'Cheating and dishonestly inducing delivery of property',gist:'Aggravated cheating — up to 7 years + fine.',cat:'IPC'},
+      {act:'Code of Criminal Procedure',short:'CrPC',sec:'154',head:'First Information Report (FIR)',gist:'Police must register FIR for cognizable offences — refusal is itself an offence.',cat:'CrPC'},
+      {act:'Code of Criminal Procedure',short:'CrPC',sec:'438',head:'Anticipatory bail',gist:'Pre-arrest bail from Sessions Court or High Court.',cat:'CrPC'},
+      {act:'Constitution of India',short:'COI',sec:'21',head:'Protection of life and personal liberty',gist:'No person shall be deprived of life or personal liberty except according to procedure established by law.',cat:'Constitution'},
+    ];
+  }
+  render();
+}
+
+function setFilter(cat){
+  currentFilter = cat;
+  document.querySelectorAll('.act-tab').forEach(t=>t.classList.toggle('active', t.dataset.cat===cat));
+  render();
+}
+
+function onSearch(){
+  searchQ = document.getElementById('searchInput').value.trim();
+  document.getElementById('clearBtn').classList.toggle('show', searchQ.length > 0);
+  render();
+}
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchQ='';
+  document.getElementById('clearBtn').classList.remove('show');
+  render();
+}
+
+function highlight(text, q){
+  if(!q) return text;
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp(escaped,'gi'), m=>`<span class="hl">${m}</span>`);
+}
+
+function render(){
+  const q = searchQ.toLowerCase();
+  filtered = allSections.filter(s=>{
+    const matchCat = currentFilter==='all' || s.cat===currentFilter;
+    if(!matchCat) return false;
+    if(!q) return true;
+    return (
+      s.sec.toLowerCase().includes(q) ||
+      s.head.toLowerCase().includes(q) ||
+      s.gist.toLowerCase().includes(q) ||
+      s.act.toLowerCase().includes(q) ||
+      s.short.toLowerCase().includes(q) ||
+      (s.cat||'').toLowerCase().includes(q)
+    );
+  });
+
+  const list = document.getElementById('sectionList');
+  const meta = document.getElementById('resultMeta');
+  meta.textContent = `${filtered.length} section${filtered.length!==1?'s':''} found${currentFilter!=='all'?' in '+currentFilter:''}${q?' for "'+searchQ+'"':''}`;
+
+  if(!filtered.length){
+    list.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No sections found</div><div class="empty-sub">Try a different keyword or clear the filter</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(s=>`
+    <div class="sec-card" data-cat="${s.cat}">
+      <div class="sec-top">
+        <div class="sec-ref">
+          <span class="sec-badge" data-cat="${s.cat}">${highlight(s.short,searchQ)}</span>
+          <span class="sec-num">${highlight(s.sec,searchQ)}</span>
+        </div>
+        <button class="sec-copy" onclick="copySection(this,'${s.short} ${s.sec} — ${s.head.replace(/'/g,"\\'")}\\n\\n${s.gist.replace(/'/g,"\\'")}\\n\\nLawSticker AI · lawsticker-ai.com')" title="Copy">📋</button>
+      </div>
+      <div class="sec-head">${highlight(s.head,searchQ)}</div>
+      <div style="height:6px"></div>
+      <div class="sec-gist">${highlight(s.gist,searchQ)}</div>
+    </div>`).join('');
+}
+
+function copySection(btn, text){
+  try{
+    navigator.clipboard.writeText(text.replace(/\\n/g,'\n').replace(/\\'/g,"'"));
+    btn.textContent='✓';
+    setTimeout(()=>btn.textContent='📋',1500);
+  }catch(e){}
+}
+
+loadSections();
+</script>
+</body>
+</html>

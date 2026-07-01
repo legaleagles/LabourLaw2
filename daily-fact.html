@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Legal Fact — LawSticker AI</title>
+<meta name="description" content="One legal fact every day — your rights, key sections, landmark rules. Free, trilingual, shareable on WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#1A1208;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
+  --jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
+.nav-back:hover{color:var(--gold-l)}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l)}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gold-l);color:var(--gold-l);background:rgba(245,215,110,.1)}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+
+/* DATE STRIP */
+.date-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.date-nav{display:flex;align-items:center;gap:10px}
+.date-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--light);background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s;color:var(--ink)}
+.date-btn:hover{border-color:var(--gold);color:var(--gold)}
+.date-btn:disabled{opacity:.3;cursor:not-allowed}
+.date-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+.today-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--gold);background:transparent;color:var(--gold);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.today-btn:hover{background:var(--gold);color:#fff}
+
+/* MAIN FACT CARD */
+.fact-card{
+  background:#fff;border-radius:20px;overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 24px rgba(0,0,0,.07);
+  margin-bottom:16px;position:relative;
+}
+.fact-card-top{
+  background:linear-gradient(135deg,var(--navy),#1a2744);
+  padding:24px 22px 20px;position:relative;overflow:hidden;
+}
+.fact-card-top::before{
+  content:'⚖';position:absolute;right:-10px;top:-10px;
+  font-size:100px;opacity:.05;line-height:1;
+}
+.fact-num{
+  font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,215,110,.55);margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.fact-num::after{content:'';flex:1;height:1px;background:rgba(245,215,110,.15)}
+.fact-cat{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(245,215,110,.12);border:1px solid rgba(245,215,110,.25);
+  color:var(--gold-l);margin-bottom:14px;
+}
+.fact-act{font-size:12px;font-weight:600;color:rgba(255,255,255,.45);margin-bottom:6px}
+.fact-section{font-size:13px;font-weight:700;color:var(--gold-l);margin-bottom:4px}
+.fact-body{
+  padding:20px 22px;
+}
+.fact-text{
+  font-size:16px;font-weight:500;color:var(--ink);line-height:1.75;
+  font-family:'Playfair Display',serif;
+}
+.fact-divider{height:1px;background:var(--light);margin:16px 0}
+.fact-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.fact-tag{font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;background:var(--gold-pale);color:var(--gold-deep)}
+
+/* SHARE SECTION */
+.share-row{display:flex;gap:10px}
+.share-btn{
+  flex:1;padding:13px 10px;border-radius:12px;border:none;
+  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+}
+.share-btn.wa{background:#25D366;color:#fff}
+.share-btn.wa:hover{background:#22bc5c;transform:translateY(-1px)}
+.share-btn.copy{background:var(--light);color:var(--ink)}
+.share-btn.copy:hover{background:#DDD5C0}
+.share-btn.copied{background:var(--jade-bg);color:var(--jade)}
+
+/* NAV BETWEEN FACTS */
+.fact-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.fact-nav-btn{
+  background:#fff;border:1px solid var(--light);border-radius:14px;padding:14px;
+  text-decoration:none;transition:all .2s;cursor:pointer;text-align:center;
+}
+.fact-nav-btn:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,162,39,.1)}
+.fnb-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.fnb-act{font-size:12px;font-weight:700;color:var(--ink)}
+
+/* PROGRESS */
+.progress-bar{height:3px;background:var(--light);border-radius:2px;margin-bottom:20px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:2px;transition:width .4s}
+
+/* STREAK */
+.streak-box{
+  background:linear-gradient(135deg,#1A0A00,#2D1500);
+  border-radius:16px;padding:16px 18px;margin-bottom:16px;
+  display:flex;align-items:center;gap:14px;
+}
+.streak-icon{font-size:28px}
+.streak-text .st{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:3px}
+.streak-text .sn{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-l)}
+.streak-text .ss{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px}
+
+footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
+footer a{color:var(--gold-deep);text-decoration:none}
+
+/* SKELETON LOADER */
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* LOADING STATE */
+.loading-state{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
+    <div class="nav-title" id="navTitle">📅 Daily Legal Fact</div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <div class="date-strip">
+    <div class="date-nav">
+      <button class="date-btn" id="prevBtn" onclick="navigate(-1)">←</button>
+      <div class="date-label" id="dateLabel">—</div>
+      <button class="date-btn" id="nextBtn" onclick="navigate(1)">→</button>
+    </div>
+    <button class="today-btn" onclick="goToday()" id="todayBtn">Today</button>
+  </div>
+
+  <div id="factContainer"><div class="loading-state">⚖️ Loading today's legal fact...</div></div>
+
+  <div class="streak-box">
+    <div class="streak-icon">🔥</div>
+    <div class="streak-text">
+      <div class="st" id="streakLabel">Daily streak</div>
+      <div class="sn" id="streakNum">0 days</div>
+      <div class="ss" id="streakSub">Come back tomorrow to keep it going!</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span id="footerTxt">Daily Legal Fact · One fact a day · Free · LawSticker AI</span> · <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference</a> · <a href="https://lawsticker-ai.com/calculators.html">Calculators</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const CDN = 'https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/legal-facts.json';
+const FALLBACK = [
+  {id:1,act:'Consumer Protection Act 2019',section:'Sec 2(7)',fact:'You are a consumer even if you received a service as a gift — the person who paid can file a complaint on your behalf.',category:'Consumer',telugu:'మీరు బహుమతిగా సేవ పొందినా వినియోగదారు అవుతారు — చెల్లించిన వ్యక్తి మీ తరపున ఫిర్యాదు చేయవచ్చు.',hindi:'उपहार में सेवा मिली हो तो भी आप उपभोक्ता हैं।'},
+  {id:2,act:'Negotiable Instruments Act 1881',section:'Sec 138',fact:'Cheque bounce is a criminal offence — punishable with up to 2 years imprisonment or twice the cheque amount as fine, or both.',category:'Criminal',telugu:'చెక్ బౌన్స్ క్రిమినల్ నేరం — 2 సంవత్సరాల జైలు లేదా రెట్టింపు జరిమానా.',hindi:'चेक बाउंस आपराधिक अपराध है — 2 साल जेल या दोगुना जुर्माना।'},
+  {id:3,act:'CCPA Guidelines 2022',section:'Jul 2022',fact:'Service charge at restaurants is NOT mandatory. You can legally ask the restaurant to remove it from your bill.',category:'Consumer',telugu:'రెస్టారెంట్‌లో సర్వీస్ ఛార్జ్ తప్పనిసరి కాదు.',hindi:'रेस्तरां में सर्विस चार्ज अनिवार्य नहीं है।'},
+];
+
+let lang = 'en';
+let facts = [];
+let currentIdx = 0;
+let todayIdx = 0;
+
+const T = {
+  en:{navTitle:'📅 Daily Legal Fact',streakLabel:'Daily streak',streakSub:'Come back tomorrow to keep it going!',streakDays:n=>`${n} day${n!==1?'s':''}`,shareWa:'WhatsApp',shareCopy:'Copy',copied:'Copied!',dayLabel:d=>d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'}),footerTxt:'Daily Legal Fact · One fact a day · Free · LawSticker AI',prevFact:'← Previous',nextFact:'Next →',ofTotal:(a,b)=>`${a} of ${b}`,todayBtn:'Today',catColors:{Consumer:'#059669',Criminal:'#DC2626',Civil:'#2563EB',Labour:'#D97706',Constitutional:'#7C3AED'}},
+  te:{navTitle:'📅 నేటి న్యాయ వాస్తవం',streakLabel:'రోజువారీ స్ట్రీక్',streakSub:'తదుపరి రోజు కూడా చదవండి!',streakDays:n=>`${n} రోజులు`,shareWa:'WhatsApp',shareCopy:'కాపీ',copied:'కాపీ అయింది!',dayLabel:d=>d.toLocaleDateString('te-IN',{weekday:'short',day:'numeric',month:'short'}),footerTxt:'నేటి న్యాయ వాస్తవం · రోజుకు ఒక వాస్తవం · ఉచితం · LawSticker AI',prevFact:'← మునుపటి',nextFact:'తదుపరి →',ofTotal:(a,b)=>`${a} / ${b}`,todayBtn:'ఈరోజు',catColors:{Consumer:'#059669',Criminal:'#DC2626',Civil:'#2563EB',Labour:'#D97706',Constitutional:'#7C3AED'}},
+  hi:{navTitle:'📅 आज का कानूनी तथ्य',streakLabel:'दैनिक स्ट्रीक',streakSub:'कल भी आएं और स्ट्रीक जारी रखें!',streakDays:n=>`${n} दिन`,shareWa:'WhatsApp',shareCopy:'कॉपी',copied:'कॉपी हो गया!',dayLabel:d=>d.toLocaleDateString('hi-IN',{weekday:'short',day:'numeric',month:'short'}),footerTxt:'आज का कानूनी तथ्य · प्रतिदिन एक तथ्य · मुफ्त · LawSticker AI',prevFact:'← पिछला',nextFact:'अगला →',ofTotal:(a,b)=>`${a} / ${b}`,todayBtn:'आज',catColors:{Consumer:'#059669',Criminal:'#DC2626',Civil:'#2563EB',Labour:'#D97706',Constitutional:'#7C3AED'}},
+};
+
+// ── DAY OF YEAR ──
+function dayOfYear(d){
+  const start = new Date(d.getFullYear(),0,0);
+  const diff = d - start;
+  return Math.floor(diff/86400000);
+}
+
+// ── LOAD FACTS ──
+async function loadFacts(){
+  try {
+    const res = await fetch(CDN + '?v=' + Date.now());
+    if(!res.ok) throw new Error('CDN fail');
+    facts = await res.json();
+  } catch(e) {
+    facts = FALLBACK;
+  }
+  todayIdx = dayOfYear(new Date()) % facts.length;
+  currentIdx = todayIdx;
+  renderFact();
+  updateStreak();
+}
+
+// ── RENDER ──
+function renderFact(){
+  const t = T[lang];
+  const f = facts[currentIdx];
+  if(!f){ document.getElementById('factContainer').innerHTML = '<div class="loading-state">No fact found.</div>'; return; }
+
+  const factText = lang==='te' ? (f.telugu||f.fact) : lang==='hi' ? (f.hindi||f.fact) : f.fact;
+  const isToday = currentIdx === todayIdx;
+  const catColor = t.catColors[f.category] || '#8B6914';
+
+  document.getElementById('factContainer').innerHTML = `
+    <div class="fact-card">
+      <div class="fact-card-top">
+        <div class="fact-num">${t.ofTotal(currentIdx+1, facts.length)}</div>
+        <div class="fact-cat" style="background:${catColor}22;border-color:${catColor}44;color:${catColor}">${f.category}</div>
+        <div class="fact-act">${f.act}</div>
+        <div class="fact-section">${f.section}</div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-text">${factText}</div>
+        <div class="fact-divider"></div>
+        <div class="share-row">
+          <button class="share-btn wa" onclick="shareWa(${f.id})">📲 ${t.shareWa}</button>
+          <button class="share-btn copy" id="copyBtn" onclick="copyFact(${f.id})">📋 ${t.shareCopy}</button>
+        </div>
+      </div>
+    </div>
+    <div class="fact-nav">
+      <div class="fact-nav-btn" onclick="navigate(-1)" style="text-align:left">
+        <div class="fnb-label">${t.prevFact}</div>
+        <div class="fnb-act">${facts[(currentIdx-1+facts.length)%facts.length]?.act||''}</div>
+      </div>
+      <div class="fact-nav-btn" onclick="navigate(1)" style="text-align:right">
+        <div class="fnb-label">${t.nextFact}</div>
+        <div class="fnb-act">${facts[(currentIdx+1)%facts.length]?.act||''}</div>
+      </div>
+    </div>`;
+
+  document.getElementById('prevBtn').disabled = false;
+  document.getElementById('nextBtn').disabled = false;
+  const pct = Math.round((currentIdx+1)/facts.length*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('todayBtn').style.display = isToday ? 'none' : '';
+
+  const today = new Date();
+  const offset = currentIdx - todayIdx;
+  const d = new Date(today); d.setDate(d.getDate()+offset);
+  document.getElementById('dateLabel').textContent = t.dayLabel(d) + (isToday ? ' ✦' : '');
+}
+
+function navigate(dir){
+  currentIdx = (currentIdx + dir + facts.length) % facts.length;
+  renderFact();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goToday(){
+  currentIdx = todayIdx;
+  renderFact();
+}
+
+// ── SHARE ──
+function getShareText(id){
+  const t = T[lang];
+  const f = facts.find(x=>x.id===id) || facts[currentIdx];
+  const factText = lang==='te' ? (f.telugu||f.fact) : lang==='hi' ? (f.hindi||f.fact) : f.fact;
+  return `⚖️ *Daily Legal Fact*\n\n*${f.act} — ${f.section}*\n\n${factText}\n\n📱 More: lawsticker-ai.com\n#LawStickerAI #LegalRights`;
+}
+function shareWa(id){
+  window.open('https://wa.me/?text='+encodeURIComponent(getShareText(id)), '_blank');
+}
+function copyFact(id){
+  navigator.clipboard.writeText(getShareText(id)).then(()=>{
+    const btn = document.getElementById('copyBtn');
+    if(!btn) return;
+    btn.className='share-btn copy copied';
+    btn.textContent='✓ '+T[lang].copied;
+    setTimeout(()=>{btn.className='share-btn copy';btn.textContent='📋 '+T[lang].shareCopy;},2000);
+  });
+}
+
+// ── STREAK ──
+function updateStreak(){
+  const t = T[lang];
+  try{
+    const KEY='lawsticker_streak';
+    const today=new Date().toDateString();
+    let data=JSON.parse(localStorage.getItem(KEY)||'{"last":"","streak":0}');
+    const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if(data.last===today){ /* already visited */ }
+    else if(data.last===yesterday.toDateString()){ data.streak++; data.last=today; }
+    else { data.streak=1; data.last=today; }
+    localStorage.setItem(KEY,JSON.stringify(data));
+    document.getElementById('streakNum').textContent=t.streakDays(data.streak);
+    document.getElementById('streakLabel').textContent=t.streakLabel;
+    document.getElementById('streakSub').textContent=data.streak>=7?'🏆 7+ day streak — you are consistent!':t.streakSub;
+  }catch(e){}
+}
+
+// ── LANG ──
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  document.getElementById('navTitle').textContent=T[l].navTitle;
+  document.getElementById('footerTxt').textContent=T[l].footerTxt;
+  document.getElementById('todayBtn').textContent=T[l].todayBtn;
+  document.getElementById('streakLabel').textContent=T[l].streakLabel;
+  try{localStorage.setItem('career_lang',l);}catch(e){}
+  if(facts.length) renderFact();
+}
+
+// ── INIT ──
+(function(){
+  try{lang=localStorage.getItem('career_lang')||'en';}catch(e){}
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===lang));
+  document.getElementById('navTitle').textContent=T[lang].navTitle;
+  document.getElementById('footerTxt').textContent=T[lang].footerTxt;
+  document.getElementById('todayBtn').textContent=T[lang].todayBtn;
+  loadFacts();
+})();
+</script>
+</body>
+</html>
