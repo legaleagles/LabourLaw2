@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask LawSticker AI — Free Legal Help in Telugu, English, Hindi</title>
+<meta name="description" content="Ask any legal question in Telugu, English or Hindi. Free guidance on consumer rights, criminal law, labour law, career, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;
+  --muted:#8B95A8;--light:#E8EDF3;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
+  --jade:#10B981;--jade-bg:#D1FAE5;
+  --rose:#DC2626;--rose-bg:#FEE2E2;
+  --amber:#D97706;--amber-bg:#FEF3C7;
+  --teal:#0D9488;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;
+  background:var(--navy);color:var(--cream);
+  display:flex;flex-direction:column;height:100vh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* NAV */
+nav{
+  flex-shrink:0;background:rgba(13,17,23,.97);
+  padding:11px 16px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(201,162,39,.15);z-index:10;
+}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-back{color:rgba(255,255,255,.45);text-decoration:none;font-size:13px;font-weight:600}
+.nav-back:hover{color:var(--gold-l)}
+.nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);display:flex;align-items:center;gap:6px}
+.nav-status{width:7px;height:7px;border-radius:50%;background:var(--jade);box-shadow:0 0 6px var(--jade);flex-shrink:0}
+.nav-langs{display:flex;gap:4px}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(201,162,39,.2);background:transparent;color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold)}
+
+/* DISCLAIMER MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--navy);border:1px solid rgba(201,162,39,.25);
+  border-radius:24px 24px 0 0;padding:28px 22px 36px;
+  max-width:560px;width:100%;
+  animation:slideUp .35s ease;
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-icon{font-size:36px;margin-bottom:14px;text-align:center}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:white;text-align:center;margin-bottom:6px}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:20px}
+.disclaimer-list{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.d-item{display:flex;gap:10px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.65)}
+.d-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.d-item strong{color:rgba(255,255,255,.9)}
+.modal-warn{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);border-radius:12px;padding:12px 14px;font-size:12px;color:rgba(255,100,100,.9);line-height:1.6;margin-bottom:20px;font-weight:600}
+.modal-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:var(--navy);border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s}
+.modal-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+/* CHAT */
+.chat-scroll{flex:1;overflow-y:auto;padding:16px 14px 8px;scrollbar-width:thin;scrollbar-color:rgba(201,162,39,.15) transparent}
+.chat-inner{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:10px;animation:msgIn .4s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:linear-gradient(135deg,rgba(201,162,39,.3),rgba(139,111,46,.5))}
+.msg.user .avatar{background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.2)}
+.bubble{
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);
+  border-radius:4px 16px 16px 16px;padding:13px 16px;
+  font-size:14px;line-height:1.7;color:rgba(244,236,216,.8);
+  max-width:88%;
+}
+.msg.user .bubble{
+  background:rgba(201,162,39,.12);border-color:rgba(201,162,39,.2);
+  border-radius:16px 4px 16px 16px;color:rgba(245,215,110,.9);font-weight:600;
+}
+.bubble .law-ref{
+  display:inline-block;margin-top:8px;padding:3px 10px;
+  background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.2);
+  border-radius:10px;font-size:11px;color:var(--gold-l);font-weight:600;
+}
+.bubble .cat-badge{
+  display:inline-block;margin-bottom:8px;padding:3px 10px;
+  border-radius:10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+}
+.bubble .action-links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.bubble .al{
+  font-size:11px;font-weight:700;padding:5px 11px;border-radius:12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.65);cursor:pointer;text-decoration:none;
+  transition:all .2s;display:inline-block;
+}
+.bubble .al:hover{background:rgba(201,162,39,.12);border-color:rgba(201,162,39,.3);color:var(--gold-l)}
+
+.typing-bubble{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:4px 16px 16px 16px;padding:14px 18px}
+.typing-dots{display:inline-flex;gap:4px}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.4;animation:dot 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+/* SUGGESTION CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px;padding:4px 14px 8px;max-width:640px;margin:0 auto}
+.chip{
+  background:rgba(255,255,255,.04);border:1px solid rgba(201,162,39,.2);
+  border-radius:20px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:600;
+  color:rgba(244,236,216,.65);cursor:pointer;transition:all .2s;
+}
+.chip:hover{background:rgba(201,162,39,.1);border-color:rgba(201,162,39,.4);color:var(--gold-l)}
+
+/* INPUT AREA */
+.input-area{
+  flex-shrink:0;background:rgba(13,17,23,.97);
+  border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;
+}
+.input-row{
+  display:flex;gap:8px;align-items:flex-end;max-width:640px;margin:0 auto;
+}
+.input-box{
+  flex:1;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:12px 14px;
+  font-family:inherit;font-size:14px;color:rgba(244,236,216,.9);
+  resize:none;outline:none;min-height:46px;max-height:120px;
+  transition:border-color .2s;line-height:1.5;
+}
+.input-box:focus{border-color:rgba(201,162,39,.45)}
+.input-box::placeholder{color:rgba(255,255,255,.2)}
+.send-btn{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold-l),var(--gold));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:all .2s;
+}
+.send-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.send-btn:active{transform:scale(.96)}
+.send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.input-hint{text-align:center;font-size:10px;color:rgba(255,255,255,.2);margin-top:6px;max-width:640px;margin-left:auto;margin-right:auto}
+
+/* UNKNOWN QUESTION SUBMIT */
+.submit-form{
+  background:rgba(255,255,255,.03);border:1px solid rgba(201,162,39,.2);
+  border-radius:16px;padding:16px;margin-top:10px;
+}
+.submit-form textarea{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13px;
+  color:rgba(244,236,216,.8);resize:none;outline:none;min-height:70px;margin-bottom:10px;
+}
+.submit-form textarea::placeholder{color:rgba(255,255,255,.2)}
+.submit-form-btn{
+  width:100%;padding:12px;background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.3);
+  border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;
+  color:var(--gold-l);cursor:pointer;transition:all .2s;
+}
+.submit-form-btn:hover{background:rgba(201,162,39,.25)}
+.submit-success{color:var(--jade);font-size:13px;font-weight:600;text-align:center;padding:8px}
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER MODAL -->
+<div class="modal-overlay" id="disclaimerModal">
+  <div class="modal">
+    <div class="modal-icon">⚖️</div>
+    <div class="modal-title" id="dm-title">Before You Ask</div>
+    <div class="modal-sub" id="dm-sub">Please read this carefully — it takes 30 seconds</div>
+    <div class="disclaimer-list">
+      <div class="d-item"><span class="d-icon">📋</span><div><strong>Informational guidance only.</strong> Answers here are general legal information, not professional legal advice for your specific situation.</div></div>
+      <div class="d-item"><span class="d-icon">👨‍⚖️</span><div><strong>Consult a lawyer</strong> for serious matters — criminal cases, property disputes, family law, or anything with legal consequences.</div></div>
+      <div class="d-item"><span class="d-icon">🌐</span><div><strong>You can ask in Telugu, English or Hindi.</strong> We'll do our best to answer in the same language.</div></div>
+      <div class="d-item"><span class="d-icon">🔒</span><div><strong>Do not share personal details</strong> — no Aadhaar, phone numbers, case numbers, or names of people involved.</div></div>
+      <div class="d-item"><span class="d-icon">📤</span><div><strong>Unknown questions get logged</strong> as anonymous GitHub issues so we can improve the knowledge base. No personal info is stored.</div></div>
+    </div>
+    <div class="modal-warn" id="dm-warn">⚠️ Misuse or abusive queries will result in the service being suspended. Use responsibly — this is built to empower people, not to be exploited.</div>
+    <button class="modal-btn" id="dm-btn" onclick="acceptDisclaimer()">I Understand — Let Me Ask →</button>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="https://lawsticker-ai.com">← Home</a>
+    <div class="nav-title"><div class="nav-status"></div><span id="navTitle">Ask LawSticker AI</span></div>
+  </div>
+  <div class="nav-langs">
+    <button class="nav-lang active" onclick="setLang('en')">EN</button>
+    <button class="nav-lang" onclick="setLang('te')">తె</button>
+    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+  </div>
+</nav>
+
+<div class="chat-scroll" id="chatScroll">
+  <div class="chat-inner" id="chatInner"></div>
+</div>
+
+<div class="chips" id="chipsArea"></div>
+
+<div class="input-area">
+  <div class="input-row">
+    <textarea class="input-box" id="inputBox" rows="1"
+      placeholder="Ask anything in Telugu, English or Hindi..."
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+  </div>
+  <div class="input-hint" id="inputHint">Telugu / English / Hindi · Free · No personal details please</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const KB_CDN = 'https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/kb.json';
+const GH_TOKEN = 'github_pat_placeholder'; // replace with fine-grained PAT (issues:write only)
+const GH_REPO = 'legaleagles/LabourLaw2';
+const MATCH_THRESHOLD = 2;
+
+let lang = 'en';
+let kb = [];
+let disclaimerAccepted = false;
+let isTyping = false;
+let msgCount = 0;
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS
+// ══════════════════════════════════════════
+const T = {
+  en:{
+    navTitle:'Ask LawSticker AI',
+    dmTitle:'Before You Ask',
+    dmSub:'Please read carefully — 30 seconds',
+    dmBtn:'I Understand — Let Me Ask →',
+    dmWarn:'⚠️ Misuse or abusive queries will result in the service being suspended. Use responsibly.',
+    greet:'Hello! I\'m LawSticker AI — your free legal guide. You can ask me anything about your rights, legal procedures, career in law, or calculators — in Telugu, English, or Hindi.\n\nWhat would you like to know?',
+    placeholder:'Ask anything in Telugu, English or Hindi...',
+    inputHint:'Telugu / English / Hindi · Free · No personal details please',
+    chips:['My landlord is threatening me 🏠','Cheque bounce — what to do? 💳','How to become a Civil Judge? ⚖️','Police refused FIR 🚨','Consumer complaint — how? 🛒','I lost money online 💻'],
+    unknown:'I don\'t have a specific answer for that question yet. But I\'ve noted it — our team will add this to the knowledge base.\n\nYou can also:\n• Visit lawsticker-ai.com for more resources\n• Use our Career Navigator for law career questions\n• Check our 25 Calculators for financial queries',
+    unknownSubmit:'Your question has been submitted anonymously. We\'ll add the answer to our knowledge base soon. Thank you for helping us improve!',
+    unknownForm:'Would you like to submit this question so we can add the answer?\n\nYour question will be saved anonymously — no personal details stored.',
+    submitBtn:'📤 Submit Question Anonymously',
+    submitting:'Submitting...',
+    submitted:'✓ Submitted! We\'ll add this answer soon.',
+    submitError:'Could not submit right now. Please try again.',
+    lawLabel:'Law',
+    askAnother:'Ask another question',
+    suggestions:'You might also want to know:',
+    disclaimer:'⚠️ This is general legal information, not professional legal advice.',
+  },
+  te:{
+    navTitle:'LawSticker AI ని అడగండి',
+    dmTitle:'అడగడానికి ముందు',
+    dmSub:'దయచేసి జాగ్రత్తగా చదవండి — 30 సెకన్లు',
+    dmBtn:'అర్థమైంది — అడగనివ్వండి →',
+    dmWarn:'⚠️ దుర్వినియోగం లేదా అసభ్యకర ప్రశ్నలు సేవ నిలిపివేతకు దారితీస్తాయి. బాధ్యతగా వాడండి.',
+    greet:'నమస్కారం! నేను LawSticker AI — మీ ఉచిత న్యాయ మార్గదర్శి. మీ హక్కులు, చట్టపరమైన విధానాలు, లా కెరీర్ లేదా కాలిక్యులేటర్ల గురించి తెలుగు, ఆంగ్లం లేదా హిందీలో అడగవచ్చు.\n\nమీకు ఏమి తెలుసుకోవాలి?',
+    placeholder:'తెలుగు, ఆంగ్లం లేదా హిందీలో అడగండి...',
+    inputHint:'తెలుగు / English / हिंदी · ఉచితం · వ్యక్తిగత వివరాలు వద్దు',
+    chips:['ఇంటి యజమాని బెదిరిస్తున్నాడు 🏠','చెక్ బౌన్స్ — ఏమి చేయాలి? 💳','సివిల్ జడ్జి ఎలా అవ్వాలి? ⚖️','పోలీసులు FIR నమోదు చేయడం లేదు 🚨','వినియోగదారు ఫిర్యాదు ఎలా? 🛒','ఆన్‌లైన్‌లో డబ్బు పోయింది 💻'],
+    unknown:'ఆ ప్రశ్నకు నా దగ్గర ఇంకా నిర్దిష్టమైన సమాధానం లేదు. కానీ నేను దీన్ని నమోదు చేశాను — మా బృందం దీన్ని జ్ఞాన బేస్‌కు జత చేస్తారు.\n\nమీరు ఇక్కడ కూడా చూడవచ్చు:\n• lawsticker-ai.com లో మరిన్ని వనరులు\n• కెరీర్ ప్రశ్నలకు మా కెరీర్ నావిగేటర్\n• ఆర్థిక ప్రశ్నలకు మా 25 కాలిక్యులేటర్లు',
+    unknownForm:'ఈ ప్రశ్నను సమర్పించాలనుకుంటున్నారా? మేము సమాధానం జత చేస్తాము.\n\nమీ ప్రశ్న అనామకంగా సేవ్ అవుతుంది — వ్యక్తిగత వివరాలు సేవ్ కావు.',
+    submitBtn:'📤 అనామకంగా ప్రశ్న సమర్పించండి',
+    submitting:'సమర్పిస్తోంది...',
+    submitted:'✓ సమర్పించబడింది! మేము త్వరలో సమాధానం జత చేస్తాము.',
+    submitError:'ఇప్పుడు సమర్పించలేకపోయాము. మళ్ళీ ప్రయత్నించండి.',
+    lawLabel:'చట్టం',
+    askAnother:'మరో ప్రశ్న అడగండి',
+    suggestions:'మీకు ఇవి కూడా తెలుసుకోవాలనుండవచ్చు:',
+    disclaimer:'⚠️ ఇది సాధారణ న్యాయ సమాచారం, వృత్తిపరమైన న్యాయ సలహా కాదు.',
+  },
+  hi:{
+    navTitle:'LawSticker AI से पूछें',
+    dmTitle:'पूछने से पहले',
+    dmSub:'कृपया ध्यान से पढ़ें — 30 सेकंड',
+    dmBtn:'समझ गया — पूछने दें →',
+    dmWarn:'⚠️ दुरुपयोग या अपमानजनक प्रश्नों से सेवा निलंबित हो जाएगी। जिम्मेदारी से उपयोग करें।',
+    greet:'नमस्ते! मैं LawSticker AI हूं — आपका मुफ्त कानूनी मार्गदर्शक। आप अपने अधिकारों, कानूनी प्रक्रियाओं, कानून करियर या कैलकुलेटर के बारे में तेलुगु, अंग्रेजी या हिंदी में कुछ भी पूछ सकते हैं।\n\nआप क्या जानना चाहेंगे?',
+    placeholder:'तेलुगु, अंग्रेजी या हिंदी में कुछ भी पूछें...',
+    inputHint:'Telugu / English / हिंदी · मुफ्त · कृपया व्यक्तिगत जानकारी न दें',
+    chips:['मकान मालिक धमका रहा है 🏠','चेक बाउंस — क्या करें? 💳','सिविल जज कैसे बनें? ⚖️','पुलिस FIR दर्ज नहीं कर रही 🚨','उपभोक्ता शिकायत कैसे करें? 🛒','ऑनलाइन पैसे चले गए 💻'],
+    unknown:'उस प्रश्न का मेरे पास अभी विशेष उत्तर नहीं है। लेकिन मैंने इसे नोट किया है — हमारी टीम इसे जल्द जोड़ेगी।\n\nआप यहां भी देख सकते हैं:\n• lawsticker-ai.com पर अधिक संसाधन\n• करियर प्रश्नों के लिए Career Navigator\n• वित्तीय प्रश्नों के लिए 25 Calculators',
+    unknownForm:'क्या आप यह प्रश्न सबमिट करना चाहेंगे ताकि हम उत्तर जोड़ सकें?\n\nआपका प्रश्न गुमनाम रूप से सहेजा जाएगा।',
+    submitBtn:'📤 गुमनाम रूप से प्रश्न सबमिट करें',
+    submitting:'सबमिट हो रहा है...',
+    submitted:'✓ सबमिट हो गया! हम जल्द उत्तर जोड़ेंगे।',
+    submitError:'अभी सबमिट नहीं हो सका। कृपया फिर प्रयास करें।',
+    lawLabel:'कानून',
+    askAnother:'एक और प्रश्न पूछें',
+    suggestions:'आप यह भी जानना चाहेंगे:',
+    disclaimer:'⚠️ यह सामान्य कानूनी जानकारी है, पेशेवर कानूनी सलाह नहीं।',
+  }
+};
+
+const catColors = {
+  'Consumer Rights':'#059669','Criminal Rights':'#DC2626','Labour Rights':'#D97706',
+  'Property / Civil':'#2563EB','Constitutional Rights':'#7C3AED','Career Guidance':'#0891B2',
+  'Women\'s Rights':'#DB2777','Family Law':'#7C3AED','Finance / Banking':'#059669',
+  'Cyber Crime':'#DC2626','Education / LAWCET':'#D97706','Consumer / Utility':'#059669','Property':'#2563EB',
+};
+
+// ══════════════════════════════════════════
+//  LANG
+// ══════════════════════════════════════════
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
+  document.getElementById('navTitle').textContent=T[l].navTitle;
+  document.getElementById('inputBox').placeholder=T[l].placeholder;
+  document.getElementById('inputHint').textContent=T[l].inputHint;
+  document.getElementById('dm-title').textContent=T[l].dmTitle;
+  document.getElementById('dm-sub').textContent=T[l].dmSub;
+  document.getElementById('dm-btn').textContent=T[l].dmBtn;
+  document.getElementById('dm-warn').textContent=T[l].dmWarn;
+  try{localStorage.setItem('career_lang',l);}catch(e){}
+  renderChips();
+}
+
+// ══════════════════════════════════════════
+//  DISCLAIMER
+// ══════════════════════════════════════════
+function acceptDisclaimer(){
+  disclaimerAccepted=true;
+  document.getElementById('disclaimerModal').style.display='none';
+  try{sessionStorage.setItem('ls_disclaimer','1');}catch(e){}
+  botGreet();
+}
+
+// ══════════════════════════════════════════
+//  KB LOADING
+// ══════════════════════════════════════════
+async function loadKB(){
+  try{
+    const r=await fetch(KB_CDN+'?v='+new Date().toDateString());
+    if(!r.ok) throw new Error();
+    kb=await r.json();
+  }catch(e){ kb=[]; }
+}
+
+// ══════════════════════════════════════════
+//  MATCHING ENGINE
+// ══════════════════════════════════════════
+function score(entry, query){
+  const q=query.toLowerCase();
+  const words=q.split(/\s+/);
+  let s=0;
+  entry.keywords.forEach(kw=>{
+    if(q.includes(kw.toLowerCase())) s+=10;
+    words.forEach(w=>{ if(w.length>2 && kw.toLowerCase().includes(w)) s+=2; });
+  });
+  entry.tags.forEach(tag=>{ if(q.includes(tag.toLowerCase())) s+=6; });
+  // match across all language fields
+  ['q_en','q_te','q_hi','a_en','a_te','a_hi'].forEach(f=>{
+    if(entry[f] && entry[f].toLowerCase().includes(q.substring(0,15))) s+=3;
+  });
+  return s;
+}
+function findBestMatch(query){
+  if(!kb.length) return null;
+  let best=null, bestScore=0;
+  kb.forEach(e=>{ const s=score(e,query); if(s>bestScore){bestScore=s;best=e;} });
+  return bestScore>=MATCH_THRESHOLD ? best : null;
+}
+
+// ══════════════════════════════════════════
+//  CHAT RENDERING
+// ══════════════════════════════════════════
+function scrollDown(){ requestAnimationFrame(()=>{ const s=document.getElementById('chatScroll'); s.scrollTop=s.scrollHeight; }); }
+
+function botMsg(html, delay){
+  return new Promise(resolve=>{
+    const typingEl=document.createElement('div');
+    typingEl.className='msg';
+    typingEl.innerHTML=`<div class="avatar">⚖️</div><div class="bubble typing-bubble"><span class="typing-dots"><span></span><span></span><span></span></span></div>`;
+    document.getElementById('chatInner').appendChild(typingEl);
+    scrollDown();
+    setTimeout(()=>{
+      typingEl.remove();
+      const el=document.createElement('div');
+      el.className='msg';
+      el.innerHTML=`<div class="avatar">⚖️</div><div class="bubble">${html}</div>`;
+      document.getElementById('chatInner').appendChild(el);
+      scrollDown();
+      resolve();
+    }, delay||700);
+  });
+}
+function userMsg(text){
+  const el=document.createElement('div');
+  el.className='msg user';
+  el.innerHTML=`<div class="avatar">🎓</div><div class="bubble">${text}</div>`;
+  document.getElementById('chatInner').appendChild(el);
+  scrollDown();
+}
+function botGreet(){
+  const t=T[lang];
+  setTimeout(async()=>{
+    await botMsg(t.greet.replace(/\n/g,'<br>'),600);
+    renderChips();
+    document.getElementById('inputBox').focus();
+  },300);
+}
+function renderChips(){
+  const t=T[lang];
+  const area=document.getElementById('chipsArea');
+  area.innerHTML=t.chips.map(c=>`<button class="chip" onclick="chipClick(this)">${c}</button>`).join('');
+}
+function chipClick(btn){
+  document.getElementById('inputBox').value=btn.textContent;
+  document.getElementById('chipsArea').innerHTML='';
+  sendMessage();
+}
+
+// ══════════════════════════════════════════
+//  SEND MESSAGE
+// ══════════════════════════════════════════
+async function sendMessage(){
+  if(isTyping) return;
+  const box=document.getElementById('inputBox');
+  const query=box.value.trim();
+  if(!query) return;
+
+  box.value=''; box.style.height='46px';
+  document.getElementById('chipsArea').innerHTML='';
+  document.getElementById('sendBtn').disabled=true;
+  isTyping=true; msgCount++;
+
+  userMsg(escHtml(query));
+
+  const match=findBestMatch(query);
+  if(match){
+    const t=T[lang];
+    const ans=lang==='te'?(match.a_te||match.a_en):lang==='hi'?(match.a_hi||match.a_en):match.a_en;
+    const cat=match.category||'';
+    const color=catColors[cat]||'#C9A227';
+    const formatted=ans.replace(/\n/g,'<br>').replace(/\((\d+)\)/g,'<strong>($1)</strong>');
+    await botMsg(
+      `<span class="cat-badge" style="background:${color}22;border:1px solid ${color}44;color:${color}">${cat}</span><br>${formatted}<br><br><span class="law-ref">📋 ${t.lawLabel}: ${match.law||''}</span><br><small style="color:rgba(255,255,255,.3);font-size:11px;margin-top:4px;display:block">${t.disclaimer}</small>`,
+      800
+    );
+    // post-answer chips
+    setTimeout(()=>renderPostChips(), 500);
+  } else {
+    await handleUnknown(query);
+  }
+
+  isTyping=false;
+  document.getElementById('sendBtn').disabled=false;
+}
+
+function renderPostChips(){
+  const t=T[lang];
+  const area=document.getElementById('chipsArea');
+  area.innerHTML=`<button class="chip" onclick="clearAndFocus()">💬 ${t.askAnother}</button>`;
+}
+function clearAndFocus(){
+  document.getElementById('chipsArea').innerHTML='';
+  document.getElementById('inputBox').focus();
+}
+
+// ══════════════════════════════════════════
+//  UNKNOWN QUESTION HANDLER
+// ══════════════════════════════════════════
+async function handleUnknown(query){
+  const t=T[lang];
+  await botMsg(t.unknown.replace(/\n/g,'<br>').replace(/•/g,'→'),900);
+
+  // Show submission form inline
+  const formEl=document.createElement('div');
+  formEl.className='msg';
+  formEl.innerHTML=`
+    <div class="avatar">⚖️</div>
+    <div class="bubble">
+      <div style="margin-bottom:10px;font-size:13px;color:rgba(244,236,216,.7)">${t.unknownForm.replace(/\n/g,'<br>')}</div>
+      <div class="submit-form">
+        <textarea id="submitQ" placeholder="${query}" readonly style="opacity:.7">${query}</textarea>
+        <button class="submit-form-btn" id="submitFormBtn" onclick="submitUnknown('${escHtml(query).replace(/'/g,"\\'")}')">
+          ${t.submitBtn}
+        </button>
+      </div>
+    </div>`;
+  document.getElementById('chatInner').appendChild(formEl);
+  scrollDown();
+}
+
+async function submitUnknown(query){
+  const t=T[lang];
+  const btn=document.getElementById('submitFormBtn');
+  if(!btn) return;
+  btn.textContent=t.submitting; btn.disabled=true;
+
+  const body = {
+    title: `[LawSticker User Question] ${query.substring(0,80)}`,
+    body: `**Anonymous user question submitted via lawsticker-ai.com/ask.html**\n\n**Question:** ${query}\n\n**Language context:** ${lang}\n\n**Timestamp:** ${new Date().toISOString()}\n\n---\n*This issue was auto-created by the LawSticker AI chatbot. Please add an answer to the knowledge base.*`,
+    labels: ['user-question','kb-gap']
+  };
+
+  try{
+    const r=await fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
+      body:JSON.stringify(body)
+    });
+    if(r.ok){ btn.className='submit-form-btn'; btn.textContent=t.submitted; btn.style.color='var(--jade)'; btn.style.borderColor='var(--jade)'; }
+    else throw new Error();
+  } catch(e){
+    btn.textContent=t.submitError; btn.disabled=false;
+  }
+}
+
+// ══════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════
+function escHtml(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function autoResize(el){ el.style.height='46px'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+(function(){
+  try{lang=localStorage.getItem('career_lang')||'en';}catch(e){}
+  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===lang));
+  document.getElementById('navTitle').textContent=T[lang].navTitle;
+  document.getElementById('inputBox').placeholder=T[lang].placeholder;
+  document.getElementById('inputHint').textContent=T[lang].inputHint;
+  document.getElementById('dm-title').textContent=T[lang].dmTitle;
+  document.getElementById('dm-sub').textContent=T[lang].dmSub;
+  document.getElementById('dm-btn').textContent=T[lang].dmBtn;
+  document.getElementById('dm-warn').textContent=T[lang].dmWarn;
+
+  // Check session disclaimer
+  try{
+    if(sessionStorage.getItem('ls_disclaimer')==='1'){
+      document.getElementById('disclaimerModal').style.display='none';
+      disclaimerAccepted=true;
+    }
+  }catch(e){}
+
+  loadKB();
+  if(disclaimerAccepted) botGreet();
+  renderChips();
+})();
+</script>
+</body>
+</html>
