@@ -164,6 +164,25 @@ nav{
 }
 .submit-form-btn:hover{background:rgba(201,162,39,.25)}
 .submit-success{color:var(--jade);font-size:13px;font-weight:600;text-align:center;padding:8px}
+
+/* THUMBS FEEDBACK */
+.feedback-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.feedback-label{font-size:11px;color:rgba(255,255,255,.3);flex:1}
+.fb-btn{background:none;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;font-size:14px;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.4)}
+.fb-btn:hover{border-color:rgba(201,162,39,.4);background:rgba(201,162,39,.08)}
+.fb-btn.active.up{border-color:var(--jade);background:rgba(16,185,129,.12);color:var(--jade)}
+.fb-btn.active.down{border-color:var(--rose);background:rgba(220,38,38,.1);color:var(--rose)}
+
+/* STAR RATING */
+.star-card{background:rgba(255,255,255,.03);border:1px solid rgba(201,162,39,.2);border-radius:16px;padding:18px;margin-top:6px;}
+.star-title{font-size:13px;font-weight:700;color:rgba(244,236,216,.8);margin-bottom:12px;text-align:center}
+.stars-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.star{font-size:30px;cursor:pointer;transition:transform .15s;opacity:.25;line-height:1;user-select:none}
+.star:hover,.star.lit{opacity:1;transform:scale(1.2)}
+.star-words{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13px;color:rgba(244,236,216,.8);resize:none;outline:none;min-height:60px;margin-bottom:10px;display:block}
+.star-words::placeholder{color:rgba(255,255,255,.2)}
+.star-submit{width:100%;padding:12px;background:linear-gradient(135deg,rgba(201,162,39,.9),rgba(201,162,39,.6));color:var(--navy);border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s}
+.star-submit:disabled{opacity:.4;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -223,11 +242,23 @@ const GH_TOKEN = 'github_pat_placeholder'; // replace with fine-grained PAT (iss
 const GH_REPO = 'legaleagles/LabourLaw2';
 const MATCH_THRESHOLD = 2;
 
+// Google Form for feedback — fill these after creating your form
+// Form URL pattern: https://docs.google.com/forms/d/e/FORM_ID/formResponse
+const GF_URL = 'https://docs.google.com/forms/d/e/FORM_ID_PLACEHOLDER/formResponse';
+const GF_RATING  = 'entry.RATING_ENTRY';   // star rating field entry ID
+const GF_WORDS   = 'entry.WORDS_ENTRY';    // optional words field entry ID
+const GF_LANG    = 'entry.LANG_ENTRY';     // language field entry ID
+const GF_HELPFUL = 'entry.HELPFUL_ENTRY';  // thumbs field entry ID
+const GF_Q       = 'entry.Q_ENTRY';        // question asked field entry ID
+
 let lang = 'en';
 let kb = [];
 let disclaimerAccepted = false;
 let isTyping = false;
 let msgCount = 0;
+let thumbsGiven = {};   // track which msg IDs have been rated
+let starRating = 0;
+let sessionQuestions = [];
 
 // ══════════════════════════════════════════
 //  TRANSLATIONS
@@ -245,15 +276,31 @@ const T = {
     chips:['My landlord is threatening me 🏠','Cheque bounce — what to do? 💳','How to become a Civil Judge? ⚖️','Police refused FIR 🚨','Consumer complaint — how? 🛒','I lost money online 💻'],
     unknown:'I don\'t have a specific answer for that question yet. But I\'ve noted it — our team will add this to the knowledge base.\n\nYou can also:\n• Visit lawsticker-ai.com for more resources\n• Use our Career Navigator for law career questions\n• Check our 25 Calculators for financial queries',
     unknownSubmit:'Your question has been submitted anonymously. We\'ll add the answer to our knowledge base soon. Thank you for helping us improve!',
-    unknownForm:'Would you like to submit this question so we can add the answer?\n\nYour question will be saved anonymously — no personal details stored.',
-    submitBtn:'📤 Submit Question Anonymously',
+    unknownChoiceIntro:'We don\'t have an answer for this yet — but we want to help. What would you like to do?',
+    opt1Label:'📅 Come back in 2 days — I\'ll ask again',
+    opt1Response:'Perfect — we\'ll work on adding this answer within 2 days.\n\nWhen you come back, just ask the same question and the chatbot will have a proper answer ready for you.\n\nWe add new questions to our knowledge base every few days based on what people ask. Thank you for helping us improve!',
+    opt2Label:'📋 Leave my question + optional contact',
+    opt2Intro:'Fill in your question below and optionally leave a phone number or email. We\'ll add the answer to the chatbot and reach out to you directly if you left contact details.',
+    yourQuestion:'Your Question',
+    contactOptional:'Your Contact (Optional)',
+    contactPlaceholder:'Phone number or email — completely optional',
+    contactNote:'🔒 Your contact is only used to notify you when the answer is added. It is stored privately in our issue tracker — never shared or published. Leave blank to stay anonymous.',
+    submitBtn:'📤 Submit Question',
     submitting:'Submitting...',
-    submitted:'✓ Submitted! We\'ll add this answer soon.',
+    submitted:'✓ Question submitted!',
+    submittedFollowup:'Thank you — your question has been noted.\n\nIf you left your contact, we\'ll reach out once the answer is added.\n\nIf you stayed anonymous — come back in 2 days and ask the same question. It will be answered.',
     submitError:'Could not submit right now. Please try again.',
     lawLabel:'Law',
     askAnother:'Ask another question',
     suggestions:'You might also want to know:',
     disclaimer:'⚠️ This is general legal information, not professional legal advice.',
+    feedbackQ:'Was this helpful?',
+    thumbsThanks:'Thanks!',
+    endRate:'⭐ Rate this conversation',
+    rateTitle:'How was your experience today?',
+    ratePlaceholder:'Any words? (optional)',
+    rateSubmit:'Submit Rating',
+    rateThanks:'Thank you! Your feedback helps us improve LawSticker AI for everyone. 🙏',
   },
   te:{
     navTitle:'LawSticker AI ని అడగండి',
@@ -266,15 +313,31 @@ const T = {
     inputHint:'తెలుగు / English / हिंदी · ఉచితం · వ్యక్తిగత వివరాలు వద్దు',
     chips:['ఇంటి యజమాని బెదిరిస్తున్నాడు 🏠','చెక్ బౌన్స్ — ఏమి చేయాలి? 💳','సివిల్ జడ్జి ఎలా అవ్వాలి? ⚖️','పోలీసులు FIR నమోదు చేయడం లేదు 🚨','వినియోగదారు ఫిర్యాదు ఎలా? 🛒','ఆన్‌లైన్‌లో డబ్బు పోయింది 💻'],
     unknown:'ఆ ప్రశ్నకు నా దగ్గర ఇంకా నిర్దిష్టమైన సమాధానం లేదు. కానీ నేను దీన్ని నమోదు చేశాను — మా బృందం దీన్ని జ్ఞాన బేస్‌కు జత చేస్తారు.\n\nమీరు ఇక్కడ కూడా చూడవచ్చు:\n• lawsticker-ai.com లో మరిన్ని వనరులు\n• కెరీర్ ప్రశ్నలకు మా కెరీర్ నావిగేటర్\n• ఆర్థిక ప్రశ్నలకు మా 25 కాలిక్యులేటర్లు',
-    unknownForm:'ఈ ప్రశ్నను సమర్పించాలనుకుంటున్నారా? మేము సమాధానం జత చేస్తాము.\n\nమీ ప్రశ్న అనామకంగా సేవ్ అవుతుంది — వ్యక్తిగత వివరాలు సేవ్ కావు.',
-    submitBtn:'📤 అనామకంగా ప్రశ్న సమర్పించండి',
+    unknownChoiceIntro:'దీనికి మా దగ్గర ఇంకా సమాధానం లేదు — కానీ మేము సహాయం చేయాలనుకుంటున్నాము. మీరు ఏమి చేయాలనుకుంటున్నారు?',
+    opt1Label:'📅 2 రోజుల్లో తిరిగి వస్తాను — మళ్ళీ అడుగుతాను',
+    opt1Response:'సరే — మేము 2 రోజుల్లో ఈ సమాధానం జత చేస్తాము.\n\nమీరు తిరిగి వచ్చినప్పుడు అదే ప్రశ్న అడగండి — చాట్‌బాట్ సరైన సమాధానం ఇస్తుంది.\n\nమీ ప్రశ్న మా జ్ఞాన బేస్ మెరుగుపరచడంలో సహాయపడింది. ధన్యవాదాలు!',
+    opt2Label:'📋 నా ప్రశ్న + ఐచ్ఛిక సంప్రదింపు వివరాలు ఇవ్వండి',
+    opt2Intro:'మీ ప్రశ్నను నమోదు చేయండి మరియు ఐచ్ఛికంగా ఫోన్ నంబర్ లేదా ఇమెయిల్ ఇవ్వండి. సమాధానం జత చేసిన తర్వాత మేము నేరుగా మీకు తెలియజేస్తాము.',
+    yourQuestion:'మీ ప్రశ్న',
+    contactOptional:'మీ సంప్రదింపు (ఐచ్ఛికం)',
+    contactPlaceholder:'ఫోన్ నంబర్ లేదా ఇమెయిల్ — పూర్తిగా ఐచ్ఛికం',
+    contactNote:'🔒 మీ సంప్రదింపు వివరాలు సమాధానం జత చేసినప్పుడు మిమ్మల్ని తెలియజేయడానికి మాత్రమే ఉపయోగిస్తాము. ఎప్పుడూ పంచుకోము లేదా ప్రచురించము. అనామకంగా ఉండాలంటే ఖాళీగా వదలండి.',
+    submitBtn:'📤 ప్రశ్న సమర్పించండి',
     submitting:'సమర్పిస్తోంది...',
-    submitted:'✓ సమర్పించబడింది! మేము త్వరలో సమాధానం జత చేస్తాము.',
+    submitted:'✓ ప్రశ్న సమర్పించబడింది!',
+    submittedFollowup:'ధన్యవాదాలు — మీ ప్రశ్న నమోదు చేయబడింది.\n\nసంప్రదింపు వివరాలు ఇచ్చినట్లయితే సమాధానం జత చేసిన తర్వాత మేము తెలియజేస్తాము.\n\nఅనామకంగా ఉన్నట్లయితే — 2 రోజుల్లో తిరిగి వచ్చి అదే ప్రశ్న అడగండి. సమాధానం ఉంటుంది.',
     submitError:'ఇప్పుడు సమర్పించలేకపోయాము. మళ్ళీ ప్రయత్నించండి.',
     lawLabel:'చట్టం',
     askAnother:'మరో ప్రశ్న అడగండి',
     suggestions:'మీకు ఇవి కూడా తెలుసుకోవాలనుండవచ్చు:',
     disclaimer:'⚠️ ఇది సాధారణ న్యాయ సమాచారం, వృత్తిపరమైన న్యాయ సలహా కాదు.',
+    feedbackQ:'ఇది సహాయకరంగా ఉందా?',
+    thumbsThanks:'ధన్యవాదాలు!',
+    endRate:'⭐ సంభాషణను రేట్ చేయండి',
+    rateTitle:'ఈరోజు మీ అనుభవం ఎలా ఉంది?',
+    ratePlaceholder:'ఏమైనా చెప్పాలనుకుంటున్నారా? (ఐచ్ఛికం)',
+    rateSubmit:'రేటింగ్ సమర్పించండి',
+    rateThanks:'ధన్యవాదాలు! మీ అభిప్రాయం LawSticker AI ని మెరుగుపరచడంలో సహాయపడుతుంది. 🙏',
   },
   hi:{
     navTitle:'LawSticker AI से पूछें',
@@ -287,15 +350,31 @@ const T = {
     inputHint:'Telugu / English / हिंदी · मुफ्त · कृपया व्यक्तिगत जानकारी न दें',
     chips:['मकान मालिक धमका रहा है 🏠','चेक बाउंस — क्या करें? 💳','सिविल जज कैसे बनें? ⚖️','पुलिस FIR दर्ज नहीं कर रही 🚨','उपभोक्ता शिकायत कैसे करें? 🛒','ऑनलाइन पैसे चले गए 💻'],
     unknown:'उस प्रश्न का मेरे पास अभी विशेष उत्तर नहीं है। लेकिन मैंने इसे नोट किया है — हमारी टीम इसे जल्द जोड़ेगी।\n\nआप यहां भी देख सकते हैं:\n• lawsticker-ai.com पर अधिक संसाधन\n• करियर प्रश्नों के लिए Career Navigator\n• वित्तीय प्रश्नों के लिए 25 Calculators',
-    unknownForm:'क्या आप यह प्रश्न सबमिट करना चाहेंगे ताकि हम उत्तर जोड़ सकें?\n\nआपका प्रश्न गुमनाम रूप से सहेजा जाएगा।',
-    submitBtn:'📤 गुमनाम रूप से प्रश्न सबमिट करें',
+    unknownChoiceIntro:'इस सवाल का जवाब अभी हमारे पास नहीं है — लेकिन हम मदद करना चाहते हैं। आप क्या करना चाहेंगे?',
+    opt1Label:'📅 2 दिन बाद वापस आऊंगा — फिर पूछूंगा',
+    opt1Response:'ठीक है — हम 2 दिनों में यह जवाब जोड़ देंगे।\n\nजब आप वापस आएं, वही सवाल पूछें — चैटबॉट का जवाब तैयार होगा।\n\nआपके सवाल ने हमें बेहतर बनाने में मदद की। धन्यवाद!',
+    opt2Label:'📋 अपना सवाल + वैकल्पिक संपर्क छोड़ें',
+    opt2Intro:'नीचे अपना सवाल भरें और वैकल्पिक रूप से फोन नंबर या ईमेल दें। जवाब जोड़ने के बाद हम आपसे सीधे संपर्क करेंगे।',
+    yourQuestion:'आपका सवाल',
+    contactOptional:'आपका संपर्क (वैकल्पिक)',
+    contactPlaceholder:'फोन नंबर या ईमेल — पूरी तरह वैकल्पिक',
+    contactNote:'🔒 आपका संपर्क केवल जवाब जोड़ने पर सूचित करने के लिए उपयोग होगा। कभी साझा या प्रकाशित नहीं किया जाएगा। गुमनाम रहने के लिए खाली छोड़ें।',
+    submitBtn:'📤 सवाल सबमिट करें',
     submitting:'सबमिट हो रहा है...',
-    submitted:'✓ सबमिट हो गया! हम जल्द उत्तर जोड़ेंगे।',
+    submitted:'✓ सवाल सबमिट हो गया!',
+    submittedFollowup:'धन्यवाद — आपका सवाल नोट किया गया।\n\nयदि आपने संपर्क दिया है तो जवाब जोड़ने पर हम बताएंगे।\n\nगुमनाम रहे हैं तो — 2 दिन बाद वही सवाल पूछें। जवाब तैयार होगा।',
     submitError:'अभी सबमिट नहीं हो सका। कृपया फिर प्रयास करें।',
     lawLabel:'कानून',
     askAnother:'एक और प्रश्न पूछें',
     suggestions:'आप यह भी जानना चाहेंगे:',
     disclaimer:'⚠️ यह सामान्य कानूनी जानकारी है, पेशेवर कानूनी सलाह नहीं।',
+    feedbackQ:'क्या यह सहायक था?',
+    thumbsThanks:'धन्यवाद!',
+    endRate:'⭐ बातचीत रेट करें',
+    rateTitle:'आज आपका अनुभव कैसा था?',
+    ratePlaceholder:'कुछ शब्द? (वैकल्पिक)',
+    rateSubmit:'रेटिंग सबमिट करें',
+    rateThanks:'धन्यवाद! आपकी प्रतिक्रिया LawSticker AI को बेहतर बनाने में मदद करती है। 🙏',
   }
 };
 
@@ -433,6 +512,7 @@ async function sendMessage(){
   isTyping=true; msgCount++;
 
   userMsg(escHtml(query));
+  sessionQuestions.push(query);
 
   const match=findBestMatch(query);
   if(match){
@@ -445,6 +525,8 @@ async function sendMessage(){
       `<span class="cat-badge" style="background:${color}22;border:1px solid ${color}44;color:${color}">${cat}</span><br>${formatted}<br><br><span class="law-ref">📋 ${t.lawLabel}: ${match.law||''}</span><br><small style="color:rgba(255,255,255,.3);font-size:11px;margin-top:4px;display:block">${t.disclaimer}</small>`,
       800
     );
+    const msgEl=document.querySelector('.chat-inner .msg:last-child .bubble');
+    if(msgEl) addThumbsFeedback(msgEl, query, match.id);
     // post-answer chips
     setTimeout(()=>renderPostChips(), 500);
   } else {
@@ -458,7 +540,104 @@ async function sendMessage(){
 function renderPostChips(){
   const t=T[lang];
   const area=document.getElementById('chipsArea');
-  area.innerHTML=`<button class="chip" onclick="clearAndFocus()">💬 ${t.askAnother}</button>`;
+  area.innerHTML=`
+    <button class="chip" onclick="clearAndFocus()">💬 ${t.askAnother}</button>
+    <button class="chip" onclick="showStarRating()" style="border-color:rgba(201,162,39,.35);color:rgba(245,215,110,.8)">⭐ ${t.endRate}</button>`;
+}
+
+// ── THUMBS FEEDBACK ──
+function addThumbsFeedback(bubbleEl, questionText, matchId){
+  const t=T[lang];
+  const fbId='fb-'+msgCount;
+  const row=document.createElement('div');
+  row.className='feedback-row';
+  row.id=fbId;
+  row.innerHTML=`
+    <span class="feedback-label">${t.feedbackQ}</span>
+    <button class="fb-btn up" onclick="giveFeedback('${fbId}','up','${escHtml(questionText).replace(/'/g,"\\'")}',${matchId})">👍</button>
+    <button class="fb-btn down" onclick="giveFeedback('${fbId}','down','${escHtml(questionText).replace(/'/g,"\\'")}',${matchId})">👎</button>`;
+  bubbleEl.appendChild(row);
+}
+
+function giveFeedback(fbId, val, question, matchId){
+  if(thumbsGiven[fbId]) return;
+  thumbsGiven[fbId]=val;
+  const row=document.getElementById(fbId);
+  if(!row) return;
+  const t=T[lang];
+  // highlight selected
+  row.querySelectorAll('.fb-btn').forEach(b=>{
+    b.classList.toggle('active',b.classList.contains(val));
+    b.classList.toggle(val,b.classList.contains(val));
+  });
+  // replace label with thanks
+  const lbl=row.querySelector('.feedback-label');
+  if(lbl) lbl.textContent=t.thumbsThanks;
+  // submit to Google Forms (silent)
+  submitThumbsToForm(val, question, matchId);
+}
+
+function submitThumbsToForm(val, question, matchId){
+  if(GF_URL.includes('FORM_ID_PLACEHOLDER')) return; // not configured yet
+  const params=new URLSearchParams();
+  params.append(GF_HELPFUL, val==='up'?'Helpful':'Not Helpful');
+  params.append(GF_Q, question.substring(0,200));
+  params.append(GF_LANG, lang);
+  fetch(GF_URL, {method:'POST', mode:'no-cors', body:params}).catch(()=>{});
+}
+
+// ── STAR RATING ──
+function showStarRating(){
+  document.getElementById('chipsArea').innerHTML='';
+  const t=T[lang];
+  const el=document.createElement('div');
+  el.className='msg';
+  el.innerHTML=`
+    <div class="avatar">⚖️</div>
+    <div class="bubble">
+      <div class="star-card">
+        <div class="star-title">${t.rateTitle}</div>
+        <div class="stars-row" id="starsRow">
+          ${[1,2,3,4,5].map(n=>`<span class="star" data-v="${n}" onclick="selectStar(${n})">⭐</span>`).join('')}
+        </div>
+        <textarea class="star-words" id="starWords" placeholder="${t.ratePlaceholder}" rows="2"></textarea>
+        <button class="star-submit" id="starSubmitBtn" onclick="submitRating()">${t.rateSubmit}</button>
+      </div>
+    </div>`;
+  document.getElementById('chatInner').appendChild(el);
+  scrollDown();
+}
+
+function selectStar(n){
+  starRating=n;
+  document.querySelectorAll('.star').forEach(s=>{
+    s.classList.toggle('lit', parseInt(s.dataset.v)<=n);
+  });
+}
+
+async function submitRating(){
+  const t=T[lang];
+  const btn=document.getElementById('starSubmitBtn');
+  const words=(document.getElementById('starWords')?.value||'').trim();
+  if(!starRating){ btn.style.animation='shake .3s'; setTimeout(()=>btn.style.animation='',400); return; }
+  btn.disabled=true; btn.textContent='...';
+
+  if(!GF_URL.includes('FORM_ID_PLACEHOLDER')){
+    const params=new URLSearchParams();
+    params.append(GF_RATING, starRating.toString());
+    params.append(GF_WORDS, words.substring(0,500));
+    params.append(GF_LANG, lang);
+    params.append(GF_Q, sessionQuestions.slice(-3).join(' | ').substring(0,300));
+    await fetch(GF_URL,{method:'POST',mode:'no-cors',body:params}).catch(()=>{});
+  }
+
+  // Replace card with thanks
+  const card=btn.closest('.star-card');
+  if(card) card.innerHTML=`<div style="text-align:center;padding:8px">
+    <div style="font-size:28px;margin-bottom:8px">${'⭐'.repeat(starRating)}</div>
+    <div style="font-size:13px;color:rgba(244,236,216,.8);line-height:1.6">${t.rateThanks}</div>
+  </div>`;
+  scrollDown();
 }
 function clearAndFocus(){
   document.getElementById('chipsArea').innerHTML='';
@@ -466,40 +645,92 @@ function clearAndFocus(){
 }
 
 // ══════════════════════════════════════════
-//  UNKNOWN QUESTION HANDLER
+//  UNKNOWN QUESTION HANDLER — 2 OPTIONS
 // ══════════════════════════════════════════
 async function handleUnknown(query){
   const t=T[lang];
   await botMsg(t.unknown.replace(/\n/g,'<br>').replace(/•/g,'→'),900);
+  await new Promise(r=>setTimeout(r,400));
 
-  // Show submission form inline
-  const formEl=document.createElement('div');
-  formEl.className='msg';
-  formEl.innerHTML=`
+  // Show two options
+  const optEl=document.createElement('div');
+  optEl.className='msg';
+  optEl.id='unknown-options';
+  optEl.innerHTML=`
     <div class="avatar">⚖️</div>
     <div class="bubble">
-      <div style="margin-bottom:10px;font-size:13px;color:rgba(244,236,216,.7)">${t.unknownForm.replace(/\n/g,'<br>')}</div>
-      <div class="submit-form">
-        <textarea id="submitQ" placeholder="${query}" readonly style="opacity:.7">${query}</textarea>
-        <button class="submit-form-btn" id="submitFormBtn" onclick="submitUnknown('${escHtml(query).replace(/'/g,"\\'")}')">
-          ${t.submitBtn}
+      <div style="font-size:13px;color:rgba(244,236,216,.75);margin-bottom:14px;line-height:1.6">${t.unknownChoiceIntro}</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="submit-form-btn" style="text-align:left;padding:13px 14px;border-radius:12px;border:1px solid rgba(201,162,39,.25);background:rgba(201,162,39,.07);color:rgba(244,236,216,.85);font-size:13px;font-weight:600" onclick="showOption1()">
+          📅 ${t.opt1Label}
+        </button>
+        <button class="submit-form-btn" style="text-align:left;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(244,236,216,.65);font-size:13px;font-weight:600" onclick="showOption2('${escHtml(query).replace(/'/g,"\\'")}')">
+          📋 ${t.opt2Label}
         </button>
       </div>
     </div>`;
-  document.getElementById('chatInner').appendChild(formEl);
+  document.getElementById('chatInner').appendChild(optEl);
   scrollDown();
+}
+
+function showOption1(){
+  // Remove options
+  const opt=document.getElementById('unknown-options');
+  if(opt) opt.remove();
+  const t=T[lang];
+  userMsg(t.opt1Label);
+  setTimeout(async()=>{
+    await botMsg(t.opt1Response.replace(/\n/g,'<br>'),700);
+    renderPostChips();
+  },400);
+}
+
+function showOption2(query){
+  const opt=document.getElementById('unknown-options');
+  if(opt) opt.remove();
+  const t=T[lang];
+  userMsg(t.opt2Label);
+
+  setTimeout(()=>{
+    const formEl=document.createElement('div');
+    formEl.className='msg';
+    formEl.innerHTML=`
+      <div class="avatar">⚖️</div>
+      <div class="bubble">
+        <div style="font-size:13px;color:rgba(244,236,216,.75);margin-bottom:12px;line-height:1.6">${t.opt2Intro}</div>
+        <div class="submit-form">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(201,162,39,.6);margin-bottom:5px">${t.yourQuestion}</div>
+          <textarea readonly style="opacity:.6;margin-bottom:10px;min-height:55px;font-size:12px">${query}</textarea>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(201,162,39,.6);margin-bottom:5px">${t.contactOptional}</div>
+          <input type="text" id="userContact" placeholder="${t.contactPlaceholder}"
+            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13px;color:rgba(244,236,216,.8);outline:none;margin-bottom:10px">
+          <div style="font-size:10px;color:rgba(255,255,255,.25);margin-bottom:10px;line-height:1.5">${t.contactNote}</div>
+          <button class="submit-form-btn" id="submitFormBtn" onclick="submitUnknown('${query.replace(/'/g,"\\'")}')">
+            ${t.submitBtn}
+          </button>
+        </div>
+      </div>`;
+    document.getElementById('chatInner').appendChild(formEl);
+    scrollDown();
+  },400);
 }
 
 async function submitUnknown(query){
   const t=T[lang];
   const btn=document.getElementById('submitFormBtn');
   if(!btn) return;
+  const contact=(document.getElementById('userContact')?.value||'').trim();
+
   btn.textContent=t.submitting; btn.disabled=true;
 
+  const contactLine = contact
+    ? `**Contact (optional, user-provided):** ${contact}\n`
+    : `**Contact:** Anonymous — no contact provided\n`;
+
   const body = {
-    title: `[LawSticker User Question] ${query.substring(0,80)}`,
-    body: `**Anonymous user question submitted via lawsticker-ai.com/ask.html**\n\n**Question:** ${query}\n\n**Language context:** ${lang}\n\n**Timestamp:** ${new Date().toISOString()}\n\n---\n*This issue was auto-created by the LawSticker AI chatbot. Please add an answer to the knowledge base.*`,
-    labels: ['user-question','kb-gap']
+    title:`[LawSticker Question] ${query.substring(0,80)}`,
+    body:`**Question submitted via lawsticker-ai.com/ask.html**\n\n**Question:** ${query}\n\n${contactLine}**Language:** ${lang}\n**Time:** ${new Date().toISOString()}\n\n---\n*Add answer to kb.json and notify user if contact provided.*`,
+    labels:['user-question','kb-gap']
   };
 
   try{
@@ -508,10 +739,20 @@ async function submitUnknown(query){
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
       body:JSON.stringify(body)
     });
-    if(r.ok){ btn.className='submit-form-btn'; btn.textContent=t.submitted; btn.style.color='var(--jade)'; btn.style.borderColor='var(--jade)'; }
-    else throw new Error();
-  } catch(e){
-    btn.textContent=t.submitError; btn.disabled=false;
+    if(r.ok){
+      btn.textContent=t.submitted;
+      btn.style.color='var(--jade)';
+      btn.style.borderColor='var(--jade)';
+      btn.disabled=true;
+      // Show follow-up message
+      setTimeout(async()=>{
+        await botMsg(t.submittedFollowup.replace(/\n/g,'<br>'),700);
+        renderPostChips();
+      },600);
+    } else throw new Error();
+  }catch(e){
+    btn.textContent=t.submitError;
+    btn.disabled=false;
   }
 }
 
