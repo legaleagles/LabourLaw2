@@ -652,6 +652,9 @@ async function handleUnknown(query){
   await botMsg(t.unknown.replace(/\n/g,'<br>').replace(/•/g,'→'),900);
   await new Promise(r=>setTimeout(r,400));
 
+  // Store query safely for option buttons
+  window._pendingQuery = query;
+
   // Show two options
   const optEl=document.createElement('div');
   optEl.className='msg';
@@ -664,7 +667,7 @@ async function handleUnknown(query){
         <button class="submit-form-btn" style="text-align:left;padding:13px 14px;border-radius:12px;border:1px solid rgba(201,162,39,.25);background:rgba(201,162,39,.07);color:rgba(244,236,216,.85);font-size:13px;font-weight:600" onclick="showOption1()">
           📅 ${t.opt1Label}
         </button>
-        <button class="submit-form-btn" style="text-align:left;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(244,236,216,.65);font-size:13px;font-weight:600" onclick="showOption2('${escHtml(query).replace(/'/g,"\\'")}')">
+        <button class="submit-form-btn" style="text-align:left;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(244,236,216,.65);font-size:13px;font-weight:600" onclick="showOption2(window._pendingQuery)">
           📋 ${t.opt2Label}
         </button>
       </div>
