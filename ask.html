@@ -238,18 +238,14 @@ nav{
 //  CONFIG
 // ══════════════════════════════════════════
 const KB_CDN = 'https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/kb.json';
+const KB_RAW = 'https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/kb.json';
 const GH_TOKEN = 'github_pat_placeholder'; // replace with fine-grained PAT (issues:write only)
 const GH_REPO = 'legaleagles/LabourLaw2';
 const MATCH_THRESHOLD = 2;
 
-// Google Form for feedback — fill these after creating your form
-// Form URL pattern: https://docs.google.com/forms/d/e/FORM_ID/formResponse
-const GF_URL = 'https://docs.google.com/forms/d/e/FORM_ID_PLACEHOLDER/formResponse';
-const GF_RATING  = 'entry.RATING_ENTRY';   // star rating field entry ID
-const GF_WORDS   = 'entry.WORDS_ENTRY';    // optional words field entry ID
-const GF_LANG    = 'entry.LANG_ENTRY';     // language field entry ID
-const GF_HELPFUL = 'entry.HELPFUL_ENTRY';  // thumbs field entry ID
-const GF_Q       = 'entry.Q_ENTRY';        // question asked field entry ID
+// GitHub Issues for feedback — same repo, same token
+const GH_FEEDBACK_LABEL = 'user-feedback';
+const GH_THUMBS_LABEL   = 'thumbs-feedback';
 
 let lang = 'en';
 let kb = [];
@@ -259,6 +255,9 @@ let msgCount = 0;
 let thumbsGiven = {};   // track which msg IDs have been rated
 let starRating = 0;
 let sessionQuestions = [];
+
+// Inline fallback KB — top 10 entries if CDN fails
+const FALLBACK_KB = [{"id":1,"tags":["consumer","restaurant","service charge","bill"],"keywords":["service charge","restaurant","hotel","bill","sarvees","mandatory","compulsory","teeyali","required","force","pay"],"q_en":"Is service charge mandatory at restaurants?","q_te":"రెస్టారెంట్‌లో సర్వీస్ ఛార్జ్ తప్పనిసరా?","q_hi":"रेस्तरां में सर्विस चार्ज अनिवार्य है?","a_en":"No — service charge at restaurants is NOT mandatory. CCPA Guidelines (July 2022) clearly state no hotel or restaurant can force you to pay service charge. You have the legal right to ask them to remove it from your bill. If they refuse, file a complaint with the National Consumer Helpline at 1800-11-4000 (free call).","a_te":"లేదు — సర్వీస్ ఛార్జ్ తప్పనిసరి కాదు. CCPA మార్గదర్శకాలు (జూలై 2022) స్పష్టంగా పేర్కొంటున్నాయి — మీకు సర్వీస్ ఛార్జ్ తొలగించమని అడిగే హక్కు ఉంది. నిరాకరిస్తే 1800-11-4000 కి ఫిర్యాదు చేయండి.","a_hi":"नहीं — सर्विस चार्ज अनिवार्य नहीं है। CCPA 2022 के अनुसार आप इसे हटाने के लिए कानूनी रूप से कह सकते हैं। मना करने पर 1800-11-4000 पर शिकायत करें।","law":"CCPA Guidelines July 2022","category":"Consumer Rights"},{"id":2,"tags":["criminal","fir","police","complaint","register"],"keywords":["FIR","police","complaint","register","refuse","station","cognizable","case pettu","file"],"q_en":"Police are refusing to register my FIR. What can I do?","q_te":"పోలీసులు FIR నమోదు చేయడానికి నిరాకరిస్తున్నారు.","q_hi":"पुलिस FIR दर्ज करने से मना कर रही है।","a_en":"Police are legally obligated to register an FIR for cognizable offences under Section 154 CrPC. Refusal is itself an offence. Options: (1) Send complaint by registered post to Superintendent of Police. (2) Approach Judicial Magistrate under Section 156(3) CrPC. (3) File petition in High Court. Keep written record of police refusal.","a_te":"సెక్షన్ 154 CrPC కింద FIR నమోదు తప్పనిసరి. నిరాకరించడం కూడా నేరమే. (1) SP కు రిజిస్టర్డ్ పోస్ట్. (2) సెక్షన్ 156(3) కింద మేజిస్ట్రేట్. (3) హైకోర్టులో పిటిషన్.","a_hi":"धारा 154 CrPC के तहत FIR दर्ज करना पुलिस की बाध्यता। (1) SP को रजिस्टर्ड डाक। (2) धारा 156(3) में मजिस्ट्रेट। (3) हाईकोर्ट में याचिका।","law":"Section 154, 156(3) CrPC","category":"Criminal Rights"},{"id":3,"tags":["arrest","rights","police","custody","detained"],"keywords":["arrested","arrest","detained","custody","rights","police","24 hours","bail","grounds","family","lawyer","lock up"],"q_en":"What are my rights when arrested by police?","q_te":"పోలీసులు అరెస్ట్ చేసినప్పుడు నా హక్కులు ఏమిటి?","q_hi":"पुलिस द्वारा गिरफ्तार होने पर मेरे क्या अधिकार हैं?","a_en":"Your rights on arrest: (1) Know grounds of arrest immediately (Sec 50 CrPC). (2) Inform family or friend (Sec 50A). (3) Consult lawyer of your choice (Art 22). (4) Produced before Magistrate within 24 hours (Art 22). (5) Free legal aid if you cannot afford lawyer. (6) For offences under 7 years — police must issue notice first (Sec 41A).","a_te":"అరెస్ట్ అయినప్పుడు హక్కులు: (1) అరెస్ట్ కారణాలు వెంటనే తెలుసుకోవడం. (2) కుటుంబానికి తెలియజేయడం. (3) న్యాయవాది సహాయం. (4) 24 గంటల్లో మేజిస్ట్రేట్ ముందు హాజరు. (5) ఉచిత న్యాయ సహాయం.","a_hi":"गिरफ्तारी पर अधिकार: (1) तुरंत कारण जानें। (2) परिवार को सूचित करें। (3) वकील से मिलें। (4) 24 घंटे में मजिस्ट्रेट के सामने। (5) मुफ्त कानूनी सहायता।","law":"Sec 50, 50A, 41A CrPC; Art 22 Constitution","category":"Criminal Rights"},{"id":4,"tags":["cheque","bounce","dishonour","138"],"keywords":["cheque bounce","cheque","dishonour","138","NI act","returned","unpaid","dekku","bank","criminal","notice"],"q_en":"What to do if a cheque bounced?","q_te":"చెక్ బౌన్స్ అయితే ఏమి చేయాలి?","q_hi":"चेक बाउंस होने पर क्या करें?","a_en":"Cheque bounce is criminal under Section 138 NI Act. If someone's cheque to you bounced: (1) Send legal notice within 30 days of bank memo. (2) If no payment within 15 days of notice — file criminal complaint in Magistrate court within 30 days. Punishment: up to 2 years or twice the cheque amount. If YOUR cheque bounced — pay immediately on receiving legal notice.","a_te":"చెక్ బౌన్స్ సెక్షన్ 138 కింద క్రిమినల్ నేరం. (1) 30 రోజుల్లో లీగల్ నోటీసు. (2) 15 రోజుల్లో చెల్లించకపోతే మేజిస్ట్రేట్‌లో ఫిర్యాదు. శిక్ష: 2 సంవత్సరాలు లేదా రెట్టింపు జరిమానా.","a_hi":"चेक बाउंस धारा 138 में आपराधिक। (1) 30 दिनों में नोटिस। (2) 15 दिन में भुगतान न हो तो मजिस्ट्रेट में शिकायत। सजा: 2 साल या दोगुना जुर्माना।","law":"Section 138 Negotiable Instruments Act 1881","category":"Criminal / Finance"},{"id":5,"tags":["gratuity","employee","service","payment"],"keywords":["gratuity","gratutiy","service","years","employer","pay","entitled","5 years","grachuti","naukri","job"],"q_en":"Am I entitled to gratuity?","q_te":"నాకు గ్రాచ్యుటీ హక్కు ఉందా?","q_hi":"क्या मैं ग्रेच्युटी का हकदार हूं?","a_en":"Yes — after 5 years of continuous service, gratuity is your legal right. Formula: (Basic + DA) × 15/26 × Years of service. Maximum tax-free: ₹20 lakhs. Employer must pay within 30 days of leaving. If refused — file complaint before Labour Commissioner (free and fast).","a_te":"అవును — 5 సంవత్సరాల నిరంతర సేవ తర్వాత గ్రాచ్యుటీ మీ హక్కు. సూత్రం: (బేసిక్+DA) × 15/26 × సంవత్సరాలు. గరిష్ట పన్ను రహితం: ₹20 లక్షలు. 30 రోజుల్లో చెల్లించాలి. నిరాకరిస్తే లేబర్ కమిషనర్‌కు ఫిర్యాదు.","a_hi":"हां — 5 साल की सेवा के बाद ग्रेच्युटी अधिकार। सूत्र: (मूल+DA) × 15/26 × वर्ष। अधिकतम ₹20 लाख। 30 दिन में भुगतान। इनकार पर श्रम आयुक्त में शिकायत।","law":"Payment of Gratuity Act 1972","category":"Labour Rights"},{"id":6,"tags":["tenant","landlord","rent","eviction","notice"],"keywords":["tenant","landlord","rent","house","evict","notice","vacate","leave","illegal","lock","belongings","flat","room","intlo","kikki","tala","electricity cut"],"q_en":"My landlord is threatening to evict me illegally. What are my rights?","q_te":"ఇంటి యజమాని చట్టవిరుద్ధంగా తరిమేయడానికి బెదిరిస్తున్నారు.","q_hi":"मकान मालिक गैरकानूनी तरीके से निकालने की धमकी दे रहा है।","a_en":"Landlord CANNOT forcibly evict you without court order. Rights: (1) Monthly tenancy requires 15 days written notice (Sec 106 TPA). (2) Cutting electricity or water or locking you out is illegal and criminal. (3) Eviction needs court order. (4) File FIR under IPC 441 and 503 if landlord uses force.","a_te":"కోర్టు ఆదేశం లేకుండా బలవంతంగా తరిమేయలేరు. (1) నెలవారీ అద్దెకు 15 రోజుల నోటీసు. (2) విద్యుత్ కట్ చేయడం చట్టవిరుద్ధం. (3) తరిమేయడానికి కోర్టు ఆదేశం కావాలి. (4) బలప్రయోగిస్తే IPC 441, 503 కింద FIR.","a_hi":"बिना कोर्ट आदेश नहीं निकाल सकता। (1) 15 दिन लिखित नोटिस। (2) बिजली-पानी काटना गैरकानूनी। (3) बेदखली के लिए कोर्ट आदेश। (4) जबरदस्ती पर IPC 441, 503 में FIR।","law":"Sec 106 Transfer of Property Act; IPC 441, 503","category":"Property / Civil"},{"id":7,"tags":["RTI","right to information","government","information"],"keywords":["RTI","right to information","government","information","10 rupees","pio","30 days","apply","records","file"],"q_en":"How do I file an RTI application?","q_te":"RTI దరఖాస్తు ఎలా దాఖలు చేయాలి?","q_hi":"RTI आवेदन कैसे दाखिल करें?","a_en":"RTI costs ₹10 (IPO/DD/court fee stamp). BPL cardholders pay nothing. How: (1) Write to Public Information Officer (PIO) of specific department. (2) Clearly state what information you need. (3) Attach ₹10 payment. Government must reply within 30 days. First appeal FREE. Second appeal to CIC also FREE. No lawyer needed.","a_te":"RTI కేవలం ₹10. BPL కార్డుదారులకు ఉచితం. (1) నిర్దిష్ట విభాగంలో PIO కు రాయండి. (2) కావలసిన సమాచారం స్పష్టంగా పేర్కొనండి. (3) ₹10 జత చేయండి. 30 రోజుల్లో సమాధానం తప్పనిసరి.","a_hi":"RTI केवल ₹10। BPL को मुफ्त। (1) PIO को लिखें। (2) जानकारी स्पष्ट बताएं। (3) ₹10 संलग्न। 30 दिन में जवाब। पहली अपील मुफ्त।","law":"Right to Information Act 2005","category":"Constitutional Rights"},{"id":8,"tags":["consumer","defective product","refund","replacement"],"keywords":["defective","product","refund","replacement","complaint","broken","not working","warranty","online","return","amazon","flipkart","mobile","appliance"],"q_en":"I bought a defective product. How do I get a refund or file a consumer complaint?","q_te":"లోపభూయిష్ట ఉత్పత్తి కొన్నాను. రిఫండ్ లేదా వినియోగదారు ఫిర్యాదు ఎలా?","q_hi":"दोषपूर्ण उत्पाद खरीदा। रिफंड या उपభోక्ता शिकायत कैसे करें?","a_en":"Steps: (1) Contact seller directly — keep all communication in writing. (2) If refused — file at consumerhelpline.gov.in or call 1800-11-4000 (free). (3) District Consumer Commission — claims up to ₹50L, filing free up to ₹5L, no lawyer needed. (4) File within 2 years of purchase. Keep bills, warranty cards, all communication as evidence.","a_te":"దశలు: (1) విక్రేతను నేరుగా సంప్రదించండి. (2) నిరాకరిస్తే consumerhelpline.gov.in లేదా 1800-11-4000. (3) జిల్లా వినియోగదారు కమిషన్ — ₹5L వరకు ఉచిత దాఖలు. (4) 2 సంవత్సరాల్లో దాఖలు.","a_hi":"(1) विक्रेता से लिखित में बात करें। (2) consumerhelpline.gov.in या 1800-11-4000। (3) जिला उपभोक्ता आयोग — ₹5L तक मुफ्त। (4) 2 साल के भीतर।","law":"Consumer Protection Act 2019","category":"Consumer Rights"},{"id":9,"tags":["domestic violence","wife","woman","protection","DV act"],"keywords":["domestic violence","wife","woman","husband","cruelty","abuse","beat","hit","DV","498A","shelter","maintenance","intlo","kottadam","harassment"],"q_en":"What protection does a woman have against domestic violence?","q_te":"గృహ హింసకు వ్యతిరేకంగా మహిళకు ఏ రక్షణ ఉంది?","q_hi":"घरेलू हिंसा के खिलाफ महिला को क्या सुरक्षा है?","a_en":"Two strong laws: (1) DV Act 2005 — Protection Orders, Residence Orders (right to stay in shared house even if she does not own it), Monetary Relief. File before Protection Officer or Magistrate. (2) IPC Sec 498A — cruelty by husband or relatives is non-bailable criminal offence (3 years). Emergency: call 181 (Women Helpline) or 112. Everything is free.","a_te":"రెండు బలమైన చట్టాలు: (1) DV యాక్ట్ 2005 — రక్షణ ఆదేశాలు, నివాస ఆదేశాలు (ఇల్లు తన పేరులో లేకపోయినా నివసించే హక్కు). (2) IPC 498A — భర్త/బంధువుల క్రూరత్వం జామీను లేని నేరం. అత్యవసరం: 181 లేదా 112.","a_hi":"(1) DV Act 2005 — सुरक्षा आदेश, निवास अधिकार। (2) IPC 498A — क्रूरता गैर-जमानती। आपात: 181 या 112।","law":"DV Act 2005; IPC Section 498A","category":"Women's Rights"},{"id":14,"tags":["cyber crime","online fraud","scam","UPI","money lost"],"keywords":["cyber crime","online fraud","scam","UPI","OTP","money lost","transferred","hacked","phishing","fake call","bank fraud","1930","cyber helpline","online thagi"],"q_en":"I was scammed online and lost money. What to do immediately?","q_te":"ఆన్‌లైన్‌లో మోసపోయాను మరియు డబ్బు పోయింది. వెంటనే ఏమి చేయాలి?","q_hi":"ऑनलाइन ठगा गया और पैसे खो गए। तुरंत क्या करूं?","a_en":"Act FAST — speed matters. (1) Call 1930 (National Cyber Crime Helpline) IMMEDIATELY. (2) File complaint at cybercrime.gov.in within 24 hours. (3) Inform your bank immediately to freeze/reverse transaction. (4) File FIR at nearest Cyber Crime Police Station. Keep all screenshots as evidence. Never share OTP or passwords with anyone.","a_te":"వేగంగా వ్యవహరించండి: (1) వెంటనే 1930 కి కాల్ చేయండి. (2) cybercrime.gov.in లో 24 గంటల్లో ఫిర్యాదు. (3) బ్యాంక్‌కు తెలియజేయండి. (4) సైబర్ క్రైమ్ పోలీస్ స్టేషన్‌లో FIR.","a_hi":"तुरंत: (1) 1930 पर कॉल। (2) cybercrime.gov.in पर 24 घंटे में। (3) बैंक को सूचित करें। (4) FIR दर्ज करें।","law":"IT Act 2000; IPC 420","category":"Cyber Crime"}];
 
 // ══════════════════════════════════════════
 //  TRANSLATIONS
@@ -416,11 +415,26 @@ function acceptDisclaimer(){
 //  KB LOADING
 // ══════════════════════════════════════════
 async function loadKB(){
-  try{
-    const r=await fetch(KB_CDN+'?v='+new Date().toDateString());
-    if(!r.ok) throw new Error();
-    kb=await r.json();
-  }catch(e){ kb=[]; }
+  // Try jsDelivr CDN first, then raw GitHub, then inline fallback
+  const urls = [
+    KB_CDN + '?v=' + new Date().toDateString(),
+    KB_RAW + '?v=' + Date.now(),
+  ];
+  for(const url of urls){
+    try{
+      const r = await fetch(url);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const data = await r.json();
+      if(data && data.length > 5){
+        kb = data;
+        console.log('KB loaded:', kb.length, 'entries from', url.split('?')[0]);
+        return;
+      }
+    }catch(e){ console.warn('KB fetch failed:', url, e.message); }
+  }
+  // Both failed — use inline fallback
+  kb = FALLBACK_KB;
+  console.warn('Using inline fallback KB:', kb.length, 'entries');
 }
 
 // ══════════════════════════════════════════
@@ -578,12 +592,23 @@ function giveFeedback(fbId, val, question, matchId){
 }
 
 function submitThumbsToForm(val, question, matchId){
-  if(GF_URL.includes('FORM_ID_PLACEHOLDER')) return; // not configured yet
-  const params=new URLSearchParams();
-  params.append(GF_HELPFUL, val==='up'?'Helpful':'Not Helpful');
-  params.append(GF_Q, question.substring(0,200));
-  params.append(GF_LANG, lang);
-  fetch(GF_URL, {method:'POST', mode:'no-cors', body:params}).catch(()=>{});
+  if(GH_TOKEN==='github_pat_placeholder') return;
+  const body={
+    title:`[Thumbs] ${val==='up'?'👍 Helpful':'👎 Not Helpful'} — ${question.substring(0,60)}`,
+    body:`**Thumbs feedback from lawsticker-ai.com/ask.html**
+
+**Helpful:** ${val==='up'?'Yes':'No'}
+**Question:** ${question}
+**KB Entry ID:** ${matchId}
+**Language:** ${lang}
+**Time:** ${new Date().toISOString()}`,
+    labels:[GH_THUMBS_LABEL]
+  };
+  fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
+    body:JSON.stringify(body)
+  }).catch(()=>{});
 }
 
 // ── STAR RATING ──
@@ -622,13 +647,24 @@ async function submitRating(){
   if(!starRating){ btn.style.animation='shake .3s'; setTimeout(()=>btn.style.animation='',400); return; }
   btn.disabled=true; btn.textContent='...';
 
-  if(!GF_URL.includes('FORM_ID_PLACEHOLDER')){
-    const params=new URLSearchParams();
-    params.append(GF_RATING, starRating.toString());
-    params.append(GF_WORDS, words.substring(0,500));
-    params.append(GF_LANG, lang);
-    params.append(GF_Q, sessionQuestions.slice(-3).join(' | ').substring(0,300));
-    await fetch(GF_URL,{method:'POST',mode:'no-cors',body:params}).catch(()=>{});
+  if(GH_TOKEN!=='github_pat_placeholder'){
+    const stars='⭐'.repeat(starRating);
+    const body={
+      title:`[Feedback] ${stars} — ${starRating}/5 stars`,
+      body:`**User rating from lawsticker-ai.com/ask.html**
+
+**Rating:** ${starRating}/5 ${stars}
+**Language:** ${lang}
+**Words:** ${words||'(none)'}
+**Questions asked:** ${sessionQuestions.slice(-5).join(' | ').substring(0,400)}
+**Time:** ${new Date().toISOString()}`,
+      labels:[GH_FEEDBACK_LABEL]
+    };
+    await fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
+      body:JSON.stringify(body)
+    }).catch(()=>{});
   }
 
   // Replace card with thanks

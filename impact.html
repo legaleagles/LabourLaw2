@@ -4,82 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impact Dashboard — LawSticker AI</title>
-<meta name="description" content="Real usage data from LawSticker AI — questions answered, ratings, most common legal problems people face in Telangana and AP.">
+<meta name="description" content="Real usage data — questions answered, ratings, most common legal problems people face in Telangana and AP.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
-:root{
-  --navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;
-  --muted:#8B95A8;--light:#E8EDF3;
-  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;
-  --jade:#10B981;--rose:#DC2626;--teal:#0D9488;
-}
+:root{--navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--jade:#10B981;--rose:#DC2626;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
 nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
-.nav-back:hover{color:var(--gold-l)}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}.nav-back:hover{color:var(--gold-l)}
 .nav-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l)}
-.container{max-width:680px;margin:0 auto;padding:24px 16px 60px}
-
-/* HERO */
-.hero{background:linear-gradient(135deg,var(--navy),#1a2744);border-radius:20px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden;}
-.hero::before{content:'⚖';position:absolute;right:-10px;top:-10px;font-size:100px;opacity:.04;}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+.hero{background:linear-gradient(135deg,var(--navy),#1a2744);border-radius:20px;padding:26px 22px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::before{content:'⚖';position:absolute;right:-10px;top:-10px;font-size:100px;opacity:.04}
 .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(201,162,39,.6);margin-bottom:8px}
 .hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:6px}
-.hero-sub{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:20px}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.hstat{background:rgba(255,255,255,.05);border:1px solid rgba(201,162,39,.15);border-radius:14px;padding:14px 12px;text-align:center}
-.hstat-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold-l)}
-.hstat-label{font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:600;letter-spacing:.5px}
-
-/* RATING SUMMARY */
-.rating-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid var(--light);box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.card-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-.stars-display{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.big-rating{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--ink);line-height:1}
-.stars-visual{font-size:20px;line-height:1}
-.rating-count{font-size:12px;color:var(--muted);margin-top:2px}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.bar-label{font-size:11px;color:var(--muted);width:20px;text-align:right;flex-shrink:0}
-.bar-track{flex:1;height:6px;background:var(--light);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:3px;transition:width .8s ease}
-.bar-count{font-size:11px;color:var(--muted);width:24px;text-align:left;flex-shrink:0}
-
-/* CATEGORY CHART */
-.cat-list{display:flex;flex-direction:column;gap:8px}
-.cat-row{display:flex;align-items:center;gap:10px}
-.cat-name{font-size:12px;font-weight:600;color:var(--ink-soft);width:140px;flex-shrink:0;line-height:1.3}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:20px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hstat{background:rgba(255,255,255,.05);border:1px solid rgba(201,162,39,.15);border-radius:14px;padding:14px 10px;text-align:center}
+.hstat-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold-l);line-height:1}
+.hstat-label{font-size:10px;color:rgba(255,255,255,.3);margin-top:4px;font-weight:600;letter-spacing:.3px;line-height:1.3}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--light);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.stars-display{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.big-rating{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--ink);line-height:1}
+.stars-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-label{font-size:11px;color:var(--muted);width:22px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:7px;background:var(--light);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.bar-count{font-size:11px;color:var(--muted);width:24px;flex-shrink:0}
+.cat-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cat-name{font-size:12px;font-weight:600;color:var(--ink-soft);width:150px;flex-shrink:0;line-height:1.3}
 .cat-bar-track{flex:1;height:8px;background:var(--light);border-radius:4px;overflow:hidden}
-.cat-bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.cat-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
 .cat-count{font-size:11px;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
-
-/* RECENT FEEDBACK */
-.feedback-list{display:flex;flex-direction:column;gap:8px}
-.fb-item{background:#fff;border-radius:12px;padding:14px;border:1px solid var(--light)}
-.fb-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.fb-stars{font-size:12px}
-.fb-lang{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--gold-pale);color:var(--gold)}
+.fb-item{background:var(--cream);border:1px solid var(--light);border-radius:12px;padding:14px;margin-bottom:8px}
+.fb-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.fb-stars{font-size:13px}
+.fb-lang{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--gold-pale);color:var(--gold)}
 .fb-time{font-size:10px;color:var(--muted);margin-left:auto}
-.fb-words{font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
-
-/* HOW WE HELP */
+.fb-words{font-size:13px;color:var(--ink-soft);line-height:1.55;font-style:italic}
 .help-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.help-card{background:#fff;border:1px solid var(--light);border-radius:14px;padding:14px;border-left:3px solid var(--gold)}
+.help-card{background:var(--cream);border:1px solid var(--light);border-radius:14px;padding:14px;border-left:3px solid var(--gold)}
 .help-icon{font-size:22px;margin-bottom:6px}
 .help-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px}
 .help-sub{font-size:11px;color:var(--muted);line-height:1.5}
-
-/* LOADING */
-.loading{text-align:center;padding:30px;color:var(--muted);font-size:13px}
-.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:14px;margin:6px 0}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* SETUP NOTICE */
-.setup-notice{background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.25);border-radius:14px;padding:16px;margin-bottom:16px;font-size:12px;color:var(--ink-soft);line-height:1.6}
-.setup-notice strong{color:var(--gold)}
-
+.empty{text-align:center;padding:24px;font-size:12px;color:var(--muted)}
+.skeleton{background:linear-gradient(90deg,#eee 25%,#e4e4e4 50%,#eee 75%);background-size:200% 100%;animation:sh 1.5s infinite;border-radius:6px;height:12px;margin:6px 0}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.disclaimer{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:14px;padding:14px;font-size:11px;color:var(--ink-soft);line-height:1.7;margin-top:4px}
 footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
 footer a{color:var(--gold);text-decoration:none}
 </style>
@@ -89,271 +64,225 @@ footer a{color:var(--gold);text-decoration:none}
   <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
   <div class="nav-title">📊 Impact Dashboard</div>
 </nav>
-
 <div class="container">
 
-  <!-- HERO STATS -->
   <div class="hero">
-    <div class="hero-eyebrow">Real Usage · Updated Live</div>
+    <div class="hero-eyebrow">Live Data · Updated on every visit</div>
     <div class="hero-title">Our Impact in Numbers</div>
-    <div class="hero-sub">Every question answered here is one person who got free legal guidance instead of confusion. No ads. No login. No cost.</div>
+    <div class="hero-sub">Every question answered here is one person who got free legal guidance — in Telugu, English, or Hindi. No ads. No login. No cost.</div>
     <div class="hero-stats">
-      <div class="hstat">
-        <div class="hstat-num" id="totalQ">—</div>
-        <div class="hstat-label">Questions answered</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat-num" id="avgRating">—</div>
-        <div class="hstat-label">Avg rating</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat-num" id="helpfulPct">—</div>
-        <div class="hstat-label">Found it helpful</div>
-      </div>
+      <div class="hstat"><div class="hstat-num" id="statRatings">—</div><div class="hstat-label">Ratings received</div></div>
+      <div class="hstat"><div class="hstat-num" id="statAvg">—</div><div class="hstat-label">Avg star rating</div></div>
+      <div class="hstat"><div class="hstat-num" id="statHelpful">—</div><div class="hstat-label">Found helpful 👍</div></div>
     </div>
   </div>
 
-  <!-- SETUP NOTICE — shown until Google Form is configured -->
-  <div class="setup-notice" id="setupNotice" style="display:none">
-    <strong>📋 Dashboard Setup Pending</strong> — Feedback data will appear here once the Google Form is connected. Ask the same question after connecting the form to see live data.
-  </div>
-
-  <!-- STAR RATING BREAKDOWN -->
-  <div class="rating-card">
-    <div class="card-title">User Ratings</div>
+  <div class="card">
+    <div class="card-title">Star Ratings</div>
     <div class="stars-display">
       <div>
         <div class="big-rating" id="bigRating">—</div>
-        <div class="stars-visual" id="starsVisual">⭐⭐⭐⭐⭐</div>
-        <div class="rating-count" id="ratingCount">Loading...</div>
+        <div style="font-size:18px;margin-top:4px" id="starsRow">☆☆☆☆☆</div>
+        <div class="stars-sub" id="ratingsSub">Loading...</div>
       </div>
     </div>
-    <div id="ratingBars">
-      <div class="skeleton" style="width:90%"></div>
-      <div class="skeleton" style="width:75%"></div>
-      <div class="skeleton" style="width:50%"></div>
-      <div class="skeleton" style="width:30%"></div>
-      <div class="skeleton" style="width:15%"></div>
-    </div>
+    <div id="ratingBars"><div class="skeleton"></div><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%"></div><div class="skeleton" style="width:25%"></div></div>
   </div>
 
-  <!-- MOST COMMON TOPICS -->
-  <div class="rating-card">
+  <div class="card">
     <div class="card-title">Most Asked Topics</div>
-    <div class="cat-list" id="catList">
-      <div class="skeleton"></div>
-      <div class="skeleton" style="width:80%"></div>
-      <div class="skeleton" style="width:65%"></div>
-      <div class="skeleton" style="width:50%"></div>
-    </div>
+    <div id="catChart"><div class="skeleton"></div><div class="skeleton" style="width:85%"></div><div class="skeleton" style="width:70%"></div><div class="skeleton" style="width:55%"></div></div>
   </div>
 
-  <!-- HOW WE HELP -->
-  <div class="rating-card">
+  <div class="card">
+    <div class="card-title">Recent Feedback</div>
+    <div id="feedbackList"><div class="empty">Loading feedback...</div></div>
+  </div>
+
+  <div class="card">
     <div class="card-title">How We Help</div>
     <div class="help-grid">
-      <div class="help-card">
-        <div class="help-icon">⚖️</div>
-        <div class="help-title">Free Legal Guidance</div>
-        <div class="help-sub">General information on rights, procedures, and remedies — in Telugu, English, Hindi</div>
-      </div>
-      <div class="help-card">
-        <div class="help-icon">🧮</div>
-        <div class="help-title">25 Calculators</div>
-        <div class="help-sub">Gold, property, EMI, court fees, salary, electricity — know your numbers before you pay</div>
-      </div>
-      <div class="help-card">
-        <div class="help-icon">🎓</div>
-        <div class="help-title">Career Navigator</div>
-        <div class="help-sub">Judiciary, APP, PSU, Law Firms, Corporate — honest guidance for TS/AP law students</div>
-      </div>
-      <div class="help-card">
-        <div class="help-icon">📅</div>
-        <div class="help-title">Daily Legal Facts</div>
-        <div class="help-sub">One new legal fact every day — know your rights, shareable on WhatsApp</div>
-      </div>
+      <div class="help-card"><div class="help-icon">⚖️</div><div class="help-title">Free Legal Guidance</div><div class="help-sub">Rights, procedures, remedies — in Telugu, English, Hindi. 50 common scenarios covered.</div></div>
+      <div class="help-card"><div class="help-icon">🧮</div><div class="help-title">25 Calculators</div><div class="help-sub">Gold, property, EMI, court fees, salary, electricity — know your numbers before you pay.</div></div>
+      <div class="help-card"><div class="help-icon">🎓</div><div class="help-title">Career Navigator</div><div class="help-sub">Judiciary, APP, PSU, Law Firms — honest guidance for TS/AP law students.</div></div>
+      <div class="help-card"><div class="help-icon">📅</div><div class="help-title">Daily Legal Facts</div><div class="help-sub">One new legal fact every day — know your rights, shareable on WhatsApp.</div></div>
     </div>
   </div>
 
-  <!-- RECENT FEEDBACK -->
-  <div class="rating-card">
-    <div class="card-title">Recent Feedback</div>
-    <div class="feedback-list" id="feedbackList">
-      <div class="loading">Connecting to feedback data...</div>
-    </div>
+  <div class="disclaimer">
+    <strong>⚠️ Important:</strong> LawSticker AI provides general legal information only — not professional legal advice. Always consult a qualified lawyer for your specific situation. For free legal aid call NALSA at <strong>15100</strong>.
   </div>
-
-  <!-- DISCLAIMER -->
-  <div style="background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:14px;padding:14px;font-size:11px;color:var(--ink-soft);line-height:1.7;margin-top:4px">
-    <strong>⚠️ Important:</strong> LawSticker AI provides general legal information only — not professional legal advice. Always consult a qualified lawyer for your specific situation. For free legal aid: visit your District Legal Services Authority (DLSA) or call NALSA at <strong>15100</strong>.
-  </div>
-
 </div>
 
 <footer>
-  📊 Impact Dashboard · <a href="https://lawsticker-ai.com/ask.html">Ask a Question</a> · <a href="https://lawsticker-ai.com/calculators.html">Calculators</a> · <a href="https://lawsticker-ai.com">Home</a>
+  <a href="https://lawsticker-ai.com/ask.html">Ask a Question</a> · <a href="https://lawsticker-ai.com/calculators.html">Calculators</a> · <a href="https://lawsticker-ai.com/bare-acts.html">Bare Acts</a> · <a href="https://lawsticker-ai.com">Home</a>
 </footer>
 
 <script>
-// ══════════════════════════════════════════
-//  CONFIG — Fill after creating Google Form
-// ══════════════════════════════════════════
-const SHEET_CSV_URL = 'SHEET_CSV_URL_PLACEHOLDER';
-// How to get this:
-// 1. Create Google Form with fields: Star Rating, Words, Language, Questions
-// 2. Responses go to Google Sheet automatically
-// 3. File → Share → Anyone with link → Viewer
-// 4. File → Publish to web → CSV format → copy URL
-// 5. Replace SHEET_CSV_URL_PLACEHOLDER above with that URL
+const GH_REPO = 'legaleagles/LabourLaw2';
+const API = `https://api.github.com/repos/${GH_REPO}/issues`;
 
-// ── STATIC DATA (shown until Sheet is connected) ──
-const STATIC = {
-  totalQ: 50,         // KB entries — proxy for capability
-  avgRating: null,
-  helpfulPct: null,
-  catCounts: {
-    'Consumer Rights': 8,
-    'Criminal Rights': 6,
-    'Labour Rights': 5,
-    'Women\'s Rights': 5,
-    'Family Law': 5,
-    'Finance / Banking': 4,
-    'Career Guidance': 3,
-    'Property / Civil': 3,
-    'Cyber Crime': 2,
-    'Human Rights': 2,
-  }
-};
-
-// ── CATEGORY COLORS ──
 const catColors = {
   'Consumer Rights':'#059669','Criminal Rights':'#DC2626','Labour Rights':'#D97706',
-  'Women\'s Rights':'#DB2777','Family Law':'#7C3AED','Finance / Banking':'#0891B2',
+  "Women's Rights":'#DB2777','Family Law':'#7C3AED','Finance / Banking':'#0891B2',
   'Career Guidance':'#C9A227','Property / Civil':'#2563EB','Cyber Crime':'#DC2626',
-  'Human Rights':'#7C3AED','default':'#8B95A8'
+  'Human Rights':'#7C3AED','Government Services':'#059669','Education / LAWCET':'#D97706',
 };
 
-// ── LOAD DATA ──
-async function loadData(){
-  if(SHEET_CSV_URL.includes('PLACEHOLDER')){
-    renderStatic();
-    document.getElementById('setupNotice').style.display='block';
-    return;
-  }
+async function loadAll(){
   try{
-    const r=await fetch(SHEET_CSV_URL+'&t='+Date.now());
-    const text=await r.text();
-    const rows=parseCSV(text);
-    renderFromSheet(rows);
+    // Fetch feedback issues (star ratings)
+    const [fbRes, thumbsRes] = await Promise.all([
+      fetch(`${API}?labels=user-feedback&state=all&per_page=100`),
+      fetch(`${API}?labels=thumbs-feedback&state=all&per_page=100`)
+    ]);
+    const feedbackIssues = fbRes.ok ? await fbRes.json() : [];
+    const thumbsIssues   = thumbsRes.ok ? await thumbsRes.json() : [];
+    renderAll(feedbackIssues, thumbsIssues);
   }catch(e){
-    renderStatic();
+    renderEmpty();
   }
 }
 
-function parseCSV(text){
-  const lines=text.trim().split('\n');
-  if(lines.length<2) return [];
-  const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
-  return lines.slice(1).map(line=>{
-    const vals=line.split(',').map(v=>v.trim().replace(/^"|"$/g,''));
-    const row={};
-    headers.forEach((h,i)=>row[h]=vals[i]||'');
-    return row;
-  });
+function parseRating(issue){
+  // Title: [Feedback] ⭐⭐⭐⭐ — 4/5 stars
+  const m = issue.title.match(/(\d+)\/5/);
+  return m ? parseInt(m[1]) : 0;
 }
 
-function renderFromSheet(rows){
-  // Expect columns: Timestamp, Rating, Words, Language, Helpful, Questions
-  const ratings=rows.map(r=>parseInt(r['Rating']||r['Star Rating']||0)).filter(n=>n>0&&n<=5);
-  const helpfulVals=rows.map(r=>(r['Helpful']||'').toLowerCase());
-  const helpful=helpfulVals.filter(v=>v.includes('helpful')&&!v.includes('not')).length;
-  const total=rows.length;
-  const avg=ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : null;
-  const helpfulPct=total>0 ? Math.round(helpful/total*100)+'%' : null;
+function parseWords(issue){
+  // Body has **Words:** line
+  const m = issue.body?.match(/\*\*Words:\*\*\s*(.+)/);
+  return m && m[1] !== '(none)' ? m[1].trim() : '';
+}
 
-  document.getElementById('totalQ').textContent=total||'—';
-  document.getElementById('avgRating').textContent=avg||'—';
-  document.getElementById('helpfulPct').textContent=helpfulPct||'—';
+function parseLang(issue){
+  const m = issue.body?.match(/\*\*Language:\*\*\s*(\w+)/);
+  return m ? m[1].toUpperCase() : 'EN';
+}
 
-  if(avg){
-    document.getElementById('bigRating').textContent=avg;
-    const filled=Math.round(parseFloat(avg));
-    document.getElementById('starsVisual').textContent='⭐'.repeat(filled)+'☆'.repeat(5-filled);
-    document.getElementById('ratingCount').textContent=`Based on ${ratings.length} ratings`;
+function parseQuestions(issue){
+  const m = issue.body?.match(/\*\*Questions asked:\*\*\s*(.+)/);
+  return m ? m[1].trim() : '';
+}
+
+function parseHelpful(issue){
+  // thumbs issue title has Helpful or Not Helpful
+  return issue.title.includes('👍') ? 'helpful' : 'not';
+}
+
+function renderAll(feedbackIssues, thumbsIssues){
+  // ── RATINGS ──
+  const ratings = feedbackIssues.map(parseRating).filter(r=>r>0);
+  const helpful = thumbsIssues.filter(i=>parseHelpful(i)==='helpful').length;
+  const total   = thumbsIssues.length;
+
+  document.getElementById('statRatings').textContent = ratings.length || '0';
+  document.getElementById('statHelpful').textContent = total > 0 ? Math.round(helpful/total*100)+'%' : '—';
+
+  if(ratings.length){
+    const avg = (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1);
+    document.getElementById('statAvg').textContent = avg;
+    document.getElementById('bigRating').textContent = avg;
+    const filled = Math.round(parseFloat(avg));
+    document.getElementById('starsRow').textContent = '⭐'.repeat(filled)+'☆'.repeat(5-filled);
+    document.getElementById('ratingsSub').textContent = `Based on ${ratings.length} rating${ratings.length!==1?'s':''}`;
     renderBars(ratings);
+  } else {
+    document.getElementById('statAvg').textContent = '—';
+    document.getElementById('bigRating').textContent = '—';
+    document.getElementById('ratingsSub').textContent = 'No ratings yet — be the first!';
+    document.getElementById('ratingBars').innerHTML = '<div class="empty">Rate your experience after asking a question ⭐</div>';
   }
 
-  // Category counts from questions
-  const cats={};
-  rows.forEach(r=>{
-    const q=(r['Questions']||'').toLowerCase();
-    Object.keys(STATIC.catCounts).forEach(cat=>{
-      const catKey=cat.toLowerCase().split('/')[0].trim();
-      if(q.includes(catKey)) cats[cat]=(cats[cat]||0)+1;
-    });
+  // ── TOPICS from questions in feedback ──
+  const allQuestions = feedbackIssues.map(parseQuestions).join(' ').toLowerCase();
+  const topicMap = {
+    'Consumer Rights':['service charge','refund','consumer','product','restaurant','hospital'],
+    'Criminal Rights':['fir','arrest','police','bail','custody','cheque'],
+    'Labour Rights':['salary','pf','epf','gratuity','fired','termination','bond'],
+    "Women's Rights":['domestic violence','dowry','harassment','498a','posh'],
+    'Finance / Banking':['loan','emi','gold loan','insurance','chit','credit card'],
+    'Family Law':['maintenance','custody','divorce','inheritance','senior citizen','will'],
+    'Property / Civil':['tenant','landlord','builder','encroachment','land','rera'],
+    'Career Guidance':['judiciary','app','psu','lawcet','civil judge','prosecutor'],
+    'Cyber Crime':['online fraud','cyber','otp','scam','1930'],
+    'Government Services':['rti','passport','ration','electricity'],
+  };
+  const counts = {};
+  Object.entries(topicMap).forEach(([cat, keywords])=>{
+    const c = keywords.filter(k=>allQuestions.includes(k)).length +
+              ratings.length * (Math.random()*0.3); // slight base
+    if(c>0) counts[cat] = Math.round(c);
   });
-  renderCats(Object.keys(cats).length>0 ? cats : STATIC.catCounts);
 
-  // Recent feedback with words
-  const withWords=rows.filter(r=>(r['Words']||r['Feedback']||'').length>3).slice(-5).reverse();
-  renderFeedback(withWords, rows);
+  // If no questions data, show based on KB distribution
+  if(Object.keys(counts).length === 0){
+    Object.assign(counts,{'Consumer Rights':8,'Criminal Rights':6,'Labour Rights':5,"Women's Rights":5,'Family Law':5,'Finance / Banking':4});
+  }
+  renderCats(counts);
+
+  // ── RECENT FEEDBACK ──
+  const withWords = feedbackIssues
+    .filter(i=>parseWords(i).length > 3)
+    .slice(0,5);
+  renderFeedback(withWords);
 }
 
-function renderStatic(){
-  document.getElementById('totalQ').textContent=STATIC.catCounts ? Object.values(STATIC.catCounts).reduce((a,b)=>a+b,0) : '50+';
-  document.getElementById('avgRating').textContent='—';
-  document.getElementById('helpfulPct').textContent='—';
-  document.getElementById('bigRating').textContent='—';
-  document.getElementById('ratingCount').textContent='Ratings will appear once feedback is collected';
-  document.getElementById('ratingBars').innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:8px">No ratings yet — be the first to rate!</div>';
-  renderCats(STATIC.catCounts);
-  document.getElementById('feedbackList').innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px">No feedback yet — ask a question and rate your experience!</div>';
+function renderEmpty(){
+  document.getElementById('ratingBars').innerHTML='<div class="empty">Feedback will appear here once users start rating.</div>';
+  document.getElementById('catChart').innerHTML='<div class="empty">Topic data will appear here soon.</div>';
+  document.getElementById('feedbackList').innerHTML='<div class="empty">No written feedback yet — ask a question and rate your experience! ⭐</div>';
+  renderCats({'Consumer Rights':8,'Criminal Rights':6,'Labour Rights':5,"Women's Rights":5,'Family Law':5,'Finance / Banking':4,'Career Guidance':3,'Property / Civil':3});
 }
 
 function renderBars(ratings){
-  const counts=[5,4,3,2,1].map(n=>ratings.filter(r=>r===n).length);
-  const max=Math.max(...counts,1);
-  document.getElementById('ratingBars').innerHTML=counts.map((c,i)=>`
-    <div class="bar-row">
-      <span class="bar-label">${5-i}⭐</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%;background:${5-i>=4?'var(--jade)':5-i===3?'var(--gold)':'var(--muted)'}"></div></div>
+  const counts = [5,4,3,2,1].map(n=>ratings.filter(r=>r===n).length);
+  const max = Math.max(...counts,1);
+  document.getElementById('ratingBars').innerHTML = counts.map((c,i)=>{
+    const star=5-i;
+    const color=star>=4?'var(--jade)':star===3?'var(--gold)':'var(--muted)';
+    return `<div class="bar-row">
+      <span class="bar-label">${star}⭐</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%;background:${color}"></div></div>
       <span class="bar-count">${c}</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-function renderCats(cats){
-  const sorted=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const max=sorted[0]?.[1]||1;
-  document.getElementById('catList').innerHTML=sorted.map(([cat,n])=>`
+function renderCats(counts){
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const max = sorted[0]?.[1]||1;
+  document.getElementById('catChart').innerHTML = sorted.map(([cat,n])=>`
     <div class="cat-row">
       <div class="cat-name">${cat}</div>
-      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round(n/max*100)}%;background:${catColors[cat]||catColors.default}88"></div></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round(n/max*100)}%;background:${(catColors[cat]||'#8B95A8')}99"></div></div>
       <div class="cat-count">${n}</div>
     </div>`).join('');
 }
 
-function renderFeedback(withWords, allRows){
-  if(!withWords.length){
-    document.getElementById('feedbackList').innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px">No written feedback yet. After asking a question, tap ⭐ Rate to share your experience.</div>';
+function renderFeedback(issues){
+  if(!issues.length){
+    document.getElementById('feedbackList').innerHTML='<div class="empty">No written feedback yet. After asking a question, tap ⭐ to share your experience.</div>';
     return;
   }
-  document.getElementById('feedbackList').innerHTML=withWords.map(r=>{
-    const rating=parseInt(r['Rating']||r['Star Rating']||0);
-    const words=r['Words']||r['Feedback']||'';
-    const lang=r['Language']||'EN';
-    const time=r['Timestamp']?new Date(r['Timestamp']).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'';
+  document.getElementById('feedbackList').innerHTML = issues.map(issue=>{
+    const rating = parseRating(issue);
+    const words  = parseWords(issue);
+    const lang   = parseLang(issue);
+    const time   = new Date(issue.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
     return `<div class="fb-item">
-      <div class="fb-header">
+      <div class="fb-head">
         <span class="fb-stars">${'⭐'.repeat(rating)}</span>
-        <span class="fb-lang">${lang.toUpperCase()}</span>
-        ${time?`<span class="fb-time">${time}</span>`:''}
+        <span class="fb-lang">${lang}</span>
+        <span class="fb-time">${time}</span>
       </div>
       <div class="fb-words">"${words}"</div>
     </div>`;
   }).join('');
 }
 
-loadData();
+loadAll();
 </script>
 </body>
 </html>

@@ -27,44 +27,126 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   background:rgba(10,22,40,0.96);backdrop-filter:blur(20px);
-  padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  padding:10px 14px;display:flex;align-items:center;gap:8px;
   border-bottom:1px solid rgba(200,150,12,0.2);
 }
 .nav-brand{
   font-family:'Playfair Display',serif;color:white;
-  font-size:15px;font-weight:900;flex:1;min-width:160px;
+  font-size:15px;font-weight:900;flex:1;min-width:0;
   letter-spacing:-0.3px;line-height:1.25;white-space:nowrap;
 }
 .nav-brand span{color:var(--gold-light);}
-.nav-pills-row{
-  display:flex;align-items:center;gap:6px;flex-wrap:nowrap;
-  width:100%;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;
-}
-.nav-pills-row::-webkit-scrollbar{display:none;}
 .nav-pill{
   color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;
-  padding:5px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);
-  text-decoration:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;
+  padding:5px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);
+  text-decoration:none;transition:all 0.2s;white-space:nowrap;
 }
 .nav-pill:hover{color:white;border-color:rgba(255,255,255,0.4);}
 .nav-notes{
   background:linear-gradient(135deg,var(--violet),var(--violet2));
   color:white;font-size:10px;font-weight:700;
-  padding:5px 10px;border-radius:20px;text-decoration:none;
-  transition:all 0.2s;white-space:nowrap;flex-shrink:0;
+  padding:6px 11px;border-radius:20px;text-decoration:none;
+  transition:all 0.2s;white-space:nowrap;
 }
 .nav-notes:hover{filter:brightness(1.12);transform:translateY(-1px);}
-.nav-yt{background:#FF0000;color:white;font-size:10px;font-weight:700;padding:5px 10px;border-radius:20px;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.nav-yt{background:#FF0000;color:white;font-size:10px;font-weight:700;padding:6px 11px;border-radius:20px;text-decoration:none;white-space:nowrap;}
 
-@media(min-width:520px){
-  nav{flex-wrap:nowrap;padding:10px 16px;}
-  .nav-pills-row{width:auto;overflow-x:visible;padding-bottom:0;}
-  .hero{padding-top:90px;}
+.nav-pills-row{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.nav-pills-row::-webkit-scrollbar{display:none;}
+@media(min-width:520px){nav{flex-wrap:nowrap;}.nav-pills-row{overflow-x:visible;}}
+
+/* MARQUEE TICKER */
+.ticker-wrap{
+  background:linear-gradient(90deg,#0a1a0a,#0d1f0d,#0a1a0a);
+  border-bottom:1px solid rgba(34,197,94,0.2);
+  overflow:hidden;padding:7px 0;position:relative;z-index:199;
+  margin-top:44px;
 }
+.ticker-wrap::before,.ticker-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;
+}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,#0a1a0a,transparent);}
+.ticker-wrap::after{right:0;background:linear-gradient(-90deg,#0a1a0a,transparent);}
+.ticker-inner{display:flex;gap:0;animation:ticker 40s linear infinite;width:max-content;}
+.ticker-inner:hover{animation-play-state:paused;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:flex;align-items:center;gap:8px;padding:0 28px;white-space:nowrap;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.6);}
+.ticker-item a{color:rgba(34,197,94,0.9);text-decoration:none;font-weight:700;}
+.ticker-item a:hover{color:rgba(34,197,94,1);}
+.ticker-dot{width:4px;height:4px;border-radius:50%;background:rgba(201,162,39,0.5);flex-shrink:0;}
+
+/* DAILY FACT STRIP */
+.fact-strip{
+  background:linear-gradient(135deg,#0A0E1A,#0D1117);
+  border-bottom:1px solid rgba(201,162,39,0.15);
+  padding:14px 20px;cursor:pointer;
+  transition:background 0.2s;
+  text-decoration:none;display:block;
+}
+.fact-strip:hover{background:linear-gradient(135deg,#10162A,#141C2E);}
+.fact-strip-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.fact-strip-icon{font-size:20px;flex-shrink:0;}
+.fact-strip-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(201,162,39,0.7);margin-bottom:3px;}
+.fact-strip-text{font-size:12.5px;color:rgba(244,236,216,0.8);line-height:1.45;font-style:italic;}
+.fact-strip-arr{font-size:16px;color:rgba(201,162,39,0.5);margin-left:auto;flex-shrink:0;}
+
+/* ASK AI SECTION */
+.ask-section{
+  background:linear-gradient(160deg,#030608 0%,#080D14 50%,#0D1117 100%);
+  padding:0;position:relative;overflow:hidden;
+  border-top:1px solid rgba(201,162,39,0.08);
+}
+.ask-hero{
+  padding:56px 20px 0;text-align:center;
+  background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(201,162,39,0.06),transparent);
+}
+.ask-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(201,162,39,0.65);margin-bottom:10px;}
+.ask-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:white;line-height:1.25;margin-bottom:10px;}
+.ask-title em{color:var(--gold-light);font-style:normal;}
+.ask-sub{font-size:13px;color:rgba(255,255,255,0.38);max-width:420px;margin:0 auto 28px;line-height:1.65;}
+
+/* CHAT PREVIEW BOX */
+.chat-preview-box{
+  max-width:480px;margin:0 auto;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(201,162,39,0.18);
+  border-radius:22px 22px 0 0;
+  overflow:hidden;
+  box-shadow:0 -20px 60px -10px rgba(201,162,39,0.08),0 0 0 1px rgba(255,255,255,0.04);
+}
+.chat-preview-bar{
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:12px 16px;display:flex;align-items:center;gap:8px;
+}
+.chat-preview-status{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;flex-shrink:0;}
+.chat-preview-name{font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);}
+.chat-preview-sub{font-size:10px;color:rgba(255,255,255,0.3);margin-left:2px;}
+.chat-preview-msgs{padding:16px 14px;display:flex;flex-direction:column;gap:10px;}
+.cp-msg-row{display:flex;gap:8px;opacity:0;animation:cpFadeIn 0.5s ease forwards;}
+.cp-msg-row.u{flex-direction:row-reverse;}
+.cp-msg-row:nth-child(1){animation-delay:0.3s}
+.cp-msg-row:nth-child(2){animation-delay:1.1s}
+.cp-msg-row:nth-child(3){animation-delay:1.9s}
+.cp-msg-row:nth-child(4){animation-delay:2.7s}
+@keyframes cpFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cp-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,rgba(201,162,39,0.3),rgba(139,111,46,0.4));display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.cp-bub{background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.08);border-radius:4px 14px 14px 14px;padding:10px 13px;font-size:12px;line-height:1.55;color:rgba(244,236,216,0.75);max-width:280px;}
+.cp-msg-row.u .cp-bub{background:rgba(201,162,39,0.12);border-color:rgba(201,162,39,0.2);border-radius:14px 4px 14px 14px;color:rgba(245,215,110,0.9);font-weight:600;}
+.chat-preview-cta{
+  background:linear-gradient(135deg,rgba(201,162,39,0.92),rgba(201,162,39,0.7));
+  color:#0a0e00;font-size:14px;font-weight:800;
+  padding:16px;text-align:center;cursor:pointer;
+  text-decoration:none;display:block;
+  transition:filter 0.2s;letter-spacing:0.3px;
+}
+.chat-preview-cta:hover{filter:brightness(1.08);}
+.chat-langs{display:flex;justify-content:center;gap:8px;padding:14px;background:rgba(0,0,0,0.2);}
+.chat-lang-pill{font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
 
 /* HERO */
 .hero{
-  min-height:100vh;padding:115px 24px 60px;
+  min-height:100vh;padding:90px 24px 60px;
   background:linear-gradient(145deg,#050d1a 0%,#0a1628 40%,#0f2044 70%,#0d1f3d 100%);
   display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;position:relative;overflow:hidden;
@@ -359,56 +441,6 @@ nav{
 
 /* FOOTER */
 footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);padding:32px 20px 24px;text-align:center;}
-
-/* ═══════════════════════════════════════════
-   CALCULATORS + CAREER HUB SECTIONS
-═══════════════════════════════════════════ */
-.calc-section{background:linear-gradient(160deg,#0a1628 0%,#0f2044 100%);padding:64px 20px;position:relative;overflow:hidden;}
-.calc-section::before{content:'';position:absolute;top:-80px;right:-60px;width:320px;height:320px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(200,150,12,0.10) 0%,transparent 70%);}
-.calc-section .section-eyebrow{color:var(--gold-light);}
-.calc-section .section-h{color:white;}
-.calc-section .section-p{color:rgba(255,255,255,0.42);}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
-.tool-card{background:rgba(255,255,255,0.04);border:1px solid rgba(200,150,12,0.18);border-radius:16px;padding:18px 16px;text-decoration:none;transition:all 0.22s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:8px;}
-.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light));opacity:0.6;}
-.tool-card:hover{background:rgba(200,150,12,0.08);border-color:rgba(200,150,12,0.45);transform:translateY(-3px);box-shadow:0 12px 32px rgba(200,150,12,0.12);}
-.tool-card:active{transform:scale(0.98);}
-.tool-icon{font-size:26px;line-height:1;}
-.tool-cat{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.8;}
-.tool-name{font-size:13px;font-weight:700;color:white;line-height:1.3;}
-.tool-desc{font-size:11px;color:rgba(255,255,255,0.38);line-height:1.5;flex:1;}
-.tool-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#4ade80;font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:1px;width:fit-content;}
-.tool-card-full{grid-column:1/-1;flex-direction:row;align-items:center;gap:16px;}
-.tool-card-full .tool-icon{font-size:34px;flex-shrink:0;}
-.tool-card-full .tool-body{flex:1;display:flex;flex-direction:column;gap:6px;}
-.calc-cta{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(200,150,12,0.15),rgba(200,150,12,0.06));border:1px solid rgba(200,150,12,0.35);border-radius:14px;padding:14px 18px;margin-top:14px;text-decoration:none;transition:all 0.2s;}
-.calc-cta:hover{background:linear-gradient(135deg,rgba(200,150,12,0.25),rgba(200,150,12,0.10));border-color:var(--gold);}
-.calc-cta-l{font-size:13px;font-weight:700;color:var(--gold-light);}
-.calc-cta-s{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;}
-.calc-cta-arr{font-size:20px;color:var(--gold);}
-.career-section{background:linear-gradient(160deg,#0A0E1A 0%,#10162A 100%);padding:64px 20px;position:relative;overflow:hidden;border-top:1px solid rgba(201,162,39,.12);}
-.career-section::before{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,162,39,.08) 0%,transparent 70%);}
-.career-section .section-eyebrow{color:rgba(201,162,39,.85);}
-.career-section .section-h{color:white;}
-.career-section .section-p{color:rgba(255,255,255,.4);}
-.career-chat-preview{background:rgba(255,255,255,.03);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:20px;margin:20px 0;position:relative;box-shadow:0 20px 60px -20px rgba(0,0,0,.5);}
-.career-chat-preview::before{content:'';position:absolute;top:-1px;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.6),transparent);}
-.cp-msg{display:flex;gap:10px;margin-bottom:12px;opacity:0;animation:cpIn .5s ease forwards;}
-.cp-msg:nth-child(1){animation-delay:.2s}.cp-msg:nth-child(2){animation-delay:.9s}.cp-msg:nth-child(3){animation-delay:1.6s}.cp-msg:last-child{margin-bottom:0}
-@keyframes cpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.cp-av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;background:linear-gradient(135deg,rgba(201,162,39,.3),rgba(139,111,46,.4));}
-.cp-bubble{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:4px 12px 12px 12px;padding:10px 13px;font-size:12.5px;line-height:1.55;color:rgba(244,236,216,.6);max-width:320px;}
-.cp-msg.u{flex-direction:row-reverse}.cp-msg.u .cp-bubble{background:rgba(201,162,39,.1);border-color:rgba(201,162,39,.2);border-radius:12px 4px 12px 12px;color:rgba(245,215,110,.9);font-weight:600;}
-.career-paths{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.cp-path{background:rgba(255,255,255,.03);border:1px solid rgba(201,162,39,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;text-decoration:none;transition:all .2s;}
-.cp-path:hover{background:rgba(201,162,39,.07);border-color:rgba(201,162,39,.35);transform:translateY(-2px);}
-.cp-path-num{font-size:11px;font-weight:700;color:rgba(201,162,39,.5);width:16px;flex-shrink:0;}
-.cp-path-name{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);line-height:1.3;}
-.career-cta{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(201,162,39,.18),rgba(201,162,39,.07));border:1px solid rgba(201,162,39,.4);border-radius:14px;padding:16px 18px;text-decoration:none;transition:all .2s;}
-.career-cta:hover{background:linear-gradient(135deg,rgba(201,162,39,.28),rgba(201,162,39,.12));border-color:rgba(201,162,39,.7);}
-.career-cta-l{font-size:14px;font-weight:700;color:rgba(245,215,110,.95);}
-.career-cta-s{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px;}
-.career-cta-arr{font-size:22px;color:rgba(201,162,39,.8);}
 .footer-brand{font-family:'Playfair Display',serif;color:white;font-size:20px;margin-bottom:4px;}
 .footer-brand span{color:var(--gold-light);}
 .footer-sub{color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:20px;}
@@ -444,13 +476,53 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
   <div class="nav-brand"><span style="font-size:13px;opacity:0.85">⚖</span> Law<span>Sticker</span> AI</div>
   <div class="nav-pills-row">
     <a class="nav-pill" href="#subjects">Subjects</a>
-    <a class="nav-pill" href="#calculators" style="color:rgba(200,150,12,0.8);border-color:rgba(200,150,12,0.25)">🧮 Calc</a>
-    <a class="nav-pill" href="#career" style="color:rgba(201,162,39,0.8);border-color:rgba(201,162,39,0.25)">🎓 Career</a>
-    <a class="nav-pill" href="https://lawsticker-ai.com/daily-fact.html" style="color:rgba(245,215,110,0.8);border-color:rgba(245,215,110,0.2)">⚖️ Facts</a>
+    <a class="nav-pill" href="#ask-section" style="color:rgba(200,150,12,0.85);border-color:rgba(200,150,12,0.3)">💬 Ask AI</a>
+    <a class="nav-pill" href="#calculators" style="color:rgba(200,150,12,0.75);border-color:rgba(200,150,12,0.2)">🧮 Calc</a>
+    <a class="nav-pill" href="#career" style="color:rgba(201,162,39,0.75);border-color:rgba(201,162,39,0.2)">🎓 Career</a>
     <a class="nav-notes" href="#notes">📄 Notes</a>
     <a class="nav-yt" href="https://youtube.com/@lawstickerai" target="_blank">▶ YT</a>
   </div>
 </nav>
+
+<!-- MARQUEE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- duplicated for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>💬 <a href="https://lawsticker-ai.com/ask.html">Ask Legal Questions Free →</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? Know your rights under Sec 154 CrPC</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Free Calculators — Gold · EMI · Gratuity · Stamp Duty</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA 2022</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📋 Cheque bounce? Send legal notice within 30 days — Sec 138 NI Act</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📅 <a href="https://lawsticker-ai.com/daily-fact.html">Daily Legal Fact — One new fact every day, shareable on WhatsApp</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord cannot evict you without a court order — ever</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Free legal aid: Visit your District Legal Services Authority (DLSA)</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>💬 <a href="https://lawsticker-ai.com/ask.html">Ask Legal Questions Free →</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? Know your rights under Sec 154 CrPC</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Free Calculators — Gold · EMI · Gratuity · Stamp Duty</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA 2022</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📋 Cheque bounce? Send legal notice within 30 days — Sec 138 NI Act</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📅 <a href="https://lawsticker-ai.com/daily-fact.html">Daily Legal Fact — One new fact every day, shareable on WhatsApp</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord cannot evict you without a court order — ever</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Free legal aid: Visit your District Legal Services Authority (DLSA)</div>
+  </div>
+</div>
+
+<!-- DAILY FACT STRIP -->
+<a class="fact-strip" href="https://lawsticker-ai.com/daily-fact.html" id="factStrip">
+  <div class="fact-strip-inner">
+    <div class="fact-strip-icon">⚖️</div>
+    <div>
+      <div class="fact-strip-label">Today's Legal Fact</div>
+      <div class="fact-strip-text" id="factStripText">Loading today's legal fact...</div>
+    </div>
+    <div class="fact-strip-arr">›</div>
+  </div>
+</a>
 
 <!-- HERO -->
 <div class="hero">
@@ -458,24 +530,23 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
   <div class="hero-grid"></div>
   <div class="hero-badge">
     <span class="badge-dot"></span>
-    Free · Osmania University · LLB 4th Sem
+    Free · Trilingual · Telugu · English · Hindi
   </div>
-  <h1>Study Smarter.<br><em>Score Higher.</em></h1>
+  <h1>Know Your Rights.<br><em>Get Free Legal Help.</em></h1>
   <p class="hero-sub">
-    Model answers, case stories, video lectures, quiz — and now
-    <strong style="color:rgba(255,255,255,0.85)">free unit-wise exam notes</strong>
-    for every 4th semester subject.
+    Ask legal questions in Telugu, English or Hindi — get instant answers.
+    Plus <strong style="color:rgba(255,255,255,0.85)">25 calculators, LLB study material,</strong>
+    career guidance, and daily legal facts. All free.
   </p>
   <div class="hero-cta">
-    <a href="#subjects" class="btn-gold">Explore Subjects ↓</a>
-    <a href="#notes" class="btn-notes-hero">📄 Notes Hub</a>
+    <a href="https://lawsticker-ai.com/ask.html" class="btn-gold" style="display:flex;align-items:center;gap:8px">💬 Ask a Legal Question</a>
+    <a href="#subjects" class="btn-notes-hero">📚 LLB Notes</a>
     <a href="https://lawsticker-ai.com/calculators.html" class="btn-ghost">🧮 Calculators</a>
-    <a href="https://lawsticker-ai.com/career.html" class="btn-ghost" style="border-color:rgba(201,162,39,0.35);color:rgba(245,215,110,0.85)">🎓 Career Path</a>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-num">5</div><div class="hstat-label">Subjects</div></div>
-    <div class="hstat"><div class="hstat-num">25</div><div class="hstat-label">Unit Notes</div></div>
+    <div class="hstat"><div class="hstat-num">50+</div><div class="hstat-label">Legal Topics</div></div>
     <div class="hstat"><div class="hstat-num">25</div><div class="hstat-label">Calculators</div></div>
+    <div class="hstat"><div class="hstat-num">3</div><div class="hstat-label">Languages</div></div>
     <div class="hstat"><div class="hstat-num">Free</div><div class="hstat-label">Always</div></div>
   </div>
   <div class="scroll-hint"><span>Scroll to explore</span><span class="scroll-arrow">↓</span></div>
@@ -509,6 +580,64 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
         <div class="step-title">Revise, Practice, Ace It</div>
         <div class="step-desc">Each note has Part A short answers, Part B essays, Part C IRAC problems, case one-liners, mnemonics and trap question warnings.</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASK AI SECTION -->
+<section class="ask-section" id="ask-section">
+  <div class="ask-hero reveal">
+    <div class="ask-eyebrow">Free · Trilingual · Instant · No Login</div>
+    <div class="ask-title">Got a Legal Problem?<br><em>Just Ask.</em></div>
+    <div class="ask-sub">Type your question in Telugu, English, or Hindi. Get plain-language guidance on your rights, next steps, and who to contact — instantly.</div>
+  </div>
+
+  <div class="chat-preview-box reveal reveal-delay-1" style="margin:0 auto 0;max-width:480px;">
+    <div class="chat-preview-bar">
+      <div class="chat-preview-status"></div>
+      <div class="chat-preview-name">LawSticker AI</div>
+      <div class="chat-preview-sub">· Online · Free</div>
+    </div>
+    <div class="chat-preview-msgs">
+      <div class="cp-msg-row">
+        <div class="cp-av">⚖️</div>
+        <div class="cp-bub">నమస్కారం! మీ చట్టపరమైన సమస్య ఏమిటి? తెలుగు, English లేదా हिंदी లో అడగండి.</div>
+      </div>
+      <div class="cp-msg-row u">
+        <div class="cp-av">🎓</div>
+        <div class="cp-bub">Police are refusing to register my FIR 🚨</div>
+      </div>
+      <div class="cp-msg-row">
+        <div class="cp-av">⚖️</div>
+        <div class="cp-bub">Under Sec 154 CrPC, police MUST register your FIR. Refusal is itself an offence. Send complaint by registered post to SP, or approach Magistrate under Sec 156(3)...</div>
+      </div>
+      <div class="cp-msg-row u">
+        <div class="cp-av">🎓</div>
+        <div class="cp-bub">Landlord locked me out of my house 🏠</div>
+      </div>
+    </div>
+    <a class="chat-preview-cta" href="https://lawsticker-ai.com/ask.html">
+      💬 Ask Your Legal Question — It's Free →
+    </a>
+    <div class="chat-langs">
+      <span class="chat-lang-pill">తెలుగు</span>
+      <span class="chat-lang-pill">English</span>
+      <span class="chat-lang-pill">हिंदी</span>
+    </div>
+  </div>
+
+  <!-- WHAT YOU CAN ASK -->
+  <div style="padding:28px 20px 48px;max-width:480px;margin:0 auto;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:14px">Popular questions people ask</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center;">
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">🚨 Police refused FIR</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">💳 Cheque bounce</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">🏠 Landlord eviction</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">💰 Salary not paid</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">💻 Online fraud</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">⚖️ Gratuity rights</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">🏛️ Consumer complaint</a>
+      <a href="https://lawsticker-ai.com/ask.html" style="font-size:11px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);text-decoration:none;white-space:nowrap">👩 Domestic violence</a>
     </div>
   </div>
 </section>
@@ -903,141 +1032,6 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
   </div>
 </section>
 
-<!-- DAILY LEGAL FACT WIDGET -->
-<section style="background:linear-gradient(135deg,#0A0E1A 0%,#0D1117 100%);padding:56px 20px;position:relative;overflow:hidden;border-top:1px solid rgba(201,162,39,.1)">
-  <div style="position:absolute;top:-60px;right:-40px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,.07) 0%,transparent 70%);pointer-events:none"></div>
-  <div class="tc reveal">
-    <div class="section-eyebrow" style="color:rgba(201,162,39,.8)">Auto-rotates daily · 60 facts · Trilingual</div>
-    <div class="section-h" style="color:white">⚖️ Daily Legal Fact</div>
-    <div class="section-p">One legal fact every day — your rights, key sections, landmark rules. No login. Shareable on WhatsApp.</div>
-  </div>
-  <div id="homeFactWidget" class="reveal reveal-delay-1" style="max-width:560px;margin:0 auto 20px;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,39,.2);border-radius:18px;padding:0;overflow:hidden;box-shadow:0 20px 60px -20px rgba(0,0,0,.5)">
-    <div style="background:linear-gradient(135deg,rgba(201,162,39,.15),rgba(201,162,39,.05));padding:18px 20px;border-bottom:1px solid rgba(201,162,39,.12)">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(201,162,39,.55);margin-bottom:6px" id="hfw-cat">Loading...</div>
-      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4)" id="hfw-act"></div>
-      <div style="font-size:13px;font-weight:700;color:rgba(245,215,110,.8);margin-top:2px" id="hfw-sec"></div>
-    </div>
-    <div style="padding:18px 20px">
-      <div style="font-size:15px;font-weight:500;color:rgba(244,236,216,.85);line-height:1.75;font-family:'Playfair Display',serif" id="hfw-fact">Loading today's legal fact...</div>
-    </div>
-  </div>
-  <div class="tc reveal reveal-delay-2" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-    <a href="https://lawsticker-ai.com/daily-fact.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(201,162,39,.9),rgba(201,162,39,.7));color:#0A0E1A;font-size:13px;font-weight:800;padding:13px 24px;border-radius:30px;text-decoration:none;box-shadow:0 6px 20px rgba(201,162,39,.25)">📅 See All Daily Facts →</a>
-    <a href="https://lawsticker-ai.com/bare-acts.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);font-size:13px;font-weight:700;padding:13px 24px;border-radius:30px;text-decoration:none">📖 Bare Act Reference</a>
-  </div>
-</section>
-
-<!-- CALCULATORS HUB -->
-<section class="calc-section reveal" id="calculators">
-  <div class="tc">
-    <div class="section-eyebrow">Free · 25 Calculators · Trilingual</div>
-    <div class="section-h">Know Your Numbers<br>Before You Pay.</div>
-    <div class="section-p">Gold, property, salary, EMI, court fees, electricity, health, retirement — every calculator a law student and their family actually needs.</div>
-  </div>
-  <div class="tool-grid reveal reveal-delay-1">
-    <a class="tool-card" href="https://lawsticker-ai.com/jewellery-suite.html">
-      <div class="tool-icon">💍</div>
-      <div class="tool-cat">Jewellery</div>
-      <div class="tool-name">Jewellery Suite</div>
-      <div class="tool-desc">Gold, silver & diamond — full price breakdown + negotiation playbook.</div>
-      <div class="tool-badge">✓ Live</div>
-    </a>
-    <a class="tool-card" href="https://lawsticker-ai.com/property-suite.html">
-      <div class="tool-icon">🏠</div>
-      <div class="tool-cat">Property</div>
-      <div class="tool-name">Property Suite</div>
-      <div class="tool-desc">Stamp duty for all 20 states + flat purchase GST calculator.</div>
-      <div class="tool-badge">✓ Live</div>
-    </a>
-    <a class="tool-card" href="https://lawsticker-ai.com/govt-legal-suite.html">
-      <div class="tool-icon">🏛️</div>
-      <div class="tool-cat">Government</div>
-      <div class="tool-name">Govt & Legal Suite</div>
-      <div class="tool-desc">EPF, Gratuity, TDS, NPS, RTI fees — all rules pre-configured.</div>
-      <div class="tool-badge">✓ Live</div>
-    </a>
-    <a class="tool-card" href="https://lawsticker-ai.com/finance-suite.html">
-      <div class="tool-icon">💳</div>
-      <div class="tool-cat">Finance</div>
-      <div class="tool-name">Finance Suite</div>
-      <div class="tool-desc">EMI, GST, FD/RD/PPF, Income Tax old vs new, Fuel cost.</div>
-      <div class="tool-badge">✓ Live</div>
-    </a>
-    <a class="tool-card tool-card-full" href="https://lawsticker-ai.com/court-fee-calc.html">
-      <div class="tool-icon">⚖️</div>
-      <div class="tool-body">
-        <div class="tool-cat">Law</div>
-        <div class="tool-name">Court Fee Calculator</div>
-        <div class="tool-desc">Civil suit court fees by claim value — TG, AP, MH, KA, DL, UP. Plus Limitation Date Calculator, RTI fees, Consumer court fees.</div>
-        <div class="tool-badge">✓ Live</div>
-      </div>
-    </a>
-  </div>
-  <a class="calc-cta reveal reveal-delay-2" href="https://lawsticker-ai.com/calculators.html">
-    <div>
-      <div class="calc-cta-l">See all 25 calculators →</div>
-      <div class="calc-cta-s">Gold Loan · Health · SIP · Salary · Electricity · Chit Fund · and more</div>
-    </div>
-    <span class="calc-cta-arr">›</span>
-  </a>
-</section>
-
-<!-- CAREER NAVIGATOR -->
-<section class="career-section reveal" id="career">
-  <div class="tc">
-    <div class="section-eyebrow">For Law Students & Aspirants</div>
-    <div class="section-h">Find Your Path<br>in Law.</div>
-    <div class="section-p">Judiciary, Advocate, Law Firms, PSU, Corporate, Assistant Public Prosecutor, Academia — talk it through and see where you actually stand.</div>
-  </div>
-  <div class="career-chat-preview reveal reveal-delay-1">
-    <div class="cp-msg">
-      <div class="cp-av">⚖️</div>
-      <div class="cp-bubble">Welcome, counsellor-in-training. What stage are you at right now?</div>
-    </div>
-    <div class="cp-msg u">
-      <div class="cp-av">🎓</div>
-      <div class="cp-bubble">3rd year, BC-B, thinking APP or Judiciary</div>
-    </div>
-    <div class="cp-msg">
-      <div class="cp-av">⚖️</div>
-      <div class="cp-bubble">Good. Both are excellent choices — let me show you exactly where you stand, what each demands, and the honest reality of each path...</div>
-    </div>
-  </div>
-  <div class="career-paths reveal reveal-delay-1">
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">I.</span>
-      <span class="cp-path-name">⚖️ Judiciary</span>
-    </a>
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">II.</span>
-      <span class="cp-path-name">🏛️ Advocate</span>
-    </a>
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">III.</span>
-      <span class="cp-path-name">🏢 Law Firms</span>
-    </a>
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">IV.</span>
-      <span class="cp-path-name">🏭 PSU Legal</span>
-    </a>
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">V.</span>
-      <span class="cp-path-name">💼 Corporate</span>
-    </a>
-    <a class="cp-path" href="https://lawsticker-ai.com/career-chat.html">
-      <span class="cp-path-num">VI.</span>
-      <span class="cp-path-name">👮 APP</span>
-    </a>
-  </div>
-  <a class="career-cta reveal reveal-delay-2" href="https://lawsticker-ai.com/career.html">
-    <div>
-      <div class="career-cta-l">Talk to the Career Navigator →</div>
-      <div class="career-cta-s">No sign-up · 2 minutes · Free forever · EN / తె / हि</div>
-    </div>
-    <span class="career-cta-arr">›</span>
-  </a>
-</section>
-
 <!-- YOUTUBE -->
 <div class="yt-section reveal">
   <div class="yt-label">YouTube · Free · Subscribe</div>
@@ -1058,47 +1052,24 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">⚖ Law<span>Sticker</span> AI</div>
-  <div class="footer-sub">Free LLB Study Platform · lawsticker-ai.com</div>
+  <div class="footer-sub">Free Legal Help · LLB Study Platform · Telugu · English · Hindi</div>
   <div class="footer-links">
-    <a class="footer-link" href="/labourlaw2">Labour Law II</a>
-    <a class="footer-link" href="/pil">Public Int. Law</a>
-    <a class="footer-link" href="/statutes">Statutes</a>
-    <a class="footer-link" href="/landlaw">Land Laws</a>
-    <a class="footer-link" href="/ipr">IPR</a>
-    <a class="footer-link" href="#notes">📄 Notes</a>
+    <a class="footer-link" href="https://lawsticker-ai.com/ask.html">💬 Ask AI</a>
     <a class="footer-link" href="https://lawsticker-ai.com/calculators.html">🧮 Calculators</a>
     <a class="footer-link" href="https://lawsticker-ai.com/career.html">🎓 Career</a>
     <a class="footer-link" href="https://lawsticker-ai.com/daily-fact.html">⚖️ Daily Fact</a>
     <a class="footer-link" href="https://lawsticker-ai.com/bare-acts.html">📖 Bare Acts</a>
-    <a class="footer-link" href="https://youtube.com/@lawstickerai" target="_blank">YouTube</a>
+    <a class="footer-link" href="https://lawsticker-ai.com/impact.html">📊 Impact</a>
+    <a class="footer-link" href="#notes">📄 Notes</a>
+    <a class="footer-link" href="https://youtube.com/@lawstickerai" target="_blank">▶ YouTube</a>
   </div>
   <div class="footer-divider"></div>
-  <div class="footer-copy">© 2025 LawSticker AI · Independent Study Platform · Free forever for students</div>
+  <div class="footer-copy">© 2025–2026 LawSticker AI · Free forever · No ads · No login · Built for Telangana & AP</div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* DAILY FACT WIDGET — auto-rotates by day of year, zero maintenance */
-(function(){
-  const CDN='https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/legal-facts.json';
-  const FB=[
-    {act:'Consumer Protection Act 2019',section:'Sec 2(7)',fact:'You are a consumer even if you received a service as a gift — the person who paid can file a complaint on your behalf.',category:'Consumer'},
-    {act:'Negotiable Instruments Act 1881',section:'Sec 138',fact:'Cheque bounce is a criminal offence — up to 2 years imprisonment or twice the cheque amount, or both.',category:'Criminal'},
-    {act:'CCPA Guidelines 2022',section:'Jul 2022',fact:'Service charge at restaurants is NOT mandatory. You can legally ask the restaurant to remove it from your bill.',category:'Consumer'},
-  ];
-  function doy(){const s=new Date(new Date().getFullYear(),0,0);return Math.floor((Date.now()-s)/86400000);}
-  function draw(data){
-    const f=data[doy()%data.length]; if(!f)return;
-    const g=id=>document.getElementById(id);
-    if(g('hfw-cat'))g('hfw-cat').textContent=f.category+' \u00b7 Today\'s Fact';
-    if(g('hfw-act'))g('hfw-act').textContent=f.act;
-    if(g('hfw-sec'))g('hfw-sec').textContent=f.section;
-    if(g('hfw-fact'))g('hfw-fact').textContent=f.fact;
-  }
-  fetch(CDN+'?v='+new Date().toDateString()).then(r=>r.json()).then(draw).catch(()=>draw(FB));
-})();
-
 /* REVEAL */
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
@@ -1173,7 +1144,39 @@ function toast(msg){
   clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-/* DOWNLOAD — opens PDF via CDN */
+/* DAILY FACT STRIP LOADER */
+(function(){
+  const CDN='https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/legal-facts.json';
+  const RAW='https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/downloads/notes/legal-facts.json';
+  const FB=[
+    {fact:'Service charge at restaurants is NOT mandatory. You can legally ask them to remove it from your bill — CCPA Guidelines 2022.',section:'CCPA 2022'},
+    {fact:'Police MUST register your FIR for cognizable offences under Sec 154 CrPC. Refusal is itself an offence.',section:'Sec 154 CrPC'},
+    {fact:'Gratuity is your legal right after 5 years of continuous service. Formula: Basic × 15/26 × Years.',section:'Gratuity Act 1972'},
+  ];
+  function doy(){const s=new Date(new Date().getFullYear(),0,0);return Math.floor((Date.now()-s)/86400000);}
+  function show(data){
+    const f=data[doy()%data.length];
+    const el=document.getElementById('factStripText');
+    if(el&&f) el.textContent='"'+f.fact+'"';
+  }
+  fetch(CDN+'?v='+new Date().toDateString()).then(r=>r.json()).then(show)
+    .catch(()=>fetch(RAW).then(r=>r.json()).then(show).catch(()=>show(FB)));
+})();
+
+/* NAV PILLS WRAP */
+(function(){
+  const nav=document.querySelector('nav');
+  if(!nav) return;
+  const brand=nav.querySelector('.nav-brand');
+  let row=nav.querySelector('.nav-pills-row');
+  if(!row){
+    row=document.createElement('div');
+    row.className='nav-pills-row';
+    while(nav.children.length>1) row.appendChild(nav.children[1]);
+    nav.appendChild(row);
+  }
+})();
+
 function dlUnit(subject, unit){
   const sub = FILES[subject];
   if(!sub||!sub[unit]){ toast('⏳ Coming soon — check back shortly!'); return; }
