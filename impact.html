@@ -27,7 +27,6 @@ nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;jus
 .hstat-label{font-size:10px;color:rgba(255,255,255,.3);margin-top:4px;font-weight:600;letter-spacing:.3px;line-height:1.3}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--light);box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-.stars-display{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .big-rating{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--ink);line-height:1}
 .stars-sub{font-size:12px;color:var(--muted);margin-top:3px}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
@@ -51,10 +50,8 @@ nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;jus
 .help-icon{font-size:22px;margin-bottom:6px}
 .help-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px}
 .help-sub{font-size:11px;color:var(--muted);line-height:1.5}
-.empty{text-align:center;padding:24px;font-size:12px;color:var(--muted)}
-.skeleton{background:linear-gradient(90deg,#eee 25%,#e4e4e4 50%,#eee 75%);background-size:200% 100%;animation:sh 1.5s infinite;border-radius:6px;height:12px;margin:6px 0}
-@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.disclaimer{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:14px;padding:14px;font-size:11px;color:var(--ink-soft);line-height:1.7;margin-top:4px}
+.empty{text-align:center;padding:24px;font-size:12px;color:var(--muted);line-height:1.8}
+.notice{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:14px;padding:14px;font-size:12px;color:var(--ink-soft);line-height:1.7;margin-bottom:14px}
 .ask-cta{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(201,162,39,.15),rgba(201,162,39,.06));border:1px solid rgba(201,162,39,.35);border-radius:14px;padding:16px 18px;text-decoration:none;transition:all .2s;margin-bottom:14px}
 .ask-cta:hover{background:linear-gradient(135deg,rgba(201,162,39,.25),rgba(201,162,39,.1))}
 .ask-cta-l{font-size:14px;font-weight:700;color:var(--gold)}
@@ -71,14 +68,18 @@ footer a{color:var(--gold);text-decoration:none}
 <div class="container">
 
   <div class="hero">
-    <div class="hero-eyebrow">Live Data · Updated on every visit</div>
+    <div class="hero-eyebrow">Live · From your device · Updated instantly</div>
     <div class="hero-title">Our Impact in Numbers</div>
     <div class="hero-sub">Every question answered here is one person who got free legal guidance — in Telugu, English, or Hindi. No ads. No login. No cost.</div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-num" id="statRatings">—</div><div class="hstat-label">Ratings received</div></div>
-      <div class="hstat"><div class="hstat-num" id="statAvg">—</div><div class="hstat-label">Avg star rating</div></div>
-      <div class="hstat"><div class="hstat-num" id="statHelpful">—</div><div class="hstat-label">Found helpful 👍</div></div>
+      <div class="hstat"><div class="hstat-num" id="statRatings">—</div><div class="hstat-label">Ratings given</div></div>
+      <div class="hstat"><div class="hstat-num" id="statAvg">—</div><div class="hstat-label">Avg rating</div></div>
+      <div class="hstat"><div class="hstat-num" id="statHelpful">—</div><div class="hstat-label">Found helpful</div></div>
     </div>
+  </div>
+
+  <div class="notice">
+    📱 <strong>Your device's data:</strong> Ratings and feedback are stored on your device. Each visitor sees their own interaction history. A shared public dashboard is coming soon.
   </div>
 
   <a class="ask-cta" href="https://lawsticker-ai.com/ask.html">
@@ -90,38 +91,38 @@ footer a{color:var(--gold);text-decoration:none}
   </a>
 
   <div class="card">
-    <div class="card-title">Star Ratings</div>
-    <div class="stars-display">
+    <div class="card-title">Your Ratings</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
       <div>
         <div class="big-rating" id="bigRating">—</div>
         <div style="font-size:18px;margin-top:4px" id="starsRow">☆☆☆☆☆</div>
-        <div class="stars-sub" id="ratingsSub">Loading...</div>
+        <div class="stars-sub" id="ratingsSub">No ratings yet</div>
       </div>
     </div>
-    <div id="ratingBars"><div class="skeleton"></div><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%"></div><div class="skeleton" style="width:25%"></div></div>
+    <div id="ratingBars"></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Most Asked Topics</div>
-    <div id="catChart"><div class="skeleton"></div><div class="skeleton" style="width:85%"></div><div class="skeleton" style="width:70%"></div><div class="skeleton" style="width:55%"></div></div>
+    <div class="card-title">Topics You Asked About</div>
+    <div id="catChart"><div class="empty">Ask questions to see your topic breakdown here.</div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Recent Feedback</div>
-    <div id="feedbackList"><div class="empty">Loading feedback...</div></div>
+    <div class="card-title">Your Recent Ratings</div>
+    <div id="feedbackList"><div class="empty">No ratings yet.<br><a href="https://lawsticker-ai.com/ask.html" style="color:var(--gold);font-weight:700">Ask a question and rate it →</a></div></div>
   </div>
 
   <div class="card">
     <div class="card-title">How We Help</div>
     <div class="help-grid">
-      <div class="help-card"><div class="help-icon">⚖️</div><div class="help-title">Free Legal Guidance</div><div class="help-sub">50 topics — rights, procedures, remedies in Telugu, English, Hindi</div></div>
-      <div class="help-card"><div class="help-icon">🧮</div><div class="help-title">25 Calculators</div><div class="help-sub">Gold, EMI, gratuity, stamp duty, court fees and more</div></div>
-      <div class="help-card"><div class="help-icon">🎓</div><div class="help-title">Career Navigator</div><div class="help-sub">Judiciary, APP, PSU, Law Firms — TS/AP focused</div></div>
-      <div class="help-card"><div class="help-icon">📅</div><div class="help-title">Daily Legal Facts</div><div class="help-sub">One new legal fact every day — shareable on WhatsApp</div></div>
+      <div class="help-card"><div class="help-icon">⚖️</div><div class="help-title">Free Legal Guidance</div><div class="help-sub">50 topics in Telugu, English, Hindi</div></div>
+      <div class="help-card"><div class="help-icon">🧮</div><div class="help-title">25 Calculators</div><div class="help-sub">Gold, EMI, gratuity, stamp duty and more</div></div>
+      <div class="help-card"><div class="help-icon">🎓</div><div class="help-title">Career Navigator</div><div class="help-sub">Judiciary, APP, PSU — TS/AP focused</div></div>
+      <div class="help-card"><div class="help-icon">📅</div><div class="help-title">Daily Legal Facts</div><div class="help-sub">One new fact every day on WhatsApp</div></div>
     </div>
   </div>
 
-  <div class="disclaimer">
+  <div style="background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:14px;padding:14px;font-size:11px;color:var(--ink-soft);line-height:1.7">
     <strong>⚠️ Important:</strong> LawSticker AI provides general legal information only — not professional legal advice. For free legal aid call NALSA at <strong>15100</strong>.
   </div>
 </div>
@@ -131,89 +132,70 @@ footer a{color:var(--gold);text-decoration:none}
 </footer>
 
 <script>
-const GH_REPO = 'legaleagles/LabourLaw2';
-const API = `https://api.github.com/repos/${GH_REPO}/issues`;
+const LS_RATINGS  = 'ls_ratings';
+const LS_THUMBS   = 'ls_thumbs';
+const LS_QUESTIONS = 'ls_questions';
+
 const catColors = {
   'Consumer Rights':'#059669','Criminal Rights':'#DC2626','Labour Rights':'#D97706',
   "Women's Rights":'#DB2777','Family Law':'#7C3AED','Finance / Banking':'#0891B2',
   'Career Guidance':'#C9A227','Property / Civil':'#2563EB','Cyber Crime':'#DC2626',
-  'Human Rights':'#7C3AED','Government Services':'#059669','Education / LAWCET':'#D97706',
+  'Human Rights':'#7C3AED','Government Services':'#059669',
 };
 
-async function loadAll(){
+function loadAll(){
   try{
-    const h = {'Accept':'application/vnd.github+json'};
-    const [fbRes, thRes] = await Promise.all([
-      fetch(`${API}?labels=user-feedback&state=all&per_page=100`,{headers:h}),
-      fetch(`${API}?labels=thumbs-feedback&state=all&per_page=100`,{headers:h})
-    ]);
-    if(fbRes.status===403||fbRes.status===429){
-      showError('GitHub API rate limit — try again in a few minutes.');
-      return;
-    }
-    const fbIssues = fbRes.ok ? await fbRes.json() : [];
-    const thIssues = thRes.ok ? await thRes.json() : [];
-    renderAll(fbIssues, thIssues);
-  }catch(e){ renderEmpty(); }
+    const ratings  = JSON.parse(localStorage.getItem(LS_RATINGS)||'[]');
+    const thumbs   = JSON.parse(localStorage.getItem(LS_THUMBS)||'[]');
+    const questions= JSON.parse(localStorage.getItem(LS_QUESTIONS)||'[]');
+    render(ratings, thumbs, questions);
+  }catch(e){
+    render([], [], []);
+  }
 }
 
-function showError(msg){
-  document.getElementById('ratingBars').innerHTML=`<div class="empty">⚠️ ${msg}</div>`;
-  document.getElementById('catChart').innerHTML='';
-  document.getElementById('feedbackList').innerHTML='';
-}
+function render(ratings, thumbs, questions){
+  // Stats
+  const ratingVals = ratings.map(r=>r.rating).filter(r=>r>0&&r<=5);
+  const helpful    = thumbs.filter(t=>t.val==='up').length;
+  const total      = thumbs.length;
 
-function parseRating(issue){
-  const m=issue.title.match(/(\d+)\/5/);
-  return m?parseInt(m[1]):0;
-}
-function parseWords(issue){
-  const m=issue.body?.match(/\*\*Words:\*\*\s*(.+)/);
-  return m&&m[1]!=='(none)'?m[1].trim():'';
-}
-function parseLang(issue){
-  const m=issue.body?.match(/\*\*Language:\*\*\s*(\w+)/);
-  return m?m[1].toUpperCase():'EN';
-}
-function parseHelpful(issue){
-  return issue.title.includes('👍')?'helpful':'not';
-}
+  document.getElementById('statRatings').textContent = ratingVals.length||'0';
+  document.getElementById('statHelpful').textContent = total>0 ? Math.round(helpful/total*100)+'%' : '—';
 
-function renderAll(fbIssues, thIssues){
-  const ratings=fbIssues.map(parseRating).filter(r=>r>0);
-  const helpful=thIssues.filter(i=>parseHelpful(i)==='helpful').length;
-  const total=thIssues.length;
+  if(ratingVals.length){
+    const avg = (ratingVals.reduce((a,b)=>a+b,0)/ratingVals.length).toFixed(1);
+    document.getElementById('statAvg').textContent = avg;
+    document.getElementById('bigRating').textContent = avg;
+    const filled = Math.round(parseFloat(avg));
+    document.getElementById('starsRow').textContent = '⭐'.repeat(filled)+'☆'.repeat(5-filled);
+    document.getElementById('ratingsSub').textContent = `Based on ${ratingVals.length} rating${ratingVals.length!==1?'s':''}`;
 
-  document.getElementById('statRatings').textContent=ratings.length||'0';
-  document.getElementById('statHelpful').textContent=total>0?Math.round(helpful/total*100)+'%':'—';
-
-  if(ratings.length){
-    const avg=(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1);
-    document.getElementById('statAvg').textContent=avg;
-    document.getElementById('bigRating').textContent=avg;
-    const filled=Math.round(parseFloat(avg));
-    document.getElementById('starsRow').textContent='⭐'.repeat(filled)+'☆'.repeat(5-filled);
-    document.getElementById('ratingsSub').textContent=`Based on ${ratings.length} rating${ratings.length!==1?'s':''}`;
-    renderBars(ratings);
+    // Bars
+    const counts=[5,4,3,2,1].map(n=>ratingVals.filter(r=>r===n).length);
+    const max=Math.max(...counts,1);
+    document.getElementById('ratingBars').innerHTML=counts.map((c,i)=>{
+      const star=5-i;
+      const color=star>=4?'var(--jade)':star===3?'var(--gold)':'var(--muted)';
+      return `<div class="bar-row"><span class="bar-label">${star}⭐</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%;background:${color}"></div></div><span class="bar-count">${c}</span></div>`;
+    }).join('');
   } else {
     document.getElementById('statAvg').textContent='—';
-    document.getElementById('bigRating').textContent='—';
-    document.getElementById('ratingsSub').textContent='No ratings yet — be the first!';
-    document.getElementById('ratingBars').innerHTML='<div class="empty">Rate your experience after asking a question ⭐<br><br><a href="https://lawsticker-ai.com/ask.html" style="color:var(--gold);font-weight:700">Ask a question now →</a></div>';
+    document.getElementById('ratingBars').innerHTML=`<div class="empty">No ratings yet.<br><a href="https://lawsticker-ai.com/ask.html" style="color:var(--gold);font-weight:700">Rate your experience →</a></div>`;
   }
 
-  // Topics from questions field
-  const allQ=fbIssues.map(i=>i.body||'').join(' ').toLowerCase();
+  // Topics from thumbs questions
+  const allQ = [...thumbs.map(t=>t.question||''), ...questions.map(q=>q.query||'')].join(' ').toLowerCase();
   const topicMap={
     'Consumer Rights':['service charge','refund','consumer','product','restaurant','hospital'],
     'Criminal Rights':['fir','arrest','police','bail','custody','cheque'],
-    'Labour Rights':['salary','pf','epf','gratuity','fired','termination','bond'],
+    'Labour Rights':['salary','pf','epf','gratuity','fired','termination'],
     "Women's Rights":['domestic violence','dowry','harassment','498a','posh'],
-    'Finance / Banking':['loan','emi','gold loan','insurance','chit','credit card'],
-    'Family Law':['maintenance','custody','divorce','inheritance','senior citizen','will'],
-    'Property / Civil':['tenant','landlord','builder','encroachment','land','rera'],
+    'Finance / Banking':['loan','emi','gold','insurance','chit','credit card'],
+    'Family Law':['maintenance','custody','divorce','inheritance','senior','will'],
+    'Property / Civil':['tenant','landlord','builder','encroachment','land'],
     'Career Guidance':['judiciary','app','psu','lawcet','civil judge'],
-    'Cyber Crime':['online fraud','cyber','otp','scam'],
+    'Cyber Crime':['fraud','cyber','otp','scam','1930'],
     'Government Services':['rti','passport','ration','electricity'],
   };
   const counts={};
@@ -221,60 +203,33 @@ function renderAll(fbIssues, thIssues){
     const c=kws.filter(k=>allQ.includes(k)).length;
     if(c>0) counts[cat]=c;
   });
-  renderCats(Object.keys(counts).length>0?counts:{
-    'Consumer Rights':8,'Criminal Rights':6,'Labour Rights':5,
-    "Women's Rights":5,'Family Law':4,'Finance / Banking':4
-  });
 
-  // Recent feedback with words
-  const withWords=fbIssues.filter(i=>parseWords(i).length>3).slice(0,5);
-  renderFeedback(withWords);
-}
-
-function renderEmpty(){
-  document.getElementById('statRatings').textContent='0';
-  document.getElementById('statAvg').textContent='—';
-  document.getElementById('statHelpful').textContent='—';
-  document.getElementById('bigRating').textContent='—';
-  document.getElementById('ratingsSub').textContent='No ratings yet';
-  document.getElementById('ratingBars').innerHTML='<div class="empty">Ratings will appear here once users start reviewing.<br><br><a href="https://lawsticker-ai.com/ask.html" style="color:var(--gold);font-weight:700">Ask a question & rate it →</a></div>';
-  renderCats({'Consumer Rights':8,'Criminal Rights':6,'Labour Rights':5,"Women's Rights":5,'Family Law':4,'Finance / Banking':4});
-  document.getElementById('feedbackList').innerHTML='<div class="empty">No written feedback yet.<br><br><a href="https://lawsticker-ai.com/ask.html" style="color:var(--gold);font-weight:700">Be the first to rate →</a></div>';
-}
-
-function renderBars(ratings){
-  const counts=[5,4,3,2,1].map(n=>ratings.filter(r=>r===n).length);
-  const max=Math.max(...counts,1);
-  document.getElementById('ratingBars').innerHTML=counts.map((c,i)=>{
-    const star=5-i;
-    const color=star>=4?'var(--jade)':star===3?'var(--gold)':'var(--muted)';
-    return `<div class="bar-row"><span class="bar-label">${star}⭐</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%;background:${color}"></div></div><span class="bar-count">${c}</span></div>`;
-  }).join('');
-}
-
-function renderCats(counts){
-  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const max=sorted[0]?.[1]||1;
-  document.getElementById('catChart').innerHTML=sorted.map(([cat,n])=>`
-    <div class="cat-row">
-      <div class="cat-name">${cat}</div>
-      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round(n/max*100)}%;background:${(catColors[cat]||'#8B95A8')}99"></div></div>
-      <div class="cat-count">${n}</div>
-    </div>`).join('');
-}
-
-function renderFeedback(issues){
-  if(!issues.length){
-    document.getElementById('feedbackList').innerHTML='<div class="empty">No written feedback yet. After asking a question, tap ⭐ to share your experience.</div>';
-    return;
+  if(Object.keys(counts).length>0){
+    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    const max=sorted[0][1];
+    document.getElementById('catChart').innerHTML=sorted.map(([cat,n])=>`
+      <div class="cat-row">
+        <div class="cat-name">${cat}</div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round(n/max*100)}%;background:${(catColors[cat]||'#8B95A8')}99"></div></div>
+        <div class="cat-count">${n}</div>
+      </div>`).join('');
   }
-  document.getElementById('feedbackList').innerHTML=issues.map(issue=>{
-    const rating=parseRating(issue);
-    const words=parseWords(issue);
-    const lang=parseLang(issue);
-    const time=new Date(issue.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-    return `<div class="fb-item"><div class="fb-head"><span class="fb-stars">${'⭐'.repeat(rating)}</span><span class="fb-lang">${lang}</span><span class="fb-time">${time}</span></div><div class="fb-words">"${words}"</div></div>`;
-  }).join('');
+
+  // Recent ratings with words
+  const withWords=ratings.filter(r=>r.words&&r.words.length>3).slice(-5).reverse();
+  if(withWords.length){
+    document.getElementById('feedbackList').innerHTML=withWords.map(r=>{
+      const time=new Date(r.time).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+      return `<div class="fb-item">
+        <div class="fb-head">
+          <span class="fb-stars">${'⭐'.repeat(r.rating)}</span>
+          <span class="fb-lang">${(r.lang||'en').toUpperCase()}</span>
+          <span class="fb-time">${time}</span>
+        </div>
+        <div class="fb-words">"${r.words}"</div>
+      </div>`;
+    }).join('');
+  }
 }
 
 loadAll();

@@ -121,7 +121,7 @@ nav{
 /* INPUT AREA */
 .input-area{
   flex-shrink:0;background:rgba(13,17,23,.97);
-  border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;
+  border-top:1px solid rgba(255,255,255,.06);padding:10px 14px;
 }
 .input-row{
   display:flex;gap:8px;align-items:flex-end;max-width:640px;margin:0 auto;
@@ -239,13 +239,14 @@ nav{
 // ══════════════════════════════════════════
 const KB_CDN = 'https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/kb.json';
 const KB_RAW = 'https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/kb.json';
-const GH_TOKEN = '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'; // replace with fine-grained PAT (issues:write only)
+// Feedback stored in localStorage — no backend needed
 const GH_REPO = 'legaleagles/LabourLaw2';
+const CONTACT_EMAIL = ['legal.eagles','with44','gmail.com']; // split to avoid scraping // update to your email
 const MATCH_THRESHOLD = 2;
 
-// GitHub Issues for feedback — same repo, same token
-const GH_FEEDBACK_LABEL = 'user-feedback';
-const GH_THUMBS_LABEL   = 'thumbs-feedback';
+// Feedback keys for localStorage
+const LS_RATINGS = 'ls_ratings';
+const LS_THUMBS  = 'ls_thumbs';
 
 let lang = 'en';
 let kb = [];
@@ -592,23 +593,13 @@ function giveFeedback(fbId, val, question, matchId){
 }
 
 function submitThumbsToForm(val, question, matchId){
-  if(GH_TOKEN==='github_pat_placeholder') return;
-  const body={
-    title:`[Thumbs] ${val==='up'?'👍 Helpful':'👎 Not Helpful'} — ${question.substring(0,60)}`,
-    body:`**Thumbs feedback from lawsticker-ai.com/ask.html**
-
-**Helpful:** ${val==='up'?'Yes':'No'}
-**Question:** ${question}
-**KB Entry ID:** ${matchId}
-**Language:** ${lang}
-**Time:** ${new Date().toISOString()}`,
-    labels:[GH_THUMBS_LABEL]
-  };
-  fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
-    body:JSON.stringify(body)
-  }).catch(()=>{});
+  try{
+    const data = JSON.parse(localStorage.getItem(LS_THUMBS)||'[]');
+    data.push({val, question:question.substring(0,100), matchId, lang, time:Date.now()});
+    // keep last 200 entries
+    if(data.length>200) data.splice(0, data.length-200);
+    localStorage.setItem(LS_THUMBS, JSON.stringify(data));
+  }catch(e){}
 }
 
 // ── STAR RATING ──
@@ -647,25 +638,19 @@ async function submitRating(){
   if(!starRating){ btn.style.animation='shake .3s'; setTimeout(()=>btn.style.animation='',400); return; }
   btn.disabled=true; btn.textContent='...';
 
-  if(GH_TOKEN!=='github_pat_placeholder'){
-    const stars='⭐'.repeat(starRating);
-    const body={
-      title:`[Feedback] ${stars} — ${starRating}/5 stars`,
-      body:`**User rating from lawsticker-ai.com/ask.html**
-
-**Rating:** ${starRating}/5 ${stars}
-**Language:** ${lang}
-**Words:** ${words||'(none)'}
-**Questions asked:** ${sessionQuestions.slice(-5).join(' | ').substring(0,400)}
-**Time:** ${new Date().toISOString()}`,
-      labels:[GH_FEEDBACK_LABEL]
-    };
-    await fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
-      body:JSON.stringify(body)
-    }).catch(()=>{});
-  }
+  // Store in localStorage
+  try{
+    const data = JSON.parse(localStorage.getItem(LS_RATINGS)||'[]');
+    data.push({
+      rating:starRating,
+      words:words.substring(0,300),
+      lang,
+      questions:sessionQuestions.slice(-3).join(' | ').substring(0,200),
+      time:Date.now()
+    });
+    if(data.length>500) data.splice(0, data.length-500);
+    localStorage.setItem(LS_RATINGS, JSON.stringify(data));
+  }catch(e){}
 
   // Replace card with thanks
   const card=btn.closest('.star-card');
@@ -766,33 +751,32 @@ async function submitUnknown(query){
     ? `**Contact (optional, user-provided):** ${contact}\n`
     : `**Contact:** Anonymous — no contact provided\n`;
 
-  const body = {
-    title:`[LawSticker Question] ${query.substring(0,80)}`,
-    body:`**Question submitted via lawsticker-ai.com/ask.html**\n\n**Question:** ${query}\n\n${contactLine}**Language:** ${lang}\n**Time:** ${new Date().toISOString()}\n\n---\n*Add answer to kb.json and notify user if contact provided.*`,
-    labels:['user-question','kb-gap']
-  };
-
+  // Save to localStorage
   try{
-    const r=await fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GH_TOKEN}`},
-      body:JSON.stringify(body)
-    });
-    if(r.ok){
-      btn.textContent=t.submitted;
-      btn.style.color='var(--jade)';
-      btn.style.borderColor='var(--jade)';
-      btn.disabled=true;
-      // Show follow-up message
-      setTimeout(async()=>{
-        await botMsg(t.submittedFollowup.replace(/\n/g,'<br>'),700);
-        renderPostChips();
-      },600);
-    } else throw new Error();
-  }catch(e){
-    btn.textContent=t.submitError;
-    btn.disabled=false;
-  }
+    const qs = JSON.parse(localStorage.getItem('ls_questions')||'[]');
+    qs.push({query, contact, lang, time:Date.now()});
+    localStorage.setItem('ls_questions', JSON.stringify(qs));
+  }catch(e){}
+
+  // Send via mailto — opens email app with question pre-filled
+  const subject = encodeURIComponent('[LawSticker Question] ' + query.substring(0,60));
+  const bodyText = encodeURIComponent(
+    'Question: ' + query + '\n\n' +
+    (contact ? 'Contact: ' + contact + '\n\n' : '') +
+    'Language: ' + lang + '\n' +
+    'Time: ' + new Date().toLocaleString('en-IN')
+  );
+  const email = CONTACT_EMAIL[0]+'.'+CONTACT_EMAIL[1]+'@'+CONTACT_EMAIL[2];
+  window.open('mailto:' + email + '?subject=' + subject + '&body=' + bodyText, '_blank');
+
+  btn.textContent=t.submitted;
+  btn.style.color='var(--jade)';
+  btn.style.borderColor='var(--jade)';
+  btn.disabled=true;
+  setTimeout(async()=>{
+    await botMsg(t.submittedFollowup.replace(/\n/g,'<br>'),700);
+    renderPostChips();
+  },600);
 }
 
 // ══════════════════════════════════════════
@@ -829,5 +813,50 @@ function autoResize(el){ el.style.height='46px'; el.style.height=Math.min(el.scr
   renderChips();
 })();
 </script>
+
+<div style="
+  background:rgba(10,17,30,0.98);
+  border-top:1px solid rgba(201,162,39,0.15);
+  padding:12px 16px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;flex-shrink:0;
+">
+  <a href="https://lawsticker-ai.com" style="
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    text-decoration:none;padding:6px 4px;border-radius:10px;
+    transition:background .2s;
+  ">
+    <span style="font-size:18px">🏠</span>
+    <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.5px;text-transform:uppercase">Home</span>
+  </a>
+  <a href="https://lawsticker-ai.com/calculators.html" style="
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    text-decoration:none;padding:6px 4px;border-radius:10px;
+  ">
+    <span style="font-size:18px">🧮</span>
+    <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.5px;text-transform:uppercase">Calc</span>
+  </a>
+  <a href="https://lawsticker-ai.com/daily-fact.html" style="
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    text-decoration:none;padding:6px 4px;border-radius:10px;
+  ">
+    <span style="font-size:18px">⚖️</span>
+    <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.5px;text-transform:uppercase">Facts</span>
+  </a>
+  <a href="https://lawsticker-ai.com/bare-acts.html" style="
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    text-decoration:none;padding:6px 4px;border-radius:10px;
+  ">
+    <span style="font-size:18px">📖</span>
+    <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.5px;text-transform:uppercase">Acts</span>
+  </a>
+  <a href="https://lawsticker-ai.com/impact.html" style="
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    text-decoration:none;padding:6px 4px;border-radius:10px;
+  ">
+    <span style="font-size:18px">📊</span>
+    <span style="font-size:9px;font-weight:700;color:rgba(201,162,39,.7);letter-spacing:.5px;text-transform:uppercase">Impact</span>
+  </a>
+</div>
 </body>
 </html>
