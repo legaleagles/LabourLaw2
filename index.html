@@ -77,23 +77,38 @@ nav{
 
 /* MARQUEE TICKER */
 .ticker-wrap{
-  background:linear-gradient(90deg,#0a1a0a,#0d1f0d,#0a1a0a);
-  border-bottom:1px solid rgba(34,197,94,0.2);
-  overflow:hidden;padding:7px 0;position:relative;z-index:199;
-  margin-top:44px;
+  background:linear-gradient(90deg,#060A12,#0D1117,#060A12);
+  border-bottom:1px solid rgba(201,162,39,0.25);
+  border-top:1px solid rgba(201,162,39,0.1);
+  overflow:hidden;padding:0;position:relative;z-index:199;
+  margin-top:72px;
 }
+@media(min-width:600px){.ticker-wrap{margin-top:44px;}}
 .ticker-wrap::before,.ticker-wrap::after{
-  content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;
+  content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;
 }
-.ticker-wrap::before{left:0;background:linear-gradient(90deg,#0a1a0a,transparent);}
-.ticker-wrap::after{right:0;background:linear-gradient(-90deg,#0a1a0a,transparent);}
-.ticker-inner{display:flex;gap:0;animation:ticker 40s linear infinite;width:max-content;}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,#060A12,transparent);}
+.ticker-wrap::after{right:0;background:linear-gradient(-90deg,#060A12,transparent);}
+.ticker-inner{display:flex;animation:tickerScroll 50s linear infinite;width:max-content;}
 .ticker-inner:hover{animation-play-state:paused;}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ticker-item{display:flex;align-items:center;gap:8px;padding:0 28px;white-space:nowrap;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.6);}
-.ticker-item a{color:rgba(34,197,94,0.9);text-decoration:none;font-weight:700;}
-.ticker-item a:hover{color:rgba(34,197,94,1);}
-.ticker-dot{width:4px;height:4px;border-radius:50%;background:rgba(201,162,39,0.5);flex-shrink:0;}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{
+  display:flex;align-items:center;gap:10px;padding:9px 20px;
+  white-space:nowrap;font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.5);
+  border-right:1px solid rgba(201,162,39,0.08);
+}
+.ticker-item a{color:rgba(245,215,110,0.9);text-decoration:none;font-weight:700;}
+.ticker-item a:hover{color:#fff;}
+.ticker-tag{
+  background:rgba(201,162,39,0.12);border:1px solid rgba(201,162,39,0.25);
+  border-radius:3px;padding:1px 6px;font-size:9px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;color:rgba(201,162,39,0.8);flex-shrink:0;
+}
+.ticker-dot{
+  width:5px;height:5px;border-radius:50%;flex-shrink:0;
+  background:rgba(201,162,39,0.45);
+}
 
 /* DAILY FACT STRIP */
 .fact-strip{
@@ -514,28 +529,31 @@ footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,0.06);paddi
 <!-- MARQUEE TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-inner" id="tickerInner">
-    <!-- duplicated for seamless loop -->
-    <div class="ticker-item"><span class="ticker-dot"></span>💬 <a href="https://lawsticker-ai.com/ask.html">Ask Legal Questions Free →</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? Know your rights under Sec 154 CrPC</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Free Calculators — Gold · EMI · Gratuity · Stamp Duty</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA 2022</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms</a></div>
+    <div class="ticker-item"><span class="ticker-tag">NEW</span> 💬 <a href="https://lawsticker-ai.com/ask.html">Ask any legal question free — Telugu · English · Hindi →</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? It is illegal — Sec 154 CrPC makes it mandatory</div>
+    <div class="ticker-item"><span class="ticker-tag">FREE</span> 🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Calculators — Gold · EMI · Gratuity · Stamp Duty · Court Fees</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA July 2022</div>
+    <div class="ticker-item"><span class="ticker-tag">TS/AP</span> 🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms · Corporate</a></div>
     <div class="ticker-item"><span class="ticker-dot"></span>📋 Cheque bounce? Send legal notice within 30 days — Sec 138 NI Act</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>📅 <a href="https://lawsticker-ai.com/daily-fact.html">Daily Legal Fact — One new fact every day, shareable on WhatsApp</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord cannot evict you without a court order — ever</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Free legal aid: Visit your District Legal Services Authority (DLSA)</div>
+    <div class="ticker-item"><span class="ticker-tag">DAILY</span> 📅 <a href="https://lawsticker-ai.com/daily-fact.html">One new legal fact every day — shareable on WhatsApp</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord CANNOT evict you without a court order — ever</div>
+    <div class="ticker-item"><span class="ticker-tag">50+</span> 📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Gratuity is your right after 5 years — formula: Basic × 15/26 × Years</div>
+    <div class="ticker-item"><span class="ticker-tag">FREE</span> ⚖️ Free legal aid available at your District Court — NALSA helpline 15100</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>💻 Online fraud? Call 1930 immediately — National Cyber Crime Helpline</div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item"><span class="ticker-dot"></span>💬 <a href="https://lawsticker-ai.com/ask.html">Ask Legal Questions Free →</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? Know your rights under Sec 154 CrPC</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Free Calculators — Gold · EMI · Gratuity · Stamp Duty</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA 2022</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms</a></div>
+    <div class="ticker-item"><span class="ticker-tag">NEW</span> 💬 <a href="https://lawsticker-ai.com/ask.html">Ask any legal question free — Telugu · English · Hindi →</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🚨 Police refusing FIR? It is illegal — Sec 154 CrPC makes it mandatory</div>
+    <div class="ticker-item"><span class="ticker-tag">FREE</span> 🧮 <a href="https://lawsticker-ai.com/calculators.html">25 Calculators — Gold · EMI · Gratuity · Stamp Duty · Court Fees</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>⚖️ Service charge at restaurants is NOT mandatory — CCPA July 2022</div>
+    <div class="ticker-item"><span class="ticker-tag">TS/AP</span> 🎓 <a href="https://lawsticker-ai.com/career.html">Career Navigator — Judiciary · APP · PSU · Law Firms · Corporate</a></div>
     <div class="ticker-item"><span class="ticker-dot"></span>📋 Cheque bounce? Send legal notice within 30 days — Sec 138 NI Act</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>📅 <a href="https://lawsticker-ai.com/daily-fact.html">Daily Legal Fact — One new fact every day, shareable on WhatsApp</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord cannot evict you without a court order — ever</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
-    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Free legal aid: Visit your District Legal Services Authority (DLSA)</div>
+    <div class="ticker-item"><span class="ticker-tag">DAILY</span> 📅 <a href="https://lawsticker-ai.com/daily-fact.html">One new legal fact every day — shareable on WhatsApp</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🏠 Landlord CANNOT evict you without a court order — ever</div>
+    <div class="ticker-item"><span class="ticker-tag">50+</span> 📖 <a href="https://lawsticker-ai.com/bare-acts.html">Bare Act Reference — IPC · CrPC · Evidence · Constitution · Contract</a></div>
+    <div class="ticker-item"><span class="ticker-dot"></span>🔥 Gratuity is your right after 5 years — formula: Basic × 15/26 × Years</div>
+    <div class="ticker-item"><span class="ticker-tag">FREE</span> ⚖️ Free legal aid available at your District Court — NALSA helpline 15100</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>💻 Online fraud? Call 1930 immediately — National Cyber Crime Helpline</div>
   </div>
 </div>
 
