@@ -112,6 +112,12 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="disclaimer">
     <strong>⚠️ Important:</strong> LawSticker AI provides general legal information only — not professional legal advice. Always consult a qualified lawyer for your specific situation. For free legal aid call NALSA at <strong>15100</strong>.
   </div>
+
+  <div style="margin-top:14px;background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.15);border-radius:14px;padding:14px;font-size:11px;color:var(--ink-soft);line-height:1.7">
+    <strong>🔧 For site admin:</strong> Ratings appear here once the GitHub PAT is set in ask.html. 
+    <a href="https://github.com/legaleagles/LabourLaw2/issues?q=label%3Auser-feedback" target="_blank" style="color:var(--gold);font-weight:700">View feedback issues on GitHub →</a>
+    · <a href="https://github.com/legaleagles/LabourLaw2/issues?q=label%3Athumb-feedback" target="_blank" style="color:var(--gold);font-weight:700">View thumbs issues →</a>
+  </div>
 </div>
 
 <footer>
@@ -131,15 +137,30 @@ const catColors = {
 
 async function loadAll(){
   try{
-    // Fetch feedback issues (star ratings)
+    const headers = {'Accept':'application/vnd.github+json'};
     const [fbRes, thumbsRes] = await Promise.all([
-      fetch(`${API}?labels=user-feedback&state=all&per_page=100`),
-      fetch(`${API}?labels=thumbs-feedback&state=all&per_page=100`)
+      fetch(`${API}?labels=user-feedback&state=all&per_page=100`, {headers}),
+      fetch(`${API}?labels=thumbs-feedback&state=all&per_page=100`, {headers})
     ]);
+
+    // Show rate limit info in console
+    console.log('Rate limit remaining:', fbRes.headers.get('x-ratelimit-remaining'));
+
+    if(fbRes.status === 403){
+      document.getElementById('ratingBars').innerHTML='<div class="empty">⏳ GitHub API rate limit reached — please try again in a few minutes.</div>';
+      renderEmpty();
+      return;
+    }
+
     const feedbackIssues = fbRes.ok ? await fbRes.json() : [];
     const thumbsIssues   = thumbsRes.ok ? await thumbsRes.json() : [];
+
+    console.log('Feedback issues found:', feedbackIssues.length);
+    console.log('Thumbs issues found:', thumbsIssues.length);
+
     renderAll(feedbackIssues, thumbsIssues);
   }catch(e){
+    console.error('Impact load error:', e);
     renderEmpty();
   }
 }
