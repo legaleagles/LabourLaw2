@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section Number Memory System — LawSticker AI</title>
+<meta name="description" content="Remember law section numbers using stories, patterns and visual anchors. CrPC/BNSS, CPC, NI Act, Advocates Act and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
+  --muted:#6B7280;--light:#E5E7EB;--border:#D1D5DB;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:flex;flex-direction:column;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-back:hover{color:var(--gold-l);}
+.nav-brand{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);}
+.nav-r2{display:flex;gap:5px;padding:0 12px 8px;overflow-x:auto;scrollbar-width:none;}
+.nav-r2::-webkit-scrollbar{display:none;}
+.sub-pill{padding:5px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.45);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;text-decoration:none;}
+.sub-pill.active{background:var(--gold);color:var(--navy);border-color:transparent;}
+.sub-pill:hover:not(.active){border-color:rgba(201,162,39,.4);color:rgba(245,215,110,.8);}
+
+.hero{background:linear-gradient(145deg,#050d1a,#0a1628,#0f2044);padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'§';position:absolute;right:-10px;top:-10px;font-size:180px;color:rgba(201,162,39,.05);font-family:'Playfair Display',serif;font-weight:900;pointer-events:none;}
+.hero-eye{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(201,162,39,.65);margin-bottom:8px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:6px;line-height:1.2;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;max-width:440px;margin:0 auto 16px;}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.hp{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.25);color:var(--gold-l);}
+
+.page{max-width:680px;margin:0 auto;padding:16px 14px 80px;}
+.section-hd{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:18px 4px 10px;display:flex;align-items:center;gap:10px;}
+.section-hd::after{content:'';flex:1;height:1px;background:var(--light);}
+
+/* INTRO CARD */
+.intro-card{background:linear-gradient(135deg,var(--gold-pale),#FFFBF0);border:1.5px solid rgba(201,162,39,.3);border-radius:16px;padding:16px;margin-bottom:16px;}
+.intro-title{font-size:14px;font-weight:800;color:var(--gold-d);margin-bottom:8px;}
+.intro-text{font-size:13px;color:#5C4A0D;line-height:1.75;}
+.methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.method-card{background:rgba(255,255,255,.7);border-radius:10px;padding:10px 12px;border:1px solid rgba(201,162,39,.2);}
+.method-icon{font-size:18px;margin-bottom:4px;}
+.method-name{font-size:11px;font-weight:800;color:var(--gold-d);margin-bottom:2px;}
+.method-desc{font-size:11px;color:#6B5A1A;line-height:1.5;}
+
+/* MEMORY CARD */
+.mem-card{background:#fff;border-radius:16px;border:1px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.mem-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background .2s;}
+.mem-header:hover{background:rgba(201,162,39,.04);}
+.mem-sec{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;min-width:70px;flex-shrink:0;}
+.mem-title{font-size:14px;font-weight:700;color:var(--ink);flex:1;}
+.mem-stars{font-size:11px;flex-shrink:0;}
+.mem-body{display:none;border-top:1px solid var(--light);padding:14px 16px;}
+.mem-body.open{display:block;}
+
+/* TECHNIQUE BLOCKS */
+.technique{margin-bottom:10px;}
+.technique-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;padding:3px 8px;border-radius:6px;display:inline-block;}
+.t-story{background:#EDE9FE;color:#5B21B6;}
+.t-pattern{background:#DBEAFE;color:#1E40AF;}
+.t-visual{background:#D1FAE5;color:#065F46;}
+.t-word{background:#FEF3C7;color:#92400E;}
+.t-number{background:#FCE7F3;color:#9D174D;}
+
+.technique-content{font-size:13px;color:var(--ink2);line-height:1.75;background:rgba(0,0,0,.02);border-radius:8px;padding:10px 12px;}
+.highlight{font-weight:800;color:var(--ink);}
+.sec-box{display:inline-block;background:var(--navy);color:var(--gold-l);font-family:'Playfair Display',serif;font-weight:900;font-size:16px;padding:4px 12px;border-radius:8px;margin:2px 4px;}
+
+/* SUBJECT SECTION */
+.subject-block{display:none;}
+.subject-block.active{display:block;}
+
+/* BNSS COMPARISON */
+.bnss-row{display:grid;grid-template-columns:1fr 110px 110px;gap:8px;padding:9px 12px;border-bottom:1px solid var(--light);font-size:12px;align-items:center;}
+.bnss-row:last-child{border-bottom:none;}
+.bnss-row:nth-child(even){background:#FAFAFA;}
+.bnss-crpc{color:#DC2626;font-weight:800;font-family:'Playfair Display',serif;font-size:13px;}
+.bnss-new{color:#059669;font-weight:800;font-family:'Playfair Display',serif;font-size:13px;}
+
+/* QUIZ */
+.flash-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;cursor:pointer;transition:all .25s;}
+.flash-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.flash-q{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.flash-hint{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.flash-a{display:none;font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold-d);margin-top:10px;padding-top:10px;border-top:1px solid var(--light);}
+.flash-a.show{display:block;}
+.flash-tip{font-size:12px;color:var(--ink2);margin-top:6px;font-style:italic;line-height:1.6;}
+.tap-hint{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(201,162,39,.15);padding:10px 14px 14px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 8px;}
+.bn-icon{font-size:18px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.8);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
+    <div class="nav-brand">§ Section Memory</div>
+    <a class="nav-back" href="https://lawsticker-ai.com/ask.html">💬 Ask</a>
+  </div>
+  <div class="nav-r2">
+    <a class="sub-pill active" href="#" onclick="showSubject('crpc',this)">CrPC/BNSS</a>
+    <a class="sub-pill" href="#" onclick="showSubject('cpc',this)">CPC</a>
+    <a class="sub-pill" href="#" onclick="showSubject('ni',this)">NI Act</a>
+    <a class="sub-pill" href="#" onclick="showSubject('advocates',this)">Advocates Act</a>
+    <a class="sub-pill" href="#" onclick="showSubject('contempt',this)">Contempt</a>
+    <a class="sub-pill" href="#" onclick="showSubject('flash',this)">🎯 Flash Cards</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eye">Memory System · All 5th Semester Subjects</div>
+  <div class="hero-title">Remember Section Numbers<br>Without Rote Learning</div>
+  <div class="hero-sub">Stories, patterns, word anchors and visual hooks — so section numbers stick in your memory naturally and permanently.</div>
+  <div class="hero-pills">
+    <span class="hp">📖 CrPC / BNSS</span>
+    <span class="hp">⚖️ CPC</span>
+    <span class="hp">💳 NI Act</span>
+    <span class="hp">👨‍⚖️ Advocates Act</span>
+    <span class="hp">🎯 Flash Cards</span>
+  </div>
+</div>
+
+<div class="page">
+
+<div class="intro-card">
+  <div class="intro-title">🧠 Why Section Numbers Feel Impossible — And How to Fix It</div>
+  <div class="intro-text">Section numbers feel arbitrary because they ARE arbitrary — the legislature chose them randomly. <strong>Rote repetition doesn't work</strong> because there's no logic to latch onto.<br><br>
+  The solution: attach each section number to something that already lives in your memory — a story, a word sound, a pattern, or a visual image. Once attached, it never leaves.</div>
+  <div class="methods-grid">
+    <div class="method-card"><div class="method-icon">📖</div><div class="method-name">Story Method</div><div class="method-desc">Section number embedded in a story. Your brain remembers stories, not numbers.</div></div>
+    <div class="method-card"><div class="method-icon">🔢</div><div class="method-name">Number Patterns</div><div class="method-desc">Find logic in the sequence. 436-437-438-439 = bail progression.</div></div>
+    <div class="method-card"><div class="method-icon">🔤</div><div class="method-name">Word Sounds</div><div class="method-desc">154 = "one-five-four" = "ONE FIR" . The sound triggers the section.</div></div>
+    <div class="method-card"><div class="method-icon">🎨</div><div class="method-name">Visual Anchor</div><div class="method-desc">Picture the number doing something related to the law. Makes it unforgettable.</div></div>
+  </div>
+</div>
+
+<!-- ═══ CrPC / BNSS ═══ -->
+<div class="subject-block active" id="sub-crpc">
+<div class="section-hd">CrPC 1973 / BNSS 2023 — Section Memory</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 154<br><span style="font-size:11px;color:#059669">→ 173</span></div>
+    <div class="mem-title">FIR — First Information Report</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Sound</span>
+      <div class="technique-content"><span class="highlight">154 = "One Five Four" = "ONE FIR"</span>. The word "FIR" is hiding inside "one-five-four" if you say it fast: ONE-FI[R]-four. Whenever anyone says "154" you hear "FIR".</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">Imagine a police station with the address <span class="highlight">House No. 154</span>. That's where you go to file an FIR. "154 = FIR address." BNSS moved the FIR to a new address: <span class="highlight">173</span> — "One-Seven-Three = ONE SEVEN FIR Three." The FIR moved to a bigger building (173 > 154).</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 41<br><span style="font-size:11px;color:#059669">→ 35</span></div>
+    <div class="mem-title">Arrest Without Warrant</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-visual">Visual</span>
+      <div class="technique-content">Police officer has <span class="highlight">41 kilograms</span> of handcuffs — heavy enough to arrest anyone without warrant. 41 = heavy arrest power. BNSS changed it to <span class="highlight">35</span> — police got lighter cuffs (35 kg) because there are now more restrictions on arrest.</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content">Section <span class="highlight">41A</span> = 41 + A = Arrest with a WARNING LETTER first (A = Advance notice). BNSS 35A follows same logic. The "A" always means "give notice first."</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 50<br><span style="font-size:11px;color:#059669">→ 47</span></div>
+    <div class="mem-title">Inform Grounds of Arrest + Family</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">You are arrested. You have <span class="highlight">50 seconds</span> to know why — Sec 50 says police must tell you the grounds immediately. Then you get <span class="highlight">50A</span> = 50 seconds + A (Additional right) to inform your family. "50 = 50 seconds to know why, 50A = also tell your A-dam (family)."</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content">50 → 50A is always a pair. Never forget one without the other. BNSS: 47 (inform grounds) and 48 (inform family). They're still neighbours — 47 and 48, side by side, just like your rights go side by side.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 57<br><span style="font-size:11px;color:#059669">→ 58</span></div>
+    <div class="mem-title">Produce Before Magistrate — 24 Hours</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Sound</span>
+      <div class="technique-content"><span class="highlight">57 = "Five-Seven" = "FIVE-SEVEN hours?"</span> No — 24 hours! The number 57 sounds like it could be a time (5:7 on a clock face). Every time you see 57, think: "That's when the clock runs out for police — produce before Magistrate in 24 hours!"</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">A person is arrested. They sit in jail for exactly <span class="highlight">57 minutes</span> before the panic sets in — "57! 57! Time is running out!" — but they actually have 24 hours (Sec 57). BNSS moved this to <span class="highlight">58</span> — one more minute! Same principle, just renumbered.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 436<br>437 · 438 · 439</div>
+    <div class="mem-title">Bail Sections — The Staircase</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — The Bail Staircase</span>
+      <div class="technique-content">These four sections climb like stairs — each step gives MORE freedom:<br><br>
+      <span class="sec-box">436</span> Bailable = Right to bail. You walk in, you walk out. <span class="highlight">436 = "four-three-six = For Three Steps forward" (easiest)</span><br><br>
+      <span class="sec-box">437</span> Non-bailable = Discretion of Magistrate. One step harder.<br><br>
+      <span class="sec-box">438</span> Anticipatory Bail = Before arrest. One step ahead (anticipate!). <span class="highlight">438 = "ante" (before) = anticipate</span><br><br>
+      <span class="sec-box">439</span> HC/Sessions = Highest court bail. Top of the staircase.<br><br>
+      Memory: <span class="highlight">436-437-438-439 = Easy → Hard → Before → Supreme</span>. The numbers climb like your desperation to get out of jail!</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-word">Word Trick for 438</span>
+      <div class="technique-content"><span class="highlight">438 = "ANTE-cipatory" Bail</span>. "ANTE" in poker means you put money in BEFORE the cards are dealt — similarly, anticipatory bail is applied for BEFORE arrest. "Ante = before = 438."</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#DC2626">Sec 167(2)<br><span style="font-size:11px;color:#059669">→ 187</span></div>
+    <div class="mem-title">Chargesheet Filing — Default Bail</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">Police have <span class="highlight">60 days</span> (most cases) or <span class="highlight">90 days</span> (serious cases) to file chargesheet after arrest. Section <span class="highlight">167</span> = "One-Six-Seven = 1, 6, 7 = One after 6 is 7 = after 60 comes 90 days." The numbers 6 and 7 inside 167 remind you of the 60/90 day rule!<br><br>If police miss the deadline → accused gets <strong>Default Bail</strong> (also called Statutory Bail). This is the most important practical right under Sec 167(2).</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sub-crpc -->
+
+<!-- ═══ CPC ═══ -->
+<div class="subject-block" id="sub-cpc">
+<div class="section-hd">CPC 1908 — Section Memory</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Sec 9</div>
+    <div class="mem-title">Courts to Try All Civil Suits</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Sound</span>
+      <div class="technique-content"><span class="highlight">9 = NAYA (new) in Hindi</span> — every new civil dispute goes to court under Sec 9. "9 = Naya case filed." Also: 9 = a complete circle (look at the digit) = complete jurisdiction of civil courts.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Sec 10</div>
+    <div class="mem-title">Sub Judice — Stay of Suit</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Trick</span>
+      <div class="technique-content"><span class="highlight">10 = TEN = "THEN wait"</span> — when the same matter is already being heard (Sub Judice), the court says "THEN wait — stay the suit." Ten fingers up = STOP = Stay. Sec 10 = STOP the second suit.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Sec 11</div>
+    <div class="mem-title">Res Judicata</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">A thief tries to steal the same house ELEVEN times. The judge says: <span class="highlight">"ELEVEN = ENOUGH! Sec 11 = it is DONE, no more suits!"</span> 11 = eleven = E-LEVEN = "enough, leave it." Res Judicata = matter already judged = leave it at 11.</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content">10 and 11 are consecutive — remember them as a PAIR:<br><span class="highlight">10 = Same matter PENDING (Sub Judice) → STOP the suit</span><br><span class="highlight">11 = Same matter DECIDED (Res Judicata) → BAR the suit</span><br>10 = it's still going on. 11 = it's over.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Sec 80</div>
+    <div class="mem-title">Notice Before Suing Government</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-visual">Visual</span>
+      <div class="technique-content">Picture the number <span class="highlight">80</span> as a traffic speed limit sign on the road to the Government office. You MUST slow down (give 2 months notice) before entering (suing). "80 = speed limit = slow down before suing Government."</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-word">Word Trick</span>
+      <div class="technique-content"><span class="highlight">80 = "EIGHT-OH = WAIT-OH!"</span> — Sec 80 says: "WAIT! Oh! Give notice first before suing Government." 80 days? No — 60 days (2 months). But 8+0 = 8 weeks = 2 months. The math works!</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Sec 96<br>Sec 100</div>
+    <div class="mem-title">First Appeal / Second Appeal</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — Appeal Numbers</span>
+      <div class="technique-content"><span class="sec-box">96</span> First Appeal = 96 = "nine-six" = <span class="highlight">NINESIX = NICE trick (first try again)</span>. You get to re-argue everything — facts AND law.<br><br>
+      <span class="sec-box">100</span> Second Appeal = 100 = <span class="highlight">HUNDRED = ONLY ONE chance — one issue (Substantial Question of Law)</span>. 100% focus on ONE legal question only — no re-arguing facts. "100 = 100% legal, 0% facts."</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">Round 1 of a boxing match (First Appeal, Sec 96): You can use ALL your moves — hooks, jabs, uppercuts (facts and law).<br>Round 100 (Second Appeal, Sec 100): The referee only allows ONE type of punch — the legal question punch. Miss it = you lose. "96 = freestyle, 100 = only one punch."</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#7C3AED">Order VII<br>Rule 11</div>
+    <div class="mem-title">Rejection of Plaint</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word + Number</span>
+      <div class="technique-content"><span class="highlight">Order VII = 7 = SEVEN = SE-VEN = "SIEVE it" (filter it)</span> — Order VII is about the Plaint. Rule 11 is where the court uses a SIEVE to filter out bad plaints. "If it doesn't pass the SEVEN-SIEVE, Rule 11 REJECTS it."<br><br>Rejection grounds memory: <span class="highlight">4 BASES</span> — No cause of Action, Barred by law, Insufficient fee, wrong Valuation = NABIV? Easy: "<span class="highlight">NAB IV</span>" — NAB the bad plaint under rule IV... (No COA, Abridged fee, Barred, Improper Valuation).</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sub-cpc -->
+
+<!-- ═══ NI Act ═══ -->
+<div class="subject-block" id="sub-ni">
+<div class="section-hd">Negotiable Instruments Act 1881 — Section Memory</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#059669">Sec 4 · 5 · 6</div>
+    <div class="mem-title">Promissory Note · Bill · Cheque</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — Perfect Sequence</span>
+      <div class="technique-content">4 → 5 → 6 in ORDER of complexity and parties:<br><br>
+      <span class="sec-box">4</span> Promissory Note = <span class="highlight">2 parties</span> (Maker + Payee). Simplest. 4 = square = 2 sides each with one party.<br><br>
+      <span class="sec-box">5</span> Bill of Exchange = <span class="highlight">3 parties</span> (Drawer + Drawee + Payee). One more. 5 = five fingers = third party added.<br><br>
+      <span class="sec-box">6</span> Cheque = Bill + BANK. Special. 6 = 5+1 = Bill + bank added.<br><br>
+      <span class="highlight">4-5-6 = PN-BoE-Cheque = 2 parties → 3 parties → 3 parties + bank</span>. The numbers grow as the parties grow!</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#059669">Sec 9</div>
+    <div class="mem-title">Holder in Due Course</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Sound</span>
+      <div class="technique-content"><span class="highlight">9 = NINE = "IN TIME" anagram</span>. Holder in Due Course must take the instrument IN TIME (before maturity). "Section NINE = IN TIME = Holder IN Due Course." Also: 9 is the highest single digit = highest protection (HDC gets the best title).</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#059669">Sec 138</div>
+    <div class="mem-title">Cheque Bounce — Criminal Offence</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-story">Story — The 138 Story</span>
+      <div class="technique-content">A man writes a cheque. The cheque <span class="highlight">BOUNCES</span>. Think of a bouncing ball:<br><br>
+      <span class="highlight">1</span> = ONE bounce (dishonour)<br>
+      <span class="highlight">3</span> = THREE: send notice within 30 days (3 tens = 30)<br>
+      <span class="highlight">8</span> = EIGHT: wait 8+7=15 days for payment... actually: 8 = "ate" = the deadline ate up 15 days<br><br>
+      Better: <span class="highlight">138 = "ONE THREE EIGHT = ONE THRICE WAIT"</span> — you wait THREE times: wait for dishonour, wait for notice response, wait before filing. "138 = bounce, notice, wait = criminal if ignored."</div>
+    </div>
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — The 30-15-30 Rhythm</span>
+      <div class="technique-content">The timelines inside Sec 138 have a rhythm:<br>
+      Notice within <span class="highlight">30 days</span> of dishonour<br>
+      Pay within <span class="highlight">15 days</span> of notice<br>
+      File complaint within <span class="highlight">30 days</span> after 15-day period<br><br>
+      <span class="highlight">30 → 15 → 30</span>. The middle (15) is half of 30. "30 down, half in the middle, 30 back up." Once you know this rhythm, you'll never forget Sec 138's requirements.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#059669">Sec 139</div>
+    <div class="mem-title">Presumption of Debt</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content"><span class="highlight">139 = 138 + 1</span>. The offence is 138. The PRESUMPTION supporting it is 139 — one step after. "138 creates the crime, 139 creates the proof." Always cite them together: "Section 138 read with Section 139."</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sub-ni -->
+
+<!-- ═══ Advocates Act ═══ -->
+<div class="subject-block" id="sub-advocates">
+<div class="section-hd">Advocates Act 1961 — Section Memory</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 3 · 4</div>
+    <div class="mem-title">State Bar Councils · Bar Council of India</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — Ground Floor vs Top Floor</span>
+      <div class="technique-content"><span class="sec-box">3</span> State Bar Council = <span class="highlight">3 = STREET level</span>. States are on the ground — foundation of the profession.<br><br>
+      <span class="sec-box">4</span> Bar Council of India = <span class="highlight">4 = FOUR floors up</span>. National body at the top. "3 is state, 4 is nation — like a 4-storey building where floors 1-3 are states and floor 4 is BCI."</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 16</div>
+    <div class="mem-title">Senior Advocate</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Trick</span>
+      <div class="technique-content"><span class="highlight">16 = SIXTEEN = "SEEN-IOR"</span> — close to "SENIOR." Sec 16 = Senior Advocate. "SixTEEN = senIOR." The number 16 sounds like it begins with "Sen" if you squint. Also: you need to be SEEN (visible, known) as a great lawyer to be designated Senior — Sec 16.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 24<br>Sec 24A</div>
+    <div class="mem-title">Enrolment Qualifications · Disqualifications</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-story">Story</span>
+      <div class="technique-content">You want to become an advocate. You go to the enrollment office at <span class="highlight">Door Number 24</span>. The guard checks if you QUALIFY (Sec 24). But there's a sign on the door: "24A = Those who are DISQUALIFIED, enter not." The "A" in 24A = "Avoid" — those who are disqualified must avoid this door. <span class="highlight">24 = Enter (qualify), 24A = Avoid (disqualify).</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 30</div>
+    <div class="mem-title">Right to Practice in All Courts</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-visual">Visual</span>
+      <div class="technique-content"><span class="highlight">30 = THIRTY = THIRTY courts</span>. Sec 30 gives you the right to practice in ALL courts — imagine 30 courts all opening their doors to you. "Sec 30 = 30 courts = ALL courts." Also: 30 = a round number = complete, full, all-encompassing right.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 35</div>
+    <div class="mem-title">Disciplinary Proceedings & Punishment</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word Trick</span>
+      <div class="technique-content"><span class="highlight">35 = "THIR-FIVE = THRIVE... until misconduct!"</span> An advocate THRIVEs in their career until Sec 35 catches them. "35 = the misconduct section that ends the thriving."<br><br>Punishments (3 levels):<br>1️⃣ Reprimand (slap on wrist)<br>2️⃣ Suspension (time out)<br>3️⃣ Removal from roll (permanent exit)<br><br><span class="highlight">3-5 = 3 punishments, in 5 (Sec 35)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#92400E">Sec 37<br>Sec 38</div>
+    <div class="mem-title">Appeal to BCI · Appeal to Supreme Court</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — Climbing Up</span>
+      <div class="technique-content">35 → 37 → 38 = Misconduct → Appeal → Higher Appeal<br><br>
+      <span class="sec-box">35</span> SBC decision (guilty or not)<br>
+      <span class="sec-box">37</span> Appeal to BCI (37 = "THIR-SEVEN = go higher")<br>
+      <span class="sec-box">38</span> Appeal to SC (38 = "THIR-EIGHT = you're LATE if you reach here")<br><br>
+      <span class="highlight">35-37-38 = Crime → BCI → SC</span>. Each number goes up, each forum goes up. Easy!</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sub-advocates -->
+
+<!-- ═══ Contempt ═══ -->
+<div class="subject-block" id="sub-contempt">
+<div class="section-hd">Contempt of Courts Act 1971 — Section Memory</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#0891B2">Sec 2(b)<br>Sec 2(c)</div>
+    <div class="mem-title">Civil Contempt · Criminal Contempt</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern — Alphabet = Type</span>
+      <div class="technique-content"><span class="highlight">2(b) = B = Breaking</span> court ORDER (disobeying decree/order/undertaking) = CIVIL contempt.<br><br>
+      <span class="highlight">2(c) = C = Criticising</span> the court (scandalising, prejudicing, interfering) = CRIMINAL contempt.<br><br>
+      "B = Break an order = Civil. C = Criticise the court = Criminal." The NEXT letter in alphabet = the STRONGER contempt. B comes before C = Civil is milder, Criminal is worse.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#0891B2">Sec 12</div>
+    <div class="mem-title">Punishment for Contempt</div>
+    <div class="mem-stars">⭐⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-word">Word + Number</span>
+      <div class="technique-content"><span class="highlight">12 = TWELVE = "TWELVE months in jail?"</span> No — only 6 months! But 12 ÷ 2 = 6. "Section TWELVE = half a year (6 months) jail OR ₹2000 fine." Also: <span class="highlight">12 = a dozen = a complete punishment package</span> (jail + fine).</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#0891B2">Sec 13</div>
+    <div class="mem-title">Truth as Defence</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content"><span class="highlight">12 = Punishment. 13 = Get out!</span> Section 13 comes RIGHT AFTER 12 — it's the ESCAPE from punishment. "If you can prove TRUTH (Sec 13), you escape the punishment of Sec 12." In Western superstition, 13 is unlucky for the prosecution but lucky for the accused.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mem-card">
+  <div class="mem-header" onclick="toggleMem(this)">
+    <div class="mem-sec" style="color:#0891B2">Art 129<br>Art 215</div>
+    <div class="mem-title">SC Contempt Power · HC Contempt Power</div>
+    <div class="mem-stars">⭐⭐⭐⭐</div>
+  </div>
+  <div class="mem-body">
+    <div class="technique">
+      <span class="technique-label t-pattern">Pattern</span>
+      <div class="technique-content"><span class="sec-box">129</span> Supreme Court contempt power. <span class="highlight">129 = 1 court at top = Supreme Court</span>. Also: 1+2+9 = 12 = contempt punishment (Sec 12). The digits add up to contempt!<br><br>
+      <span class="sec-box">215</span> High Court contempt power. <span class="highlight">215 = 2+1+5 = 8 = eight High Courts originally = HC</span>. "215 = multiple courts (HCs) = HC contempt power."<br><br>
+      Simpler: <span class="highlight">129 = SC (one at top). 215 = HC (many below SC)</span>. 129 < 215 = SC comes first (top) even though number is smaller.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sub-contempt -->
+
+<!-- ═══ FLASH CARDS ═══ -->
+<div class="subject-block" id="sub-flash">
+<div class="section-hd">🎯 Flash Cards — Tap to Reveal Answer</div>
+<div class="tap-hint">Tap any card to see the section number + memory trick</div>
+<div id="flashCards"></div>
+</div>
+
+</div><!-- /page -->
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/ask.html"><span class="bn-icon">💬</span><span class="bn-lbl">Ask AI</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/sections.html"><span class="bn-icon">§</span><span class="bn-lbl active">Sections</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/bare-acts.html"><span class="bn-icon">📖</span><span class="bn-lbl">Acts</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/career.html"><span class="bn-icon">🎓</span><span class="bn-lbl">Career</span></a>
+</div>
+
+<script>
+function showSubject(id, el) {
+  event.preventDefault();
+  document.querySelectorAll('.subject-block').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('sub-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id === 'flash') renderFlash();
+}
+
+function toggleMem(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+const FLASH_DATA = [
+  // [Subject, Question, Answer, Memory Trick]
+  ["CrPC","Which section mandates FIR registration?","Sec 154 CrPC / Sec 173 BNSS","154 = ONE FIR sound. 173 = new address in BNSS."],
+  ["CrPC","Anticipatory Bail = Section?","Sec 438 CrPC / Sec 482 BNSS","438 = ANTE-cipatory (poker ante = before the game)"],
+  ["CrPC","Produce before Magistrate in 24 hours = Section?","Sec 57 CrPC / Sec 58 BNSS","57 = clock running out. 58 = BNSS = one more minute."],
+  ["CrPC","Bail as right in bailable offence = Section?","Sec 436","436-437-438-439 = Easy→Hard→Before→Supreme staircase"],
+  ["CrPC","Notice in lieu of arrest (7-year offences)?","Sec 41A CrPC / Sec 35A BNSS","41A = 41 arrest power + A = Advance notice letter first"],
+  ["CrPC","Which case held FIR registration is mandatory?","Lalita Kumari v. Govt of UP (2013 SC)","LALITA = girl who was refused FIR. SC said MANDATORY."],
+  ["CrPC","DK Basu case gave how many custody guidelines?","11 mandatory guidelines","D-K-B = Dozens of Keys to Bail = 11 specific keys"],
+  ["CPC","Res Judicata = Section?","Section 11 CPC","11 = ELEVEN = ENOUGH! No more suits on decided matter."],
+  ["CPC","Sub Judice = Section?","Section 10 CPC","10 = TEN fingers up = STOP! Same matter pending."],
+  ["CPC","Notice before suing Government = Section?","Section 80 CPC","80 = WAIT-OH! 2 months notice before entering Govt door."],
+  ["CPC","Second Appeal on Substantial Question of Law?","Section 100 CPC","100 = 100% legal, 0% facts. Only ONE legal question."],
+  ["CPC","Rejection of Plaint = Order and Rule?","Order VII Rule 11","Order 7 = SEVEN = SIEVE it. Rule 11 = filter out bad plaints."],
+  ["CPC","Temporary Injunction = Order and Rules?","Order XXXIX Rules 1&2","39 = Three-Nine = Three conditions: PBI"],
+  ["NI Act","Promissory Note definition = Section?","Section 4 NI Act","4-5-6 pattern: PN=4 (2 parties), BoE=5 (3 parties), Cheque=6"],
+  ["NI Act","Cheque Bounce criminal offence = Section?","Section 138 NI Act","138 = bounce-notice-wait. 30→15→30 day rhythm."],
+  ["NI Act","Presumption of debt (cheque bounce support)?","Section 139 NI Act","139 = 138+1. Crime then Presumption. Always cite together."],
+  ["NI Act","Holder in Due Course = Section?","Section 9 NI Act","9 = IN TIME anagram. Must take before maturity. Highest protection."],
+  ["Advocates","Enrolment qualifications = Section?","Section 24 Advocates Act","24 = Door 24 = qualify to ENTER the profession."],
+  ["Advocates","Disqualification for enrolment = Section?","Section 24A Advocates Act","24A = 24 + A = Avoid (those disqualified must avoid Door 24)"],
+  ["Advocates","Right to practice in all courts = Section?","Section 30 Advocates Act","30 = THIRTY courts = ALL courts open to you."],
+  ["Advocates","Disciplinary proceedings & punishment = Section?","Section 35 Advocates Act","35 = Career THRIVES until Sec 35 catches misconduct."],
+  ["Advocates","Appeal against SBC to BCI = Section?","Section 37 Advocates Act","35→37→38 = Crime→BCI→SC. Climb the ladder."],
+  ["Advocates","Senior Advocate designation = Section?","Section 16 Advocates Act","16 = SIXTEEN ≈ SENIOR. Seen-IOR."],
+  ["Contempt","Civil contempt definition = Section?","Section 2(b) Contempt Act","B = Breaking a court order = Civil contempt."],
+  ["Contempt","Criminal contempt definition = Section?","Section 2(c) Contempt Act","C = Criticising the court = Criminal contempt."],
+  ["Contempt","Punishment for contempt = Section?","Section 12 (6 months / ₹2000)","12 ÷ 2 = 6 months. Twelve = complete punishment package."],
+  ["Contempt","Truth as defence in contempt = Section?","Section 13 (2006 Amendment)","13 comes after 12 = escape punishment with truth defence."],
+  ["Contempt","SC inherent contempt power = Article?","Article 129 Constitution","129 = 1 court at top. Digits: 1+2+9=12 = Sec 12 punishment."],
+  ["ADR","Arbitration agreement = Section?","Section 7 A&C Act 1996","7 = SEVEN = WRITTEN agreement (7 letters in 'written')"],
+  ["ADR","Setting aside arbitral award = Section?","Section 34 A&C Act","34 = THIR-FOUR = Challenge is BEFORE you accept."],
+  ["ADR","Anticipatory measures (before arbitration) = Section?","Section 9 A&C Act","9 = court's own section. Before = Section 9."],
+  ["ADR","Lok Adalat governed by?","Legal Services Authorities Act 1987","LSA 1987 = Legal SERVICES = free service for all."],
+  ["ADR","ONGC v Saw Pipes = which section expanded?","Section 34 — patent illegality added","ONGC = Oil = slippery public policy expanded."],
+];
+
+function renderFlash() {
+  const c = document.getElementById('flashCards');
+  if(!c || c.innerHTML) return;
+  c.innerHTML = FLASH_DATA.map((f,i) => `
+    <div class="flash-card" onclick="toggleFlash(${i})">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">${f[0]}</div>
+      <div class="flash-q">${f[1]}</div>
+      <div class="flash-hint">💡 Memory: ${f[3]}</div>
+      <div class="flash-a" id="fa${i}">${f[2]}</div>
+    </div>`).join('');
+}
+
+function toggleFlash(i) {
+  document.getElementById('fa'+i).classList.toggle('show');
+}
+</script>
+</body>
+</html>
