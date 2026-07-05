@@ -1332,23 +1332,91 @@ function toast(msg){
   clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-/* DAILY FACT STRIP LOADER */
+/* DAILY FACT STRIP LOADER — date-stable, CDN-failure-proof */
 (function(){
   const CDN='https://cdn.jsdelivr.net/gh/legaleagles/LabourLaw2@main/downloads/notes/legal-facts.json';
   const RAW='https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/downloads/notes/legal-facts.json';
+  const TODAY=new Date().toISOString().slice(0,10); // "2026-07-05" — stable key
+  const CACHE_KEY='ls_fact_'+TODAY;
+
+  // Expanded inline fallback — 30 facts so rotation works even without network
   const FB=[
     {fact:'Service charge at restaurants is NOT mandatory. You can legally ask them to remove it from your bill — CCPA Guidelines 2022.',section:'CCPA 2022'},
     {fact:'Police MUST register your FIR for cognizable offences under Sec 154 CrPC. Refusal is itself an offence.',section:'Sec 154 CrPC'},
     {fact:'Gratuity is your legal right after 5 years of continuous service. Formula: Basic × 15/26 × Years.',section:'Gratuity Act 1972'},
+    {fact:'A landlord cannot cut electricity or water to force you out — this is criminal intimidation under IPC Section 503.',section:'IPC Sec 503'},
+    {fact:'Anticipatory Bail under Section 438 CrPC can be applied for BEFORE arrest — you don\'t have to wait to be arrested.',section:'Sec 438 CrPC'},
+    {fact:'Under Sec 138 NI Act, cheque bounce is a criminal offence — punishment up to 2 years imprisonment or twice the cheque amount.',section:'Sec 138 NI Act'},
+    {fact:'Cyber Crime helpline 1930 — call immediately if you are cheated online. The faster you call, the higher the chance of recovering money.',section:'Cyber Crime Helpline'},
+    {fact:'SARFAESI Act 2002 allows banks to take possession of mortgaged property without a court order after 60 days notice.',section:'SARFAESI 2002'},
+    {fact:'Under Right to Education Act, children aged 6-14 have a fundamental right to free and compulsory education.',section:'RTE Act 2009'},
+    {fact:'A consumer complaint can be filed free of cost (up to ₹5 lakhs) at the District Consumer Commission — no lawyer needed.',section:'Consumer Protection Act 2019'},
+    {fact:'Res Judicata under Section 11 CPC — once a matter is decided by court, no second suit on the same matter is allowed.',section:'Sec 11 CPC'},
+    {fact:'Lok Adalat awards are final and binding — no appeal lies, and court fees already paid are refunded upon settlement.',section:'Legal Services Act 1987'},
+    {fact:'Under Sec 50A CrPC, police must immediately inform a family member or friend when you are arrested.',section:'Sec 50A CrPC'},
+    {fact:'RERA 2016 — if builder delays possession, you can demand full refund with 10-11% annual interest.',section:'RERA 2016'},
+    {fact:'An advocate cannot retain your documents to recover unpaid fees — R.D. Saxena v. Balram Prasad Sharma (2000 SC).',section:'Advocates Act'},
+    {fact:'Right to Information (RTI) — you can ask any government office for information. They must reply within 30 days.',section:'RTI Act 2005'},
+    {fact:'Senior Citizens Act 2007 — children are legally bound to maintain parents. Magistrate can order up to ₹10,000/month.',section:'Senior Citizens Act 2007'},
+    {fact:'Holder in Due Course (Sec 9 NI Act) gets a better title than the transferor — free from all defects in the instrument.',section:'Sec 9 NI Act'},
+    {fact:'Habeas Corpus — if someone is illegally detained, any person can file in High Court. Court must produce and release.',section:'Art 226 Constitution'},
+    {fact:'DK Basu guidelines (1997 SC) — 11 mandatory requirements for police during arrest. Violation = contempt of court.',section:'Art 21 Constitution'},
+    {fact:'Plea Bargaining under Sec 265A CrPC — for offences up to 7 years, you can negotiate for reduced punishment.',section:'Sec 265A CrPC'},
+    {fact:'Adverse possession — if you possess land openly and continuously for 12 years without owner\'s permission, you may acquire title.',section:'Limitation Act 1963'},
+    {fact:'Under Payment of Wages Act, salary must be paid by 7th of next month (companies under 1000 workers). Delay is a criminal offence.',section:'Payment of Wages Act'},
+    {fact:'Anticipatory bail under Sec 438 was described by SC in Gurbaksh Sibbia case — courts must take a liberal approach.',section:'Sec 438 CrPC'},
+    {fact:'Environmental principle: Polluter Pays — the party causing pollution must bear the cost of its remedy. MC Mehta v. Union of India.',section:'Environmental Law'},
+    {fact:'Under Maternity Benefit Act 2017, women employees are entitled to 26 weeks paid maternity leave.',section:'Maternity Benefit Act'},
+    {fact:'Public trust doctrine — natural resources like rivers, forests, air belong to the public and state holds them in trust.',section:'Environmental Law'},
+    {fact:'Under Section 80 CPC, 2 months\' notice is mandatory before suing any Government or public officer. No notice = suit dismissed.',section:'Sec 80 CPC'},
+    {fact:'Fundamental Duty (Art 51A) — every citizen must protect and improve the natural environment including forests, lakes and wildlife.',section:'Art 51A Constitution'},
+    {fact:'Legal Aid is a fundamental right — NALSA provides free lawyers to eligible persons. Call 15100 for free legal help.',section:'Legal Services Act / Art 39A'},
   ];
-  function doy(){const s=new Date(new Date().getFullYear(),0,0);return Math.floor((Date.now()-s)/86400000);}
+
+  function doy(){
+    // Day of year calculation — stable for entire calendar day
+    const s=new Date(new Date().getFullYear(),0,0);
+    return Math.floor((Date.now()-s)/86400000);
+  }
+
   function show(data){
-    const f=data[doy()%data.length];
+    try{
+      const f=data[doy()%data.length];
+      const el=document.getElementById('factStripText');
+      if(el&&f){
+        el.textContent='"'+f.fact+'"';
+        // Cache today's fact so CDN failures on next pageload don't reset it
+        try{localStorage.setItem(CACHE_KEY,JSON.stringify(f));}catch(e){}
+      }
+    }catch(e){}
+  }
+
+  function showCached(f){
     const el=document.getElementById('factStripText');
     if(el&&f) el.textContent='"'+f.fact+'"';
   }
-  fetch(CDN+'?v='+new Date().toDateString()).then(r=>r.json()).then(show)
-    .catch(()=>fetch(RAW).then(r=>r.json()).then(show).catch(()=>show(FB)));
+
+  // Step 1: Show cached today's fact INSTANTLY (no flash/loading state)
+  try{
+    const cached=localStorage.getItem(CACHE_KEY);
+    if(cached){showCached(JSON.parse(cached));}
+    else{
+      // No cache — show inline fallback immediately so it's not blank
+      showCached(FB[doy()%FB.length]);
+    }
+  }catch(e){showCached(FB[doy()%FB.length]);}
+
+  // Step 2: Fetch full JSON from CDN to get correct fact (upgrades if cached was fallback)
+  // Use cache-busting by date only (not time) so CDN doesn't get hammered
+  fetch(CDN+'?d='+TODAY)
+    .then(r=>r.json())
+    .then(data=>{show(data);})
+    .catch(()=>
+      fetch(RAW+'?d='+TODAY)
+        .then(r=>r.json())
+        .then(data=>{show(data);})
+        .catch(()=>{/* already showing fallback/cache — do nothing */})
+    );
 })();
 
 /* NAV PILLS WRAP */
