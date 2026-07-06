@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPC Deep Dive — Practitioner's Handbook | LawSticker AI</title>
+<meta name="description" content="Civil Procedure Code deep study — complete case lifecycle, section-by-section explanation, 40+ landmark cases, 60+ viva questions. For LLB and legal career.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
+  --muted:#6B7280;--light:#E5E7EB;--border:#D1D5DB;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+  --violet:#7C3AED;--violet-bg:#F5F3FF;--violet-border:#DDD6FE;
+  --jade:#059669;--jade-bg:#ECFDF5;--jade-border:#A7F3D0;
+  --sky:#0EA5E9;--sky-bg:#F0F9FF;--sky-border:#BAE6FD;
+  --rose:#DC2626;--rose-bg:#FEF2F2;
+  --amber:#D97706;--amber-bg:#FFFBEB;--amber-border:#FDE68A;
+  --teal:#0D9488;--teal-bg:#F0FDFA;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+nav{background:var(--navy);position:sticky;top:0;z-index:200;display:flex;flex-direction:column;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:9px 16px 6px;}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:13px;font-weight:900;color:var(--gold-l);}
+.nav-r2{display:flex;gap:5px;padding:0 12px 8px;overflow-x:auto;scrollbar-width:none;}
+.nav-r2::-webkit-scrollbar{display:none;}
+.tab-btn{padding:5px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.45);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;}
+.tab-btn.active{background:var(--violet);color:white;border-color:transparent;}
+
+.hero{background:linear-gradient(145deg,#050d1a,#0a1628,#0f1e40);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'§';position:absolute;right:-5px;top:-15px;font-size:200px;color:rgba(124,58,237,.07);font-family:'Playfair Display',serif;font-weight:900;pointer-events:none;}
+.hero-eye{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(124,58,237,.8);margin-bottom:6px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:4px;line-height:1.2;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;margin-bottom:14px;}
+.hero-pills{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;}
+.hp{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#C4B5FD;}
+
+.tab-content{display:none;}.tab-content.active{display:block;}
+.page{max-width:700px;margin:0 auto;padding:16px 14px 80px;}
+.section-hd{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:18px 4px 10px;display:flex;align-items:center;gap:10px;}
+.section-hd::after{content:'';flex:1;height:1px;background:var(--light);}
+
+/* FLOW STEPS */
+.flow-step{background:#fff;border-radius:16px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.flow-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;}
+.flow-num{width:36px;height:36px;border-radius:50%;background:var(--violet);color:white;font-family:'Playfair Display',serif;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.flow-header-text{flex:1;}
+.flow-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.flow-sec{font-size:11px;color:var(--violet);font-weight:700;}
+.flow-chevron{font-size:16px;color:var(--muted);transition:transform .3s;flex-shrink:0;}
+.flow-chevron.open{transform:rotate(180deg);}
+.flow-body{display:none;border-top:1px solid var(--light);padding:14px 16px;}
+.flow-body.open{display:block;}
+
+.step-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.step-item{display:flex;gap:10px;align-items:flex-start;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--violet);flex-shrink:0;margin-top:5px;}
+.step-text{font-size:13px;color:var(--ink2);line-height:1.65;}
+.step-text strong{color:var(--ink);}
+
+.practical-box{background:var(--violet-bg);border:1px solid var(--violet-border);border-radius:10px;padding:12px 14px;margin-top:8px;}
+.practical-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:5px;}
+.practical-text{font-size:12px;color:#4C1D95;line-height:1.65;}
+
+.trap-box{background:var(--rose-bg);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:12px 14px;margin-top:8px;}
+.trap-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
+.trap-text{font-size:12px;color:#7F1D1D;line-height:1.65;}
+
+/* SECTIONS */
+.sec-card{background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.sec-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;}
+.sec-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--violet);min-width:80px;flex-shrink:0;}
+.sec-title{font-size:14px;font-weight:700;color:var(--ink);}
+.sec-stars{font-size:11px;margin-top:2px;}
+.sec-chevron{font-size:16px;color:var(--muted);transition:transform .3s;flex-shrink:0;}
+.sec-chevron.open{transform:rotate(180deg);}
+.sec-body{display:none;border-top:1px solid var(--light);padding:14px 16px;}
+.sec-body.open{display:block;}
+.sec-plain{font-size:13px;color:var(--ink2);line-height:1.8;margin-bottom:8px;}
+.policy-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+.policy-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.policy-text{font-size:12px;color:#451A03;line-height:1.6;}
+.connect-box{background:var(--teal-bg);border:1px solid rgba(13,148,136,.2);border-radius:8px;padding:10px 12px;}
+.connect-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.connect-text{font-size:12px;color:#134E4A;line-height:1.6;}
+
+/* CASES */
+.case-card{background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.case-header{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;cursor:pointer;}
+.case-stars{font-size:13px;flex-shrink:0;margin-top:1px;}
+.case-name{font-size:13px;font-weight:800;color:var(--violet);flex:1;line-height:1.35;margin-bottom:2px;}
+.case-topic{font-size:11px;color:var(--muted);font-weight:600;}
+.case-chev{font-size:14px;color:var(--muted);transition:transform .3s;flex-shrink:0;}
+.case-chev.open{transform:rotate(180deg);}
+.case-body{display:none;border-top:1px solid var(--light);padding:14px 16px;}
+.case-body.open{display:block;}
+.firac-row{margin-bottom:8px;}
+.firac-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:5px;display:inline-block;margin-bottom:4px;}
+.fl-f{background:#DBEAFE;color:#1E40AF;}
+.fl-i{background:#EDE9FE;color:#5B21B6;}
+.fl-r{background:#D1FAE5;color:#065F46;}
+.fl-a{background:#FEF3C7;color:#92400E;}
+.fl-c{background:#FCE7F3;color:#9D174D;}
+.firac-text{font-size:12px;color:var(--ink2);line-height:1.65;}
+.exam-tag{display:inline-block;font-size:9px;font-weight:800;padding:2px 8px;border-radius:6px;background:#FEF3C7;color:#92400E;margin-left:6px;}
+
+/* VIVA */
+.viva-section{margin-bottom:6px;}
+.viva-cat{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 4px 8px;display:flex;align-items:center;gap:8px;}
+.viva-cat::after{content:'';flex:1;height:1px;background:var(--light);}
+.viva-card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.viva-q{padding:12px 14px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink);line-height:1.5;display:flex;align-items:flex-start;gap:8px;}
+.viva-q-num{color:var(--violet);font-weight:800;flex-shrink:0;}
+.viva-a{display:none;border-top:1px solid var(--light);padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.75;background:var(--violet-bg);}
+.viva-a.show{display:block;}
+
+/* DISTINCTIONS */
+.dist-card{background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+.dist-title{font-size:13px;font-weight:800;color:var(--ink);padding:12px 16px;background:var(--navy);color:var(--gold-l);}
+.dist-table{width:100%;}
+.dist-row{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.dist-row:nth-child(even){background:#FAFAFA;}
+.dist-col{padding:9px 14px;font-size:12px;line-height:1.55;border-bottom:1px solid var(--light);}
+.dist-col:first-child{border-right:2px solid var(--violet);color:var(--ink);font-weight:600;}
+.dist-col:last-child{color:var(--ink2);}
+.dist-hdr{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--violet-bg);}
+.dist-hdr-col{padding:8px 14px;font-size:11px;font-weight:800;color:var(--violet);letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid var(--violet-border);}
+.dist-hdr-col:first-child{border-right:2px solid var(--violet);}
+
+/* QUIZ */
+.quiz-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.quiz-q{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.55;}
+.quiz-scenario{font-size:12px;color:var(--violet);background:var(--violet-bg);border-radius:8px;padding:8px 12px;margin-bottom:10px;line-height:1.6;font-style:italic;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.quiz-opt{padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:inherit;background:#fff;text-align:left;}
+.quiz-opt:hover{border-color:var(--violet);background:var(--violet-bg);}
+.quiz-opt.correct{border-color:var(--jade);background:var(--jade-bg);color:var(--jade);font-weight:700;}
+.quiz-opt.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+.quiz-exp{display:none;font-size:12px;color:var(--ink2);background:var(--jade-bg);border:1px solid var(--jade-border);border-radius:8px;padding:10px 12px;line-height:1.65;}
+.quiz-exp.show{display:block;}
+.quiz-next{display:none;background:var(--violet);color:white;border:none;padding:9px 18px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
+.quiz-next.show{display:inline-block;}
+.quiz-score{text-align:center;padding:24px;background:linear-gradient(135deg,#050d1a,#0f1e40);border-radius:16px;color:white;}
+.quiz-score-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--gold-l);}
+
+.tag-imp{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:#FEF3C7;color:#92400E;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(124,58,237,.2);padding:10px 14px 14px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 8px;}
+.bn-icon{font-size:18px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(124,58,237,.8);}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-r1">
+    <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
+    <div class="nav-brand">CPC Deep Dive</div>
+    <a class="nav-back" href="https://lawsticker-ai.com/cpc.html">5th Sem →</a>
+  </div>
+  <div class="nav-r2">
+    <button class="tab-btn active" onclick="switchTab('flow',this)">🔄 Case Flow</button>
+    <button class="tab-btn" onclick="switchTab('sections',this)">§ Sections</button>
+    <button class="tab-btn" onclick="switchTab('cases',this)">⚖️ Cases</button>
+    <button class="tab-btn" onclick="switchTab('viva',this)">🎤 Viva</button>
+    <button class="tab-btn" onclick="switchTab('dist',this)">⚡ Distinctions</button>
+    <button class="tab-btn" onclick="switchTab('quiz',this)">🎯 Quiz</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eye">Practitioner's Deep Dive · Career-Level</div>
+  <div class="hero-title">Civil Procedure Code 1908<br>Complete Mastery</div>
+  <div class="hero-sub">Full case lifecycle · Every key section explained · 40+ landmark cases · 60+ viva questions · Moot court prep</div>
+  <div class="hero-pills">
+    <span class="hp">🔄 Full Case Flow</span>
+    <span class="hp">§ Section Policy</span>
+    <span class="hp">⚖️ 40+ Cases FIRAC</span>
+    <span class="hp">🎤 60+ Viva Q&A</span>
+    <span class="hp">⚡ All Distinctions</span>
+  </div>
+</div>
+
+<div class="tab-content active" id="tab-flow">
+<div class="page" id="flowPage"></div>
+</div>
+<div class="tab-content" id="tab-sections">
+<div class="page" id="sectionsPage"></div>
+</div>
+<div class="tab-content" id="tab-cases">
+<div class="page"><div class="section-hd">40+ Landmark Cases — Full FIRAC</div><div id="casesPage"></div></div>
+</div>
+<div class="tab-content" id="tab-viva">
+<div class="page"><div class="section-hd">60+ Viva & Moot Court Questions</div><div id="vivaPage"></div></div>
+</div>
+<div class="tab-content" id="tab-dist">
+<div class="page"><div class="section-hd">All Important Distinctions</div><div id="distPage"></div></div>
+</div>
+<div class="tab-content" id="tab-quiz">
+<div class="page"><div class="section-hd">Scenario-Based Quiz</div><div id="quizPage"></div></div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/cpc.html"><span class="bn-icon">📖</span><span class="bn-lbl">5th Sem</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/cpc-deep.html"><span class="bn-icon">⚖️</span><span class="bn-lbl active">CPC</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/crpc-deep.html"><span class="bn-icon">🚔</span><span class="bn-lbl">CrPC</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/sections.html"><span class="bn-icon">§</span><span class="bn-lbl">Memory</span></a>
+</div>
+
+<script>
+// ══ CASE FLOW DATA ══════════════════════════════════════════════════════
+const FLOW_STEPS = [
+  {
+    num:1, title:"Pre-Suit: Cause of Action Accrues", sec:"Sec 9, 15-20",
+    steps:[
+      "Cause of action = every fact the plaintiff must prove to win. It must be COMPLETE before filing suit.",
+      "Identify the RIGHT COURT: (1) Subject-matter jurisdiction (2) Territorial jurisdiction (3) Pecuniary jurisdiction — always file in LOWEST competent court (Sec 15).",
+      "Calculate LIMITATION: Most suits = 3 years. Property = 12 years. Check from date cause of action arose.",
+      "Collect all documents: agreements, correspondence, receipts, title deeds — whatever you need to prove each fact.",
+      "Check if mandatory notice is required: Sec 80 (Government suits = 2 months), Specific Relief Act, etc.",
+      "Advise client on merits honestly — do not encourage frivolous litigation.",
+    ],
+    practical:"In practice, the first thing a lawyer does is draw a timeline: (1) When did the right arise? (2) When was it violated? (3) Is it within limitation? Many cases fail at this stage because the limitation period has expired. Check limitation FIRST, always.",
+    trap:"Common trap: Client comes to you with a land dispute but hasn't given you the full story. You file the suit without knowing that an earlier suit between the same parties on the same matter was already decided. Result: Res Judicata bars the new suit — and you face professional embarrassment. Always check for prior litigation.",
+  },
+  {
+    num:2, title:"Drafting & Filing the Plaint", sec:"Order VII",
+    steps:[
+      "Plaint must contain (Order VII Rule 1): Court name, parties' names/addresses, FACTS constituting cause of action, facts showing court's jurisdiction, specific RELIEF claimed, VALUATION, verification.",
+      "Valuation is critical — determines court fee AND which court has jurisdiction. Under-value = wrong court. Over-value = excess court fee.",
+      "Court fee: Paid upfront on the plaint. Different for money suits (ad valorem) vs declaratory suits (fixed).",
+      "Verification (Order VI Rule 15): Plaintiff or his agent must verify that contents are true to knowledge and belief. Perjury liability attaches.",
+      "Documents relied upon must be listed in Schedule and copies annexed (Order VII Rule 14).",
+      "File in Registry: Court allocates case number, fixes first date of hearing.",
+    ],
+    practical:"Practical drafting tip: State facts in chronological order. Number your paragraphs. Each paragraph = one fact. Use simple language — the test is whether an ordinary person can understand what happened and what you want. Avoid legal jargon in the facts section.",
+    trap:"Order VII Rule 11 — Court MUST reject plaint if: (a) No cause of action disclosed on face of plaint (b) Suit barred by law (c) Not properly valued (d) Insufficient court fee. Rejection is not dismissal on merits — you can file again after curing the defect. But remember: limitation keeps running even while the defect-cured plaint is being refiled.",
+  },
+  {
+    num:3, title:"Admission Hearing & Summons", sec:"Order V, Sec 27-29",
+    steps:[
+      "First hearing: Court examines the plaint. If it discloses cause of action and is in order — court issues SUMMONS to defendant.",
+      "Summons: Formal notice to defendant to appear and answer. Must state: date of hearing, relief claimed, that defendant must appear in person or by pleader.",
+      "Service of summons: Defendant must be served PERSONALLY if possible. If not available — substituted service (family member, affixture on door, publication in newspaper).",
+      "Summons may be served by court, by plaintiff, by speed post, or electronically (2002 amendment allows email/fax).",
+      "If defendant cannot be found at all — Sec 29 allows publication of summons in newspaper.",
+      "Once summons is served, defendant must appear on the fixed date.",
+    ],
+    practical:"In practice, service of summons is often the most frustrating step. Defendants avoid service deliberately. Courts are lenient about substituted service if there is evidence that defendant is aware of the proceedings. Keep Akhilesh Kumar Yadav's phone as proof of notice — screenshot of WhatsApp sent to defendant has been accepted as proof of notice in some High Courts.",
+    trap:"Never serve summons informally or assume the defendant knows. If summons is not properly served, any ex-parte decree can be set aside under Order IX Rule 13. This wastes months of work.",
+  },
+  {
+    num:4, title:"Filing Written Statement", sec:"Order VIII",
+    steps:[
+      "Defendant must file Written Statement within 30 days of service of summons. Court can extend up to 90 days for sufficient cause (not beyond).",
+      "Written Statement must specifically DENY each allegation of fact in the plaint. Silence = admission (Order VIII Rule 5). General denial is insufficient.",
+      "Three options for each fact: (1) Admit — agree with plaintiff (2) Deny — specifically dispute (3) Not admit — put plaintiff to proof.",
+      "Set-off (Rule 6): Defendant can claim a LIQUIDATED amount due from plaintiff as a defense. Works as a shield — reduces decree amount.",
+      "Counter-claim (Rule 6A): Defendant's INDEPENDENT claim against plaintiff. Not limited to liquidated amounts. Survives even if plaintiff's suit is withdrawn.",
+      "Additional Written Statement: Allowed if new facts arise after first WS, with court's leave.",
+    ],
+    practical:"The single most important drafting rule: READ EVERY PARAGRAPH of the plaint. Write 'Denied' or 'Admitted' against each. Do NOT write 'Not admitted' for everything — courts see through it and treat it as admission. For facts you genuinely don't know — write 'The defendant is not in a position to admit or deny and the plaintiff is put to strict proof thereof.'",
+    trap:"Filing after 90 days: Unlike the old position, post-Salem Bar Association case, courts strictly follow the 90-day outer limit. If you miss it without a valid reason, the defendant loses the right to file WS and court proceeds as if WS was never filed. Do NOT miss this deadline.",
+  },
+  {
+    num:5, title:"Framing of Issues", sec:"Order XIV",
+    steps:[
+      "After pleadings close (plaint + WS filed), court frames ISSUES at first hearing.",
+      "Issues = Points in DISPUTE between parties. Facts admitted are not issues. Facts denied by both sides = issues.",
+      "Types of issues: (1) Issues of fact — disputed factual questions (2) Issues of law — pure legal questions (3) Mixed issues.",
+      "Court reads pleadings → identifies what is common ground and what is disputed → frames issues.",
+      "Parties can suggest additional issues. Court can frame issues suo motu.",
+      "Importance: The ENTIRE TRIAL is confined to framed issues. Evidence must relate to issues. Judgment must decide every issue.",
+    ],
+    practical:"When issues are framed, carefully read each one. If any issue is framed incorrectly or is missing, raise it immediately — ask court to amend or add issues. Under Order XIV Rule 5, court can frame additional issues at any time before judgment. Once trial ends, it is too late.",
+    trap:"A common appellate ground is 'no issue was framed on Point X so judgment cannot be based on it.' If an important point is not reflected in the issues, the appellate court may remand the case for re-trial on that point — years of work wasted. Always match every claim in your plaint to a corresponding issue.",
+  },
+  {
+    num:6, title:"Discovery, Inspection & Interrogatories", sec:"Order XI",
+    steps:[
+      "Discovery of documents (Order XI Rule 1): Plaintiff can ask defendant to disclose ALL relevant documents in his possession. Vice versa.",
+      "Interrogatories (Order XI Rule 1): Written questions served on opposite party. Must be answered on oath. Powerful tool to pin down opponent's version early.",
+      "Inspection of documents (Order XI Rule 15): Right to inspect documents discovered by opposite party.",
+      "These tools are underused in Indian litigation but extremely valuable in commercial cases.",
+      "Affidavit of documents: Party must list all documents, dividing into: (a) Documents being produced (b) Privileged documents (c) Documents not in possession.",
+      "Failure to disclose: Court may draw adverse inference or order costs.",
+    ],
+    practical:"In commercial litigation, always serve interrogatories early. Ask the opponent to state their version of events specifically. Their answers are binding — they cannot contradict them at trial. This is particularly useful in contract disputes where the defendant's account of what was agreed keeps changing.",
+    trap:"Privilege: Communications with lawyers, documents made for purpose of litigation, state documents affecting national security — these are privileged. Opponent cannot demand these in discovery. Know this defense well — some lawyers produce privileged documents inadvertently.",
+  },
+  {
+    num:7, title:"Trial — Examination of Witnesses", sec:"Order XVIII",
+    steps:[
+      "Trial begins after issues are framed and documents are filed.",
+      "Plaintiff bears BURDEN OF PROOF on his issues. Begins first.",
+      "Examination in Chief: Plaintiff examines own witness. In most cases now, chief examination is by AFFIDAVIT filed in advance.",
+      "Cross-examination: Defendant's lawyer cross-examines plaintiff's witness. Most critical part of trial. Tests credibility and version.",
+      "Re-examination: Plaintiff's lawyer can re-examine only on points arising from cross-examination. Cannot introduce new matters.",
+      "Defendant then examines his witnesses — same process.",
+      "After all witnesses examined — court hears FINAL ARGUMENTS from both sides.",
+    ],
+    practical:"Cross-examination is where cases are won and lost. The goal of cross-examination is not to get the witness to say what you want — it is to destroy credibility or create reasonable doubt. Never ask a question in cross-examination whose answer you don't know. If you don't know, don't ask. A bad cross-examination damages your own case.",
+    trap:"Order XVIII Rule 4: Chief examination by affidavit. If you don't file the affidavit on time, you lose the right to examine that witness in chief. Courts are strict about this. File witness affidavits well before the scheduled date.",
+  },
+  {
+    num:8, title:"Judgment & Decree", sec:"Sec 2(2), 2(9), Order XX",
+    steps:[
+      "After final arguments, court pronounces JUDGMENT. Under Order XX Rule 1, judgment must be pronounced within 30 days of completing arguments (extendable to 60 days with reasons).",
+      "JUDGMENT = Reasoned statement containing: (a) Summary of facts (b) Issues for determination (c) Decision on each issue (d) Reasons for each decision.",
+      "DECREE = Formal expression of adjudication — separate document that gives effect to the judgment. Must be drawn within 15 days of judgment.",
+      "Preliminary Decree: Does not fully dispose of suit (partition, mortgage, pre-emption). Final decree follows.",
+      "Final Decree: Completely disposes of suit. One suit = one final decree.",
+      "Decree must specify exact relief — vague decrees cause execution problems.",
+    ],
+    practical:"Always read the decree carefully before signing off. In practice, decrees are often drawn by the Registry clerks who may not perfectly reflect the judgment. Check that: (1) Exact amount is correct (2) Names are correctly spelled (3) Interest rate and period is specified (4) Costs order is included. Any error must be corrected immediately under Sec 151 (slip rule).",
+    trap:"Decree vs Order confusion: A decree is passed in a SUIT and finally determines rights. An Order is passed in a proceeding. This distinction matters for appeals — all decrees are appealable under Sec 96. Orders are only appealable if specifically listed under Order XLIII.",
+  },
+  {
+    num:9, title:"Execution of Decree", sec:"Sec 36-74, Order XXI",
+    steps:[
+      "Execution = Making the decree happen. Must be applied for within 12 years (Article 136 Limitation Act).",
+      "File Execution Petition: Identify the decree, identify the decree-holder and judgment-debtor, specify mode of execution required.",
+      "Modes of Execution (Sec 51): (1) Delivery of property (2) Attachment and sale of property (3) Arrest and detention in civil prison (4) Appointment of receiver (5) Any other method.",
+      "Attachment of property: Court attaches defendant's property. Attached property cannot be alienated. Sale follows.",
+      "Resistance to execution (Order XXI Rule 97): If third party resists delivery, decree-holder applies to court. Court adjudicates.",
+      "Execution of money decree: Attach bank accounts, immovable property, salary (up to certain limit).",
+    ],
+    practical:"The most common error in execution: wrong property attached. Always identify the property precisely — survey number, extent, boundaries. Use recent encumbrance certificate to confirm ownership. If property has changed hands, trace the chain. Execution against wrong property = wasted effort + potential contempt.",
+    trap:"Cannot execute against: (1) Agricultural tools and implements (2) Necessary wearing apparel (3) Unattached tools of artisan (4) Houses of agriculturists — Sec 60 specifically exempts these from attachment. Trying to attach exempt property leads to court orders against you.",
+  },
+  {
+    num:10, title:"Appeals & Revision", sec:"Sec 96-115",
+    steps:[
+      "FIRST APPEAL (Sec 96): Against original decrees. Lies to appellate court. On FACTS and LAW both. File within 30 days (District Court) or 90 days (High Court).",
+      "SECOND APPEAL (Sec 100): To High Court ONLY on SUBSTANTIAL QUESTION OF LAW. No re-examination of facts. HC must formulate SQoL at admission stage.",
+      "REVISION (Sec 115): High Court can revise orders of subordinate courts when: (a) Court has no jurisdiction (b) Failed to exercise jurisdiction (c) Acted with material irregularity. NOT a third appeal.",
+      "REVIEW (Sec 114, Order XLVII): Same court that passed decree can review it on: discovery of new evidence, error apparent on face of record, other sufficient reason. Filed within 30 days.",
+      "REFERENCE (Sec 113): Subordinate court refers question of law to High Court for opinion. Mandatory if constitutionality of central law challenged.",
+      "SLP to Supreme Court: Under Article 136 Constitution — against any judgment of any court. Filed within 90 days.",
+    ],
+    practical:"Second appeal trap: Many advocates file second appeals thinking they can re-argue the facts. They cannot. High Court will dismiss if there is no SQoL. Before filing Second Appeal, identify the SPECIFIC substantial question of law — write it out precisely. File in the memo of appeal. If you can't articulate it clearly, you don't have a second appeal.",
+    trap:"Revision (Sec 115) is NOT an appeal. It corrects jurisdictional errors and gross irregularities. Cannot be used to correct errors of fact or errors of law that are not jurisdictional in nature. Confusing revision with appeal is a common junior advocate mistake.",
+  },
+];
+
+// ══ SECTIONS DATA ═══════════════════════════════════════════════════════
+const SECTIONS_DATA = [
+  {
+    sec:"Sec 9", title:"Civil Court's Jurisdiction — General Principle", stars:5,
+    plain:"Every civil court shall try all suits of a civil nature unless they are expressly or impliedly barred. A suit is of 'civil nature' if the principal question relates to a civil right or obligation — it is not just about money.",
+    policy:"This section establishes the OPEN DOOR principle for civil courts. The framers wanted civil courts to have broad jurisdiction so citizens can always find a forum. Exceptions (expressly or impliedly barred) are read narrowly.",
+    connect:"Read with: Sec 11 (Res Judicata bars some suits), Sec 15-20 (which court to approach), Order VII Rule 11 (when plaint can be rejected for no cause of action).",
+    key:"Political questions (elections, sovereign acts) are impliedly barred. Religious questions (which deity to worship) are not civil suits. Property disputes involving religious institutions = civil in nature."
+  },
+  {
+    sec:"Sec 10", title:"Sub Judice — Stay of Suit", stars:5,
+    plain:"No court shall proceed with the trial of a suit in which the matter in issue is also directly and substantially in issue in a previously instituted suit between the same parties — and that earlier suit is pending in the same or higher court.",
+    policy:"Sub Judice prevents two courts deciding the same issue simultaneously — which could lead to conflicting judgments. It saves judicial time and protects parties from being vexed twice simultaneously (as opposed to Res Judicata which protects from being vexed twice sequentially).",
+    connect:"Read with: Sec 11 (Res Judicata — decided vs pending). Order II Rule 2 (relinquishment of claims). Order XXXIII (suits by indigent persons — different forum, same principle).",
+    key:"Sec 10 uses 'directly and substantially' — same test as Res Judicata. The earlier suit must be PENDING. If it is decided, Sec 11 (Res Judicata) applies instead. The stay is mandatory — court has no discretion once conditions are satisfied."
+  },
+  {
+    sec:"Sec 11", title:"Res Judicata — The Final Barrier", stars:5,
+    plain:"Once a court has heard and decided a matter, the same matter cannot be re-litigated between the same parties in any subsequent suit. The decision is final between them.",
+    policy:"Two maxims underpin this: (1) Interest reipublicae ut sit finis litium — it is in society's interest that there be an end to litigation. (2) Nemo debet bis vexari — no one should be troubled twice for the same cause. Without Res Judicata, losing parties would file endless suits hoping for a different result.",
+    connect:"Connects to: Constructive Res Judicata (Explanation IV) — what OUGHT to have been raised is deemed decided. Sec 10 (pending suits). Order II Rule 2 (bar on future suits if claim not included in earlier suit). Art 20(2) Constitution (double jeopardy in criminal law — same principle, different branch).",
+    key:"Five conditions — SCCPP. Applies between co-defendants if conflict of interest existed. Does NOT apply to pure questions of law (Mathura Prasad case). Does NOT create res judicata between different parties even if same facts."
+  },
+  {
+    sec:"Sec 15-20", title:"Place of Suing — Territorial Jurisdiction", stars:5,
+    plain:"Sec 15: File in lowest competent court. Sec 16-18: Immovable property suits — where the property is situated. Sec 19: Tort suits — where wrong done OR defendant resides. Sec 20: All other suits — where defendant resides/works OR cause of action arises.",
+    policy:"Sec 15 prevents parties from forum-shopping — going to higher courts for convenience or perceived advantage. Makes courts accessible to all, not just wealthy litigants who can travel to distant courts.",
+    connect:"Sec 21: Objection to territorial or pecuniary jurisdiction must be raised at the earliest opportunity or it is waived. Subject-matter jurisdiction objection can be raised at any time.",
+    key:"'Cause of action arises' under Sec 20 — each separate act constituting cause of action (in continuing wrongs) gives a fresh right to sue in that place. Important in contract disputes where offer made in one state and accepted in another — either place works."
+  },
+  {
+    sec:"Order VI Rule 17", title:"Amendment of Pleadings", stars:5,
+    plain:"Court may allow either party to amend pleadings at any stage of proceedings in such manner and on such terms as may be just. BUT: No application for amendment shall be allowed after trial has commenced unless court finds the party could not have raised the matter before despite due diligence.",
+    policy:"Two competing values: (1) Finality — parties should be held to their pleadings so the other side knows what to answer. (2) Justice — preventing parties from being bound by defective pleadings for purely technical reasons. The 2002 amendment restricted post-trial amendments to balance these.",
+    connect:"Read with Order VI Rule 1 (what pleadings may contain). Virendra Kashinath case (cannot go beyond pleadings). Ganesh Trading case (liberal approach to pre-trial amendments).",
+    key:"LIBERAL standard pre-trial. STRICT standard post-trial commencement. An amendment that adds a new cause of action after limitation has expired is NOT allowed — it cannot relate back to the original date of filing."
+  },
+  {
+    sec:"Order VII Rule 11", title:"Rejection of Plaint — The Four Grounds", stars:5,
+    plain:"Court SHALL (mandatory) reject the plaint if: (a) It does not disclose a cause of action (b) The relief claimed is undervalued and plaintiff fails to correct (c) Plaint is written on paper not being properly stamped (d) Suit appears barred by any law.",
+    policy:"Rejection at the threshold saves courts and parties from going through the full trial process when the suit is fundamentally flawed. It is a preliminary check. Rejected plaint can be re-filed after curing defect (unlike dismissal on merits).",
+    connect:"Read with: Return of plaint (Order VII Rule 10) — when court has no territorial jurisdiction. Sec 9 (civil nature of suit). Liverpool & London SP case — read plaint charitably before rejecting.",
+    key:"'Barred by any law' includes: limitation (Limitation Act), res judicata (Sec 11), statutory bars. Court reads ONLY the plaint — cannot look at the defense at this stage. If even one cause of action is valid, plaint cannot be rejected (De Backer's principle)."
+  },
+  {
+    sec:"Order VIII Rule 5", title:"Specific Denial — Silence is Admission", stars:5,
+    plain:"Every allegation of fact in the plaint must be specifically dealt with in the written statement. If a defendant does not deny an allegation specifically or by necessary implication — it shall be taken to be admitted.",
+    policy:"Prevents defendants from filing vague WS that neither admits nor denies, making the plaintiff prove everything. Forces the defendant to take a clear position early, narrowing the disputed issues and making trial efficient.",
+    connect:"Read with: Order VIII Rule 1 (WS within 30 days, max 90 days). Order VIII Rule 6 (Set-off). Order VIII Rule 6A (Counter-claim). The specific denial requirement shapes the entire trial — what is admitted needs no proof.",
+    key:"'Specifically' means: state what is denied and (where possible) state the defendant's version of those facts. 'Not admitted' is different from 'denied' — 'not admitted' means plaintiff must prove, but defendant is not contradicting. Use this distinction consciously."
+  },
+  {
+    sec:"Sec 51, Order XXI", title:"Modes of Execution — The Arsenal", stars:4,
+    plain:"Section 51 gives courts power to execute decrees by: (1) Delivery of property (2) Attachment and sale (3) Arrest and detention in civil prison (4) Appointment of receiver (5) Any other manner court deems fit.",
+    policy:"The law recognizes that different types of decrees need different enforcement mechanisms. A money decree can be satisfied by attachment of assets. A decree for specific performance may need appointment of a commissioner to hand over property. The list in Sec 51 is inclusive, not exhaustive.",
+    connect:"Read with: Article 136 Limitation Act (12 years to execute). Sec 60 (exempt property). Order XXI Rule 97 (resistance to execution). Sec 57 (arrest for disobedience — only for certain decrees).",
+    key:"Arrest in civil suits: Cannot arrest women for money decrees. Cannot arrest judgment-debtor who has no means. Cannot arrest members of Parliament during session. Must satisfy court that judgment-debtor has means but refuses to pay."
+  },
+  {
+    sec:"Sec 96 & 100", title:"First Appeal & Second Appeal — The Crucial Difference", stars:5,
+    plain:"Sec 96: First appeal from original decree — lies to appellate court on questions of FACT and LAW. Sec 100: Second appeal from appellate decree — lies to High Court ONLY on SUBSTANTIAL QUESTION OF LAW.",
+    policy:"Three tiers of adjudication: original court (facts and law) → first appellate court (facts and law, fresh look) → second appellate court (law only). The HC in second appeal is not a third court of facts — it is there to maintain uniformity of law across the state.",
+    connect:"Pankajakshi case (5-judge bench) — Second appeal only on SQoL, HC cannot re-examine facts. Sec 107 — powers of appellate court. Sec 104 — appeals from orders (specific list). Sec 115 — revision (jurisdictional errors, not factual errors).",
+    key:"Substantial Question of Law: Must (a) involve interpretation of law (b) have material bearing on case (c) not be settled by SC. 'Concurrent findings of fact' by two courts = almost never disturbed in second appeal unless perverse or against evidence."
+  },
+  {
+    sec:"Order XXXIX", title:"Temporary Injunction — The Emergency Tool", stars:5,
+    plain:"Courts can grant temporary injunctions to restrain a party from doing or continuing to do any act that would cause irreparable harm before the case is decided. Three conditions must ALL be present: prima facie case, balance of convenience, irreparable injury.",
+    policy:"Without temporary injunctions, a winning plaintiff might lose the very subject matter of the dispute before trial ends. Injunctions preserve the STATUS QUO so that justice at the end of trial is meaningful. But they are not granted lightly — courts must balance the harm of granting vs not granting.",
+    connect:"Dalpat Kumar case (all 3 conditions mandatory). Gujarat Bottling v Coca Cola (commercial disputes — money compensation = no irreparable injury usually). Order XXXIX Rule 2A (disobedience of injunction = attachment of property + imprisonment). Specific Relief Act for permanent injunctions.",
+    key:"Mandatory injunction (directing positive act) requires a STRONGER case than prohibitory injunction (restraining act). Ex parte injunction — only in urgent cases where even notice would defeat the purpose. Rule 3 requires notice to opposite party before order. Ex parte = exception not rule."
+  },
+  {
+    sec:"Sec 80", title:"Government Notice — The Mandatory Knock", stars:5,
+    plain:"Before filing suit against the Government (Union or State) or a public officer for acts done in official capacity, you must give 2 months' advance notice by registered post or direct delivery to the Secretary/Collector. No suit without notice = suit can be dismissed.",
+    policy:"Gives the Government opportunity to examine the claim and settle it without litigation — avoiding unnecessary burden on courts and government. Also ensures government gets advance knowledge of claims against it and can make necessary provisions.",
+    connect:"Sec 82: No execution against Government without 3 months prior notice. Exception: Urgent cases — court can grant leave under Sec 80(2) to file without notice. Bihari Chowdhary case — notice is mandatory, not directory.",
+    key:"The notice must: specify the cause of action, name the parties, state the relief sought. A defective notice (missing key information) is treated as no notice. Plaintiff cannot add new claims not mentioned in notice when filing the suit."
+  },
+];
+
+// ══ CASES DATA ══════════════════════════════════════════════════════════
+const CASES_DATA = [
+  {
+    name:"Satyadhyan Ghosal v. Deorjin Debi (1960) SCR 590",
+    topic:"Res Judicata — Section 11", stars:5,
+    exam:true,
+    facts:"A dispute arose regarding a property. The earlier suit between the same parties had resulted in a finding that the property was not in joint possession. In the subsequent suit, the plaintiff again raised the question of joint possession.",
+    issue:"Whether the finding in the earlier suit regarding joint possession operated as res judicata in the subsequent suit?",
+    rule:"Section 11 CPC: Once a matter is directly and substantially in issue in a former suit between the same parties and has been heard and finally decided, it cannot be re-agitated.",
+    analysis:"The Supreme Court held that the principle of res judicata is based on the need of giving finality to judicial decisions. It applies between co-defendants also if there was a conflict of interest between them and the issue was directly decided. The finding on joint possession was directly in issue and finally decided — therefore it operates as res judicata.",
+    conclusion:"Res judicata applies. Second suit on the same issue is barred. The principle applies between co-defendants also if directly in issue.",
+  },
+  {
+    name:"Pankajakshi v. Chandrika (2016) 6 SCC 157 — 5 Judge Bench",
+    topic:"Second Appeal — Substantial Question of Law", stars:5,
+    exam:true,
+    facts:"A property dispute went through trial court, first appellate court. In second appeal, the High Court interfered with concurrent findings of fact of two courts below.",
+    issue:"Whether the High Court was correct in interfering with concurrent factual findings in a second appeal under Section 100 CPC?",
+    rule:"Section 100 CPC: Second appeal to High Court lies ONLY on a substantial question of law. HC cannot re-examine or re-appreciate facts.",
+    analysis:"A 5-judge Constitutional Bench reaffirmed that second appeal under Sec 100 lies ONLY on substantial question of law. The High Court cannot interfere with concurrent findings of fact of two courts below unless those findings are perverse, based on no evidence, or the courts failed to apply correct legal principles. Mere disagreement with factual findings is not enough.",
+    conclusion:"HC's interference was wrong. Concurrent findings of fact cannot be disturbed in second appeal merely because HC would have reached different conclusion.",
+  },
+  {
+    name:"Dalpat Kumar v. Prahlad Singh (1991) 4 SCC 634",
+    topic:"Temporary Injunction — Three Conditions", stars:5,
+    exam:true,
+    facts:"A dispute over agricultural land. The plaintiff sought temporary injunction restraining the defendant from alienating or transferring the land pending trial. The defendant claimed only one condition (prima facie case) was sufficient.",
+    issue:"Whether all three conditions (prima facie case, balance of convenience, irreparable injury) must be satisfied for granting a temporary injunction?",
+    rule:"Order XXXIX Rules 1 and 2 CPC: Three conditions — prima facie case, balance of convenience, irreparable injury — must all be satisfied.",
+    analysis:"The Supreme Court held emphatically that ALL THREE conditions are independent requirements and must ALL be satisfied. It is not sufficient to show only one or two. The court must give reasons for satisfying each condition. 'Prima facie case' means an arguable case — not proof. 'Balance of convenience' means harm to plaintiff if not granted > harm to defendant if granted. 'Irreparable injury' means harm not adequately compensable in money.",
+    conclusion:"All three conditions are mandatory. The Court must record reasons for each. Grant of injunction without satisfying all three conditions is a legal error.",
+  },
+  {
+    name:"Collector, Land Acquisition v. Mst. Katiji (1987) 2 SCC 107",
+    topic:"Condonation of Delay — Section 5 Limitation Act", stars:5,
+    exam:true,
+    facts:"Government filed an appeal after the limitation period. The question arose whether 'sufficient cause' for condoning delay should be construed liberally or strictly.",
+    issue:"What principles govern the condonation of delay under Section 5 of the Limitation Act?",
+    rule:"Section 5 Limitation Act: Court may admit appeal after limitation period if appellant satisfies court that he had sufficient cause for not preferring the appeal within limitation.",
+    analysis:"SC laid down the famous Katiji principles: (1) Sufficient cause should receive liberal construction — merit of the case should be seen. (2) Litigants should not suffer for counsel's fault. (3) Judiciary is not meant to be hypertechnical. (4) The word 'sufficient' in Sec 5 must receive a liberal construction to advance substantial justice. (5) When the case is on merits, lean towards condonation.",
+    conclusion:"Delay condoned. Liberal interpretation of 'sufficient cause.' Merits of the case should be considered while deciding condonation applications.",
+  },
+  {
+    name:"Karnataka Board of Wakf v. Govt of India (2004) 10 SCC 779",
+    topic:"Adverse Possession — Section 27 Limitation Act", stars:5,
+    exam:true,
+    facts:"The Karnataka Wakf Board claimed title to land on the basis of adverse possession. The Board had been in possession for over 12 years, claiming the land belonged to the Wakf. The Government disputed the claim.",
+    issue:"What are the conditions that must be strictly proved for a claim of adverse possession?",
+    rule:"Section 27 Limitation Act read with Article 65 of the Schedule: Adverse possession for 12 years extinguishes original owner's right and remedy both.",
+    analysis:"The Supreme Court held that adverse possession must be pleaded specifically and proved strictly. The claimant must prove: (1) Exact date when possession became adverse (2) Continuous and uninterrupted possession for the entire limitation period (3) Open, visible and notorious possession (4) Hostile animus — possession as of right, not by permission. The burden is heavily on the person claiming adverse possession. It cannot be inferred from mere long possession.",
+    conclusion:"Wakf Board failed to prove all conditions. Claim of adverse possession rejected. Adverse possession must be strictly pleaded and rigorously proved.",
+  },
+  {
+    name:"Bihari Chowdhary v. State of Bihar (1984) 2 SCC 627",
+    topic:"Section 80 — Government Notice Mandatory", stars:4,
+    exam:true,
+    facts:"A suit was filed against the State Government without giving the mandatory 2-month notice under Section 80 CPC. The question was whether the notice was mandatory or merely directory.",
+    issue:"Is the requirement of giving 2-month notice before suing Government under Section 80 mandatory or directory?",
+    rule:"Section 80 CPC: No suit shall be instituted against Government without first giving 2 months' notice. The word used is 'shall' — mandatory.",
+    analysis:"The Supreme Court held that the requirement of notice under Section 80 is mandatory and not directory. The legislature used the word 'shall' which indicates a mandatory obligation. The object of the provision is to give the Government an opportunity to examine the claim and avoid litigation. If notice is not given, the suit must be dismissed even if it has merits.",
+    conclusion:"Section 80 notice is mandatory. Suit filed without notice must be dismissed. Plaintiff can file fresh suit with proper notice.",
+  },
+  {
+    name:"Virendra Kashinath v. Vinayak N. Joshi (1999) 1 SCC 47",
+    topic:"Pleadings — Cannot Go Beyond", stars:4,
+    exam:true,
+    facts:"The plaintiff in his plaint claimed relief on a specific basis. At trial, he tried to lead evidence on a completely different basis that was not pleaded. The defendant objected.",
+    issue:"Can a party lead evidence or claim relief on a basis not pleaded in his pleadings?",
+    rule:"Fundamental rule of pleadings: A party is bound by his pleadings. Relief can only be granted based on what was pleaded.",
+    analysis:"The Supreme Court held that a party cannot travel beyond his pleadings. The purpose of pleadings is to give the opposite party fair notice of the case he must meet. If a party could lead evidence beyond pleadings without notice, the opposite party would be prejudiced. Evidence contrary to pleadings must be ignored. Relief cannot be granted on an unpleaded basis even if the evidence supports it.",
+    conclusion:"Party bound by pleadings. Evidence beyond pleadings is irrelevant. Court cannot grant relief on unpleaded basis. This applies to both plaintiff and defendant.",
+  },
+  {
+    name:"Ganesh Trading Co. v. Moji Ram (1978) 2 SCC 91",
+    topic:"Amendment of Pleadings — Liberal Approach", stars:4,
+    exam:false,
+    facts:"The plaintiff sought to amend his plaint to include an additional ground of relief before the conclusion of trial. The defendant opposed on grounds that it would prejudice him.",
+    issue:"Should courts take a liberal or strict approach to allowing amendments of pleadings before trial concludes?",
+    rule:"Order VI Rule 17: Court may allow amendment at any stage if necessary to determine real questions in controversy.",
+    analysis:"The Supreme Court held that courts should be LIBERAL in granting amendments, particularly before trial concludes. The purpose of allowing amendments is to do justice — to prevent parties from being bound by defective pleadings for technical reasons. Refusal should be the exception, not the rule. The question is whether the amendment is necessary to determine the real questions in controversy — not whether it inconveniences the opposite party. Appropriate costs can address prejudice.",
+    conclusion:"Liberal approach to amendments. Refusal is exception. Costs can compensate for prejudice. Amendment allowed if it enables determination of real controversy.",
+  },
+  {
+    name:"Gujarat Bottling Co. v. Coca Cola Co. (1995) 5 SCC 545",
+    topic:"Temporary Injunction — Commercial Disputes", stars:4,
+    exam:true,
+    facts:"Coca Cola sought a temporary injunction against Gujarat Bottling to restrain breach of a franchise agreement. The dispute involved commercial interests. Gujarat Bottling argued that money could compensate any loss.",
+    issue:"In commercial disputes where loss can be compensated by money, should courts grant temporary injunctions?",
+    rule:"Order XXXIX Rules 1 and 2: Three conditions for injunction — including irreparable injury which means harm not adequately compensable by money.",
+    analysis:"The Supreme Court held that in commercial disputes, courts must carefully examine whether the alleged loss can be adequately compensated by an award of damages. If it can be so compensated, the third condition (irreparable injury) is not satisfied and injunction should not ordinarily be granted. Commercial losses are generally calculable and can be compensated by money. However, if the loss is to goodwill, business reputation, or involves a unique product — money may not adequately compensate.",
+    conclusion:"If loss is adequately compensable in money, irreparable injury not established. Injunction should not be granted in such cases. Goodwill/reputation loss = different consideration.",
+  },
+  {
+    name:"Mathura Prasad Bajoo Jaiswal v. Dossibai N.B. Jeejeebhoy (1970) 1 SCC 613",
+    topic:"Res Judicata — Exception for Pure Questions of Law", stars:4,
+    exam:true,
+    facts:"A matter of law (whether a rent act provision was constitutionally valid) had been decided in an earlier suit. The same question arose in a subsequent suit.",
+    issue:"Does res judicata apply to pure questions of law as well as questions of fact?",
+    rule:"Section 11 CPC: Res judicata bars re-agitation of matters 'directly and substantially in issue.'",
+    analysis:"The Supreme Court held that res judicata applies to findings of FACT and to decisions on questions of mixed fact and law. However, a pure question of law is NOT barred by res judicata. This is because laws change — a statute may be amended, or the Supreme Court may overrule an earlier interpretation. It would be absurd to say that an incorrect legal position once decided between parties can never be corrected even if the law itself changes.",
+    conclusion:"Res judicata does NOT apply to pure questions of law. Such questions can always be re-agitated as the law evolves. This is an important exception.",
+  },
+  {
+    name:"IDBI Trusteeship v. Hubtown Ltd (2016) 12 SCC 551",
+    topic:"Summary Suits — Order XXXVII", stars:4,
+    exam:false,
+    facts:"IDBI filed a summary suit for recovery of money. Hubtown sought leave to defend arguing it had a genuine defense. The court had to determine what constituted a 'triable issue' warranting leave to defend.",
+    issue:"What is the standard for granting leave to defend in summary suits under Order XXXVII?",
+    rule:"Order XXXVII: Defendant must show 'triable issue' — a genuine defense on facts — to get leave to defend in summary suits.",
+    analysis:"The Supreme Court laid down clear standards: (1) If defendant raises a triable issue of fact on affidavit — unconditional leave to defend. (2) If defense is shadowy or illusory — no leave. (3) If defense raises some question of law — conditional leave (deposit some money). The purpose of Order XXXVII is quick recovery for commercial document holders. Defendant must go beyond assertion — must show specific facts constituting a genuine defense.",
+    conclusion:"Triable issue = genuine defense with specific facts. Assertion alone insufficient. Court may impose conditions (deposit) when defense is weakly made out.",
+  },
+  {
+    name:"Hriday Nath Roy v. Ram Chandra (1920) ILR 47 Cal 670",
+    topic:"Jurisdiction — Void vs Voidable Decree", stars:4,
+    exam:false,
+    facts:"A court that lacked jurisdiction passed a decree. The question arose whether such decree was void or voidable and whether it could be challenged at any stage.",
+    issue:"What is the effect of a decree passed by a court without jurisdiction?",
+    rule:"A decree passed by a court lacking jurisdiction is a nullity — void ab initio.",
+    analysis:"A decree passed without jurisdiction is void (not voidable) and can be challenged at any time, anywhere, even in collateral proceedings. It need not be set aside through appeal — it has no legal effect from the moment it was passed. This is because jurisdiction is the foundation of judicial authority. Without jurisdiction, there is no court, there is no decree.",
+    conclusion:"No jurisdiction = Void decree. Can be challenged at any time in any proceedings. Need not be appealed. Fundamentally different from an erroneous decree (which is voidable, not void).",
+  },
+  {
+    name:"Liverpool & London SP v. MV Sea Success I (2004) 9 SCC 512",
+    topic:"Rejection of Plaint — Order VII Rule 11", stars:4,
+    exam:false,
+    facts:"An application for rejection of plaint was filed arguing that no cause of action was disclosed. The court had to determine the approach for examining whether cause of action is disclosed.",
+    issue:"What is the approach courts should take when examining whether a plaint discloses a cause of action for purposes of rejection?",
+    rule:"Order VII Rule 11(a): Court shall reject plaint if it does not disclose cause of action.",
+    analysis:"The Supreme Court held that while examining whether a plaint discloses cause of action, the court must: (1) Read the plaint as a whole, charitably (2) Accept the averments as true for this limited purpose (3) Not look at the defence or potential defence (4) Only if it is beyond doubt that no cause of action exists should rejection be ordered. The plaint must be read benevolently — rejection should be the exception.",
+    conclusion:"Plaint must be read as a whole and charitably. Court cannot look at defence at this stage. Rejection only when it is beyond doubt that no cause of action exists.",
+  },
+  {
+    name:"Official Trustee v. Sachindra Nath (1969) 1 SCC 1",
+    topic:"Jurisdiction Objection — Section 21 Waiver", stars:3,
+    exam:false,
+    facts:"A party objected to the court's territorial jurisdiction mid-trial, having not raised it at the earliest stage. The question was whether the objection could be raised belatedly.",
+    issue:"Can a party raise an objection to territorial or pecuniary jurisdiction of a court after trial has progressed without raising it earlier?",
+    rule:"Section 21: No objection to place of suing shall be allowed by appellate court unless such objection was taken in trial court at the earliest possible opportunity.",
+    analysis:"The Supreme Court held that territorial and pecuniary jurisdiction objections are waivable. A party who does not raise the objection at the earliest opportunity waives it. This is different from subject-matter jurisdiction which goes to the root of the court's authority and can never be waived.",
+    conclusion:"Territorial and pecuniary jurisdiction objections must be raised at earliest opportunity or waived. Subject-matter jurisdiction can never be waived — it is not curable.",
+  },
+];
+
+// ══ VIVA DATA ═══════════════════════════════════════════════════════════
+const VIVA_DATA = [
+  { cat:"Fundamental Concepts", qs:[
+    { q:"What is the difference between CPC and substantive law? Give an example.",
+      a:"CPC is adjective/procedural law — it prescribes the METHOD of enforcing rights. Substantive law creates the rights. Example: Indian Contract Act (substantive) creates the right to damages for breach. CPC tells you HOW to sue to enforce that right — which court, how to draft plaint, how to conduct trial, how to execute decree. The right exists without CPC; CPC is the machinery to enforce it." },
+    { q:"What is a 'cause of action'? Why is it important?",
+      a:"Cause of action = every fact that a plaintiff must prove to obtain the relief he seeks. It must be complete before filing suit. Importance: (1) Determines whether suit is maintainable (2) Determines limitation period (3) Determines territorial jurisdiction under Sec 20 (4) If cause of action is not disclosed in plaint, plaint is rejected under Order VII Rule 11(a). Without cause of action, there is no suit." },
+    { q:"Distinguish between a Decree and an Order.",
+      a:"DECREE (Sec 2(2)): Formal expression of adjudication in a SUIT that conclusively determines rights of parties regarding matter in controversy. Always appealable under Sec 96 or 100. Can be preliminary or final.\n\nORDER (Sec 2(14)): Formal expression of any decision of civil court other than a decree. Passed in any proceeding. Only appealable if specifically listed in Order XLIII. Cannot be preliminary and final.\n\nKey test: Decree = passed in a SUIT + conclusively determines rights. Order = everything else." },
+    { q:"What is a Preliminary Decree? Give three examples.",
+      a:"Preliminary Decree = A decree that does not completely dispose of the suit. It determines some rights but leaves final determination to a later date (final decree).\n\nExamples: (1) PARTITION SUIT — preliminary decree declares parties' shares. Final decree partitions the specific properties. (2) MORTGAGE SUIT — preliminary decree gives time to pay + declares amount due. Final decree orders sale if not paid. (3) PRE-EMPTION SUIT — preliminary decree grants right of pre-emption. Final decree specifies terms of purchase." },
+    { q:"What does 'lis pendens' mean? Which section codifies it?",
+      a:"Lis pendens (Transfer of Property during litigation): Once a suit is filed concerning immovable property, any transfer of that property by a party to the suit is subject to the outcome of the suit. The transferee takes the property with notice of the pending litigation.\n\nNot in CPC — Section 52 Transfer of Property Act codifies it. The purpose: prevents parties from defeating the decree by transferring property during trial. Any transfer does not affect the court's jurisdiction to deal with the property." },
+  ]},
+  { cat:"Jurisdiction Questions", qs:[
+    { q:"A suit is filed for recovery of ₹5 lakhs. The defendant claims the court has no pecuniary jurisdiction. The trial concludes. Can defendant raise jurisdiction on appeal?",
+      a:"PARTLY: Under Section 21 CPC, objection to PECUNIARY or TERRITORIAL jurisdiction must be raised at the earliest opportunity in the trial court. If not raised there, it cannot be raised on appeal UNLESS the appellate court is satisfied that the objection was raised before judgment at the earliest opportunity AND there has been a consequent failure of justice.\n\nSo: Defendant cannot ordinarily raise pecuniary jurisdiction on appeal if he didn't raise it at the earliest stage in trial court. HOWEVER: Subject-matter jurisdiction — if the suit is wholly outside civil court's jurisdiction — can be raised at any time including appeal, because it goes to the root of the court's authority." },
+    { q:"A contract is signed in Hyderabad. Goods are to be delivered in Mumbai. Non-delivery happens. Plaintiff is in Chennai. Where can the suit be filed?",
+      a:"Under Section 20 CPC — suits for breach of contract can be filed where: (a) Defendant resides or carries on business (b) Cause of action arises\n\nHere: Cause of action arises at both: Mumbai (where delivery was to happen — non-delivery happened there) AND Hyderabad (where contract was signed — breach of agreement).\n\nSo: Plaintiff can file in Hyderabad (contract signed — cause of action arose partly here) OR Mumbai (non-delivery — cause of action arose here).\n\nChennai: NOT competent — plaintiff's residence is irrelevant for jurisdiction under Sec 20." },
+    { q:"Can a Civil Court decide questions regarding religious rites? What about property rights of religious institutions?",
+      a:"KEY DISTINCTION: \n\nReligious rites/practices ONLY: Civil court cannot decide purely theological questions — which idol is genuine, which priest's ritual is correct, who is the true head of a religious institution on purely doctrinal grounds. These are impliedly barred under Sec 9.\n\nBUT property rights of religious institutions: Civil court CAN decide. If a math claims ownership of a piece of land, that is a property dispute of a civil nature. The religious character of the institution doesn't oust civil court jurisdiction.\n\nTest: What is the PRINCIPAL question? If it relates to civil rights/property = civil court has jurisdiction. If it's purely doctrinal/theological = impliedly barred." },
+  ]},
+  { cat:"Pleadings & Trial", qs:[
+    { q:"Your client is the defendant. The plaintiff in his plaint has stated that a meeting happened on 1st January. Your client says the meeting never happened. How do you draft the denial?",
+      a:"CORRECT DRAFTING: 'The defendant specifically denies that any meeting took place on 1st January 2024 or on any other date between the plaintiff and the defendant regarding the subject matter of this suit. The defendant states that he has never met the plaintiff in connection with the said matter and the plaintiff is put to strict proof thereof.'\n\nNOT ACCEPTABLE: 'Not admitted.' (Too vague)\n\nNOT ACCEPTABLE: 'Denied.' alone (No explanation)\n\nRule: Under Order VIII Rule 5 — specific denial must state what is denied and where possible state defendant's own version. Silence or vague non-admission = deemed admission." },
+    { q:"What is the difference between a Set-off and a Counter-claim?",
+      a:"SET-OFF (Order VIII Rule 6):\n• Only LIQUIDATED (ascertained/certain) amounts\n• Must be due from plaintiff to defendant\n• Same parties only — cannot add new parties\n• Dependent on plaintiff's suit — if suit fails, set-off also fails\n• Must be legally recoverable at the time of filing WS\n\nCOUNTER-CLAIM (Order VIII Rule 6A):\n• ANY relief — not limited to liquidated amounts\n• Can include any claim against plaintiff\n• Can add new parties to the proceedings\n• INDEPENDENT of plaintiff's suit — survives even if plaintiff's suit is withdrawn/dismissed\n• Treated as a plaint — court fee must be paid\n\nMemory: Set-off = SHIELD (defense). Counter-claim = SHIELD + SWORD (defense + attack)." },
+    { q:"At the stage of final arguments, you realize you forgot to examine a key witness. What are your options?",
+      a:"This is a very practical problem. Options:\n\n1. RECALL UNDER ORDER XVIII RULE 17: Apply to court for permission to recall any witness for the purpose of clarification. Courts may allow this, especially if evidence of the uncalled witness would genuinely assist the court.\n\n2. COURT ITSELF CAN CALL WITNESS: Under Order XVI Rule 14, the court has power to call and examine any person as its own witness. You can request the court to exercise this power in the interests of justice.\n\n3. ADDITIONAL EVIDENCE IN APPEAL: If the case goes to appeal, additional evidence can be led under Order XLI Rule 27 if: (a) Trial court wrongly refused evidence (b) Evidence was not available despite due diligence (c) Evidence is necessary for pronouncing judgment.\n\nBut: The best practice is to NEVER reach this stage. Prepare witness list carefully before trial begins." },
+    { q:"A decree is passed. The judgment-debtor has no known property in India but holds a foreign bank account. Can the decree be executed?",
+      a:"This is a complex practical question:\n\n1. DIRECT ATTACHMENT: Indian courts cannot directly attach a foreign bank account. Indian execution jurisdiction is limited to India.\n\n2. RECIPROCATING TERRITORIES: Under Sec 44A CPC, if the foreign country is a 'reciprocating territory' (UK, Singapore, UAE, etc.) — the Indian decree can be sent there for execution as if it were a local decree.\n\n3. FRESH SUIT IN FOREIGN COUNTRY: File a fresh suit based on the Indian decree in the foreign country where the assets are. The Indian decree is used as cause of action (not res judicata).\n\n4. PROPERTY IN INDIA: Check all sources — PAN card transactions, property registrations, vehicle registrations, company directorships (ROC filings).\n\n5. ARREST: If judgment-debtor is present in India, consider arrest and detention in civil prison under Sec 51 — this creates pressure to pay." },
+  ]},
+  { cat:"Injunctions & Execution", qs:[
+    { q:"Your client's neighbour started construction on disputed land. The neighbour is working at night. How do you get urgent relief?",
+      a:"STEP 1: File suit for declaration of title and permanent injunction.\n\nSTEP 2: Along with the suit, file APPLICATION under Order XXXIX Rule 1&2 for temporary injunction.\n\nSTEP 3: Since construction is ongoing (urgent), also apply under Order XXXIX Rule 3 for EX-PARTE injunction WITHOUT NOTICE to defendant — argue that notice itself would defeat the purpose (defendant could complete construction before notice is served).\n\nIN YOUR APPLICATION, establish all 3 conditions:\n• Prima facie case: Show title documents, ownership claim\n• Balance of convenience: Construction ongoing, will cause irreparable damage, defendant can always demolish if he ultimately wins\n• Irreparable injury: Once construction is complete, it cannot be undone by money alone\n\nCourt can grant ex-parte injunction the same day. Defendant is then given notice and opportunity to be heard within a few days (Order XXXIX Rule 3 proviso)." },
+    { q:"An ex-parte decree was passed against your client (defendant) as he couldn't appear. What are his remedies?",
+      a:"Multiple remedies are available:\n\n1. ORDER IX RULE 13 — SET ASIDE EX-PARTE DECREE: Application to the same court within 30 days. Must show sufficient cause for non-appearance. If service was not properly effected — decree CAN be set aside as of right. If properly served but valid reason for absence — discretionary.\n\n2. APPEAL UNDER SEC 96: Against the ex-parte decree itself. Can challenge both facts and law. File within limitation.\n\n3. REVIEW UNDER SEC 114/ORDER XLVII: To the same court — if there is an error apparent on face of record or new evidence discovered.\n\n4. REVISION UNDER SEC 115: If trial court committed jurisdictional error in passing ex-parte decree.\n\nBest option: Order IX Rule 13 is fastest — specifically designed for ex-parte decrees. But: if it is denied, appeal is still available against the decree (Sec 96)." },
+  ]},
+  { cat:"Landmark Case Applications", qs:[
+    { q:"In the Katiji case, what are the 4 key principles for condonation of delay? Apply them to a situation where the Government delays filing appeal by 6 months.",
+      a:"KATIJI PRINCIPLES:\n1. Courts should not be hyper-technical when sufficient cause is shown\n2. The word 'sufficient' in Sec 5 must be liberally construed to advance substantial justice\n3. If the case has merit, lean towards condoning delay\n4. The litigant should not be made to suffer for counsel's mistake\n\nAPPLICATION TO GOVERNMENT DELAY:\nGovernment regularly gets benefit of these principles because:\n(a) Government files appeals after obtaining departmental sanction — this bureaucratic process takes time\n(b) Government cannot ignore a legal defeat without proper examination\n(c) Litigants on the other side rarely suffer irreparable prejudice from a few months' delay\n\nHOWEVER: Government cannot take its own inefficiency for granted. The SC in Union of India v. Varindera Construction held that the same principles apply to government as to private parties — the delay must be satisfactorily explained. Length of delay matters — 6 months needs a stronger reason than 6 days." },
+    { q:"In the Pankajakshi case (5-judge bench), what is a 'Substantial Question of Law'? Give 3 examples of what qualifies and 3 of what doesn't.",
+      a:"SUBSTANTIAL QUESTION OF LAW: A question that: (1) Involves determination of a question of law (2) Has material bearing on the case — not merely academic (3) Is not already settled by a SC binding precedent (4) Requires fresh interpretation\n\nQUALIFIES as SQoL:\n1. Whether a particular transaction is a lease or license — involves legal interpretation with material effect\n2. Whether a statute applies retrospectively to pending proceedings — pure law question with large impact\n3. Whether a specific limitation provision excludes certain types of claims — statutory interpretation\n\nDOES NOT QUALIFY:\n1. 'The two courts below were wrong about who signed the document' — pure factual dispute\n2. 'The witness was not credible' — factual, credibility assessment\n3. 'The lower courts gave more weight to Document A than Document B' — weight of evidence = fact, not law" },
+  ]},
+  { cat:"Moot Court Scenarios", qs:[
+    { q:"You are appearing for the Respondent in a second appeal. Appellant argues that the trial court and first appellate court both erred in relying on unregistered documents. What is your counter-argument?",
+      a:"COUNTER-ARGUMENT FOR RESPONDENT:\n\n1. CONCURRENT FINDINGS: Two courts below have concurrently found in favour of the Respondent. Under Sec 100, these concurrent findings of fact can only be disturbed if they are perverse (against evidence) or based on no evidence. The Appellant has not shown this.\n\n2. NOT A SUBSTANTIAL QUESTION OF LAW: The admissibility and evidentiary value of unregistered documents is a WELL SETTLED question of law (governed by Registration Act and Evidence Act). It is not a fresh/unsettled question. Without an unsettled SQoL, the second appeal is not maintainable.\n\n3. PANKAJAKSHI 5-JUDGE BENCH BINDING: Even if this were an SQoL, the HC must formulate it precisely at the admission stage under Sec 100(4). If it was not formulated at admission, the HC cannot deal with it now.\n\n4. ON MERITS: Even if unregistered documents are ignored — consider what other evidence supports the judgment. If the decision stands on other evidence — the Appellant has not shown how ignoring those documents changes the result." },
+    { q:"Your senior asks you: 'Can we use Sec 151 CPC to set aside a consent decree?' What do you say?",
+      a:"This is a subtle and important question.\n\nSEC 151: Courts have inherent powers to make orders necessary to prevent abuse of process or to secure ends of justice.\n\nGENERAL RULE: A consent decree (passed with parties' agreement) is generally FINAL and NOT appealable under Sec 96(3). It cannot be set aside through ordinary remedies.\n\nBUT: Section 151 CAN be used to set aside a consent decree if:\n(a) Consent was obtained by FRAUD — the party deceived into consent\n(b) COERCION — consent was not free\n(c) MISTAKE — mutual mistake about a fundamental fact\n(d) MISREPRESENTATION — false representation induced the consent\n\nIMPORTANT LIMIT: Sec 151 cannot be used to override an explicit provision of CPC. It fills gaps — it does not override. So you cannot use Sec 151 to bypass the appeal provisions or give a court jurisdiction it does not have.\n\nBOTTOM LINE: Consent decree can be challenged under Sec 151 but ONLY on grounds that vitiate consent (fraud, coercion, mistake). Not for a change of mind or because the party now thinks the terms were unfair." },
+  ]},
+];
+
+// ══ DISTINCTIONS DATA ═══════════════════════════════════════════════════
+const DIST_DATA = [
+  {
+    title:"Decree vs Order",
+    headers:["DECREE","ORDER"],
+    rows:[
+      ["Passed in a SUIT","Passed in any proceeding"],
+      ["Sec 2(2) CPC defines it","Sec 2(14) CPC defines it"],
+      ["Conclusively determines rights","May or may not determine rights finally"],
+      ["Always appealable (Sec 96/100)","Appealable only if listed in Order XLIII"],
+      ["Can be preliminary or final","No such classification"],
+      ["Example: Judgment for plaintiff in money suit","Example: Order allowing amendment of pleading"],
+    ]
+  },
+  {
+    title:"Res Judicata (Sec 11) vs Sub Judice (Sec 10)",
+    headers:["RES JUDICATA","SUB JUDICE"],
+    rows:[
+      ["Matter already DECIDED","Matter still PENDING"],
+      ["Bars the SUBSEQUENT suit completely","STAYS the subsequent suit temporarily"],
+      ["Section 11 CPC","Section 10 CPC"],
+      ["Effect is permanent","Effect is temporary — stays till first suit decided"],
+      ["Earlier suit must be decided","Earlier suit must be pending"],
+      ["Satyadhyan Ghosal case","Indian Bank v. Maharashtra State Coop case"],
+    ]
+  },
+  {
+    title:"Set-Off vs Counter-Claim",
+    headers:["SET-OFF (O.VIII R.6)","COUNTER-CLAIM (O.VIII R.6A)"],
+    rows:[
+      ["Only LIQUIDATED amounts","Any relief — liquidated or unliquidated"],
+      ["Same parties only","Can include third parties"],
+      ["Depends on plaintiff's suit","INDEPENDENT — survives withdrawal of plaintiff's suit"],
+      ["No separate court fee","Treated as a plaint — court fee payable"],
+      ["Works as a DEFENSE only","Works as both defense and attack"],
+      ["Amount must be ascertained","Amount need not be precisely ascertained"],
+    ]
+  },
+  {
+    title:"Return vs Rejection of Plaint",
+    headers:["RETURN (O.VII R.10)","REJECTION (O.VII R.11)"],
+    rows:[
+      ["Court has no TERRITORIAL JURISDICTION","4 specific grounds: COA, valuation, court fee, barred by law"],
+      ["Plaint returned to plaintiff to present to correct court","Plaint rejected — fresh filing possible after curing defect"],
+      ["Plaintiff can refile immediately in correct court","Plaintiff must cure the defect before refiling"],
+      ["Merit of the case is not examined","Merits not examined — only threshold check"],
+      ["No res judicata effect","No res judicata effect"],
+      ["Limitation continues to run","Limitation continues to run"],
+    ]
+  },
+  {
+    title:"First Appeal (Sec 96) vs Second Appeal (Sec 100) vs Revision (Sec 115)",
+    headers:["FIRST APPEAL","SECOND APPEAL","REVISION"],
+    rows:[
+      ["Against original decree","Against appellate decree","Against any order with jurisdiction error"],
+      ["Facts AND Law","ONLY SQoL","Only jurisdictional errors"],
+      ["To District Court or HC","To High Court only","To High Court only"],
+      ["Fresh appreciation of facts","Cannot re-examine facts","Cannot re-examine facts or law on merits"],
+      ["30 or 90 days limitation","90 days limitation","No limitation — within reasonable time"],
+      ["Right of appeal","Not a third appeal — only law","Not an appeal — supervisory jurisdiction"],
+    ]
+  },
+  {
+    title:"Temporary vs Permanent Injunction",
+    headers:["TEMPORARY INJUNCTION","PERMANENT INJUNCTION"],
+    rows:[
+      ["Granted during trial — pendente lite","Granted as final relief at conclusion of trial"],
+      ["Order XXXIX Rules 1 & 2","Section 38 Specific Relief Act"],
+      ["3 conditions: PBI","Merits of case fully determined"],
+      ["Can be vacated, modified anytime","Final — can only be challenged by appeal"],
+      ["Purpose: Preserve status quo","Purpose: Final protection of right"],
+      ["Can be ex-parte in urgent cases","Never ex-parte — full trial precedes it"],
+    ]
+  },
+  {
+    title:"Execution vs Attachment",
+    headers:["EXECUTION","ATTACHMENT"],
+    rows:[
+      ["Entire process of enforcing decree","One specific mode of execution"],
+      ["Includes delivery, arrest, appointment of receiver, etc.","Specifically means prohibiting alienation of property"],
+      ["Broader concept — the whole mechanism","Narrower — one step in execution"],
+      ["Sec 36-74 and Order XXI","Order XXI Rules 41-57"],
+      ["Application for execution initiates the process","Attachment follows after execution application"],
+      ["12 years limitation (Article 136)","No separate limitation — part of execution"],
+    ]
+  },
+];
+
+// ══ QUIZ DATA ════════════════════════════════════════════════════════════
+const QUIZ_DATA = [
+  {
+    scenario:"Ramaiah filed a suit against the State Government for compensation for loss caused due to road accident. He did not send any notice under Sec 80 CPC before filing.",
+    q:"What will happen to Ramaiah's suit?",
+    opts:["Suit will be stayed for 2 months","Suit must be dismissed as it is not maintainable without notice","Court can convert the suit into a petition","Court will overlook the requirement as it is directory"],
+    ans:1,
+    exp:"Section 80 notice is MANDATORY before suing the Government. The word 'shall' in Sec 80 makes it mandatory (not directory). Bihari Chowdhary v. State of Bihar (1984 SC) confirmed this. The suit must be dismissed. Ramaiah can give fresh notice and refile within limitation period."
+  },
+  {
+    scenario:"In a property suit, a finding was given in 2020 that Suresh had no title to Plot No. 123. In 2024, Suresh files a fresh suit claiming the same Plot No. 123 is his — but this time using a different document as evidence.",
+    q:"What is the most important legal bar Suresh faces?",
+    opts:["The suit is time-barred","Res Judicata bars the fresh suit","He can file as new evidence makes it different","Sub Judice will stay the suit"],
+    ans:1,
+    exp:"Res Judicata (Section 11 CPC) bars the fresh suit. The MATTER (title to Plot 123 as between the same parties) was directly and substantially in issue in the 2020 suit and was finally decided. The fact that new evidence is available doesn't help — constructive res judicata means all evidence and arguments that could have been raised should have been raised. Satyadhyan Ghosal case: once decided, cannot be re-litigated."
+  },
+  {
+    scenario:"Lalitha filed a suit for partition of the family house. The trial court passed a decree declaring her share as 1/3rd but left the actual division of specific portions to be decided later.",
+    q:"What type of decree has the trial court passed?",
+    opts:["Final Decree","Preliminary Decree","Ex-parte Decree","Consent Decree"],
+    ans:1,
+    exp:"This is a PRELIMINARY DECREE. In partition suits, the trial court first passes a preliminary decree declaring the parties' SHARES (1/3rd here). The specific partition of properties — who gets which room, which portion — is done by a final decree later (after a Commissioner surveys and divides). The suit is not completely disposed of by the preliminary decree."
+  },
+  {
+    scenario:"Kalyan's advocate did not file the written statement within 90 days because he was working on another case. He now wants to file it on day 95.",
+    q:"What is the correct legal position?",
+    opts:["Court can extend the time as it has inherent powers","Court cannot extend beyond 90 days even for sufficient cause","Defendant forfeits right to file WS and case proceeds without it","The 90-day limit is only directory — court can allow at any time"],
+    ans:2,
+    exp:"Post-Salem Bar Association case, the 90-day outer limit for filing Written Statement is MANDATORY. The court CANNOT extend beyond 90 days even for sufficient cause. If not filed within 90 days, the defendant loses the right to file WS and the trial proceeds without it. The court has discretion only between 30 and 90 days — not beyond 90. Order VIII Rule 1 is strict on this."
+  },
+  {
+    scenario:"You apply for an urgent temporary injunction to stop construction on disputed land. The defendant argues: 'Even if I am wrong about ownership, money can fully compensate the plaintiff. Injunction should not be granted.'",
+    q:"If this argument is accepted, which condition for injunction fails?",
+    opts:["Prima facie case","Balance of convenience","Irreparable injury","All three conditions fail simultaneously"],
+    ans:2,
+    exp:"IRREPARABLE INJURY fails. This condition requires that the harm cannot be adequately compensated by money. If the defendant is correct that money can fully compensate — then this condition is not satisfied. Gujarat Bottling v. Coca Cola (1995 SC): In commercial disputes, if loss is calculable and compensable in money, irreparable injury is not established. Without this condition, injunction cannot be granted even if the other two conditions are met (Dalpat Kumar case — all 3 mandatory)."
+  },
+  {
+    scenario:"A High Court in second appeal under Sec 100 CPC says: 'We disagree with the trial court's finding that the defendant signed the document. We think the plaintiff signed it. We therefore reverse the decree.'",
+    q:"Is the High Court correct?",
+    opts:["Yes — High Court can re-examine all evidence in second appeal","No — HC cannot re-examine questions of FACT in second appeal","Yes — but only if there is a substantial question of fact","No — second appeal only lies to Supreme Court"],
+    ans:1,
+    exp:"The HC is WRONG. Under Section 100 CPC (as confirmed by Pankajakshi v. Chandrika — 5-judge bench), second appeal lies ONLY on a Substantial Question of LAW. HC cannot re-examine or re-appreciate questions of FACT. 'Who signed the document' is a pure question of FACT determined by evidence — not a SQoL. The HC's reversal based on factual re-appreciation is legally wrong and would be overturned by SC."
+  },
+  {
+    scenario:"While writing the defendant's written statement, you notice that your client is actually owed ₹2 lakhs by the plaintiff — the exact amount the plaintiff is suing for. What can you do?",
+    q:"What is the most powerful legal tool available to the defendant?",
+    opts:["File a separate suit to recover the ₹2 lakhs","Plead set-off under Order VIII Rule 6","Plead counter-claim under Order VIII Rule 6A","Both set-off and counter-claim are equally available and equally powerful"],
+    ans:1,
+    exp:"SET-OFF under Order VIII Rule 6 is the RIGHT answer here because the ₹2 lakhs is a LIQUIDATED (ascertained) amount and it is due from the plaintiff to the defendant. Set-off means even if plaintiff proves his case, the defendant's debt is set off against the decree, reducing or nullifying what plaintiff can recover. Counter-claim (Rule 6A) is available too but requires court fee payment. For a liquidated amount matching the plaintiff's claim, set-off is simpler and more powerful as a defense."
+  },
+  {
+    scenario:"A decree-holder wants to execute a money decree against a school teacher. The teacher earns ₹40,000/month. The decree-holder wants to attach the entire salary.",
+    q:"What legal protection does the teacher have?",
+    opts:["Full salary can be attached — no protection","Only 2/3rds of salary can be attached, 1/3rd is exempt under Sec 60","Salary cannot be attached at all in execution","Only 50% can be attached"],
+    ans:1,
+    exp:"Section 60 CPC: The wages and salary of a government servant or other employee is attachable BUT with a protection: the first ₹1000 per month is completely exempt. Beyond that, 2/3rds of the balance is exempt. So only 1/3rd of salary above ₹1000 can be attached. For ₹40,000 salary: ₹1000 exempt. Remaining ₹39,000 × 1/3 = ₹13,000 can be attached. Section 60 lists many categories of exempt property to protect basic dignified living."
+  },
+];
+
+// ══ RENDER FUNCTIONS ══════════════════════════════════════════════════
+function renderFlow() {
+  const c = document.getElementById('flowPage');
+  let h = `<div class="section-hd">Complete Lifecycle of a Civil Suit</div>`;
+  FLOW_STEPS.forEach(s => {
+    h += `<div class="flow-step">
+      <div class="flow-header" onclick="toggleEl('fs${s.num}','fc${s.num}')">
+        <div class="flow-num">${s.num}</div>
+        <div class="flow-header-text">
+          <div class="flow-title">${s.title}</div>
+          <div class="flow-sec">${s.sec}</div>
+        </div>
+        <div class="flow-chevron" id="fc${s.num}">▼</div>
+      </div>
+      <div class="flow-body" id="fs${s.num}">
+        <div class="step-grid">
+          ${s.steps.map(st => `<div class="step-item"><div class="step-dot"></div><div class="step-text">${st}</div></div>`).join('')}
+        </div>
+        <div class="practical-box">
+          <div class="practical-label">⚖️ In Practice</div>
+          <div class="practical-text">${s.practical}</div>
+        </div>
+        <div class="trap-box">
+          <div class="trap-label">⚠️ Common Trap / Mistake</div>
+          <div class="trap-text">${s.trap}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  c.innerHTML = h;
+}
+
+function renderSections() {
+  const c = document.getElementById('sectionsPage');
+  let h = `<div class="section-hd">Key Sections — Policy, Plain English & Connections</div>`;
+  SECTIONS_DATA.forEach(s => {
+    h += `<div class="sec-card">
+      <div class="sec-header" onclick="toggleEl('sd${s.sec.replace(/\s/g,'')}','sc${s.sec.replace(/\s/g,'')}')">
+        <div class="sec-num">${s.sec}</div>
+        <div style="flex:1"><div class="sec-title">${s.title}</div><div class="sec-stars">${'⭐'.repeat(s.stars)}</div></div>
+        <div class="sec-chevron" id="sc${s.sec.replace(/\s/g,'')}">▼</div>
+      </div>
+      <div class="sec-body" id="sd${s.sec.replace(/\s/g,'')}">
+        <div class="sec-plain">${s.plain}</div>
+        <div class="policy-box">
+          <div class="policy-label">🏛️ Policy Behind This Section</div>
+          <div class="policy-text">${s.policy}</div>
+        </div>
+        <div class="connect-box" style="margin-top:8px">
+          <div class="connect-label">🔗 Connects To</div>
+          <div class="connect-text">${s.connect}</div>
+        </div>
+        <div style="background:var(--rose-bg);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:10px 12px;margin-top:8px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:4px">⚡ Key Exam/Viva Point</div>
+          <div style="font-size:12px;color:#7F1D1D;line-height:1.6">${s.key}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  c.innerHTML = h;
+}
+
+function renderCases() {
+  const c = document.getElementById('casesPage');
+  const fivestar = CASES_DATA.filter(x => x.stars === 5);
+  const fourstar = CASES_DATA.filter(x => x.stars === 4);
+  const threestar = CASES_DATA.filter(x => x.stars === 3);
+
+  function renderGroup(cases, label) {
+    if (!cases.length) return '';
+    let h = `<div class="section-hd">${label}</div>`;
+    cases.forEach((cs, i) => {
+      const id = 'cs' + i + cs.stars;
+      h += `<div class="case-card">
+        <div class="case-header" onclick="toggleEl('cb${id}','cc${id}')">
+          <div class="case-stars">${'⭐'.repeat(cs.stars)}</div>
+          <div style="flex:1">
+            <div class="case-name">${cs.name}${cs.exam ? '<span class="exam-tag">EXAM FAVOURITE</span>' : ''}</div>
+            <div class="case-topic">${cs.topic}</div>
+          </div>
+          <div class="case-chev" id="cc${id}">▼</div>
+        </div>
+        <div class="case-body" id="cb${id}">
+          <div class="firac-row"><span class="firac-label fl-f">Facts</span><div class="firac-text">${cs.facts}</div></div>
+          <div class="firac-row"><span class="firac-label fl-i">Issue</span><div class="firac-text">${cs.issue}</div></div>
+          <div class="firac-row"><span class="firac-label fl-r">Rule</span><div class="firac-text">${cs.rule}</div></div>
+          <div class="firac-row"><span class="firac-label fl-a">Analysis</span><div class="firac-text">${cs.analysis}</div></div>
+          <div class="firac-row"><span class="firac-label fl-c">Conclusion</span><div class="firac-text">${cs.conclusion}</div></div>
+        </div>
+      </div>`;
+    });
+    return h;
+  }
+
+  c.innerHTML = renderGroup(fivestar, '⭐⭐⭐⭐⭐ Must Know — Exam Favourites') +
+                renderGroup(fourstar, '⭐⭐⭐⭐ Important — Frequently Asked') +
+                renderGroup(threestar, '⭐⭐⭐ Know Well');
+}
+
+function renderViva() {
+  const c = document.getElementById('vivaPage');
+  let h = '';
+  VIVA_DATA.forEach((cat, ci) => {
+    h += `<div class="viva-cat">${cat.cat}</div>`;
+    cat.qs.forEach((q, qi) => {
+      const id = `v${ci}${qi}`;
+      h += `<div class="viva-card">
+        <div class="viva-q" onclick="toggleViva('${id}')">
+          <span class="viva-q-num">Q${qi+1}</span>
+          <span>${q.q}</span>
+        </div>
+        <div class="viva-a" id="${id}">${q.a.replace(/\n/g,'<br>')}</div>
+      </div>`;
+    });
+  });
+  c.innerHTML = h;
+}
+
+function toggleViva(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+
+function renderDist() {
+  const c = document.getElementById('distPage');
+  let h = '';
+  DIST_DATA.forEach(d => {
+    h += `<div class="dist-card">
+      <div class="dist-title">${d.title}</div>
+      <div class="dist-hdr">
+        <div class="dist-hdr-col">${d.headers[0]}</div>
+        <div class="dist-hdr-col">${d.headers[1]}</div>
+      </div>
+      ${d.rows.map(r => `<div class="dist-row"><div class="dist-col">${r[0]}</div><div class="dist-col">${r[1]}</div></div>`).join('')}
+    </div>`;
+  });
+  c.innerHTML = h;
+}
+
+let currentQ=0, score=0, answered=false;
+function renderQuiz() {
+  const c = document.getElementById('quizPage');
+  if (currentQ >= QUIZ_DATA.length) {
+    c.innerHTML = `<div class="quiz-score"><div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:4px">Your Score</div><div class="quiz-score-num">${score}/${QUIZ_DATA.length}</div><div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:4px">${score>=6?'🎉 Excellent!':'📚 Review the explanations!'}</div><button onclick="restartQuiz()" style="margin-top:16px;background:var(--violet);color:white;border:none;padding:12px 24px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;">Try Again</button></div>`;
+    return;
+  }
+  const q = QUIZ_DATA[currentQ];
+  answered = false;
+  c.innerHTML = `<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Q${currentQ+1}/${QUIZ_DATA.length} · Score: ${score}</div>
+  <div class="quiz-card">
+    ${q.scenario ? `<div class="quiz-scenario">📋 Scenario: ${q.scenario}</div>` : ''}
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerQ(${i})" id="qo${i}">${o}</button>`).join('')}</div>
+    <div class="quiz-exp" id="qexp">${q.exp}</div>
+    <button class="quiz-next" id="qnext" onclick="nextQ()">Next Question →</button>
+  </div>`;
+}
+
+function answerQ(idx) {
+  if (answered) return;
+  answered = true;
+  const q = QUIZ_DATA[currentQ];
+  document.querySelectorAll('.quiz-opt').forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx && idx !== q.ans) b.classList.add('wrong');
+  });
+  if (idx === q.ans) score++;
+  document.getElementById('qexp').classList.add('show');
+  document.getElementById('qnext').classList.add('show');
+}
+
+function nextQ() { currentQ++; renderQuiz(); }
+function restartQuiz() { currentQ = 0; score = 0; renderQuiz(); }
+
+function toggleEl(bodyId, chevId) {
+  const b = document.getElementById(bodyId);
+  const ch = document.getElementById(chevId);
+  if (!b) return;
+  const isOpen = b.classList.contains('open');
+  b.classList.toggle('open', !isOpen);
+  if (ch) ch.classList.toggle('open', !isOpen);
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'quiz' && currentQ === 0 && score === 0) renderQuiz();
+}
+
+// Init
+renderFlow();
+renderSections();
+renderCases();
+renderViva();
+renderDist();
+setTimeout(() => toggleEl('fs1','fc1'), 100);
+</script>
+</body>
+</html>
