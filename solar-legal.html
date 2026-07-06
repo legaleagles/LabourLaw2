@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Legal Entitlement & Savings Calculator | LawSticker AI</title>
+<meta name="description" content="Know your legal rights before going solar. PM Surya Ghar subsidy calculator, DISCOM net metering rights, vendor comparison checklist and negotiation tips — free.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
+  --muted:#6B7280;--light:#E5E7EB;--border:#D1D5DB;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+  --jade:#059669;--jade-bg:#ECFDF5;--jade-border:#A7F3D0;
+  --amber:#D97706;--amber-bg:#FFFBEB;--amber-border:#FDE68A;
+  --sky:#0EA5E9;--sky-bg:#F0F9FF;--sky-border:#BAE6FD;
+  --rose:#DC2626;--rose-bg:#FEF2F2;--rose-border:#FECACA;
+  --solar:#F59E0B;--solar-bg:#FFFBEB;--solar-d:#B45309;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:flex;flex-direction:column;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);}
+
+.hero{background:linear-gradient(145deg,#0a0f00,#1a2200,#0f1800);padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'☀';position:absolute;right:-10px;top:-10px;font-size:180px;opacity:.06;pointer-events:none;}
+.hero-eye{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(245,158,11,.7);margin-bottom:8px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;color:white;margin-bottom:6px;line-height:1.2;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;max-width:460px;margin:0 auto;}
+
+.page{max-width:680px;margin:0 auto;padding:16px 14px 80px;}
+.section-hd{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:20px 4px 12px;display:flex;align-items:center;gap:10px;}
+.section-hd::after{content:'';flex:1;height:1px;background:var(--light);}
+
+/* TAB PILLS */
+.tab-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:12px 14px 0;background:#fff;border-bottom:1px solid var(--light);position:sticky;top:52px;z-index:50;}
+.tab-row::-webkit-scrollbar{display:none;}
+.tab-pill{padding:8px 16px;border-radius:10px 10px 0 0;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border:none;font-family:inherit;background:transparent;color:var(--muted);border-bottom:3px solid transparent;transition:all .2s;}
+.tab-pill.active{color:var(--solar-d);border-bottom-color:var(--solar);background:var(--solar-bg);}
+
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+/* FORM */
+.calc-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.calc-title{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.field select,.field input{padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;color:var(--ink);background:#fff;outline:none;transition:border-color .2s;width:100%;}
+.field select:focus,.field input:focus{border-color:var(--solar);}
+.field .hint{font-size:10px;color:var(--muted);margin-top:2px;}
+
+.calc-btn{width:100%;padding:14px;background:linear-gradient(135deg,#F59E0B,#D97706);color:white;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-top:14px;transition:all .2s;letter-spacing:.3px;}
+.calc-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+
+/* RESULTS */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.result-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;text-align:center;}
+.result-icon{font-size:24px;margin-bottom:6px;}
+.result-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--solar-d);margin-bottom:2px;}
+.result-label{font-size:11px;color:var(--muted);font-weight:600;line-height:1.4;}
+.result-card.highlight{background:linear-gradient(135deg,var(--jade-bg),#F0FDF8);border-color:var(--jade-border);}
+.result-card.highlight .result-val{color:var(--jade);}
+.result-card.legal{background:linear-gradient(135deg,var(--gold-pale),#FFFBF0);border-color:rgba(201,162,39,.3);}
+.result-card.legal .result-val{color:var(--gold-d);}
+
+.breakdown-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+.breakdown-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--light);font-size:13px;}
+.breakdown-row:last-child{border-bottom:none;font-weight:700;color:var(--jade);}
+.breakdown-key{color:var(--ink2);}
+.breakdown-val{font-weight:700;color:var(--ink);}
+
+/* LEGAL RIGHTS BOX */
+.legal-box{background:linear-gradient(135deg,var(--gold-pale),#FFFBF0);border:1.5px solid rgba(201,162,39,.3);border-radius:14px;padding:16px;margin-bottom:12px;}
+.legal-box-title{font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
+.legal-right{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.legal-right:last-child{margin-bottom:0;}
+.legal-num{width:22px;height:22px;border-radius:50%;background:var(--gold);color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.legal-text{font-size:12px;color:#5C4A0D;line-height:1.65;}
+.legal-text strong{color:var(--gold-d);}
+
+/* REMEDY BOX */
+.remedy-box{background:var(--rose-bg);border:1.5px solid var(--rose-border);border-radius:14px;padding:14px;margin-bottom:12px;}
+.remedy-title{font-size:12px;font-weight:800;color:var(--rose);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.remedy-step{font-size:12px;color:#7F1D1D;line-height:1.65;margin-bottom:5px;padding-left:16px;position:relative;}
+.remedy-step::before{content:'→';position:absolute;left:0;color:var(--rose);font-weight:800;}
+
+/* CHECKLIST */
+.checklist-section{margin-bottom:16px;}
+.checklist-cat{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:8px;padding:8px 12px;background:var(--navy);color:var(--gold-l);border-radius:8px;}
+.check-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:6px;cursor:pointer;transition:all .2s;}
+.check-item:hover{border-color:var(--solar);background:var(--solar-bg);}
+.check-item.checked{border-color:var(--jade);background:var(--jade-bg);}
+.check-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;}
+.check-item.checked .check-box{background:var(--jade);border-color:var(--jade);}
+.check-tick{color:white;font-size:12px;font-weight:800;display:none;}
+.check-item.checked .check-tick{display:block;}
+.check-body{flex:1;}
+.check-q{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;line-height:1.45;}
+.check-item.checked .check-q{color:var(--jade);}
+.check-tip{font-size:11px;color:var(--muted);line-height:1.55;}
+.check-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;margin-bottom:4px;}
+.tag-legal{background:#FEF3C7;color:#92400E;}
+.tag-financial{background:#DBEAFE;color:#1E40AF;}
+.tag-technical{background:#D1FAE5;color:#065F46;}
+.tag-negotiation{background:#EDE9FE;color:#5B21B6;}
+
+/* CHECKLIST SCORE */
+.score-bar-wrap{background:var(--light);border-radius:20px;height:8px;margin-bottom:6px;overflow:hidden;}
+.score-bar{height:8px;border-radius:20px;background:linear-gradient(90deg,var(--jade),var(--sky));transition:width .5s ease;}
+.score-text{font-size:12px;color:var(--muted);font-weight:600;}
+
+/* NEGOTIATION TIPS */
+.tip-card{background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.tip-header{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;cursor:pointer;}
+.tip-icon{font-size:24px;flex-shrink:0;}
+.tip-title{font-size:14px;font-weight:700;color:var(--ink);flex:1;line-height:1.35;}
+.tip-chev{font-size:14px;color:var(--muted);transition:transform .3s;flex-shrink:0;margin-top:2px;}
+.tip-chev.open{transform:rotate(180deg);}
+.tip-body{display:none;border-top:1px solid var(--light);padding:14px 16px;}
+.tip-body.open{display:block;}
+.tip-point{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:6px;padding-left:14px;position:relative;}
+.tip-point::before{content:'•';position:absolute;left:0;color:var(--solar);font-weight:800;}
+.tip-warning{background:var(--rose-bg);border:1px solid var(--rose-border);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#7F1D1D;line-height:1.6;}
+.tip-law{background:var(--gold-pale);border:1px solid rgba(201,162,39,.25);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--gold-d);line-height:1.6;}
+
+/* SHARE */
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:#25D366;color:white;border:none;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:6px;transition:all .2s;}
+.share-btn:hover{filter:brightness(.92);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(245,158,11,.2);padding:10px 14px 14px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 8px;}
+.bn-icon{font-size:18px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(245,158,11,.8);}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
+    <div class="nav-brand">☀️ Solar Legal Guide</div>
+    <a class="nav-back" href="https://lawsticker-ai.com/ask.html">💬 Ask</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eye">Know Your Rights Before You Sign</div>
+  <div class="hero-title">Solar — Legal Entitlements,<br>Savings & Smart Buying Guide</div>
+  <div class="hero-sub">Government subsidy you're legally entitled to · DISCOM net metering rights · Vendor comparison checklist · Negotiation tips</div>
+</div>
+
+<div class="tab-row">
+  <button class="tab-pill active" onclick="switchTab('calc',this)">🧮 Calculate</button>
+  <button class="tab-pill" onclick="switchTab('rights',this)">⚖️ Legal Rights</button>
+  <button class="tab-pill" onclick="switchTab('checklist',this)">✅ Before You Sign</button>
+  <button class="tab-pill" onclick="switchTab('negotiate',this)">🤝 Negotiate Smart</button>
+</div>
+
+<!-- ══ TAB 1: CALCULATOR ══════════════════════════════════════════════ -->
+<div class="tab-pane active" id="pane-calc">
+<div class="page">
+
+<div class="calc-card">
+  <div class="calc-title">☀️ Your Solar Setup Details</div>
+  <div class="field-grid">
+    <div class="field">
+      <label>State</label>
+      <select id="state" onchange="onStateChange()">
+        <option value="TS" selected>Telangana</option>
+        <option value="AP">Andhra Pradesh</option>
+        <option value="KA">Karnataka</option>
+        <option value="MH">Maharashtra</option>
+        <option value="TN">Tamil Nadu</option>
+        <option value="DL">Delhi</option>
+        <option value="GJ">Gujarat</option>
+        <option value="RJ">Rajasthan</option>
+        <option value="UP">Uttar Pradesh</option>
+        <option value="OTHER">Other State</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Customer Type</label>
+      <select id="custType" onchange="onTypeChange()">
+        <option value="residential">Residential</option>
+        <option value="commercial">Commercial</option>
+        <option value="industrial">Industrial</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>System Size (kWp)</label>
+      <select id="systemSize">
+        <option value="1">1 kWp</option>
+        <option value="2">2 kWp</option>
+        <option value="3" selected>3 kWp</option>
+        <option value="4">4 kWp</option>
+        <option value="5">5 kWp</option>
+        <option value="6">6 kWp</option>
+        <option value="7">7 kWp</option>
+        <option value="8">8 kWp</option>
+        <option value="9">9 kWp</option>
+        <option value="10">10 kWp</option>
+        <option value="15">15 kWp</option>
+        <option value="20">20 kWp</option>
+        <option value="25">25 kWp</option>
+        <option value="30">30 kWp</option>
+        <option value="50">50 kWp</option>
+        <option value="100">100 kWp</option>
+        <option value="custom">Custom →</option>
+      </select>
+    </div>
+    <div class="field" id="customSizeField" style="display:none;">
+      <label>Custom Size (kWp)</label>
+      <input type="number" id="customSize" placeholder="e.g. 12" min="0.5" max="500" step="0.5">
+    </div>
+    <div class="field">
+      <label>Current Monthly Bill (₹)</label>
+      <input type="number" id="monthlyBill" value="3000" min="100" step="100">
+      <div class="hint">Your average electricity bill before solar</div>
+    </div>
+    <div class="field">
+      <label>Current Tariff (₹/unit)</label>
+      <input type="number" id="tariff" value="6.50" min="1" max="20" step="0.25" id="tariff">
+      <div class="hint" id="tariffHint">TSSPDCL/TSNPDCL HT/LT rate — adjust if different</div>
+    </div>
+    <div class="field">
+      <label>System Cost (₹)</label>
+      <input type="number" id="systemCost" value="150000" min="10000" step="5000">
+      <div class="hint">Total quoted price before subsidy</div>
+    </div>
+    <div class="field">
+      <label>Peak Sun Hours / Day</label>
+      <select id="sunHours">
+        <option value="4">4 hrs (cloudy / monsoon months)</option>
+        <option value="4.5">4.5 hrs</option>
+        <option value="5" selected>5 hrs (Hyderabad / South India avg)</option>
+        <option value="5.5">5.5 hrs</option>
+        <option value="6">6 hrs (peak summer)</option>
+        <option value="6.5">6.5 hrs (Rajasthan / Gujarat)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Panel Efficiency Loss/Year (%)</label>
+      <select id="degradation">
+        <option value="0.5">0.5% (premium panels)</option>
+        <option value="0.7" selected>0.7% (standard)</option>
+        <option value="1">1% (budget panels)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Annual Tariff Increase (%)</label>
+      <select id="tariffIncrease">
+        <option value="3">3% (conservative)</option>
+        <option value="5" selected>5% (historical avg)</option>
+        <option value="7">7% (aggressive)</option>
+        <option value="0">0% (no change assumed)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Financing</label>
+      <select id="financing" onchange="onFinanceChange()">
+        <option value="own">Own funds / Cash</option>
+        <option value="loan">Bank / NBFC Loan</option>
+        <option value="subsidy_loan">Loan under PM Surya Ghar</option>
+      </select>
+    </div>
+    <div class="field" id="loanFields" style="display:none;">
+      <label>Loan Interest Rate (%)</label>
+      <input type="number" id="loanRate" value="7" min="1" max="20" step="0.25">
+    </div>
+    <div class="field" id="loanTenureField" style="display:none;">
+      <label>Loan Tenure (years)</label>
+      <select id="loanTenure">
+        <option value="5">5 years</option>
+        <option value="7" selected>7 years</option>
+        <option value="10">10 years</option>
+        <option value="15">15 years</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Subsidy fields — shown conditionally -->
+  <div id="subsidySection" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--light);">
+    <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:10px;">🏛️ Government Subsidy (PM Surya Ghar Yojana)</div>
+    <div class="field-grid">
+      <div class="field full">
+        <label>Apply Subsidy?</label>
+        <select id="applySubsidy">
+          <option value="yes" selected>Yes — I am eligible (Residential with DISCOM connection)</option>
+          <option value="no">No — Commercial / Industrial / Not applying</option>
+        </select>
+        <div class="hint" id="subsidyHint">Subsidy is only for residential customers with existing DISCOM connection. Commercial and industrial are NOT eligible for PM Surya Ghar subsidy.</div>
+      </div>
+    </div>
+    <div class="field-grid" id="subsidyRateFields" style="margin-top:8px;">
+      <div class="field">
+        <label>Subsidy Rate ₹/kWp (up to 2 kWp)</label>
+        <input type="number" id="subsidyR1" value="30000" step="1000">
+        <div class="hint">Central subsidy — PM Surya Ghar 2024 rate. Update if revised.</div>
+      </div>
+      <div class="field">
+        <label>Subsidy Rate ₹/kWp (2-3 kWp slab)</label>
+        <input type="number" id="subsidyR2" value="18000" step="1000">
+        <div class="hint">Reduced rate for 2-3 kWp slab.</div>
+      </div>
+      <div class="field full">
+        <label>Maximum Subsidy Cap (₹)</label>
+        <input type="number" id="subsidyCap" value="78000" step="1000">
+        <div class="hint">Current cap under PM Surya Ghar: ₹78,000 for 3 kWp system. Update if scheme is revised.</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculate()">☀️ Calculate My Solar Entitlements</button>
+</div>
+
+<!-- RESULTS (hidden until calculated) -->
+<div id="resultsSection" class="hidden">
+
+  <div class="section-hd">Your Results</div>
+
+  <div class="results-grid">
+    <div class="result-card legal">
+      <div class="result-icon">🏛️</div>
+      <div class="result-val" id="r-subsidy">—</div>
+      <div class="result-label">Govt Subsidy<br>You're Entitled To</div>
+    </div>
+    <div class="result-card highlight">
+      <div class="result-icon">💰</div>
+      <div class="result-val" id="r-netcost">—</div>
+      <div class="result-label">Your Net Cost<br>After Subsidy</div>
+    </div>
+    <div class="result-card">
+      <div class="result-icon">⚡</div>
+      <div class="result-val" id="r-units">—</div>
+      <div class="result-label">Units Generated<br>Per Month (Est.)</div>
+    </div>
+    <div class="result-card">
+      <div class="result-icon">📉</div>
+      <div class="result-val" id="r-saving">—</div>
+      <div class="result-label">Monthly Bill<br>Savings (Yr 1)</div>
+    </div>
+    <div class="result-card highlight">
+      <div class="result-icon">📅</div>
+      <div class="result-val" id="r-breakeven">—</div>
+      <div class="result-label">Break-Even<br>Period</div>
+    </div>
+    <div class="result-card">
+      <div class="result-icon">📈</div>
+      <div class="result-val" id="r-25yr">—</div>
+      <div class="result-label">Total Savings<br>Over 25 Years</div>
+    </div>
+  </div>
+
+  <!-- Year by year breakdown -->
+  <div class="breakdown-card">
+    <div class="breakdown-title">📊 Investment Breakdown</div>
+    <div class="breakdown-row"><span class="breakdown-key">System Cost (quoted)</span><span class="breakdown-val" id="b-cost">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Less: Govt Subsidy</span><span class="breakdown-val" id="b-subsidy" style="color:var(--jade)">—</span></div>
+    <div class="breakdown-row" id="b-emiRow" style="display:none"><span class="breakdown-key">Monthly EMI</span><span class="breakdown-val" id="b-emi">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Year 1 Savings</span><span class="breakdown-val" id="b-yr1">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Year 5 Savings (cumulative)</span><span class="breakdown-val" id="b-yr5">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Year 10 Savings (cumulative)</span><span class="breakdown-val" id="b-yr10">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Year 25 Total Savings</span><span class="breakdown-val" id="b-yr25">—</span></div>
+  </div>
+
+  <div class="breakdown-card" id="netMeteringBox">
+    <div class="breakdown-title">🔌 Net Metering Estimate</div>
+    <div class="breakdown-row"><span class="breakdown-key">Est. Self-consumption</span><span class="breakdown-val" id="nm-self">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Est. Export to grid</span><span class="breakdown-val" id="nm-export">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Export credit rate (₹/unit)</span><span class="breakdown-val" id="nm-rate">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Annual export credit</span><span class="breakdown-val" id="nm-credit">—</span></div>
+  </div>
+
+  <button class="share-btn" onclick="shareResults()">📲 Share These Results on WhatsApp</button>
+
+  <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6;padding:0 10px;">
+    ⚠️ These are estimates based on inputs provided. Actual generation varies with weather, panel orientation, and shading. Subsidy amounts are as per PM Surya Ghar Yojana — verify with your state DISCOM before finalising.
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ TAB 2: LEGAL RIGHTS ════════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-rights">
+<div class="page">
+
+<div class="legal-box">
+  <div class="legal-box-title">⚖️ Your Legal Rights — Solar in India</div>
+  <div class="legal-right">
+    <div class="legal-num">1</div>
+    <div class="legal-text"><strong>Net Metering is a Legal Right — not a favour.</strong> Under the Electricity Act 2003 (Sec 42) and CERC/SERC Regulations, your DISCOM is legally obligated to provide net metering within 30 days of your application. They cannot refuse without written reasons.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">2</div>
+    <div class="legal-text"><strong>PM Surya Ghar Subsidy is an Entitlement.</strong> Eligible residential consumers have a legal right to apply. The scheme mandates processing within 30 days of application. Delay or rejection without reason is actionable through State Grievance Redressal.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">3</div>
+    <div class="legal-text"><strong>DISCOM cannot charge you for the net meter.</strong> Under most state regulations, the cost of the net meter is borne by the DISCOM. If your vendor or DISCOM is asking you to pay for it — question it with written reference to state SERC regulations.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">4</div>
+    <div class="legal-text"><strong>Vendor must give you a written warranty.</strong> Bureau of Indian Standards (BIS) mandates that solar panels must have a minimum 10-year product warranty and 25-year performance warranty. Get this in writing — verbal warranty is not enforceable.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">5</div>
+    <div class="legal-text"><strong>AMC (Annual Maintenance Contract) must be written.</strong> Any oral AMC promise has no legal value. Insist on a signed agreement specifying: duration, what is covered, response time, penalty for delay, escalation mechanism.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">6</div>
+    <div class="legal-text"><strong>Consumer Forum jurisdiction applies.</strong> If the vendor fails to deliver what was promised — District Consumer Commission (formerly District Forum) has jurisdiction. Complaints can be filed online at consumerhelpline.gov.in. No lawyer needed for claims up to ₹50 lakhs.</div>
+  </div>
+  <div class="legal-right">
+    <div class="legal-num">7</div>
+    <div class="legal-text"><strong>Export tariff must be defined in writing.</strong> The rate at which your DISCOM will credit exported units (net metering rate) must be specified in your net metering agreement. Do not proceed without this in writing.</div>
+  </div>
+</div>
+
+<div class="section-hd">If DISCOM Refuses or Delays</div>
+
+<div class="remedy-box">
+  <div class="remedy-title">🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies</div>
+  <div class="remedy-step">Send written application to DISCOM with acknowledgment copy. Note the date — 30-day clock starts here.</div>
+  <div class="remedy-step">If no response in 30 days — file written complaint with State Electricity Regulatory Commission (SERC): TSERC for Telangana, APERC for AP.</div>
+  <div class="remedy-step">Simultaneously file on National Portal: <strong>solarrooftop.gov.in</strong> — PM Surya Ghar grievance redressal is tracked here.</div>
+  <div class="remedy-step">File Consumer Complaint at District Consumer Commission under Consumer Protection Act 2019 for deficiency of service.</div>
+  <div class="remedy-step">If subsidy is delayed beyond 30 days without reason — SERC grievance + National Consumer Helpline: <strong>1800-11-4000</strong>.</div>
+</div>
+
+<div class="section-hd">State-Specific Quick Reference</div>
+<div class="breakdown-card">
+  <div class="breakdown-title">📋 Regulatory Bodies</div>
+  <div class="breakdown-row"><span class="breakdown-key">Telangana DISCOM</span><span class="breakdown-val">TSSPDCL / TSNPDCL</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Telangana Regulator</span><span class="breakdown-val">TSERC</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">AP DISCOM</span><span class="breakdown-val">APSPDCL / APEPDCL</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">AP Regulator</span><span class="breakdown-val">APERC</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">National Solar Portal</span><span class="breakdown-val">solarrooftop.gov.in</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">PM Surya Ghar Portal</span><span class="breakdown-val">pmsuryaghar.gov.in</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Consumer Helpline</span><span class="breakdown-val">1800-11-4000 (free)</span></div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ TAB 3: BEFORE YOU SIGN ════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-checklist">
+<div class="page">
+
+<div style="background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:14px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+    <div style="font-size:13px;font-weight:700;color:var(--ink);">Your Readiness Score</div>
+    <div class="score-text" id="scoreText">0 / 25 checked</div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" id="scoreBar" style="width:0%"></div></div>
+  <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="scoreMsg">Check each item before signing the agreement with any solar vendor.</div>
+</div>
+
+<div class="checklist-section">
+  <div class="checklist-cat">⚖️ Legal & Documentation</div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Has the vendor given you the agreement in writing (not just verbal)?</div>
+      <div class="check-tip">Verbal promises have zero legal value. Insist on a signed agreement before paying even an advance.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Does the agreement mention 25-year panel performance warranty?</div>
+      <div class="check-tip">BIS standards mandate 25-year performance warranty (minimum 80% output at 25 years). If not in agreement — demand it in writing.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Is the Annual Maintenance Contract (AMC) scope clearly defined?</div>
+      <div class="check-tip">Check: What is covered? What is excluded? What is the response time? What happens if inverter fails?</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Is there a penalty clause if installation is delayed beyond agreed date?</div>
+      <div class="check-tip">Without a penalty clause, you have no leverage if the vendor delays. Negotiate at least ₹500/day penalty for delay.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Is the vendor MNRE empanelled / registered?</div>
+      <div class="check-tip">Only MNRE empanelled vendors can facilitate PM Surya Ghar subsidy. Ask for their vendor ID and verify on pmsuryaghar.gov.in before paying.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-legal">LEGAL</span>
+      <div class="check-q">Does the agreement mention who will apply for net metering — vendor or you?</div>
+      <div class="check-tip">Many disputes arise because vendors say "you apply" but don't guide you. Insist it is vendor's responsibility to apply and obtain net meter connection.</div>
+    </div>
+  </div>
+</div>
+
+<div class="checklist-section">
+  <div class="checklist-cat">💰 Financial Clarity</div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Is the total cost breakdown itemised — panels, inverter, structure, wiring, installation separately?</div>
+      <div class="check-tip">A lump sum quote hides the quality of individual components. Ask for itemised quote — this also helps you compare vendors properly.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Have you verified the subsidy amount yourself on pmsuryaghar.gov.in?</div>
+      <div class="check-tip">Some vendors inflate the "original" cost knowing you expect a subsidy. Calculate your subsidy independently — it is ₹30,000/kWp for first 2 kWp, ₹18,000/kWp for next 1 kWp, max ₹78,000 for 3 kWp system.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Is GST clearly shown in the quote?</div>
+      <div class="check-tip">Solar panels attract 12% GST. If vendor says "GST extra," ensure the final payable amount including GST is what you're comparing. Hidden GST is a common trick.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Is the payment schedule tied to milestones (not advance-heavy)?</div>
+      <div class="check-tip">Standard: 30% advance, 60% on delivery of material, 10% on commissioning. Avoid paying more than 40% before material delivery — you have no leverage if vendor disappears.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Have you calculated your own break-even period using our calculator?</div>
+      <div class="check-tip">Never rely on the vendor's break-even calculation — they always show optimistic numbers. Use our calculator above with your own electricity tariff and consumption.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-financial">FINANCIAL</span>
+      <div class="check-q">Does the agreement clarify who pays for DISCOM inspection/net meter charges?</div>
+      <div class="check-tip">DISCOM net meter should typically be provided at no extra cost to you under state SERC regulations. If vendor is charging you for it — verify with DISCOM directly.</div>
+    </div>
+  </div>
+</div>
+
+<div class="checklist-section">
+  <div class="checklist-cat">🔧 Technical Standards</div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Are the panels BIS certified (IS 14286 for crystalline silicon)?</div>
+      <div class="check-tip">BIS certification is mandatory for subsidy eligibility. Non-BIS panels will disqualify your subsidy application. Ask for the BIS registration number.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Is the inverter MNRE approved and BIS certified?</div>
+      <div class="check-tip">The inverter is the most failure-prone component. Insist on MNRE-approved brands. Ask for model number and verify. Common reliable brands: Growatt, SolarEdge, Fronius, Sungrow, Huawei, Delta.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Has a site survey been done to check for shading, roof strength, and orientation?</div>
+      <div class="check-tip">Shading from a single tree or water tank can reduce output by 20-30%. A good vendor will do a shadow analysis. If they quote without visiting — be cautious.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Is the mounting structure galvanised / hot-dip galvanised steel or aluminium?</div>
+      <div class="check-tip">Cheap painted MS structures rust within 3-4 years in Telangana/AP humidity. Insist on hot-dip galvanised steel or aluminium structure with a warranty.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Will you get monitoring app access to track daily generation?</div>
+      <div class="check-tip">Most modern inverters come with monitoring apps. Without monitoring, you won't know if your system is underperforming. Ask specifically for this before finalising.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-technical">TECHNICAL</span>
+      <div class="check-q">Is the generation estimate given in writing with stated assumptions?</div>
+      <div class="check-tip">If vendor says "you will generate 20 units/day" — get it in writing with stated assumptions (panel wattage, peak sun hours used, efficiency). Then if actual is far lower, you have grounds for complaint.</div>
+    </div>
+  </div>
+</div>
+
+<div class="checklist-section">
+  <div class="checklist-cat">🤝 Vendor Credibility</div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-negotiation">VENDOR</span>
+      <div class="check-q">Have you seen at least 3 completed installations by this vendor?</div>
+      <div class="check-tip">Ask for references of completed installations in your area. Visit if possible. Check how the system looks after 1-2 years — is wiring neat, structure stable?</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-negotiation">VENDOR</span>
+      <div class="check-q">Has the vendor facilitated subsidy for previous customers successfully?</div>
+      <div class="check-tip">Ask specifically — "how many of your customers received PM Surya Ghar subsidy?" If they haven't done it before, your application may face complications.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-negotiation">VENDOR</span>
+      <div class="check-q">Have you got quotes from at least 2 other vendors for comparison?</div>
+      <div class="check-tip">Never buy from the first vendor. Even if you trust them, a competing quote gives you negotiation leverage and confirms the price is fair.</div>
+    </div>
+  </div>
+  <div class="check-item" onclick="toggleCheck(this)">
+    <div class="check-box"><span class="check-tick">✓</span></div>
+    <div class="check-body">
+      <span class="check-tag tag-negotiation">VENDOR</span>
+      <div class="check-q">Is the vendor's GST registration and company registration verifiable?</div>
+      <div class="check-tip">Ask for GSTIN and verify on gst.gov.in. This also ensures you get a proper GST invoice — which is required for subsidy application.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ TAB 4: NEGOTIATE SMART ════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-negotiate">
+<div class="page">
+
+<div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid rgba(245,158,11,.3);border-radius:14px;padding:14px;margin-bottom:14px;">
+  <div style="font-size:13px;font-weight:800;color:var(--solar-d);margin-bottom:6px;">💡 How to use this section</div>
+  <div style="font-size:12px;color:#5C4A0D;line-height:1.7;">These are negotiation strategies and red flags — both for customers to protect themselves, and for vendors to understand what informed customers will ask. Knowledge on both sides leads to better deals and fewer disputes.</div>
+</div>
+
+<div class="section-hd">Negotiation Strategies</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">💰</div>
+    <div class="tip-title">Get the Real Post-Subsidy Price First</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point">Calculate subsidy yourself before talking price. Use our calculator. Then ask vendor: "What is your price after subsidy?" Many inflate the pre-subsidy price knowing the subsidy will be deducted.</div>
+    <div class="tip-point">Ask: "If I don't get the subsidy, what happens?" Good vendors say "we handle the subsidy process and guarantee it or compensate." Bad vendors say "subsidy is your problem."</div>
+    <div class="tip-point">The effective price you should be comparing across vendors is: Total Cost − Subsidy − Any State Incentives. Not the sticker price.</div>
+    <div class="tip-law">⚖️ Legal angle: The subsidy amount is fixed by Government — it is the same regardless of vendor. Any vendor who says "our subsidy is higher" is misleading you.</div>
+  </div>
+</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">📋</div>
+    <div class="tip-title">Compare Apples to Apples — Not Quotes to Quotes</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point">A ₹1,50,000 quote with Tier-1 panels and 5-year AMC is better than a ₹1,20,000 quote with no-name panels and no AMC. Always compare: panel brand + wattage per panel + inverter brand + structure material + warranty terms + AMC years.</div>
+    <div class="tip-point">Ask for the datasheet of the panel being offered. Check: Wattage (e.g., 545Wp per panel), Efficiency %, Temperature coefficient (how much output drops in heat — important in Hyderabad summers).</div>
+    <div class="tip-point">Create a simple table: Vendor A vs Vendor B vs Vendor C. Fill in: system size, brand, warranty, AMC, total cost, net cost, who handles net meter.</div>
+    <div class="tip-warning">🚨 Red flag: Vendor who refuses to give itemised quote is hiding something — possibly using cheaper components than quoted.</div>
+  </div>
+</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">🤝</div>
+    <div class="tip-title">What You Can Negotiate — and What You Cannot</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point"><strong>CAN negotiate:</strong> Panel brand/wattage upgrade, Additional year of AMC at no cost, Monitoring app access, Delay penalties, Extended inverter warranty, Payment schedule (milestone-based not time-based).</div>
+    <div class="tip-point"><strong>CANNOT negotiate:</strong> GST (fixed by law), Subsidy amount (fixed by Government), DISCOM net metering charges (fixed by SERC regulation), BIS certification requirement.</div>
+    <div class="tip-point">Best negotiation moment: After getting 3 quotes, go back to your preferred vendor with the lowest competing quote. Say: "I prefer your service but Vendor X quoted ₹X less for similar specs — can you match or add value?" This works well in solar.</div>
+    <div class="tip-law">⚖️ Legal angle: Vendors cannot legally quote different subsidy amounts — the amount is Government-fixed. If two vendors quote different "subsidy" amounts for same system size, one is misleading you.</div>
+  </div>
+</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">⚠️</div>
+    <div class="tip-title">Red Flags — Walk Away If You See These</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point">Vendor asks for more than 40% advance before installation begins.</div>
+    <div class="tip-point">No written agreement — "verbal agreement is fine, we trust each other."</div>
+    <div class="tip-point">Cannot show BIS certificate or MNRE vendor registration when asked.</div>
+    <div class="tip-point">Generation guarantee is oral and very high — "you will save ₹8,000/month guaranteed."</div>
+    <div class="tip-point">Says "net metering takes 6 months" without explaining why or offering to follow up.</div>
+    <div class="tip-point">Quotes a system size that doesn't match your consumption — selling you more than you need.</div>
+    <div class="tip-point">Pressure to sign same day — "this price is only for today."</div>
+    <div class="tip-warning">🚨 If vendor pressures you to sign immediately, always take 48 hours. A legitimate vendor will honour the quote for at least a week. Urgency is a sales tactic, not a legal obligation on your part.</div>
+  </div>
+</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">📝</div>
+    <div class="tip-title">Questions to Ask Every Vendor</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point">"Can I see your MNRE vendor registration number?" — Verify on pmsuryaghar.gov.in.</div>
+    <div class="tip-point">"What panel brand and model are you providing? Can I see the datasheet?" — Check wattage, efficiency, temperature coefficient.</div>
+    <div class="tip-point">"Who applies for net metering — you or me? How many days does it typically take in this area?"</div>
+    <div class="tip-point">"How many PM Surya Ghar subsidy applications have you facilitated in the last 6 months? How many received subsidy?"</div>
+    <div class="tip-point">"What exactly is covered in the AMC? What is the response time if inverter fails?" — Get this in writing.</div>
+    <div class="tip-point">"What happens if my actual generation is 20% below your estimate?" — A confident vendor will have an answer; a dishonest one will get nervous.</div>
+    <div class="tip-point">"Can you give me contact of 2 customers who installed with you in the last year?" — Then actually call them.</div>
+    <div class="tip-law">⚖️ A vendor who cannot answer these questions clearly and in writing is not ready for your business. Your money, your right to full information.</div>
+  </div>
+</div>
+
+<div class="tip-card">
+  <div class="tip-header" onclick="toggleTip(this)">
+    <div class="tip-icon">📱</div>
+    <div class="tip-title">Right System Size for Your Consumption</div>
+    <div class="tip-chev">▼</div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-point">Rule of thumb: 1 kWp system generates approximately 4-5 units/day in South India (120-150 units/month). So if you consume 300 units/month — a 2-2.5 kWp system suffices.</div>
+    <div class="tip-point">Do NOT oversize just because the vendor says "future-proof." If you don't have the load, extra generation that's exported earns at lower export tariff than what you pay for consumption.</div>
+    <div class="tip-point">Calculate right size: Monthly consumption (units) ÷ 130 = kWp needed (approximate). Then size up by 10-15% for degradation and losses.</div>
+    <div class="tip-point">For commercial: Account for peak demand, sanctioned load, and DISCOM regulations on max system size relative to sanctioned load.</div>
+    <div class="tip-warning">🚨 Common sales tactic: "Your bill will be zero with 5 kWp." If your consumption doesn't justify 5 kWp, you're being oversold. Right-size your system first.</div>
+  </div>
+</div>
+
+<div class="section-hd">Share This on WhatsApp</div>
+<button class="share-btn" onclick="shareTips()">📲 Share Solar Buying Tips on WhatsApp</button>
+<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.6;">Share this guide with anyone going solar — helps them avoid common traps.</div>
+
+</div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/ask.html"><span class="bn-icon">💬</span><span class="bn-lbl">Ask AI</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/rights.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">Rights</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/calculators.html"><span class="bn-icon">🧮</span><span class="bn-lbl">Calcs</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/solar-legal.html"><span class="bn-icon">☀️</span><span class="bn-lbl active">Solar</span></a>
+</div>
+
+<script>
+// ── STATE DEFAULTS ─────────────────────────────────────────────────────
+const STATE_DEFAULTS = {
+  TS:  { tariff: 6.50, exportRate: 3.00, hint: 'TSSPDCL/TSNPDCL domestic tariff (slab avg). Adjust for your actual slab.' },
+  AP:  { tariff: 6.00, exportRate: 2.75, hint: 'APSPDCL/APEPDCL domestic tariff (slab avg). Adjust for your actual slab.' },
+  KA:  { tariff: 5.90, exportRate: 2.80, hint: 'BESCOM/MESCOM avg tariff. Adjust for your actual slab.' },
+  MH:  { tariff: 7.20, exportRate: 3.10, hint: 'MSEDCL avg tariff. Adjust for your actual slab.' },
+  TN:  { tariff: 5.50, exportRate: 2.50, hint: 'TANGEDCO avg tariff. First 100 units free for some categories.' },
+  DL:  { tariff: 7.00, exportRate: 3.50, hint: 'BSES/Tata Power Delhi avg tariff.' },
+  GJ:  { tariff: 5.00, exportRate: 2.40, hint: 'UGVCL/DGVCL avg tariff.' },
+  RJ:  { tariff: 6.75, exportRate: 3.00, hint: 'JVVNL/AVVNL avg tariff.' },
+  UP:  { tariff: 6.50, exportRate: 2.75, hint: 'PVVNL/DVVNL avg tariff.' },
+  OTHER:{ tariff: 6.00, exportRate: 2.75, hint: 'Enter your actual tariff from your electricity bill.' },
+};
+
+function onStateChange() {
+  const s = document.getElementById('state').value;
+  const d = STATE_DEFAULTS[s] || STATE_DEFAULTS['OTHER'];
+  document.getElementById('tariff').value = d.tariff;
+  document.getElementById('tariffHint').textContent = d.hint;
+}
+
+function onTypeChange() {
+  const t = document.getElementById('custType').value;
+  const sub = document.getElementById('subsidySection');
+  const applyField = document.getElementById('applySubsidy');
+  if (t !== 'residential') {
+    applyField.value = 'no';
+    applyField.disabled = true;
+    document.getElementById('subsidyHint').textContent = 'PM Surya Ghar subsidy is available for RESIDENTIAL customers only.';
+    document.getElementById('subsidyRateFields').style.opacity = '0.4';
+  } else {
+    applyField.disabled = false;
+    applyField.value = 'yes';
+    document.getElementById('subsidyHint').textContent = 'Subsidy is only for residential customers with existing DISCOM connection.';
+    document.getElementById('subsidyRateFields').style.opacity = '1';
+  }
+}
+
+function onFinanceChange() {
+  const v = document.getElementById('financing').value;
+  const show = v === 'loan' || v === 'subsidy_loan';
+  document.getElementById('loanFields').style.display = show ? 'flex' : 'none';
+  document.getElementById('loanTenureField').style.display = show ? 'flex' : 'none';
+  if (v === 'subsidy_loan') {
+    document.getElementById('loanRate').value = 7; // PM Surya Ghar collateralised loan rate
+  }
+}
+
+document.getElementById('systemSize').addEventListener('change', function() {
+  const show = this.value === 'custom';
+  document.getElementById('customSizeField').style.display = show ? 'flex' : 'none';
+  if (!show) updateDefaultCost(parseFloat(this.value));
+});
+
+function updateDefaultCost(kw) {
+  // Rough market rate per kWp — user can override
+  const ratePerKw = kw <= 3 ? 55000 : kw <= 10 ? 50000 : 45000;
+  document.getElementById('systemCost').value = Math.round(kw * ratePerKw / 5000) * 5000;
+}
+
+// ── CALCULATE ──────────────────────────────────────────────────────────
+function fmt(n) {
+  if (n >= 100000) return '₹' + (n / 100000).toFixed(1) + 'L';
+  if (n >= 1000) return '₹' + (n / 1000).toFixed(1) + 'k';
+  return '₹' + Math.round(n);
+}
+
+function calculate() {
+  // Read inputs
+  const state = document.getElementById('state').value;
+  const custType = document.getElementById('custType').value;
+  const sizeRaw = document.getElementById('systemSize').value;
+  const kw = sizeRaw === 'custom' ? parseFloat(document.getElementById('customSize').value) || 3 : parseFloat(sizeRaw);
+  const monthlyBill = parseFloat(document.getElementById('monthlyBill').value) || 3000;
+  const tariff = parseFloat(document.getElementById('tariff').value) || 6.5;
+  const systemCost = parseFloat(document.getElementById('systemCost').value) || 150000;
+  const sunHours = parseFloat(document.getElementById('sunHours').value) || 5;
+  const degradation = parseFloat(document.getElementById('degradation').value) || 0.7;
+  const tariffIncrease = parseFloat(document.getElementById('tariffIncrease').value) || 5;
+  const financing = document.getElementById('financing').value;
+  const applySubsidy = document.getElementById('applySubsidy').value === 'yes' && custType === 'residential';
+
+  // Subsidy calculation
+  const subsidyR1 = parseFloat(document.getElementById('subsidyR1').value) || 30000;
+  const subsidyR2 = parseFloat(document.getElementById('subsidyR2').value) || 18000;
+  const subsidyCap = parseFloat(document.getElementById('subsidyCap').value) || 78000;
+
+  let subsidy = 0;
+  if (applySubsidy) {
+    if (kw <= 2) {
+      subsidy = kw * subsidyR1;
+    } else if (kw <= 3) {
+      subsidy = 2 * subsidyR1 + (kw - 2) * subsidyR2;
+    } else {
+      subsidy = 2 * subsidyR1 + 1 * subsidyR2; // capped at 3 kWp slab
+    }
+    subsidy = Math.min(subsidy, subsidyCap);
+  }
+
+  const netCost = systemCost - subsidy;
+
+  // Generation
+  const unitsPerDay = kw * sunHours * 0.8; // 0.8 = system efficiency factor
+  const unitsPerMonth = unitsPerDay * 30;
+  const unitsPerYear = unitsPerDay * 365;
+
+  // Self-consumption vs export (estimates based on type)
+  const selfPct = custType === 'residential' ? 0.70 : custType === 'commercial' ? 0.85 : 0.90;
+  const exportPct = 1 - selfPct;
+
+  const exportRate = STATE_DEFAULTS[state]?.exportRate || 2.75;
+
+  // Savings year by year
+  let cumSavings = 0;
+  let breakevenYear = null;
+  let currentTariff = tariff;
+  const yearSavings = [];
+
+  for (let y = 1; y <= 25; y++) {
+    const eff = Math.pow(1 - degradation / 100, y - 1);
+    const unitsThisYear = unitsPerYear * eff;
+    const selfUnits = unitsThisYear * selfPct;
+    const exportUnits = unitsThisYear * exportPct;
+    const saving = selfUnits * currentTariff + exportUnits * exportRate;
+    cumSavings += saving;
+    yearSavings.push({ y, saving, cumSavings });
+
+    if (!breakevenYear && cumSavings >= netCost) {
+      const fraction = (cumSavings - netCost) / saving;
+      breakevenYear = (y - fraction).toFixed(1);
+    }
+
+    currentTariff *= (1 + tariffIncrease / 100);
+  }
+
+  // EMI if loan
+  let emi = 0;
+  if (financing !== 'own') {
+    const rate = (parseFloat(document.getElementById('loanRate').value) || 7) / 100 / 12;
+    const tenure = parseInt(document.getElementById('loanTenure').value) || 7;
+    const months = tenure * 12;
+    const principal = netCost;
+    emi = principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1);
+  }
+
+  // Fill results
+  document.getElementById('r-subsidy').textContent = applySubsidy ? fmt(subsidy) : 'Not applicable';
+  document.getElementById('r-netcost').textContent = fmt(netCost);
+  document.getElementById('r-units').textContent = Math.round(unitsPerMonth) + ' units';
+  document.getElementById('r-saving').textContent = fmt(yearSavings[0].saving / 12) + '/mo';
+  document.getElementById('r-breakeven').textContent = breakevenYear ? breakevenYear + ' years' : '>25 yrs';
+  document.getElementById('r-25yr').textContent = fmt(yearSavings[24].cumSavings);
+
+  document.getElementById('b-cost').textContent = fmt(systemCost);
+  document.getElementById('b-subsidy').textContent = applySubsidy ? '− ' + fmt(subsidy) : '₹0 (not applicable)';
+  document.getElementById('b-yr1').textContent = fmt(yearSavings[0].saving);
+  document.getElementById('b-yr5').textContent = fmt(yearSavings[4].cumSavings);
+  document.getElementById('b-yr10').textContent = fmt(yearSavings[9].cumSavings);
+  document.getElementById('b-yr25').textContent = fmt(yearSavings[24].cumSavings);
+
+  if (financing !== 'own') {
+    document.getElementById('b-emiRow').style.display = 'flex';
+    document.getElementById('b-emi').textContent = fmt(emi) + '/month';
+  } else {
+    document.getElementById('b-emiRow').style.display = 'none';
+  }
+
+  // Net metering
+  document.getElementById('nm-self').textContent = Math.round(unitsPerYear * selfPct) + ' units/year';
+  document.getElementById('nm-export').textContent = Math.round(unitsPerYear * exportPct) + ' units/year';
+  document.getElementById('nm-rate').textContent = '₹' + exportRate + '/unit';
+  document.getElementById('nm-credit').textContent = fmt(unitsPerYear * exportPct * exportRate);
+
+  document.getElementById('resultsSection').classList.remove('hidden');
+  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Store for share
+  window._calcResults = {
+    kw, subsidy: applySubsidy ? subsidy : 0, netCost,
+    unitsPerMonth: Math.round(unitsPerMonth),
+    yr1: yearSavings[0].saving,
+    yr25: yearSavings[24].cumSavings,
+    breakeven: breakevenYear || '>25',
+    state, custType,
+  };
+}
+
+function shareResults() {
+  const r = window._calcResults;
+  if (!r) return;
+  const msg = `☀️ *Solar Savings Calculator Results*
+_from lawsticker-ai.com/solar-legal.html_
+
+System: *${r.kw} kWp* | ${r.custType} | ${document.getElementById('state').options[document.getElementById('state').selectedIndex].text}
+
+🏛️ Govt Subsidy I'm entitled to: *${r.subsidy > 0 ? fmt(r.subsidy) : 'Not applicable'}*
+💰 My Net Cost after Subsidy: *${fmt(r.netCost)}*
+⚡ Monthly Generation: *${r.unitsPerMonth} units*
+📉 Year 1 Monthly Saving: *${fmt(r.yr1 / 12)}*
+📅 Break-even: *${r.breakeven} years*
+📈 Total 25-Year Savings: *${fmt(r.yr25)}*
+
+⚖️ Know your legal rights before signing:
+lawsticker-ai.com/solar-legal.html`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareTips() {
+  const msg = `☀️ *Solar Buying Guide — Know Before You Sign*
+_From LawSticker AI: lawsticker-ai.com/solar-legal.html_
+
+✅ *5 things to always ask your solar vendor:*
+1️⃣ Show MNRE vendor registration (verify on pmsuryaghar.gov.in)
+2️⃣ Give itemised quote — panels, inverter, structure separately
+3️⃣ Confirm subsidy in writing — ₹30,000/kWp (first 2kWp), ₹18,000/kWp (next 1kWp)
+4️⃣ Who applies for net metering — and in how many days?
+5️⃣ What is covered in AMC? Response time if inverter fails?
+
+⚖️ *Your Legal Rights:*
+• Net metering is your RIGHT under Electricity Act 2003
+• DISCOM must process net meter within 30 days
+• BIS certified panels are mandatory for subsidy
+• Consumer Forum has jurisdiction if vendor defaults
+
+🧮 Calculate your own savings & subsidy:
+lawsticker-ai.com/solar-legal.html
+
+#SolarLegal #KnowYourRights #LawStickerAI`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── CHECKLIST ──────────────────────────────────────────────────────────
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  updateScore();
+}
+
+function updateScore() {
+  const total = document.querySelectorAll('.check-item').length;
+  const done = document.querySelectorAll('.check-item.checked').length;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('scoreBar').style.width = pct + '%';
+  document.getElementById('scoreText').textContent = done + ' / ' + total + ' checked';
+  const msgs = ['Check each item before signing the agreement with any solar vendor.',
+    'Good start — keep going through the list.',
+    'Halfway there — the remaining items are just as important.',
+    'Almost ready — finish the remaining checks.',
+    '✅ Well prepared! You are ready to sign with confidence.'];
+  const idx = done === total ? 4 : Math.floor(pct / 25);
+  document.getElementById('scoreMsg').textContent = msgs[idx] || msgs[0];
+}
+
+// ── TIPS ───────────────────────────────────────────────────────────────
+function toggleTip(header) {
+  const body = header.nextElementSibling;
+  const chev = header.querySelector('.tip-chev');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+
+// ── TABS ───────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('pane-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
