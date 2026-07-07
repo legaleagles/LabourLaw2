@@ -311,7 +311,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 
   <!-- Subsidy fields — shown conditionally -->
   <div id="subsidySection" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--light);">
-    <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:10px;">🏛️ Government Subsidy (PM Surya Ghar Yojana)</div>
+    <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:10px;" id="subsidySectionTitle">🏛️ Government Subsidy (PM Surya Ghar Yojana)</div>
     <div class="field-grid">
       <div class="field full">
         <label data-lang="lSubsidyApply">Apply Subsidy?</label>
@@ -347,7 +347,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 <!-- RESULTS (hidden until calculated) -->
 <div id="resultsSection" class="hidden">
 
-  <div class="section-hd">Your Results</div>
+  <div class="section-hd" id="resultsSectionHd">Your Results</div>
 
   <div class="results-grid">
     <div class="result-card legal">
@@ -384,27 +384,27 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 
   <!-- Year by year breakdown -->
   <div class="breakdown-card">
-    <div class="breakdown-title">📊 Investment Breakdown</div>
-    <div class="breakdown-row"><span class="breakdown-key">System Cost (quoted)</span><span class="breakdown-val" id="b-cost">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Less: Govt Subsidy</span><span class="breakdown-val" id="b-subsidy" style="color:var(--jade)">—</span></div>
+    <div class="breakdown-title" id="breakdownTitle">📊 Investment Breakdown</div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeyCost">System Cost (quoted)</span><span class="breakdown-val" id="b-cost">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeySubsidy">Less: Govt Subsidy</span><span class="breakdown-val" id="b-subsidy" style="color:var(--jade)">—</span></div>
     <div class="breakdown-row" id="b-emiRow" style="display:none"><span class="breakdown-key">Monthly EMI</span><span class="breakdown-val" id="b-emi">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Year 1 Savings</span><span class="breakdown-val" id="b-yr1">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Year 5 Savings (cumulative)</span><span class="breakdown-val" id="b-yr5">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Year 10 Savings (cumulative)</span><span class="breakdown-val" id="b-yr10">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Year 25 Total Savings</span><span class="breakdown-val" id="b-yr25">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeyYr1">Year 1 Savings</span><span class="breakdown-val" id="b-yr1">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeyYr5">Year 5 Savings (cumulative)</span><span class="breakdown-val" id="b-yr5">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeyYr10">Year 10 Savings (cumulative)</span><span class="breakdown-val" id="b-yr10">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="bKeyYr25">Year 25 Total Savings</span><span class="breakdown-val" id="b-yr25">—</span></div>
   </div>
 
   <div class="breakdown-card" id="netMeteringBox">
-    <div class="breakdown-title">🔌 Net Metering Estimate</div>
-    <div class="breakdown-row"><span class="breakdown-key">Est. Self-consumption</span><span class="breakdown-val" id="nm-self">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Est. Export to grid</span><span class="breakdown-val" id="nm-export">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Export credit rate (₹/unit)</span><span class="breakdown-val" id="nm-rate">—</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Annual export credit</span><span class="breakdown-val" id="nm-credit">—</span></div>
+    <div class="breakdown-title" id="nmTitle">🔌 Net Metering Estimate</div>
+    <div class="breakdown-row"><span class="breakdown-key" id="nmKeySelf">Est. Self-consumption</span><span class="breakdown-val" id="nm-self">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="nmKeyExport">Est. Export to grid</span><span class="breakdown-val" id="nm-export">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="nmKeyRate">Export credit rate (₹/unit)</span><span class="breakdown-val" id="nm-rate">—</span></div>
+    <div class="breakdown-row"><span class="breakdown-key" id="nmKeyCredit">Annual export credit</span><span class="breakdown-val" id="nm-credit">—</span></div>
   </div>
 
   <!-- LOAN COMPARISON — appears after calculate -->
   <div id="loanCompareSection" class="hidden">
-    <div class="section-hd">💳 PM Surya Ghar Loan Options — Side by Side</div>
+    <div class="section-hd" id="loanCompareSectionHd">💳 PM Surya Ghar Loan Options — Side by Side</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;padding:0 2px;">All three official loan options compared. Amounts and rates are as per MNRE official scheme — update if scheme is revised.</div>
 
     <!-- Loan option cards -->
@@ -431,7 +431,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <button class="share-btn" onclick="shareResults()" style="margin-top:6px;">📲 Share Savings Results on WhatsApp</button>
 
   <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6;padding:0 10px;">
-    ⚠️ These are estimates based on inputs provided. Actual generation varies with weather, panel orientation, and shading. Subsidy amounts and loan terms are as per PM Surya Ghar Yojana — verify with your bank before finalising.
+    <span id="disclaimerText">⚠️ These are estimates based on inputs provided. Actual generation varies with weather, panel orientation, and shading. Subsidy amounts and loan terms are as per PM Surya Ghar Yojana — verify with your bank before finalising.</span>
   </div>
 </div>
 
@@ -443,7 +443,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 <div class="page">
 
 <div style="background:linear-gradient(135deg,var(--jade-bg),#F0FDF8);border:1.5px solid var(--jade-border);border-radius:14px;padding:14px;margin-bottom:14px;">
-  <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:6px;">💳 PM Surya Ghar — Official Loan Options</div>
+  <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:6px;" id="emiIntroTitle">💳 PM Surya Ghar — Official Loan Options</div>
   <div style="font-size:12px;color:#064E3B;line-height:1.7;">Enter your system cost and details below. We compare all three official loan options, calculate total interest you'll pay, and recommend the most beneficial option for your situation — with a prepayment strategy to save even more.</div>
 </div>
 
@@ -451,34 +451,34 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <div class="calc-title">Your Loan Details</div>
   <div class="field-grid">
     <div class="field full">
-      <label>Net System Cost after Subsidy (₹)</label>
+      <label id="emiLabelCost">Net System Cost after Subsidy (₹)</label>
       <input type="number" id="emi-loanamt" value="72000" min="10000" step="1000">
       <div class="hint">Use the net cost from the Calculate tab (after subsidy). This is the amount you'll borrow.</div>
     </div>
     <div class="field">
-      <label>Your Monthly Savings from Solar (₹)</label>
+      <label id="emiLabelSaving">Your Monthly Savings from Solar (₹)</label>
       <input type="number" id="emi-saving" value="2000" min="100" step="100">
       <div class="hint">From your electricity bill savings — use Calculate tab result.</div>
     </div>
     <div class="field">
-      <label>Your Existing Home Loan?</label>
+      <label id="emiLabelHL">Your Existing Home Loan?</label>
       <select id="emi-homeloan">
         <option value="no">No existing home loan</option>
         <option value="yes">Yes — I have a home loan with a PSB</option>
       </select>
     </div>
     <div class="field">
-      <label>Current Home Loan Rate (%) if yes</label>
+      <label id="emiLabelHLRate">Current Home Loan Rate (%) if yes</label>
       <input type="number" id="emi-hlrate" value="8.5" min="5" max="15" step="0.25">
       <div class="hint">Only relevant if you have an existing home loan.</div>
     </div>
     <div class="field">
-      <label>RBI Repo Rate (%)</label>
+      <label id="emiLabelRepo">RBI Repo Rate (%)</label>
       <input type="number" id="emi-repo" value="6.50" min="4" max="12" step="0.25">
       <div class="hint">Current RBI Repo Rate. Update if changed. Used to calculate PM Surya Ghar Option A rate.</div>
     </div>
     <div class="field">
-      <label>Your preferred tenure</label>
+      <label id="emiLabelTenure">Your preferred tenure</label>
       <select id="emi-tenure">
         <option value="3">3 years</option>
         <option value="5">5 years</option>
@@ -487,7 +487,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field full">
-      <label>Can you pay extra every month? (₹)</label>
+      <label id="emiLabelExtra">Can you pay extra every month? (₹)</label>
       <input type="number" id="emi-extra" value="0" min="0" step="500">
       <div class="hint">If you can pay this much extra above EMI every month, we'll show how many years you save. Even ₹500 extra/month makes a big difference.</div>
     </div>
@@ -497,7 +497,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 
 <!-- EMI Results -->
 <div id="emiResults" class="hidden">
-  <div class="section-hd">All 3 Loan Options — Side by Side</div>
+  <div class="section-hd" id="emiResultsHd">All 3 Loan Options — Side by Side</div>
   <div id="emiOptionCards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
 
   <div id="emiRecommendationBox" style="margin-bottom:14px;"></div>
@@ -525,7 +525,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <button class="share-btn" onclick="shareEMIResults()">📲 Share This Loan Comparison on WhatsApp</button>
 </div>
 
-<div class="section-hd">PM Surya Ghar — Official Loan Terms</div>
+<div class="section-hd" id="emiTermsHd">PM Surya Ghar — Official Loan Terms</div>
 <div class="breakdown-card">
   <div class="breakdown-title">Option A — Up to ₹2 Lakh (MNRE Standard)</div>
   <div class="breakdown-row"><span class="breakdown-key">Max loan amount</span><span class="breakdown-val">₹2,00,000</span></div>
@@ -601,7 +601,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   </div>
 </div>
 
-<div class="section-hd">If DISCOM Refuses or Delays</div>
+<div class="section-hd" id="discHd">If DISCOM Refuses or Delays</div>
 
 <div class="remedy-box">
   <div class="remedy-title" id="remedyTitle">🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies</div>
@@ -612,7 +612,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <div class="remedy-step">If subsidy is delayed beyond 30 days without reason — SERC grievance + National Consumer Helpline: <strong>1800-11-4000</strong>.</div>
 </div>
 
-<div class="section-hd">State-Specific Quick Reference</div>
+<div class="section-hd" id="stateRefHd">State-Specific Quick Reference</div>
 <div class="breakdown-card">
   <div class="breakdown-title">📋 Regulatory Bodies</div>
   <div class="breakdown-row"><span class="breakdown-key">Telangana DISCOM</span><span class="breakdown-val">TSSPDCL / TSNPDCL</span></div>
@@ -633,15 +633,15 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 
 <div style="background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:14px;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-    <div style="font-size:13px;font-weight:700;color:var(--ink);">Your Readiness Score</div>
+    <div style="font-size:13px;font-weight:700;color:var(--ink);" id="checklistScoreTitle">Your Readiness Score</div>
     <div class="score-text" id="scoreText">0 / 25 checked</div>
   </div>
   <div class="score-bar-wrap"><div class="score-bar" id="scoreBar" style="width:0%"></div></div>
-  <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="scoreMsg">Check each item before signing the agreement with any solar vendor.</div>
+  <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="scoreMsg" id="checklistScoreMsg">Check each item before signing the agreement with any solar vendor.</div>
 </div>
 
 <div class="checklist-section">
-  <div class="checklist-cat">⚖️ Legal & Documentation</div>
+  <div class="checklist-cat" id="checkCat1">⚖️ Legal & Documentation</div>
   <div class="check-item" onclick="toggleCheck(this)">
     <div class="check-box"><span class="check-tick">✓</span></div>
     <div class="check-body">
@@ -693,7 +693,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 </div>
 
 <div class="checklist-section">
-  <div class="checklist-cat">💰 Financial Clarity</div>
+  <div class="checklist-cat" id="checkCat2">💰 Financial Clarity</div>
   <div class="check-item" onclick="toggleCheck(this)">
     <div class="check-box"><span class="check-tick">✓</span></div>
     <div class="check-body">
@@ -745,7 +745,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 </div>
 
 <div class="checklist-section">
-  <div class="checklist-cat">🔧 Technical Standards</div>
+  <div class="checklist-cat" id="checkCat3">🔧 Technical Standards</div>
   <div class="check-item" onclick="toggleCheck(this)">
     <div class="check-box"><span class="check-tick">✓</span></div>
     <div class="check-body">
@@ -797,7 +797,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 </div>
 
 <div class="checklist-section">
-  <div class="checklist-cat">🤝 Vendor Credibility</div>
+  <div class="checklist-cat" id="checkCat4">🤝 Vendor Credibility</div>
   <div class="check-item" onclick="toggleCheck(this)">
     <div class="check-box"><span class="check-tick">✓</span></div>
     <div class="check-body">
@@ -844,7 +844,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <div style="font-size:12px;color:#5C4A0D;line-height:1.7;">These are negotiation strategies and red flags — both for customers to protect themselves, and for vendors to understand what informed customers will ask. Knowledge on both sides leads to better deals and fewer disputes.</div>
 </div>
 
-<div class="section-hd">Negotiation Strategies</div>
+<div class="section-hd" id="negotiateStrategiesHd">Negotiation Strategies</div>
 
 <div class="tip-card">
   <div class="tip-header" onclick="toggleTip(this)">
@@ -939,7 +939,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   </div>
 </div>
 
-<div class="section-hd">Share This on WhatsApp</div>
+<div class="section-hd" id="shareTipsHd">Share This on WhatsApp</div>
 <button class="share-btn" onclick="shareTips()">📲 Share Solar Buying Tips on WhatsApp</button>
 <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.6;">Share this guide with anyone going solar — helps them avoid common traps.</div>
 
@@ -975,6 +975,51 @@ const LANG = {
     rUnits: "Units Generated<br>Per Month (Est.)", rSaving: "Monthly Bill<br>Savings (Yr 1)",
     rBreakeven: "Break-Even<br>Period", r25yr: "Total Savings<br>Over 25 Years",
     shareBtn: "📲 Share These Results on WhatsApp",
+
+    subsidySectionTitle: "🏛️ Government Subsidy (PM Surya Ghar Yojana)",
+    resultsSectionHd: "Your Results",
+    breakdownTitle: "📊 Investment Breakdown",
+    bKeyCost:"System Cost (quoted)", bKeySubsidy:"Less: Govt Subsidy", bKeyEmi:"Monthly EMI",
+    bKeyYr1:"Year 1 Savings", bKeyYr5:"Year 5 Savings (cumulative)",
+    bKeyYr10:"Year 10 Savings (cumulative)", bKeyYr25:"Year 25 Total Savings",
+    nmTitle:"🔌 Net Metering Estimate", nmKeySelf:"Est. Self-consumption",
+    nmKeyExport:"Est. Export to grid", nmKeyRate:"Export credit rate (₹/unit)", nmKeyCredit:"Annual export credit",
+    loanCompareSectionHd:"💳 PM Surya Ghar Loan Options — Side by Side",
+    shareLoanBtn:"📲 Share Loan Comparison on WhatsApp",
+    shareTipsBtn:"📲 Share Solar Buying Tips on WhatsApp",
+    shareEmiBtn:"📲 Share This Loan Comparison on WhatsApp",
+    disclaimerText:"⚠️ Estimates based on your inputs. Actual generation varies with weather, orientation and shading. Subsidy and loan terms are per PM Surya Ghar Yojana — verify with your DISCOM and bank before finalising.",
+    emiIntroTitle:"💳 PM Surya Ghar — Official Loan Options",
+    emiLabelCost:"Net System Cost after Subsidy (₹)", emiLabelSaving:"Your Monthly Savings from Solar (₹)",
+    emiLabelHL:"Your Existing Home Loan?", emiLabelHLRate:"Current Home Loan Rate (%) if yes",
+    emiLabelRepo:"RBI Repo Rate (%)", emiLabelTenure:"Your preferred tenure",
+    emiLabelExtra:"Can you pay extra every month? (₹)",
+    emiCalcBtn:"💳 Compare All Loan Options",
+    emiResultsHd:"All 3 Loan Options — Side by Side",
+    emiTermsHd:"PM Surya Ghar — Official Loan Terms",
+    legalBoxTitle:"⚖️ Your Legal Rights — Solar in India",
+    remedyTitle:"🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies",
+    discHd:"If DISCOM Refuses or Delays",
+    stateRefHd:"State-Specific Quick Reference",
+    lr1:"<strong>Net Metering is a Legal Right — not a favour.</strong> Under the Electricity Act 2003 (Sec 42) and CERC/SERC Regulations, your DISCOM is legally obligated to provide net metering within 30 days. They cannot refuse without written reasons.",
+    lr2:"<strong>PM Surya Ghar Subsidy is an Entitlement.</strong> Eligible residential consumers have a legal right to apply. Processing must happen within 30 days. Delay without reason is actionable through State Grievance Redressal.",
+    lr3:"<strong>DISCOM cannot charge you for the net meter.</strong> Under most state SERC regulations, the net meter cost is borne by the DISCOM. If asked to pay — question it in writing with SERC regulation reference.",
+    lr4:"<strong>Vendor must give you a written warranty.</strong> BIS mandates minimum 10-year product warranty and 25-year performance warranty on solar panels. Get this in writing — verbal warranty is not enforceable.",
+    lr5:"<strong>AMC must be in writing.</strong> Any oral AMC promise has zero legal value. Insist on a signed agreement specifying duration, coverage, response time, penalty for delay.",
+    lr6:"<strong>Consumer Forum jurisdiction applies.</strong> If vendor fails to deliver — District Consumer Commission has jurisdiction. File at consumerhelpline.gov.in. No lawyer needed for claims up to ₹50 lakhs.",
+    lr7:"<strong>Export tariff must be defined in writing.</strong> The net metering credit rate must be in your net metering agreement. Do not proceed without this in writing.",
+    rs1:"Send written application to DISCOM with acknowledgment copy. Note the date — 30-day clock starts here.",
+    rs2:"If no response in 30 days — file complaint with SERC: TSERC for Telangana, APERC for AP.",
+    rs3:"Simultaneously file on National Portal: <strong>solarrooftop.gov.in</strong>",
+    rs4:"File Consumer Complaint at District Consumer Commission under Consumer Protection Act 2019.",
+    rs5:"If subsidy delayed beyond 30 days — SERC grievance + National Consumer Helpline: <strong>1800-11-4000</strong>.",
+    checklistScoreTitle:"Your Readiness Score",
+    checklistScoreMsg:"Check each item before signing the agreement with any solar vendor.",
+    checkCat1:"⚖️ Legal & Documentation", checkCat2:"💰 Financial Clarity",
+    checkCat3:"🔧 Technical Standards", checkCat4:"🤝 Vendor Credibility",
+    negotiateTitle:"💡 How to use this section",
+    negotiateStrategiesHd:"Negotiation Strategies",
+    shareTipsHd:"Share This on WhatsApp",
     shareMsg: "☀️ *Solar Savings Calculator Results*\n_from lawsticker-ai.com/solar-legal.html_\n\nSystem: *{kw} kWp* | {type} | {state}\n\n🏛️ Govt Subsidy I'm entitled to: *{subsidy}*\n💰 My Net Cost after Subsidy: *{netcost}*\n⚡ Monthly Generation: *{units} units*\n📉 Year 1 Monthly Saving: *{saving}*\n📅 Break-even: *{breakeven} years*\n📈 Total 25-Year Savings: *{yr25}*\n\n⚖️ Know your legal rights before signing:\nlawsticker-ai.com/solar-legal.html",
   },
   te: {
@@ -994,6 +1039,51 @@ const LANG = {
     rUnits: "నెలకు ఉత్పత్తి<br>అంచనా యూనిట్లు", rSaving: "నెలవారీ బిల్లు<br>పొదుపు (1వ సం.)",
     rBreakeven: "పెట్టుబడి<br>వెనక్కి వచ్చే సమయం", r25yr: "25 సంవత్సరాల్లో<br>మొత్తం పొదుపు",
     shareBtn: "📲 WhatsApp లో షేర్ చేయండి",
+
+    subsidySectionTitle: "🏛️ ప్రభుత్వ సబ్సిడీ (PM Surya Ghar Yojana)",
+    resultsSectionHd: "మీ ఫలితాలు",
+    breakdownTitle: "📊 పెట్టుబడి వివరాలు",
+    bKeyCost:"సిస్టమ్ ధర (కోట్ చేసిన)", bKeySubsidy:"తగ్గింపు: ప్రభుత్వ సబ్సిడీ", bKeyEmi:"నెలవారీ EMI",
+    bKeyYr1:"1వ సంవత్సరం పొదుపు", bKeyYr5:"5 సంవత్సరాల పొదుపు (మొత్తం)",
+    bKeyYr10:"10 సంవత్సరాల పొదుపు (మొత్తం)", bKeyYr25:"25 సంవత్సరాల మొత్తం పొదుపు",
+    nmTitle:"🔌 నెట్ మీటరింగ్ అంచనా", nmKeySelf:"స్వంత వినియోగం",
+    nmKeyExport:"గ్రిడ్‌కు ఎగుమతి", nmKeyRate:"ఎగుమతి క్రెడిట్ రేటు (₹/యూనిట్)", nmKeyCredit:"వార్షిక ఎగుమతి క్రెడిట్",
+    loanCompareSectionHd:"💳 PM Surya Ghar రుణ ఎంపికలు — పోల్చి చూడండి",
+    shareLoanBtn:"📲 రుణ పోల్చిక WhatsApp లో షేర్ చేయండి",
+    shareTipsBtn:"📲 సోలార్ కొనుగోలు చిట్కాలు షేర్ చేయండి",
+    shareEmiBtn:"📲 EMI పోల్చిక WhatsApp లో షేర్ చేయండి",
+    disclaimerText:"⚠️ ఇవి మీ ఇన్‌పుట్‌ల ఆధారంగా అంచనాలు. వాస్తవ ఉత్పత్తి వాతావరణం, ధిక్కరణ మరియు నీడతో మారుతుంది. సబ్సిడీ మరియు రుణ నిబంధనలు PM Surya Ghar Yojana ప్రకారం — మీ DISCOM మరియు బ్యాంకుతో ధృవీకరించండి.",
+    emiIntroTitle:"💳 PM Surya Ghar — అధికారిక రుణ ఎంపికలు",
+    emiLabelCost:"సబ్సిడీ తర్వాత నికర సిస్టమ్ ధర (₹)", emiLabelSaving:"సోలార్ నుండి నెలవారీ పొదుపు (₹)",
+    emiLabelHL:"మీకు హోమ్ లోన్ ఉందా?", emiLabelHLRate:"ప్రస్తుత హోమ్ లోన్ రేటు (%) ఉంటే",
+    emiLabelRepo:"RBI రెపో రేటు (%)", emiLabelTenure:"మీకు ఇష్టమైన వ్యవధి",
+    emiLabelExtra:"నెలకు అదనంగా చెల్లించగలరా? (₹)",
+    emiCalcBtn:"💳 అన్ని రుణ ఎంపికలు పోల్చండి",
+    emiResultsHd:"అన్ని 3 రుణ ఎంపికలు — పోల్చి చూడండి",
+    emiTermsHd:"PM Surya Ghar — అధికారిక రుణ నిబంధనలు",
+    legalBoxTitle:"⚖️ మీ చట్టపరమైన హక్కులు — భారతదేశంలో సోలార్",
+    remedyTitle:"🚨 DISCOM సహకరించడం లేదా? దశలవారీ చట్టపరమైన పరిష్కారాలు",
+    discHd:"DISCOM నిరాకరిస్తే లేదా ఆలస్యం చేస్తే",
+    stateRefHd:"రాష్ట్రానికి సంబంధించిన సమాచారం",
+    lr1:"<strong>నెట్ మీటరింగ్ మీ చట్టపరమైన హక్కు — దయ కాదు.</strong> Electricity Act 2003 (Sec 42) మరియు CERC/SERC నిబంధనల ప్రకారం, మీ DISCOM 30 రోజుల్లో నెట్ మీటరింగ్ ఇవ్వాల్సిన చట్టపరమైన బాధ్యత ఉంది.",
+    lr2:"<strong>PM Surya Ghar సబ్సిడీ మీకు చట్టపరంగా చెందుతుంది.</strong> అర్హులైన గృహ వినియోగదారులు దరఖాస్తు చేసుకోవచ్చు. 30 రోజుల్లో ప్రాసెస్ చేయాల్సి ఉంటుంది.",
+    lr3:"<strong>నెట్ మీటర్ కోసం DISCOM మీ నుండి రుసుము వసూలు చేయలేదు.</strong> చాలా రాష్ట్రాల SERC నిబంధనల ప్రకారం ఇది DISCOM భరించాలి.",
+    lr4:"<strong>వెండర్ తప్పనిసరిగా లిఖిత వారంటీ ఇవ్వాలి.</strong> BIS ప్రమాణాల ప్రకారం కనీసం 10 సంవత్సరాల ఉత్పత్తి వారంటీ మరియు 25 సంవత్సరాల పని తీరు వారంటీ తప్పనిసరి.",
+    lr5:"<strong>AMC తప్పనిసరిగా లిఖితంగా ఉండాలి.</strong> నోటి మాట AMC వాగ్దానానికి చట్టపరమైన విలువ లేదు.",
+    lr6:"<strong>వినియోగదారు ఫోరం అధికారం వర్తిస్తుంది.</strong> వెండర్ వాగ్దానం నెరవేర్చకపోతే — జిల్లా వినియోగదారు కమీషన్‌లో ఫిర్యాదు చేయవచ్చు.",
+    lr7:"<strong>ఎగుమతి టారిఫ్ లిఖితంగా నిర్ణయించాల్సిన అవసరం ఉంది.</strong> నెట్ మీటరింగ్ క్రెడిట్ రేటు మీ అగ్రిమెంట్‌లో ఉండాలి.",
+    rs1:"DISCOM కు రాతపూర్వక దరఖాస్తు పంపించండి — తేదీ గమనించండి. 30 రోజుల గడువు ఇక్కడ మొదలవుతుంది.",
+    rs2:"30 రోజుల్లో స్పందన లేకుంటే — SERC కు ఫిర్యాదు: తెలంగాణలో TSERC, AP లో APERC.",
+    rs3:"జాతీయ పోర్టల్‌లో కూడా ఫిర్యాదు చేయండి: <strong>solarrooftop.gov.in</strong>",
+    rs4:"వినియోగదారు రక్షణ చట్టం 2019 కింద జిల్లా వినియోగదారు కమీషన్‌లో ఫిర్యాదు చేయండి.",
+    rs5:"సబ్సిడీ 30 రోజులు ఆలస్యమైతే — SERC ఫిర్యాదు + జాతీయ వినియోగదారు హెల్ప్‌లైన్: <strong>1800-11-4000</strong>.",
+    checklistScoreTitle:"మీ సంసిద్ధత స్కోర్",
+    checklistScoreMsg:"ఏదైనా సోలార్ వెండర్‌తో అగ్రిమెంట్ సంతకం చేయడానికి ముందు ప్రతి అంశం తనిఖీ చేయండి.",
+    checkCat1:"⚖️ చట్టపరమైన & పత్రాలు", checkCat2:"💰 ఆర్థిక స్పష్టత",
+    checkCat3:"🔧 సాంకేతిక ప్రమాణాలు", checkCat4:"🤝 వెండర్ విశ్వసనీయత",
+    negotiateTitle:"💡 ఈ విభాగాన్ని ఎలా ఉపయోగించాలి",
+    negotiateStrategiesHd:"చర్చ వ్యూహాలు",
+    shareTipsHd:"WhatsApp లో షేర్ చేయండి",
     shareMsg: "☀️ *సోలార్ పొదుపు లెక్క*\n_lawsticker-ai.com/solar-legal.html నుండి_\n\nసిస్టమ్: *{kw} kWp* | {type} | {state}\n\n🏛️ ప్రభుత్వ సబ్సిడీ: *{subsidy}*\n💰 సబ్సిడీ తర్వాత ధర: *{netcost}*\n⚡ నెలకు ఉత్పత్తి: *{units} యూనిట్లు*\n📉 నెలవారీ పొదుపు: *{saving}*\n📅 పెట్టుబడి తిరిగి: *{breakeven} సంవత్సరాలు*\n📈 25 సంవత్సరాల పొదుపు: *{yr25}*\n\n⚖️ సంతకం ముందు హక్కులు తెలుసుకోండి:\nlawsticker-ai.com/solar-legal.html",
   },
   hi: {
@@ -1013,6 +1103,51 @@ const LANG = {
     rUnits: "प्रति माह<br>अनुमानित यूनिट", rSaving: "मासिक बिल<br>बचत (वर्ष 1)",
     rBreakeven: "निवेश वापसी<br>की अवधि", r25yr: "25 साल में<br>कुल बचत",
     shareBtn: "📲 WhatsApp पर शेयर करें",
+
+    subsidySectionTitle: "🏛️ सरकारी सब्सिडी (PM Surya Ghar Yojana)",
+    resultsSectionHd: "आपके परिणाम",
+    breakdownTitle: "📊 निवेश विवरण",
+    bKeyCost:"सिस्टम लागत (उद्धृत)", bKeySubsidy:"कम: सरकारी सब्सिडी", bKeyEmi:"मासिक EMI",
+    bKeyYr1:"वर्ष 1 की बचत", bKeyYr5:"5 साल की बचत (कुल)",
+    bKeyYr10:"10 साल की बचत (कुल)", bKeyYr25:"25 साल की कुल बचत",
+    nmTitle:"🔌 नेट मीटरिंग अनुमान", nmKeySelf:"स्वयं उपभोग",
+    nmKeyExport:"ग्रिड को निर्यात", nmKeyRate:"निर्यात क्रेडिट दर (₹/यूनिट)", nmKeyCredit:"वार्षिक निर्यात क्रेडिट",
+    loanCompareSectionHd:"💳 PM Surya Ghar ऋण विकल्प — तुलना",
+    shareLoanBtn:"📲 ऋण तुलना WhatsApp पर शेयर करें",
+    shareTipsBtn:"📲 सोलर खरीद सुझाव शेयर करें",
+    shareEmiBtn:"📲 EMI तुलना WhatsApp पर शेयर करें",
+    disclaimerText:"⚠️ ये आपके इनपुट के आधार पर अनुमान हैं। वास्तविक उत्पादन मौसम, दिशा और छाया से भिन्न हो सकता है। सब्सिडी और ऋण शर्तें PM Surya Ghar Yojana के अनुसार हैं — अपने DISCOM और बैंक से पुष्टि करें।",
+    emiIntroTitle:"💳 PM Surya Ghar — आधिकारिक ऋण विकल्प",
+    emiLabelCost:"सब्सिडी के बाद नेट सिस्टम लागत (₹)", emiLabelSaving:"सोलर से मासिक बचत (₹)",
+    emiLabelHL:"क्या आपका होम लोन है?", emiLabelHLRate:"मौजूदा होम लोन दर (%) यदि है",
+    emiLabelRepo:"RBI रेपो दर (%)", emiLabelTenure:"आपकी पसंदीदा अवधि",
+    emiLabelExtra:"क्या आप हर महीने अतिरिक्त भुगतान कर सकते हैं? (₹)",
+    emiCalcBtn:"💳 सभी ऋण विकल्पों की तुलना करें",
+    emiResultsHd:"सभी 3 ऋण विकल्प — तुलना",
+    emiTermsHd:"PM Surya Ghar — आधिकारिक ऋण शर्तें",
+    legalBoxTitle:"⚖️ आपके कानूनी अधिकार — भारत में सोलर",
+    remedyTitle:"🚨 DISCOM सहयोग नहीं कर रहा? चरण-दर-चरण कानूनी उपाय",
+    discHd:"यदि DISCOM मना करे या देरी करे",
+    stateRefHd:"राज्य-विशिष्ट त्वरित संदर्भ",
+    lr1:"<strong>नेट मीटरिंग आपका कानूनी अधिकार है — कोई एहसान नहीं।</strong> Electricity Act 2003 (Sec 42) और CERC/SERC नियमों के अनुसार आपका DISCOM 30 दिनों के भीतर नेट मीटरिंग देने के लिए कानूनी रूप से बाध्य है।",
+    lr2:"<strong>PM Surya Ghar सब्सिडी आपका अधिकार है।</strong> पात्र आवासीय उपभोक्ताओं को आवेदन का अधिकार है। 30 दिनों में प्रसंस्करण अनिवार्य है।",
+    lr3:"<strong>DISCOM नेट मीटर के लिए आपसे शुल्क नहीं ले सकता।</strong> अधिकांश राज्य SERC नियमों के अनुसार यह लागत DISCOM वहन करता है।",
+    lr4:"<strong>वेंडर को लिखित वारंटी देनी होगी।</strong> BIS मानकों के अनुसार कम से कम 10 साल की उत्पाद वारंटी और 25 साल की प्रदर्शन वारंटी अनिवार्य है।",
+    lr5:"<strong>AMC लिखित में होनी चाहिए।</strong> मौखिक AMC वादे का कोई कानूनी मूल्य नहीं है।",
+    lr6:"<strong>उपभोक्ता फोरम का अधिकार लागू होता है।</strong> यदि वेंडर वादा पूरा नहीं करता — जिला उपभोक्ता आयोग में शिकायत करें।",
+    lr7:"<strong>निर्यात टैरिफ लिखित में तय होना चाहिए।</strong> नेट मीटरिंग क्रेडिट दर आपके अनुबंध में होनी चाहिए।",
+    rs1:"DISCOM को लिखित आवेदन भेजें — तारीख नोट करें। 30 दिन की समय सीमा यहाँ से शुरू होती है।",
+    rs2:"30 दिनों में कोई प्रतिक्रिया नहीं — SERC में शिकायत करें: तेलंगाना में TSERC, AP में APERC।",
+    rs3:"राष्ट्रीय पोर्टल पर भी शिकायत करें: <strong>solarrooftop.gov.in</strong>",
+    rs4:"उपभोक्ता संरक्षण अधिनियम 2019 के तहत जिला उपभोक्ता आयोग में शिकायत दर्ज करें।",
+    rs5:"यदि सब्सिडी 30 दिन से अधिक देरी हो — SERC शिकायत + राष्ट्रीय उपभोक्ता हेल्पलाइन: <strong>1800-11-4000</strong>।",
+    checklistScoreTitle:"आपकी तैयारी का स्कोर",
+    checklistScoreMsg:"किसी भी सोलर वेंडर के साथ अनुबंध पर हस्ताक्षर करने से पहले हर बिंदु जाँचें।",
+    checkCat1:"⚖️ कानूनी & दस्तावेज़", checkCat2:"💰 वित्तीय स्पष्टता",
+    checkCat3:"🔧 तकनीकी मानक", checkCat4:"🤝 वेंडर विश्वसनीयता",
+    negotiateTitle:"💡 इस सेक्शन का उपयोग कैसे करें",
+    negotiateStrategiesHd:"बातचीत की रणनीतियाँ",
+    shareTipsHd:"WhatsApp पर शेयर करें",
     shareMsg: "☀️ *सोलर बचत कैलकुलेटर*\n_lawsticker-ai.com/solar-legal.html से_\n\nसिस्टम: *{kw} kWp* | {type} | {state}\n\n🏛️ सरकारी सब्सिडी: *{subsidy}*\n💰 सब्सिडी के बाद लागत: *{netcost}*\n⚡ मासिक उत्पादन: *{units} यूनिट*\n📉 मासिक बचत: *{saving}*\n📅 निवेश वापसी: *{breakeven} वर्ष*\n📈 25 साल की बचत: *{yr25}*\n\n⚖️ साइन करने से पहले अधिकार जानें:\nlawsticker-ai.com/solar-legal.html",
   }
 };
@@ -1026,63 +1161,7 @@ function setLang(lang, btn) {
   applyLang();
 }
 
-function applyLang() {
-  const L = LANG[currentLang];
-  if (!L) return;
 
-  // Hero
-  const heroEye = document.querySelector('.hero-eye');
-  const heroTitle = document.querySelector('.hero-title');
-  const heroSub = document.querySelector('.hero-sub');
-  if (heroEye) heroEye.textContent = L.heroEye;
-  if (heroTitle) heroTitle.innerHTML = L.heroTitle;
-  if (heroSub) heroSub.textContent = L.heroSub;
-
-  // Tab pills
-  const pills = document.querySelectorAll('.tab-pill');
-  const tabKeys = ['tab1','tab2','tab3','tab4','tab5'];
-  pills.forEach((p,i) => { if(tabKeys[i]) p.textContent = L[tabKeys[i]]; });
-
-  // Calc card title
-  const calcTitle = document.querySelector('.calc-title');
-  if (calcTitle) calcTitle.textContent = L.calcTitle;
-
-  // Field labels — use data-lang attribute
-  document.querySelectorAll('[data-lang]').forEach(el => {
-    const key = el.getAttribute('data-lang');
-    if (L[key]) el.textContent = L[key];
-  });
-
-  // Calculate button
-  const calcBtn = document.querySelector('.calc-btn');
-  if (calcBtn) calcBtn.textContent = L.calcBtn;
-
-  // Result labels
-  const resultLabels = document.querySelectorAll('.result-label');
-  const labelKeys = ['rSubsidy','rNetCost','rUnits','rSaving','rBreakeven','r25yr'];
-  resultLabels.forEach((el,i) => { if(labelKeys[i] && L[labelKeys[i]]) el.innerHTML = L[labelKeys[i]]; });
-
-  // Section titles
-  const legalBoxTitle = document.getElementById('legalBoxTitle');
-  const remedyTitle = document.getElementById('remedyTitle');
-  const negotiateTitle = document.getElementById('negotiateTitle');
-  const legalTitles = {
-    en: ['⚖️ Your Legal Rights — Solar in India', '🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies', '💡 How to use this section'],
-    te: ['⚖️ మీ చట్టపరమైన హక్కులు — భారతదేశంలో సోలార్', '🚨 DISCOM సహకరించడం లేదా? దశలవారీ చట్టపరమైన పరిష్కారాలు', '💡 ఈ విభాగాన్ని ఎలా ఉపయోగించాలి'],
-    hi: ['⚖️ आपके कानूनी अधिकार — भारत में सोलर', '🚨 DISCOM सहयोग नहीं कर रहा? चरण-दर-चरण कानूनी उपाय', '💡 इस सेक्शन का उपयोग कैसे करें'],
-  };
-  const lt = legalTitles[currentLang] || legalTitles.en;
-  if (legalBoxTitle) legalBoxTitle.textContent = lt[0];
-  if (remedyTitle) remedyTitle.textContent = lt[1];
-  if (negotiateTitle) negotiateTitle.textContent = lt[2];
-
-  // Share button text
-  document.querySelectorAll('.share-btn').forEach(btn => {
-    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('shareResults')) {
-      btn.textContent = L.shareBtn;
-    }
-  });
-}
 
 // ── STATE DEFAULTS ─────────────────────────────────────────────────────
 const STATE_DEFAULTS = {
@@ -1364,6 +1443,8 @@ function fmtI(n) {
 }
 
 function calculateEMI() {
+  const L = LANG[currentLang] || LANG.en;
+
   const loanAmt   = parseFloat(document.getElementById('emi-loanamt').value) || 72000;
   const saving    = parseFloat(document.getElementById('emi-saving').value) || 2000;
   const hasHL     = document.getElementById('emi-homeloan').value === 'yes';
@@ -1373,196 +1454,256 @@ function calculateEMI() {
   const extra     = parseFloat(document.getElementById('emi-extra').value) || 0;
   const months    = tenureYrs * 12;
 
-  // ── Option A: PM Surya Ghar ≤₹2L
   const rateA = repoRate + 0.5;
   const principalA = Math.min(loanAmt, 200000);
   const emiA = calcEMI(principalA, rateA, Math.min(months, 120));
   const intA = totalInterest(emiA, Math.min(months, 120), principalA);
 
-  // ── Option B: >₹2L, up to ₹6L
   const rateB = hasHL ? hlRate : (hlRate + 1.0);
   const principalB = Math.min(loanAmt, 600000);
   const emiB = calcEMI(principalB, rateB, months);
   const intB = totalInterest(emiB, months, principalB);
 
-  // ── Option C: Own funds (opportunity cost = FD rate ~7%)
   const fdRate = 7.0;
-  const opportunityCost = loanAmt * (fdRate/100) * tenureYrs; // simple approx
-  const emiC = 0;
-  const intC = 0;
+  const opportunityCost = loanAmt * (fdRate/100) * tenureYrs;
 
-  // ── Eligibility check
   const eligibleA = loanAmt <= 200000;
   const eligibleB = loanAmt <= 600000;
 
-  // ── Recommendation logic
   let recommended = '';
   let recReason = '';
   if (loanAmt <= 200000) {
     if (rateA < rateB) {
       recommended = 'A';
-      recReason = `Option A gives you the lowest rate (${rateA.toFixed(2)}% vs ${rateB.toFixed(2)}% for Option B), zero processing fee, and needs only Aadhaar. For your loan amount of ${fmtI(loanAmt)}, this is clearly the best choice — you save ${fmtI(intB - intA)} in interest over the tenure.`;
+      recReason = {
+        en: `Option A gives you the lowest rate (${rateA.toFixed(2)}% vs ${rateB.toFixed(2)}% for Option B), zero processing fee, and needs only Aadhaar. You save ${fmtI(intB - intA)} in interest over the tenure.`,
+        te: `ఎంపిక A అత్యంత తక్కువ రేటు ఇస్తుంది (${rateA.toFixed(2)}% vs ఎంపిక B కి ${rateB.toFixed(2)}%), శూన్య ప్రాసెసింగ్ రుసుము, ఆధార్ మాత్రమే అవసరం. మొత్తం వ్యవధిలో ${fmtI(intB - intA)} వడ్డీ ఆదా అవుతుంది.`,
+        hi: `विकल्प A सबसे कम दर देता है (${rateA.toFixed(2)}% बनाम विकल्प B के ${rateB.toFixed(2)}%), शून्य प्रसंस्करण शुल्क, केवल आधार। पूरी अवधि में ${fmtI(intB - intA)} ब्याज बचत होगी।`,
+      }[currentLang] || '';
     } else {
       recommended = 'B';
-      recReason = `Unusually, Option B offers a lower rate than Option A right now because your home loan rate is low. However, Option B requires more documents. Weigh the savings vs documentation effort.`;
+      recReason = {
+        en: `Unusually, Option B offers a lower rate because your home loan rate is low. However, it requires more documents.`,
+        te: `అసాధారణంగా, మీ హోమ్ లోన్ రేటు తక్కువగా ఉండటం వల్ల ఎంపిక B తక్కువ రేటు ఇస్తుంది. అయితే అదనపు పత్రాలు అవసరం.`,
+        hi: `असामान्य रूप से, आपकी होम लोन दर कम होने से विकल्प B बेहतर दर देता है। लेकिन इसमें अधिक दस्तावेज़ चाहिए।`,
+      }[currentLang] || '';
     }
   } else if (loanAmt <= 600000) {
     recommended = 'B';
-    recReason = `Option A only covers up to ₹2 lakhs. For your loan amount of ${fmtI(loanAmt)}, only Option B applies. ${hasHL ? 'Since you have an existing home loan, you get the home loan rate — which is a good deal.' : 'You will pay home loan rate + 1% since you don\'t have an existing home loan with a PSB.'}`;
+    recReason = {
+      en: `Option A only covers up to ₹2 lakhs. For your amount of ${fmtI(loanAmt)}, only Option B applies. ${hasHL ? 'Since you have an existing home loan, you get the home loan rate.' : 'You will pay home loan rate + 1% without an existing home loan.'}`,
+      te: `ఎంపిక A గరిష్టం ₹2 లక్షలు మాత్రమే. మీ మొత్తం ${fmtI(loanAmt)} కి ఎంపిక B మాత్రమే వర్తిస్తుంది. ${hasHL ? 'మీకు హోమ్ లోన్ ఉన్నందున హోమ్ లోన్ రేటే వర్తిస్తుంది.' : 'హోమ్ లోన్ లేనందున హోమ్ లోన్ రేటు + 1% చెల్లించాల్సి ఉంటుంది.'}`,
+      hi: `विकल्प A केवल ₹2 लाख तक है। आपकी राशि ${fmtI(loanAmt)} के लिए केवल विकल्प B लागू होता है। ${hasHL ? 'होम लोन होने से आपको होम लोन दर मिलेगी।' : 'होम लोन न होने पर होम लोन दर + 1% लगेगा।'}`,
+    }[currentLang] || '';
   } else {
     recommended = 'C';
-    recReason = `Your loan amount exceeds ₹6 lakhs — beyond PM Surya Ghar scheme limits. If you have savings, using own funds avoids all interest cost. Alternatively, explore a regular bank loan or NBFC loan for the excess amount.`;
+    recReason = {
+      en: `Your loan amount exceeds ₹6 lakhs — beyond PM Surya Ghar scheme limits. Cash purchase avoids all interest.`,
+      te: `మీ రుణ మొత్తం ₹6 లక్షలు మించింది — PM Surya Ghar పరిధి దాటింది. స్వంత నిధులు ఉపయోగిస్తే వడ్డీ అవసరం లేదు.`,
+      hi: `आपकी ऋण राशि ₹6 लाख से अधिक है — PM Surya Ghar सीमा से बाहर। नकद खरीद से सब्याज से बचें।`,
+    }[currentLang] || '';
   }
 
-  // ── Prepayment calculation
+  // Prepayment calculation
   let prepayText = '';
+  const baseEMI = recommended === 'A' ? emiA : emiB;
+  const baseRate = recommended === 'A' ? rateA : rateB;
+  const baseInt = recommended === 'A' ? intA : intB;
+  const normalMonths = recommended === 'A' ? Math.min(months,120) : months;
+
   if (extra > 0) {
-    const baseEMI = recommended === 'A' ? emiA : emiB;
-    const baseRate = recommended === 'A' ? rateA : rateB;
-    const normalMonths = recommended === 'A' ? Math.min(months,120) : months;
     const fastMonths = monthsToPayoff(loanAmt, baseRate, baseEMI + extra);
     const savedMonths = normalMonths - fastMonths;
     const savedInterest = totalInterest(baseEMI, normalMonths, loanAmt) -
                           totalInterest(baseEMI + extra, fastMonths, loanAmt);
     if (savedMonths > 0) {
-      prepayText = `By paying an extra ${fmtI(extra)}/month above your EMI of ${fmtI(baseEMI)}, you will repay the loan in <strong>${Math.ceil(fastMonths/12)} years ${fastMonths%12} months</strong> instead of ${tenureYrs} years — saving <strong>${savedMonths} months</strong> and approximately <strong>${fmtI(Math.max(0,savedInterest))}</strong> in interest. Since PM Surya Ghar has no prepayment charges, this is 100% free savings.`;
+      prepayText = {
+        en: `By paying ${fmtI(extra)}/month extra above your EMI of ${fmtI(baseEMI)}, you repay in <strong>${Math.ceil(fastMonths/12)} years ${fastMonths%12} months</strong> instead of ${tenureYrs} years — saving <strong>${savedMonths} months</strong> and <strong>${fmtI(Math.max(0,savedInterest))}</strong> interest. Zero prepayment charges.`,
+        te: `మీ EMI ${fmtI(baseEMI)} పైన నెలకు ${fmtI(extra)} అదనంగా చెల్లిస్తే, ${tenureYrs} సంవత్సరాలకు బదులు <strong>${Math.ceil(fastMonths/12)} సంవత్సరాలు ${fastMonths%12} నెలల్లో</strong> రుణం తీర్చవచ్చు — <strong>${savedMonths} నెలలు</strong> మరియు <strong>${fmtI(Math.max(0,savedInterest))}</strong> వడ్డీ ఆదా. ముందస్తు చెల్లింపు రుసుమే లేదు.`,
+        hi: `EMI ${fmtI(baseEMI)} से ऊपर ${fmtI(extra)}/माह अतिरिक्त देने पर ${tenureYrs} साल की जगह <strong>${Math.ceil(fastMonths/12)} साल ${fastMonths%12} माह</strong> में ऋण चुकता होगा — <strong>${savedMonths} माह</strong> और <strong>${fmtI(Math.max(0,savedInterest))}</strong> ब्याज बचत। पूर्व भुगतान शुल्क शून्य।`,
+      }[currentLang] || '';
     }
   } else {
-    const baseEMI = recommended === 'A' ? emiA : emiB;
-    const baseRate = recommended === 'A' ? rateA : rateB;
-    const baseInt = recommended === 'A' ? intA : intB;
     const extraNeeded = 500;
     const fastM = monthsToPayoff(loanAmt, baseRate, baseEMI + extraNeeded);
-    const savedM = months - fastM;
+    const savedM = normalMonths - fastM;
     const savedI = baseInt - totalInterest(baseEMI+extraNeeded, fastM, loanAmt);
-    prepayText = `PM Surya Ghar loan has <strong>zero prepayment charges</strong>. If you pay just ₹500 extra per month above your EMI of ${fmtI(baseEMI)}, you save approximately <strong>${savedM} months</strong> and <strong>${fmtI(Math.max(0,savedI))}</strong> in interest. Your solar savings of ${fmtI(saving)}/month can partly fund this extra payment.`;
+    prepayText = {
+      en: `PM Surya Ghar has <strong>zero prepayment charges</strong>. Paying just ₹500 extra/month above your EMI of ${fmtI(baseEMI)} saves approximately <strong>${savedM} months</strong> and <strong>${fmtI(Math.max(0,savedI))}</strong> in interest. Your solar savings of ${fmtI(saving)}/month can partly fund this.`,
+      te: `PM Surya Ghar రుణానికి <strong>ముందస్తు చెల్లింపు రుసుమే లేదు</strong>. మీ EMI ${fmtI(baseEMI)} పైన కేవలం ₹500 అదనంగా చెల్లిస్తే <strong>${savedM} నెలలు</strong> మరియు <strong>${fmtI(Math.max(0,savedI))}</strong> వడ్డీ ఆదా. మీ సోలార్ పొదుపు ${fmtI(saving)}/నెల ఇందుకు సహాయపడుతుంది.`,
+      hi: `PM Surya Ghar ऋण में <strong>पूर्व भुगतान शुल्क शून्य</strong>। EMI ${fmtI(baseEMI)} से मात्र ₹500 अतिरिक्त/माह देने पर <strong>${savedM} माह</strong> और <strong>${fmtI(Math.max(0,savedI))}</strong> ब्याज बचत। आपकी सोलर बचत ${fmtI(saving)}/माह इसमें मदद करेगी।`,
+    }[currentLang] || '';
   }
 
-  // ── Solar vs EMI position
-  const bestEMI = recommended === 'A' ? emiA : (recommended === 'B' ? emiB : 0);
-  const netMonthly = saving - bestEMI;
-  let solarVsEmi = '';
-  if (bestEMI === 0) {
-    solarVsEmi = `Cash purchase — no EMI burden. Your solar system generates ${fmtI(saving)}/month in savings from day one. Pure gain.`;
-  } else if (netMonthly >= 0) {
-    solarVsEmi = `✅ Your monthly solar savings (${fmtI(saving)}) are <strong>higher than your EMI (${fmtI(bestEMI)})</strong>. This means solar pays for itself from day one — you are cash-flow positive immediately. Net monthly benefit: <strong>${fmtI(netMonthly)}</strong>. This is the ideal situation.`;
-  } else {
-    const gapMonths = Math.ceil((-netMonthly * months) / saving);
-    solarVsEmi = `Your EMI (${fmtI(bestEMI)}) is higher than your current savings (${fmtI(saving)}) by ${fmtI(-netMonthly)}/month. This gap reduces over time as tariff increases raise your solar savings. You will reach cash-flow positive in approximately <strong>${Math.ceil(-netMonthly / (saving * 0.05))} months</strong> assuming 5% annual tariff increase. Plan your cash flow accordingly.`;
-  }
+  // Solar vs EMI position
+  const netMonthly = saving - baseEMI;
+  const solarVsEmi = netMonthly >= 0 ? {
+    en: `✅ Your monthly solar savings (${fmtI(saving)}) are <strong>higher than your EMI (${fmtI(baseEMI)})</strong>. Solar pays for itself from day one. Net monthly benefit: <strong>${fmtI(netMonthly)}</strong>.`,
+    te: `✅ మీ నెలవారీ సోలార్ పొదుపు (${fmtI(saving)}) మీ EMI (${fmtI(baseEMI)}) <strong>కంటే అధికం</strong>. సోలార్ మొదటి రోజు నుండే లాభం ఇస్తుంది. నికర నెలవారీ ప్రయోజనం: <strong>${fmtI(netMonthly)}</strong>.`,
+    hi: `✅ मासिक सोलर बचत (${fmtI(saving)}) आपकी EMI (${fmtI(baseEMI)}) से <strong>अधिक है</strong>। पहले दिन से सोलर लाभदायक। मासिक शुद्ध लाभ: <strong>${fmtI(netMonthly)}</strong>.`,
+  }[currentLang] : {
+    en: `Your EMI (${fmtI(baseEMI)}) is higher than current savings (${fmtI(saving)}) by ${fmtI(-netMonthly)}/month. This gap reduces as tariff rises annually. Plan your cash flow accordingly.`,
+    te: `మీ EMI (${fmtI(baseEMI)}) ప్రస్తుత పొదుపు (${fmtI(saving)}) కంటే ${fmtI(-netMonthly)}/నెల అధికం. టారిఫ్ పెరుగుతున్న కొద్దీ ఈ అంతరం తగ్గుతుంది. నగదు ప్రవాహాన్ని తదనుగుణంగా ప్లాన్ చేయండి.`,
+    hi: `आपकी EMI (${fmtI(baseEMI)}) मौजूदा बचत (${fmtI(saving)}) से ${fmtI(-netMonthly)}/माह अधिक है। टैरिफ बढ़ने के साथ यह अंतर कम होगा। नकदी प्रवाह की योजना बनाएं।`,
+  }[currentLang] || '';
 
-  // ── Watch out for
+  // Watch out
   const watchOut = [
-    hasHL ? null : `You don't have an existing home loan — Option B will cost you home loan rate + 1% (currently ~${(hlRate+1).toFixed(1)}%). Consider getting Option B from the PSB where you have your salary account for better rates.`,
-    loanAmt > 200000 ? `Your loan amount (${fmtI(loanAmt)}) exceeds ₹2 lakhs — Option A is not available. Ensure you meet Option B income requirements: annual income ≥ ₹3 lakhs, 2 years ITR, 6 months salary slips.` : null,
-    `The moratorium period (6 months after disbursement — no EMI) sounds helpful but interest still accrues. Your effective loan amount grows during moratorium. Factor this in.`,
-    `Rate in Option A is floating (RBI Repo + 0.50%). If RBI raises repo rate, your EMI increases. Consider a fixed-rate loan if rate stability matters to you.`,
+    !hasHL ? {
+      en: `You don't have an existing home loan — Option B costs home loan rate + 1% (currently ~${(hlRate+1).toFixed(1)}%).`,
+      te: `మీకు హోమ్ లోన్ లేదు — ఎంపిక B హోమ్ లోన్ రేటు + 1% (ప్రస్తుతం ~${(hlRate+1).toFixed(1)}%) అవుతుంది.`,
+      hi: `होम लोन नहीं है — विकल्प B होम लोन दर + 1% (~${(hlRate+1).toFixed(1)}%) होगा।`,
+    }[currentLang] : null,
+    loanAmt > 200000 ? {
+      en: `Your amount (${fmtI(loanAmt)}) exceeds ₹2L — Option A not available. Option B needs: annual income ≥ ₹3L, 2 years ITR, 6 months salary slips.`,
+      te: `మీ మొత్తం (${fmtI(loanAmt)}) ₹2L మించింది — ఎంపిక A వర్తించదు. ఎంపిక B కి: వార్షిక ఆదాయం ≥ ₹3L, 2 సంవత్సరాల ITR, 6 నెలల జీతం స్లిప్‌లు అవసరం.`,
+      hi: `राशि (${fmtI(loanAmt)}) ₹2L से अधिक — विकल्प A उपलब्ध नहीं। विकल्प B के लिए: वार्षिक आय ≥ ₹3L, 2 साल ITR, 6 माह वेतन पर्ची।`,
+    }[currentLang] : null,
+    {
+      en: `Moratorium period (6 months — no EMI) sounds helpful but interest still accrues. Your effective loan grows during moratorium.`,
+      te: `మారటోరియం వ్యవధి (6 నెలలు — EMI లేదు) సహాయకరంగా అనిపించినా వడ్డీ పెరుగుతూనే ఉంటుంది. మారటోరియం సమయంలో మీ ప్రభావవంతమైన రుణం పెరుగుతుంది.`,
+      hi: `मोराटोरियम (6 माह — कोई EMI नहीं) सहायक लगता है लेकिन ब्याज बढ़ता रहता है।`,
+    }[currentLang],
+    {
+      en: `Option A rate is floating (Repo + 0.5%). If RBI raises rates, your EMI increases. Consider fixed-rate loan if stability matters.`,
+      te: `ఎంపిక A రేటు ఫ్లోటింగ్ (Repo + 0.5%). RBI రేటు పెంచితే మీ EMI పెరుగుతుంది.`,
+      hi: `विकल्प A दर फ्लोटिंग है (Repo + 0.5%)। RBI दर बढ़ाने पर EMI बढ़ेगी।`,
+    }[currentLang],
   ].filter(Boolean);
 
-  // ── Render
-  const cards = document.getElementById('emiOptionCards');
+  // UI labels per language
+  const ui = {
+    en: { recTitle:'🏆 Our Recommendation', savingsTitle:'💰 Interest Saving by Choosing Right', solarTitle:'🌞 Solar Savings vs EMI — Your True Position', watchTitle:'⚠️ Watch Out For', pros:'✓ PROS', cons:'✗ CONS', rate:'Interest Rate', emi:'Monthly EMI', interest:'Total Interest', recommended:'✓ RECOMMENDED', notEligible:'NOT ELIGIBLE' },
+    te: { recTitle:'🏆 మా సిఫార్సు', savingsTitle:'💰 సరైన ఎంపికతో వడ్డీ ఆదా', solarTitle:'🌞 సోలార్ పొదుపు vs EMI', watchTitle:'⚠️ జాగ్రత్త వహించండి', pros:'✓ ప్రయోజనాలు', cons:'✗ నష్టాలు', rate:'వడ్డీ రేటు', emi:'నెలవారీ EMI', interest:'మొత్తం వడ్డీ', recommended:'✓ సిఫార్సు', notEligible:'అర్హత లేదు' },
+    hi: { recTitle:'🏆 हमारी सिफारिश', savingsTitle:'💰 सही विकल्प से ब्याज बचत', solarTitle:'🌞 सोलर बचत vs EMI', watchTitle:'⚠️ सावधान रहें', pros:'✓ फायदे', cons:'✗ नुकसान', rate:'ब्याज दर', emi:'मासिक EMI', interest:'कुल ब्याज', recommended:'✓ अनुशंसित', notEligible:'पात्र नहीं' },
+  };
+  const UI = ui[currentLang] || ui.en;
+
+  // Option pros/cons per language
+  const optPros = {
+    en: {
+      A: ['Lowest rate (Repo+0.5%)', 'Zero processing fee', 'Only Aadhaar needed', 'No prepayment charges', '6-month moratorium'],
+      B: hasHL ? ['Home loan rate (lower)','Higher loan amount','Suitable for large systems'] : ['Up to ₹6L available','Suitable for large systems'],
+      C: ['Zero interest','Fastest break-even','No documents','No CIBIL check'],
+    },
+    te: {
+      A: ['అతి తక్కువ రేటు (Repo+0.5%)', 'శూన్య ప్రాసెసింగ్ రుసుము', 'ఆధార్ మాత్రమే', 'ముందస్తు చెల్లింపు రుసుమే లేదు', '6 నెలల మారటోరియం'],
+      B: hasHL ? ['హోమ్ లోన్ రేటు (తక్కువ)','అధిక రుణ మొత్తం','పెద్ద సిస్టమ్‌లకు అనుకూలం'] : ['₹6L వరకు అందుబాటు','పెద్ద సిస్టమ్‌లకు అనుకూలం'],
+      C: ['వడ్డీ శూన్యం','వేగంగా పెట్టుబడి తిరిగి','పత్రాలు అక్కరలేదు','CIBIL అవసరం లేదు'],
+    },
+    hi: {
+      A: ['सबसे कम दर (Repo+0.5%)', 'शून्य प्रसंस्करण शुल्क', 'केवल आधार', 'पूर्व भुगतान शुल्क नहीं', '6 माह मोराटोरियम'],
+      B: hasHL ? ['होम लोन दर (कम)','अधिक ऋण राशि','बड़े सिस्टम के लिए'] : ['₹6L तक उपलब्ध','बड़े सिस्टम के लिए'],
+      C: ['शून्य ब्याज','सबसे तेज़ निवेश वापसी','कोई दस्तावेज़ नहीं','कोई CIBIL नहीं'],
+    },
+  };
+  const optCons = {
+    en: {
+      A: ['Max ₹2L only','Floating rate','CIBIL 680+ required'],
+      B: hasHL ? ['Needs more documents','20% margin required'] : ['Home loan rate + 1%','Needs ITR, salary slips','20% margin','PAN mandatory'],
+      C: [`Opportunity cost: ~₹${Math.round(opportunityCost/tenureYrs/1000)}k/yr in FD`, 'Needs upfront capital'],
+    },
+    te: {
+      A: ['గరిష్టం ₹2L మాత్రమే','ఫ్లోటింగ్ రేటు','CIBIL 680+ అవసరం'],
+      B: hasHL ? ['అదనపు పత్రాలు అవసరం','20% మార్జిన్ తప్పనిసరి'] : ['హోమ్ లోన్ రేటు + 1%','ITR, జీతం స్లిప్‌లు అవసరం','20% మార్జిన్','PAN తప్పనిసరి'],
+      C: [`అవకాశ వ్యయం: ~₹${Math.round(opportunityCost/tenureYrs/1000)}k/సం. FD లో`, 'ముందస్తు పెట్టుబడి అవసరం'],
+    },
+    hi: {
+      A: ['अधिकतम ₹2L','फ्लोटिंग दर','CIBIL 680+ जरूरी'],
+      B: hasHL ? ['अधिक दस्तावेज़','20% मार्जिन जरूरी'] : ['होम लोन दर + 1%','ITR, वेतन पर्ची','20% मार्जिन','PAN अनिवार्य'],
+      C: [`अवसर लागत: ~₹${Math.round(opportunityCost/tenureYrs/1000)}k/वर्ष FD में`, 'पूंजी अग्रिम चाहिए'],
+    },
+  };
+
   const options = [
-    {
-      label: 'Option A', sub: 'PM Surya Ghar — Up to ₹2L',
-      rate: rateA, emi: emiA, interest: intA,
-      eligible: eligibleA, recommended: recommended === 'A',
-      pros: ['Lowest rate (Repo+0.5%)', 'Zero processing fee', 'Only Aadhaar needed', 'No prepayment charges', '6-month moratorium'],
-      cons: ['Max ₹2L only', 'Floating rate — rises with RBI rate', 'CIBIL 680+ required'],
-      color: eligibleA ? (recommended === 'A' ? 'var(--jade)' : 'var(--sky)') : 'var(--muted)',
-      bg: eligibleA ? (recommended === 'A' ? 'var(--jade-bg)' : 'var(--sky-bg)') : '#F9FAFB',
-      border: eligibleA ? (recommended === 'A' ? 'var(--jade-border)' : 'var(--sky-border)') : 'var(--border)',
+    { label:`${UI.recommended === '✓ RECOMMENDED' ? 'A' : 'A'}`, fullLabel: currentLang==='te'?'ఎంపిక A — PM Surya Ghar':currentLang==='hi'?'विकल्प A — PM Surya Ghar':'Option A — PM Surya Ghar',
+      sub: currentLang==='te'?`₹2L వరకు`:currentLang==='hi'?`₹2L तक`:`Up to ₹2L`, rate:rateA, emi:emiA, interest:intA,
+      eligible:eligibleA, recommended:recommended==='A',
+      pros:(optPros[currentLang]||optPros.en).A, cons:(optCons[currentLang]||optCons.en).A,
+      color:eligibleA?(recommended==='A'?'var(--jade)':'var(--sky)'):'var(--muted)',
+      bg:eligibleA?(recommended==='A'?'var(--jade-bg)':'var(--sky-bg)'):'#F9FAFB',
+      border:eligibleA?(recommended==='A'?'var(--jade-border)':'var(--sky-border)'):'var(--border)',
     },
-    {
-      label: 'Option B', sub: `PM Surya Ghar — ₹2L to ₹6L`,
-      rate: rateB, emi: emiB, interest: intB,
-      eligible: eligibleB, recommended: recommended === 'B',
-      pros: hasHL ? ['Home loan rate (lower)','Higher loan amount','Suitable for large systems'] : ['Up to ₹6L available','Suitable for large systems'],
-      cons: hasHL ? ['Needs more documents','20% margin required'] : ['Home loan rate + 1%','Needs ITR, salary slips','20% margin required','PAN mandatory'],
-      color: eligibleB ? (recommended === 'B' ? 'var(--jade)' : 'var(--amber)') : 'var(--muted)',
-      bg: eligibleB ? (recommended === 'B' ? 'var(--jade-bg)' : 'var(--amber-bg)') : '#F9FAFB',
-      border: eligibleB ? (recommended === 'B' ? 'var(--jade-border)' : 'var(--amber-border)') : 'var(--border)',
+    { fullLabel:currentLang==='te'?'ఎంపిక B — అధిక మొత్తం':currentLang==='hi'?'विकल्प B — अधिक राशि':'Option B — Higher amount',
+      sub:currentLang==='te'?`₹2L నుండి ₹6L`:currentLang==='hi'?`₹2L से ₹6L`:`₹2L to ₹6L`, rate:rateB, emi:emiB, interest:intB,
+      eligible:eligibleB, recommended:recommended==='B',
+      pros:(optPros[currentLang]||optPros.en).B, cons:(optCons[currentLang]||optCons.en).B,
+      color:eligibleB?(recommended==='B'?'var(--jade)':'var(--amber)'):'var(--muted)',
+      bg:eligibleB?(recommended==='B'?'var(--jade-bg)':'var(--amber-bg)'):'#F9FAFB',
+      border:eligibleB?(recommended==='B'?'var(--jade-border)':'var(--amber-border)'):'var(--border)',
     },
-    {
-      label: 'Option C', sub: 'Cash / Own Funds',
-      rate: 0, emi: 0, interest: 0,
-      eligible: true, recommended: recommended === 'C',
-      pros: ['Zero interest','Fastest break-even','No documents','No CIBIL check','Complete ownership from day 1'],
-      cons: [`Opportunity cost: savings could earn ~₹${Math.round(opportunityCost/tenureYrs).toLocaleString('en-IN')}/yr in FD`, 'Needs upfront capital'],
-      color: recommended === 'C' ? 'var(--jade)' : 'var(--muted)',
-      bg: recommended === 'C' ? 'var(--jade-bg)' : '#F9FAFB',
-      border: recommended === 'C' ? 'var(--jade-border)' : 'var(--border)',
+    { fullLabel:currentLang==='te'?'ఎంపిక C — నగదు':currentLang==='hi'?'विकल्प C — नकद':'Option C — Cash / Own Funds',
+      sub:currentLang==='te'?'స్వంత నిధులు':currentLang==='hi'?'स्वयं के फंड':'Own funds', rate:0, emi:0, interest:0,
+      eligible:true, recommended:recommended==='C',
+      pros:(optPros[currentLang]||optPros.en).C, cons:(optCons[currentLang]||optCons.en).C,
+      color:recommended==='C'?'var(--jade)':'var(--muted)',
+      bg:recommended==='C'?'var(--jade-bg)':'#F9FAFB',
+      border:recommended==='C'?'var(--jade-border)':'var(--border)',
     },
   ];
 
+  const cards = document.getElementById('emiOptionCards');
   cards.innerHTML = options.map(o => `
     <div style="background:${o.bg};border:2px solid ${o.border};border-radius:14px;padding:14px;position:relative;">
-      ${o.recommended ? '<div style="position:absolute;top:12px;right:12px;background:var(--jade);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">✓ RECOMMENDED</div>' : ''}
-      ${!o.eligible ? '<div style="position:absolute;top:12px;right:12px;background:var(--muted);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">NOT ELIGIBLE</div>' : ''}
-      <div style="font-size:15px;font-weight:900;color:${o.color};margin-bottom:2px;">${o.label}</div>
+      ${o.recommended ? `<div style="position:absolute;top:12px;right:12px;background:var(--jade);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">${UI.recommended}</div>` : ''}
+      ${!o.eligible ? `<div style="position:absolute;top:12px;right:12px;background:var(--muted);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">${UI.notEligible}</div>` : ''}
+      <div style="font-size:15px;font-weight:900;color:${o.color};margin-bottom:2px;">${o.fullLabel}</div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">${o.sub}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
         <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
           <div style="font-size:18px;font-weight:900;color:${o.color};">${o.rate > 0 ? o.rate.toFixed(1)+'%' : '0%'}</div>
-          <div style="font-size:10px;color:var(--muted);font-weight:700;">Interest Rate</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">${UI.rate}</div>
         </div>
         <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
-          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.emi > 0 ? fmtI(o.emi) : 'Nil'}</div>
-          <div style="font-size:10px;color:var(--muted);font-weight:700;">Monthly EMI</div>
+          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.emi > 0 ? fmtI(o.emi) : (currentLang==='te'?'శూన్యం':currentLang==='hi'?'शून्य':'Nil')}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">${UI.emi}</div>
         </div>
         <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
-          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.interest > 0 ? fmtI(o.interest) : 'Nil'}</div>
-          <div style="font-size:10px;color:var(--muted);font-weight:700;">Total Interest</div>
+          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.interest > 0 ? fmtI(o.interest) : (currentLang==='te'?'శూన్యం':currentLang==='hi'?'शून्य':'Nil')}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">${UI.interest}</div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div>
-          <div style="font-size:10px;font-weight:800;color:var(--jade);margin-bottom:4px;">✓ PROS</div>
+          <div style="font-size:10px;font-weight:800;color:var(--jade);margin-bottom:4px;">${UI.pros}</div>
           ${o.pros.map(p=>`<div style="font-size:11px;color:var(--ink2);margin-bottom:2px;padding-left:10px;position:relative;"><span style="position:absolute;left:0;color:var(--jade);">•</span>${p}</div>`).join('')}
         </div>
         <div>
-          <div style="font-size:10px;font-weight:800;color:var(--rose);margin-bottom:4px;">✗ CONS</div>
+          <div style="font-size:10px;font-weight:800;color:var(--rose);margin-bottom:4px;">${UI.cons}</div>
           ${o.cons.map(p=>`<div style="font-size:11px;color:var(--ink2);margin-bottom:2px;padding-left:10px;position:relative;"><span style="position:absolute;left:0;color:var(--rose);">•</span>${p}</div>`).join('')}
         </div>
       </div>
     </div>
   `).join('');
 
-  // Recommendation box
   document.getElementById('emiRecommendationBox').innerHTML = `
     <div style="background:linear-gradient(135deg,var(--jade-bg),#F0FDF8);border:2px solid var(--jade-border);border-radius:14px;padding:16px;">
-      <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:8px;">🏆 Our Recommendation: ${recommended === 'A' ? 'PM Surya Ghar Option A' : recommended === 'B' ? 'PM Surya Ghar Option B' : 'Cash Purchase'}</div>
+      <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:8px;">${UI.recTitle}: ${recommended==='A'?'Option A (PM Surya Ghar)':recommended==='B'?'Option B':currentLang==='te'?'నగదు కొనుగోలు':currentLang==='hi'?'नकद खरीद':'Cash Purchase'}</div>
       <div style="font-size:13px;color:#064E3B;line-height:1.75;">${recReason}</div>
     </div>`;
 
-  // Savings rows
-  const bestInt = recommended === 'A' ? intA : (recommended === 'B' ? intB : 0);
+  const bestInt = recommended==='A'?intA:(recommended==='B'?intB:0);
   document.getElementById('emiSavingsRows').innerHTML = [
-    ['Option A interest cost', eligibleA ? fmtI(intA) : 'Not eligible'],
-    ['Option B interest cost', eligibleB ? fmtI(intB) : 'Not eligible'],
-    ['Cash purchase interest cost', '₹0'],
-    ['You save vs worst option', fmtI(Math.max(intA,intB) - bestInt)],
-    ['You save vs average bank loan (12%)', fmtI(totalInterest(calcEMI(loanAmt,12,months),months,loanAmt) - bestInt)],
+    [currentLang==='te'?'ఎంపిక A వడ్డీ':currentLang==='hi'?'विकल्प A ब्याज':'Option A interest', eligibleA?fmtI(intA):(currentLang==='te'?'అర్హత లేదు':currentLang==='hi'?'पात्र नहीं':'Not eligible')],
+    [currentLang==='te'?'ఎంపిక B వడ్డీ':currentLang==='hi'?'विकल्प B ब्याज':'Option B interest', eligibleB?fmtI(intB):(currentLang==='te'?'అర్హత లేదు':currentLang==='hi'?'पात्र नहीं':'Not eligible')],
+    [currentLang==='te'?'నగదు కొనుగోలు వడ్డీ':currentLang==='hi'?'नकद ब्याज':'Cash interest', '₹0'],
+    [currentLang==='te'?'మీ ఆదా vs చెత్త ఎంపిక':currentLang==='hi'?'सबसे बुरे विकल्प की तुलना में बचत':'You save vs worst option', fmtI(Math.max(intA,intB)-bestInt)],
+    [currentLang==='te'?'12% మార్కెట్ రుణంతో పోల్చి ఆదా':currentLang==='hi'?'12% बाज़ार ऋण की तुलना में बचत':'You save vs 12% market loan', fmtI(totalInterest(calcEMI(loanAmt,12,months),months,loanAmt)-bestInt)],
   ].map(([k,v])=>`<div class="breakdown-row"><span class="breakdown-key">${k}</span><span class="breakdown-val">${v}</span></div>`).join('');
 
-  // Prepayment
   if (prepayText) {
     document.getElementById('prepaymentBox').style.display = 'block';
     document.getElementById('prepaymentBoxText').innerHTML = prepayText;
   }
 
-  // Solar vs EMI
   document.getElementById('solarVsEmiBox').innerHTML = solarVsEmi;
-
-  // Watch out
   document.getElementById('watchOutBox').innerHTML = watchOut.map(w=>`<div style="margin-bottom:6px;padding-left:14px;position:relative;"><span style="position:absolute;left:0;">→</span>${w}</div>`).join('');
 
   document.getElementById('emiResults').classList.remove('hidden');
   document.getElementById('emiResults').scrollIntoView({behavior:'smooth',block:'start'});
 
-  // Store for share
-  window._emiResults = { recommended, loanAmt, bestEMI, bestInt: recommended==='A'?intA:intB, saving, recReason };
+  window._emiResults = { recommended, loanAmt, bestEMI:baseEMI, bestInt, saving, recReason };
 }
-
 function shareEMIResults() {
   const r = window._emiResults;
   if (!r) return;
@@ -1587,16 +1728,71 @@ function showLoanCompareInResults(netCost, saving, repoRate) {
   const loanSec = document.getElementById('loanCompareSection');
   if (!loanSec) return;
 
-  // Quick side-by-side for calculate tab
+  const L = LANG[currentLang] || LANG.en;
   const rateA = repoRate + 0.5;
   const principal = Math.min(netCost, 200000);
   const emiA7 = calcEMI(principal, rateA, 84);
   const intA7 = totalInterest(emiA7, 84, principal);
 
+  // Labels per language
+  const optLabels = {
+    en: {
+      a: 'Option A — PM Surya Ghar (recommended if ≤₹2L)',
+      b: 'Option B — Higher amount (>₹2L up to ₹6L)',
+      c: 'Option C — Cash / Own Funds',
+      bDesc: `Rate = your home loan rate (or home loan rate + 1%). Use the <strong>EMI Advisor tab</strong> for exact calculation with your rate.`,
+      cDesc: 'Zero interest. Fastest break-even. No documents needed.',
+      quickTake: 'Quick Take',
+      quickA: `Your net cost (${fmtI(netCost)}) fits within Option A (max ₹2L). This is the best loan — lowest rate, zero fees, Aadhaar only. For a detailed comparison, use the <strong>EMI Advisor</strong> tab.`,
+      quickB: `Your net cost (${fmtI(netCost)}) exceeds ₹2L — you'll need Option B or part-cash part-loan. Use the <strong>EMI Advisor</strong> tab to compare exactly.`,
+      savingsTitle: '💰 What You Save by Choosing Right',
+      row1: 'PM Surya Ghar EMI (7 yrs)',
+      row2: 'Typical market loan EMI (12%)',
+      row3: 'You save vs market loan',
+      prepayTitle: '💡 Prepayment Strategy — Save Thousands',
+      prepayText: `PM Surya Ghar loan has <strong>zero prepayment charges</strong>. Your solar savings of ${fmtI(saving)}/month can be used to make extra payments — this can cut your loan tenure by 2-3 years and save thousands in interest. See the <strong>EMI Advisor tab</strong> for exact prepayment savings calculation.`,
+    },
+    te: {
+      a: 'ఎంపిక A — PM Surya Ghar (₹2L వరకు సిఫార్సు)',
+      b: 'ఎంపిక B — అధిక మొత్తం (₹2L నుండి ₹6L)',
+      c: 'ఎంపిక C — నగదు / స్వంత నిధులు',
+      bDesc: `రేటు = మీ హోమ్ లోన్ రేటు (లేదా హోమ్ లోన్ రేటు + 1%). ఖచ్చితమైన లెక్కకు <strong>EMI సలహా</strong> ట్యాబ్ ఉపయోగించండి.`,
+      cDesc: 'వడ్డీ శూన్యం. అత్యంత వేగంగా పెట్టుబడి తిరిగి వస్తుంది. పత్రాలు అవసరం లేదు.',
+      quickTake: 'శీఘ్ర విశ్లేషణ',
+      quickA: `మీ నికర ధర (${fmtI(netCost)}) ఎంపిక A పరిధిలో ఉంది (గరిష్టం ₹2L). ఇది అత్యుత్తమ రుణం — తక్కువ రేటు, శూన్య రుసుము, ఆధార్ మాత్రమే. వివరణాత్మక పోల్చికకు <strong>EMI సలహా</strong> ట్యాబ్ ఉపయోగించండి.`,
+      quickB: `మీ నికర ధర (${fmtI(netCost)}) ₹2L కంటే అధికం — ఎంపిక B లేదా పాక్షిక రుణం అవసరం. <strong>EMI సలహా</strong> ట్యాబ్‌లో ఖచ్చితంగా పోల్చండి.`,
+      savingsTitle: '💰 సరైన ఎంపిక వల్ల మీకు కలిగే ఆదా',
+      row1: 'PM Surya Ghar EMI (7 సం.)',
+      row2: 'సాధారణ బ్యాంకు రుణం EMI (12%)',
+      row3: 'మార్కెట్ రుణంతో పోల్చి ఆదా',
+      prepayTitle: '💡 ముందస్తు చెల్లింపు వ్యూహం — వేల రూపాయలు ఆదా',
+      prepayText: `PM Surya Ghar రుణానికి <strong>ముందస్తు చెల్లింపు రుసుమే లేదు</strong>. మీ సోలార్ పొదుపు ${fmtI(saving)}/నెల అదనపు చెల్లింపులకు ఉపయోగించవచ్చు — ఇది 2-3 సంవత్సరాలు రుణ వ్యవధి తగ్గించి వేల రూపాయలు వడ్డీ ఆదా చేస్తుంది. ఖచ్చితమైన లెక్కకు <strong>EMI సలహా ట్యాబ్</strong> చూడండి.`,
+    },
+    hi: {
+      a: 'विकल्प A — PM Surya Ghar (₹2L तक अनुशंसित)',
+      b: 'विकल्प B — अधिक राशि (₹2L से ₹6L)',
+      c: 'विकल्प C — नकद / स्वयं के फंड',
+      bDesc: `दर = आपकी होम लोन दर (या होम लोन दर + 1%)। सटीक गणना के लिए <strong>EMI सलाह</strong> टैब उपयोग करें।`,
+      cDesc: 'शून्य ब्याज। सबसे तेज़ निवेश वापसी। कोई दस्तावेज़ नहीं।',
+      quickTake: 'त्वरित विश्लेषण',
+      quickA: `आपकी नेट लागत (${fmtI(netCost)}) विकल्प A की सीमा में है (अधिकतम ₹2L)। यह सबसे अच्छा ऋण है — कम दर, शून्य शुल्क, केवल आधार। विस्तृत तुलना के लिए <strong>EMI सलाह</strong> टैब उपयोग करें।`,
+      quickB: `आपकी नेट लागत (${fmtI(netCost)}) ₹2L से अधिक है — विकल्प B या आंशिक ऋण की जरूरत है। <strong>EMI सलाह</strong> टैब में सटीक तुलना करें।`,
+      savingsTitle: '💰 सही विकल्प चुनने से आपकी बचत',
+      row1: 'PM Surya Ghar EMI (7 वर्ष)',
+      row2: 'सामान्य बाज़ार ऋण EMI (12%)',
+      row3: 'बाज़ार ऋण की तुलना में बचत',
+      prepayTitle: '💡 पूर्व भुगतान रणनीति — हज़ारों बचाएं',
+      prepayText: `PM Surya Ghar ऋण में <strong>पूर्व भुगतान शुल्क शून्य है</strong>। आपकी सोलर बचत ${fmtI(saving)}/माह अतिरिक्त भुगतान के लिए उपयोग करें — यह 2-3 साल कार्यकाल कम करके हज़ारों ब्याज बचाएगा। सटीक गणना के लिए <strong>EMI सलाह टैब</strong> देखें।`,
+    },
+  };
+
+  const OL = optLabels[currentLang] || optLabels.en;
+  const mktEMI = calcEMI(netCost, 12, 84);
+
   const grid = document.getElementById('loanCardsGrid');
   grid.innerHTML = `
     <div style="background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:12px;padding:12px;">
-      <div style="font-size:12px;font-weight:800;color:var(--jade);margin-bottom:6px;">Option A — PM Surya Ghar (recommended if ≤₹2L)</div>
+      <div style="font-size:12px;font-weight:800;color:var(--jade);margin-bottom:6px;">${OL.a}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
         <div><div style="font-size:16px;font-weight:900;color:var(--jade);">${rateA.toFixed(1)}%</div><div style="font-size:10px;color:var(--muted);">Rate p.a.</div></div>
         <div><div style="font-size:16px;font-weight:900;color:var(--jade);">${fmtI(emiA7)}</div><div style="font-size:10px;color:var(--muted);">EMI/month</div></div>
@@ -1604,36 +1800,39 @@ function showLoanCompareInResults(netCost, saving, repoRate) {
       </div>
     </div>
     <div style="background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px;">
-      <div style="font-size:12px;font-weight:800;color:var(--amber);margin-bottom:6px;">Option B — Higher amount (>₹2L up to ₹6L)</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.6;">Rate = your home loan rate (or home loan rate + 1%). Use the <strong>EMI Advisor tab</strong> above for exact calculation with your rate.</div>
+      <div style="font-size:12px;font-weight:800;color:var(--amber);margin-bottom:6px;">${OL.b}</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.6;">${OL.bDesc}</div>
     </div>
     <div style="background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px;">
-      <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px;">Option C — Cash / Own Funds</div>
-      <div style="font-size:12px;color:var(--ink2);">Zero interest. Fastest break-even. No documents needed.</div>
+      <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px;">${OL.c}</div>
+      <div style="font-size:12px;color:var(--ink2);">${OL.cDesc}</div>
     </div>`;
 
   document.getElementById('loanRecommendation').innerHTML = `
     <div style="background:var(--gold-pale);border:1.5px solid rgba(201,162,39,.3);border-radius:12px;padding:12px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:4px;">💡 Quick Take</div>
+      <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:4px;">💡 ${OL.quickTake}</div>
       <div style="font-size:12px;color:#5C4A0D;line-height:1.7;">
-        ${netCost <= 200000
-          ? `Your net cost (${fmtI(netCost)}) fits within Option A (max ₹2L). This is the best loan — lowest rate, zero fees, Aadhaar only. For a detailed comparison, use the <strong>EMI Advisor</strong> tab.`
-          : `Your net cost (${fmtI(netCost)}) exceeds ₹2L — you'll need Option B or part-cash part-loan. Use the <strong>EMI Advisor</strong> tab to compare exactly.`}
+        ${netCost <= 200000 ? OL.quickA : OL.quickB}
       </div>
     </div>`;
 
   const rows = document.getElementById('loanSavingsRows');
-  const mktEMI = calcEMI(netCost, 12, 84);
   rows.innerHTML = `
-    <div class="breakdown-row"><span class="breakdown-key">PM Surya Ghar EMI (7 yrs)</span><span class="breakdown-val">${fmtI(emiA7)}/month</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Typical market loan EMI (12%)</span><span class="breakdown-val">${fmtI(mktEMI)}/month</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">You save vs market loan</span><span class="breakdown-val" style="color:var(--jade)">${fmtI(totalInterest(mktEMI,84,netCost) - intA7)} interest</span></div>`;
+    <div class="breakdown-row"><span class="breakdown-key">${OL.row1}</span><span class="breakdown-val">${fmtI(emiA7)}/month</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">${OL.row2}</span><span class="breakdown-val">${fmtI(mktEMI)}/month</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">${OL.row3}</span><span class="breakdown-val" style="color:var(--jade)">${fmtI(totalInterest(mktEMI,84,netCost) - intA7)} interest</span></div>`;
 
-  document.getElementById('prepaymentTip').innerHTML = `PM Surya Ghar loan has <strong>zero prepayment charges</strong>. Your solar savings of ${fmtI(saving)}/month can be used to make extra payments — this can cut your loan tenure by 2-3 years and save thousands in interest. See the <strong>EMI Advisor tab</strong> for exact prepayment savings calculation.`;
+  document.getElementById('prepaymentTip').innerHTML = OL.prepayText;
+
+  // Update prepayment card title
+  const prepCard = document.querySelector('#loanCompareSection .breakdown-card + div');
+  if (prepCard) {
+    const prepTitle = prepCard.querySelector('div:first-child');
+    if (prepTitle) prepTitle.textContent = OL.prepayTitle;
+  }
 
   loanSec.classList.remove('hidden');
 }
-
 function shareLoanResults() {
   const msg = `☀️ *PM Surya Ghar Loan Quick Comparison*
 _from lawsticker-ai.com/solar-legal.html_
@@ -1666,6 +1865,126 @@ function calculateAndLoan() {
       showLoanCompareInResults(Math.max(0, netCostRaw), savingRaw, repoEst);
     } catch(e) {}
   }, 200);
+}
+
+function applyLang() {
+  const L = LANG[currentLang];
+  if (!L) return;
+
+  function t(id, key, html) {
+    const el = document.getElementById(id);
+    if (!el || !L[key]) return;
+    if (html) el.innerHTML = L[key]; else el.textContent = L[key];
+  }
+  function tq(sel, key, html) {
+    const el = document.querySelector(sel);
+    if (!el || !L[key]) return;
+    if (html) el.innerHTML = L[key]; else el.textContent = L[key];
+  }
+
+  // Hero
+  tq('.hero-eye','heroEye'); tq('.hero-title','heroTitle',true); tq('.hero-sub','heroSub');
+
+  // Tab pills
+  const pills = document.querySelectorAll('.tab-pill');
+  ['tab1','tab2','tab3','tab4','tab5'].forEach((k,i)=>{ if(pills[i]&&L[k]) pills[i].textContent=L[k]; });
+
+  // Calc tab
+  tq('.calc-title','calcTitle');
+  tq('.calc-btn','calcBtn');
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    const key=el.getAttribute('data-lang');
+    if(L[key]) el.textContent=L[key];
+  });
+
+  // Subsidy section heading
+  t('subsidySectionTitle','subsidySectionTitle');
+
+  // Result labels
+  const rl = document.querySelectorAll('.result-label');
+  ['rSubsidy','rNetCost','rUnits','rSaving','rBreakeven','r25yr'].forEach((k,i)=>{
+    if(rl[i]&&L[k]) rl[i].innerHTML=L[k];
+  });
+
+  // Results section heading
+  t('resultsSectionHd','resultsSectionHd');
+
+  // Breakdown
+  t('breakdownTitle','breakdownTitle');
+  t('bKeyCost','bKeyCost'); t('bKeySubsidy','bKeySubsidy'); t('bKeyEmi','bKeyEmi');
+  t('bKeyYr1','bKeyYr1'); t('bKeyYr5','bKeyYr5'); t('bKeyYr10','bKeyYr10'); t('bKeyYr25','bKeyYr25');
+
+  // Net metering
+  t('nmTitle','nmTitle'); t('nmKeySelf','nmKeySelf'); t('nmKeyExport','nmKeyExport');
+  t('nmKeyRate','nmKeyRate'); t('nmKeyCredit','nmKeyCredit');
+
+  // Loan compare
+  t('loanCompareSectionHd','loanCompareSectionHd');
+
+  // Share buttons
+  document.querySelectorAll('.share-btn').forEach(btn=>{
+    const oc = btn.getAttribute('onclick')||'';
+    if(oc.includes('shareResults')) btn.textContent=L.shareBtn;
+    if(oc.includes('shareLoanResults')) btn.textContent=L.shareLoanBtn||L.shareBtn;
+    if(oc.includes('shareTips')) btn.textContent=L.shareTipsBtn||L.shareBtn;
+    if(oc.includes('shareEMIResults')) btn.textContent=L.shareEmiBtn||L.shareBtn;
+  });
+
+  // Disclaimer
+  t('disclaimerText','disclaimerText');
+
+  // EMI tab
+  t('emiIntroTitle','emiIntroTitle');
+  t('emiLabelCost','emiLabelCost'); t('emiLabelSaving','emiLabelSaving');
+  t('emiLabelHL','emiLabelHL'); t('emiLabelHLRate','emiLabelHLRate');
+  t('emiLabelRepo','emiLabelRepo'); t('emiLabelTenure','emiLabelTenure');
+  t('emiLabelExtra','emiLabelExtra');
+  t('emiResultsHd','emiResultsHd'); t('emiTermsHd','emiTermsHd');
+  tq('#pane-emi .calc-btn','emiCalcBtn');
+
+  // Legal rights tab
+  t('legalBoxTitle','legalBoxTitle');
+  t('remedyTitle','remedyTitle');
+  t('discHd','discHd'); t('stateRefHd','stateRefHd');
+
+  // Legal rights content
+  const lrights = document.querySelectorAll('.legal-text');
+  const lrKeys = ['lr1','lr2','lr3','lr4','lr5','lr6','lr7'];
+  lrights.forEach((el,i)=>{ if(L[lrKeys[i]]) el.innerHTML=L[lrKeys[i]]; });
+
+  // Remedy steps
+  const rsteps = document.querySelectorAll('.remedy-step');
+  const rsKeys = ['rs1','rs2','rs3','rs4','rs5'];
+  rsteps.forEach((el,i)=>{ if(L[rsKeys[i]]) el.innerHTML=L[rsKeys[i]]; });
+
+  // Checklist
+  t('checklistScoreTitle','checklistScoreTitle');
+  t('checklistScoreMsg','checklistScoreMsg');
+  t('checkCat1','checkCat1'); t('checkCat2','checkCat2');
+  t('checkCat3','checkCat3'); t('checkCat4','checkCat4');
+
+  // Check item questions (data-cq attribute)
+  document.querySelectorAll('[data-cq]').forEach(el=>{
+    const key=el.getAttribute('data-cq');
+    if(L[key]) el.textContent=L[key];
+  });
+
+  // Negotiate tab
+  t('negotiateTitle','negotiateTitle');
+  t('negotiateStrategiesHd','negotiateStrategiesHd');
+  t('shareTipsHd','shareTipsHd');
+
+  // Tip titles (data-tip attribute)
+  document.querySelectorAll('[data-tip]').forEach(el=>{
+    const key=el.getAttribute('data-tip');
+    if(L[key]) el.textContent=L[key];
+  });
+
+  // Section headings (data-hd attribute)
+  t('legalBoxTitle','legalBoxTitle');
+
+  // State reference table heading
+  t('stateRefHd','stateRefHd');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────
