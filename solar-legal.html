@@ -174,6 +174,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 
 <div class="tab-row">
   <button class="tab-pill active" onclick="switchTab('calc',this)">🧮 Calculate</button>
+  <button class="tab-pill" onclick="switchTab('emi',this)">💳 EMI Advisor</button>
   <button class="tab-pill" onclick="switchTab('rights',this)">⚖️ Legal Rights</button>
   <button class="tab-pill" onclick="switchTab('checklist',this)">✅ Before You Sign</button>
   <button class="tab-pill" onclick="switchTab('negotiate',this)">🤝 Negotiate Smart</button>
@@ -333,7 +334,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
     </div>
   </div>
 
-  <button class="calc-btn" onclick="calculate()">☀️ Calculate My Solar Entitlements</button>
+  <button class="calc-btn" onclick="calculateAndLoan()">☀️ Calculate My Solar Entitlements</button>
 </div>
 
 <!-- RESULTS (hidden until calculated) -->
@@ -394,11 +395,164 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
     <div class="breakdown-row"><span class="breakdown-key">Annual export credit</span><span class="breakdown-val" id="nm-credit">—</span></div>
   </div>
 
-  <button class="share-btn" onclick="shareResults()">📲 Share These Results on WhatsApp</button>
+  <!-- LOAN COMPARISON — appears after calculate -->
+  <div id="loanCompareSection" class="hidden">
+    <div class="section-hd">💳 PM Surya Ghar Loan Options — Side by Side</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;padding:0 2px;">All three official loan options compared. Amounts and rates are as per MNRE official scheme — update if scheme is revised.</div>
+
+    <!-- Loan option cards -->
+    <div id="loanCardsGrid" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
+
+    <!-- Recommendation box -->
+    <div id="loanRecommendation" style="margin-bottom:14px;"></div>
+
+    <!-- Savings comparison -->
+    <div class="breakdown-card" id="loanSavingsCard">
+      <div class="breakdown-title">💰 What You Save by Choosing Right</div>
+      <div id="loanSavingsRows"></div>
+    </div>
+
+    <!-- Prepayment tip -->
+    <div style="background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:14px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:var(--jade);margin-bottom:8px;">💡 Prepayment Strategy — Save Thousands</div>
+      <div id="prepaymentTip" style="font-size:12px;color:#064E3B;line-height:1.75;"></div>
+    </div>
+
+    <button class="share-btn" onclick="shareLoanResults()">📲 Share Loan Comparison on WhatsApp</button>
+  </div>
+
+  <button class="share-btn" onclick="shareResults()" style="margin-top:6px;">📲 Share Savings Results on WhatsApp</button>
 
   <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6;padding:0 10px;">
-    ⚠️ These are estimates based on inputs provided. Actual generation varies with weather, panel orientation, and shading. Subsidy amounts are as per PM Surya Ghar Yojana — verify with your state DISCOM before finalising.
+    ⚠️ These are estimates based on inputs provided. Actual generation varies with weather, panel orientation, and shading. Subsidy amounts and loan terms are as per PM Surya Ghar Yojana — verify with your bank before finalising.
   </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ TAB EMI ADVISOR ════════════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-emi">
+<div class="page">
+
+<div style="background:linear-gradient(135deg,var(--jade-bg),#F0FDF8);border:1.5px solid var(--jade-border);border-radius:14px;padding:14px;margin-bottom:14px;">
+  <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:6px;">💳 PM Surya Ghar — Official Loan Options</div>
+  <div style="font-size:12px;color:#064E3B;line-height:1.7;">Enter your system cost and details below. We compare all three official loan options, calculate total interest you'll pay, and recommend the most beneficial option for your situation — with a prepayment strategy to save even more.</div>
+</div>
+
+<div class="calc-card">
+  <div class="calc-title">Your Loan Details</div>
+  <div class="field-grid">
+    <div class="field full">
+      <label>Net System Cost after Subsidy (₹)</label>
+      <input type="number" id="emi-loanamt" value="72000" min="10000" step="1000">
+      <div class="hint">Use the net cost from the Calculate tab (after subsidy). This is the amount you'll borrow.</div>
+    </div>
+    <div class="field">
+      <label>Your Monthly Savings from Solar (₹)</label>
+      <input type="number" id="emi-saving" value="2000" min="100" step="100">
+      <div class="hint">From your electricity bill savings — use Calculate tab result.</div>
+    </div>
+    <div class="field">
+      <label>Your Existing Home Loan?</label>
+      <select id="emi-homeloan">
+        <option value="no">No existing home loan</option>
+        <option value="yes">Yes — I have a home loan with a PSB</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Current Home Loan Rate (%) if yes</label>
+      <input type="number" id="emi-hlrate" value="8.5" min="5" max="15" step="0.25">
+      <div class="hint">Only relevant if you have an existing home loan.</div>
+    </div>
+    <div class="field">
+      <label>RBI Repo Rate (%)</label>
+      <input type="number" id="emi-repo" value="6.50" min="4" max="12" step="0.25">
+      <div class="hint">Current RBI Repo Rate. Update if changed. Used to calculate PM Surya Ghar Option A rate.</div>
+    </div>
+    <div class="field">
+      <label>Your preferred tenure</label>
+      <select id="emi-tenure">
+        <option value="3">3 years</option>
+        <option value="5">5 years</option>
+        <option value="7" selected>7 years</option>
+        <option value="10">10 years (max for Option A)</option>
+      </select>
+    </div>
+    <div class="field full">
+      <label>Can you pay extra every month? (₹)</label>
+      <input type="number" id="emi-extra" value="0" min="0" step="500">
+      <div class="hint">If you can pay this much extra above EMI every month, we'll show how many years you save. Even ₹500 extra/month makes a big difference.</div>
+    </div>
+  </div>
+  <button class="calc-btn" onclick="calculateEMI()">💳 Compare All Loan Options</button>
+</div>
+
+<!-- EMI Results -->
+<div id="emiResults" class="hidden">
+  <div class="section-hd">All 3 Loan Options — Side by Side</div>
+  <div id="emiOptionCards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
+
+  <div id="emiRecommendationBox" style="margin-bottom:14px;"></div>
+
+  <div class="breakdown-card">
+    <div class="breakdown-title">💰 Interest Saving by Choosing Right Option</div>
+    <div id="emiSavingsRows"></div>
+  </div>
+
+  <div id="prepaymentBox" style="background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:14px;padding:14px;margin-bottom:14px;display:none;">
+    <div style="font-size:12px;font-weight:800;color:var(--jade);margin-bottom:8px;">⚡ Your Prepayment Advantage</div>
+    <div id="prepaymentBoxText" style="font-size:12px;color:#064E3B;line-height:1.75;"></div>
+  </div>
+
+  <div style="background:var(--gold-pale);border:1.5px solid rgba(201,162,39,.3);border-radius:14px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:8px;">🌞 Solar Savings vs EMI — Your True Position</div>
+    <div id="solarVsEmiBox" style="font-size:12px;color:#5C4A0D;line-height:1.75;"></div>
+  </div>
+
+  <div style="background:var(--rose-bg);border:1.5px solid var(--rose-border);border-radius:14px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:800;color:var(--rose);margin-bottom:8px;">⚠️ Watch Out For</div>
+    <div style="font-size:12px;color:#7F1D1D;line-height:1.75;" id="watchOutBox"></div>
+  </div>
+
+  <button class="share-btn" onclick="shareEMIResults()">📲 Share This Loan Comparison on WhatsApp</button>
+</div>
+
+<div class="section-hd">PM Surya Ghar — Official Loan Terms</div>
+<div class="breakdown-card">
+  <div class="breakdown-title">Option A — Up to ₹2 Lakh (MNRE Standard)</div>
+  <div class="breakdown-row"><span class="breakdown-key">Max loan amount</span><span class="breakdown-val">₹2,00,000</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Interest rate</span><span class="breakdown-val">RBI Repo + 0.50%</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Current rate</span><span class="breakdown-val">~6% p.a. (floating)</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Max tenure</span><span class="breakdown-val">10 years (120 months)</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Moratorium</span><span class="breakdown-val">6 months from disbursement</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Processing fee</span><span class="breakdown-val">Zero</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Prepayment charges</span><span class="breakdown-val">None</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Margin (your contribution)</span><span class="breakdown-val">Min 10% of project cost</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Security</span><span class="breakdown-val">Hypothecation of solar equipment only</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">CIBIL score</span><span class="breakdown-val">680 and above</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Documents</span><span class="breakdown-val">Aadhaar only</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Income proof</span><span class="breakdown-val">Not required</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">PAN</span><span class="breakdown-val">Not required</span></div>
+</div>
+<div class="breakdown-card">
+  <div class="breakdown-title">Option B — ₹2L to ₹6 Lakh (Higher Amount)</div>
+  <div class="breakdown-row"><span class="breakdown-key">Max loan amount</span><span class="breakdown-val">₹6,00,000</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Interest (existing HL customer)</span><span class="breakdown-val">Same as your home loan rate</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Interest (no home loan)</span><span class="breakdown-val">Home loan rate + 100 bps</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Margin</span><span class="breakdown-val">Min 20% of project cost</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Min annual income</span><span class="breakdown-val">₹3,00,000</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">PAN</span><span class="breakdown-val">Mandatory</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Documents</span><span class="breakdown-val">KYC + ITR 2 yrs + 6 month salary + electricity bill</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Subsidy</span><span class="breakdown-val">₹78,000 flat (max)</span></div>
+</div>
+<div class="breakdown-card">
+  <div class="breakdown-title">Option C — Own Funds / Cash Purchase</div>
+  <div class="breakdown-row"><span class="breakdown-key">Interest cost</span><span class="breakdown-val">Zero</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Break-even</span><span class="breakdown-val">Fastest — no interest drag</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Documents</span><span class="breakdown-val">None for loan</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Best for</span><span class="breakdown-val">Those with savings available</span></div>
+  <div class="breakdown-row"><span class="breakdown-key">Opportunity cost</span><span class="breakdown-val">Consider: what would savings earn in FD/RD?</span></div>
 </div>
 
 </div>
@@ -1053,6 +1207,332 @@ function toggleTip(header) {
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   chev.classList.toggle('open', !isOpen);
+}
+
+// ── EMI HELPERS ────────────────────────────────────────────────────────
+function calcEMI(principal, annualRate, months) {
+  if (annualRate === 0) return principal / months;
+  const r = annualRate / 100 / 12;
+  return principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months) - 1);
+}
+function totalInterest(emi, months, principal) {
+  return (emi * months) - principal;
+}
+function monthsToPayoff(principal, annualRate, emi) {
+  if (annualRate === 0) return Math.ceil(principal / emi);
+  const r = annualRate / 100 / 12;
+  if (emi <= principal * r) return 999; // never pays off
+  return Math.ceil(-Math.log(1 - (principal * r) / emi) / Math.log(1 + r));
+}
+
+function fmtI(n) {
+  if (n >= 100000) return '₹' + (n/100000).toFixed(2) + 'L';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function calculateEMI() {
+  const loanAmt   = parseFloat(document.getElementById('emi-loanamt').value) || 72000;
+  const saving    = parseFloat(document.getElementById('emi-saving').value) || 2000;
+  const hasHL     = document.getElementById('emi-homeloan').value === 'yes';
+  const hlRate    = parseFloat(document.getElementById('emi-hlrate').value) || 8.5;
+  const repoRate  = parseFloat(document.getElementById('emi-repo').value) || 6.5;
+  const tenureYrs = parseInt(document.getElementById('emi-tenure').value) || 7;
+  const extra     = parseFloat(document.getElementById('emi-extra').value) || 0;
+  const months    = tenureYrs * 12;
+
+  // ── Option A: PM Surya Ghar ≤₹2L
+  const rateA = repoRate + 0.5;
+  const principalA = Math.min(loanAmt, 200000);
+  const emiA = calcEMI(principalA, rateA, Math.min(months, 120));
+  const intA = totalInterest(emiA, Math.min(months, 120), principalA);
+
+  // ── Option B: >₹2L, up to ₹6L
+  const rateB = hasHL ? hlRate : (hlRate + 1.0);
+  const principalB = Math.min(loanAmt, 600000);
+  const emiB = calcEMI(principalB, rateB, months);
+  const intB = totalInterest(emiB, months, principalB);
+
+  // ── Option C: Own funds (opportunity cost = FD rate ~7%)
+  const fdRate = 7.0;
+  const opportunityCost = loanAmt * (fdRate/100) * tenureYrs; // simple approx
+  const emiC = 0;
+  const intC = 0;
+
+  // ── Eligibility check
+  const eligibleA = loanAmt <= 200000;
+  const eligibleB = loanAmt <= 600000;
+
+  // ── Recommendation logic
+  let recommended = '';
+  let recReason = '';
+  if (loanAmt <= 200000) {
+    if (rateA < rateB) {
+      recommended = 'A';
+      recReason = `Option A gives you the lowest rate (${rateA.toFixed(2)}% vs ${rateB.toFixed(2)}% for Option B), zero processing fee, and needs only Aadhaar. For your loan amount of ${fmtI(loanAmt)}, this is clearly the best choice — you save ${fmtI(intB - intA)} in interest over the tenure.`;
+    } else {
+      recommended = 'B';
+      recReason = `Unusually, Option B offers a lower rate than Option A right now because your home loan rate is low. However, Option B requires more documents. Weigh the savings vs documentation effort.`;
+    }
+  } else if (loanAmt <= 600000) {
+    recommended = 'B';
+    recReason = `Option A only covers up to ₹2 lakhs. For your loan amount of ${fmtI(loanAmt)}, only Option B applies. ${hasHL ? 'Since you have an existing home loan, you get the home loan rate — which is a good deal.' : 'You will pay home loan rate + 1% since you don\'t have an existing home loan with a PSB.'}`;
+  } else {
+    recommended = 'C';
+    recReason = `Your loan amount exceeds ₹6 lakhs — beyond PM Surya Ghar scheme limits. If you have savings, using own funds avoids all interest cost. Alternatively, explore a regular bank loan or NBFC loan for the excess amount.`;
+  }
+
+  // ── Prepayment calculation
+  let prepayText = '';
+  if (extra > 0) {
+    const baseEMI = recommended === 'A' ? emiA : emiB;
+    const baseRate = recommended === 'A' ? rateA : rateB;
+    const normalMonths = recommended === 'A' ? Math.min(months,120) : months;
+    const fastMonths = monthsToPayoff(loanAmt, baseRate, baseEMI + extra);
+    const savedMonths = normalMonths - fastMonths;
+    const savedInterest = totalInterest(baseEMI, normalMonths, loanAmt) -
+                          totalInterest(baseEMI + extra, fastMonths, loanAmt);
+    if (savedMonths > 0) {
+      prepayText = `By paying an extra ${fmtI(extra)}/month above your EMI of ${fmtI(baseEMI)}, you will repay the loan in <strong>${Math.ceil(fastMonths/12)} years ${fastMonths%12} months</strong> instead of ${tenureYrs} years — saving <strong>${savedMonths} months</strong> and approximately <strong>${fmtI(Math.max(0,savedInterest))}</strong> in interest. Since PM Surya Ghar has no prepayment charges, this is 100% free savings.`;
+    }
+  } else {
+    const baseEMI = recommended === 'A' ? emiA : emiB;
+    const baseRate = recommended === 'A' ? rateA : rateB;
+    const baseInt = recommended === 'A' ? intA : intB;
+    const extraNeeded = 500;
+    const fastM = monthsToPayoff(loanAmt, baseRate, baseEMI + extraNeeded);
+    const savedM = months - fastM;
+    const savedI = baseInt - totalInterest(baseEMI+extraNeeded, fastM, loanAmt);
+    prepayText = `PM Surya Ghar loan has <strong>zero prepayment charges</strong>. If you pay just ₹500 extra per month above your EMI of ${fmtI(baseEMI)}, you save approximately <strong>${savedM} months</strong> and <strong>${fmtI(Math.max(0,savedI))}</strong> in interest. Your solar savings of ${fmtI(saving)}/month can partly fund this extra payment.`;
+  }
+
+  // ── Solar vs EMI position
+  const bestEMI = recommended === 'A' ? emiA : (recommended === 'B' ? emiB : 0);
+  const netMonthly = saving - bestEMI;
+  let solarVsEmi = '';
+  if (bestEMI === 0) {
+    solarVsEmi = `Cash purchase — no EMI burden. Your solar system generates ${fmtI(saving)}/month in savings from day one. Pure gain.`;
+  } else if (netMonthly >= 0) {
+    solarVsEmi = `✅ Your monthly solar savings (${fmtI(saving)}) are <strong>higher than your EMI (${fmtI(bestEMI)})</strong>. This means solar pays for itself from day one — you are cash-flow positive immediately. Net monthly benefit: <strong>${fmtI(netMonthly)}</strong>. This is the ideal situation.`;
+  } else {
+    const gapMonths = Math.ceil((-netMonthly * months) / saving);
+    solarVsEmi = `Your EMI (${fmtI(bestEMI)}) is higher than your current savings (${fmtI(saving)}) by ${fmtI(-netMonthly)}/month. This gap reduces over time as tariff increases raise your solar savings. You will reach cash-flow positive in approximately <strong>${Math.ceil(-netMonthly / (saving * 0.05))} months</strong> assuming 5% annual tariff increase. Plan your cash flow accordingly.`;
+  }
+
+  // ── Watch out for
+  const watchOut = [
+    hasHL ? null : `You don't have an existing home loan — Option B will cost you home loan rate + 1% (currently ~${(hlRate+1).toFixed(1)}%). Consider getting Option B from the PSB where you have your salary account for better rates.`,
+    loanAmt > 200000 ? `Your loan amount (${fmtI(loanAmt)}) exceeds ₹2 lakhs — Option A is not available. Ensure you meet Option B income requirements: annual income ≥ ₹3 lakhs, 2 years ITR, 6 months salary slips.` : null,
+    `The moratorium period (6 months after disbursement — no EMI) sounds helpful but interest still accrues. Your effective loan amount grows during moratorium. Factor this in.`,
+    `Rate in Option A is floating (RBI Repo + 0.50%). If RBI raises repo rate, your EMI increases. Consider a fixed-rate loan if rate stability matters to you.`,
+  ].filter(Boolean);
+
+  // ── Render
+  const cards = document.getElementById('emiOptionCards');
+  const options = [
+    {
+      label: 'Option A', sub: 'PM Surya Ghar — Up to ₹2L',
+      rate: rateA, emi: emiA, interest: intA,
+      eligible: eligibleA, recommended: recommended === 'A',
+      pros: ['Lowest rate (Repo+0.5%)', 'Zero processing fee', 'Only Aadhaar needed', 'No prepayment charges', '6-month moratorium'],
+      cons: ['Max ₹2L only', 'Floating rate — rises with RBI rate', 'CIBIL 680+ required'],
+      color: eligibleA ? (recommended === 'A' ? 'var(--jade)' : 'var(--sky)') : 'var(--muted)',
+      bg: eligibleA ? (recommended === 'A' ? 'var(--jade-bg)' : 'var(--sky-bg)') : '#F9FAFB',
+      border: eligibleA ? (recommended === 'A' ? 'var(--jade-border)' : 'var(--sky-border)') : 'var(--border)',
+    },
+    {
+      label: 'Option B', sub: `PM Surya Ghar — ₹2L to ₹6L`,
+      rate: rateB, emi: emiB, interest: intB,
+      eligible: eligibleB, recommended: recommended === 'B',
+      pros: hasHL ? ['Home loan rate (lower)','Higher loan amount','Suitable for large systems'] : ['Up to ₹6L available','Suitable for large systems'],
+      cons: hasHL ? ['Needs more documents','20% margin required'] : ['Home loan rate + 1%','Needs ITR, salary slips','20% margin required','PAN mandatory'],
+      color: eligibleB ? (recommended === 'B' ? 'var(--jade)' : 'var(--amber)') : 'var(--muted)',
+      bg: eligibleB ? (recommended === 'B' ? 'var(--jade-bg)' : 'var(--amber-bg)') : '#F9FAFB',
+      border: eligibleB ? (recommended === 'B' ? 'var(--jade-border)' : 'var(--amber-border)') : 'var(--border)',
+    },
+    {
+      label: 'Option C', sub: 'Cash / Own Funds',
+      rate: 0, emi: 0, interest: 0,
+      eligible: true, recommended: recommended === 'C',
+      pros: ['Zero interest','Fastest break-even','No documents','No CIBIL check','Complete ownership from day 1'],
+      cons: [`Opportunity cost: savings could earn ~₹${Math.round(opportunityCost/tenureYrs).toLocaleString('en-IN')}/yr in FD`, 'Needs upfront capital'],
+      color: recommended === 'C' ? 'var(--jade)' : 'var(--muted)',
+      bg: recommended === 'C' ? 'var(--jade-bg)' : '#F9FAFB',
+      border: recommended === 'C' ? 'var(--jade-border)' : 'var(--border)',
+    },
+  ];
+
+  cards.innerHTML = options.map(o => `
+    <div style="background:${o.bg};border:2px solid ${o.border};border-radius:14px;padding:14px;position:relative;">
+      ${o.recommended ? '<div style="position:absolute;top:12px;right:12px;background:var(--jade);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">✓ RECOMMENDED</div>' : ''}
+      ${!o.eligible ? '<div style="position:absolute;top:12px;right:12px;background:var(--muted);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">NOT ELIGIBLE</div>' : ''}
+      <div style="font-size:15px;font-weight:900;color:${o.color};margin-bottom:2px;">${o.label}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">${o.sub}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
+          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.rate > 0 ? o.rate.toFixed(1)+'%' : '0%'}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">Interest Rate</div>
+        </div>
+        <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
+          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.emi > 0 ? fmtI(o.emi) : 'Nil'}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">Monthly EMI</div>
+        </div>
+        <div style="text-align:center;background:rgba(255,255,255,.7);border-radius:10px;padding:8px;">
+          <div style="font-size:18px;font-weight:900;color:${o.color};">${o.interest > 0 ? fmtI(o.interest) : 'Nil'}</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:700;">Total Interest</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <div style="font-size:10px;font-weight:800;color:var(--jade);margin-bottom:4px;">✓ PROS</div>
+          ${o.pros.map(p=>`<div style="font-size:11px;color:var(--ink2);margin-bottom:2px;padding-left:10px;position:relative;"><span style="position:absolute;left:0;color:var(--jade);">•</span>${p}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:800;color:var(--rose);margin-bottom:4px;">✗ CONS</div>
+          ${o.cons.map(p=>`<div style="font-size:11px;color:var(--ink2);margin-bottom:2px;padding-left:10px;position:relative;"><span style="position:absolute;left:0;color:var(--rose);">•</span>${p}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Recommendation box
+  document.getElementById('emiRecommendationBox').innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--jade-bg),#F0FDF8);border:2px solid var(--jade-border);border-radius:14px;padding:16px;">
+      <div style="font-size:13px;font-weight:800;color:var(--jade);margin-bottom:8px;">🏆 Our Recommendation: ${recommended === 'A' ? 'PM Surya Ghar Option A' : recommended === 'B' ? 'PM Surya Ghar Option B' : 'Cash Purchase'}</div>
+      <div style="font-size:13px;color:#064E3B;line-height:1.75;">${recReason}</div>
+    </div>`;
+
+  // Savings rows
+  const bestInt = recommended === 'A' ? intA : (recommended === 'B' ? intB : 0);
+  document.getElementById('emiSavingsRows').innerHTML = [
+    ['Option A interest cost', eligibleA ? fmtI(intA) : 'Not eligible'],
+    ['Option B interest cost', eligibleB ? fmtI(intB) : 'Not eligible'],
+    ['Cash purchase interest cost', '₹0'],
+    ['You save vs worst option', fmtI(Math.max(intA,intB) - bestInt)],
+    ['You save vs average bank loan (12%)', fmtI(totalInterest(calcEMI(loanAmt,12,months),months,loanAmt) - bestInt)],
+  ].map(([k,v])=>`<div class="breakdown-row"><span class="breakdown-key">${k}</span><span class="breakdown-val">${v}</span></div>`).join('');
+
+  // Prepayment
+  if (prepayText) {
+    document.getElementById('prepaymentBox').style.display = 'block';
+    document.getElementById('prepaymentBoxText').innerHTML = prepayText;
+  }
+
+  // Solar vs EMI
+  document.getElementById('solarVsEmiBox').innerHTML = solarVsEmi;
+
+  // Watch out
+  document.getElementById('watchOutBox').innerHTML = watchOut.map(w=>`<div style="margin-bottom:6px;padding-left:14px;position:relative;"><span style="position:absolute;left:0;">→</span>${w}</div>`).join('');
+
+  document.getElementById('emiResults').classList.remove('hidden');
+  document.getElementById('emiResults').scrollIntoView({behavior:'smooth',block:'start'});
+
+  // Store for share
+  window._emiResults = { recommended, loanAmt, bestEMI, bestInt: recommended==='A'?intA:intB, saving, recReason };
+}
+
+function shareEMIResults() {
+  const r = window._emiResults;
+  if (!r) return;
+  const msg = `💳 *PM Surya Ghar Loan Comparison*
+_from lawsticker-ai.com/solar-legal.html_
+
+Loan Amount: *${fmtI(r.loanAmt)}*
+🏆 Recommended: *Option ${r.recommended}*
+Monthly EMI: *${r.bestEMI > 0 ? fmtI(r.bestEMI) : 'Nil (Cash)'}*
+Total Interest: *${fmtI(r.bestInt)}*
+Monthly Solar Saving: *${fmtI(r.saving)}*
+
+📌 Key insight: ${r.recReason.substring(0,150)}...
+
+Compare all options free:
+lawsticker-ai.com/solar-legal.html`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── Also show loan compare in CALCULATE tab results ─────────────────────
+function showLoanCompareInResults(netCost, saving, repoRate) {
+  const loanSec = document.getElementById('loanCompareSection');
+  if (!loanSec) return;
+
+  // Quick side-by-side for calculate tab
+  const rateA = repoRate + 0.5;
+  const principal = Math.min(netCost, 200000);
+  const emiA7 = calcEMI(principal, rateA, 84);
+  const intA7 = totalInterest(emiA7, 84, principal);
+
+  const grid = document.getElementById('loanCardsGrid');
+  grid.innerHTML = `
+    <div style="background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:12px;padding:12px;">
+      <div style="font-size:12px;font-weight:800;color:var(--jade);margin-bottom:6px;">Option A — PM Surya Ghar (recommended if ≤₹2L)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+        <div><div style="font-size:16px;font-weight:900;color:var(--jade);">${rateA.toFixed(1)}%</div><div style="font-size:10px;color:var(--muted);">Rate p.a.</div></div>
+        <div><div style="font-size:16px;font-weight:900;color:var(--jade);">${fmtI(emiA7)}</div><div style="font-size:10px;color:var(--muted);">EMI/month</div></div>
+        <div><div style="font-size:16px;font-weight:900;color:var(--jade);">${fmtI(intA7)}</div><div style="font-size:10px;color:var(--muted);">Total interest</div></div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px;">
+      <div style="font-size:12px;font-weight:800;color:var(--amber);margin-bottom:6px;">Option B — Higher amount (>₹2L up to ₹6L)</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.6;">Rate = your home loan rate (or home loan rate + 1%). Use the <strong>EMI Advisor tab</strong> above for exact calculation with your rate.</div>
+    </div>
+    <div style="background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px;">
+      <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px;">Option C — Cash / Own Funds</div>
+      <div style="font-size:12px;color:var(--ink2);">Zero interest. Fastest break-even. No documents needed.</div>
+    </div>`;
+
+  document.getElementById('loanRecommendation').innerHTML = `
+    <div style="background:var(--gold-pale);border:1.5px solid rgba(201,162,39,.3);border-radius:12px;padding:12px;">
+      <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:4px;">💡 Quick Take</div>
+      <div style="font-size:12px;color:#5C4A0D;line-height:1.7;">
+        ${netCost <= 200000
+          ? `Your net cost (${fmtI(netCost)}) fits within Option A (max ₹2L). This is the best loan — lowest rate, zero fees, Aadhaar only. For a detailed comparison, use the <strong>EMI Advisor</strong> tab.`
+          : `Your net cost (${fmtI(netCost)}) exceeds ₹2L — you'll need Option B or part-cash part-loan. Use the <strong>EMI Advisor</strong> tab to compare exactly.`}
+      </div>
+    </div>`;
+
+  const rows = document.getElementById('loanSavingsRows');
+  const mktEMI = calcEMI(netCost, 12, 84);
+  rows.innerHTML = `
+    <div class="breakdown-row"><span class="breakdown-key">PM Surya Ghar EMI (7 yrs)</span><span class="breakdown-val">${fmtI(emiA7)}/month</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Typical market loan EMI (12%)</span><span class="breakdown-val">${fmtI(mktEMI)}/month</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">You save vs market loan</span><span class="breakdown-val" style="color:var(--jade)">${fmtI(totalInterest(mktEMI,84,netCost) - intA7)} interest</span></div>`;
+
+  document.getElementById('prepaymentTip').innerHTML = `PM Surya Ghar loan has <strong>zero prepayment charges</strong>. Your solar savings of ${fmtI(saving)}/month can be used to make extra payments — this can cut your loan tenure by 2-3 years and save thousands in interest. See the <strong>EMI Advisor tab</strong> for exact prepayment savings calculation.`;
+
+  loanSec.classList.remove('hidden');
+}
+
+function shareLoanResults() {
+  const msg = `☀️ *PM Surya Ghar Loan Quick Comparison*
+_from lawsticker-ai.com/solar-legal.html_
+
+3 ways to finance your solar:
+💚 Option A: PM Surya Ghar loan — lowest rate, Aadhaar only, zero processing fee
+🟡 Option B: Higher amount (up to ₹6L), needs more documents
+⚪ Option C: Cash purchase — zero interest, fastest break-even
+
+📌 No prepayment charges in Option A — use solar savings to repay faster!
+
+Full comparison & EMI calculator:
+lawsticker-ai.com/solar-legal.html`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── ORIGINAL CALCULATE — patch to also trigger loan compare ──────────────
+const _originalCalculate = window.calculate || calculate;
+function calculateAndLoan() {
+  calculate();
+  // After calculate, also pre-fill EMI advisor inputs
+  setTimeout(() => {
+    try {
+      const netCostRaw = parseFloat(document.getElementById('systemCost').value) -
+                         parseFloat(document.getElementById('subsidyCap').value || 78000);
+      const savingRaw = parseFloat(document.getElementById('monthlyBill').value) * 0.7;
+      const repoEst = parseFloat(document.getElementById('emi-repo').value) || 6.5;
+      document.getElementById('emi-loanamt').value = Math.max(0, Math.round(netCostRaw));
+      document.getElementById('emi-saving').value = Math.round(savingRaw);
+      showLoanCompareInResults(Math.max(0, netCostRaw), savingRaw, repoEst);
+    } catch(e) {}
+  }, 200);
 }
 
 // ── TABS ───────────────────────────────────────────────────────────────
