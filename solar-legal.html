@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="Calculate PM Surya Ghar subsidy you're entitled to. DISCOM net metering rights, 25-item vendor checklist, negotiation tips. Telangana default. All variables selectable.">
   <meta name="twitter:image" content="https://lawsticker-ai.com/og-image.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
 :root{
@@ -32,11 +32,14 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
 
 nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:flex;flex-direction:column;}
 .nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;}
 .nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-langs{display:flex;gap:5px;}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(201,162,39,.2);background:transparent;color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold);}
 .nav-brand{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);}
 
 .hero{background:linear-gradient(145deg,#0a0f00,#1a2200,#0f1800);padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
@@ -162,7 +165,11 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <div class="nav-r1">
     <a class="nav-back" href="https://lawsticker-ai.com">← LawSticker AI</a>
     <div class="nav-brand">☀️ Solar Legal Guide</div>
-    <a class="nav-back" href="https://lawsticker-ai.com/ask.html">💬 Ask</a>
+    <div class="nav-langs">
+      <button class="nav-lang active" onclick="setLang('en',this)">EN</button>
+      <button class="nav-lang" onclick="setLang('te',this)">తె</button>
+      <button class="nav-lang" onclick="setLang('hi',this)">हि</button>
+    </div>
   </div>
 </nav>
 
@@ -188,7 +195,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
   <div class="calc-title">☀️ Your Solar Setup Details</div>
   <div class="field-grid">
     <div class="field">
-      <label>State</label>
+      <label data-lang="lState">State</label>
       <select id="state" onchange="onStateChange()">
         <option value="TS" selected>Telangana</option>
         <option value="AP">Andhra Pradesh</option>
@@ -203,7 +210,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field">
-      <label>Customer Type</label>
+      <label data-lang="lCustType">Customer Type</label>
       <select id="custType" onchange="onTypeChange()">
         <option value="residential">Residential</option>
         <option value="commercial">Commercial</option>
@@ -211,7 +218,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field">
-      <label>System Size (kWp)</label>
+      <label data-lang="lSize">System Size (kWp)</label>
       <select id="systemSize">
         <option value="1">1 kWp</option>
         <option value="2">2 kWp</option>
@@ -237,22 +244,22 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       <input type="number" id="customSize" placeholder="e.g. 12" min="0.5" max="500" step="0.5">
     </div>
     <div class="field">
-      <label>Current Monthly Bill (₹)</label>
+      <label data-lang="lBill">Current Monthly Bill (₹)</label>
       <input type="number" id="monthlyBill" value="3000" min="100" step="100">
       <div class="hint">Your average electricity bill before solar</div>
     </div>
     <div class="field">
-      <label>Current Tariff (₹/unit)</label>
+      <label data-lang="lTariff">Current Tariff (₹/unit)</label>
       <input type="number" id="tariff" value="6.50" min="1" max="20" step="0.25" id="tariff">
       <div class="hint" id="tariffHint">TSSPDCL/TSNPDCL HT/LT rate — adjust if different</div>
     </div>
     <div class="field">
-      <label>System Cost (₹)</label>
+      <label data-lang="lCost">System Cost (₹)</label>
       <input type="number" id="systemCost" value="150000" min="10000" step="5000">
       <div class="hint">Total quoted price before subsidy</div>
     </div>
     <div class="field">
-      <label>Peak Sun Hours / Day</label>
+      <label data-lang="lSun">Peak Sun Hours / Day</label>
       <select id="sunHours">
         <option value="4">4 hrs (cloudy / monsoon months)</option>
         <option value="4.5">4.5 hrs</option>
@@ -263,7 +270,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field">
-      <label>Panel Efficiency Loss/Year (%)</label>
+      <label data-lang="lDeg">Panel Efficiency Loss/Year (%)</label>
       <select id="degradation">
         <option value="0.5">0.5% (premium panels)</option>
         <option value="0.7" selected>0.7% (standard)</option>
@@ -271,7 +278,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field">
-      <label>Annual Tariff Increase (%)</label>
+      <label data-lang="lTariffInc">Annual Tariff Increase (%)</label>
       <select id="tariffIncrease">
         <option value="3">3% (conservative)</option>
         <option value="5" selected>5% (historical avg)</option>
@@ -280,7 +287,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field">
-      <label>Financing</label>
+      <label data-lang="lFinance">Financing</label>
       <select id="financing" onchange="onFinanceChange()">
         <option value="own">Own funds / Cash</option>
         <option value="loan">Bank / NBFC Loan</option>
@@ -288,11 +295,11 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
       </select>
     </div>
     <div class="field" id="loanFields" style="display:none;">
-      <label>Loan Interest Rate (%)</label>
+      <label data-lang="lLoanRate">Loan Interest Rate (%)</label>
       <input type="number" id="loanRate" value="7" min="1" max="20" step="0.25">
     </div>
     <div class="field" id="loanTenureField" style="display:none;">
-      <label>Loan Tenure (years)</label>
+      <label data-lang="lLoanTenure">Loan Tenure (years)</label>
       <select id="loanTenure">
         <option value="5">5 years</option>
         <option value="7" selected>7 years</option>
@@ -307,7 +314,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
     <div style="font-size:12px;font-weight:800;color:var(--gold-d);margin-bottom:10px;">🏛️ Government Subsidy (PM Surya Ghar Yojana)</div>
     <div class="field-grid">
       <div class="field full">
-        <label>Apply Subsidy?</label>
+        <label data-lang="lSubsidyApply">Apply Subsidy?</label>
         <select id="applySubsidy">
           <option value="yes" selected>Yes — I am eligible (Residential with DISCOM connection)</option>
           <option value="no">No — Commercial / Industrial / Not applying</option>
@@ -317,17 +324,17 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
     </div>
     <div class="field-grid" id="subsidyRateFields" style="margin-top:8px;">
       <div class="field">
-        <label>Subsidy Rate ₹/kWp (up to 2 kWp)</label>
+        <label data-lang="lSubsidyR1">Subsidy Rate ₹/kWp (up to 2 kWp)</label>
         <input type="number" id="subsidyR1" value="30000" step="1000">
         <div class="hint">Central subsidy — PM Surya Ghar 2024 rate. Update if revised.</div>
       </div>
       <div class="field">
-        <label>Subsidy Rate ₹/kWp (2-3 kWp slab)</label>
+        <label data-lang="lSubsidyR2">Subsidy Rate ₹/kWp (2-3 kWp slab)</label>
         <input type="number" id="subsidyR2" value="18000" step="1000">
         <div class="hint">Reduced rate for 2-3 kWp slab.</div>
       </div>
       <div class="field full">
-        <label>Maximum Subsidy Cap (₹)</label>
+        <label data-lang="lSubsidyCap">Maximum Subsidy Cap (₹)</label>
         <input type="number" id="subsidyCap" value="78000" step="1000">
         <div class="hint">Current cap under PM Surya Ghar: ₹78,000 for 3 kWp system. Update if scheme is revised.</div>
       </div>
@@ -563,7 +570,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 <div class="page">
 
 <div class="legal-box">
-  <div class="legal-box-title">⚖️ Your Legal Rights — Solar in India</div>
+  <div class="legal-box-title" id="legalBoxTitle">⚖️ Your Legal Rights — Solar in India</div>
   <div class="legal-right">
     <div class="legal-num">1</div>
     <div class="legal-text"><strong>Net Metering is a Legal Right — not a favour.</strong> Under the Electricity Act 2003 (Sec 42) and CERC/SERC Regulations, your DISCOM is legally obligated to provide net metering within 30 days of your application. They cannot refuse without written reasons.</div>
@@ -597,7 +604,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 <div class="section-hd">If DISCOM Refuses or Delays</div>
 
 <div class="remedy-box">
-  <div class="remedy-title">🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies</div>
+  <div class="remedy-title" id="remedyTitle">🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies</div>
   <div class="remedy-step">Send written application to DISCOM with acknowledgment copy. Note the date — 30-day clock starts here.</div>
   <div class="remedy-step">If no response in 30 days — file written complaint with State Electricity Regulatory Commission (SERC): TSERC for Telangana, APERC for AP.</div>
   <div class="remedy-step">Simultaneously file on National Portal: <strong>solarrooftop.gov.in</strong> — PM Surya Ghar grievance redressal is tracked here.</div>
@@ -833,7 +840,7 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 <div class="page">
 
 <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid rgba(245,158,11,.3);border-radius:14px;padding:14px;margin-bottom:14px;">
-  <div style="font-size:13px;font-weight:800;color:var(--solar-d);margin-bottom:6px;">💡 How to use this section</div>
+  <div style="font-size:13px;font-weight:800;color:var(--solar-d);margin-bottom:6px;" id="negotiateTitle">💡 How to use this section</div>
   <div style="font-size:12px;color:#5C4A0D;line-height:1.7;">These are negotiation strategies and red flags — both for customers to protect themselves, and for vendors to understand what informed customers will ask. Knowledge on both sides leads to better deals and fewer disputes.</div>
 </div>
 
@@ -948,6 +955,135 @@ nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:100;display:f
 </div>
 
 <script>
+
+// ── LANGUAGE DATA ──────────────────────────────────────────────────────
+const LANG = {
+  en: {
+    heroEye: "Know Your Rights Before You Sign",
+    heroTitle: "Solar — Legal Entitlements,<br>Savings & Smart Buying Guide",
+    heroSub: "Government subsidy you're legally entitled to · DISCOM net metering rights · Vendor comparison checklist · Negotiation tips",
+    tab1: "🧮 Calculate", tab2: "💳 EMI Advisor", tab3: "⚖️ Legal Rights", tab4: "✅ Before You Sign", tab5: "🤝 Negotiate Smart",
+    calcTitle: "☀️ Your Solar Setup Details",
+    lState: "State", lCustType: "Customer Type", lSize: "System Size (kWp)", lBill: "Current Monthly Bill (₹)",
+    lTariff: "Current Tariff (₹/unit)", lCost: "System Cost (₹)", lSun: "Peak Sun Hours / Day",
+    lDeg: "Panel Efficiency Loss/Year (%)", lTariffInc: "Annual Tariff Increase (%)", lFinance: "Financing",
+    lLoanRate: "Loan Interest Rate (%)", lLoanTenure: "Loan Tenure (years)",
+    lSubsidyApply: "Apply Subsidy?", lSubsidyR1: "Subsidy Rate ₹/kWp (up to 2 kWp)",
+    lSubsidyR2: "Subsidy Rate ₹/kWp (2-3 kWp slab)", lSubsidyCap: "Maximum Subsidy Cap (₹)",
+    calcBtn: "☀️ Calculate My Solar Entitlements",
+    rSubsidy: "Govt Subsidy<br>You're Entitled To", rNetCost: "Your Net Cost<br>After Subsidy",
+    rUnits: "Units Generated<br>Per Month (Est.)", rSaving: "Monthly Bill<br>Savings (Yr 1)",
+    rBreakeven: "Break-Even<br>Period", r25yr: "Total Savings<br>Over 25 Years",
+    shareBtn: "📲 Share These Results on WhatsApp",
+    shareMsg: "☀️ *Solar Savings Calculator Results*\n_from lawsticker-ai.com/solar-legal.html_\n\nSystem: *{kw} kWp* | {type} | {state}\n\n🏛️ Govt Subsidy I'm entitled to: *{subsidy}*\n💰 My Net Cost after Subsidy: *{netcost}*\n⚡ Monthly Generation: *{units} units*\n📉 Year 1 Monthly Saving: *{saving}*\n📅 Break-even: *{breakeven} years*\n📈 Total 25-Year Savings: *{yr25}*\n\n⚖️ Know your legal rights before signing:\nlawsticker-ai.com/solar-legal.html",
+  },
+  te: {
+    heroEye: "సంతకం చేయడానికి ముందు మీ హక్కులు తెలుసుకోండి",
+    heroTitle: "సోలార్ — చట్టపరమైన హక్కులు,<br>పొదుపులు & స్మార్ట్ కొనుగోలు గైడ్",
+    heroSub: "మీకు చట్టపరంగా చెందే ప్రభుత్వ సబ్సిడీ · DISCOM నెట్ మీటరింగ్ హక్కులు · వెండర్ చెక్‌లిస్ట్ · చర్చ చిట్కాలు",
+    tab1: "🧮 లెక్కించు", tab2: "💳 EMI సలహా", tab3: "⚖️ చట్టపరమైన హక్కులు", tab4: "✅ సంతకం ముందు", tab5: "🤝 తెలివిగా చర్చించు",
+    calcTitle: "☀️ మీ సోలార్ వివరాలు",
+    lState: "రాష్ట్రం", lCustType: "కస్టమర్ రకం", lSize: "సిస్టమ్ సైజ్ (kWp)", lBill: "ప్రస్తుత నెలవారీ బిల్లు (₹)",
+    lTariff: "ప్రస్తుత టారిఫ్ (₹/యూనిట్)", lCost: "సిస్టమ్ ధర (₹)", lSun: "రోజువారీ గరిష్ట సూర్యరశ్మి గంటలు",
+    lDeg: "సంవత్సరానికి ప్యానెల్ నష్టం (%)", lTariffInc: "వార్షిక టారిఫ్ పెరుగుదల (%)", lFinance: "ఆర్థిక సహాయం",
+    lLoanRate: "రుణ వడ్డీ రేటు (%)", lLoanTenure: "రుణ వ్యవధి (సంవత్సరాలు)",
+    lSubsidyApply: "సబ్సిడీ వర్తించాలా?", lSubsidyR1: "సబ్సిడీ రేటు ₹/kWp (2 kWp వరకు)",
+    lSubsidyR2: "సబ్సిడీ రేటు ₹/kWp (2-3 kWp స్లాబ్)", lSubsidyCap: "గరిష్ట సబ్సిడీ పరిమితి (₹)",
+    calcBtn: "☀️ నా సోలార్ హక్కులు లెక్కించు",
+    rSubsidy: "మీకు చెందే<br>ప్రభుత్వ సబ్సిడీ", rNetCost: "సబ్సిడీ తర్వాత<br>మీ నికర ధర",
+    rUnits: "నెలకు ఉత్పత్తి<br>అంచనా యూనిట్లు", rSaving: "నెలవారీ బిల్లు<br>పొదుపు (1వ సం.)",
+    rBreakeven: "పెట్టుబడి<br>వెనక్కి వచ్చే సమయం", r25yr: "25 సంవత్సరాల్లో<br>మొత్తం పొదుపు",
+    shareBtn: "📲 WhatsApp లో షేర్ చేయండి",
+    shareMsg: "☀️ *సోలార్ పొదుపు లెక్క*\n_lawsticker-ai.com/solar-legal.html నుండి_\n\nసిస్టమ్: *{kw} kWp* | {type} | {state}\n\n🏛️ ప్రభుత్వ సబ్సిడీ: *{subsidy}*\n💰 సబ్సిడీ తర్వాత ధర: *{netcost}*\n⚡ నెలకు ఉత్పత్తి: *{units} యూనిట్లు*\n📉 నెలవారీ పొదుపు: *{saving}*\n📅 పెట్టుబడి తిరిగి: *{breakeven} సంవత్సరాలు*\n📈 25 సంవత్సరాల పొదుపు: *{yr25}*\n\n⚖️ సంతకం ముందు హక్కులు తెలుసుకోండి:\nlawsticker-ai.com/solar-legal.html",
+  },
+  hi: {
+    heroEye: "साइन करने से पहले अपने अधिकार जानें",
+    heroTitle: "सोलर — कानूनी अधिकार,<br>बचत और स्मार्ट खरीद गाइड",
+    heroSub: "आपका कानूनी अधिकार — सरकारी सब्सिडी · DISCOM नेट मीटरिंग अधिकार · वेंडर चेकलिस्ट · बातचीत के टिप्स",
+    tab1: "🧮 गणना करें", tab2: "💳 EMI सलाह", tab3: "⚖️ कानूनी अधिकार", tab4: "✅ साइन से पहले", tab5: "🤝 समझदारी से बातचीत",
+    calcTitle: "☀️ आपका सोलर विवरण",
+    lState: "राज्य", lCustType: "ग्राहक प्रकार", lSize: "सिस्टम साइज (kWp)", lBill: "मौजूदा मासिक बिल (₹)",
+    lTariff: "मौजूदा टैरिफ (₹/यूनिट)", lCost: "सिस्टम की लागत (₹)", lSun: "रोज़ाना सूर्यप्रकाश के घंटे",
+    lDeg: "सालाना पैनल क्षति (%)", lTariffInc: "वार्षिक टैरिफ वृद्धि (%)", lFinance: "वित्तपोषण",
+    lLoanRate: "ऋण ब्याज दर (%)", lLoanTenure: "ऋण अवधि (वर्ष)",
+    lSubsidyApply: "सब्सिडी लागू करें?", lSubsidyR1: "सब्सिडी दर ₹/kWp (2 kWp तक)",
+    lSubsidyR2: "सब्सिडी दर ₹/kWp (2-3 kWp स्लैब)", lSubsidyCap: "अधिकतम सब्सिडी सीमा (₹)",
+    calcBtn: "☀️ मेरे सोलर अधिकार जानें",
+    rSubsidy: "सरकारी सब्सिडी<br>जो आपको मिलेगी", rNetCost: "सब्सिडी के बाद<br>आपकी कुल लागत",
+    rUnits: "प्रति माह<br>अनुमानित यूनिट", rSaving: "मासिक बिल<br>बचत (वर्ष 1)",
+    rBreakeven: "निवेश वापसी<br>की अवधि", r25yr: "25 साल में<br>कुल बचत",
+    shareBtn: "📲 WhatsApp पर शेयर करें",
+    shareMsg: "☀️ *सोलर बचत कैलकुलेटर*\n_lawsticker-ai.com/solar-legal.html से_\n\nसिस्टम: *{kw} kWp* | {type} | {state}\n\n🏛️ सरकारी सब्सिडी: *{subsidy}*\n💰 सब्सिडी के बाद लागत: *{netcost}*\n⚡ मासिक उत्पादन: *{units} यूनिट*\n📉 मासिक बचत: *{saving}*\n📅 निवेश वापसी: *{breakeven} वर्ष*\n📈 25 साल की बचत: *{yr25}*\n\n⚖️ साइन करने से पहले अधिकार जानें:\nlawsticker-ai.com/solar-legal.html",
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.nav-lang').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  applyLang();
+}
+
+function applyLang() {
+  const L = LANG[currentLang];
+  if (!L) return;
+
+  // Hero
+  const heroEye = document.querySelector('.hero-eye');
+  const heroTitle = document.querySelector('.hero-title');
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroEye) heroEye.textContent = L.heroEye;
+  if (heroTitle) heroTitle.innerHTML = L.heroTitle;
+  if (heroSub) heroSub.textContent = L.heroSub;
+
+  // Tab pills
+  const pills = document.querySelectorAll('.tab-pill');
+  const tabKeys = ['tab1','tab2','tab3','tab4','tab5'];
+  pills.forEach((p,i) => { if(tabKeys[i]) p.textContent = L[tabKeys[i]]; });
+
+  // Calc card title
+  const calcTitle = document.querySelector('.calc-title');
+  if (calcTitle) calcTitle.textContent = L.calcTitle;
+
+  // Field labels — use data-lang attribute
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    const key = el.getAttribute('data-lang');
+    if (L[key]) el.textContent = L[key];
+  });
+
+  // Calculate button
+  const calcBtn = document.querySelector('.calc-btn');
+  if (calcBtn) calcBtn.textContent = L.calcBtn;
+
+  // Result labels
+  const resultLabels = document.querySelectorAll('.result-label');
+  const labelKeys = ['rSubsidy','rNetCost','rUnits','rSaving','rBreakeven','r25yr'];
+  resultLabels.forEach((el,i) => { if(labelKeys[i] && L[labelKeys[i]]) el.innerHTML = L[labelKeys[i]]; });
+
+  // Section titles
+  const legalBoxTitle = document.getElementById('legalBoxTitle');
+  const remedyTitle = document.getElementById('remedyTitle');
+  const negotiateTitle = document.getElementById('negotiateTitle');
+  const legalTitles = {
+    en: ['⚖️ Your Legal Rights — Solar in India', '🚨 DISCOM Not Cooperating? Step-by-Step Legal Remedies', '💡 How to use this section'],
+    te: ['⚖️ మీ చట్టపరమైన హక్కులు — భారతదేశంలో సోలార్', '🚨 DISCOM సహకరించడం లేదా? దశలవారీ చట్టపరమైన పరిష్కారాలు', '💡 ఈ విభాగాన్ని ఎలా ఉపయోగించాలి'],
+    hi: ['⚖️ आपके कानूनी अधिकार — भारत में सोलर', '🚨 DISCOM सहयोग नहीं कर रहा? चरण-दर-चरण कानूनी उपाय', '💡 इस सेक्शन का उपयोग कैसे करें'],
+  };
+  const lt = legalTitles[currentLang] || legalTitles.en;
+  if (legalBoxTitle) legalBoxTitle.textContent = lt[0];
+  if (remedyTitle) remedyTitle.textContent = lt[1];
+  if (negotiateTitle) negotiateTitle.textContent = lt[2];
+
+  // Share button text
+  document.querySelectorAll('.share-btn').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('shareResults')) {
+      btn.textContent = L.shareBtn;
+    }
+  });
+}
+
 // ── STATE DEFAULTS ─────────────────────────────────────────────────────
 const STATE_DEFAULTS = {
   TS:  { tariff: 6.50, exportRate: 3.00, hint: 'TSSPDCL/TSNPDCL domestic tariff (slab avg). Adjust for your actual slab.' },
@@ -1138,20 +1274,17 @@ function calculate() {
 function shareResults() {
   const r = window._calcResults;
   if (!r) return;
-  const msg = `☀️ *Solar Savings Calculator Results*
-_from lawsticker-ai.com/solar-legal.html_
-
-System: *${r.kw} kWp* | ${r.custType} | ${document.getElementById('state').options[document.getElementById('state').selectedIndex].text}
-
-🏛️ Govt Subsidy I'm entitled to: *${r.subsidy > 0 ? fmt(r.subsidy) : 'Not applicable'}*
-💰 My Net Cost after Subsidy: *${fmt(r.netCost)}*
-⚡ Monthly Generation: *${r.unitsPerMonth} units*
-📉 Year 1 Monthly Saving: *${fmt(r.yr1 / 12)}*
-📅 Break-even: *${r.breakeven} years*
-📈 Total 25-Year Savings: *${fmt(r.yr25)}*
-
-⚖️ Know your legal rights before signing:
-lawsticker-ai.com/solar-legal.html`;
+  const L = LANG[currentLang] || LANG.en;
+  const msg = L.shareMsg
+    .replace('{kw}', r.kw)
+    .replace('{type}', r.custType)
+    .replace('{state}', document.getElementById('state').options[document.getElementById('state').selectedIndex].text)
+    .replace('{subsidy}', r.subsidy > 0 ? fmt(r.subsidy) : (currentLang==='te'?'వర్తించదు':currentLang==='hi'?'लागू नहीं':'Not applicable'))
+    .replace('{netcost}', fmt(r.netCost))
+    .replace('{units}', r.unitsPerMonth)
+    .replace('{saving}', fmt(r.yr1 / 12))
+    .replace('{breakeven}', r.breakeven)
+    .replace('{yr25}', fmt(r.yr25));
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1534,6 +1667,9 @@ function calculateAndLoan() {
     } catch(e) {}
   }, 200);
 }
+
+// ── INIT ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => applyLang());
 
 // ── TABS ───────────────────────────────────────────────────────────────
 function switchTab(id, btn) {
