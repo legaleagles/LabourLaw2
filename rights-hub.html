@@ -1138,12 +1138,18 @@ function renderCats() {
   const grid = document.getElementById('catsGrid');
   grid.innerHTML = CATS.map(cat => {
     const count = RIGHTS.filter(r => r.cat === cat.id).length;
-    return `<button class="cat-card ${cat.cls}" onclick="cat.page ? window.location.href='https://lawsticker-ai.com/'+cat.page : showCat('${cat.id}')">
+    const onclick = cat.page
+      ? `window.location.href='https://lawsticker-ai.com/${cat.page}'`
+      : `showCat('${cat.id}')`;
+    const guide = cat.page
+      ? `<div style="font-size:10px;font-weight:800;color:var(--navy);margin-top:8px;opacity:.6;">Full guide →</div>`
+      : '';
+    return `<button class="cat-card ${cat.cls}" onclick="${onclick}">
       <span class="cat-icon">${cat.icon}</span>
       <div class="cat-name">${cat.name[currentLang]}</div>
       <div class="cat-desc">${cat.desc[currentLang]}</div>
       <div class="cat-count">${count} rights covered</div>
-      ${cat.page ? `<div style="font-size:10px;font-weight:800;color:var(--navy);margin-top:8px;opacity:.6;">Full guide →</div>` : ''}
+      ${guide}
     </button>`;
   }).join('');
 }
