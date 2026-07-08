@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Grocery Bill Calculator — Smart Shopper | LawSticker AI</title>
+<meta name="description" content="Free grocery bill calculator with GST breakdown. Add items, calculate total, know your rights as a consumer. Telugu, English, Hindi.">
+<link rel="canonical" href="https://lawsticker-ai.com/grocery-calc.html">
+<meta property="og:title" content="Grocery Bill Calculator | LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.svg">
+<meta property="og:site_name" content="LawSticker AI">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{
+  --navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
+  --muted:#6B7280;--border:#D1D5DB;--light:#F3F4F6;
+  --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+  --jade:#059669;--jade-bg:#ECFDF5;--jade-border:#A7F3D0;--jade-d:#065F46;
+  --sky:#0EA5E9;--sky-bg:#F0F9FF;--sky-d:#0369A1;
+  --rose:#DC2626;--rose-bg:#FEF2F2;
+  --amber:#D97706;--amber-bg:#FFFBEB;
+  --violet:#7C3AED;--violet-bg:#F5F3FF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;
+  background:#F8FAFC;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{background:var(--navy);position:sticky;top:0;z-index:200;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);}
+.nav-langs{display:flex;gap:5px;}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(201,162,39,.2);
+  background:transparent;color:rgba(255,255,255,.35);font-family:inherit;
+  font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold);}
+
+/* STICKY BILL SUMMARY */
+.bill-sticky{position:sticky;top:48px;z-index:100;background:var(--navy);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--gold);}
+.bill-total-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:1px;}
+.bill-total-amt{font-family:'Playfair Display',serif;font-size:22px;
+  font-weight:900;color:var(--gold-l);}
+.bill-items-count{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;}
+.bill-reset-btn{background:rgba(220,38,38,.2);color:#FCA5A5;border:1px solid rgba(220,38,38,.3);
+  border-radius:8px;padding:6px 12px;font-family:inherit;font-size:11px;
+  font-weight:700;cursor:pointer;transition:all .2s;}
+.bill-reset-btn:hover{background:rgba(220,38,38,.35);}
+
+/* PAGE */
+.page{max-width:700px;margin:0 auto;padding:12px 12px 100px;}
+
+/* SECTION HEADERS */
+.sec-hd{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+.sec-hd::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* QUICK ENTRY */
+.quick-entry{background:#fff;border-radius:14px;border:1px solid var(--border);
+  padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.qe-row{display:flex;gap:8px;align-items:flex-end;}
+.qe-name{flex:2;display:flex;flex-direction:column;gap:4px;}
+.qe-price,.qe-qty{flex:1;display:flex;flex-direction:column;gap:4px;}
+.qe-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.qe-input{border:1.5px solid var(--border);border-radius:8px;padding:9px 10px;
+  font-family:inherit;font-size:14px;color:var(--ink);outline:none;
+  width:100%;transition:border-color .2s;}
+.qe-input:focus{border-color:var(--gold);}
+.qe-gst-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;}
+.qe-gst-label{font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;}
+.gst-chip{font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;
+  border:1.5px solid var(--border);background:#fff;color:var(--muted);
+  cursor:pointer;transition:all .2s;white-space:nowrap;}
+.gst-chip.active{border-color:var(--jade);background:var(--jade-bg);color:var(--jade-d);}
+.qe-add-btn{background:var(--navy);color:var(--gold-l);border:none;
+  border-radius:10px;padding:11px 20px;font-family:inherit;font-size:14px;
+  font-weight:800;cursor:pointer;transition:all .2s;margin-top:10px;width:100%;}
+.qe-add-btn:active{transform:scale(.98);}
+.qe-hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+/* CATEGORY QUICK-ADD */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.cat-btn{background:#fff;border:1.5px solid var(--border);border-radius:12px;
+  padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;
+  font-family:inherit;}
+.cat-btn:hover{border-color:var(--gold);background:var(--gold-pale);}
+.cat-btn-icon{font-size:22px;display:block;margin-bottom:4px;}
+.cat-btn-name{font-size:10px;font-weight:700;color:var(--ink2);}
+
+/* CATEGORY ITEM PICKER */
+.cat-picker{background:#fff;border-radius:14px;border:1.5px solid var(--gold);
+  padding:14px;margin-bottom:12px;display:none;box-shadow:0 4px 20px rgba(201,162,39,.15);}
+.cat-picker.active{display:block;}
+.cat-picker-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cat-picker-title{font-size:14px;font-weight:800;color:var(--ink);}
+.cat-picker-close{background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;}
+.cat-items{display:flex;flex-direction:column;gap:6px;}
+.cat-item-row{display:flex;align-items:center;gap:8px;padding:8px 0;
+  border-bottom:1px solid var(--light);}
+.cat-item-row:last-child{border-bottom:none;}
+.cat-item-name{flex:1;font-size:13px;font-weight:600;color:var(--ink);}
+.cat-item-gst{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;
+  background:var(--jade-bg);color:var(--jade-d);flex-shrink:0;}
+.cat-item-price{width:80px;}
+.cat-item-price input{border:1.5px solid var(--border);border-radius:8px;
+  padding:7px 8px;font-family:inherit;font-size:13px;color:var(--ink);
+  outline:none;width:100%;transition:border-color .2s;}
+.cat-item-price input:focus{border-color:var(--gold);}
+.cat-item-add{background:var(--jade);color:white;border:none;border-radius:8px;
+  padding:7px 12px;font-family:inherit;font-size:12px;font-weight:700;
+  cursor:pointer;flex-shrink:0;}
+
+/* CART */
+.cart-empty{text-align:center;padding:28px 16px;color:var(--muted);}
+.cart-empty-icon{font-size:40px;margin-bottom:10px;}
+.cart-empty-text{font-size:13px;line-height:1.7;}
+
+.cart-item{background:#fff;border-radius:12px;border:1px solid var(--border);
+  margin-bottom:6px;overflow:hidden;display:flex;align-items:center;
+  gap:0;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+.ci-color{width:4px;align-self:stretch;flex-shrink:0;}
+.ci-body{flex:1;padding:10px 12px;}
+.ci-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.ci-meta{font-size:11px;color:var(--muted);}
+.ci-right{display:flex;flex-direction:column;align-items:flex-end;
+  padding:10px 12px;gap:4px;}
+.ci-price{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--ink);}
+.ci-gst-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;}
+.ci-del{background:none;border:none;color:var(--muted);font-size:16px;
+  cursor:pointer;padding:2px;line-height:1;}
+.ci-qty-row{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.ci-qty-btn{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);
+  background:#fff;font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--ink2);}
+.ci-qty-val{font-size:13px;font-weight:700;min-width:20px;text-align:center;}
+
+/* BILL BREAKDOWN */
+.bill-breakdown{background:#fff;border-radius:14px;border:1px solid var(--border);
+  padding:16px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.bb-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--light);font-size:13px;}
+.bb-row:last-child{border-bottom:none;}
+.bb-row.total{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;
+  padding-top:12px;color:var(--navy);}
+.bb-row.total .bb-val{color:var(--jade);}
+.bb-label{color:var(--ink2);}
+.bb-val{font-weight:700;color:var(--ink);}
+.bb-gst-detail{font-size:11px;color:var(--muted);padding:4px 0;}
+
+/* ACTION BUTTONS */
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.action-btn{padding:13px;border-radius:12px;font-family:inherit;font-size:13px;
+  font-weight:800;cursor:pointer;border:none;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;}
+.action-btn:active{transform:scale(.97);}
+.btn-share{background:#25D366;color:white;}
+.btn-clear{background:var(--rose-bg);color:var(--rose);border:1px solid var(--rose-border,#FECACA);}
+
+/* TIPS SECTION */
+.tips-section{margin-top:20px;}
+.tip-card{background:#fff;border-radius:14px;border:1px solid var(--border);
+  margin-bottom:8px;overflow:hidden;}
+.tip-header{display:flex;align-items:center;gap:10px;padding:12px 14px;
+  cursor:pointer;user-select:none;}
+.tip-icon{font-size:22px;flex-shrink:0;}
+.tip-hdr-body{flex:1;}
+.tip-title{font-size:13px;font-weight:800;color:var(--ink);}
+.tip-subtitle{font-size:11px;color:var(--muted);margin-top:1px;}
+.tip-chev{font-size:14px;color:var(--muted);transition:transform .25s;flex-shrink:0;}
+.tip-chev.open{transform:rotate(180deg);}
+.tip-body{display:none;padding:0 14px 14px;border-top:1px solid var(--light);}
+.tip-body.open{display:block;}
+.tip-body p{font-size:13px;color:var(--ink2);line-height:1.75;margin-top:10px;}
+.tip-body p strong{color:var(--ink);}
+.tip-law{background:var(--gold-pale);border:1px solid rgba(201,162,39,.25);
+  border-radius:8px;padding:8px 12px;margin-top:10px;font-size:11px;
+  color:var(--gold-d);line-height:1.6;}
+.tip-law strong{color:var(--navy);font-weight:800;}
+.tip-save{background:var(--jade-bg);border:1px solid var(--jade-border);
+  border-radius:8px;padding:8px 12px;margin-top:8px;font-size:11px;
+  color:var(--jade-d);font-weight:700;line-height:1.6;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);
+  border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;
+  display:flex;flex-direction:row;justify-content:space-around;
+  align-items:center;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;
+  text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);
+  letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--navy);color:var(--gold-l);padding:10px 20px;border-radius:20px;
+  font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:300;
+  white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <a class="nav-back" href="https://lawsticker-ai.com/calculators.html">← Calculators</a>
+    <div class="nav-brand" id="navBrand">🛒 Grocery Bill Calculator</div>
+    <div class="nav-langs">
+      <button class="nav-lang active" onclick="setLang('en',this)">EN</button>
+      <button class="nav-lang" onclick="setLang('te',this)">తె</button>
+      <button class="nav-lang" onclick="setLang('hi',this)">हि</button>
+    </div>
+  </div>
+</nav>
+
+<!-- STICKY TOTAL -->
+<div class="bill-sticky">
+  <div>
+    <div class="bill-total-label" id="totalLabel">Total Bill</div>
+    <div class="bill-total-amt">₹<span id="stickyTotal">0.00</span></div>
+    <div class="bill-items-count" id="itemsCount">0 items</div>
+  </div>
+  <button class="bill-reset-btn" onclick="confirmClear()" id="resetBtn">🗑 Clear All</button>
+</div>
+
+<div class="page">
+
+<!-- QUICK ENTRY -->
+<div class="sec-hd" id="secQuickEntry">Quick Add Item</div>
+<div class="quick-entry">
+  <div class="qe-row">
+    <div class="qe-name">
+      <div class="qe-label" id="labelName">Item Name (optional)</div>
+      <input class="qe-input" id="qeName" placeholder="e.g. Rice, Biscuits, Soap..." type="text">
+    </div>
+    <div class="qe-price">
+      <div class="qe-label" id="labelPrice">Price ₹</div>
+      <input class="qe-input" id="qePrice" placeholder="0" type="number" min="0" step="0.01">
+    </div>
+    <div class="qe-qty">
+      <div class="qe-label" id="labelQty">Qty</div>
+      <input class="qe-input" id="qeQty" placeholder="1" type="number" min="1" value="1">
+    </div>
+  </div>
+  <div class="qe-gst-row">
+    <span class="qe-gst-label" id="gstLabel">GST:</span>
+    <span class="gst-chip active" data-rate="0" onclick="selectGst(this)">0% — Fresh / Staples</span>
+    <span class="gst-chip" data-rate="5" onclick="selectGst(this)">5% — Packaged Food</span>
+    <span class="gst-chip" data-rate="12" onclick="selectGst(this)">12% — Processed</span>
+    <span class="gst-chip" data-rate="18" onclick="selectGst(this)">18% — Personal Care</span>
+  </div>
+  <button class="qe-add-btn" onclick="addItem()" id="addBtn">+ Add to Bill</button>
+  <div class="qe-hint" id="qeHint">💡 Tip: Type "rice 60 2" in the name field and press Add — it auto-parses name, price and quantity.</div>
+</div>
+
+<!-- CATEGORY QUICK-ADD -->
+<div class="sec-hd" id="secCategories">Browse by Category</div>
+<div class="cat-grid" id="catGrid">
+  <!-- rendered by JS -->
+</div>
+<div class="cat-picker" id="catPicker">
+  <div class="cat-picker-hd">
+    <div class="cat-picker-title" id="catPickerTitle">Select items</div>
+    <button class="cat-picker-close" onclick="closePicker()">✕</button>
+  </div>
+  <div class="cat-items" id="catItemsList"></div>
+</div>
+
+<!-- CART -->
+<div class="sec-hd" id="secCart">Your Bill</div>
+<div id="cartContainer">
+  <div class="cart-empty" id="cartEmpty">
+    <div class="cart-empty-icon">🛒</div>
+    <div class="cart-empty-text" id="cartEmptyText">Your cart is empty.<br>Add items above to start calculating your bill.</div>
+  </div>
+</div>
+
+<!-- BILL BREAKDOWN -->
+<div class="bill-breakdown" id="billBreakdown" style="display:none;">
+  <div class="bb-row"><span class="bb-label" id="bbSubtotal">Subtotal (before tax)</span><span class="bb-val">₹<span id="bbSubAmt">0.00</span></span></div>
+  <div id="bbGstRows"></div>
+  <div class="bb-row total"><span id="bbTotalLabel">Total Payable</span><span class="bb-val">₹<span id="bbTotalAmt">0.00</span></span></div>
+</div>
+
+<div class="action-row" id="actionRow" style="display:none;">
+  <button class="action-btn btn-share" onclick="shareBill()" id="shareBtn">📲 Share Bill</button>
+  <button class="action-btn btn-clear" onclick="confirmClear()" id="clearBtn">🗑 Clear Cart</button>
+</div>
+
+<!-- SMART SHOPPER TIPS -->
+<div class="sec-hd" id="secTips">Smart Shopper Tips</div>
+<div class="tips-section" id="tipsContainer">
+  <!-- rendered by JS -->
+</div>
+
+</div><!-- /page -->
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/rights-hub.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">Rights</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/ask.html"><span class="bn-icon">💬</span><span class="bn-lbl">Ask AI</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/calculators.html"><span class="bn-icon">🧮</span><span class="bn-lbl active">Calculators</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/helplines.html"><span class="bn-icon">📞</span><span class="bn-lbl">Helplines</span></a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// LANGUAGE DATA
+// ══════════════════════════════════════════════════════════════
+const UI = {
+  en: {
+    navBrand:'🛒 Grocery Bill Calculator',
+    totalLabel:'Total Bill',
+    resetBtn:'🗑 Clear All',
+    secQuickEntry:'Quick Add Item',
+    labelName:'Item Name (optional)',
+    labelPrice:'Price ₹',
+    labelQty:'Qty',
+    gstLabel:'GST:',
+    gstChips:['0% — Fresh / Staples','5% — Packaged Food','12% — Processed','18% — Personal Care'],
+    addBtn:'+ Add to Bill',
+    qeHint:'💡 Tip: Type "rice 60 2" in the name field and press Add — it auto-parses name, price and quantity.',
+    secCategories:'Browse by Category',
+    secCart:'Your Bill',
+    cartEmptyText:'Your cart is empty.\nAdd items above to start calculating your bill.',
+    secTips:'Smart Shopper Tips',
+    bbSubtotal:'Subtotal (before tax)',
+    bbTotalLabel:'Total Payable',
+    shareBtn:'📲 Share Bill',
+    clearBtn:'🗑 Clear Cart',
+    itemsCount: n => n === 1 ? '1 item' : `${n} items`,
+    itemAdded:'✓ Item added',
+    cleared:'Cart cleared',
+    confirmClear:'Clear all items from cart?',
+    catPickerTitle: name => `Add from ${name}`,
+    shareHeader:'🛒 *My Grocery Bill*\n_Calculated via LawSticker AI_\n\n',
+    shareFooter:'\n\n🧮 Calculate yours: lawsticker-ai.com/grocery-calc.html',
+    enterPrice:'Enter price first',
+  },
+  te: {
+    navBrand:'🛒 కిరాణా బిల్లు కాలిక్యులేటర్',
+    totalLabel:'మొత్తం బిల్లు',
+    resetBtn:'🗑 అన్నీ తొలగించు',
+    secQuickEntry:'వస్తువు త్వరగా జోడించు',
+    labelName:'వస్తువు పేరు (ఐచ్ఛికం)',
+    labelPrice:'ధర ₹',
+    labelQty:'పరిమాణం',
+    gstLabel:'GST:',
+    gstChips:['0% — తాజా / స్టేపుల్స్','5% — ప్యాకేజ్డ్ ఆహారం','12% — ప్రాసెస్డ్','18% — వ్యక్తిగత సంరక్షణ'],
+    addBtn:'+ బిల్లుకు జోడించు',
+    qeHint:'💡 సూచన: పేరు ఫీల్డ్‌లో "బియ్యం 60 2" అని టైప్ చేసి జోడించు నొక్కండి — పేరు, ధర, పరిమాణం స్వయంచాలకంగా గుర్తిస్తుంది.',
+    secCategories:'వర్గం వారీగా బ్రౌజ్ చేయండి',
+    secCart:'మీ బిల్లు',
+    cartEmptyText:'మీ కార్ట్ ఖాళీగా ఉంది.\nమీ బిల్లు లెక్కించడానికి పై నుండి వస్తువులు జోడించండి.',
+    secTips:'స్మార్ట్ షాపర్ చిట్కాలు',
+    bbSubtotal:'ఉప మొత్తం (పన్ను ముందు)',
+    bbTotalLabel:'చెల్లించాల్సిన మొత్తం',
+    shareBtn:'📲 బిల్లు షేర్ చేయండి',
+    clearBtn:'🗑 కార్ట్ క్లియర్ చేయి',
+    itemsCount: n => n === 1 ? '1 వస్తువు' : `${n} వస్తువులు`,
+    itemAdded:'✓ వస్తువు జోడించబడింది',
+    cleared:'కార్ట్ క్లియర్ అయింది',
+    confirmClear:'కార్ట్‌లోని అన్ని వస్తువులు తొలగించాలా?',
+    catPickerTitle: name => `${name} నుండి జోడించు`,
+    shareHeader:'🛒 *నా కిరాణా బిల్లు*\n_LawSticker AI ద్వారా లెక్కించబడింది_\n\n',
+    shareFooter:'\n\n🧮 మీది లెక్కించండి: lawsticker-ai.com/grocery-calc.html',
+    enterPrice:'ముందుగా ధర నమోదు చేయండి',
+  },
+  hi: {
+    navBrand:'🛒 किराना बिल कैलकुलेटर',
+    totalLabel:'कुल बिल',
+    resetBtn:'🗑 सब हटाएं',
+    secQuickEntry:'आइटम जल्दी जोड़ें',
+    labelName:'आइटम का नाम (वैकल्पिक)',
+    labelPrice:'मूल्य ₹',
+    labelQty:'मात्रा',
+    gstLabel:'GST:',
+    gstChips:['0% — ताजा / मुख्य खाद्य','5% — पैकेज्ड भोजन','12% — प्रसंस्कृत','18% — व्यक्तिगत देखभाल'],
+    addBtn:'+ बिल में जोड़ें',
+    qeHint:'💡 सुझाव: नाम फ़ील्ड में "चावल 60 2" टाइप करें और जोड़ें दबाएं — नाम, मूल्य और मात्रा अपने आप पहचान लेगा।',
+    secCategories:'श्रेणी के अनुसार ब्राउज़ करें',
+    secCart:'आपका बिल',
+    cartEmptyText:'आपका कार्ट खाली है।\nबिल की गणना शुरू करने के लिए ऊपर से आइटम जोड़ें।',
+    secTips:'स्मार्ट शॉपर टिप्स',
+    bbSubtotal:'उप-कुल (कर से पहले)',
+    bbTotalLabel:'कुल देय राशि',
+    shareBtn:'📲 बिल शेयर करें',
+    clearBtn:'🗑 कार्ट साफ़ करें',
+    itemsCount: n => n === 1 ? '1 आइटम' : `${n} आइटम`,
+    itemAdded:'✓ आइटम जोड़ा गया',
+    cleared:'कार्ट साफ़ हो गया',
+    confirmClear:'कार्ट के सभी आइटम हटाएं?',
+    catPickerTitle: name => `${name} से जोड़ें`,
+    shareHeader:'🛒 *मेरा किराना बिल*\n_LawSticker AI से गणना_\n\n',
+    shareFooter:'\n\n🧮 अपना बिल बनाएं: lawsticker-ai.com/grocery-calc.html',
+    enterPrice:'पहले मूल्य दर्ज करें',
+  },
+};
+
+// ══════════════════════════════════════════════════════════════
+// CATEGORY DATA
+// ══════════════════════════════════════════════════════════════
+const CATEGORIES = [
+  { id:'staples', icon:'🌾',
+    name:{en:'Staples',te:'ముఖ్య ఆహారం',hi:'मुख्य खाद्य'},
+    items:[
+      {name:{en:'Rice (1kg)',te:'బియ్యం (1kg)',hi:'चावल (1kg)'},gst:0},
+      {name:{en:'Wheat / Atta (1kg)',te:'గోధుమ / అట్ట (1kg)',hi:'गेहूं/आटा (1kg)'},gst:0},
+      {name:{en:'Dal / Lentils (1kg)',te:'పప్పు (1kg)',hi:'दाल (1kg)'},gst:0},
+      {name:{en:'Sugar (1kg)',te:'చక్కర (1kg)',hi:'चीनी (1kg)'},gst:0},
+      {name:{en:'Salt (1kg)',te:'ఉప్పు (1kg)',hi:'नमक (1kg)'},gst:0},
+      {name:{en:'Poha / Flattened Rice',te:'పోహా',hi:'पोहा'},gst:0},
+    ]},
+  { id:'dairy', icon:'🥛',
+    name:{en:'Dairy',te:'పాల ఉత్పత్తులు',hi:'डेयरी'},
+    items:[
+      {name:{en:'Milk (1L)',te:'పాలు (1L)',hi:'दूध (1L)'},gst:0},
+      {name:{en:'Curd / Yogurt (500g)',te:'పెరుగు (500g)',hi:'दही (500g)'},gst:0},
+      {name:{en:'Butter (100g)',te:'వెన్న (100g)',hi:'मक्खन (100g)'},gst:12},
+      {name:{en:'Paneer (200g)',te:'పనీర్ (200g)',hi:'पनीर (200g)'},gst:5},
+      {name:{en:'Cheese (200g)',te:'చీజ్ (200g)',hi:'पनीर/चीज़ (200g)'},gst:12},
+      {name:{en:'Ghee (500g)',te:'నేయి (500g)',hi:'घी (500g)'},gst:12},
+    ]},
+  { id:'vegetables', icon:'🥬',
+    name:{en:'Vegetables',te:'కూరగాయలు',hi:'सब्जियाँ'},
+    items:[
+      {name:{en:'Onions (1kg)',te:'ఉల్లిపాయలు (1kg)',hi:'प्याज (1kg)'},gst:0},
+      {name:{en:'Tomatoes (1kg)',te:'టమాటాలు (1kg)',hi:'टमाटर (1kg)'},gst:0},
+      {name:{en:'Potatoes (1kg)',te:'బంగాళదుంపలు (1kg)',hi:'आलू (1kg)'},gst:0},
+      {name:{en:'Leafy Vegetables',te:'ఆకు కూరలు',hi:'हरी सब्जियाँ'},gst:0},
+      {name:{en:'Other Vegetables',te:'ఇతర కూరగాయలు',hi:'अन्य सब्जियाँ'},gst:0},
+    ]},
+  { id:'fruits', icon:'🍎',
+    name:{en:'Fruits',te:'పండ్లు',hi:'फल'},
+    items:[
+      {name:{en:'Bananas (dozen)',te:'అరటిపండ్లు (డజను)',hi:'केले (दर्जन)'},gst:0},
+      {name:{en:'Apples (1kg)',te:'యాపిల్స్ (1kg)',hi:'सेब (1kg)'},gst:0},
+      {name:{en:'Seasonal Fruits',te:'సీజనల్ పండ్లు',hi:'मौसमी फल'},gst:0},
+    ]},
+  { id:'oil', icon:'🫙',
+    name:{en:'Oil & Masala',te:'నూనె & మసాలా',hi:'तेल & मसाला'},
+    items:[
+      {name:{en:'Cooking Oil (1L)',te:'వంట నూనె (1L)',hi:'खाना पकाने का तेल (1L)'},gst:5},
+      {name:{en:'Turmeric (100g)',te:'పసుపు (100g)',hi:'हल्दी (100g)'},gst:0},
+      {name:{en:'Chilli Powder (100g)',te:'మిర్చి పొడి (100g)',hi:'मिर्च पाउडर (100g)'},gst:0},
+      {name:{en:'Garam Masala (100g)',te:'గరం మసాలా (100g)',hi:'गरम मसाला (100g)'},gst:0},
+      {name:{en:'Coriander Powder (100g)',te:'ధనియాల పొడి (100g)',hi:'धनिया पाउडर (100g)'},gst:0},
+    ]},
+  { id:'snacks', icon:'🍪',
+    name:{en:'Snacks',te:'స్నాక్స్',hi:'स्नैक्स'},
+    items:[
+      {name:{en:'Biscuits (pack)',te:'బిస్కట్లు (ప్యాక్)',hi:'बिस्कुट (पैक)'},gst:18},
+      {name:{en:'Chips (pack)',te:'చిప్స్ (ప్యాక్)',hi:'चिप्स (पैक)'},gst:18},
+      {name:{en:'Namkeen (200g)',te:'నమ్కీన్ (200g)',hi:'नमकीन (200g)'},gst:12},
+      {name:{en:'Popcorn (pack)',te:'పాప్‌కార్న్ (ప్యాక్)',hi:'पॉपकॉर्न (पैक)'},gst:12},
+    ]},
+  { id:'beverages', icon:'🥤',
+    name:{en:'Beverages',te:'పానీయాలు',hi:'पेय पदार्थ'},
+    items:[
+      {name:{en:'Tea (250g)',te:'టీ (250g)',hi:'चाय (250g)'},gst:5},
+      {name:{en:'Coffee (100g)',te:'కాఫీ (100g)',hi:'कॉफी (100g)'},gst:5},
+      {name:{en:'Cold Drink (bottle)',te:'కోల్డ్ డ్రింక్ (బాటిల్)',hi:'कोल्ड ड्रिंक (बोतल)'},gst:12},
+      {name:{en:'Juice (1L)',te:'జ్యూస్ (1L)',hi:'जूस (1L)'},gst:12},
+      {name:{en:'Water Bottle (1L)',te:'నీటి బాటిల్ (1L)',hi:'पानी की बोतल (1L)'},gst:18},
+    ]},
+  { id:'personal', icon:'🧴',
+    name:{en:'Personal Care',te:'వ్యక్తిగత సంరక్షణ',hi:'व्यक्तिगत देखभाल'},
+    items:[
+      {name:{en:'Soap (bar)',te:'సబ్బు (బార్)',hi:'साबुन (बार)'},gst:18},
+      {name:{en:'Shampoo (bottle)',te:'షాంపూ (బాటిల్)',hi:'शैंपू (बोतल)'},gst:18},
+      {name:{en:'Toothpaste (tube)',te:'టూత్‌పేస్ట్ (ట్యూబ్)',hi:'टूथपेस्ट (ट्यूब)'},gst:18},
+      {name:{en:'Sanitary Pads (pack)',te:'శానిటరీ ప్యాడ్లు (ప్యాక్)',hi:'सैनिटरी पैड (पैक)'},gst:0},
+      {name:{en:'Razor (pack)',te:'రేజర్ (ప్యాక్)',hi:'रेज़र (पैक)'},gst:18},
+      {name:{en:'Deodorant',te:'డియోడరెంట్',hi:'डियोडरेंट'},gst:18},
+    ]},
+  { id:'household', icon:'🧹',
+    name:{en:'Household',te:'గృహోపకరణాలు',hi:'घरेलू सामान'},
+    items:[
+      {name:{en:'Washing Powder (1kg)',te:'వాషింగ్ పౌడర్ (1kg)',hi:'वाशिंग पाउडर (1kg)'},gst:18},
+      {name:{en:'Dishwash Bar/Liquid',te:'గిన్నెల సబ్బు',hi:'बर्तन साफ करने का साबुन'},gst:18},
+      {name:{en:'Floor Cleaner (1L)',te:'ఫ్లోర్ క్లీనర్ (1L)',hi:'फ्लोर क्लीनर (1L)'},gst:18},
+      {name:{en:'Garbage Bags (pack)',te:'చెత్త సంచులు (ప్యాక్)',hi:'कचरा बैग (पैक)'},gst:18},
+      {name:{en:'Tissue Paper (pack)',te:'టిష్యూ పేపర్ (ప్యాక్)',hi:'टिश्यू पेपर (पैक)'},gst:18},
+    ]},
+  { id:'instant', icon:'🍜',
+    name:{en:'Instant & Packed',te:'ఇన్‌స్టంట్ & ప్యాక్డ్',hi:'इंस्टेंट & पैक्ड'},
+    items:[
+      {name:{en:'Instant Noodles (pack)',te:'నూడుల్స్ (ప్యాక్)',hi:'इंस्टेंट नूडल्स (पैक)'},gst:18},
+      {name:{en:'Bread (loaf)',te:'బ్రెడ్ (లోఫ్)',hi:'ब्रेड (रोटी)'},gst:0},
+      {name:{en:'Eggs (dozen)',te:'గుడ్లు (డజను)',hi:'अंडे (दर्जन)'},gst:0},
+      {name:{en:'Tomato Sauce (bottle)',te:'టొమాటో సాస్ (బాటిల్)',hi:'टमाटर सॉस (बोतल)'},gst:12},
+      {name:{en:'Pickle (jar)',te:'పచ్చడి (జార్)',hi:'अचार (जार)'},gst:5},
+    ]},
+  { id:'baby', icon:'👶',
+    name:{en:'Baby & Kids',te:'శిశువు & పిల్లలు',hi:'बच्चे'},
+    items:[
+      {name:{en:'Baby Soap / Wash',te:'బేబీ సోప్ / వాష్',hi:'बेबी सोप/वॉश'},gst:0},
+      {name:{en:'Diapers (pack)',te:'డయపర్లు (ప్యాక్)',hi:'डायपर (पैक)'},gst:12},
+      {name:{en:'Baby Powder',te:'బేబీ పౌడర్',hi:'बेबी पाउडर'},gst:18},
+      {name:{en:'Baby Food (jar)',te:'బేబీ ఫుడ్ (జార్)',hi:'बेबी फूड (जार)'},gst:5},
+    ]},
+  { id:'other', icon:'➕',
+    name:{en:'Other / Custom',te:'ఇతరాలు / కస్టమ్',hi:'अन्य / कस्टम'},
+    items:[
+      {name:{en:'Custom Item',te:'కస్టమ్ వస్తువు',hi:'कस्टम आइटम'},gst:0},
+    ]},
+];
+
+// ══════════════════════════════════════════════════════════════
+// TIPS DATA
+// ══════════════════════════════════════════════════════════════
+const TIPS = [
+  { icon:'⚖️',
+    title:{en:'MRP is the Maximum — Shops Cannot Charge More',te:'MRP గరిష్ట ధర — దుకాణాలు ఎక్కువ వసూలు చేయలేవు',hi:'MRP अधिकतम है — दुकानें ज़्यादा नहीं ले सकतीं'},
+    subtitle:{en:'Your Legal Right · Legal Metrology Act',te:'మీ చట్టపరమైన హక్కు · లీగల్ మెట్రాలజీ చట్టం',hi:'आपका कानूनी अधिकार · विधिक माप विज्ञान अधिनियम'},
+    body:{en:'The Maximum Retail Price (MRP) printed on any product is the <strong>maximum price including all taxes</strong>. No retailer can charge above MRP — even during festivals, weddings or peak demand. If charged above MRP — you can file a consumer complaint immediately.',
+          te:'ఏ ఉత్పత్తిపై ముద్రించిన గరిష్ట వెచ్చాలు ధర (MRP) అన్ని పన్నులతో సహా <strong>గరిష్ట ధర</strong>. పండుగల సమయంలో కూడా ఏ రిటైలర్ MRP కంటే ఎక్కువ వసూలు చేయలేరు.',
+          hi:'किसी भी उत्पाद पर छपी MRP (अधिकतम खुदरा मूल्य) सभी करों सहित <strong>अधिकतम मूल्य</strong> है। कोई भी दुकानदार MRP से ज़्यादा नहीं ले सकता — त्योहारों में भी नहीं।'},
+    law:{en:'Legal Metrology Act 2009; Legal Metrology (Packaged Commodities) Rules 2011 — overcharging above MRP is a punishable offence; Consumer Protection Act 2019',
+         te:'లీగల్ మెట్రాలజీ చట్టం 2009; వినియోగదారు రక్షణ చట్టం 2019 — MRP కంటే ఎక్కువ వసూలు చేయడం శిక్షార్హ నేరం',
+         hi:'विधिक माप विज्ञान अधिनियम 2009; उपभोक्ता संरक्षण अधिनियम 2019 — MRP से अधिक वसूली दंडनीय अपराध'},
+    save:{en:'💡 Stores can sell BELOW MRP. If you see the same item cheaper in another store — they are both within the law.',
+          te:'💡 దుకాణాలు MRP కంటే తక్కువకు అమ్మవచ్చు. వేరే దుకాణంలో చవుకగా కనిపిస్తే — రెండూ చట్టబద్ధమే.',
+          hi:'💡 दुकानें MRP से कम पर बेच सकती हैं। दूसरी दुकान में सस्ता मिले — दोनों कानूनी हैं।'},
+  },
+  { icon:'🏷️',
+    title:{en:'GST on Groceries — Know What You Are Paying',te:'కిరాణాలపై GST — మీరు ఏమి చెల్లిస్తున్నారో తెలుసుకోండి',hi:'किराने पर GST — जानें आप क्या दे रहे हैं'},
+    subtitle:{en:'Save Money by Choosing Loose Over Branded',te:'లూజ్ vs బ్రాండెడ్ — పన్ను వ్యత్యాసం తెలుసుకోండి',hi:'ब्रांडेड vs ढीला — टैक्स का फर्क जानें'},
+    body:{en:'<strong>0% GST:</strong> Fresh vegetables, fruits, unbranded/loose staples (rice, wheat, dal), eggs, bread, milk, curd.<br><strong>5% GST:</strong> Packaged branded food items — packaged dal, rice, oil, tea, coffee.<br><strong>12% GST:</strong> Processed food — butter, cheese, ghee, pickles, sauces, namkeen.<br><strong>18% GST:</strong> Personal care products, household cleaners, biscuits, chips, shampoo, soap.',
+          te:'<strong>0% GST:</strong> తాజా కూరగాయలు, పండ్లు, బ్రాండ్ లేని/లూజ్ స్టేపుల్స్, గుడ్లు, రొట్టె, పాలు.<br><strong>5% GST:</strong> ప్యాకేజ్డ్ బ్రాండెడ్ ఆహారం — ప్యాకేజ్డ్ పప్పు, బియ్యం, నూనె, టీ.<br><strong>12% GST:</strong> ప్రాసెస్డ్ ఆహారం — వెన్న, చీజ్, నేయి, పచ్చడి.<br><strong>18% GST:</strong> వ్యక్తిగత సంరక్షణ, గృహ క్లీనర్లు, బిస్కట్లు.',
+          hi:'<strong>0% GST:</strong> ताजी सब्जियां, फल, अनब्रांडेड/ढीले स्टेपल, अंडे, रोटी, दूध, दही।<br><strong>5% GST:</strong> पैकेज्ड ब्रांडेड खाद्य — पैकेज्ड दाल, चावल, तेल, चाय।<br><strong>12% GST:</strong> प्रसंस्कृत खाद्य — मक्खन, घी, अचार, सॉस।<br><strong>18% GST:</strong> व्यक्तिगत देखभाल, घरेलू क्लीनर, बिस्कुट, चिप्स।'},
+    save:{en:'💰 Buy loose rice, dal, wheat — 0% GST vs 5% on branded packaged. On ₹2,000 monthly staples — that is ₹100 saved every month.',
+          te:'💰 లూజ్ బియ్యం, పప్పు, గోధుమ కొనండి — 0% GST vs బ్రాండెడ్ ప్యాకేజ్డ్‌కు 5%. నెలకు ₹2,000 స్టేపుల్స్‌పై ₹100 ఆదా.',
+          hi:'💰 ढीला चावल, दाल, गेहूं खरीदें — 0% GST बनाम ब्रांडेड पर 5%। ₹2,000 मासिक स्टेपल पर ₹100 की बचत।'},
+  },
+  { icon:'⚖️',
+    title:{en:'Weighment is Your Right — Demand It',te:'తూకం మీ హక్కు — డిమాండ్ చేయండి',hi:'तौल आपका अधिकार है — मांगें'},
+    subtitle:{en:'Loose items must be weighed in front of you',te:'లూజ్ వస్తువులు మీ ముందే తూకం వేయాలి',hi:'ढीले सामान आपके सामने तौले जाएं'},
+    body:{en:'For any loose items (vegetables, grains, dry fruits) — you have the right to see the weighment done. The weighing scale must be <strong>certified and stamped by Legal Metrology Department</strong>. Uncertified scales are illegal. You can demand a weighment slip for any purchase above ₹50.',
+          te:'ఏ లూజ్ వస్తువులకైనా (కూరగాయలు, ధాన్యాలు, డ్రై ఫ్రూట్స్) — తూకం మీ ముందే చేయడం మీ హక్కు. తూకం యంత్రం <strong>లీగల్ మెట్రాలజీ విభాగం ధృవీకరించినది</strong> అయి ఉండాలి.',
+          hi:'किसी भी ढीले सामान (सब्जियां, अनाज, ड्राई फ्रूट्स) के लिए — तौल आपके सामने होना आपका अधिकार है। तौल मशीन <strong>विधिक माप विज्ञान विभाग द्वारा प्रमाणित</strong> होनी चाहिए।'},
+    law:{en:'Legal Metrology Act 2009; Legal Metrology (Weights and Measures) Rules — uncertified weighing instruments are illegal; Consumer Protection Act 2019',
+         te:'లీగల్ మెట్రాలజీ చట్టం 2009; వినియోగదారు రక్షణ చట్టం 2019 — అసత్య తూకం నేరం',
+         hi:'विधिक माप विज्ञान अधिनियम 2009; उपभोक्ता संरक्षण अधिनियम 2019 — गलत तौल अपराध'},
+    save:{en:'💰 Short-weighment of 5% on ₹500 weekly vegetables = ₹1,300 loss per year. Always watch the scale.',
+          te:'💰 వారానికి ₹500 కూరగాయల్లో 5% తక్కువ తూకం = సంవత్సరానికి ₹1,300 నష్టం. ఎల్లప్పుడూ తూకం చూడండి.',
+          hi:'💰 ₹500 साप्ताहिक सब्जियों में 5% कम तौल = साल में ₹1,300 का नुकसान। हमेशा तराजू देखें।'},
+  },
+  { icon:'📅',
+    title:{en:'Best Before vs Expiry Date — Know the Difference',te:'బెస్ట్ బిఫోర్ vs ఎక్స్‌పైరీ తేదీ — వ్యత్యాసం తెలుసుకోండి',hi:'बेस्ट बिफोर बनाम एक्सपायरी — फर्क जानें'},
+    subtitle:{en:'Don\'t throw away safe food — don\'t buy expired',te:'సురక్షితమైన ఆహారం వృధా చేయకండి',hi:'सुरक्षित भोजन बर्बाद न करें'},
+    body:{en:'<strong>Best Before Date</strong> — the product is at its best quality before this date. It is still <strong>safe to consume after this date</strong> in most cases (biscuits, rice, pasta, canned goods). Quality may decline but it is not dangerous.<br><strong>Use By / Expiry Date</strong> — this is the safety deadline. Do NOT consume after this date — medicines, dairy, meat, baby food.',
+          te:'<strong>బెస్ట్ బిఫోర్ తేదీ</strong> — ఉత్పత్తి ఈ తేదీ వరకు గొప్ప నాణ్యతలో ఉంటుంది. ఎక్కువ సందర్భాలలో తర్వాత కూడా <strong>తినడానికి సురక్షితం</strong> (బిస్కట్లు, బియ్యం, కాన్డ్ వస్తువులు).<br><strong>ఎక్స్‌పైరీ తేదీ</strong> — ఇది భద్రతా గడువు. ఈ తేదీ తర్వాత వాడకండి — మందులు, పాల ఉత్పత్తులు, మాంసం.',
+          hi:'<strong>बेस्ट बिफोर डेट</strong> — उत्पाद इस तारीख तक सर्वोत्तम गुणवत्ता में होता है। ज्यादातर मामलों में इसके बाद भी <strong>सेवन करना सुरक्षित</strong> है (बिस्कुट, चावल, डिब्बाबंद)।<br><strong>यूज़ बाय/एक्सपायरी डेट</strong> — यह सुरक्षा समय सीमा है। इसके बाद सेवन न करें — दवाएं, डेयरी, मांस।'},
+    save:{en:'💰 Products near Best Before date are often discounted by stores. You can legally ask for a discount — and it is safe.',
+          te:'💰 బెస్ట్ బిఫోర్ తేదీ దగ్గర ఉన్న ఉత్పత్తులు తరచుగా దుకాణాల్లో తగ్గింపులో ఉంటాయి. డిస్కౌంట్ అడగడం చట్టబద్ధం — మరియు సురక్షితం.',
+          hi:'💰 बेस्ट बिफोर के करीब उत्पाद अक्सर दुकानों में छूट पर मिलते हैं। छूट मांगना कानूनी है — और सुरक्षित भी।'},
+  },
+  { icon:'🧮',
+    title:{en:'Offers & Bundle Deals — Calculate Per Unit Cost',te:'ఆఫర్లు & బండిల్ డీల్స్ — యూనిట్ వ్యాపారం లెక్కించండి',hi:'ऑफर और बंडल डील — प्रति यूनिट लागत जानें'},
+    subtitle:{en:'Buy 2 get 1 free is not always cheapest',te:'2 కొనితే 1 ఉచితం ఎల్లప్పుడూ చవుక కాదు',hi:'2 खरीदो 1 मुफ्त हमेशा सस्ता नहीं'},
+    body:{en:'<strong>"Buy 2 Get 1 Free"</strong> is often priced higher than the regular unit price. Always calculate: Total amount paid ÷ Total units received = <strong>Effective price per unit</strong>. Compare this against the regular price of one unit. Sometimes the regular smaller pack is cheaper per gram/ml.',
+          te:'<strong>"2 కొనితే 1 ఉచితం"</strong> తరచుగా సాధారణ యూనిట్ ధర కంటే ఎక్కువగా ధర పెట్టబడి ఉంటుంది. ఎల్లప్పుడూ లెక్కించండి: చెల్లించిన మొత్తం ÷ అందిన మొత్తు = <strong>ప్రభావవంతమైన యూనిట్ ధర</strong>.',
+          hi:'<strong>"2 खरीदो 1 मुफ्त"</strong> अक्सर नियमित इकाई मूल्य से अधिक पर कीमत लगाई जाती है। हमेशा गणना करें: कुल भुगतान ÷ कुल इकाइयां = <strong>प्रभावी प्रति इकाई मूल्य</strong>।'},
+    save:{en:'💰 A 500g pack at ₹100 = ₹20/100g. A "Buy 2 get 1" where each 200g pack is ₹45 = ₹22.50/100g. The bigger single pack is cheaper.',
+          te:'💰 ₹100కి 500g ప్యాక్ = ₹20/100g. "2 కొనితే 1" లో ప్రతి 200g ₹45 = ₹22.50/100g. పెద్ద ప్యాక్ చవుక.',
+          hi:'💰 ₹100 में 500g = ₹20/100g। "2 खरीदो 1" में 200g ₹45 = ₹22.50/100g। बड़ा पैक सस्ता।'},
+  },
+  { icon:'🏷️',
+    title:{en:'FSSAI Label is Mandatory — Check Before Buying',te:'FSSAI లేబుల్ తప్పనిసరి — కొనే ముందు తనిఖీ చేయండి',hi:'FSSAI लेबल अनिवार्य है — खरीदने से पहले जांचें'},
+    subtitle:{en:'No FSSAI label = unsafe product',te:'FSSAI లేబుల్ లేకపోతే = అసురక్షిత ఉత్పత్తి',hi:'FSSAI लेबल नहीं = असुरक्षित उत्पाद'},
+    body:{en:'Every packaged food product sold in India must have an <strong>FSSAI licence number</strong> on the label. No FSSAI number = the product is unregistered and potentially unsafe. Also check: ingredients list (must be in descending order of weight), nutritional information, country of manufacture. File complaint at fssai.gov.in if you find products without FSSAI.',
+          te:'భారతదేశంలో అమ్మే ప్రతి ప్యాకేజ్డ్ ఆహార ఉత్పత్తిలో <strong>FSSAI లైసెన్స్ నంబర్</strong> ఉండాలి. FSSAI నంబర్ లేకపోతే = ఉత్పత్తి నమోదు కాలేదు మరియు సంభావ్యంగా అసురక్షితం.',
+          hi:'भारत में बेचे जाने वाले हर पैकेज्ड खाद्य उत्पाद पर <strong>FSSAI लाइसेंस नंबर</strong> होना अनिवार्य है। FSSAI नंबर नहीं = उत्पाद अपंजीकृत और संभावित रूप से असुरक्षित।'},
+    law:{en:'Food Safety and Standards Act 2006; FSSAI (Labelling and Display) Regulations 2020 — mandatory labelling; Consumer Protection Act 2019',
+         te:'ఫుడ్ సేఫ్టీ అండ్ స్టాండర్డ్స్ చట్టం 2006; FSSAI తప్పనిసరి లేబులింగ్ నిబంధనలు 2020',
+         hi:'खाद्य सुरक्षा और मानक अधिनियम 2006; FSSAI अनिवार्य लेबलिंग विनियम 2020'},
+    save:{en:'💰 Unlabelled loose snacks are often cheaper but may lack hygiene standards. Verified FSSAI-labelled products are worth the small premium for safety.',
+          te:'💰 లేబుల్ లేని లూజ్ స్నాక్స్ చవుకగా ఉంటాయి కానీ పరిశుభ్రత ప్రమాణాలు లేకపోవచ్చు.',
+          hi:'💰 अनलेबल्ड ढीले स्नैक्स सस्ते होते हैं लेकिन स्वच्छता मानकों की कमी हो सकती है।'},
+  },
+  { icon:'📲',
+    title:{en:'Compare Online vs Offline Prices Before Shopping',te:'షాపింగ్ ముందు ఆన్‌లైన్ vs ఆఫ్‌లైన్ ధరలు పోల్చండి',hi:'खरीदारी से पहले ऑनलाइन vs ऑफलाइन कीमतें तुलना करें'},
+    subtitle:{en:'Same product, different prices — know before you go',te:'ఒకే ఉత్పత్తి, వేర్వేరు ధరలు',hi:'एक ही उत्पाद, अलग-अलग कीमतें'},
+    body:{en:'Online grocery delivery platforms sometimes price the same product differently from physical stores — sometimes higher, sometimes lower. Check the online app price for staples and branded items before you go to a physical store. For bulk purchases especially — a 5-10% price difference is significant.',
+          te:'ఆన్‌లైన్ కిరాణా డెలివరీ ప్లాట్‌ఫారమ్‌లు కొన్నిసార్లు ఫిజికల్ స్టోర్ల కంటే వేర్వేరుగా ధర పెడతాయి. స్టేపుల్స్ మరియు బ్రాండెడ్ వస్తువుల ఆన్‌లైన్ ధరలు ముందు తనిఖీ చేయండి.',
+          hi:'ऑनलाइन किराना डिलीवरी प्लेटफॉर्म कभी-कभी भौतिक स्टोर से अलग कीमत पर बेचते हैं। स्टेपल और ब्रांडेड आइटम के लिए जाने से पहले ऑनलाइन कीमत जांचें।'},
+    save:{en:'💰 A price difference of ₹10 on 10 items = ₹100 saved per visit. With delivery charges factored in, physical store often wins for fresh produce.',
+          te:'💰 10 వస్తువులపై ₹10 ధర వ్యత్యాసం = ప్రతి సందర్శనకు ₹100 ఆదా.',
+          hi:'💰 10 आइटम पर ₹10 का फर्क = हर विजिट पर ₹100 की बचत।'},
+  },
+  { icon:'🛒',
+    title:{en:'Consumer Rights If Billing Goes Wrong',te:'బిల్లింగ్ తప్పు అయితే వినియోగదారు హక్కులు',hi:'बिलिंग में गड़बड़ी पर उपभोक్ता అధికారులు'},
+    subtitle:{en:'Overcharged at billing counter? You have rights.',te:'బిల్లింగ్ కౌంటర్‌లో ఎక్కువ వసూలు చేస్తే? మీకు హక్కులు ఉన్నాయి.',hi:'बिलिंग काउंटर पर ज़्यादा वसूली? आपके अधिकार हैं।'},
+    body:{en:'If you are overcharged at any grocery store: <strong>1.</strong> Demand an itemised receipt — it is your right. <strong>2.</strong> If charged above MRP on any item — you do not have to pay the excess. <strong>3.</strong> If the store refuses to correct the bill — note the store name, address, item, MRP and amount charged. <strong>4.</strong> File a consumer complaint at consumerhelpline.gov.in or call 1800-11-4000. You can claim refund + compensation.',
+          te:'ఏ కిరాణా దుకాణంలోనైనా ఎక్కువ వసూలు చేస్తే: <strong>1.</strong> వివరణాత్మక రసీదు డిమాండ్ చేయండి — మీ హక్కు. <strong>2.</strong> MRP కంటే ఎక్కువ వసూలు చేస్తే — మీరు అదనపు చెల్లించాల్సిన అవసరం లేదు. <strong>4.</strong> consumerhelpline.gov.in లో వినియోగదారు ఫిర్యాదు దాఖలు చేయండి.',
+          hi:'किसी भी किराना दुकान में ज़्यादा वसूली पर: <strong>1.</strong> मदवार रसीद मांगें — आपका अधिकार। <strong>2.</strong> MRP से ज़्यादा पर — अतिरिक्त देने की जरूरत नहीं। <strong>4.</strong> consumerhelpline.gov.in पर उपभोक्ता शिकायत दर्ज करें।'},
+    law:{en:'Consumer Protection Act 2019, Section 2(9) — unfair trade practice; Legal Metrology Act 2009; National Consumer Helpline: 1800-11-4000',
+         te:'వినియోగదారు రక్షణ చట్టం 2019, Section 2(9); లీగల్ మెట్రాలజీ చట్టం 2009; జాతీయ వినియోగదారు హెల్ప్‌లైన్: 1800-11-4000',
+         hi:'उपभोक्ता संरक्षण अधिनियम 2019, धारा 2(9); विधिक माप विज्ञान अधिनियम 2009; राष्ट्रीय उपभोक्ता हेल्पलाइन: 1800-11-4000'},
+  },
+];
+
+// ══════════════════════════════════════════════════════════════
+// CART STATE
+// ══════════════════════════════════════════════════════════════
+let cart = [];
+let selectedGst = 0;
+let currentLang = 'en';
+let currentCat = null;
+let itemIdCounter = 0;
+
+const GST_COLORS = { 0:'#059669', 5:'#0EA5E9', 12:'#D97706', 18:'#7C3AED' };
+const GST_BG = { 0:'#ECFDF5', 5:'#F0F9FF', 12:'#FFFBEB', 18:'#F5F3FF' };
+
+// ══════════════════════════════════════════════════════════════
+// LANGUAGE
+// ══════════════════════════════════════════════════════════════
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.nav-lang').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  applyLang();
+  renderCatGrid();
+  renderTips();
+  renderCart();
+}
+
+function applyLang() {
+  const L = UI[currentLang];
+  const ids = ['navBrand','totalLabel','resetBtn','secQuickEntry','labelName','labelPrice',
+    'labelQty','gstLabel','addBtn','qeHint','secCategories','secCart','cartEmptyText',
+    'secTips','bbSubtotal','bbTotalLabel','shareBtn','clearBtn'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = L[id];
+    if (typeof val === 'string') el.textContent = val;
+  });
+  // GST chips
+  const gstChips = document.querySelectorAll('.gst-chip');
+  L.gstChips.forEach((text, i) => { if (gstChips[i]) gstChips[i].textContent = text; });
+  // Items count
+  updateStickyTotal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// GST SELECTION
+// ══════════════════════════════════════════════════════════════
+function selectGst(chip) {
+  document.querySelectorAll('.gst-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  selectedGst = parseInt(chip.dataset.rate);
+}
+
+// ══════════════════════════════════════════════════════════════
+// SMART PARSE: "rice 60 2" → {name, price, qty}
+// ══════════════════════════════════════════════════════════════
+function smartParse(input) {
+  const parts = input.trim().split(/\s+/);
+  let name = '', price = 0, qty = 1;
+  const nums = parts.filter(p => !isNaN(p) && p !== '');
+  const words = parts.filter(p => isNaN(p) || p === '');
+  name = words.join(' ').trim();
+  if (nums.length >= 2) { price = parseFloat(nums[0]); qty = parseInt(nums[1]); }
+  else if (nums.length === 1) { price = parseFloat(nums[0]); }
+  return { name, price, qty };
+}
+
+// ══════════════════════════════════════════════════════════════
+// ADD ITEM
+// ══════════════════════════════════════════════════════════════
+function addItem() {
+  const nameInput = document.getElementById('qeName').value.trim();
+  let priceVal = parseFloat(document.getElementById('qePrice').value);
+  let qtyVal = parseInt(document.getElementById('qeQty').value) || 1;
+  let nameVal = nameInput;
+
+  // Smart parse if name field has numbers (shorthand mode)
+  if (nameInput && /\d/.test(nameInput)) {
+    const parsed = smartParse(nameInput);
+    if (parsed.price > 0) {
+      nameVal = parsed.name || UI[currentLang].labelName;
+      priceVal = parsed.price;
+      qtyVal = parsed.qty;
+    }
+  }
+
+  if (!priceVal || priceVal <= 0) {
+    showToast(UI[currentLang].enterPrice);
+    return;
+  }
+  if (!nameVal) nameVal = '—';
+
+  const item = {
+    id: ++itemIdCounter,
+    name: nameVal,
+    price: priceVal,
+    qty: qtyVal,
+    gst: selectedGst,
+  };
+  cart.push(item);
+  renderCart();
+  updateStickyTotal();
+  showToast(UI[currentLang].itemAdded);
+
+  // Reset inputs
+  document.getElementById('qeName').value = '';
+  document.getElementById('qePrice').value = '';
+  document.getElementById('qeQty').value = '1';
+  document.getElementById('qeName').focus();
+}
+
+// ══════════════════════════════════════════════════════════════
+// CATEGORY PICKER
+// ══════════════════════════════════════════════════════════════
+function renderCatGrid() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map(cat => `
+    <button class="cat-btn" onclick="openCat('${cat.id}')">
+      <span class="cat-btn-icon">${cat.icon}</span>
+      <span class="cat-btn-name">${cat.name[currentLang]}</span>
+    </button>`).join('');
+}
+
+function openCat(catId) {
+  currentCat = CATEGORIES.find(c => c.id === catId);
+  document.getElementById('catPickerTitle').textContent =
+    UI[currentLang].catPickerTitle(currentCat.name[currentLang]);
+  const list = document.getElementById('catItemsList');
+  list.innerHTML = currentCat.items.map((item, idx) => `
+    <div class="cat-item-row">
+      <div class="cat-item-name">${item.name[currentLang]}</div>
+      <span class="cat-item-gst">${item.gst}% GST</span>
+      <div class="cat-item-price">
+        <input type="number" placeholder="₹" min="0" step="0.01"
+          id="catprice_${idx}" onkeydown="if(event.key==='Enter')addCatItem(${idx})">
+      </div>
+      <button class="cat-item-add" onclick="addCatItem(${idx})">Add</button>
+    </div>`).join('');
+  document.getElementById('catPicker').classList.add('active');
+  document.getElementById('catPicker').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function addCatItem(idx) {
+  const item = currentCat.items[idx];
+  const priceInput = document.getElementById(`catprice_${idx}`);
+  const price = parseFloat(priceInput.value);
+  if (!price || price <= 0) {
+    priceInput.focus();
+    showToast(UI[currentLang].enterPrice);
+    return;
+  }
+  cart.push({ id: ++itemIdCounter, name: item.name[currentLang], price, qty: 1, gst: item.gst });
+  priceInput.value = '';
+  renderCart();
+  updateStickyTotal();
+  showToast(UI[currentLang].itemAdded);
+}
+
+function closePicker() {
+  document.getElementById('catPicker').classList.remove('active');
+  currentCat = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CART RENDER
+// ══════════════════════════════════════════════════════════════
+function renderCart() {
+  const container = document.getElementById('cartContainer');
+  const empty = document.getElementById('cartEmpty');
+  const breakdown = document.getElementById('billBreakdown');
+  const actionRow = document.getElementById('actionRow');
+
+  if (cart.length === 0) {
+    container.innerHTML = `<div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">🛒</div>
+      <div class="cart-empty-text" id="cartEmptyText">${UI[currentLang].cartEmptyText}</div>
+    </div>`;
+    breakdown.style.display = 'none';
+    actionRow.style.display = 'none';
+    return;
+  }
+
+  container.innerHTML = cart.map(item => {
+    const baseTotal = item.price * item.qty;
+    const gstAmt = baseTotal * item.gst / 100;
+    const total = baseTotal + gstAmt;
+    const color = GST_COLORS[item.gst] || '#6B7280';
+    const bg = GST_BG[item.gst] || '#F9FAFB';
+    return `
+    <div class="cart-item">
+      <div class="ci-color" style="background:${color}"></div>
+      <div class="ci-body">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-meta">₹${item.price.toFixed(2)} × ${item.qty}</div>
+        <div class="ci-qty-row">
+          <button class="ci-qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="ci-qty-val">${item.qty}</span>
+          <button class="ci-qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-price">₹${total.toFixed(2)}</div>
+        <span class="ci-gst-badge" style="background:${bg};color:${color}">${item.gst}% GST</span>
+        <button class="ci-del" onclick="removeItem(${item.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderBreakdown();
+  breakdown.style.display = 'block';
+  actionRow.style.display = 'grid';
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  renderCart();
+  updateStickyTotal();
+}
+
+function removeItem(id) {
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateStickyTotal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// BILL BREAKDOWN
+// ══════════════════════════════════════════════════════════════
+function renderBreakdown() {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const gstByRate = {};
+  cart.forEach(item => {
+    const base = item.price * item.qty;
+    const gst = base * item.gst / 100;
+    if (!gstByRate[item.gst]) gstByRate[item.gst] = 0;
+    gstByRate[item.gst] += gst;
+  });
+  const totalGst = Object.values(gstByRate).reduce((s, v) => s + v, 0);
+  const total = subtotal + totalGst;
+
+  document.getElementById('bbSubAmt').textContent = subtotal.toFixed(2);
+  document.getElementById('bbTotalAmt').textContent = total.toFixed(2);
+
+  const gstRows = document.getElementById('bbGstRows');
+  gstRows.innerHTML = Object.entries(gstByRate)
+    .filter(([, v]) => v > 0)
+    .sort(([a],[b]) => Number(a)-Number(b))
+    .map(([rate, amt]) => `
+      <div class="bb-gst-detail">GST ${rate}% → ₹${amt.toFixed(2)}</div>`)
+    .join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// STICKY TOTAL
+// ══════════════════════════════════════════════════════════════
+function updateStickyTotal() {
+  const total = cart.reduce((s, i) => {
+    const base = i.price * i.qty;
+    return s + base + base * i.gst / 100;
+  }, 0);
+  document.getElementById('stickyTotal').textContent = total.toFixed(2);
+  const L = UI[currentLang];
+  document.getElementById('itemsCount').textContent = L.itemsCount(cart.length);
+}
+
+// ══════════════════════════════════════════════════════════════
+// CLEAR
+// ══════════════════════════════════════════════════════════════
+function confirmClear() {
+  if (cart.length === 0) return;
+  if (confirm(UI[currentLang].confirmClear)) {
+    cart = [];
+    renderCart();
+    updateStickyTotal();
+    showToast(UI[currentLang].cleared);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// SHARE
+// ══════════════════════════════════════════════════════════════
+function shareBill() {
+  const L = UI[currentLang];
+  const lines = cart.map(i => {
+    const base = i.price * i.qty;
+    const total = base + base * i.gst / 100;
+    return `• ${i.name} × ${i.qty} — ₹${total.toFixed(2)}${i.gst > 0 ? ` (incl. ${i.gst}% GST)` : ''}`;
+  }).join('\n');
+  const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  const totalGst = cart.reduce((s,i) => s + i.price * i.qty * i.gst / 100, 0);
+  const total = subtotal + totalGst;
+  const msg = L.shareHeader + lines +
+    `\n\n─────────────────\n🧮 Total: ₹${total.toFixed(2)}` +
+    (totalGst > 0 ? `\n   (incl. GST: ₹${totalGst.toFixed(2)})` : '') +
+    L.shareFooter;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ══════════════════════════════════════════════════════════════
+// TIPS
+// ══════════════════════════════════════════════════════════════
+function renderTips() {
+  const container = document.getElementById('tipsContainer');
+  container.innerHTML = TIPS.map((tip, i) => `
+    <div class="tip-card">
+      <div class="tip-header" onclick="toggleTip(${i})">
+        <div class="tip-icon">${tip.icon}</div>
+        <div class="tip-hdr-body">
+          <div class="tip-title">${tip.title[currentLang]}</div>
+          <div class="tip-subtitle">${tip.subtitle[currentLang]}</div>
+        </div>
+        <div class="tip-chev" id="tipchev${i}">▼</div>
+      </div>
+      <div class="tip-body" id="tipbody${i}">
+        <p>${tip.body[currentLang]}</p>
+        ${tip.save ? `<div class="tip-save">${tip.save[currentLang]}</div>` : ''}
+        ${tip.law ? `<div class="tip-law"><strong>Legal basis:</strong> ${tip.law[currentLang]}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function toggleTip(i) {
+  const body = document.getElementById(`tipbody${i}`);
+  const chev = document.getElementById(`tipchev${i}`);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ENTER KEY on quick entry
+// ══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  renderCatGrid();
+  renderTips();
+  renderCart();
+
+  ['qeName','qePrice','qeQty'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); addItem(); }
+    });
+  });
+});
+</script>
+</body>
+</html>
