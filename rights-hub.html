@@ -172,6 +172,8 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;
 .cat-student .cat-name{color:#1E40AF;}
 .cat-farmer{background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-color:rgba(22,163,74,.2);}
 .cat-farmer .cat-name{color:#166534;}
+.cat-residents{background:linear-gradient(135deg,#F0F9FF,#E0F2FE);border-color:rgba(14,165,233,.25);}
+.cat-residents .cat-name{color:#0369A1;}
 
 /* RIGHTS LIST (when category selected) */
 .cat-rights-list{padding:0 14px 16px;display:none;}
@@ -1221,6 +1223,43 @@ const RIGHTS = [
     urgency:'high',
     links:[{label:'NALSA Legal Aid',url:'tel:15100'},{label:'Ask AI',url:'ask.html'}],
   },
+
+  { id:'res1', cat:'residents', icon:'💧',
+    title:'Association Cannot Cut Water/Power for Dues',
+    keywords:['apartment','association','RWA','water','power','disconnect','maintenance','dues','society','gated'],
+    summary:'No matter how much maintenance you owe — the association cannot cut water, power, lift or essential services. Water is part of right to life (Article 21). Their only legal remedy is a civil recovery suit. Self-help disconnection is criminal intimidation — call police.',
+    actions:['Record disconnection — photos, videos, witnesses.','Written notice demanding restoration in 24 hours.','Police complaint: IPC 503/506 criminal intimidation.','Civil suit for mandatory injunction — courts restore services urgently.','Settle dues dispute separately through proper channel.'],
+    law:'Article 21 Constitution — water is right to life; IPC 503, 506; multiple HC rulings against essential-service disconnection',
+    urgency:'high',
+    links:[{label:'Full Resident Guide',url:'rights-residents.html'},{label:'Police',url:'tel:100'}],
+  },
+  { id:'res2', cat:'residents', icon:'📜',
+    title:'Unregistered Association Cannot Enforce Penalties',
+    keywords:['association','registered','bylaws','society','registrar','penalty','fine','apartment','RWA','rules'],
+    summary:'An association must be registered with registered bylaws to legally levy penalties, sue members or enforce rules. Unregistered body = moral authority only. Fines not backed by registered bylaws are unenforceable. Demand registration certificate + bylaws copy.',
+    actions:['Ask in writing for registration certificate + registered bylaws.','Verify at District Registrar / Registrar of Societies.','If unregistered — their penalties and rules are unenforceable.','Push GB for registration — it protects everyone.','Coercion while unregistered → civil injunction + police as applicable.'],
+    law:'TS/AP Societies Registration Act 2001; Telangana Apartments Act 1987; Societies Registration Act 1860',
+    urgency:'med',
+    links:[{label:'Full Resident Guide',url:'rights-residents.html'},{label:'Ask AI',url:'ask.html'}],
+  },
+  { id:'res3', cat:'residents', icon:'💰',
+    title:'Maintenance Charges Need Bylaws + GB Approval',
+    keywords:['maintenance','charges','hike','apartment','association','general body','bylaws','bill','interest','levy'],
+    summary:'Maintenance rates, penalty interest and special levies must be approved by the General Body per registered bylaws — a managing committee cannot invent them. You are entitled to itemised bills, audited accounts, and to inspect GB minutes and society records.',
+    actions:['Demand GB resolution + bylaw clause for any new charge — in writing.','Demand itemised bills and audited annual accounts.','Pay undisputed portion; contest the rest in writing.','Registrar of Societies complaint for bylaw violations.','Consumer Commission — maintenance is a service; deficiency complaints succeed.'],
+    law:'Registered bylaws + GB supremacy under Societies/Apartment Acts; Consumer Protection Act 2019; IPC 406 for fund misappropriation',
+    urgency:'med',
+    links:[{label:'Full Resident Guide',url:'rights-residents.html'},{label:'e-Daakhil',url:'https://edaakhil.nic.in'}],
+  },
+  { id:'res4', cat:'residents', icon:'🚫',
+    title:'NOC Extortion & Arbitrary Fines are Not Enforceable',
+    keywords:['NOC','transfer','fee','move in','tenant','bachelor','fine','penalty','sell','flat','discrimination','pets'],
+    summary:'Your flat is your property. Association cannot demand transfer/NOC charges beyond registered bylaws, weaponise NOC over unrelated disputes, ban tenants by category (bachelors, religion, food habits), or ban pets outright (AWBI Guidelines 2015 — regulate, not ban).',
+    actions:['Ask which bylaw clause authorises the charge/fine — demand GB resolution.','Clear genuine documented dues; separate them from illegal demands.','Unjustified NOC refusal blocking sale → legal notice, then damages suit.','Discriminatory tenant embargo does not override ownership rights — proceed.','Registrar complaint for beyond-bylaws committee actions.'],
+    law:'Transfer of Property Act 1882; registered bylaws limits; AWBI Pet Guidelines 2015; Articles 14/15 principles',
+    urgency:'med',
+    links:[{label:'Full Resident Guide',url:'rights-residents.html'},{label:'Legal Aid',url:'tel:15100'}],
+  },
 ];
 
 // ══════════════════════════════════════════════════════════════════════
@@ -1270,6 +1309,10 @@ const CATS = [
   { id:'student', icon:'🎓', cls:'cat-student', page:'rights-student.html',
     name:{en:'Student Rights',te:'విద్యార్థి హక్కులు',hi:'छात्र अधिकार'},
     desc:{en:'Ragging, fee refund, exams, scholarships, admissions',te:'ర్యాగింగ్, ఫీజు రీఫండ్, పరీక్షలు, స్కాలర్‌షిప్‌లు',hi:'रैगिंग, शुल्क वापसी, परीक्षाएं, छात्रवृत्ति'},
+  },
+  { id:'residents', icon:'🏢', cls:'cat-residents', page:'rights-residents.html',
+    name:{en:'Apartment & Residents',te:'అపార్ట్‌మెంట్ & నివాసితులు',hi:'अपार्टमेंट और निवासी'},
+    desc:{en:'RWA disputes, maintenance, water cut, NOC, bylaws',te:'RWA వివాదాలు, మెయింటెనెన్స్, నీటి కట్, NOC',hi:'RWA विवाद, मेंटेनेंस, पानी कटौती, NOC'},
   },
   { id:'farmer', icon:'🌾', cls:'cat-farmer', page:'rights-farmer.html',
     name:{en:'Farmer Rights',te:'రైతు హక్కులు',hi:'किसान అधिकार'},
