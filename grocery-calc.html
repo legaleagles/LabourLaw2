@@ -198,6 +198,30 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
   letter-spacing:.5px;text-transform:uppercase;}
 .bn-lbl.active{color:rgba(201,162,39,.85);}
 
+
+/* VOICE INPUT */
+.voice-row{display:flex;gap:8px;margin-top:10px;}
+.voice-btn{flex:1;background:linear-gradient(135deg,#7C3AED,#6D28D9);color:white;
+  border:none;border-radius:12px;padding:14px;font-family:inherit;font-size:14px;
+  font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  gap:8px;transition:all .2s;}
+.voice-btn:active{transform:scale(.97);}
+.voice-btn.listening{background:linear-gradient(135deg,#DC2626,#B91C1C);
+  animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4);}50%{box-shadow:0 0 0 12px rgba(220,38,38,0);}}
+.voice-lang-sel{background:#fff;border:1.5px solid var(--border);border-radius:12px;
+  padding:0 10px;font-family:inherit;font-size:12px;font-weight:700;color:var(--ink2);
+  outline:none;cursor:pointer;}
+.voice-hint{font-size:11px;color:var(--violet);margin-top:6px;line-height:1.5;
+  font-weight:600;display:none;}
+.voice-hint.show{display:block;}
+/* RECENT ITEMS */
+.recent-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.recent-chip{font-size:11px;font-weight:700;padding:6px 12px;border-radius:16px;
+  border:1.5px solid var(--jade-border);background:var(--jade-bg);color:var(--jade-d);
+  cursor:pointer;transition:all .2s;}
+.recent-chip:active{transform:scale(.95);}
+
 /* TOAST */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
   background:var(--navy);color:var(--gold-l);padding:10px 20px;border-radius:20px;
@@ -257,6 +281,16 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
     <span class="gst-chip" data-rate="18" onclick="selectGst(this)">18% — Personal Care</span>
   </div>
   <button class="qe-add-btn" onclick="addItem()" id="addBtn">+ Add to Bill</button>
+  <div class="voice-row">
+    <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎤 <span id="voiceBtnText">Speak to Add</span></button>
+    <select class="voice-lang-sel" id="voiceLang">
+      <option value="en-IN">EN</option>
+      <option value="te-IN">తెలుగు</option>
+      <option value="hi-IN">हिन्दी</option>
+    </select>
+  </div>
+  <div class="voice-hint" id="voiceHint"></div>
+  <div class="recent-row" id="recentRow"></div>
   <div class="qe-hint" id="qeHint">💡 Tip: Type "rice 60 2" in the name field and press Add — it auto-parses name, price and quantity.</div>
 </div>
 
@@ -345,6 +379,12 @@ const UI = {
     shareHeader:'🛒 *My Grocery Bill*\n_Calculated via LawSticker AI_\n\n',
     shareFooter:'\n\n🧮 Calculate yours: lawsticker-ai.com/grocery-calc.html',
     enterPrice:'Enter price first',
+    voiceBtn:'Speak to Add',
+    voiceListening:'Listening... speak now',
+    voiceHint:'Say: "rice sixty" or "soap forty five two" (name price qty)',
+    voiceNotSupported:'Voice not supported in this browser — use Chrome',
+    voiceHeard: t => `Heard: "${t}"`,
+    voiceNoPrice:'Could not detect price — say item name then price',
   },
   te: {
     navBrand:'🛒 కిరాణా బిల్లు కాలిక్యులేటర్',
@@ -374,6 +414,12 @@ const UI = {
     shareHeader:'🛒 *నా కిరాణా బిల్లు*\n_LawSticker AI ద్వారా లెక్కించబడింది_\n\n',
     shareFooter:'\n\n🧮 మీది లెక్కించండి: lawsticker-ai.com/grocery-calc.html',
     enterPrice:'ముందుగా ధర నమోదు చేయండి',
+    voiceBtn:'మాట్లాడి జోడించండి',
+    voiceListening:'వింటున్నాను... ఇప్పుడు మాట్లాడండి',
+    voiceHint:'చెప్పండి: "బియ్యం అరవై" లేదా "సబ్బు నలభై ఐదు రెండు" (పేరు ధర పరిమాణం)',
+    voiceNotSupported:'ఈ బ్రౌజర్‌లో వాయిస్ పనిచేయదు — Chrome వాడండి',
+    voiceHeard: t => `విన్నది: "${t}"`,
+    voiceNoPrice:'ధర గుర్తించలేకపోయాను — వస్తువు పేరు తర్వాత ధర చెప్పండి',
   },
   hi: {
     navBrand:'🛒 किराना बिल कैलकुलेटर',
@@ -403,6 +449,12 @@ const UI = {
     shareHeader:'🛒 *मेरा किराना बिल*\n_LawSticker AI से गणना_\n\n',
     shareFooter:'\n\n🧮 अपना बिल बनाएं: lawsticker-ai.com/grocery-calc.html',
     enterPrice:'पहले मूल्य दर्ज करें',
+    voiceBtn:'बोलकर जोड़ें',
+    voiceListening:'सुन रहा हूं... अब बोलें',
+    voiceHint:'कहें: "चावल साठ" या "साबुन पैंतालीस दो" (नाम मूल्य मात्रा)',
+    voiceNotSupported:'इस ब्राउज़र में वॉयस काम नहीं करता — Chrome इस्तेमाल करें',
+    voiceHeard: t => `सुना: "${t}"`,
+    voiceNoPrice:'मूल्य नहीं पहचाना — आइटम नाम फिर मूल्य बोलें',
   },
 };
 
@@ -646,6 +698,9 @@ function applyLang() {
     const val = L[id];
     if (typeof val === 'string') el.textContent = val;
   });
+  // Voice button
+  const vbt = document.getElementById('voiceBtnText');
+  if (vbt && !isListening) vbt.textContent = L.voiceBtn;
   // GST chips
   const gstChips = document.querySelectorAll('.gst-chip');
   L.gstChips.forEach((text, i) => { if (gstChips[i]) gstChips[i].textContent = text; });
@@ -709,6 +764,7 @@ function addItem() {
     gst: selectedGst,
   };
   cart.push(item);
+  saveRecent(item.name, item.price, item.gst);
   renderCart();
   updateStickyTotal();
   showToast(UI[currentLang].itemAdded);
@@ -761,6 +817,7 @@ function addCatItem(idx) {
     return;
   }
   cart.push({ id: ++itemIdCounter, name: item.name[currentLang], price, qty: 1, gst: item.gst });
+  saveRecent(item.name[currentLang], price, item.gst);
   priceInput.value = '';
   renderCart();
   updateStickyTotal();
@@ -937,6 +994,165 @@ function toggleTip(i) {
   const chev = document.getElementById(`tipchev${i}`);
   body.classList.toggle('open');
   chev.classList.toggle('open');
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// VOICE INPUT (Web Speech API)
+// ══════════════════════════════════════════════════════════════
+let recognition = null;
+let isListening = false;
+
+// Number words → digits (EN + TE + HI)
+const NUM_WORDS = {
+  // English
+  'zero':0,'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,
+  'ten':10,'eleven':11,'twelve':12,'thirteen':13,'fourteen':14,'fifteen':15,'sixteen':16,
+  'seventeen':17,'eighteen':18,'nineteen':19,'twenty':20,'thirty':30,'forty':40,'fifty':50,
+  'sixty':60,'seventy':70,'eighty':80,'ninety':90,'hundred':100,
+  // Telugu
+  'ఒకటి':1,'రెండు':2,'మూడు':3,'నాలుగు':4,'ఐదు':5,'ఆరు':6,'ఏడు':7,'ఎనిమిది':8,'తొమ్మిది':9,
+  'పది':10,'ఇరవై':20,'ముప్పై':30,'నలభై':40,'యాభై':50,'అరవై':60,'డెబ్బై':70,'ఎనభై':80,'తొంభై':90,'వంద':100,
+  // Hindi
+  'एक':1,'दो':2,'तीन':3,'चार':4,'पांच':5,'छह':6,'सात':7,'आठ':8,'नौ':9,
+  'दस':10,'बीस':20,'तीस':30,'चालीस':40,'पचास':50,'साठ':60,'सत्तर':70,'अस्सी':80,'नब्बे':90,'सौ':100,
+};
+
+function wordsToNumbers(text) {
+  // Convert number words to digits, handling compounds like "sixty five" = 65
+  const parts = text.toLowerCase().split(/\s+/);
+  const out = [];
+  let acc = null, unitDone = false;
+  const flush = () => { if (acc !== null) { out.push(String(acc)); acc = null; unitDone = false; } };
+  for (const p of parts) {
+    const clean = p.replace(/[.,!?]/g,'');
+    if (NUM_WORDS.hasOwnProperty(clean)) {
+      const v = NUM_WORDS[clean];
+      if (acc === null) { acc = v; unitDone = false; }
+      else if (v === 100 && acc < 100) { acc = acc * 100; unitDone = false; }        // one hundred → 100
+      else if (acc >= 100 && acc % 100 === 0 && v < 100) { acc = acc + v; unitDone = (v % 10 !== 0); }  // hundred twenty → 120
+      else if (acc >= 20 && acc < 100 && acc % 10 === 0 && v < 10 && !unitDone) { acc = acc + v; unitDone = true; }  // sixty five → 65
+      else { flush(); acc = v; }
+    } else if (/^\d+(\.\d+)?$/.test(clean)) {
+      flush();
+      out.push(clean);
+    } else {
+      flush();
+      out.push(p);
+    }
+  }
+  if (acc !== null) out.push(String(acc));
+  return out.join(' ');
+}
+
+function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return null;
+  const rec = new SR();
+  rec.continuous = false;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  return rec;
+}
+
+function toggleVoice() {
+  const L = UI[currentLang];
+  const btn = document.getElementById('voiceBtn');
+  const btnText = document.getElementById('voiceBtnText');
+  const hint = document.getElementById('voiceHint');
+
+  if (isListening) {
+    if (recognition) recognition.stop();
+    return;
+  }
+
+  recognition = initVoice();
+  if (!recognition) {
+    showToast(L.voiceNotSupported);
+    return;
+  }
+
+  recognition.lang = document.getElementById('voiceLang').value;
+
+  recognition.onstart = () => {
+    isListening = true;
+    btn.classList.add('listening');
+    btnText.textContent = L.voiceListening;
+    hint.textContent = L.voiceHint;
+    hint.classList.add('show');
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    btn.classList.remove('listening');
+    btnText.textContent = L.voiceBtn;
+    hint.classList.remove('show');
+  };
+
+  recognition.onerror = (e) => {
+    isListening = false;
+    btn.classList.remove('listening');
+    btnText.textContent = L.voiceBtn;
+    hint.classList.remove('show');
+    if (e.error === 'not-allowed') showToast('🎤 Allow microphone access');
+  };
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript.trim();
+    showToast(L.voiceHeard(transcript));
+    const normalized = wordsToNumbers(transcript);
+    const parsed = smartParse(normalized);
+    if (parsed.price > 0) {
+      cart.push({
+        id: ++itemIdCounter,
+        name: parsed.name || '🎤',
+        price: parsed.price,
+        qty: parsed.qty || 1,
+        gst: selectedGst,
+      });
+      saveRecent(parsed.name || '🎤', parsed.price, selectedGst);
+      renderCart();
+      updateStickyTotal();
+      setTimeout(() => showToast(L.itemAdded), 1200);
+    } else {
+      // No price found — put transcript in name field for manual completion
+      document.getElementById('qeName').value = parsed.name || transcript;
+      document.getElementById('qePrice').focus();
+      setTimeout(() => showToast(L.voiceNoPrice), 1200);
+    }
+  };
+
+  recognition.start();
+}
+
+// ══════════════════════════════════════════════════════════════
+// RECENT ITEMS (session memory — quick re-add)
+// ══════════════════════════════════════════════════════════════
+let recentItems = [];
+
+function saveRecent(name, price, gst) {
+  if (!name || name === '—' || name === '🎤') return;
+  // Dedupe by name
+  recentItems = recentItems.filter(r => r.name.toLowerCase() !== name.toLowerCase());
+  recentItems.unshift({ name, price, gst });
+  if (recentItems.length > 8) recentItems.pop();
+  renderRecent();
+}
+
+function renderRecent() {
+  const row = document.getElementById('recentRow');
+  if (!row) return;
+  row.innerHTML = recentItems.map((r, i) =>
+    `<span class="recent-chip" onclick="addRecent(${i})">${r.name} ₹${r.price}</span>`
+  ).join('');
+}
+
+function addRecent(i) {
+  const r = recentItems[i];
+  cart.push({ id: ++itemIdCounter, name: r.name, price: r.price, qty: 1, gst: r.gst });
+  renderCart();
+  updateStickyTotal();
+  showToast(UI[currentLang].itemAdded);
 }
 
 // ══════════════════════════════════════════════════════════════
