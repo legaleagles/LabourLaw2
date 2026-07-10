@@ -36,6 +36,7 @@ color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:700;c
 background-size:300% 300%;animation:heroShift 14s ease infinite;
 padding:44px 22px 40px;text-align:center;position:relative;overflow:hidden;}
 @keyframes heroShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.hero::before,.hero::after{pointer-events:none;}
 .hero::before{content:'⚖️';position:absolute;left:-25px;top:-25px;font-size:150px;opacity:.05;transform:rotate(-12deg);}
 .hero::after{content:'🛠️';position:absolute;right:-20px;bottom:-30px;font-size:150px;opacity:.05;transform:rotate(12deg);}
 .hero-badge{display:inline-block;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.35);
@@ -98,7 +99,7 @@ text-align:center;text-decoration:none;transition:all .2s;}
 /* TODAY'S RIGHT */
 .today{background:linear-gradient(135deg,var(--navy),#1a2436);border-radius:20px;padding:22px 20px;
 margin-bottom:30px;position:relative;overflow:hidden;border:1px solid rgba(201,162,39,.3);}
-.today::before{content:'💡';position:absolute;right:-15px;bottom:-20px;font-size:120px;opacity:.07;}
+.today::before{pointer-events:none;content:'💡';position:absolute;right:-15px;bottom:-20px;font-size:120px;opacity:.07;}
 .today-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:9px;font-weight:900;
 letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px;}
 .today-fact{font-size:16px;font-weight:700;color:white;line-height:1.6;margin-bottom:10px;}
@@ -114,8 +115,8 @@ border-bottom:2px solid var(--gold);overflow:hidden;position:relative;}
 .ticker-label{position:absolute;left:0;top:0;bottom:0;background:var(--gold);color:var(--navy);
 font-size:9px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;
 padding:0 10px;z-index:2;text-transform:uppercase;}
-.ticker{display:flex;white-space:nowrap;animation:tick 60s linear infinite;padding:9px 0;}
-.ticker:hover{animation-play-state:paused;}
+.ticker{display:flex;white-space:nowrap;animation:tick 40s linear infinite;padding:9px 0;will-change:transform;}
+@media(hover:hover){.ticker:hover{animation-play-state:paused;}}
 .ticker a{color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;
 padding:0 26px;position:relative;}
 .ticker a::after{content:'•';position:absolute;right:-4px;color:var(--gold);}
@@ -599,8 +600,14 @@ function render(){
  const start=dayOfYear()%BUNDLES.length;
  const items=[...BUNDLES.slice(start),...BUNDLES.slice(0,start)];
  const tickerHTML=items.map(b=>`<a href="https://lawsticker-ai.com/${b.ru}"><b>${UI[L].tickPrefix}</b> ${b.f[L]}</a>`).join('');
- document.getElementById('ticker').innerHTML=tickerHTML+tickerHTML; // duplicate for seamless loop
+ const tEl=document.getElementById('ticker');
+ tEl.innerHTML=tickerHTML+tickerHTML; // duplicate for seamless loop
  document.getElementById('tickLabel').textContent=UI[L].tickLabel;
+ // Constant speed regardless of content length: 130 px/sec
+ requestAnimationFrame(()=>{
+   const half=tEl.scrollWidth/2;
+   if(half>0)tEl.style.animationDuration=Math.max(20,Math.round(half/130))+'s';
+ });
  // Rotating tagline
  rotateTag(true);
 }
@@ -628,6 +635,14 @@ function shareToday(){
 }
 
 document.addEventListener('DOMContentLoaded',render);
+// Fix frozen ticker/tagline when returning via back button (bfcache restore)
+window.addEventListener('pageshow',e=>{
+ if(e.persisted){
+  const t=document.getElementById('ticker');
+  if(t){t.style.animation='none';void t.offsetWidth;t.style.animation='';}
+  render();
+ }
+});
 </script>
 </body>
 </html>
