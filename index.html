@@ -107,6 +107,36 @@ letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;
 border:1px solid rgba(201,162,39,.4);color:var(--gold-l);font-size:12px;font-weight:800;
 padding:9px 16px;border-radius:10px;text-decoration:none;}
 
+
+/* TICKER */
+.ticker-wrap{background:var(--navy);border-top:1px solid rgba(201,162,39,.15);
+border-bottom:2px solid var(--gold);overflow:hidden;position:relative;}
+.ticker-label{position:absolute;left:0;top:0;bottom:0;background:var(--gold);color:var(--navy);
+font-size:9px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;
+padding:0 10px;z-index:2;text-transform:uppercase;}
+.ticker{display:flex;white-space:nowrap;animation:tick 60s linear infinite;padding:9px 0;}
+.ticker:hover{animation-play-state:paused;}
+.ticker a{color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;
+padding:0 26px;position:relative;}
+.ticker a::after{content:'•';position:absolute;right:-4px;color:var(--gold);}
+.ticker a b{color:var(--gold-l);}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* TODAY BUNDLE */
+.tb-chips{display:grid;grid-template-columns:1fr;gap:7px;margin:14px 0 14px;}
+.tb-chip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;text-decoration:none;transition:all .2s;}
+.tb-chip:active{transform:scale(.98);}
+.tb-chip-icon{font-size:19px;flex-shrink:0;}
+.tb-chip-k{font-size:8.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.tb-chip-v{font-size:12px;font-weight:700;color:white;line-height:1.35;}
+.tb-chip-arr{margin-left:auto;color:var(--gold-l);font-weight:800;flex-shrink:0;}
+.today-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.today-share{display:flex;align-items:center;justify-content:center;gap:6px;background:#25D366;
+color:white;font-size:12px;font-weight:800;padding:11px;border-radius:10px;border:none;
+font-family:inherit;cursor:pointer;}
+.today-share:active{transform:scale(.97);}
+
 /* FEATURE SHOWCASE */
 .feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
 .feat{border-radius:16px;padding:16px 14px;text-decoration:none;position:relative;overflow:hidden;
@@ -183,6 +213,11 @@ justify-content:space-around;align-items:center;z-index:100;}
   <div class="stat"><div class="stat-n">3</div><div class="stat-l" id="st4"></div></div>
 </div>
 
+<div class="ticker-wrap">
+  <span class="ticker-label" id="tickLabel">⚡ Rights</span>
+  <div class="ticker" id="ticker"></div>
+</div>
+
 <div class="page">
 
   <!-- JOURNEY -->
@@ -210,12 +245,21 @@ justify-content:space-around;align-items:center;z-index:100;}
   <div class="sec-sub" id="sSub"></div>
   <div class="sit-grid" id="sitGrid"></div>
 
-  <!-- TODAY'S RIGHT -->
+  <!-- TODAY'S RIGHT BUNDLE -->
   <div class="today">
     <div class="today-badge" id="tBadge"></div>
     <div class="today-fact" id="tFact"></div>
     <div class="today-law" id="tLaw"></div>
-    <a class="today-cta" href="https://lawsticker-ai.com/rights-shorts.html" id="tCta"></a>
+    <div class="tb-chips">
+      <a class="tb-chip" id="tbRight" href="#"><span class="tb-chip-icon">⚖️</span><span><span class="tb-chip-k" id="tbRightK"></span><br><span class="tb-chip-v" id="tbRightV"></span></span><span class="tb-chip-arr">→</span></a>
+      <a class="tb-chip" id="tbRemedy" href="https://lawsticker-ai.com/remedies-hub.html"><span class="tb-chip-icon">🛠️</span><span><span class="tb-chip-k" id="tbRemedyK"></span><br><span class="tb-chip-v" id="tbRemedyV"></span></span><span class="tb-chip-arr">→</span></a>
+      <a class="tb-chip" id="tbCalc" href="#"><span class="tb-chip-icon">🧮</span><span><span class="tb-chip-k" id="tbCalcK"></span><br><span class="tb-chip-v" id="tbCalcV"></span></span><span class="tb-chip-arr">→</span></a>
+      <a class="tb-chip" id="tbHelp" href="#"><span class="tb-chip-icon">📞</span><span><span class="tb-chip-k" id="tbHelpK"></span><br><span class="tb-chip-v" id="tbHelpV"></span></span><span class="tb-chip-arr">→</span></a>
+    </div>
+    <div class="today-actions">
+      <button class="today-share" onclick="shareToday()" id="tShare"></button>
+      <a class="today-cta" href="https://lawsticker-ai.com/rights-shorts.html" id="tCta" style="justify-content:center;"></a>
+    </div>
   </div>
 
   <!-- FEATURES -->
@@ -307,23 +351,8 @@ const UI={
   f5n:'Solar Subsidy Guide',f5d:'PM Surya Ghar: your exact ₹30k–₹78k entitlement + net metering rights.',
   hHd:'🚨 Emergency Helplines — Tap to Call',h1:'Police',h2:'Cyber Fraud',h3:'Women',h4:'Legal Aid',
   ftTag:'Your rights. Your language. Free.',
-  ftDisc:'LawSticker AI provides legal information and education, not legal advice. For advice on your specific case, consult a qualified advocate. Free legal aid: NALSA 15100.',
-  facts:[
-   ['No hospital can refuse emergency treatment because you can\'t pay.','Parmanand Katara v. UOI (SC 1989) · Article 21'],
-   ['Salary must be paid by the 7th — withholding it is a criminal offence.','Payment of Wages Act 1936'],
-   ['Your association cannot cut water or power for maintenance dues.','Article 21 · IPC 503/506'],
-   ['Daughters have equal rights in ancestral property — retroactively.','Vineeta Sharma (SC 2020)'],
-   ['Report cyber fraud within 24 hours and the money can be frozen.','Call 1930 · IT Act 2000'],
-   ['MRP is the maximum price — even in cinemas and airports.','Legal Metrology Act 2009'],
-   ['College can\'t keep your original certificates as security.','UGC Regulations 2018'],
-   ['Crop damage? Report within 72 hours or PMFBY claim may be rejected.','PMFBY Guidelines'],
-   ['Landlord cutting utilities to force you out is criminal force.','TP Act 1882 · IPC'],
-   ['Restaurant service charge is optional — you can refuse to pay it.','CCPA Guidelines 2022'],
-   ['Arrested? Police must produce you before a Magistrate within 24 hours.','Article 22 · CrPC 57'],
-   ['RTI gets you any government information for ₹10 in 30 days.','RTI Act 2005'],
-   ['Builder delayed possession? Exit with refund + interest — or claim monthly interest.','RERA 2016 Section 18'],
-   ['Report unauthorised bank transactions in 3 days — your liability is zero.','RBI Circular 2017'],
-  ]},
+  ftDisc:'LawSticker AI provides legal information and education, not legal advice. For advice on your specific case, consult a qualified advocate. Free legal aid: NALSA 15100.',bundleK:['YOUR RIGHT','YOUR REMEDY','CALCULATE IT','HELPLINE'],tShare:'📲 Share Today\'s Right',tickLabel:'⚡ Rights',tickPrefix:'DID YOU KNOW?',
+  shareTpl:'💡 *TODAY\'S RIGHT*\n\n{fact}\n📋 {law}\n\n⚖️ Right: {right}\n→ {rurl}\n\n🛠️ Remedy: {remedy}\n\n🧮 Calculator: {calc}\n→ {curl}\n\n📞 Helpline: {help}\n\n_Your rights. Your language. Free._\nlawsticker-ai.com'},
  te:{navSub:'· ఉచితం',heroBadge:'భారతదేశపు త్రిభాషా చట్ట సాధికారత వేదిక',
   heroTitle:'మీ <span class="gold">హక్కులు</span> తెలుసుకోండి.<br>మీ <span class="gold">పరిష్కారాలు</span> తెలుసుకోండి.',
   heroTags:['మీ హక్కులు. మీ భాష. ఉచితం.','Your rights. Your language. Free.','आपके अधिकार। आपकी भाषा। मुफ्त।'],
@@ -348,23 +377,8 @@ const UI={
   f5n:'సోలార్ సబ్సిడీ గైడ్',f5d:'PM సూర్యఘర్: మీ ఖచ్చితమైన ₹30k–₹78k అర్హత + నెట్ మీటరింగ్ హక్కులు.',
   hHd:'🚨 అత్యవసర హెల్ప్‌లైన్‌లు — కాల్ చేయడానికి నొక్కండి',h1:'పోలీస్',h2:'సైబర్ మోసం',h3:'మహిళలు',h4:'న్యాయ సహాయం',
   ftTag:'మీ హక్కులు. మీ భాష. ఉచితం.',
-  ftDisc:'LawSticker AI చట్టపరమైన సమాచారం మరియు విద్యను అందిస్తుంది, న్యాయ సలహా కాదు. మీ నిర్దిష్ట కేసుకు అర్హత కలిగిన న్యాయవాదిని సంప్రదించండి. ఉచిత న్యాయ సహాయం: NALSA 15100.',
-  facts:[
-   ['డబ్బు లేదని ఏ ఆసుపత్రి అత్యవసర చికిత్స నిరాకరించలేదు.','Parmanand Katara (SC 1989) · Article 21'],
-   ['జీతం 7వ తేదీలోపు చెల్లించాలి — నిలిపివేయడం నేరం.','వేతన చెల్లింపు చట్టం 1936'],
-   ['మీ సంఘం మెయింటెనెన్స్ బకాయిలకు నీరు/విద్యుత్ కట్ చేయలేదు.','Article 21 · IPC 503/506'],
-   ['పూర్వీకుల ఆస్తిలో కూతుళ్ళకు సమాన హక్కులు — గత కాలానికి కూడా.','Vineeta Sharma (SC 2020)'],
-   ['సైబర్ మోసం 24 గంటల్లో రిపోర్ట్ చేస్తే డబ్బు ఫ్రీజ్ కావచ్చు.','1930 కి కాల్ · IT చట్టం 2000'],
-   ['MRP గరిష్ట ధర — సినిమాల్లో, ఎయిర్‌పోర్టుల్లో కూడా.','లీగల్ మెట్రాలజీ చట్టం 2009'],
-   ['కళాశాల మీ అసలు సర్టిఫికేట్లను సెక్యూరిటీగా ఉంచుకోలేదు.','UGC నిబంధనలు 2018'],
-   ['పంట నష్టం? 72 గంటల్లో నివేదించకపోతే PMFBY క్లెయిమ్ తిరస్కరణ.','PMFBY మార్గదర్శకాలు'],
-   ['ఖాళీ చేయించడానికి యజమాని యుటిలిటీలు కట్ చేయడం నేరపూరిత బలప్రయోగం.','TP చట్టం 1882 · IPC'],
-   ['రెస్టారెంట్ సర్వీస్ ఛార్జ్ ఐచ్ఛికం — చెల్లించడానికి నిరాకరించవచ్చు.','CCPA మార్గదర్శకాలు 2022'],
-   ['అరెస్ట్ అయ్యారా? 24 గంటల్లో మేజిస్ట్రేట్ ముందు హాజరుపరచాలి.','Article 22 · CrPC 57'],
-   ['RTI తో ₹10కి 30 రోజుల్లో ఏ ప్రభుత్వ సమాచారమైనా పొందండి.','RTI చట్టం 2005'],
-   ['బిల్డర్ స్వాధీనం ఆలస్యం? రీఫండ్ + వడ్డీతో నిష్క్రమించండి.','RERA 2016 Section 18'],
-   ['అనధికార బ్యాంక్ లావాదేవీలు 3 రోజుల్లో రిపోర్ట్ = బాధ్యత సున్నా.','RBI సర్క్యులర్ 2017'],
-  ]},
+  ftDisc:'LawSticker AI చట్టపరమైన సమాచారం మరియు విద్యను అందిస్తుంది, న్యాయ సలహా కాదు. మీ నిర్దిష్ట కేసుకు అర్హత కలిగిన న్యాయవాదిని సంప్రదించండి. ఉచిత న్యాయ సహాయం: NALSA 15100.',bundleK:['మీ హక్కు','మీ పరిష్కారం','లెక్కించండి','హెల్ప్‌లైన్'],tShare:'📲 నేటి హక్కు షేర్ చేయండి',tickLabel:'⚡ హక్కులు',tickPrefix:'మీకు తెలుసా?',
+  shareTpl:'💡 *నేటి హక్కు*\n\n{fact}\n📋 {law}\n\n⚖️ హక్కు: {right}\n→ {rurl}\n\n🛠️ పరిష్కారం: {remedy}\n\n🧮 కాలిక్యులేటర్: {calc}\n→ {curl}\n\n📞 హెల్ప్‌లైన్: {help}\n\n_మీ హక్కులు. మీ భాష. ఉచితం._\nlawsticker-ai.com'},
  hi:{navSub:'· मुफ्त',heroBadge:'भारत का त्रिभाषी कानूनी सशक्तिकरण मंच',
   heroTitle:'अपने <span class="gold">अधिकार</span> जानें।<br>अपने <span class="gold">उपाय</span> जानें।',
   heroTags:['आपके अधिकार। आपकी भाषा। मुफ्त।','Your rights. Your language. Free.','మీ హక్కులు. మీ భాష. ఉచితం.'],
@@ -389,24 +403,140 @@ const UI={
   f5n:'सोलर सब्सिडी गाइड',f5d:'PM सूर्यघर: आपकी सटीक ₹30k–₹78k पात्रता + नेट मीटरिंग अधिकार।',
   hHd:'🚨 आपातकालीन हेल्पलाइन — कॉल के लिए टैप करें',h1:'पुलिस',h2:'साइबर धोखाधड़ी',h3:'महिला',h4:'कानूनी सहायता',
   ftTag:'आपके अधिकार। आपकी भाषा। मुफ्त।',
-  ftDisc:'LawSticker AI कानूनी जानकारी और शिक्षा प्रदान करता है, कानूनी सलाह नहीं। अपने विशिष्ट मामले के लिए योग्य अधिवक्ता से परामर्श करें। मुफ्त कानूनी सहायता: NALSA 15100।',
-  facts:[
-   ['पैसे न होने पर कोई अस्पताल आपातकालीन इलाज से मना नहीं कर सकता।','परमानंद कटारा (SC 1989) · अनुच्छेद 21'],
-   ['वेतन 7 तारीख तक मिलना चाहिए — रोकना आपराधिक अपराध है।','वेतन भुगतान अधिनियम 1936'],
-   ['आपका संघ मेंटेनेंस बकाया के लिए पानी/बिजली नहीं काट सकता।','अनुच्छेद 21 · IPC 503/506'],
-   ['बेटियों को पैतृक संपत्ति में बराबर अधिकार — पूर्वव्यापी।','विनीता शर्मा (SC 2020)'],
-   ['साइबर धोखाधड़ी 24 घंटे में रिपोर्ट करें — पैसा फ्रीज हो सकता है।','1930 कॉल करें · IT अधिनियम 2000'],
-   ['MRP अधिकतम मूल्य है — सिनेमा और एयरपोर्ट में भी।','विधिक माप विज्ञान अधिनियम 2009'],
-   ['कॉलेज आपके मूल प्रमाणपत्र सिक्योरिटी के रूप में नहीं रख सकता।','UGC विनियम 2018'],
-   ['फसल नुकसान? 72 घंटे में रिपोर्ट न करने पर PMFBY दावा खारिज।','PMFBY दिशानिर्देश'],
-   ['निकालने के लिए मकान मालिक का यूटिलिटी काटना आपराधिक बल है।','TP अधिनियम 1882 · IPC'],
-   ['रेस्तरां सर्विस चार्ज वैकल्पिक है — देने से मना कर सकते हैं।','CCPA दिशानिर्देश 2022'],
-   ['गिरफ्तार? 24 घंटे में मजिस्ट्रेट के सामने पेशी अनिवार्य।','अनुच्छेद 22 · CrPC 57'],
-   ['RTI से ₹10 में 30 दिनों में कोई भी सरकारी जानकारी पाएं।','RTI अधिनियम 2005'],
-   ['बिल्डर की देरी? रिफंड + ब्याज लेकर निकलें।','RERA 2016 धारा 18'],
-   ['अनधिकृत बैंक लेनदेन 3 दिन में रिपोर्ट = शून्य देनदारी।','RBI सर्कुलर 2017'],
-  ]},
+  ftDisc:'LawSticker AI कानूनी जानकारी और शिक्षा प्रदान करता है, कानूनी सलाह नहीं। अपने विशिष्ट मामले के लिए योग्य अधिवक्ता से परामर्श करें। मुफ्त कानूनी सहायता: NALSA 15100।',bundleK:['आपका अधिकार','आपका उपाय','गणना करें','हेल्पलाइन'],tShare:'📲 आज का अधिकार शेयर करें',tickLabel:'⚡ अधिकार',tickPrefix:'क्या आप जानते हैं?',
+  shareTpl:'💡 *आज का अधिकार*\n\n{fact}\n📋 {law}\n\n⚖️ अधिकार: {right}\n→ {rurl}\n\n🛠️ उपाय: {remedy}\n\n🧮 कैलकुलेटर: {calc}\n→ {curl}\n\n📞 हेल्पलाइन: {help}\n\n_आपके अधिकार। आपकी भाषा। मुफ्त।_\nlawsticker-ai.com'},
 };
+
+
+// ═══ DAILY BUNDLES — fact + right + remedy + calc + helpline ═══
+const BUNDLES=[
+ {f:{en:"No hospital — government or private — can refuse emergency treatment because you can't pay.",te:"డబ్బు లేదని ఏ ఆసుపత్రి — ప్రభుత్వ లేదా ప్రైవేట్ — అత్యవసర చికిత్స నిరాకరించలేదు.",hi:"पैसे न होने पर कोई अस्पताल — सरकारी या निजी — आपातकालीन इलाज से मना नहीं कर सकता।"},
+  l:"Parmanand Katara v. UOI (SC 1989) · Article 21",
+  rn:{en:"Health & Patient Rights",te:"ఆరోగ్య & రోగి హక్కులు",hi:"स्वास्थ्य और मरीज अधिकार"},ru:"rights-health.html",
+  mn:{en:"Consumer Complaint (medical negligence)",te:"వినియోగదారు ఫిర్యాదు (వైద్య నిర్లక్ష్యం)",hi:"उपभोक्ता शिकायत (चिकित्सा लापरवाही)"},
+  cn:{en:"Court Fee Calculator",te:"కోర్టు రుసుము కాలిక్యులేటర్",hi:"कोर्ट फीस कैलकुलेटर"},cu:"court-fee-calc.html",
+  hn:{en:"Ambulance",te:"అంబులెన్స్",hi:"एम्बुलेंस"},hp:"108"},
+ {f:{en:"Salary must be paid by the 7th of every month — withholding it is a criminal offence, not an HR issue.",te:"జీతం ప్రతి నెల 7వ తేదీలోపు చెల్లించాలి — నిలిపివేయడం నేరం, HR సమస్య కాదు.",hi:"वेतन हर महीने की 7 तारीख तक मिलना चाहिए — रोकना आपराधिक अपराध है, HR मामला नहीं।"},
+  l:"Payment of Wages Act 1936, Sections 4-5",
+  rn:{en:"Employment Rights",te:"ఉపాధి హక్కులు",hi:"रोजगार अधिकार"},ru:"rights-employment.html",
+  mn:{en:"Labour Commissioner Complaint — free, no lawyer",te:"లేబర్ కమీషనర్ ఫిర్యాదు — ఉచితం",hi:"श्रम आयुक्त शिकायत — मुफ्त"},
+  cn:{en:"Finance Calculator",te:"ఫైనాన్స్ కాలిక్యులేటర్",hi:"वित्त कैलकुलेटर"},cu:"finance-suite.html",
+  hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
+ {f:{en:"Your apartment association cannot cut water or power for maintenance dues — that's a criminal offence.",te:"మీ అపార్ట్‌మెంట్ సంఘం బకాయిల కోసం నీరు/విద్యుత్ కట్ చేయలేదు — అది నేరం.",hi:"आपका अपार्टमेंट संघ बकाया के लिए पानी/बिजली नहीं काट सकता — यह आपराधिक अपराध है।"},
+  l:"Article 21 · IPC 503/506",
+  rn:{en:"Apartment & Resident Rights",te:"అపార్ట్‌మెంట్ & నివాసిత హక్కులు",hi:"अपार्टमेंट और निवासी अधिकार"},ru:"rights-residents.html",
+  mn:{en:"Police complaint + civil injunction",te:"పోలీసు ఫిర్యాదు + సివిల్ నిషేధాజ్ఞ",hi:"पुलिस शिकायत + सिविल निषेधाज्ञा"},
+  cn:{en:"Court Fee Calculator",te:"కోర్టు రుసుము కాలిక్యులేటర్",hi:"कोर्ट फीस कैलकुलेटर"},cu:"court-fee-calc.html",
+  hn:{en:"Police",te:"పోలీస్",hi:"पुलिस"},hp:"100"},
+ {f:{en:"Daughters have equal rights in ancestral property — same as sons, even if father died before 2005.",te:"పూర్వీకుల ఆస్తిలో కూతుళ్ళకు సమాన హక్కులు — తండ్రి 2005 ముందు చనిపోయినా.",hi:"बेटियों को पैतृक संपत्ति में बराबर अधिकार — भले पिता 2005 से पहले गुज़रे हों।"},
+  l:"Vineeta Sharma v. Rakesh Sharma (SC 2020)",
+  rn:{en:"Family & Inheritance Rights",te:"కుటుంబ & వారసత్వ హక్కులు",hi:"परिवार और विरासत अधिकार"},ru:"rights-family.html",
+  mn:{en:"Partition suit at Civil Court",te:"సివిల్ కోర్టులో విభజన దావా",hi:"सिविल कोर्ट में बंटवारा मुकदमा"},
+  cn:{en:"Limitation Calculator",te:"పరిమితి కాలిక్యులేటర్",hi:"सीमा कैलकुलेटर"},cu:"limitation-calc.html",
+  hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
+ {f:{en:"Cyber fraud? Report within 24 hours and the fraudster's account can be frozen before money moves.",te:"సైబర్ మోసమా? 24 గంటల్లో రిపోర్ట్ చేస్తే డబ్బు వెళ్ళే ముందే ఖాతా ఫ్రీజ్ కావచ్చు.",hi:"साइबर धोखाधड़ी? 24 घंटे में रिपोर्ट करें — पैसा जाने से पहले खाता फ्रीज हो सकता है।"},
+  l:"IT Act 2000 · RBI Zero Liability Circular",
+  rn:{en:"Digital Rights",te:"డిజిటల్ హక్కులు",hi:"डिजिटल अधिकार"},ru:"rights-digital.html",
+  mn:{en:"1930 + cybercrime.gov.in + RBI Ombudsman",te:"1930 + cybercrime.gov.in + RBI అంబుడ్స్‌మన్",hi:"1930 + cybercrime.gov.in + RBI लोकपाल"},
+  cn:{en:"Finance Calculator",te:"ఫైనాన్స్ కాలిక్యులేటర్",hi:"वित्त कैलकुलेटर"},cu:"finance-suite.html",
+  hn:{en:"Cyber Helpline",te:"సైబర్ హెల్ప్‌లైన్",hi:"साइबर हेल्पलाइन"},hp:"1930"},
+ {f:{en:"MRP is the MAXIMUM price — even in festivals, cinemas and airports. Charging more is punishable.",te:"MRP గరిష్ట ధర — పండుగల్లో, సినిమాల్లో, ఎయిర్‌పోర్టుల్లో కూడా. ఎక్కువ వసూలు శిక్షార్హం.",hi:"MRP अधिकतम मूल्य है — त्योहार, सिनेमा, एयरपोर्ट में भी। ज़्यादा वसूली दंडनीय है।"},
+  l:"Legal Metrology Act 2009 · CPA 2019",
+  rn:{en:"Consumer Rights",te:"వినియోగదారు హక్కులు",hi:"उपभोक्ता अधिकार"},ru:"rights-consumer.html",
+  mn:{en:"e-Daakhil — zero fee up to ₹5 lakh",te:"e-Daakhil — ₹5 లక్షల వరకు రుసుము సున్నా",hi:"e-Daakhil — ₹5 लाख तक शून्य फीस"},
+  cn:{en:"Grocery Bill Calculator",te:"కిరాణా బిల్లు కాలిక్యులేటర్",hi:"किराना बिल कैलकुलेटर"},cu:"grocery-calc.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"College can't keep your original certificates as security — UGC explicitly prohibits it.",te:"కళాశాల మీ అసలు సర్టిఫికేట్లను సెక్యూరిటీగా ఉంచుకోలేదు — UGC నిషేధించింది.",hi:"कॉलेज आपके मूल प्रमाणपत्र सिक्योरिटी के रूप में नहीं रख सकता — UGC ने रोका है।"},
+  l:"UGC Regulations 2018",
+  rn:{en:"Student Rights",te:"విద్యార్థి హక్కులు",hi:"छात्र अधिकार"},ru:"rights-student.html",
+  mn:{en:"UGC e-Samadhaan + Consumer Commission",te:"UGC e-Samadhaan + వినియోగదారు కమిషన్",hi:"UGC e-Samadhaan + उपभोक्ता आयोग"},
+  cn:{en:"Limitation Calculator",te:"పరిమితి కాలిక్యులేటర్",hi:"सीमा कैलकुलेटर"},cu:"limitation-calc.html",
+  hn:{en:"Anti-Ragging",te:"యాంటీ-రాగింగ్",hi:"एंटी-रैगिंग"},hp:"1800-180-5522"},
+ {f:{en:"Crop damaged? Report within 72 HOURS or your PMFBY insurance claim can be rejected.",te:"పంట నష్టమా? 72 గంటల్లో నివేదించండి లేకపోతే PMFBY క్లెయిమ్ తిరస్కరణ.",hi:"फसल खराब? 72 घंटे में रिपोर्ट करें वरना PMFBY दावा खारिज हो सकता है।"},
+  l:"PMFBY Operational Guidelines",
+  rn:{en:"Farmer Rights",te:"రైతు హక్కులు",hi:"किसान अधिकार"},ru:"rights-farmer.html",
+  mn:{en:"14447 + District Grievance Committee + Ombudsman",te:"14447 + జిల్లా కమిటీ + అంబుడ్స్‌మన్",hi:"14447 + जिला समिति + लोकपाल"},
+  cn:{en:"Finance Calculator (KCC)",te:"ఫైనాన్స్ కాలిక్యులేటర్ (KCC)",hi:"वित्त कैलकुलेटर (KCC)"},cu:"finance-suite.html",
+  hn:{en:"Kisan Call Centre",te:"కిసాన్ కాల్ సెంటర్",hi:"किसान कॉल सेंटर"},hp:"1800-180-1551"},
+ {f:{en:"Landlord cutting electricity or water to force you out? That's criminal force — file police complaint.",te:"ఖాళీ చేయించడానికి యజమాని విద్యుత్/నీరు కట్ చేస్తున్నారా? నేరపూరిత బలప్రయోగం.",hi:"मकान मालिक बिजली-पानी काटकर निकालना चाहता है? यह आपराधिक बल है।"},
+  l:"Transfer of Property Act 1882 · IPC",
+  rn:{en:"Property & Tenant Rights",te:"ఆస్తి & అద్దెదారు హక్కులు",hi:"संपत्ति और किरायेदार अधिकार"},ru:"rights-property.html",
+  mn:{en:"Police complaint + urgent injunction",te:"పోలీసు ఫిర్యాదు + అత్యవసర నిషేధాజ్ఞ",hi:"पुलिस शिकायत + तत्काल निषेधाज्ञा"},
+  cn:{en:"Stamp Duty Calculator",te:"స్టాంప్ డ్యూటీ కాలిక్యులేటర్",hi:"स्टांप ड्यूटी कैलकुलेटर"},cu:"property-suite.html",
+  hn:{en:"Police",te:"పోలీస్",hi:"पुलिस"},hp:"100"},
+ {f:{en:"Restaurant service charge is OPTIONAL — you can ask for it to be removed from the bill.",te:"రెస్టారెంట్ సర్వీస్ ఛార్జ్ ఐచ్ఛికం — బిల్లు నుండి తొలగించమని అడగవచ్చు.",hi:"रेस्तरां सर्विस चार्ज वैकल्पिक है — बिल से हटवा सकते हैं।"},
+  l:"CCPA Guidelines 2022",
+  rn:{en:"Consumer Rights",te:"వినియోగదారు హక్కులు",hi:"उपभोक्ता अधिकार"},ru:"rights-consumer.html",
+  mn:{en:"Refuse + consumerhelpline.gov.in / 1915",te:"నిరాకరించండి + consumerhelpline.gov.in",hi:"मना करें + consumerhelpline.gov.in"},
+  cn:{en:"Grocery Bill Calculator",te:"కిరాణా బిల్లు కాలిక్యులేటర్",hi:"किराना बिल कैलकुलेटर"},cu:"grocery-calc.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"Arrested? Police must produce you before a Magistrate within 24 hours — beyond that is illegal detention.",te:"అరెస్ట్ అయ్యారా? 24 గంటల్లో మేజిస్ట్రేట్ ముందు హాజరుపరచాలి — మించితే చట్టవిరుద్ధ నిర్బంధం.",hi:"गिरफ्तार? 24 घंटे में मजिस्ट्रेट के सामने पेशी अनिवार्य — उससे अधिक अवैध हिरासत।"},
+  l:"Article 22 · CrPC Section 57 · D.K. Basu",
+  rn:{en:"Personal & Arrest Rights",te:"వ్యక్తిగత & అరెస్ట్ హక్కులు",hi:"व्यक्तिगत और गिरफ्तारी अधिकार"},ru:"rights-personal.html",
+  mn:{en:"Habeas Corpus in High Court",te:"హైకోర్టులో హెబియస్ కార్పస్",hi:"उच्च न्यायालय में बंदी प्रत्यक्षीकरण"},
+  cn:{en:"Court Fee Calculator",te:"కోర్టు రుసుము కాలిక్యులేటర్",hi:"कोर्ट फीस कैलकुलेटर"},cu:"court-fee-calc.html",
+  hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
+ {f:{en:"RTI gets you ANY government information for ₹10 — reply mandatory in 30 days or officer pays ₹250/day.",te:"RTI తో ₹10కి ఏ ప్రభుత్వ సమాచారమైనా — 30 రోజుల్లో సమాధానం తప్పనిసరి.",hi:"RTI से ₹10 में कोई भी सरकारी जानकारी — 30 दिन में जवाब अनिवार्य।"},
+  l:"RTI Act 2005",
+  rn:{en:"Personal Rights (RTI)",te:"వ్యక్తిగత హక్కులు (RTI)",hi:"व्यक्तिगत अधिकार (RTI)"},ru:"rights-personal.html",
+  mn:{en:"RTI application — rtionline.gov.in",te:"RTI దరఖాస్తు — rtionline.gov.in",hi:"RTI आवेदन — rtionline.gov.in"},
+  cn:{en:"Limitation Calculator",te:"పరిమితి కాలిక్యులేటర్",hi:"सीमा कैलकुलेटर"},cu:"limitation-calc.html",
+  hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
+ {f:{en:"Builder delayed possession? Exit with full refund + interest, OR stay and claim monthly delay interest.",te:"బిల్డర్ ఆలస్యమా? పూర్తి రీఫండ్ + వడ్డీతో నిష్క్రమించండి, లేదా ఉండి నెలవారీ వడ్డీ క్లెయిమ్ చేయండి.",hi:"बिल्डर की देरी? पूरा रिफंड + ब्याज लेकर निकलें, या रुककर मासिक ब्याज लें।"},
+  l:"RERA 2016, Section 18",
+  rn:{en:"Property Rights (RERA)",te:"ఆస్తి హక్కులు (RERA)",hi:"संपत्ति अधिकार (RERA)"},ru:"rights-property.html",
+  mn:{en:"RERA complaint — 60-day disposal, no lawyer",te:"RERA ఫిర్యాదు — 60 రోజుల్లో పరిష్కారం",hi:"RERA शिकायत — 60 दिन में निपटान"},
+  cn:{en:"Stamp Duty Calculator",te:"స్టాంప్ డ్యూటీ కాలిక్యులేటర్",hi:"स्टांप ड्यूटी कैलकुलेटर"},cu:"property-suite.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"Unauthorised bank transaction? Report within 3 days and your liability is ZERO — bank must shadow-credit in 10 days.",te:"అనధికార బ్యాంక్ లావాదేవీ? 3 రోజుల్లో రిపోర్ట్ = బాధ్యత సున్నా.",hi:"अनधिकृत बैंक लेनदेन? 3 दिन में रिपोर्ट = शून्य देनदारी।"},
+  l:"RBI Zero Liability Circular 2017",
+  rn:{en:"Digital & Banking Rights",te:"డిజిటల్ & బ్యాంకింగ్ హక్కులు",hi:"डिजिटल और बैंकिंग अधिकार"},ru:"rights-digital.html",
+  mn:{en:"Bank + 1930 + RBI Ombudsman (cms.rbi.org.in)",te:"బ్యాంక్ + 1930 + RBI అంబుడ్స్‌మన్",hi:"बैंक + 1930 + RBI लोकपाल"},
+  cn:{en:"Finance Calculator",te:"ఫైనాన్స్ కాలిక్యులేటర్",hi:"वित्त कैलकुलेटर"},cu:"finance-suite.html",
+  hn:{en:"Cyber Helpline",te:"సైబర్ హెల్ప్‌లైన్",hi:"साइबर हेल्पलाइन"},hp:"1930"},
+ {f:{en:"Flight cancelled with under 2 weeks notice? Airline owes ₹5,000–₹10,000 compensation PLUS full refund.",te:"2 వారాల కంటే తక్కువ నోటీసుతో విమానం రద్దా? ₹5,000–₹10,000 పరిహారం + పూర్తి రీఫండ్.",hi:"2 हफ्ते से कम नोटिस पर फ्लाइट रद्द? ₹5,000–₹10,000 मुआवज़ा + पूरा रिफंड।"},
+  l:"DGCA CAR Section 3, Series M, Part IV",
+  rn:{en:"Air Travel Rights",te:"విమాన ప్రయాణ హక్కులు",hi:"हवाई यात्रा अधिकार"},ru:"travel-air.html",
+  mn:{en:"AirSewa complaint + Consumer Commission",te:"AirSewa ఫిర్యాదు + వినియోగదారు కమిషన్",hi:"AirSewa शिकायत + उपभोक्ता आयोग"},
+  cn:{en:"Court Fee Calculator",te:"కోర్టు రుసుము కాలిక్యులేటర్",hi:"कोर्ट फीस कैलकुलेटर"},cu:"court-fee-calc.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"A woman cannot be thrown out of her shared household — even if the house is not in her name.",te:"మహిళను భాగస్వామ్య ఇంటి నుండి వెళ్ళగొట్టలేరు — ఇల్లు ఆమె పేరున లేకపోయినా.",hi:"महिला को साझा घर से नहीं निकाला जा सकता — भले घर उसके नाम न हो।"},
+  l:"DV Act 2005, Section 17",
+  rn:{en:"Women's Rights",te:"మహిళల హక్కులు",hi:"महिला अधिकार"},ru:"rights-women.html",
+  mn:{en:"DV Act reliefs — residence + protection order",te:"DV చట్టం ఉపశమనాలు — నివాసం + రక్షణ",hi:"DV अधिनियम राहतें — निवास + सुरक्षा"},
+  cn:{en:"Finance Calculator (maintenance)",te:"ఫైనాన్స్ కాలిక్యులేటర్",hi:"वित्त कैलकुलेटर"},cu:"finance-suite.html",
+  hn:{en:"Women Helpline",te:"మహిళా హెల్ప్‌లైన్",hi:"महिला हेल्पलाइन"},hp:"181"},
+ {f:{en:"Electricity bill disputed in 15 days? DISCOM must reply in 7 — and cannot disconnect while pending.",te:"15 రోజుల్లో విద్యుత్ బిల్లు వివాదం? DISCOM 7 రోజుల్లో స్పందించాలి — పెండింగ్‌లో కట్ లేదు.",hi:"15 दिन में बिजली बिल विवाद? DISCOM 7 दिन में जवाब दे — लंबित रहते कटौती नहीं।"},
+  l:"Electricity Act 2003, Sections 55-56",
+  rn:{en:"Energy Rights",te:"శక్తి హక్కులు",hi:"ऊर्जा अधिकार"},ru:"rights-energy.html",
+  mn:{en:"CGRF → SERC → Electricity Ombudsman",te:"CGRF → SERC → విద్యుత్ అంబుడ్స్‌మన్",hi:"CGRF → SERC → विद्युत लोकपाल"},
+  cn:{en:"Electricity Bill Calculator",te:"విద్యుత్ బిల్లు కాలిక్యులేటర్",hi:"बिजली बिल कैलकुलेटर"},cu:"electricity-calc.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"Loan app agents calling your family? ILLEGAL — RBI bans third-party contact. Report at sachet.rbi.org.in.",te:"లోన్ యాప్ ఏజెంట్లు కుటుంబానికి కాల్ చేస్తున్నారా? చట్టవిరుద్ధం — RBI నిషేధించింది.",hi:"लोन ऐप एजेंट परिवार को कॉल कर रहे? गैरकानूनी — RBI ने रोका है।"},
+  l:"RBI Digital Lending Guidelines 2022",
+  rn:{en:"Digital Rights",te:"డిజిటల్ హక్కులు",hi:"डिजिटल अधिकार"},ru:"rights-digital.html",
+  mn:{en:"sachet.rbi.org.in + FIR (IPC 503/506)",te:"sachet.rbi.org.in + FIR",hi:"sachet.rbi.org.in + FIR"},
+  cn:{en:"Finance Calculator",te:"ఫైనాన్స్ కాలిక్యులేటర్",hi:"वित्त कैलकुलेटर"},cu:"finance-suite.html",
+  hn:{en:"Cyber Helpline",te:"సైబర్ హెల్ప్‌లైన్",hi:"साइबर हेल्पलाइन"},hp:"1930"},
+ {f:{en:"Rooftop solar net metering is a legal right — DISCOM must process it within 30 days. Subsidy: ₹30k–₹78k.",te:"నెట్ మీటరింగ్ చట్టపరమైన హక్కు — DISCOM 30 రోజుల్లో ప్రాసెస్ చేయాలి. సబ్సిడీ: ₹30k–₹78k.",hi:"नेट मीटरिंग कानूनी अधिकार — DISCOM 30 दिन में प्रोसेस करे। सब्सिडी: ₹30k–₹78k।"},
+  l:"Electricity Act 2003 · PM Surya Ghar 2024",
+  rn:{en:"Energy Rights (Solar)",te:"శక్తి హక్కులు (సోలార్)",hi:"ऊर्जा अधिकार (सोलर)"},ru:"rights-energy.html",
+  mn:{en:"SERC complaint + pmsuryaghar.gov.in grievance",te:"SERC ఫిర్యాదు + pmsuryaghar.gov.in",hi:"SERC शिकायत + pmsuryaghar.gov.in"},
+  cn:{en:"Solar Subsidy Calculator",te:"సోలార్ సబ్సిడీ కాలిక్యులేటర్",hi:"सोलर सब्सिडी कैलकुलेटर"},cu:"solar-legal.html",
+  hn:{en:"Consumer Helpline",te:"వినియోగదారు హెల్ప్‌లైన్",hi:"उपभोक्ता हेल्पलाइन"},hp:"1800-11-4000"},
+ {f:{en:"Train ticket refund: file TDR BEFORE the train departs — after departure the right is lost.",te:"రైలు టికెట్ రీఫండ్: రైలు బయలుదేరే ముందే TDR దాఖలు చేయండి.",hi:"ट्रेन टिकट रिफंड: ट्रेन छूटने से पहले TDR फाइल करें।"},
+  l:"Railway Refund Rules 2015",
+  rn:{en:"Train Travel Rights",te:"రైలు ప్రయాణ హక్కులు",hi:"रेल यात्रा अधिकार"},ru:"travel-train.html",
+  mn:{en:"TDR on IRCTC + RailMadad 139",te:"IRCTC లో TDR + RailMadad 139",hi:"IRCTC पर TDR + RailMadad 139"},
+  cn:{en:"Limitation Calculator",te:"పరిమితి కాలిక్యులేటర్",hi:"सीमा कैलकुलेटर"},cu:"limitation-calc.html",
+  hn:{en:"RailMadad",te:"RailMadad",hi:"RailMadad"},hp:"139"},
+ {f:{en:"Every legal claim has a deadline: consumer 2 years, property 12 years. Miss it — lose the right forever.",te:"ప్రతి క్లెయిమ్‌కు గడువు: వినియోగదారు 2 సంవత్సరాలు, ఆస్తి 12. తప్పిపోతే హక్కు శాశ్వతంగా పోతుంది.",hi:"हर दावे की समयसीमा: उपभोक्ता 2 साल, संपत्ति 12। चूके तो अधिकार हमेशा के लिए गया।"},
+  l:"Limitation Act 1963",
+  rn:{en:"Know Your Deadlines",te:"మీ గడువులు తెలుసుకోండి",hi:"अपनी समयसीमाएं जानें"},ru:"rights-hub.html",
+  mn:{en:"Check before filing — every remedy has a clock",te:"దాఖలుకు ముందు తనిఖీ చేయండి",hi:"दाखिल से पहले जांचें"},
+  cn:{en:"Limitation Calculator",te:"పరిమితి కాలిక్యులేటర్",hi:"सीमा कैलकुलेटर"},cu:"limitation-calc.html",
+  hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
+];
 
 let L='en', tagIdx=0, tagTimer=null;
 
@@ -431,10 +561,29 @@ function render(){
  // Situation grid
  document.getElementById('sitGrid').innerHTML=U.sits.map(([icon,name,url])=>
   `<a class="sit" href="https://lawsticker-ai.com/${url}"><span class="sit-icon">${icon}</span><span class="sit-name">${name}</span></a>`).join('');
- // Today's fact
- const f=U.facts[dayOfYear()%U.facts.length];
- document.getElementById('tFact').textContent=f[0];
- document.getElementById('tLaw').textContent='📋 '+f[1];
+ // Today's bundle: fact + right + remedy + calc + helpline
+ const B=BUNDLES[dayOfYear()%BUNDLES.length];
+ document.getElementById('tFact').textContent=B.f[L];
+ document.getElementById('tLaw').textContent='📋 '+B.l;
+ const KB=UI[L].bundleK;
+ document.getElementById('tbRight').href='https://lawsticker-ai.com/'+B.ru;
+ document.getElementById('tbRightK').textContent=KB[0];
+ document.getElementById('tbRightV').textContent=B.rn[L];
+ document.getElementById('tbRemedyK').textContent=KB[1];
+ document.getElementById('tbRemedyV').textContent=B.mn[L];
+ document.getElementById('tbCalc').href='https://lawsticker-ai.com/'+B.cu;
+ document.getElementById('tbCalcK').textContent=KB[2];
+ document.getElementById('tbCalcV').textContent=B.cn[L];
+ document.getElementById('tbHelp').href='tel:'+B.hp.replace(/-/g,'');
+ document.getElementById('tbHelpK').textContent=KB[3];
+ document.getElementById('tbHelpV').textContent=B.hn[L]+' · '+B.hp;
+ document.getElementById('tShare').textContent=UI[L].tShare;
+ // Ticker: rotate start position daily so it feels fresh every day
+ const start=dayOfYear()%BUNDLES.length;
+ const items=[...BUNDLES.slice(start),...BUNDLES.slice(0,start)];
+ const tickerHTML=items.map(b=>`<a href="https://lawsticker-ai.com/${b.ru}"><b>${UI[L].tickPrefix}</b> ${b.f[L]}</a>`).join('');
+ document.getElementById('ticker').innerHTML=tickerHTML+tickerHTML; // duplicate for seamless loop
+ document.getElementById('tickLabel').textContent=UI[L].tickLabel;
  // Rotating tagline
  rotateTag(true);
 }
@@ -446,6 +595,19 @@ function rotateTag(reset){
  const el=document.getElementById('heroTag');
  el.style.opacity=0;
  setTimeout(()=>{el.textContent=tags[tagIdx%tags.length];el.style.transition='opacity .5s';el.style.opacity=1;tagIdx++;},reset?0:400);
+}
+
+
+function shareToday(){
+ const B=BUNDLES[dayOfYear()%BUNDLES.length];
+ const U=UI[L];
+ const msg=U.shareTpl
+  .replace('{fact}',B.f[L]).replace('{law}',B.l)
+  .replace('{right}',B.rn[L]).replace('{rurl}','lawsticker-ai.com/'+B.ru)
+  .replace('{remedy}',B.mn[L])
+  .replace('{calc}',B.cn[L]).replace('{curl}','lawsticker-ai.com/'+B.cu)
+  .replace('{help}',B.hn[L]+' '+B.hp);
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 
 document.addEventListener('DOMContentLoaded',render);
