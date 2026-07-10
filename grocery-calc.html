@@ -187,6 +187,42 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
   color:var(--jade-d);font-weight:700;line-height:1.6;}
 
 /* BOTTOM NAV */
+
+/* BILL FRAUD CHECK */
+.bc-wrap{background:#fff;border:2px solid var(--rose,#DC2626);border-radius:18px;padding:16px;margin-bottom:22px;}
+.bc-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.bc-title{font-size:16px;font-weight:900;color:#991B1B;}
+.bc-sub{font-size:11.5px;color:#6B7280;line-height:1.65;margin-bottom:14px;}
+.bc-field{margin-bottom:10px;}
+.bc-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#374151;margin-bottom:4px;}
+.bc-input{width:100%;padding:11px 12px;border:1.5px solid #D1D5DB;border-radius:10px;font-family:inherit;font-size:14px;}
+.bc-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.bc-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.bc-btn{width:100%;padding:13px;background:#DC2626;color:#fff;border:none;border-radius:12px;
+font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:4px;}
+.bc-btn:active{transform:scale(.98);}
+.bc-verdict{border-radius:12px;padding:13px;margin-top:12px;display:none;}
+.bc-verdict.show{display:block;}
+.bc-verdict.bad{background:#FEF2F2;border:1.5px solid #FECACA;}
+.bc-verdict.good{background:#ECFDF5;border:1.5px solid #A7F3D0;}
+.bc-v-title{font-size:14px;font-weight:900;margin-bottom:6px;}
+.bc-verdict.bad .bc-v-title{color:#991B1B;}
+.bc-verdict.good .bc-v-title{color:#065F46;}
+.bc-v-line{font-size:12.5px;color:#374151;line-height:1.7;margin-bottom:4px;}
+.bc-v-law{font-size:10.5px;color:#8B6914;font-weight:700;margin-top:8px;}
+.bc-complaint-btn{width:100%;padding:11px;background:#25D366;color:#fff;border:none;border-radius:10px;
+font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;margin-top:10px;}
+.bc-section-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px;}
+.bc-tab{padding:9px 6px;border-radius:10px;border:1.5px solid #D1D5DB;background:#F3F4F6;
+font-family:inherit;font-size:11px;font-weight:800;color:#374151;cursor:pointer;text-align:center;}
+.bc-tab.active{background:#0D1117;color:#F5D76E;border-color:#0D1117;}
+.bc-panel{display:none;}
+.bc-panel.active{display:block;}
+.bc-hint{font-size:10.5px;color:#6B7280;line-height:1.6;margin-top:6px;}
+.up-win{background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:10px;padding:10px 12px;margin-top:10px;
+font-size:12.5px;font-weight:700;color:#065F46;display:none;}
+.up-win.show{display:block;}
+
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);
   border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;
   display:flex;flex-direction:row;justify-content:space-around;
@@ -255,6 +291,68 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
 </div>
 
 <div class="page">
+
+
+<!-- BILL FRAUD CHECK -->
+<div class="sec-hd" id="secBillCheck">🕵️ Bill Fraud Check</div>
+<div class="bc-wrap">
+  <div class="bc-sub" id="bcIntro">Shops commit 3 common frauds: charging GST on top of MRP (illegal — MRP includes all taxes), charging above MRP, and collecting GST with a fake/no GSTIN. Check your bill here.</div>
+  <div class="bc-section-tabs">
+    <button class="bc-tab active" id="bctab0" onclick="bcTab(0)">MRP + GST</button>
+    <button class="bc-tab" id="bctab1" onclick="bcTab(1)">GSTIN</button>
+    <button class="bc-tab" id="bctab2" onclick="bcTab(2)">Unit Price</button>
+  </div>
+
+  <!-- PANEL 0: MRP/GST fraud -->
+  <div class="bc-panel active" id="bcpanel0">
+    <div class="bc-row2">
+      <div class="bc-field"><div class="bc-label" id="bcMrpL">MRP on packet ₹</div>
+        <input class="bc-input" id="bcMrp" type="number" min="0" step="0.01" placeholder="e.g. 100"></div>
+      <div class="bc-field"><div class="bc-label" id="bcChargedL">Price charged ₹</div>
+        <input class="bc-input" id="bcCharged" type="number" min="0" step="0.01" placeholder="e.g. 105"></div>
+    </div>
+    <div class="bc-field"><div class="bc-label" id="bcGstAddedL">GST shown separately on bill? ₹ (0 if none)</div>
+      <input class="bc-input" id="bcGstAdded" type="number" min="0" step="0.01" placeholder="0"></div>
+    <button class="bc-btn" onclick="bcCheckMrp()" id="bcCheckBtn">🕵️ Check My Bill</button>
+    <div class="bc-verdict" id="bcVerdict">
+      <div class="bc-v-title" id="bcVTitle"></div>
+      <div id="bcVLines"></div>
+      <div class="bc-v-law" id="bcVLaw"></div>
+      <button class="bc-complaint-btn" id="bcComplaintBtn" onclick="bcShareComplaint()" style="display:none;"></button>
+    </div>
+  </div>
+
+  <!-- PANEL 1: GSTIN validator -->
+  <div class="bc-panel" id="bcpanel1">
+    <div class="bc-field"><div class="bc-label" id="bcGstinL">GSTIN printed on bill (15 characters)</div>
+      <input class="bc-input" id="bcGstin" maxlength="15" placeholder="36ABCDE1234F1Z5" style="text-transform:uppercase;letter-spacing:1px;"></div>
+    <button class="bc-btn" onclick="bcCheckGstin()" id="bcGstinBtn">✓ Validate GSTIN</button>
+    <div class="bc-hint" id="bcGstinHint">No GSTIN on the bill but GST charged? The shop cannot legally collect GST. Composition scheme dealers also cannot charge GST.</div>
+    <div class="bc-verdict" id="bcGVerdict">
+      <div class="bc-v-title" id="bcGVTitle"></div>
+      <div id="bcGVLines"></div>
+      <div class="bc-v-law" id="bcGVLaw"></div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: Unit price comparator -->
+  <div class="bc-panel" id="bcpanel2">
+    <div class="bc-row2">
+      <div class="bc-field"><div class="bc-label" id="upAqL">Pack A: quantity (g/ml)</div>
+        <input class="bc-input" id="upAq" type="number" min="0" placeholder="500"></div>
+      <div class="bc-field"><div class="bc-label" id="upApL">Pack A: price ₹</div>
+        <input class="bc-input" id="upAp" type="number" min="0" step="0.01" placeholder="48"></div>
+    </div>
+    <div class="bc-row2">
+      <div class="bc-field"><div class="bc-label" id="upBqL">Pack B: quantity (g/ml)</div>
+        <input class="bc-input" id="upBq" type="number" min="0" placeholder="1000"></div>
+      <div class="bc-field"><div class="bc-label" id="upBpL">Pack B: price ₹</div>
+        <input class="bc-input" id="upBp" type="number" min="0" step="0.01" placeholder="92"></div>
+    </div>
+    <button class="bc-btn" style="background:#059669;" onclick="upCompare()" id="upBtn">⚖️ Which is Cheaper?</button>
+    <div class="up-win" id="upWin"></div>
+  </div>
+</div>
 
 <!-- QUICK ENTRY -->
 <div class="sec-hd" id="secQuickEntry">Quick Add Item</div>
@@ -339,7 +437,7 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
 <div class="bottom-nav">
   <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
   <a class="bn" href="https://lawsticker-ai.com/rights-hub.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">Rights</span></a>
-  <a class="bn" href="https://lawsticker-ai.com/ask.html"><span class="bn-icon">💬</span><span class="bn-lbl">Ask AI</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/rights-shorts.html"><span class="bn-icon">📇</span><span class="bn-lbl">Cards</span></a>
   <a class="bn" href="https://lawsticker-ai.com/calculators.html"><span class="bn-icon">🧮</span><span class="bn-lbl active">Calculators</span></a>
   <a class="bn" href="https://lawsticker-ai.com/helplines.html"><span class="bn-icon">📞</span><span class="bn-lbl">Helplines</span></a>
 </div>
@@ -352,6 +450,7 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
 // ══════════════════════════════════════════════════════════════
 const UI = {
   en: {
+    secBillCheck:'🕵️ Bill Fraud Check',bcIntro:'Shops commit 3 common frauds: charging GST on top of MRP (illegal — MRP includes all taxes), charging above MRP, and collecting GST with a fake or missing GSTIN. Check your bill here.',bcTabs:['MRP + GST','GSTIN','Unit Price'],bcMrpL:'MRP on packet ₹',bcChargedL:'Price charged ₹',bcGstAddedL:'GST shown separately on bill? ₹ (0 if none)',bcCheckBtn:'🕵️ Check My Bill',bcGstinL:'GSTIN printed on bill (15 characters)',bcGstinBtn:'✓ Validate GSTIN',bcGstinHint:'No GSTIN on the bill but GST charged? The shop cannot legally collect GST. Composition scheme dealers also cannot charge GST.',upAqL:'Pack A: quantity (g/ml)',upApL:'Pack A: price ₹',upBqL:'Pack B: quantity (g/ml)',upBpL:'Pack B: price ₹',upBtn:'⚖️ Which is Cheaper?',bc:{needBoth:'Please fill the required numbers first.',badTitle:'🚨 FRAUD DETECTED ON YOUR BILL',goodTitle:'✅ Bill looks clean',gstOnMrp:'GST charged ON TOP of MRP — this is ILLEGAL. MRP already includes ALL taxes.',gstOnMrpDetail:'The ₹{g} "GST" added to MRP is an unlawful collection. You can demand it back on the spot.',overMrp:'Charged ₹{c} against MRP ₹{m} — ₹{d} overcharge. Selling above MRP is a punishable offence.',clean:'No MRP violation detected. Price charged is within MRP and no illegal GST addition found.',law:'Legal Metrology Act 2009, Section 18 · Consumer Protection Act 2019 · Complaint: 1915 / consumerhelpline.gov.in',complaintBtn:'📲 Generate Complaint (WhatsApp)',complaintTpl:'⚠️ *MRP VIOLATION COMPLAINT DRAFT*\n\nDate: {date}\nStore: ____________\nItem: ____________\n\nMRP on packet: ₹{mrp}\nAmount charged: ₹{paid}\nGST added on MRP: ₹{gst}\n\nThis violates the Legal Metrology Act 2009 (selling above MRP / charging GST on MRP which is tax-inclusive).\n\nI request refund of the excess and action against the store.\n\n📞 File at: 1915 or consumerhelpline.gov.in\n\n_Checked via lawsticker-ai.com/grocery-calc.html_',gLen:'GSTIN must be exactly 15 characters — you entered {n}.',gFmt:'Format invalid. Pattern: 2-digit state + 10-char PAN + entity + Z + check character.',gChk:'CHECKSUM FAILED — this GSTIN is mathematically invalid. Likely fake or mistyped.',gValid:'Structure and checksum are VALID.',gState:'State: {s}',gPan:'PAN embedded: {p}',gBadState:'Unknown state code — suspicious.',gBadTitle:'🚨 INVALID GSTIN',gGoodTitle:'✅ GSTIN structure valid',gLaw:'A shop cannot collect GST without a valid GSTIN. Report: 1915 · cbic-gst.gov.in',gVerify:'Checksum valid ≠ registration active. Cross-verify free at services.gst.gov.in → Search Taxpayer.',upSame:'Both packs cost the same per 100g/ml (₹{u}).',upWinner:'Pack {w} is cheaper — ₹{ua} vs ₹{ub} per 100g/ml. You save {p}% choosing it.'},
     navBrand:'🛒 Grocery Bill Calculator',
     totalLabel:'Total Bill',
     resetBtn:'🗑 Clear All',
@@ -387,6 +486,7 @@ const UI = {
     voiceNoPrice:'Could not detect price — say item name then price',
   },
   te: {
+    secBillCheck:'🕵️ బిల్లు మోసం తనిఖీ',bcIntro:'దుకాణాలు 3 సాధారణ మోసాలు చేస్తాయి: MRP పైన GST వసూలు (చట్టవిరుద్ధం — MRPలో అన్ని పన్నులు ఉన్నాయి), MRP మించి వసూలు, నకిలీ/లేని GSTINతో GST వసూలు. మీ బిల్లు ఇక్కడ తనిఖీ చేయండి.',bcTabs:['MRP + GST','GSTIN','యూనిట్ ధర'],bcMrpL:'ప్యాకెట్ MRP ₹',bcChargedL:'వసూలు చేసిన ధర ₹',bcGstAddedL:'బిల్లులో GST విడిగా చూపారా? ₹ (లేకపోతే 0)',bcCheckBtn:'🕵️ నా బిల్లు తనిఖీ',bcGstinL:'బిల్లుపై GSTIN (15 అక్షరాలు)',bcGstinBtn:'✓ GSTIN ధృవీకరించండి',bcGstinHint:'బిల్లుపై GSTIN లేదు కానీ GST వసూలు చేశారా? దుకాణం చట్టపరంగా GST వసూలు చేయలేదు.',upAqL:'ప్యాక్ A: పరిమాణం (g/ml)',upApL:'ప్యాక్ A: ధర ₹',upBqL:'ప్యాక్ B: పరిమాణం (g/ml)',upBpL:'ప్యాక్ B: ధర ₹',upBtn:'⚖️ ఏది చవక?',bc:{needBoth:'ముందుగా అవసరమైన సంఖ్యలు నింపండి.',badTitle:'🚨 మీ బిల్లులో మోసం గుర్తించబడింది',goodTitle:'✅ బిల్లు సరిగ్గా ఉంది',gstOnMrp:'MRP పైన అదనంగా GST వసూలు — ఇది చట్టవిరుద్ధం. MRPలో అన్ని పన్నులు ఇప్పటికే ఉన్నాయి.',gstOnMrpDetail:'MRPకి జోడించిన ₹{g} "GST" చట్టవిరుద్ధ వసూలు. అక్కడికక్కడే తిరిగి అడగవచ్చు.',overMrp:'MRP ₹{m} కి బదులు ₹{c} వసూలు — ₹{d} అధిక వసూలు. MRP మించి అమ్మడం శిక్షార్హ నేరం.',clean:'MRP ఉల్లంఘన లేదు. వసూలు చేసిన ధర MRP లోపే ఉంది, చట్టవిరుద్ధ GST జోడింపు లేదు.',law:'Legal Metrology Act 2009, Section 18 · CPA 2019 · ఫిర్యాదు: 1915 / consumerhelpline.gov.in',complaintBtn:'📲 ఫిర్యాదు తయారు చేయండి (WhatsApp)',complaintTpl:'⚠️ *MRP ఉల్లంఘన ఫిర్యాదు ముసాయిదా*\n\nతేదీ: {date}\nదుకాణం: ____________\nవస్తువు: ____________\n\nప్యాకెట్ MRP: ₹{mrp}\nవసూలు చేసిన మొత్తం: ₹{paid}\nMRPపై జోడించిన GST: ₹{gst}\n\nఇది Legal Metrology Act 2009 ఉల్లంఘన (MRP మించి అమ్మడం / పన్నులతో కూడిన MRPపై GST వసూలు).\n\nఅదనపు మొత్తం వాపసు మరియు దుకాణంపై చర్య కోరుతున్నాను.\n\n📞 ఫిర్యాదు: 1915 లేదా consumerhelpline.gov.in\n\n_lawsticker-ai.com/grocery-calc.html ద్వారా తనిఖీ_',gLen:'GSTIN ఖచ్చితంగా 15 అక్షరాలు ఉండాలి — మీరు {n} ఇచ్చారు.',gFmt:'ఫార్మాట్ తప్పు. నమూనా: 2-అంకెల రాష్ట్రం + 10-అక్షరాల PAN + ఎంటిటీ + Z + చెక్ అక్షరం.',gChk:'చెక్‌సమ్ విఫలం — ఈ GSTIN గణితపరంగా చెల్లదు. నకిలీ లేదా తప్పుగా టైప్ చేసి ఉండవచ్చు.',gValid:'నిర్మాణం మరియు చెక్‌సమ్ సరైనవి.',gState:'రాష్ట్రం: {s}',gPan:'లోపల ఉన్న PAN: {p}',gBadState:'తెలియని రాష్ట్ర కోడ్ — అనుమానాస్పదం.',gBadTitle:'🚨 చెల్లని GSTIN',gGoodTitle:'✅ GSTIN నిర్మాణం సరైనది',gLaw:'చెల్లుబాటు అయ్యే GSTIN లేకుండా దుకాణం GST వసూలు చేయలేదు. రిపోర్ట్: 1915 · cbic-gst.gov.in',gVerify:'చెక్‌సమ్ సరైనది ≠ నమోదు యాక్టివ్. services.gst.gov.in → Search Taxpayer లో ఉచితంగా ధృవీకరించండి.',upSame:'రెండు ప్యాక్‌లు 100g/ml కి ఒకే ధర (₹{u}).',upWinner:'ప్యాక్ {w} చవక — 100g/ml కి ₹{ua} vs ₹{ub}. దీన్ని ఎంచుకుంటే {p}% ఆదా.'},
     navBrand:'🛒 కిరాణా బిల్లు కాలిక్యులేటర్',
     totalLabel:'మొత్తం బిల్లు',
     resetBtn:'🗑 అన్నీ తొలగించు',
@@ -422,6 +522,7 @@ const UI = {
     voiceNoPrice:'ధర గుర్తించలేకపోయాను — వస్తువు పేరు తర్వాత ధర చెప్పండి',
   },
   hi: {
+    secBillCheck:'🕵️ बिल धोखाधड़ी जांच',bcIntro:'दुकानें 3 आम धोखे करती हैं: MRP के ऊपर GST वसूलना (गैरकानूनी — MRP में सभी कर शामिल), MRP से अधिक वसूलना, नकली/बिना GSTIN के GST वसूलना। अपना बिल यहां जांचें।',bcTabs:['MRP + GST','GSTIN','यूनिट मूल्य'],bcMrpL:'पैकेट MRP ₹',bcChargedL:'वसूली गई कीमत ₹',bcGstAddedL:'बिल में GST अलग दिखाया? ₹ (नहीं तो 0)',bcCheckBtn:'🕵️ मेरा बिल जांचें',bcGstinL:'बिल पर GSTIN (15 अक्षर)',bcGstinBtn:'✓ GSTIN सत्यापित करें',bcGstinHint:'बिल पर GSTIN नहीं पर GST वसूला? दुकान कानूनी रूप से GST नहीं वसूल सकती।',upAqL:'पैक A: मात्रा (g/ml)',upApL:'पैक A: कीमत ₹',upBqL:'पैक B: मात्रा (g/ml)',upBpL:'पैक B: कीमत ₹',upBtn:'⚖️ कौन सस्ता?',bc:{needBoth:'पहले आवश्यक संख्याएं भरें।',badTitle:'🚨 आपके बिल में धोखाधड़ी पकड़ी गई',goodTitle:'✅ बिल सही लगता है',gstOnMrp:'MRP के ऊपर GST वसूला गया — यह गैरकानूनी है। MRP में सभी कर पहले से शामिल हैं।',gstOnMrpDetail:'MRP पर जोड़ा गया ₹{g} "GST" अवैध वसूली है। मौके पर ही वापस मांग सकते हैं।',overMrp:'MRP ₹{m} के बदले ₹{c} वसूले — ₹{d} अधिक। MRP से ऊपर बेचना दंडनीय अपराध है।',clean:'कोई MRP उल्लंघन नहीं। वसूली MRP के भीतर है, कोई अवैध GST जोड़ नहीं।',law:'Legal Metrology Act 2009, धारा 18 · CPA 2019 · शिकायत: 1915 / consumerhelpline.gov.in',complaintBtn:'📲 शिकायत तैयार करें (WhatsApp)',complaintTpl:'⚠️ *MRP उल्लंघन शिकायत ड्राफ्ट*\n\nतारीख: {date}\nदुकान: ____________\nवस्तु: ____________\n\nपैकेट MRP: ₹{mrp}\nवसूली गई राशि: ₹{paid}\nMRP पर जोड़ा GST: ₹{gst}\n\nयह Legal Metrology Act 2009 का उल्लंघन है (MRP से ऊपर बेचना / कर-समावेशी MRP पर GST वसूलना)।\n\nअतिरिक्त राशि की वापसी और दुकान पर कार्रवाई की मांग करता हूं।\n\n📞 शिकायत: 1915 या consumerhelpline.gov.in\n\n_lawsticker-ai.com/grocery-calc.html से जांचा_',gLen:'GSTIN ठीक 15 अक्षर होना चाहिए — आपने {n} डाले।',gFmt:'फॉर्मेट गलत। पैटर्न: 2-अंक राज्य + 10-अक्षर PAN + इकाई + Z + चेक अक्षर।',gChk:'चेकसम विफल — यह GSTIN गणितीय रूप से अमान्य है। नकली या गलत टाइप।',gValid:'संरचना और चेकसम मान्य हैं।',gState:'राज्य: {s}',gPan:'निहित PAN: {p}',gBadState:'अज्ञात राज्य कोड — संदिग्ध।',gBadTitle:'🚨 अमान्य GSTIN',gGoodTitle:'✅ GSTIN संरचना मान्य',gLaw:'वैध GSTIN के बिना दुकान GST नहीं वसूल सकती। रिपोर्ट: 1915 · cbic-gst.gov.in',gVerify:'चेकसम मान्य ≠ पंजीकरण सक्रिय। services.gst.gov.in → Search Taxpayer पर मुफ्त सत्यापित करें।',upSame:'दोनों पैक प्रति 100g/ml समान (₹{u})।',upWinner:'पैक {w} सस्ता है — ₹{ua} vs ₹{ub} प्रति 100g/ml। इसे चुनने पर {p}% बचत।'},
     navBrand:'🛒 किराना बिल कैलकुलेटर',
     totalLabel:'कुल बिल',
     resetBtn:'🗑 सब हटाएं',
@@ -691,12 +792,18 @@ function applyLang() {
   const L = UI[currentLang];
   const ids = ['navBrand','totalLabel','resetBtn','secQuickEntry','labelName','labelPrice',
     'labelQty','gstLabel','addBtn','qeHint','secCategories','secCart','cartEmptyText',
-    'secTips','bbSubtotal','bbTotalLabel','shareBtn','clearBtn'];
+    'secTips','bbSubtotal','bbTotalLabel','shareBtn','clearBtn',
+    'secBillCheck','bcIntro','bcMrpL','bcChargedL','bcGstAddedL','bcCheckBtn',
+    'bcGstinL','bcGstinBtn','bcGstinHint','upAqL','upApL','upBqL','upBpL','upBtn'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     const val = L[id];
     if (typeof val === 'string') el.textContent = val;
+  });
+  if (L.bcTabs) [0,1,2].forEach(i => {
+    const t = document.getElementById('bctab'+i);
+    if (t) t.textContent = L.bcTabs[i];
   });
   // Voice button
   const vbt = document.getElementById('voiceBtnText');
@@ -1180,6 +1287,120 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// ═══ BILL FRAUD CHECK ═══
+let bcLastReport=null;
+
+function bcTab(i){
+ [0,1,2].forEach(j=>{
+  document.getElementById('bctab'+j).classList.toggle('active',j===i);
+  document.getElementById('bcpanel'+j).classList.toggle('active',j===i);
+ });
+}
+
+function bcCheckMrp(){
+ const U=UI[currentLang].bc;
+ const mrp=parseFloat(document.getElementById('bcMrp').value)||0;
+ const charged=parseFloat(document.getElementById('bcCharged').value)||0;
+ const gstAdded=parseFloat(document.getElementById('bcGstAdded').value)||0;
+ const v=document.getElementById('bcVerdict');
+ const lines=[];let bad=false;
+ if(mrp<=0||charged<=0){alert(U.needBoth);return;}
+ const totalPaid=charged+ (gstAdded>0 && Math.abs(charged-mrp)<0.01 ? gstAdded : 0);
+ if(gstAdded>0){
+   bad=true;
+   lines.push(U.gstOnMrp);
+   lines.push(U.gstOnMrpDetail.replace('{g}',gstAdded.toFixed(2)));
+ }
+ const effective=charged+gstAdded;
+ if(effective>mrp+0.009){
+   bad=true;
+   lines.push(U.overMrp.replace('{d}',(effective-mrp).toFixed(2)).replace('{m}',mrp.toFixed(2)).replace('{c}',effective.toFixed(2)));
+ }
+ if(!bad){lines.push(U.clean);}
+ document.getElementById('bcVTitle').textContent=bad?U.badTitle:U.goodTitle;
+ document.getElementById('bcVLines').innerHTML=lines.map(l=>`<div class="bc-v-line">• ${l}</div>`).join('');
+ document.getElementById('bcVLaw').textContent=bad?U.law:'';
+ const btn=document.getElementById('bcComplaintBtn');
+ btn.style.display=bad?'block':'none';
+ btn.textContent=U.complaintBtn;
+ v.className='bc-verdict show '+(bad?'bad':'good');
+ bcLastReport=bad?{mrp,charged,gstAdded,over:(effective-mrp)}:null;
+}
+
+function bcShareComplaint(){
+ if(!bcLastReport)return;
+ const U=UI[currentLang].bc;
+ const r=bcLastReport;
+ const msg=U.complaintTpl
+  .replace('{mrp}',r.mrp.toFixed(2))
+  .replace('{paid}',(r.charged+r.gstAdded).toFixed(2))
+  .replace('{gst}',r.gstAdded.toFixed(2))
+  .replace('{date}',new Date().toLocaleDateString('en-IN'));
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// GSTIN checksum (public algorithm): chars 1-14 → base36; multiply alternate by 1,2;
+// sum quotient+remainder of /36; check char = (36 - sum%36)%36 in base36
+const B36='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const GST_STATES={'01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh','05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh','10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur','15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal','20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat','26':'Dadra & Nagar Haveli, Daman & Diu','27':'Maharashtra','29':'Karnataka','30':'Goa','31':'Lakshadweep','32':'Kerala','33':'Tamil Nadu','34':'Puducherry','35':'Andaman & Nicobar','36':'Telangana','37':'Andhra Pradesh','38':'Ladakh'};
+
+function gstinCheckChar(g14){
+ let sum=0;
+ for(let i=0;i<14;i++){
+  let v=B36.indexOf(g14[i]);
+  if(v<0)return null;
+  let m=v*((i%2===0)?1:2);
+  sum+=Math.floor(m/36)+(m%36);
+ }
+ return B36[(36-(sum%36))%36];
+}
+
+function bcCheckGstin(){
+ const U=UI[currentLang].bc;
+ const g=(document.getElementById('bcGstin').value||'').toUpperCase().trim();
+ const v=document.getElementById('bcGVerdict');
+ const lines=[];let bad=false;
+ const fmt=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+ if(g.length!==15){bad=true;lines.push(U.gLen.replace('{n}',g.length));}
+ else if(!fmt.test(g)){bad=true;lines.push(U.gFmt);}
+ else{
+  const expect=gstinCheckChar(g.slice(0,14));
+  if(expect!==g[14]){bad=true;lines.push(U.gChk);}
+  else{
+   const st=GST_STATES[g.slice(0,2)];
+   lines.push(U.gValid);
+   lines.push(U.gState.replace('{s}',st||('code '+g.slice(0,2))));
+   lines.push(U.gPan.replace('{p}',g.slice(2,12)));
+   if(!st){bad=true;lines.push(U.gBadState);}
+  }
+ }
+ document.getElementById('bcGVTitle').textContent=bad?U.gBadTitle:U.gGoodTitle;
+ document.getElementById('bcGVLines').innerHTML=lines.map(l=>`<div class="bc-v-line">• ${l}</div>`).join('');
+ document.getElementById('bcGVLaw').textContent=bad?U.gLaw:U.gVerify;
+ v.className='bc-verdict show '+(bad?'bad':'good');
+}
+
+function upCompare(){
+ const U=UI[currentLang].bc;
+ const aq=parseFloat(document.getElementById('upAq').value)||0;
+ const ap=parseFloat(document.getElementById('upAp').value)||0;
+ const bq=parseFloat(document.getElementById('upBq').value)||0;
+ const bp=parseFloat(document.getElementById('upBp').value)||0;
+ const w=document.getElementById('upWin');
+ if(aq<=0||ap<=0||bq<=0||bp<=0){alert(U.needBoth);return;}
+ const ua=ap/aq*100, ub=bp/bq*100; // per 100g/ml
+ let msg;
+ if(Math.abs(ua-ub)<0.001) msg=U.upSame.replace('{u}',ua.toFixed(2));
+ else{
+  const winner=ua<ub?'A':'B';
+  const pct=(Math.abs(ua-ub)/Math.max(ua,ub)*100).toFixed(1);
+  msg=U.upWinner.replace('{w}',winner).replace('{ua}',ua.toFixed(2)).replace('{ub}',ub.toFixed(2)).replace('{p}',pct);
+ }
+ w.textContent=msg;
+ w.classList.add('show');
+}
+
 </script>
 </body>
 </html>
