@@ -123,6 +123,38 @@ padding:0 26px;position:relative;}
 .ticker a b{color:var(--gold-l);}
 @keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
+
+/* DAILY QUIZ */
+.quiz{background:#fff;border:2px solid var(--gold);border-radius:20px;padding:20px 18px;
+margin-bottom:30px;box-shadow:0 6px 24px rgba(201,162,39,.15);}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.quiz-badge{background:var(--navy);color:var(--gold-l);font-size:9px;font-weight:900;
+letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:12px;}
+.quiz-streak{font-size:12px;font-weight:800;color:var(--amber);}
+.quiz-q{font-size:15.5px;font-weight:800;color:var(--ink);line-height:1.5;margin-bottom:14px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{background:var(--light);border:2px solid var(--border);border-radius:12px;
+padding:12px 14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);
+cursor:pointer;text-align:left;transition:all .2s;}
+.quiz-opt:active{transform:scale(.98);}
+.quiz-opt.correct{background:var(--jade-bg);border-color:var(--jade);color:var(--jade-d,#065F46);}
+.quiz-opt.wrong{background:#FEF2F2;border-color:var(--rose);color:#991B1B;}
+.quiz-opt:disabled{cursor:default;opacity:.85;}
+.quiz-reveal{display:none;margin-top:14px;}
+.quiz-reveal.show{display:block;}
+.quiz-verdict{font-size:14px;font-weight:900;margin-bottom:6px;}
+.quiz-verdict.win{color:var(--jade);}
+.quiz-verdict.lose{color:var(--rose);}
+.quiz-expl{font-size:12.5px;color:var(--ink2);line-height:1.7;margin-bottom:10px;}
+.quiz-law{font-size:11px;color:var(--gold-d);font-weight:700;margin-bottom:12px;}
+.quiz-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.quiz-share{background:#25D366;color:#fff;border:none;border-radius:10px;padding:11px;
+font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.quiz-more{display:flex;align-items:center;justify-content:center;background:var(--gold-pale);
+border:1.5px solid var(--gold);color:var(--gold-d);border-radius:10px;padding:11px;
+font-size:12px;font-weight:800;text-decoration:none;}
+.quiz-done-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
+
 /* TODAY BUNDLE */
 .tb-chips{display:grid;grid-template-columns:1fr;gap:7px;margin:14px 0 14px;}
 .tb-chip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);
@@ -250,6 +282,26 @@ justify-content:space-around;align-items:center;z-index:100;}
     </a>
   </div>
 
+  <!-- DAILY QUIZ -->
+  <div class="quiz">
+    <div class="quiz-top">
+      <span class="quiz-badge" id="qBadge"></span>
+      <span class="quiz-streak" id="qStreak"></span>
+    </div>
+    <div class="quiz-q" id="qQ"></div>
+    <div class="quiz-opts" id="qOpts"></div>
+    <div class="quiz-reveal" id="qReveal">
+      <div class="quiz-verdict" id="qVerdict"></div>
+      <div class="quiz-expl" id="qExpl"></div>
+      <div class="quiz-law" id="qLaw"></div>
+      <div class="quiz-actions">
+        <button class="quiz-share" onclick="shareQuiz()" id="qShare"></button>
+        <a class="quiz-more" id="qMore" href="#"></a>
+      </div>
+      <div class="quiz-done-note" id="qNote"></div>
+    </div>
+  </div>
+
   <!-- SITUATION PICKER -->
   <div class="sec-eyebrow" id="sEye"></div>
   <div class="sec-title" id="sTitle"></div>
@@ -370,7 +422,7 @@ const UI={
   hHd:'🚨 Emergency Helplines — Tap to Call',h1:'Police',h2:'Cyber Fraud',h3:'Women',h4:'Legal Aid',
   ftTag:'Your rights. Your language. Free.',
   ftDisc:'LawSticker AI provides legal information and education, not legal advice. For advice on your specific case, consult a qualified advocate. Free legal aid: NALSA 15100.',bundleK:['YOUR RIGHT','YOUR REMEDY','CALCULATE IT','HELPLINE'],tShare:'📲 Share Today\'s Right',tickLabel:'⚡ Rights',tickPrefix:'DID YOU KNOW?',
-  shareTpl:'💡 *TODAY\'S RIGHT*\n\n{fact}\n📋 {law}\n\n⚖️ Right: {right}\n→ {rurl}\n\n🛠️ Remedy: {remedy}\n\n🧮 Calculator: {calc}\n→ {curl}\n\n📞 Helpline: {help}\n\n_Your rights. Your language. Free._\nlawsticker-ai.com',stuN:'LLB Study Corner',stuD:'Osmania University subject apps — notes, videos, quizzes & cheat sheets for law students'},
+  shareTpl:'💡 *TODAY\'S RIGHT*\n\n{fact}\n📋 {law}\n\n⚖️ Right: {right}\n→ {rurl}\n\n🛠️ Remedy: {remedy}\n\n🧮 Calculator: {calc}\n→ {curl}\n\n📞 Helpline: {help}\n\n_Your rights. Your language. Free._\nlawsticker-ai.com',stuN:'LLB Study Corner',stuD:'Osmania University subject apps — notes, videos, quizzes & cheat sheets for law students',qBadge:"⚡ TODAY'S RIGHTS QUIZ",qStreakL:'day streak',qWin:'✅ Correct! You know your rights.',qLose:'❌ Not quite — now you know.',qShare:'📲 Share My Result',qMore:'⚖️ Read This Right →',qNote:'One question daily. Come back tomorrow to keep your streak!',qShareTpl:'⚡ *Daily Rights Quiz* {result} {streak}\n\n"{q}"\n\nCan YOU answer? Play today\'s quiz:\nlawsticker-ai.com\n\n_Your rights. Your language. Free._'},
  te:{navSub:'· ఉచితం',heroBadge:'భారతదేశపు త్రిభాషా చట్ట సాధికారత వేదిక',
   heroTitle:'మీ <span class="gold">హక్కులు</span> తెలుసుకోండి.<br>మీ <span class="gold">పరిష్కారాలు</span> తెలుసుకోండి.',
   heroTags:['మీ హక్కులు. మీ భాష. ఉచితం.','Your rights. Your language. Free.','आपके अधिकार। आपकी भाषा। मुफ्त।'],
@@ -396,7 +448,7 @@ const UI={
   hHd:'🚨 అత్యవసర హెల్ప్‌లైన్‌లు — కాల్ చేయడానికి నొక్కండి',h1:'పోలీస్',h2:'సైబర్ మోసం',h3:'మహిళలు',h4:'న్యాయ సహాయం',
   ftTag:'మీ హక్కులు. మీ భాష. ఉచితం.',
   ftDisc:'LawSticker AI చట్టపరమైన సమాచారం మరియు విద్యను అందిస్తుంది, న్యాయ సలహా కాదు. మీ నిర్దిష్ట కేసుకు అర్హత కలిగిన న్యాయవాదిని సంప్రదించండి. ఉచిత న్యాయ సహాయం: NALSA 15100.',bundleK:['మీ హక్కు','మీ పరిష్కారం','లెక్కించండి','హెల్ప్‌లైన్'],tShare:'📲 నేటి హక్కు షేర్ చేయండి',tickLabel:'⚡ హక్కులు',tickPrefix:'మీకు తెలుసా?',
-  shareTpl:'💡 *నేటి హక్కు*\n\n{fact}\n📋 {law}\n\n⚖️ హక్కు: {right}\n→ {rurl}\n\n🛠️ పరిష్కారం: {remedy}\n\n🧮 కాలిక్యులేటర్: {calc}\n→ {curl}\n\n📞 హెల్ప్‌లైన్: {help}\n\n_మీ హక్కులు. మీ భాష. ఉచితం._\nlawsticker-ai.com',stuN:'LLB స్టడీ కార్నర్',stuD:'ఉస్మానియా విశ్వవిద్యాలయ సబ్జెక్ట్ యాప్‌లు — నోట్స్, వీడియోలు, క్విజ్‌లు & చీట్ షీట్లు'},
+  shareTpl:'💡 *నేటి హక్కు*\n\n{fact}\n📋 {law}\n\n⚖️ హక్కు: {right}\n→ {rurl}\n\n🛠️ పరిష్కారం: {remedy}\n\n🧮 కాలిక్యులేటర్: {calc}\n→ {curl}\n\n📞 హెల్ప్‌లైన్: {help}\n\n_మీ హక్కులు. మీ భాష. ఉచితం._\nlawsticker-ai.com',stuN:'LLB స్టడీ కార్నర్',stuD:'ఉస్మానియా విశ్వవిద్యాలయ సబ్జెక్ట్ యాప్‌లు — నోట్స్, వీడియోలు, క్విజ్‌లు & చీట్ షీట్లు',qBadge:'⚡ నేటి హక్కుల క్విజ్',qStreakL:'రోజుల స్ట్రీక్',qWin:'✅ సరైనది! మీ హక్కులు మీకు తెలుసు.',qLose:'❌ కాదు — ఇప్పుడు తెలుసుకున్నారు.',qShare:'📲 నా ఫలితం షేర్',qMore:'⚖️ ఈ హక్కు చదవండి →',qNote:'రోజుకో ప్రశ్న. స్ట్రీక్ కొనసాగించడానికి రేపు రండి!',qShareTpl:'⚡ *రోజువారీ హక్కుల క్విజ్* {result} {streak}\n\n"{q}"\n\nమీరు జవాబు చెప్పగలరా? నేటి క్విజ్ ఆడండి:\nlawsticker-ai.com\n\n_మీ హక్కులు. మీ భాష. ఉచితం._'},
  hi:{navSub:'· मुफ्त',heroBadge:'भारत का त्रिभाषी कानूनी सशक्तिकरण मंच',
   heroTitle:'अपने <span class="gold">अधिकार</span> जानें।<br>अपने <span class="gold">उपाय</span> जानें।',
   heroTags:['आपके अधिकार। आपकी भाषा। मुफ्त।','Your rights. Your language. Free.','మీ హక్కులు. మీ భాష. ఉచితం.'],
@@ -422,7 +474,7 @@ const UI={
   hHd:'🚨 आपातकालीन हेल्पलाइन — कॉल के लिए टैप करें',h1:'पुलिस',h2:'साइबर धोखाधड़ी',h3:'महिला',h4:'कानूनी सहायता',
   ftTag:'आपके अधिकार। आपकी भाषा। मुफ्त।',
   ftDisc:'LawSticker AI कानूनी जानकारी और शिक्षा प्रदान करता है, कानूनी सलाह नहीं। अपने विशिष्ट मामले के लिए योग्य अधिवक्ता से परामर्श करें। मुफ्त कानूनी सहायता: NALSA 15100।',bundleK:['आपका अधिकार','आपका उपाय','गणना करें','हेल्पलाइन'],tShare:'📲 आज का अधिकार शेयर करें',tickLabel:'⚡ अधिकार',tickPrefix:'क्या आप जानते हैं?',
-  shareTpl:'💡 *आज का अधिकार*\n\n{fact}\n📋 {law}\n\n⚖️ अधिकार: {right}\n→ {rurl}\n\n🛠️ उपाय: {remedy}\n\n🧮 कैलकुलेटर: {calc}\n→ {curl}\n\n📞 हेल्पलाइन: {help}\n\n_आपके अधिकार। आपकी भाषा। मुफ्त।_\nlawsticker-ai.com',stuN:'LLB स्टडी कॉर्नर',stuD:'उस्मानिया विश्वविद्यालय विषय ऐप्स — नोट्स, वीडियो, क्विज़ और चीट शीट'},
+  shareTpl:'💡 *आज का अधिकार*\n\n{fact}\n📋 {law}\n\n⚖️ अधिकार: {right}\n→ {rurl}\n\n🛠️ उपाय: {remedy}\n\n🧮 कैलकुलेटर: {calc}\n→ {curl}\n\n📞 हेल्पलाइन: {help}\n\n_आपके अधिकार। आपकी भाषा। मुफ्त।_\nlawsticker-ai.com',stuN:'LLB स्टडी कॉर्नर',stuD:'उस्मानिया विश्वविद्यालय विषय ऐप्स — नोट्स, वीडियो, क्विज़ और चीट शीट',qBadge:'⚡ आज की अधिकार क्विज़',qStreakL:'दिन की स्ट्रीक',qWin:'✅ सही! आप अपने अधिकार जानते हैं।',qLose:'❌ नहीं — अब आप जानते हैं।',qShare:'📲 मेरा परिणाम शेयर करें',qMore:'⚖️ यह अधिकार पढ़ें →',qNote:'रोज़ एक सवाल। स्ट्रीक बनाए रखने कल आएं!',qShareTpl:'⚡ *दैनिक अधिकार क्विज़* {result} {streak}\n\n"{q}"\n\nक्या आप जवाब दे सकते हैं? आज की क्विज़ खेलें:\nlawsticker-ai.com\n\n_आपके अधिकार। आपकी भाषा। मुफ्त।_'},
 };
 
 
@@ -608,6 +660,7 @@ function render(){
    const half=tEl.scrollWidth/2;
    if(half>0)tEl.style.animationDuration=Math.max(20,Math.round(half/130))+'s';
  });
+ renderQuiz();
  // Rotating tagline
  rotateTag(true);
 }
@@ -621,6 +674,140 @@ function rotateTag(reset){
  setTimeout(()=>{el.textContent=tags[tagIdx%tags.length];el.style.transition='opacity .5s';el.style.opacity=1;tagIdx++;},reset?0:400);
 }
 
+
+
+// ═══ DAILY QUIZ — one question a day, streak, share ═══
+const QUIZ=[
+ {q:{en:"A hospital demands ₹20,000 deposit before treating an accident victim. Can it refuse treatment?",te:"ప్రమాద బాధితుడి చికిత్సకు ముందు ఆసుపత్రి ₹20,000 డిపాజిట్ అడుగుతోంది. చికిత్స నిరాకరించవచ్చా?",hi:"अस्पताल दुर्घटना पीड़ित के इलाज से पहले ₹20,000 जमा मांगता है। क्या इलाज से मना कर सकता है?"},
+  o:{en:["Yes, private hospitals can","No — emergency treatment cannot be refused","Only govt hospitals must treat"],te:["అవును, ప్రైవేట్ ఆసుపత్రులు చేయవచ్చు","కాదు — అత్యవసర చికిత్స నిరాకరించలేరు","ప్రభుత్వ ఆసుపత్రులు మాత్రమే"],hi:["हां, निजी अस्पताल कर सकते हैं","नहीं — आपातकालीन इलाज से मना नहीं","केवल सरकारी अस्पताल"]},
+  a:1,l:"Parmanand Katara (SC 1989) · Article 21",
+  e:{en:"NO hospital — government or private — can refuse emergency treatment for money. It violates the right to life.",te:"ఏ ఆసుపత్రి — ప్రభుత్వ లేదా ప్రైవేట్ — డబ్బు కోసం అత్యవసర చికిత్స నిరాకరించలేదు.",hi:"कोई अस्पताल — सरकारी या निजी — पैसे के लिए आपातकालीन इलाज से मना नहीं कर सकता।"},u:"rights-health.html"},
+ {q:{en:"Your salary is 20 days late. Is this just an HR issue?",te:"మీ జీతం 20 రోజులు ఆలస్యం. ఇది HR సమస్య మాత్రమేనా?",hi:"आपका वेतन 20 दिन लेट है। क्या यह सिर्फ HR मामला है?"},
+  o:{en:["Yes, internal matter","No — it's a criminal offence","Only if 3+ months late"],te:["అవును, అంతర్గత విషయం","కాదు — ఇది నేరం","3+ నెలలు ఆలస్యమైతేనే"],hi:["हां, आंतरिक मामला","नहीं — यह आपराधिक अपराध है","केवल 3+ महीने लेट होने पर"]},
+  a:1,l:"Payment of Wages Act 1936",
+  e:{en:"Salary must be paid by the 7th. Withholding it is a criminal offence — Labour Commissioner complaint is free.",te:"జీతం 7వ తేదీలోపు చెల్లించాలి. నిలిపివేయడం నేరం — లేబర్ కమీషనర్ ఫిర్యాదు ఉచితం.",hi:"वेतन 7 तारीख तक मिलना चाहिए। रोकना आपराधिक अपराध है।"},u:"rights-employment.html"},
+ {q:{en:"Your apartment association cuts your water over unpaid maintenance. Legal?",te:"మెయింటెనెన్స్ బకాయిలపై సంఘం మీ నీరు కట్ చేసింది. చట్టబద్ధమా?",hi:"बकाया मेंटेनेंस पर संघ ने आपका पानी काट दिया। कानूनी?"},
+  o:{en:["Yes, if dues exceed 3 months","Yes, if GB approved it","No — it's a criminal offence"],te:["అవును, 3 నెలలు మించితే","అవును, GB ఆమోదిస్తే","కాదు — ఇది నేరం"],hi:["हां, 3 महीने से अधिक पर","हां, GB की मंजूरी पर","नहीं — यह आपराधिक अपराध है"]},
+  a:2,l:"Article 21 · IPC 503/506",
+  e:{en:"Water is part of the right to life. No GB resolution can authorise disconnection — their only route is a recovery suit.",te:"నీరు జీవించే హక్కులో భాగం. ఏ GB తీర్మానం కట్‌కు అధికారం ఇవ్వలేదు.",hi:"पानी जीवन के अधिकार का हिस्सा है। कोई GB प्रस्ताव कटौती को अधिकृत नहीं कर सकता।"},u:"rights-residents.html"},
+ {q:{en:"A married daughter demands a share in ancestral property. Father died in 1998. Can she?",te:"వివాహిత కూతురు పూర్వీకుల ఆస్తిలో వాటా కోరుతోంది. తండ్రి 1998లో చనిపోయారు. ఆమెకు హక్కు ఉందా?",hi:"विवाहित बेटी पैतृक संपत्ति में हिस्सा मांगती है। पिता 1998 में गुज़रे। क्या वह कर सकती है?"},
+  o:{en:["No — father died before 2005","No — she's married","Yes — equal right, retroactive"],te:["లేదు — తండ్రి 2005 ముందు చనిపోయారు","లేదు — ఆమె వివాహిత","అవును — సమాన హక్కు, గత కాలానికీ"],hi:["नहीं — पिता 2005 से पहले गुज़रे","नहीं — वह विवाहित है","हां — बराबर हक, पूर्वव्यापी"]},
+  a:2,l:"Vineeta Sharma (SC 2020)",
+  e:{en:"Daughters are coparceners BY BIRTH — equal to sons, retroactive, marriage irrelevant.",te:"కూతుళ్ళు పుట్టుకతోనే సహభాగస్వాములు — కొడుకులతో సమానం, పెళ్ళి అసంబద్ధం.",hi:"बेटियां जन्म से सहदायिक हैं — बेटों के बराबर, विवाह अप्रासंगिक।"},u:"rights-family.html"},
+ {q:{en:"₹50,000 vanished via UPI fraud at 9 PM. What's the FIRST move?",te:"రాత్రి 9కి UPI మోసంతో ₹50,000 పోయాయి. మొదటి అడుగు?",hi:"रात 9 बजे UPI धोखाधड़ी से ₹50,000 गए। पहला कदम?"},
+  o:{en:["Visit police station tomorrow","Call 1930 immediately","Wait for bank to notice"],te:["రేపు పోలీస్ స్టేషన్‌కు","వెంటనే 1930కి కాల్","బ్యాంక్ గమనించే వరకు వేచి ఉండండి"],hi:["कल थाने जाएं","तुरंत 1930 कॉल करें","बैंक के नोटिस का इंतज़ार करें"]},
+  a:1,l:"IT Act 2000 · RBI Zero Liability",
+  e:{en:"Speed decides recovery — 1930 works 24/7 and can freeze the fraudster's account before money moves on.",te:"వేగమే వసూలును నిర్ణయిస్తుంది — 1930 24/7 పనిచేస్తుంది.",hi:"गति ही वसूली तय करती है — 1930 24/7 काम करता है।"},u:"rights-digital.html"},
+ {q:{en:"Cinema hall sells a ₹20 water bottle for ₹60. Allowed?",te:"సినిమా హాల్ ₹20 నీటి బాటిల్‌ను ₹60కి అమ్ముతోంది. అనుమతి ఉందా?",hi:"सिनेमा हॉल ₹20 की पानी की बोतल ₹60 में बेचता है। अनुमति है?"},
+  o:{en:["Yes — private premises","No — MRP is the maximum everywhere","Yes — with entertainment tax"],te:["అవును — ప్రైవేట్ ప్రాంగణం","కాదు — MRP అన్నిచోట్లా గరిష్టం","అవును — వినోద పన్నుతో"],hi:["हां — निजी परिसर","नहीं — MRP हर जगह अधिकतम","हां — मनोरंजन कर के साथ"]},
+  a:1,l:"Legal Metrology Act 2009",
+  e:{en:"MRP includes all taxes and applies everywhere — cinemas, airports, festivals. Charging above it is punishable.",te:"MRP అన్ని పన్నులతో సహా — అన్నిచోట్లా వర్తిస్తుంది. మించి వసూలు శిక్షార్హం.",hi:"MRP सभी करों सहित है — हर जगह लागू। अधिक वसूली दंडनीय।"},u:"rights-consumer.html"},
+ {q:{en:"College holds your originals until you pay a 'bond' for leaving early. Legal?",te:"ముందుగా వెళ్తున్నందుకు 'బాండ్' చెల్లించే వరకు కళాశాల మీ ఒరిజినల్స్ ఉంచుకుంది. చట్టబద్ధమా?",hi:"जल्दी छोड़ने पर 'बॉन्ड' चुकाने तक कॉलेज आपके मूल दस्तावेज़ रखता है। कानूनी?"},
+  o:{en:["Yes — you signed the bond","No — UGC prohibits retention","Only for professional courses"],te:["అవును — మీరు బాండ్ సంతకం చేశారు","కాదు — UGC నిషేధించింది","ప్రొఫెషనల్ కోర్సులకు మాత్రమే"],hi:["हां — आपने बॉन्ड साइन किया","नहीं — UGC ने रोका है","केवल प्रोफेशनल कोर्स के लिए"]},
+  a:1,l:"UGC Regulations 2018",
+  e:{en:"UGC explicitly prohibits keeping original certificates as security. Demand them in writing; escalate to e-Samadhaan.",te:"UGC ఒరిజినల్ సర్టిఫికేట్లను సెక్యూరిటీగా ఉంచడాన్ని స్పష్టంగా నిషేధించింది.",hi:"UGC मूल प्रमाणपत्र सिक्योरिटी के रूप में रखने पर स्पष्ट रोक लगाता है।"},u:"rights-student.html"},
+ {q:{en:"Hailstorm destroyed your crop on Monday. PMFBY deadline to report?",te:"సోమవారం వడగళ్ళు మీ పంటను నాశనం చేశాయి. PMFBY నివేదన గడువు?",hi:"सोमवार को ओलावृष्टि ने फसल नष्ट की। PMFBY रिपोर्ट की समयसीमा?"},
+  o:{en:["Within 72 hours","Within 30 days","Before season ends"],te:["72 గంటల్లో","30 రోజుల్లో","సీజన్ ముగిసేలోపు"],hi:["72 घंटे में","30 दिन में","सीजन खत्म होने से पहले"]},
+  a:0,l:"PMFBY Guidelines",
+  e:{en:"72 hours — via 14447, the app, insurer, bank or agriculture officer. Miss it and the claim can be rejected.",te:"72 గంటలు — 14447, యాప్, బీమా సంస్థ ద్వారా. తప్పితే క్లెయిమ్ తిరస్కరణ.",hi:"72 घंटे — 14447, ऐप, बीमाकर्ता से। चूके तो दावा खारिज।"},u:"rights-farmer.html"},
+ {q:{en:"Police arrested someone Saturday 10 AM. By when must they see a Magistrate?",te:"శనివారం ఉదయం 10కి అరెస్ట్. ఎప్పటిలోగా మేజిస్ట్రేట్ ముందు హాజరుపరచాలి?",hi:"शनिवार सुबह 10 बजे गिरफ्तारी। कब तक मजिस्ट्रेट के सामने पेश करना होगा?"},
+  o:{en:["Sunday 10 AM — 24 hours","Monday — next working day","Within 7 days"],te:["ఆదివారం 10 — 24 గంటలు","సోమవారం — తదుపరి పని దినం","7 రోజుల్లో"],hi:["रविवार 10 बजे — 24 घंटे","सोमवार — अगला कार्य दिवस","7 दिनों में"]},
+  a:0,l:"Article 22 · CrPC 57",
+  e:{en:"24 hours, no exceptions for weekends (excluding journey time). Beyond that = illegal detention → Habeas Corpus.",te:"24 గంటలు, వారాంతాలకు మినహాయింపు లేదు. మించితే = చట్టవిరుద్ధ నిర్బంధం.",hi:"24 घंटे, वीकेंड की छूट नहीं। उससे अधिक = अवैध हिरासत।"},u:"rights-personal.html"},
+ {q:{en:"Restaurant added 10% 'service charge' automatically. Must you pay it?",te:"రెస్టారెంట్ 10% 'సర్వీస్ ఛార్జ్' ఆటోమేటిక్‌గా జోడించింది. చెల్లించాలా?",hi:"रेस्तरां ने 10% 'सर्विस चार्ज' अपने आप जोड़ा। क्या देना जरूरी है?"},
+  o:{en:["Yes — it's like GST","No — it's optional, ask to remove","Only at 5-star hotels"],te:["అవును — GST లాంటిది","కాదు — ఐచ్ఛికం, తొలగించమనండి","5-స్టార్ హోటళ్లలో మాత్రమే"],hi:["हां — GST जैसा है","नहीं — वैकल्पिक है, हटवाएं","केवल 5-स्टार होटलों में"]},
+  a:1,l:"CCPA Guidelines 2022",
+  e:{en:"Service charge is voluntary. You can ask for it to be struck off — refusal to remove is an unfair trade practice.",te:"సర్వీస్ ఛార్జ్ స్వచ్ఛందం. తొలగించమని అడగవచ్చు.",hi:"सर्विस चार्ज स्वैच्छिक है। हटवाने को कह सकते हैं।"},u:"rights-consumer.html"},
+ {q:{en:"Builder promised possession Dec 2024, still incomplete. Your strongest option?",te:"బిల్డర్ డిసెంబర్ 2024 స్వాధీనం వాగ్దానం, ఇంకా అసంపూర్ణం. మీ బలమైన ఎంపిక?",hi:"बिल्डर ने दिसंबर 2024 कब्जे का वादा किया, अभी अधूरा। सबसे मजबूत विकल्प?"},
+  o:{en:["Wait — construction takes time","RERA: refund + interest OR delay interest","Only civil court works"],te:["వేచి ఉండండి","RERA: రీఫండ్ + వడ్డీ లేదా ఆలస్య వడ్డీ","సివిల్ కోర్టు మాత్రమే"],hi:["इंतज़ार करें","RERA: रिफंड + ब्याज या देरी ब्याज","केवल सिविल कोर्ट"]},
+  a:1,l:"RERA 2016, Section 18",
+  e:{en:"RERA gives you the choice — exit with refund + interest, or stay and claim monthly delay interest. 60-day disposal, no lawyer needed.",te:"RERA మీకు ఎంపిక ఇస్తుంది — 60 రోజుల పరిష్కారం, న్యాయవాది అవసరం లేదు.",hi:"RERA आपको विकल्प देता है — 60 दिन निपटान, वकील नहीं चाहिए।"},u:"rights-property.html"},
+ {q:{en:"Recovery agent calls your brother about YOUR loan. Allowed?",te:"రికవరీ ఏజెంట్ మీ రుణం గురించి మీ సోదరుడికి కాల్ చేశాడు. అనుమతి ఉందా?",hi:"रिकवरी एजेंट आपके लोन के बारे में आपके भाई को कॉल करता है। अनुमति है?"},
+  o:{en:["Yes — family is responsible","No — RBI prohibits third-party contact","Yes — if loan is 90+ days overdue"],te:["అవును — కుటుంబం బాధ్యత","కాదు — RBI నిషేధించింది","అవును — 90+ రోజులు మించితే"],hi:["हां — परिवार जिम्मेदार है","नहीं — RBI ने रोका है","हां — 90+ दिन बकाया पर"]},
+  a:1,l:"RBI Digital Lending Guidelines 2022",
+  e:{en:"Agents cannot contact family/friends/employer, cannot call before 8am/after 7pm. Report at sachet.rbi.org.in.",te:"ఏజెంట్లు కుటుంబం/స్నేహితులను సంప్రదించలేరు. sachet.rbi.org.in లో రిపోర్ట్.",hi:"एजेंट परिवार/दोस्तों से संपर्क नहीं कर सकते। sachet.rbi.org.in पर रिपोर्ट करें।"},u:"rights-digital.html"},
+ {q:{en:"You want your evaluated exam answer sheet. Can the university refuse?",te:"మీ మూల్యాంకన జవాబు పత్రం కావాలి. విశ్వవిద్యాలయం నిరాకరించవచ్చా?",hi:"आप अपनी मूल्यांकित उत्तर पुस्तिका चाहते हैं। क्या विश्वविद्यालय मना कर सकता है?"},
+  o:{en:["Yes — internal documents","No — it's information under RTI","Only toppers can see them"],te:["అవును — అంతర్గత పత్రాలు","కాదు — RTI కింద సమాచారం","టాపర్లు మాత్రమే చూడవచ్చు"],hi:["हां — आंतरिक दस्तावेज़","नहीं — RTI में सूचना है","केवल टॉपर देख सकते हैं"]},
+  a:1,l:"CBSE v. Aditya Bandopadhyay (SC 2011)",
+  e:{en:"The Supreme Court held answer sheets are 'information' — get a certified copy of your own sheet via RTI for ~₹10.",te:"జవాబు పత్రాలు 'సమాచారం' అని సుప్రీంకోర్టు తీర్పు — RTI ద్వారా ~₹10కి పొందండి.",hi:"सुप्रीम कोर्ट ने उत्तर पुस्तिकाओं को 'सूचना' माना — RTI से ~₹10 में पाएं।"},u:"rights-student.html"},
+ {q:{en:"Landlord won't return ₹50,000 deposit 2 months after you vacated. He says 'painting costs'. Your move?",te:"ఖాళీ చేసి 2 నెలలైనా యజమాని ₹50,000 డిపాజిట్ ఇవ్వడం లేదు. 'పెయింటింగ్ ఖర్చులు' అంటున్నాడు.",hi:"खाली किए 2 महीने बाद भी मकान मालिक ₹50,000 जमा नहीं लौटा रहा। 'पेंटिंग खर्च' कहता है।"},
+  o:{en:["Nothing — deposits are risky","Written demand → consumer/civil case","Deduct from last month's rent next time"],te:["ఏమీ లేదు","లిఖిత డిమాండ్ → వినియోగదారు/సివిల్ కేసు","తదుపరిసారి చివరి నెల అద్దె నుండి తగ్గించండి"],hi:["कुछ नहीं","लिखित मांग → उपभोक्ता/सिविल केस","अगली बार आखिरी महीने के किराए से काटें"]},
+  a:1,l:"TP Act 1882 · CPA 2019",
+  e:{en:"Normal wear and tear (painting after years of use) cannot be deducted. Written demand, then legal notice, then case — many settle at the notice stage.",te:"సాధారణ వాడకం (పెయింటింగ్) తగ్గించలేరు. లిఖిత డిమాండ్ → లీగల్ నోటీసు → కేసు.",hi:"सामान्य टूट-फूट (पेंटिंग) नहीं काटी जा सकती। लिखित मांग → नोटिस → केस।"},u:"rights-property.html"},
+]
+
+let quizState={answered:false};
+function quizKey(){const d=new Date();return 'lsq-'+d.getFullYear()+'-'+dayOfYear();}
+function getStreak(){try{return parseInt(localStorage.getItem('lsq-streak')||'0');}catch(e){return 0;}}
+function todayQuiz(){return QUIZ[dayOfYear()%QUIZ.length];}
+
+function renderQuiz(){
+ const U=UI[L],Q=todayQuiz();
+ document.getElementById('qBadge').textContent=U.qBadge;
+ document.getElementById('qQ').textContent=Q.q[L];
+ const streak=getStreak();
+ document.getElementById('qStreak').textContent=streak>0?('🔥 '+streak+' '+U.qStreakL):'';
+ let saved=null;
+ try{saved=localStorage.getItem(quizKey());}catch(e){}
+ const opts=document.getElementById('qOpts');
+ opts.innerHTML=Q.o[L].map((o,i)=>`<button class="quiz-opt" id="qopt${i}" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+ if(saved!==null){revealQuiz(parseInt(saved),true);}
+ else{document.getElementById('qReveal').classList.remove('show');}
+}
+
+function answerQuiz(i){
+ if(quizState.answered)return;
+ try{
+   if(localStorage.getItem(quizKey())!==null)return;
+   localStorage.setItem(quizKey(),String(i));
+   // streak: correct answer + played yesterday → +1, else reset to 1 (if correct) or 0
+   const Q=todayQuiz();
+   const y=new Date();y.setDate(y.getDate()-1);
+   const yKey='lsq-'+y.getFullYear()+'-'+(dayOfYear()-1);
+   let s=getStreak();
+   if(i===Q.a){s=(localStorage.getItem(yKey)!==null)?s+1:1;}
+   else{s=0;}
+   localStorage.setItem('lsq-streak',String(s));
+ }catch(e){}
+ revealQuiz(i,false);
+}
+
+function revealQuiz(i,restored){
+ quizState.answered=true;
+ const U=UI[L],Q=todayQuiz();
+ Q.o[L].forEach((_,j)=>{
+  const b=document.getElementById('qopt'+j);
+  if(!b)return;
+  b.disabled=true;
+  if(j===Q.a)b.classList.add('correct');
+  else if(j===i)b.classList.add('wrong');
+ });
+ const win=(i===Q.a);
+ const v=document.getElementById('qVerdict');
+ v.textContent=win?U.qWin:U.qLose;
+ v.className='quiz-verdict '+(win?'win':'lose');
+ document.getElementById('qExpl').textContent=Q.e[L];
+ document.getElementById('qLaw').textContent='📋 '+Q.l;
+ document.getElementById('qShare').textContent=U.qShare;
+ const more=document.getElementById('qMore');
+ more.textContent=U.qMore;
+ more.href='https://lawsticker-ai.com/'+Q.u;
+ document.getElementById('qNote').textContent=U.qNote;
+ document.getElementById('qStreak').textContent=getStreak()>0?('🔥 '+getStreak()+' '+U.qStreakL):'';
+ document.getElementById('qReveal').classList.add('show');
+}
+
+function shareQuiz(){
+ const U=UI[L],Q=todayQuiz();
+ let mine=null;try{mine=parseInt(localStorage.getItem(quizKey()));}catch(e){}
+ const win=(mine===Q.a);
+ const streak=getStreak();
+ const msg=U.qShareTpl
+  .replace('{result}',win?'✅':'❌')
+  .replace('{streak}',streak>0?('🔥'+streak):'')
+  .replace('{q}',Q.q[L]);
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
 
 function shareToday(){
  const B=BUNDLES[dayOfYear()%BUNDLES.length];
