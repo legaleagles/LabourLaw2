@@ -214,5 +214,22 @@ function toggleSection(h){const b=h.nextElementSibling,c=h.querySelector('.secti
 function shareEmployment(){const D=T[CL]||T.en;window.open('https://wa.me/?text='+encodeURIComponent(D.shareMsg),'_blank');}
 document.addEventListener('DOMContentLoaded',()=>applyL());
 </script>
+<script>
+/* Language persistence — remembers choice across all pages */
+document.addEventListener('DOMContentLoaded',function(){
+ try{
+  var langs=['en','te','hi'];
+  var btns=document.querySelectorAll('.nav-lang');
+  btns.forEach(function(b,i){
+   b.addEventListener('click',function(){try{localStorage.setItem('lsLang',langs[i]);}catch(e){}});
+  });
+  var s=localStorage.getItem('lsLang');
+  if(s&&typeof setLang==='function'){
+   var i=langs.indexOf(s);
+   if(i>0&&btns[i])setLang(s,btns[i]);
+  }
+ }catch(e){}
+});
+</script>
 </body>
 </html>
