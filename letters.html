@@ -79,9 +79,13 @@ font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;margi
   <div class="hero-sub" id="heroSub"></div>
 </div>
 <div class="page">
-  <div class="gen-tabs">
+  <div class="gen-tabs" style="grid-template-columns:1fr 1fr;">
     <button class="gen-tab active" id="gtab0" onclick="genTab(0)"></button>
     <button class="gen-tab" id="gtab1" onclick="genTab(1)"></button>
+    <button class="gen-tab" id="gtab2" onclick="genTab(2)"></button>
+    <button class="gen-tab" id="gtab3" onclick="genTab(3)"></button>
+    <button class="gen-tab" id="gtab4" onclick="genTab(4)"></button>
+    <button class="gen-tab" id="gtab5" onclick="genTab(5)"></button>
   </div>
 
   <!-- RTI FORM -->
@@ -112,6 +116,64 @@ font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;margi
       <div><div class="f-label" id="d7L"></div><input class="f-input" id="dDays" type="number" min="3" value="15"></div>
     </div>
     <button class="gen-btn" onclick="genDeposit()" id="dGen"></button>
+  </div>
+
+
+  <!-- SALARY FORM -->
+  <div class="form-card" id="form2" style="display:none;">
+    <div class="f-label" id="s1L"></div><input class="f-input" id="sName">
+    <div class="f-label" id="s2L"></div><input class="f-input" id="sDesig">
+    <div class="f-label" id="s3L"></div><textarea class="f-area" id="sCompany" style="min-height:56px;"></textarea>
+    <div class="f-row">
+      <div><div class="f-label" id="s4L"></div><input class="f-input" id="sMonths" placeholder="May, June 2026"></div>
+      <div><div class="f-label" id="s5L"></div><input class="f-input" id="sAmount" type="number" min="0"></div>
+    </div>
+    <div class="f-label" id="s6L"></div><input class="f-input" id="sDays" type="number" min="3" value="7">
+    <button class="gen-btn" onclick="genSalary()" id="sGen"></button>
+  </div>
+
+  <!-- BANK DISPUTE FORM -->
+  <div class="form-card" id="form3" style="display:none;">
+    <div class="f-label" id="b1L"></div><input class="f-input" id="bName">
+    <div class="f-label" id="b2L"></div><input class="f-input" id="bBank">
+    <div class="f-row">
+      <div><div class="f-label" id="b3L"></div><input class="f-input" id="bAcct" maxlength="4" placeholder="1234"></div>
+      <div><div class="f-label" id="b4L"></div><input class="f-input" id="bTxnDate" type="date"></div>
+    </div>
+    <div class="f-row">
+      <div><div class="f-label" id="b5L"></div><input class="f-input" id="bAmount" type="number" min="0"></div>
+      <div><div class="f-label" id="b6L"></div><input class="f-input" id="bRef" placeholder="UPI/UTR ref (optional)"></div>
+    </div>
+    <div class="f-label" id="b7L"></div><input class="f-input" id="bReported" type="date">
+    <button class="gen-btn" onclick="genBank()" id="bGen"></button>
+  </div>
+
+  <!-- RTI FIRST APPEAL FORM -->
+  <div class="form-card" id="form4" style="display:none;">
+    <div class="f-label" id="a1L"></div><input class="f-input" id="aName">
+    <div class="f-label" id="a2L"></div><textarea class="f-area" id="aAddr" style="min-height:56px;"></textarea>
+    <div class="f-label" id="a3L"></div><input class="f-input" id="aDept">
+    <div class="f-row">
+      <div><div class="f-label" id="a4L"></div><input class="f-input" id="aRtiDate" type="date"></div>
+      <div><div class="f-label" id="a5L"></div>
+        <select class="f-input" id="aReason"><option value="noreply" id="aRNo"></option><option value="refused" id="aRRef"></option><option value="incomplete" id="aRInc"></option></select></div>
+    </div>
+    <div class="f-label" id="a6L"></div><textarea class="f-area" id="aInfo"></textarea>
+    <button class="gen-btn" onclick="genAppeal()" id="aGen"></button>
+  </div>
+
+  <!-- E-DAAKHIL DRAFT FORM -->
+  <div class="form-card" id="form5" style="display:none;">
+    <div class="f-label" id="e1L"></div><input class="f-input" id="eName">
+    <div class="f-label" id="e2L"></div><textarea class="f-area" id="eAddr" style="min-height:56px;"></textarea>
+    <div class="f-label" id="e3L"></div><textarea class="f-area" id="eOpp" style="min-height:56px;"></textarea>
+    <div class="f-row">
+      <div><div class="f-label" id="e4L"></div><input class="f-input" id="eDate" type="date"></div>
+      <div><div class="f-label" id="e5L"></div><input class="f-input" id="eAmount" type="number" min="0"></div>
+    </div>
+    <div class="f-label" id="e6L"></div><textarea class="f-area" id="eGrief"></textarea>
+    <div class="f-label" id="e7L"></div><input class="f-input" id="eRelief" placeholder="Refund + ₹10,000 compensation">
+    <button class="gen-btn" onclick="genEdaakhil()" id="eGen"></button>
   </div>
 
   <!-- OUTPUT -->
@@ -152,7 +214,16 @@ const UI={
   sendRTI:['Print/write it, attach ₹10 fee (IPO / court fee stamp / online payment proof). BPL: attach card copy instead.','Send by Registered Post AD or submit in person — keep the acknowledgment.','Central departments can be filed online at rtionline.gov.in.','No reply in 30 days → First Appeal (free) to the First Appellate Authority of the same department.'],
   sendDep:['Send by Registered Post AD to the landlord\'s address — the postal receipt is your legal proof.','Email/WhatsApp a copy too, but registered post is what counts in court.','Keep a signed copy with you.','Deadline passes with no refund → consumer complaint (edaakhil.nic.in) or civil suit. See our Remedies Hub.'],
   fillAll:'Please fill all fields first.',
-  disc:'This is a self-help letter template for information purposes, not legal advice. For court notices or complex disputes, consult an advocate — see our Get Legal Help page. Free legal aid: 15100.'},
+  disc:'This is a self-help letter template for information purposes, not legal advice. For court notices or complex disputes, consult an advocate — see our Get Legal Help page. Free legal aid: 15100.',
+  tabs6:['📋 RTI Application','🏠 Deposit Demand','💼 Salary Demand','🏦 Bank Dispute','📨 RTI First Appeal','🛒 Consumer Complaint'],
+  s1L:'Your name',s2L:'Designation / Employee ID',s3L:'Company name & address',s4L:'Months unpaid',s5L:'Amount due ₹',s6L:'Deadline (days)',sGen:'💼 Generate Salary Demand',
+  b1L:'Your name',b2L:'Bank & branch',b3L:'Account last 4 digits',b4L:'Transaction date',b5L:'Amount ₹',b6L:'Transaction reference',b7L:'Date you reported to bank',bGen:'🏦 Generate Bank Dispute Letter',
+  a1L:'Your name',a2L:'Your address',a3L:'Department (same as original RTI)',a4L:'Date of original RTI',a5L:'What happened?',aRNo:'No reply in 30 days',aRRef:'Information refused',aRInc:'Incomplete/evasive reply',a6L:'Information originally sought (summary)',aGen:'📨 Generate First Appeal',
+  e1L:'Your name',e2L:'Your address',e3L:'Opposite party (seller/company) name & address',e4L:'Date of purchase/service',e5L:'Amount paid ₹',e6L:'What went wrong (facts, dates)',e7L:'Relief you want',eGen:'🛒 Generate Complaint Draft',
+  sendSal:['Email it to HR AND send by Registered Post AD to the registered office — both.','Keep salary slips, offer letter, bank statements ready as proof.','Deadline passes → file before the Labour Commissioner (free, no lawyer) — see our Employment Rights page.','If amount is large or termination is involved, consider consulting an advocate.'],
+  sendBank:['Submit at the branch and take a stamped acknowledgment copy; also email to the bank\'s customer care.','Also report at 1930 / cybercrime.gov.in if not already done — note the reference.','Count 10 working days for the shadow credit.','No credit / rejected → RBI Ombudsman at cms.rbi.org.in (free, binding on the bank).'],
+  sendAppeal:['File within 30 days of the reply (or of the 30-day deadline expiring).','Attach a copy of the original RTI application and its postal/online proof.','Most states charge no fee for the First Appeal.','Appeal also fails → Second Appeal to the State/Central Information Commission within 90 days.'],
+  sendEdk:['This draft maps to the fields on edaakhil.nic.in — register there and paste each section.','Court fee is ZERO for claims up to ₹5 lakh.','Upload: bill, payment proof, correspondence, photos.','File within 2 years of the cause of action — check our Limitation Calculator.']},
  te:{navBrand:'✍️ లేఖ జనరేటర్',navBack:'← హోమ్',
   heroTitle:'సరిగ్గా రాయండి — ఉచిత లేఖ జనరేటర్',
   heroSub:'ఖాళీలు నింపండి, సరైన చట్ట ఉల్లేఖనలతో ఫార్మాట్ చేసిన లేఖ పొందండి. మీరే పంపుకునే స్వయం-సహాయ లేఖలు — వీటికి న్యాయవాది అవసరం లేదు.',
@@ -167,7 +238,16 @@ const UI={
   sendRTI:['ప్రింట్ చేసి ₹10 రుసుము జత చేయండి (IPO / కోర్టు ఫీ స్టాంప్). BPL: కార్డు కాపీ జత చేయండి.','రిజిస్టర్డ్ పోస్ట్ AD ద్వారా పంపండి — అక్నాలెడ్జ్‌మెంట్ ఉంచుకోండి.','కేంద్ర శాఖలకు rtionline.gov.in లో ఆన్‌లైన్ దాఖలు చేయవచ్చు.','30 రోజుల్లో సమాధానం లేదు → అదే శాఖ మొదటి అప్పీలేట్ అథారిటీకి మొదటి అప్పీల్ (ఉచితం).'],
   sendDep:['యజమాని చిరునామాకు రిజిస్టర్డ్ పోస్ట్ AD ద్వారా పంపండి — పోస్టల్ రసీదు మీ చట్టపరమైన రుజువు.','ఇమెయిల్/WhatsApp కాపీ కూడా పంపండి, కానీ కోర్టులో రిజిస్టర్డ్ పోస్టే లెక్క.','సంతకం చేసిన కాపీ మీ వద్ద ఉంచుకోండి.','గడువు దాటినా రీఫండ్ లేదు → వినియోగదారు ఫిర్యాదు (edaakhil.nic.in) లేదా సివిల్ దావా.'],
   fillAll:'ముందుగా అన్ని ఖాళీలు నింపండి.',
-  disc:'ఇది సమాచార ప్రయోజనాల కోసం స్వయం-సహాయ లేఖ నమూనా, న్యాయ సలహా కాదు. కోర్టు నోటీసులు లేదా క్లిష్ట వివాదాలకు న్యాయవాదిని సంప్రదించండి. ఉచిత న్యాయ సహాయం: 15100.'},
+  disc:'ఇది సమాచార ప్రయోజనాల కోసం స్వయం-సహాయ లేఖ నమూనా, న్యాయ సలహా కాదు. కోర్టు నోటీసులు లేదా క్లిష్ట వివాదాలకు న్యాయవాదిని సంప్రదించండి. ఉచిత న్యాయ సహాయం: 15100.',
+  tabs6:['📋 RTI దరఖాస్తు','🏠 డిపాజిట్ డిమాండ్','💼 జీతం డిమాండ్','🏦 బ్యాంక్ వివాదం','📨 RTI మొదటి అప్పీల్','🛒 వినియోగదారు ఫిర్యాదు'],
+  s1L:'మీ పేరు',s2L:'హోదా / ఉద్యోగి ID',s3L:'కంపెనీ పేరు & చిరునామా',s4L:'చెల్లించని నెలలు',s5L:'బకాయి మొత్తం ₹',s6L:'గడువు (రోజులు)',sGen:'💼 జీతం డిమాండ్ తయారు చేయండి',
+  b1L:'మీ పేరు',b2L:'బ్యాంక్ & బ్రాంచ్',b3L:'ఖాతా చివరి 4 అంకెలు',b4L:'లావాదేవీ తేదీ',b5L:'మొత్తం ₹',b6L:'లావాదేవీ రిఫరెన్స్',b7L:'బ్యాంక్‌కు నివేదించిన తేదీ',bGen:'🏦 బ్యాంక్ వివాద లేఖ తయారు చేయండి',
+  a1L:'మీ పేరు',a2L:'మీ చిరునామా',a3L:'శాఖ (అసలు RTI లోనిదే)',a4L:'అసలు RTI తేదీ',a5L:'ఏమి జరిగింది?',aRNo:'30 రోజుల్లో సమాధానం లేదు',aRRef:'సమాచారం నిరాకరించారు',aRInc:'అసంపూర్ణ సమాధానం',a6L:'మొదట కోరిన సమాచారం (సారాంశం)',aGen:'📨 మొదటి అప్పీల్ తయారు చేయండి',
+  e1L:'మీ పేరు',e2L:'మీ చిరునామా',e3L:'ప్రతివాది (విక్రేత/కంపెనీ) పేరు & చిరునామా',e4L:'కొనుగోలు/సేవ తేదీ',e5L:'చెల్లించిన మొత్తం ₹',e6L:'ఏమి తప్పు జరిగింది (వాస్తవాలు, తేదీలు)',e7L:'కోరుకునే ఉపశమనం',eGen:'🛒 ఫిర్యాదు ముసాయిదా తయారు చేయండి',
+  sendSal:['HRకి ఇమెయిల్ చేయండి మరియు రిజిస్టర్డ్ పోస్ట్ AD ద్వారా కూడా పంపండి — రెండూ.','జీత స్లిప్‌లు, ఆఫర్ లెటర్, బ్యాంక్ స్టేట్‌మెంట్లు సిద్ధంగా ఉంచుకోండి.','గడువు దాటితే → లేబర్ కమీషనర్ ముందు దాఖలు (ఉచితం, న్యాయవాది అవసరం లేదు).','మొత్తం పెద్దదైతే లేదా తొలగింపు ఉంటే న్యాయవాదిని సంప్రదించండి.'],
+  sendBank:['బ్రాంచ్‌లో సమర్పించి స్టాంప్ చేసిన అక్నాలెడ్జ్‌మెంట్ తీసుకోండి; కస్టమర్ కేర్‌కు ఇమెయిల్ కూడా.','ఇంకా చేయకపోతే 1930 / cybercrime.gov.in లో కూడా నివేదించండి.','షాడో క్రెడిట్ కోసం 10 పని దినాలు లెక్కించండి.','క్రెడిట్ రాకపోతే → cms.rbi.org.in లో RBI అంబుడ్స్‌మన్ (ఉచితం).'],
+  sendAppeal:['సమాధానం వచ్చిన (లేదా 30 రోజుల గడువు ముగిసిన) 30 రోజుల్లో దాఖలు చేయండి.','అసలు RTI దరఖాస్తు కాపీ మరియు రుజువు జతచేయండి.','చాలా రాష్ట్రాల్లో మొదటి అప్పీల్‌కు రుసుము లేదు.','అప్పీల్ విఫలమైతే → 90 రోజుల్లో సమాచార కమిషన్‌కు రెండవ అప్పీల్.'],
+  sendEdk:['ఈ ముసాయిదా edaakhil.nic.in ఫీల్డ్‌లకు సరిపోతుంది — అక్కడ నమోదు చేసి ప్రతి విభాగం పేస్ట్ చేయండి.','₹5 లక్షల వరకు క్లెయిమ్‌లకు కోర్టు రుసుము సున్నా.','అప్‌లోడ్: బిల్లు, చెల్లింపు రుజువు, ఉత్తరప్రత్యుత్తరాలు, ఫోటోలు.','కారణం ఏర్పడిన 2 సంవత్సరాల్లో దాఖలు చేయండి — మా పరిమితి కాలిక్యులేటర్ చూడండి.']},
  hi:{navBrand:'✍️ पत्र जनरेटर',navBack:'← होम',
   heroTitle:'सही लिखें — मुफ्त पत्र जनरेटर',
   heroSub:'खाली जगह भरें, सही कानूनी हवालों के साथ फॉर्मेट किया पत्र पाएं। खुद भेजने वाले स्व-सहायता पत्र — इनके लिए वकील नहीं चाहिए।',
@@ -182,7 +262,16 @@ const UI={
   sendRTI:['प्रिंट कर ₹10 शुल्क जोड़ें (IPO / कोर्ट फी स्टांप)। BPL: कार्ड की कॉपी लगाएं।','रजिस्टर्ड पोस्ट AD से भेजें — पावती संभालें।','केंद्रीय विभागों के लिए rtionline.gov.in पर ऑनलाइन।','30 दिन में जवाब नहीं → उसी विभाग की प्रथम अपीलीय प्राधिकारी को पहली अपील (मुफ्त)।'],
   sendDep:['मकान मालिक के पते पर रजिस्टर्ड पोस्ट AD से भेजें — डाक रसीद आपका कानूनी प्रमाण।','ईमेल/WhatsApp कॉपी भी भेजें, पर कोर्ट में रजिस्टर्ड पोस्ट ही मान्य।','हस्ताक्षरित प्रति अपने पास रखें।','समयसीमा बीतने पर रिफंड नहीं → उपभोक्ता शिकायत (edaakhil.nic.in) या सिविल मुकदमा।'],
   fillAll:'पहले सभी फ़ील्ड भरें।',
-  disc:'यह सूचना हेतु स्व-सहायता पत्र टेम्पलेट है, कानूनी सलाह नहीं। कोर्ट नोटिस या जटिल विवादों के लिए वकील से मिलें। मुफ्त कानूनी सहायता: 15100।'},
+  disc:'यह सूचना हेतु स्व-सहायता पत्र टेम्पलेट है, कानूनी सलाह नहीं। कोर्ट नोटिस या जटिल विवादों के लिए वकील से मिलें। मुफ्त कानूनी सहायता: 15100।',
+  tabs6:['📋 RTI आवेदन','🏠 जमा मांग','💼 वेतन मांग','🏦 बैंक विवाद','📨 RTI प्रथम अपील','🛒 उपभोक्ता शिकायत'],
+  s1L:'आपका नाम',s2L:'पदनाम / कर्मचारी ID',s3L:'कंपनी नाम व पता',s4L:'अवैतनिक महीने',s5L:'बकाया राशि ₹',s6L:'समयसीमा (दिन)',sGen:'💼 वेतन मांग पत्र बनाएं',
+  b1L:'आपका नाम',b2L:'बैंक व शाखा',b3L:'खाता अंतिम 4 अंक',b4L:'लेनदेन तिथि',b5L:'राशि ₹',b6L:'लेनदेन संदर्भ',b7L:'बैंक को सूचना की तिथि',bGen:'🏦 बैंक विवाद पत्र बनाएं',
+  a1L:'आपका नाम',a2L:'आपका पता',a3L:'विभाग (मूल RTI वाला)',a4L:'मूल RTI की तिथि',a5L:'क्या हुआ?',aRNo:'30 दिन में उत्तर नहीं',aRRef:'जानकारी अस्वीकृत',aRInc:'अधूरा उत्तर',a6L:'मूल रूप से मांगी जानकारी (सारांश)',aGen:'📨 प्रथम अपील बनाएं',
+  e1L:'आपका नाम',e2L:'आपका पता',e3L:'विपक्षी पक्ष (विक्रेता/कंपनी) नाम व पता',e4L:'खरीद/सेवा तिथि',e5L:'भुगतान राशि ₹',e6L:'क्या गलत हुआ (तथ्य, तिथियां)',e7L:'चाही गई राहत',eGen:'🛒 शिकायत ड्राफ्ट बनाएं',
+  sendSal:['HR को ईमेल करें और रजिस्टर्ड पोस्ट AD से भी भेजें — दोनों।','वेतन पर्ची, ऑफर लेटर, बैंक स्टेटमेंट तैयार रखें।','समयसीमा बीतने पर → श्रम आयुक्त के समक्ष दाखिल करें (मुफ्त)।','राशि बड़ी हो या बर्खास्तगी हो तो वकील से मिलें।'],
+  sendBank:['शाखा में जमा कर मुहर लगी पावती लें; कस्टमर केयर को ईमेल भी करें।','यदि नहीं किया तो 1930 / cybercrime.gov.in पर भी रिपोर्ट करें।','शैडो क्रेडिट के लिए 10 कार्य दिवस गिनें।','क्रेडिट न मिले → cms.rbi.org.in पर RBI लोकपाल (मुफ्त)।'],
+  sendAppeal:['उत्तर मिलने (या 30-दिन सीमा बीतने) के 30 दिनों में दाखिल करें।','मूल RTI आवेदन की प्रति और प्रमाण संलग्न करें।','अधिकांश राज्यों में प्रथम अपील निःशुल्क है।','अपील विफल → 90 दिनों में सूचना आयोग को द्वितीय अपील।'],
+  sendEdk:['यह ड्राफ्ट edaakhil.nic.in के फ़ील्ड से मेल खाता है — वहां पंजीकरण कर हर खंड पेस्ट करें।','₹5 लाख तक के दावों में कोर्ट फीस शून्य।','अपलोड: बिल, भुगतान प्रमाण, पत्राचार, फोटो।','कारण उत्पन्न होने के 2 वर्ष में दाखिल करें — हमारा सीमा कैलकुलेटर देखें।']},
 };
 
 let L='en', activeGen=0, lastLetter='';
@@ -198,10 +287,12 @@ function setLang(l,b){L=l;document.querySelectorAll('.nav-lang').forEach(x=>x.cl
 function render(){
  const U=UI[L];
  ['navBrand','navBack','heroTitle','heroSub','r1L','r2L','r3L','r4L','r5L','r6L','rBplNo','rBplYes','rGen',
-  'd1L','d2L','d3L','d4L','d5L','d6L','d7L','dGen','disc'].forEach(id=>{
+  'd1L','d2L','d3L','d4L','d5L','d6L','d7L','dGen','disc',
+  's1L','s2L','s3L','s4L','s5L','s6L','sGen','b1L','b2L','b3L','b4L','b5L','b6L','b7L','bGen',
+  'a1L','a2L','a3L','a4L','a5L','aRNo','aRRef','aRInc','a6L','aGen',
+  'e1L','e2L','e3L','e4L','e5L','e6L','e7L','eGen'].forEach(id=>{
   const el=document.getElementById(id);if(el&&U[id])el.textContent=U[id];});
- document.getElementById('gtab0').textContent=U.tabs[0];
- document.getElementById('gtab1').textContent=U.tabs[1];
+ for(let t=0;t<6;t++)document.getElementById('gtab'+t).textContent=U.tabs6[t];
  document.getElementById('copyBtn').textContent=U.copy;
  document.getElementById('waBtn').textContent=U.wa;
  document.getElementById('dlBtn').textContent=U.dl;
@@ -209,10 +300,10 @@ function render(){
 }
 
 function genTab(i){activeGen=i;
- document.getElementById('gtab0').classList.toggle('active',i===0);
- document.getElementById('gtab1').classList.toggle('active',i===1);
- document.getElementById('form0').style.display=i===0?'block':'none';
- document.getElementById('form1').style.display=i===1?'block':'none';
+ for(let j=0;j<6;j++){
+  document.getElementById('gtab'+j).classList.toggle('active',j===i);
+  document.getElementById('form'+j).style.display=j===i?'block':'none';
+ }
  document.getElementById('letterWrap').classList.remove('show');
 }
 
@@ -379,6 +470,363 @@ ${tenant}
  showLetter(T[L],UI[L].sendDep,'deposit-demand-letter');
 }
 
+
+function genSalary(){
+ const U=UI[L];
+ const name=v('sName'),desig=v('sDesig'),comp=v('sCompany'),months=v('sMonths');
+ const amt=parseFloat(v('sAmount'))||0,days=parseInt(v('sDays'))||7;
+ if(!name||!desig||!comp||!months||amt<=0){alert(U.fillAll);return;}
+ const A=amt.toLocaleString('en-IN');
+ const T={
+ en:`To,
+The Management / HR Department,
+${comp}
+
+Date: ${todayStr()}
+
+Subject: Demand for payment of pending salary — ${months}
+
+Dear Sir/Madam,
+
+I, ${name}, working as ${desig}, state that my salary for ${months}, amounting to ₹${A}, remains unpaid despite my having rendered services in full.
+
+Under Sections 4 and 5 of the Payment of Wages Act, 1936, wages must be paid before the 7th day of the following month. Non-payment of earned wages is a statutory violation attracting penalties, and interest/compensation up to ten times the withheld amount can be awarded under Section 15(3).
+
+I therefore demand payment of ₹${A} within ${days} days of receipt of this letter.
+
+Failing payment, I will be constrained to file a claim before the Labour Commissioner / appropriate authority under the Payment of Wages Act and pursue all other remedies available in law — at your risk as to costs and consequences.
+
+Yours faithfully,
+
+${name}
+${desig}
+(Sent by email and Registered Post AD — retain proof)`,
+ te:`గ్రహీత,
+యాజమాన్యం / HR విభాగం,
+${comp}
+
+తేదీ: ${todayStr()}
+
+విషయం: పెండింగ్ జీతం చెల్లింపు డిమాండ్ — ${months}
+
+అయ్యా/అమ్మా,
+
+${desig} గా పనిచేస్తున్న నేను, ${name}, పూర్తి సేవలందించినప్పటికీ ${months} నెలల నా జీతం ₹${A} చెల్లించబడలేదని తెలియజేస్తున్నాను.
+
+వేతన చెల్లింపు చట్టం 1936, Sections 4 మరియు 5 ప్రకారం, జీతం తదుపరి నెల 7వ తేదీలోపు చెల్లించాలి. సంపాదించిన వేతనం చెల్లించకపోవడం చట్ట ఉల్లంఘన; Section 15(3) కింద నిలిపివేసిన మొత్తానికి పది రెట్ల వరకు పరిహారం విధించవచ్చు.
+
+కావున ఈ లేఖ అందిన ${days} రోజుల్లోగా ₹${A} చెల్లించవలసినదిగా డిమాండ్ చేస్తున్నాను.
+
+చెల్లించని పక్షంలో, వేతన చెల్లింపు చట్టం కింద లేబర్ కమీషనర్ ముందు క్లెయిమ్ దాఖలు చేయడంతో పాటు చట్టంలో లభించే అన్ని పరిష్కారాలను అనుసరించవలసి వస్తుంది — ఖర్చులు, పరిణామాలు మీ బాధ్యతపై.
+
+భవదీయుడు,
+
+${name}
+${desig}
+(ఇమెయిల్ మరియు రిజిస్టర్డ్ పోస్ట్ AD ద్వారా — రుజువు ఉంచుకోండి)`,
+ hi:`सेवा में,
+प्रबंधन / HR विभाग,
+${comp}
+
+दिनांक: ${todayStr()}
+
+विषय: बकाया वेतन भुगतान की मांग — ${months}
+
+महोदय/महोदया,
+
+मैं, ${name}, ${desig} के पद पर कार्यरत, सूचित करता/करती हूं कि पूर्ण सेवाएं देने के बावजूद ${months} का मेरा वेतन ₹${A} अभी तक नहीं मिला है।
+
+वेतन भुगतान अधिनियम 1936 की धारा 4 और 5 के अनुसार वेतन अगले माह की 7 तारीख से पहले देना अनिवार्य है। अर्जित वेतन न देना वैधानिक उल्लंघन है; धारा 15(3) के अंतर्गत रोकी गई राशि के दस गुना तक मुआवज़ा दिलाया जा सकता है।
+
+अतः मैं मांग करता/करती हूं कि यह पत्र मिलने के ${days} दिनों के भीतर ₹${A} का भुगतान किया जाए।
+
+भुगतान न होने पर मुझे वेतन भुगतान अधिनियम के अंतर्गत श्रम आयुक्त के समक्ष दावा और विधि में उपलब्ध अन्य सभी उपाय करने पड़ेंगे — खर्च और परिणाम आपके जोखिम पर।
+
+भवदीय,
+
+${name}
+${desig}
+(ईमेल और रजिस्टर्ड पोस्ट AD से प्रेषित — प्रमाण रखें)`};
+ showLetter(T[L],U.sendSal,'salary-demand-letter');
+}
+
+function genBank(){
+ const U=UI[L];
+ const name=v('bName'),bank=v('bBank'),acct=v('bAcct'),ref=v('bRef');
+ const txnDate=v('bTxnDate'),reported=v('bReported');
+ const amt=parseFloat(v('bAmount'))||0;
+ if(!name||!bank||!acct||!txnDate||!reported||amt<=0){alert(U.fillAll);return;}
+ const A=amt.toLocaleString('en-IN');
+ const fmt=d=>new Date(d).toLocaleDateString(L==='te'?'te-IN':L==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'long',year:'numeric'});
+ const T={
+ en:`To,
+The Branch Manager,
+${bank}
+
+Date: ${todayStr()}
+
+Subject: Unauthorised transaction of ₹${A} — demand for reversal under RBI Zero Liability framework (A/c ending ${acct})
+
+Dear Sir/Madam,
+
+I, ${name}, hold the above account with your branch. An unauthorised transaction of ₹${A} occurred on ${fmt(txnDate)}${ref?` (Ref: ${ref})`:''} without my knowledge, consent, or participation. I did not share my credentials, OTP, or PIN with anyone.
+
+I reported this to the bank on ${fmt(reported)} and have also reported it on the National Cyber Crime Portal / helpline 1930.
+
+Under RBI Circular DBR.No.Leg.BC.78/09.07.005/2017-18 dated 06.07.2017:
+1. A customer reporting an unauthorised electronic transaction within three working days bears ZERO liability;
+2. The bank must credit (shadow reversal) the amount within 10 working days of notification, without waiting for investigation.
+
+I therefore demand: (a) immediate shadow credit of ₹${A}; (b) written confirmation of my complaint with reference number; (c) the outcome of your investigation in writing.
+
+If the amount is not credited within 10 working days, I shall escalate to the RBI Ombudsman (cms.rbi.org.in) and pursue all other remedies.
+
+Yours faithfully,
+
+${name}
+Account ending: ${acct}
+(Delivered by email and in person/Registered Post — retain acknowledgment)`,
+ te:`గ్రహీత,
+బ్రాంచ్ మేనేజర్,
+${bank}
+
+తేదీ: ${todayStr()}
+
+విషయం: ₹${A} అనధికార లావాదేవీ — RBI జీరో లయబిలిటీ ప్రకారం రివర్సల్ డిమాండ్ (ఖాతా చివరి అంకెలు ${acct})
+
+అయ్యా/అమ్మా,
+
+మీ బ్రాంచ్‌లో పై ఖాతా కలిగిన నేను, ${name}, ${fmt(txnDate)} న నా అనుమతి, భాగస్వామ్యం లేకుండా ₹${A} అనధికార లావాదేవీ జరిగిందని తెలియజేస్తున్నాను${ref?` (Ref: ${ref})`:''}. నా OTP, PIN ఎవరితోనూ పంచుకోలేదు.
+
+దీన్ని ${fmt(reported)} న బ్యాంక్‌కు నివేదించాను; జాతీయ సైబర్ క్రైమ్ పోర్టల్ / 1930 లో కూడా నివేదించాను.
+
+RBI సర్క్యులర్ DBR.No.Leg.BC.78/09.07.005/2017-18 (06.07.2017) ప్రకారం:
+1. మూడు పని దినాల్లో నివేదించిన కస్టమర్ బాధ్యత సున్నా;
+2. నివేదించిన 10 పని దినాల్లో బ్యాంక్ షాడో క్రెడిట్ ఇవ్వాలి — దర్యాప్తు కోసం వేచి ఉండకుండా.
+
+కావున డిమాండ్: (a) ₹${A} తక్షణ షాడో క్రెడిట్; (b) రిఫరెన్స్ నంబర్‌తో ఫిర్యాదు లిఖిత ధృవీకరణ; (c) దర్యాప్తు ఫలితం లిఖితంగా.
+
+10 పని దినాల్లో క్రెడిట్ కాకపోతే, RBI అంబుడ్స్‌మన్ (cms.rbi.org.in) కు ఎస్కలేట్ చేస్తాను.
+
+భవదీయుడు,
+
+${name}
+ఖాతా చివరి అంకెలు: ${acct}
+(ఇమెయిల్ మరియు నేరుగా/రిజిస్టర్డ్ పోస్ట్ ద్వారా — అక్నాలెడ్జ్‌మెంట్ ఉంచుకోండి)`,
+ hi:`सेवा में,
+शाखा प्रबंधक,
+${bank}
+
+दिनांक: ${todayStr()}
+
+विषय: ₹${A} का अनधिकृत लेनदेन — RBI जीरो लायबिलिटी के अंतर्गत रिवर्सल की मांग (खाता अंतिम अंक ${acct})
+
+महोदय/महोदया,
+
+आपकी शाखा में उपरोक्त खाताधारक मैं, ${name}, सूचित करता/करती हूं कि ${fmt(txnDate)} को मेरी जानकारी या सहमति के बिना ₹${A} का अनधिकृत लेनदेन हुआ${ref?` (Ref: ${ref})`:''}। मैंने OTP या PIN किसी से साझा नहीं किया।
+
+मैंने इसकी सूचना ${fmt(reported)} को बैंक को दी और राष्ट्रीय साइबर क्राइम पोर्टल / 1930 पर भी दर्ज कराया।
+
+RBI परिपत्र DBR.No.Leg.BC.78/09.07.005/2017-18 (06.07.2017) के अनुसार:
+1. तीन कार्य दिवसों में सूचना देने वाले ग्राहक की देनदारी शून्य है;
+2. बैंक को सूचना के 10 कार्य दिवसों में शैडो क्रेडिट देना होगा — जांच की प्रतीक्षा किए बिना।
+
+अतः मांग: (a) ₹${A} का तत्काल शैडो क्रेडिट; (b) संदर्भ संख्या सहित शिकायत की लिखित पुष्टि; (c) जांच का परिणाम लिखित में।
+
+10 कार्य दिवसों में क्रेडिट न होने पर मैं RBI लोकपाल (cms.rbi.org.in) में शिकायत करूंगा/करूंगी।
+
+भवदीय,
+
+${name}
+खाता अंतिम अंक: ${acct}
+(ईमेल और व्यक्तिगत/रजिस्टर्ड पोस्ट से — पावती रखें)`};
+ showLetter(T[L],U.sendBank,'bank-dispute-letter');
+}
+
+function genAppeal(){
+ const U=UI[L];
+ const name=v('aName'),addr=v('aAddr'),dept=v('aDept'),rtiDate=v('aRtiDate'),info=v('aInfo');
+ const reason=document.getElementById('aReason').value;
+ if(!name||!addr||!dept||!rtiDate||!info){alert(U.fillAll);return;}
+ const fmt=d=>new Date(d).toLocaleDateString(L==='te'?'te-IN':L==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'long',year:'numeric'});
+ const R={en:{noreply:'no reply has been received within the 30-day period mandated by Section 7(1)',
+   refused:'the information was refused without valid grounds under the Act',
+   incomplete:'the reply received was incomplete, evasive and did not furnish the information sought'},
+  te:{noreply:'Section 7(1) నిర్దేశించిన 30 రోజుల్లో ఎటువంటి సమాధానం అందలేదు',
+   refused:'చట్టం కింద చెల్లుబాటు అయ్యే కారణాలు లేకుండా సమాచారం నిరాకరించబడింది',
+   incomplete:'అందిన సమాధానం అసంపూర్ణం, తప్పించుకునేదిగా ఉంది'},
+  hi:{noreply:'धारा 7(1) की 30-दिन की अवधि में कोई उत्तर नहीं मिला',
+   refused:'अधिनियम के अंतर्गत वैध आधार के बिना जानकारी अस्वीकार की गई',
+   incomplete:'प्राप्त उत्तर अधूरा और टालमटोल भरा था'}};
+ const T={
+ en:`To,
+The First Appellate Authority,
+${dept}
+
+Date: ${todayStr()}
+
+Subject: FIRST APPEAL under Section 19(1) of the RTI Act, 2005
+
+Sir/Madam,
+
+I, ${name}, filed an RTI application dated ${fmt(rtiDate)} with the Public Information Officer of your department, seeking:
+
+${info}
+
+However, ${R.en[reason]}.
+
+I therefore prefer this First Appeal under Section 19(1) of the RTI Act, 2005, and request that:
+1. The PIO be directed to furnish the complete information sought, free of cost as per Section 7(6);
+2. Appropriate action be considered against the PIO under Section 20 for the default.
+
+Enclosed: copy of the original RTI application and proof of submission.
+
+Yours faithfully,
+
+${name}
+${addr}`,
+ te:`గ్రహీత,
+మొదటి అప్పీలేట్ అథారిటీ,
+${dept}
+
+తేదీ: ${todayStr()}
+
+విషయం: RTI చట్టం 2005, Section 19(1) కింద మొదటి అప్పీల్
+
+అయ్యా/అమ్మా,
+
+నేను, ${name}, ${fmt(rtiDate)} తేదీన మీ శాఖ PIO వద్ద RTI దరఖాస్తు దాఖలు చేసి, ఈ సమాచారం కోరాను:
+
+${info}
+
+అయితే, ${R.te[reason]}.
+
+కావున RTI చట్టం 2005 Section 19(1) కింద ఈ మొదటి అప్పీల్ దాఖలు చేస్తూ కోరుతున్నాను:
+1. Section 7(6) ప్రకారం పూర్తి సమాచారం ఉచితంగా అందించమని PIOని ఆదేశించాలి;
+2. లోపానికి Section 20 కింద PIOపై తగిన చర్య పరిశీలించాలి.
+
+జతచేసినవి: అసలు RTI దరఖాస్తు కాపీ మరియు సమర్పణ రుజువు.
+
+భవదీయుడు,
+
+${name}
+${addr}`,
+ hi:`सेवा में,
+प्रथम अपीलीय प्राधिकारी,
+${dept}
+
+दिनांक: ${todayStr()}
+
+विषय: RTI अधिनियम 2005 की धारा 19(1) के अंतर्गत प्रथम अपील
+
+महोदय/महोदया,
+
+मैंने, ${name}, दिनांक ${fmt(rtiDate)} को आपके विभाग के जन सूचना अधिकारी के समक्ष RTI आवेदन दाखिल कर यह जानकारी मांगी थी:
+
+${info}
+
+परंतु, ${R.hi[reason]}।
+
+अतः मैं RTI अधिनियम 2005 की धारा 19(1) के अंतर्गत यह प्रथम अपील प्रस्तुत करते हुए निवेदन करता/करती हूं:
+1. PIO को धारा 7(6) के अनुसार पूर्ण जानकारी निःशुल्क देने का निर्देश दिया जाए;
+2. चूक के लिए धारा 20 के अंतर्गत PIO पर उचित कार्रवाई पर विचार किया जाए।
+
+संलग्न: मूल RTI आवेदन की प्रति और जमा करने का प्रमाण।
+
+भवदीय,
+
+${name}
+${addr}`};
+ showLetter(T[L],U.sendAppeal,'rti-first-appeal');
+}
+
+function genEdaakhil(){
+ const U=UI[L];
+ const name=v('eName'),addr=v('eAddr'),opp=v('eOpp'),pdate=v('eDate'),grief=v('eGrief'),relief=v('eRelief');
+ const amt=parseFloat(v('eAmount'))||0;
+ if(!name||!addr||!opp||!pdate||!grief||!relief||amt<=0){alert(U.fillAll);return;}
+ const A=amt.toLocaleString('en-IN');
+ const fmt=d=>new Date(d).toLocaleDateString(L==='te'?'te-IN':L==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'long',year:'numeric'});
+ const T={
+ en:`CONSUMER COMPLAINT DRAFT (for filing on edaakhil.nic.in)
+Under Section 35 of the Consumer Protection Act, 2019
+
+COMPLAINANT:
+${name}
+${addr}
+
+OPPOSITE PARTY:
+${opp}
+
+FACTS OF THE COMPLAINT:
+1. On ${fmt(pdate)}, the complainant purchased goods/availed services from the opposite party for a consideration of ₹${A}. The complainant is therefore a "consumer" under Section 2(7) of the Act.
+2. ${grief}
+3. The complainant contacted the opposite party seeking resolution, but no satisfactory remedy was provided.
+4. The above acts amount to deficiency in service / defect in goods / unfair trade practice under the Act.
+5. This complaint is within the limitation of two years under Section 69.
+
+RELIEF SOUGHT:
+${relief}
++ litigation costs and any other relief this Hon'ble Commission deems fit.
+
+Documents to attach on e-Daakhil: bill/invoice, payment proof, correspondence with opposite party, photos (if any).
+
+${name}
+Date: ${todayStr()}`,
+ te:`వినియోగదారు ఫిర్యాదు ముసాయిదా (edaakhil.nic.in లో దాఖలుకు)
+వినియోగదారు రక్షణ చట్టం 2019, Section 35 కింద
+
+ఫిర్యాదుదారు:
+${name}
+${addr}
+
+ప్రతివాది:
+${opp}
+
+ఫిర్యాదు వాస్తవాలు:
+1. ${fmt(pdate)} న ఫిర్యాదుదారు ప్రతివాది నుండి ₹${A} చెల్లించి వస్తువులు కొన్నారు/సేవలు పొందారు. కావున చట్టం Section 2(7) ప్రకారం "వినియోగదారు".
+2. ${grief}
+3. పరిష్కారం కోసం ప్రతివాదిని సంప్రదించినా సంతృప్తికరమైన పరిష్కారం లభించలేదు.
+4. పై చర్యలు చట్టం కింద సేవా లోపం / వస్తు లోపం / అన్యాయ వాణిజ్య పద్ధతి అవుతాయి.
+5. ఈ ఫిర్యాదు Section 69 కింద రెండు సంవత్సరాల పరిమితిలోపు ఉంది.
+
+కోరిన ఉపశమనం:
+${relief}
++ వ్యాజ్య ఖర్చులు మరియు గౌరవ కమిషన్ తగినదిగా భావించే ఇతర ఉపశమనం.
+
+e-Daakhil లో జతచేయవలసిన పత్రాలు: బిల్లు/ఇన్వాయిస్, చెల్లింపు రుజువు, ఉత్తరప్రత్యుత్తరాలు, ఫోటోలు (ఉంటే).
+
+${name}
+తేదీ: ${todayStr()}`,
+ hi:`उपभोक्ता शिकायत ड्राफ्ट (edaakhil.nic.in पर दाखिल हेतु)
+उपभोक्ता संरक्षण अधिनियम 2019 की धारा 35 के अंतर्गत
+
+शिकायतकर्ता:
+${name}
+${addr}
+
+विपक्षी पक्ष:
+${opp}
+
+शिकायत के तथ्य:
+1. ${fmt(pdate)} को शिकायतकर्ता ने विपक्षी पक्ष से ₹${A} का भुगतान कर वस्तुएं खरीदीं/सेवाएं लीं। अतः अधिनियम की धारा 2(7) के अनुसार "उपभोक्ता" है।
+2. ${grief}
+3. समाधान हेतु विपक्षी पक्ष से संपर्क किया गया, परंतु संतोषजनक समाधान नहीं मिला।
+4. उपरोक्त कृत्य अधिनियम के अंतर्गत सेवा में कमी / वस्तु दोष / अनुचित व्यापार व्यवहार हैं।
+5. यह शिकायत धारा 69 की दो वर्ष की सीमा के भीतर है।
+
+मांगी गई राहत:
+${relief}
++ मुकदमा खर्च और अन्य राहत जो माननीय आयोग उचित समझे।
+
+e-Daakhil पर संलग्न करें: बिल/इनवॉइस, भुगतान प्रमाण, पत्राचार, फोटो (यदि हों)।
+
+${name}
+दिनांक: ${todayStr()}`};
+ showLetter(T[L],U.sendEdk,'consumer-complaint-draft');
+}
+
+
 let dlName='letter';
 function showLetter(text,sendSteps,fname){
  lastLetter=text;dlName=fname;
@@ -402,7 +850,9 @@ function dlLetter(){
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=dlName+'.txt';
  document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
-document.addEventListener('DOMContentLoaded',render);
+document.addEventListener('DOMContentLoaded',function(){render();
+ try{var g=parseInt(new URLSearchParams(window.location.search).get('g'));
+  if(g>=0&&g<=5)genTab(g);}catch(e){}});
 </script>
 <script>
 /* Language persistence — remembers choice across all pages */
