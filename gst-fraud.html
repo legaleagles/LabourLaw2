@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GST Fraud Checker — Verify GSTIN, Restaurant & Hotel Bills | LawSticker AI</title>
+<meta name="description" content="Check if a shop, restaurant or hotel is charging GST correctly. Validate GSTIN, detect wrong rates and GST-on-MRP fraud, and file complaints — Telugu, English, Hindi.">
+<link rel="canonical" href="https://lawsticker-ai.com/gst-fraud.html">
+<meta property="og:title" content="🕵️ GST Fraud Checker — Is your bill legal? | LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<meta property="og:site_name" content="LawSticker AI">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;--border:#D1D5DB;
+--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+--jade:#059669;--jade-bg:#ECFDF5;--jade-d:#065F46;--sky:#0EA5E9;--sky-bg:#F0F9FF;--sky-d:#0369A1;
+--rose:#DC2626;--rose-bg:#FEF2F2;--rose-d:#991B1B;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+nav{background:var(--navy);position:sticky;top:0;z-index:200;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);}
+.nav-langs{display:flex;gap:5px;}
+.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(201,162,39,.2);background:transparent;color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold);}
+.hero{background:linear-gradient(145deg,#1a0505,#301010,#1d0808);padding:24px 20px 18px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'🕵️';position:absolute;right:-15px;top:-20px;font-size:150px;opacity:.06;pointer-events:none;}
+.hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:6px;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;max-width:450px;margin:0 auto;}
+.page{max-width:700px;margin:0 auto;padding:14px 14px 90px;}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:14px;}
+.tab{padding:10px 2px;border-radius:12px;border:1.5px solid var(--border);background:#fff;font-family:inherit;
+font-size:10px;font-weight:800;color:var(--ink2);cursor:pointer;text-align:center;line-height:1.3;}
+.tab .ti{display:block;font-size:18px;margin-bottom:2px;}
+.tab.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.f-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin:10px 0 4px;}
+.f-label:first-child{margin-top:0;}
+.f-input,.f-sel{width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;background:#fff;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.go-btn{width:100%;padding:13px;background:var(--rose);color:#fff;border:none;border-radius:12px;
+font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;margin-top:12px;}
+.go-btn:active{transform:scale(.98);}
+.hint{font-size:10.5px;color:var(--muted);line-height:1.65;margin-top:8px;}
+.verdict{border-radius:12px;padding:14px;margin-top:12px;display:none;}
+.verdict.show{display:block;}
+.verdict.bad{background:var(--rose-bg);border:1.5px solid #FECACA;}
+.verdict.good{background:var(--jade-bg);border:1.5px solid #A7F3D0;}
+.verdict.info{background:var(--sky-bg);border:1.5px solid #BAE6FD;}
+.v-title{font-size:14px;font-weight:900;margin-bottom:8px;}
+.verdict.bad .v-title{color:var(--rose-d);}
+.verdict.good .v-title{color:var(--jade-d);}
+.verdict.info .v-title{color:var(--sky-d);}
+.v-line{font-size:12.5px;color:var(--ink2);line-height:1.7;margin-bottom:5px;}
+.v-law{font-size:10.5px;color:var(--gold-d);font-weight:700;margin-top:8px;}
+.wa-btn{width:100%;padding:12px;background:#25D366;color:#fff;border:none;border-radius:10px;
+font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;margin-top:10px;display:none;}
+.wa-btn.show{display:block;}
+.ref-box{background:var(--gold-pale);border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px 13px;margin-top:10px;}
+.ref-title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px;}
+.ref-item{font-size:12px;color:var(--ink2);line-height:1.7;}
+.ref-item b{color:var(--gold-d);}
+/* complain ladder */
+.step-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:12px;}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--gold-l);font-weight:900;
+font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-body{flex:1;}
+.step-t{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
+.step-d{font-size:12px;color:var(--muted);line-height:1.65;}
+.step-act{display:inline-block;margin-top:7px;font-size:11px;font-weight:800;color:var(--gold-d);
+background:var(--gold-pale);border:1px solid var(--gold);border-radius:14px;padding:6px 12px;text-decoration:none;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-r1">
+    <a class="nav-back" href="https://lawsticker-ai.com" id="navBack">← Home</a>
+    <div class="nav-brand" id="navBrand">🕵️ GST Fraud Checker</div>
+    <div class="nav-langs">
+      <button class="nav-lang active" onclick="setLang('en',this)">EN</button>
+      <button class="nav-lang" onclick="setLang('te',this)">తె</button>
+      <button class="nav-lang" onclick="setLang('hi',this)">हि</button>
+    </div>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-title" id="heroTitle"></div>
+  <div class="hero-sub" id="heroSub"></div>
+</div>
+<div class="page">
+  <div class="tabs">
+    <button class="tab active" id="tab0" onclick="tab(0)"><span class="ti">🧾</span><span id="tl0"></span></button>
+    <button class="tab" id="tab1" onclick="tab(1)"><span class="ti">🍽️</span><span id="tl1"></span></button>
+    <button class="tab" id="tab2" onclick="tab(2)"><span class="ti">🏨</span><span id="tl2"></span></button>
+    <button class="tab" id="tab3" onclick="tab(3)"><span class="ti">🛍️</span><span id="tl3"></span></button>
+    <button class="tab" id="tab4" onclick="tab(4)"><span class="ti">📣</span><span id="tl4"></span></button>
+  </div>
+
+  <!-- PANEL 0: GSTIN -->
+  <div class="panel active" id="panel0">
+    <div class="card">
+      <div class="f-label" id="g1L"></div>
+      <input class="f-input" id="gstin" maxlength="15" placeholder="36ABCDE1234F1Z5" style="text-transform:uppercase;letter-spacing:1px;">
+      <button class="go-btn" onclick="checkGstin()" id="gBtn"></button>
+      <div class="hint" id="gHint"></div>
+      <div class="verdict" id="gVerdict"><div class="v-title" id="gVT"></div><div id="gVL"></div><div class="v-law" id="gVLaw"></div></div>
+      <div class="ref-box">
+        <div class="ref-title" id="gRefT"></div>
+        <div class="ref-item" id="gRef1"></div>
+        <div class="ref-item" id="gRef2"></div>
+        <div class="ref-item" id="gRef3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: RESTAURANT -->
+  <div class="panel" id="panel1">
+    <div class="card">
+      <div class="f-label" id="r1L"></div>
+      <select class="f-sel" id="rType">
+        <option value="standalone" id="rOpt1"></option>
+        <option value="premium" id="rOpt2"></option>
+      </select>
+      <div class="f-row">
+        <div><div class="f-label" id="r2L"></div><input class="f-input" id="rFood" type="number" min="0" placeholder="800"></div>
+        <div><div class="f-label" id="r3L"></div><input class="f-input" id="rGst" type="number" min="0" placeholder="40"></div>
+      </div>
+      <div class="f-row">
+        <div><div class="f-label" id="r4L"></div><input class="f-input" id="rSC" type="number" min="0" value="0"></div>
+        <div><div class="f-label" id="r5L"></div><input class="f-input" id="rAlc" type="number" min="0" value="0"></div>
+      </div>
+      <button class="go-btn" onclick="checkRestaurant()" id="rBtn"></button>
+      <div class="hint" id="rHint"></div>
+      <div class="verdict" id="rVerdict"><div class="v-title" id="rVT"></div><div id="rVL"></div><div class="v-law" id="rVLaw"></div></div>
+      <button class="wa-btn" id="rWA" onclick="shareComplaint('restaurant')"></button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: HOTEL -->
+  <div class="panel" id="panel2">
+    <div class="card">
+      <div class="f-row">
+        <div><div class="f-label" id="h1L"></div><input class="f-input" id="hTariff" type="number" min="0" placeholder="4500"></div>
+        <div><div class="f-label" id="h2L"></div><input class="f-input" id="hNights" type="number" min="1" value="1"></div>
+      </div>
+      <div class="f-label" id="h3L"></div><input class="f-input" id="hGst" type="number" min="0" placeholder="225">
+      <button class="go-btn" onclick="checkHotel()" id="hBtn"></button>
+      <div class="hint" id="hHint"></div>
+      <div class="verdict" id="hVerdict"><div class="v-title" id="hVT"></div><div id="hVL"></div><div class="v-law" id="hVLaw"></div></div>
+      <button class="wa-btn" id="hWA" onclick="shareComplaint('hotel')"></button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: SHOP / MRP -->
+  <div class="panel" id="panel3">
+    <div class="card">
+      <div class="f-row">
+        <div><div class="f-label" id="s1L"></div><input class="f-input" id="sMrp" type="number" min="0" placeholder="100"></div>
+        <div><div class="f-label" id="s2L"></div><input class="f-input" id="sCharged" type="number" min="0" placeholder="105"></div>
+      </div>
+      <div class="f-label" id="s3L"></div><input class="f-input" id="sGstAdded" type="number" min="0" value="0">
+      <button class="go-btn" onclick="checkShop()" id="sBtn"></button>
+      <div class="verdict" id="sVerdict"><div class="v-title" id="sVT"></div><div id="sVL"></div><div class="v-law" id="sVLaw"></div></div>
+      <button class="wa-btn" id="sWA" onclick="shareComplaint('shop')"></button>
+      <div class="ref-box">
+        <div class="ref-title" id="sRefT"></div>
+        <div class="ref-item" id="sRef1"></div>
+        <div class="ref-item" id="sRef2"></div>
+        <div class="ref-item" id="sRef3"></div>
+        <div class="ref-item" id="sRef4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: COMPLAIN -->
+  <div class="panel" id="panel4">
+    <div id="ladder"></div>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/rights-hub.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">Rights</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/remedies-hub.html"><span class="bn-icon">🛠️</span><span class="bn-lbl">Remedies</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/rights-shorts.html"><span class="bn-icon">📇</span><span class="bn-lbl">Cards</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/calculators.html"><span class="bn-icon">🧮</span><span class="bn-lbl">Calc</span></a>
+</div>
+<script>
+const UI={
+en:{navBrand:'🕵️ GST Fraud Checker',navBack:'← Home',
+ heroTitle:'Is Your Bill Legal?',
+ heroSub:'Shops, restaurants and hotels overcharge GST every day — wrong rates, GST on MRP, fake GSTINs. Check any bill in 30 seconds and know exactly how to complain. Updated for the Sept 2025 GST reform (5% / 18% / 40%).',
+ tabs:['GSTIN','Restaurant','Hotel','Shop/MRP','Complain'],
+ g1L:'GSTIN printed on the bill (15 characters)',gBtn:'✓ Validate GSTIN',
+ gHint:'No GSTIN on the bill but GST charged? The business CANNOT legally collect GST — that itself is the fraud.',
+ gRefT:'Also check on the bill',
+ gRef1:'<b>Composition dealer:</b> if the bill says "composition taxable person — not eligible to collect tax", they can charge NO GST at all.',
+ gRef2:'<b>CGST + SGST split:</b> a proper tax invoice shows the split (e.g., 2.5% + 2.5%), not one lump "tax".',
+ gRef3:'<b>Final check:</b> checksum valid ≠ registration active. Verify free at services.gst.gov.in → Search Taxpayer — takes 30 seconds.',
+ r1L:'Restaurant type',rOpt1:'Standalone / normal restaurant (incl. AC, takeaway, delivery)',rOpt2:'Inside premium hotel (room price above ₹7,500/night)',
+ r2L:'Food + drinks total ₹ (before tax)',r3L:'GST charged ₹',r4L:'Service charge ₹ (if any)',r5L:'Alcohol amount ₹ (if any)',
+ rBtn:'🍽️ Check Restaurant Bill',
+ rHint:'Since 22 Sept 2025 the AC/non-AC distinction is GONE — standalone restaurants charge a flat 5%. 18% is legal only inside premium hotels.',
+ h1L:'Room price per night ₹',h2L:'Nights',h3L:'GST charged ₹',hBtn:'🏨 Check Hotel Bill',
+ hHint:'Since 22 Sept 2025: rooms ≤ ₹7,500/night → 5% GST. Above ₹7,500 → 18%.',
+ s1L:'MRP on packet ₹',s2L:'Price charged ₹',s3L:'GST shown separately? ₹ (0 if none)',sBtn:'🛍️ Check Shop Bill',
+ sRefT:'Quick rate reference (post Sept-2025)',
+ sRef1:'<b>Exempt (0%):</b> fresh fruits & vegetables, milk, UHT milk, curd, eggs, fresh meat/fish, roti/paratha, packaged paneer',
+ sRef2:'<b>5%:</b> most packaged foods and daily essentials',
+ sRef3:'<b>18%:</b> chocolates, packaged beverages, electronics, services',
+ sRef4:'<b>40%:</b> sugary/aerated drinks, energy drinks, pan masala — yes, forty!',
+ fillAll:'Please fill the required numbers first.',
+ badge:{bad:'🚨 VIOLATION DETECTED',good:'✅ Bill looks correct',info:'ℹ️ Check the details'},
+ wa:'📲 Generate Complaint (WhatsApp)',
+ // verdict strings
+ gLen:'GSTIN must be exactly 15 characters — you entered {n}.',
+ gFmt:'Format invalid. Correct pattern: 2-digit state + 10-char PAN + entity + Z + check character.',
+ gChk:'CHECKSUM FAILED — mathematically invalid. Fake or mistyped. A business using an invalid GSTIN while collecting GST is committing an offence.',
+ gValid:'Structure and checksum are VALID.',gState:'Registered state: {s}',gPan:'PAN embedded: {p}',
+ gLaw:'CGST Act 2017, Section 32 — only registered persons may collect GST · Section 122 — penalty for unauthorised collection',
+ gVerify:'Now confirm registration is ACTIVE: services.gst.gov.in → Search Taxpayer (free, 30 seconds).',
+ rWrongRate:'This restaurant charged {p}% but the legal rate is {e}% — excess of ₹{x}. Since 22 Sept 2025, standalone restaurants must charge flat 5%.',
+ rPremium:'18% is legal only because this is inside a premium hotel (rooms > ₹7,500). If the hotel is NOT premium, this is overcharging.',
+ rGstOnSC:'GST appears to be calculated on the service charge too. Service charge is not part of the taxable food value the way it was billed here — and remember, service charge itself is OPTIONAL (CCPA 2022). You can refuse it entirely.',
+ rAlc:'Alcohol is OUTSIDE GST — it attracts state VAT/excise instead. If GST was computed on the alcohol amount (₹{a}), that portion is illegal collection.',
+ rOk:'GST of {p}% matches the legal rate. Amounts reconcile within rounding.',
+ rLaw:'GST Council 56th meeting (Sept 2025) · CGST Act Section 76 — collecting excess tax is punishable · CCPA Service Charge Guidelines 2022',
+ hWrong:'Room is ₹{t}/night → legal rate is {e}%, but you were charged {p}% — excess ₹{x}. Rooms ≤ ₹7,500 attract only 5% since 22 Sept 2025.',
+ hOk:'Charged {p}% — matches the legal rate for this tariff.',
+ hLaw:'Notification 15/2025-CTR effective 22.09.2025 · CGST Act Section 76',
+ sGstOnMrp:'GST charged ON TOP of MRP — ILLEGAL. MRP already includes all taxes. The ₹{g} added is unlawful collection; demand it back on the spot.',
+ sOverMrp:'Charged ₹{c} against MRP ₹{m} — ₹{d} overcharge. Selling above MRP is a punishable offence.',
+ sOk:'No MRP violation. Price is within MRP and no illegal GST addition.',
+ sLaw:'Legal Metrology Act 2009, Section 18 · CPA 2019',
+ waTpl:'⚠️ *GST/MRP VIOLATION — COMPLAINT DRAFT*\n\nDate: {date}\nBusiness: ____________\nBill No: ____________\n\nIssue found:\n{issues}\n\nRelevant law: {law}\n\nI request refund of the excess amount and action against the business.\n\n📞 File at: 1915 (Consumer Helpline) · GST grievance: selfservice.gstsystem.in\n\n_Checked via lawsticker-ai.com/gst-fraud.html_',
+ ladder:[
+  ['🗣️','Step 1 — On the spot','Point out the error politely and ask for a corrected bill. Quote the rate: "standalone restaurants are 5% since Sept 2025" or "MRP includes all taxes." Many billing "errors" get fixed instantly when the customer clearly knows the law.',null,null],
+  ['📞','Step 2 — National Consumer Helpline 1915','Call 1915 or file at consumerhelpline.gov.in (INGRAM portal). Free, no lawyer, creates an official record. Works for overcharging, MRP violations and wrong GST. Keep the bill photo ready.','tel:1915','📞 Call 1915'],
+  ['🧾','Step 3 — GST Department','For fake GSTIN or GST collected without registration: complain at selfservice.gstsystem.in (Grievance → Others) or CBIC Mitra helpdesk 1800-1200-232. The department can penalise unauthorised collection under Section 122.','https://selfservice.gstsystem.in','🌐 GST Grievance Portal'],
+  ['⚖️','Step 4 — Legal Metrology (for MRP cases)','Selling above MRP or charging GST over MRP violates the Legal Metrology Act — complain to your district Legal Metrology office (search "Legal Metrology + your district"). Fines start at ₹25,000 for the business.',null,null],
+  ['🏛️','Step 5 — Consumer Commission (get money back + compensation)','For refund WITH compensation for harassment: file on e-Daakhil. Zero court fee up to ₹5 lakh. Use our ready complaint draft generator.','https://lawsticker-ai.com/letters.html?g=5','✍️ Generate Complaint Draft'],
+ ]},
+te:{navBrand:'🕵️ GST మోసం తనిఖీ',navBack:'← హోమ్',
+ heroTitle:'మీ బిల్లు చట్టబద్ధమేనా?',
+ heroSub:'దుకాణాలు, రెస్టారెంట్లు, హోటళ్ళు ప్రతిరోజూ GST అధికంగా వసూలు చేస్తాయి — తప్పు రేట్లు, MRPపై GST, నకిలీ GSTINలు. ఏ బిల్లునైనా 30 సెకన్లలో తనిఖీ చేసి, ఫిర్యాదు ఎలా చేయాలో తెలుసుకోండి. సెప్టెంబర్ 2025 GST సంస్కరణకు అప్‌డేట్ (5% / 18% / 40%).',
+ tabs:['GSTIN','రెస్టారెంట్','హోటల్','దుకాణం/MRP','ఫిర్యాదు'],
+ g1L:'బిల్లుపై ఉన్న GSTIN (15 అక్షరాలు)',gBtn:'✓ GSTIN ధృవీకరించండి',
+ gHint:'బిల్లుపై GSTIN లేదు కానీ GST వసూలు చేశారా? ఆ వ్యాపారం చట్టపరంగా GST వసూలు చేయలేదు — అదే మోసం.',
+ gRefT:'బిల్లుపై ఇవి కూడా చూడండి',
+ gRef1:'<b>కంపోజిషన్ డీలర్:</b> బిల్లుపై "composition taxable person — not eligible to collect tax" ఉంటే, వారు అసలు GST వసూలు చేయలేరు.',
+ gRef2:'<b>CGST + SGST విభజన:</b> సరైన పన్ను ఇన్వాయిస్ విభజన చూపుతుంది (ఉదా: 2.5% + 2.5%), ఒకే "tax" కాదు.',
+ gRef3:'<b>తుది తనిఖీ:</b> చెక్‌సమ్ సరైనది ≠ నమోదు యాక్టివ్. services.gst.gov.in → Search Taxpayer లో ఉచితంగా ధృవీకరించండి.',
+ r1L:'రెస్టారెంట్ రకం',rOpt1:'సాధారణ రెస్టారెంట్ (AC, టేకవే, డెలివరీతో సహా)',rOpt2:'ప్రీమియం హోటల్ లోపల (గది ధర ₹7,500+/రాత్రి)',
+ r2L:'ఆహారం + పానీయాల మొత్తం ₹ (పన్ను ముందు)',r3L:'వసూలు చేసిన GST ₹',r4L:'సర్వీస్ ఛార్జ్ ₹ (ఉంటే)',r5L:'మద్యం మొత్తం ₹ (ఉంటే)',
+ rBtn:'🍽️ రెస్టారెంట్ బిల్లు తనిఖీ',
+ rHint:'22 సెప్టెంబర్ 2025 నుండి AC/నాన్-AC తేడా పోయింది — సాధారణ రెస్టారెంట్లు ఫ్లాట్ 5% వసూలు చేయాలి. 18% ప్రీమియం హోటళ్ళ లోపల మాత్రమే చట్టబద్ధం.',
+ h1L:'గది ధర/రాత్రి ₹',h2L:'రాత్రులు',h3L:'వసూలు చేసిన GST ₹',hBtn:'🏨 హోటల్ బిల్లు తనిఖీ',
+ hHint:'22 సెప్టెంబర్ 2025 నుండి: గది ≤ ₹7,500/రాత్రి → 5% GST. ₹7,500 పైన → 18%.',
+ s1L:'ప్యాకెట్ MRP ₹',s2L:'వసూలు చేసిన ధర ₹',s3L:'GST విడిగా చూపారా? ₹ (లేకపోతే 0)',sBtn:'🛍️ దుకాణం బిల్లు తనిఖీ',
+ sRefT:'రేట్ల త్వరిత సూచన (సెప్టెంబర్ 2025 తర్వాత)',
+ sRef1:'<b>మినహాయింపు (0%):</b> తాజా పండ్లు & కూరగాయలు, పాలు, UHT పాలు, పెరుగు, గుడ్లు, తాజా మాంసం/చేపలు, రొట్టె/పరాఠా, ప్యాక్ చేసిన పనీర్',
+ sRef2:'<b>5%:</b> చాలా ప్యాకేజ్డ్ ఆహారాలు, నిత్యావసరాలు',
+ sRef3:'<b>18%:</b> చాక్లెట్లు, ప్యాకేజ్డ్ పానీయాలు, ఎలక్ట్రానిక్స్, సేవలు',
+ sRef4:'<b>40%:</b> చక్కెర/సోడా పానీయాలు, ఎనర్జీ డ్రింక్స్, పాన్ మసాలా — అవును, నలభై!',
+ fillAll:'ముందుగా అవసరమైన సంఖ్యలు నింపండి.',
+ badge:{bad:'🚨 ఉల్లంఘన గుర్తించబడింది',good:'✅ బిల్లు సరిగ్గా ఉంది',info:'ℹ️ వివరాలు తనిఖీ చేయండి'},
+ wa:'📲 ఫిర్యాదు తయారు చేయండి (WhatsApp)',
+ gLen:'GSTIN ఖచ్చితంగా 15 అక్షరాలు — మీరు {n} ఇచ్చారు.',
+ gFmt:'ఫార్మాట్ తప్పు. సరైన నమూనా: 2-అంకెల రాష్ట్రం + 10-అక్షరాల PAN + ఎంటిటీ + Z + చెక్ అక్షరం.',
+ gChk:'చెక్‌సమ్ విఫలం — గణితపరంగా చెల్లదు. నకిలీ లేదా తప్పు టైపింగ్. చెల్లని GSTINతో GST వసూలు చేయడం నేరం.',
+ gValid:'నిర్మాణం మరియు చెక్‌సమ్ సరైనవి.',gState:'నమోదిత రాష్ట్రం: {s}',gPan:'లోపలి PAN: {p}',
+ gLaw:'CGST చట్టం 2017, Section 32 — నమోదిత వ్యక్తులు మాత్రమే GST వసూలు చేయగలరు · Section 122 — అనధికార వసూలుకు జరిమానా',
+ gVerify:'ఇప్పుడు నమోదు యాక్టివ్‌గా ఉందో నిర్ధారించండి: services.gst.gov.in → Search Taxpayer (ఉచితం, 30 సెకన్లు).',
+ rWrongRate:'ఈ రెస్టారెంట్ {p}% వసూలు చేసింది కానీ చట్టబద్ధ రేటు {e}% — ₹{x} అధికం. 22 సెప్టెంబర్ 2025 నుండి సాధారణ రెస్టారెంట్లు ఫ్లాట్ 5% మాత్రమే.',
+ rPremium:'ప్రీమియం హోటల్ లోపల (గదులు ₹7,500+) కాబట్టే 18% చట్టబద్ధం. హోటల్ ప్రీమియం కాకపోతే, ఇది అధిక వసూలు.',
+ rGstOnSC:'సర్వీస్ ఛార్జ్‌పై కూడా GST లెక్కించినట్లుంది. గుర్తుంచుకోండి — సర్వీస్ ఛార్జ్ ఐచ్ఛికం (CCPA 2022). పూర్తిగా నిరాకరించవచ్చు.',
+ rAlc:'మద్యం GST పరిధిలో లేదు — దానిపై రాష్ట్ర VAT/ఎక్సైజ్ వర్తిస్తుంది. మద్యం మొత్తంపై (₹{a}) GST లెక్కిస్తే, ఆ భాగం చట్టవిరుద్ధ వసూలు.',
+ rOk:'{p}% GST చట్టబద్ధ రేటుకు సరిపోతుంది. మొత్తాలు సరిగ్గా ఉన్నాయి.',
+ rLaw:'GST కౌన్సిల్ 56వ సమావేశం (సెప్టెంబర్ 2025) · CGST చట్టం Section 76 · CCPA సర్వీస్ ఛార్జ్ మార్గదర్శకాలు 2022',
+ hWrong:'గది ₹{t}/రాత్రి → చట్టబద్ధ రేటు {e}%, కానీ {p}% వసూలు — ₹{x} అధికం. ₹7,500 లోపు గదులకు 22 సెప్టెంబర్ 2025 నుండి 5% మాత్రమే.',
+ hOk:'{p}% వసూలు — ఈ ధరకు చట్టబద్ధ రేటుకు సరిపోతుంది.',
+ hLaw:'నోటిఫికేషన్ 15/2025-CTR (22.09.2025 నుండి) · CGST చట్టం Section 76',
+ sGstOnMrp:'MRP పైన GST వసూలు — చట్టవిరుద్ధం. MRPలో అన్ని పన్నులు ఉన్నాయి. జోడించిన ₹{g} చట్టవిరుద్ధ వసూలు; అక్కడికక్కడే తిరిగి అడగండి.',
+ sOverMrp:'MRP ₹{m}కి బదులు ₹{c} వసూలు — ₹{d} అధికం. MRP మించి అమ్మడం శిక్షార్హ నేరం.',
+ sOk:'MRP ఉల్లంఘన లేదు. ధర MRP లోపే ఉంది, చట్టవిరుద్ధ GST జోడింపు లేదు.',
+ sLaw:'లీగల్ మెట్రాలజీ చట్టం 2009, Section 18 · CPA 2019',
+ waTpl:'⚠️ *GST/MRP ఉల్లంఘన — ఫిర్యాదు ముసాయిదా*\n\nతేదీ: {date}\nవ్యాపారం: ____________\nబిల్లు నం: ____________\n\nగుర్తించిన సమస్య:\n{issues}\n\nసంబంధిత చట్టం: {law}\n\nఅధిక మొత్తం వాపసు మరియు వ్యాపారంపై చర్య కోరుతున్నాను.\n\n📞 ఫిర్యాదు: 1915 (వినియోగదారు హెల్ప్‌లైన్) · GST: selfservice.gstsystem.in\n\n_lawsticker-ai.com/gst-fraud.html ద్వారా తనిఖీ_',
+ ladder:[
+  ['🗣️','దశ 1 — అక్కడికక్కడే','మర్యాదగా తప్పు చూపించి సరిచేసిన బిల్లు అడగండి. రేటు చెప్పండి: "సెప్టెంబర్ 2025 నుండి సాధారణ రెస్టారెంట్లు 5%" లేదా "MRPలో అన్ని పన్నులు ఉన్నాయి." కస్టమర్‌కు చట్టం తెలుసని తెలిస్తే చాలా "పొరపాట్లు" వెంటనే సరవుతాయి.',null,null],
+  ['📞','దశ 2 — జాతీయ వినియోగదారు హెల్ప్‌లైన్ 1915','1915కి కాల్ చేయండి లేదా consumerhelpline.gov.in లో దాఖలు చేయండి. ఉచితం, న్యాయవాది అవసరం లేదు, అధికారిక రికార్డు ఏర్పడుతుంది. బిల్లు ఫోటో సిద్ధంగా ఉంచుకోండి.','tel:1915','📞 1915కి కాల్'],
+  ['🧾','దశ 3 — GST శాఖ','నకిలీ GSTIN లేదా నమోదు లేకుండా GST వసూలుకు: selfservice.gstsystem.in లో ఫిర్యాదు లేదా CBIC మిత్ర హెల్ప్‌డెస్క్ 1800-1200-232. Section 122 కింద శాఖ జరిమానా విధించగలదు.','https://selfservice.gstsystem.in','🌐 GST ఫిర్యాదు పోర్టల్'],
+  ['⚖️','దశ 4 — లీగల్ మెట్రాలజీ (MRP కేసులకు)','MRP మించి అమ్మడం లేదా MRPపై GST వసూలు లీగల్ మెట్రాలజీ చట్ట ఉల్లంఘన — మీ జిల్లా లీగల్ మెట్రాలజీ కార్యాలయానికి ఫిర్యాదు చేయండి. వ్యాపారానికి జరిమానాలు ₹25,000 నుండి ప్రారంభం.',null,null],
+  ['🏛️','దశ 5 — వినియోగదారు కమిషన్ (డబ్బు + పరిహారం)','రీఫండ్‌తో పాటు వేధింపు పరిహారం కోసం: e-Daakhil లో దాఖలు చేయండి. ₹5 లక్షల వరకు కోర్టు రుసుము సున్నా. మా సిద్ధ ఫిర్యాదు ముసాయిదా వాడండి.','https://lawsticker-ai.com/letters.html?g=5','✍️ ఫిర్యాదు ముసాయిదా'],
+ ]},
+hi:{navBrand:'🕵️ GST धोखाधड़ी जांच',navBack:'← होम',
+ heroTitle:'क्या आपका बिल कानूनी है?',
+ heroSub:'दुकानें, रेस्तरां और होटल रोज़ GST अधिक वसूलते हैं — गलत दरें, MRP पर GST, नकली GSTIN। कोई भी बिल 30 सेकंड में जांचें और शिकायत का तरीका जानें। सितंबर 2025 GST सुधार के अनुसार अपडेटेड (5% / 18% / 40%)।',
+ tabs:['GSTIN','रेस्तरां','होटल','दुकान/MRP','शिकायत'],
+ g1L:'बिल पर छपा GSTIN (15 अक्षर)',gBtn:'✓ GSTIN सत्यापित करें',
+ gHint:'बिल पर GSTIN नहीं पर GST वसूला? वह व्यवसाय कानूनी रूप से GST वसूल ही नहीं सकता — यही धोखाधड़ी है।',
+ gRefT:'बिल पर ये भी देखें',
+ gRef1:'<b>कंपोजीशन डीलर:</b> बिल पर "composition taxable person — not eligible to collect tax" लिखा हो तो वे कोई GST नहीं ले सकते।',
+ gRef2:'<b>CGST + SGST विभाजन:</b> सही कर चालान विभाजन दिखाता है (जैसे 2.5% + 2.5%), एक "tax" नहीं।',
+ gRef3:'<b>अंतिम जांच:</b> चेकसम मान्य ≠ पंजीकरण सक्रिय। services.gst.gov.in → Search Taxpayer पर मुफ्त सत्यापित करें।',
+ r1L:'रेस्तरां प्रकार',rOpt1:'सामान्य रेस्तरां (AC, टेकअवे, डिलीवरी सहित)',rOpt2:'प्रीमियम होटल के अंदर (कमरा ₹7,500+/रात)',
+ r2L:'भोजन + पेय कुल ₹ (कर से पहले)',r3L:'वसूला गया GST ₹',r4L:'सर्विस चार्ज ₹ (यदि हो)',r5L:'शराब राशि ₹ (यदि हो)',
+ rBtn:'🍽️ रेस्तरां बिल जांचें',
+ rHint:'22 सितंबर 2025 से AC/नॉन-AC भेद खत्म — सामान्य रेस्तरां फ्लैट 5% ही ले सकते हैं। 18% केवल प्रीमियम होटलों के अंदर वैध।',
+ h1L:'कमरे की कीमत/रात ₹',h2L:'रातें',h3L:'वसूला गया GST ₹',hBtn:'🏨 होटल बिल जांचें',
+ hHint:'22 सितंबर 2025 से: कमरा ≤ ₹7,500/रात → 5% GST। ₹7,500 से ऊपर → 18%।',
+ s1L:'पैकेट MRP ₹',s2L:'वसूली गई कीमत ₹',s3L:'GST अलग दिखाया? ₹ (नहीं तो 0)',sBtn:'🛍️ दुकान बिल जांचें',
+ sRefT:'दरों का त्वरित संदर्भ (सितंबर 2025 के बाद)',
+ sRef1:'<b>छूट (0%):</b> ताज़े फल-सब्जियां, दूध, UHT दूध, दही, अंडे, ताज़ा मांस/मछली, रोटी/पराठा, पैक्ड पनीर',
+ sRef2:'<b>5%:</b> अधिकांश पैकेज्ड खाद्य और दैनिक आवश्यकताएं',
+ sRef3:'<b>18%:</b> चॉकलेट, पैकेज्ड पेय, इलेक्ट्रॉनिक्स, सेवाएं',
+ sRef4:'<b>40%:</b> मीठे/सोडा पेय, एनर्जी ड्रिंक, पान मसाला — हां, चालीस!',
+ fillAll:'पहले आवश्यक संख्याएं भरें।',
+ badge:{bad:'🚨 उल्लंघन पकड़ा गया',good:'✅ बिल सही लगता है',info:'ℹ️ विवरण जांचें'},
+ wa:'📲 शिकायत तैयार करें (WhatsApp)',
+ gLen:'GSTIN ठीक 15 अक्षर — आपने {n} डाले।',
+ gFmt:'फॉर्मेट गलत। सही पैटर्न: 2-अंक राज्य + 10-अक्षर PAN + इकाई + Z + चेक अक्षर।',
+ gChk:'चेकसम विफल — गणितीय रूप से अमान्य। नकली या गलत टाइप। अमान्य GSTIN से GST वसूलना अपराध है।',
+ gValid:'संरचना और चेकसम मान्य हैं।',gState:'पंजीकृत राज्य: {s}',gPan:'निहित PAN: {p}',
+ gLaw:'CGST अधिनियम 2017, धारा 32 — केवल पंजीकृत व्यक्ति GST वसूल सकते हैं · धारा 122 — अनधिकृत वसूली पर दंड',
+ gVerify:'अब पंजीकरण सक्रिय है या नहीं पुष्टि करें: services.gst.gov.in → Search Taxpayer (मुफ्त, 30 सेकंड)।',
+ rWrongRate:'रेस्तरां ने {p}% वसूला पर वैध दर {e}% है — ₹{x} अधिक। 22 सितंबर 2025 से सामान्य रेस्तरां फ्लैट 5% ही ले सकते हैं।',
+ rPremium:'प्रीमियम होटल के अंदर (कमरे ₹7,500+) होने से ही 18% वैध है। होटल प्रीमियम नहीं है तो यह अधिक वसूली है।',
+ rGstOnSC:'सर्विस चार्ज पर भी GST लगाया गया लगता है। याद रखें — सर्विस चार्ज वैकल्पिक है (CCPA 2022)। पूरी तरह मना कर सकते हैं।',
+ rAlc:'शराब GST से बाहर है — उस पर राज्य VAT/एक्साइज लगता है। शराब राशि (₹{a}) पर GST लगाया गया तो वह हिस्सा अवैध वसूली है।',
+ rOk:'{p}% GST वैध दर से मेल खाता है। राशियां सही हैं।',
+ rLaw:'GST परिषद 56वीं बैठक (सितंबर 2025) · CGST अधिनियम धारा 76 · CCPA सर्विस चार्ज दिशानिर्देश 2022',
+ hWrong:'कमरा ₹{t}/रात → वैध दर {e}%, पर {p}% वसूला — ₹{x} अधिक। ₹7,500 तक के कमरों पर 22 सितंबर 2025 से केवल 5%।',
+ hOk:'{p}% वसूला — इस किराए की वैध दर से मेल खाता है।',
+ hLaw:'अधिसूचना 15/2025-CTR (22.09.2025 से) · CGST अधिनियम धारा 76',
+ sGstOnMrp:'MRP के ऊपर GST वसूला — गैरकानूनी। MRP में सभी कर शामिल हैं। जोड़ा गया ₹{g} अवैध वसूली है; मौके पर वापस मांगें।',
+ sOverMrp:'MRP ₹{m} के बदले ₹{c} वसूले — ₹{d} अधिक। MRP से ऊपर बेचना दंडनीय अपराध।',
+ sOk:'कोई MRP उल्लंघन नहीं। कीमत MRP के भीतर, कोई अवैध GST नहीं।',
+ sLaw:'विधिक माप विज्ञान अधिनियम 2009, धारा 18 · CPA 2019',
+ waTpl:'⚠️ *GST/MRP उल्लंघन — शिकायत ड्राफ्ट*\n\nतारीख: {date}\nव्यवसाय: ____________\nबिल नं: ____________\n\nपाई गई समस्या:\n{issues}\n\nसंबंधित कानून: {law}\n\nअधिक राशि की वापसी और व्यवसाय पर कार्रवाई की मांग करता/करती हूं।\n\n📞 शिकायत: 1915 · GST: selfservice.gstsystem.in\n\n_lawsticker-ai.com/gst-fraud.html से जांचा_',
+ ladder:[
+  ['🗣️','कदम 1 — मौके पर','विनम्रता से गलती बताएं और सही बिल मांगें। दर बताएं: "सितंबर 2025 से सामान्य रेस्तरां 5%" या "MRP में सभी कर शामिल हैं।" ग्राहक को कानून पता हो तो कई "गलतियां" तुरंत ठीक हो जाती हैं।',null,null],
+  ['📞','कदम 2 — राष्ट्रीय उपभोक्ता हेल्पलाइन 1915','1915 कॉल करें या consumerhelpline.gov.in पर दर्ज करें। मुफ्त, बिना वकील, आधिकारिक रिकॉर्ड बनता है। बिल की फोटो तैयार रखें।','tel:1915','📞 1915 कॉल करें'],
+  ['🧾','कदम 3 — GST विभाग','नकली GSTIN या बिना पंजीकरण GST वसूली के लिए: selfservice.gstsystem.in पर शिकायत या CBIC मित्र हेल्पडेस्क 1800-1200-232। धारा 122 के तहत विभाग दंड लगा सकता है।','https://selfservice.gstsystem.in','🌐 GST शिकायत पोर्टल'],
+  ['⚖️','कदम 4 — विधिक माप विज्ञान (MRP मामलों में)','MRP से ऊपर बेचना या MRP पर GST वसूलना विधिक माप विज्ञान अधिनियम का उल्लंघन — जिला Legal Metrology कार्यालय में शिकायत करें। व्यवसाय पर जुर्माना ₹25,000 से शुरू।',null,null],
+  ['🏛️','कदम 5 — उपभोक्ता आयोग (पैसा + मुआवज़ा)','रिफंड के साथ उत्पीड़न मुआवज़े के लिए: e-Daakhil पर दाखिल करें। ₹5 लाख तक शून्य कोर्ट फीस। हमारा तैयार शिकायत ड्राफ्ट इस्तेमाल करें।','https://lawsticker-ai.com/letters.html?g=5','✍️ शिकायत ड्राफ्ट बनाएं'],
+ ]},
+};
+
+let L='en', lastIssues=[], lastLaw='';
+
+// ═══ GSTIN checksum (public algorithm) ═══
+const B36='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const GST_STATES={'01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh','05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh','10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur','15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal','20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat','26':'Dadra & Nagar Haveli, Daman & Diu','27':'Maharashtra','29':'Karnataka','30':'Goa','31':'Lakshadweep','32':'Kerala','33':'Tamil Nadu','34':'Puducherry','35':'Andaman & Nicobar','36':'Telangana','37':'Andhra Pradesh','38':'Ladakh'};
+function gstinCheckChar(g14){let s=0;for(let i=0;i<14;i++){let v=B36.indexOf(g14[i]);if(v<0)return null;
+ let m=v*((i%2===0)?1:2);s+=Math.floor(m/36)+(m%36);}return B36[(36-(s%36))%36];}
+
+function setLang(l,b){L=l;document.querySelectorAll('.nav-lang').forEach(x=>x.classList.remove('active'));
+ if(b)b.classList.add('active');render();}
+
+function render(){
+ const U=UI[L];
+ ['navBrand','navBack','heroTitle','heroSub','g1L','gBtn','gHint','gRefT',
+  'r1L','rOpt1','rOpt2','r2L','r3L','r4L','r5L','rBtn','rHint',
+  'h1L','h2L','h3L','hBtn','hHint','s1L','s2L','s3L','sBtn','sRefT'].forEach(id=>{
+  const el=document.getElementById(id);if(el&&U[id]!==undefined)el.textContent=U[id];});
+ ['gRef1','gRef2','gRef3','sRef1','sRef2','sRef3','sRef4'].forEach(id=>{
+  const el=document.getElementById(id);if(el&&U[id])el.innerHTML=U[id];});
+ for(let i=0;i<5;i++)document.getElementById('tl'+i).textContent=U.tabs[i];
+ ['rWA','hWA','sWA'].forEach(id=>document.getElementById(id).textContent=U.wa);
+ // complain ladder
+ document.getElementById('ladder').innerHTML=U.ladder.map(([ic,t,d,url,act],i)=>`
+  <div class="step-card"><div class="step-num">${i+1}</div><div class="step-body">
+   <div class="step-t">${ic} ${t}</div><div class="step-d">${d}</div>
+   ${url?`<a class="step-act" href="${url}" ${url.startsWith('http')?'target="_blank"':''}>${act}</a>`:''}
+  </div></div>`).join('');
+}
+
+function tab(i){for(let j=0;j<5;j++){
+ document.getElementById('tab'+j).classList.toggle('active',j===i);
+ document.getElementById('panel'+j).classList.toggle('active',j===i);}}
+
+function fill(id,tpl,vals){let s=tpl;for(const k in vals)s=s.split('{'+k+'}').join(vals[k]);
+ return s;}
+function num(id){return parseFloat(document.getElementById(id).value)||0;}
+function show(prefix,bad,lines,law){
+ const U=UI[L];
+ document.getElementById(prefix+'VT').textContent=bad?U.badge.bad:U.badge.good;
+ document.getElementById(prefix+'VL').innerHTML=lines.map(l=>`<div class="v-line">• ${l}</div>`).join('');
+ document.getElementById(prefix+'VLaw').textContent=law||'';
+ const v=document.getElementById(prefix+'Verdict');
+ v.className='verdict show '+(bad?'bad':'good');
+ const wa=document.getElementById(prefix+'WA');
+ if(wa)wa.classList.toggle('show',bad);
+ if(bad){lastIssues=lines;lastLaw=law;}
+}
+
+function checkGstin(){
+ const U=UI[L];
+ const g=(document.getElementById('gstin').value||'').toUpperCase().trim();
+ const lines=[];let bad=false;
+ const fmt=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+ if(g.length!==15){bad=true;lines.push(fill('',U.gLen,{n:g.length}));}
+ else if(!fmt.test(g)){bad=true;lines.push(U.gFmt);}
+ else{
+  const expect=gstinCheckChar(g.slice(0,14));
+  if(expect!==g[14]){bad=true;lines.push(U.gChk);}
+  else{
+   const st=GST_STATES[g.slice(0,2)];
+   lines.push(U.gValid);
+   lines.push(fill('',U.gState,{s:st||('code '+g.slice(0,2))}));
+   lines.push(fill('',U.gPan,{p:g.slice(2,12)}));
+   lines.push(U.gVerify);
+  }
+ }
+ document.getElementById('gVT').textContent=bad?U.badge.bad:U.badge.good;
+ document.getElementById('gVL').innerHTML=lines.map(l=>`<div class="v-line">• ${l}</div>`).join('');
+ document.getElementById('gVLaw').textContent=bad?U.gLaw:'';
+ document.getElementById('gVerdict').className='verdict show '+(bad?'bad':'good');
+ if(bad){lastIssues=lines;lastLaw=U.gLaw;}
+}
+
+function checkRestaurant(){
+ const U=UI[L];
+ const type=document.getElementById('rType').value;
+ const food=num('rFood'),gst=num('rGst'),sc=num('rSC'),alc=num('rAlc');
+ if(food<=0||gst<0){alert(U.fillAll);return;}
+ const taxableFood=Math.max(0,food-alc); // alcohol outside GST
+ const expected=type==='premium'?18:5;
+ const TOL=2; // ₹2 rounding tolerance, independent of base size
+ const legalGst=taxableFood*expected/100;
+ const pct=taxableFood>0?Math.round(gst/taxableFood*1000)/10:0;
+ const lines=[];let bad=false;
+
+ // Check most specific explanations FIRST, before the generic wrong-rate message
+ const withSC=(taxableFood+sc)*expected/100;
+ const gstOnSC = sc>0 && Math.abs(gst-withSC)<=TOL && Math.abs(gst-legalGst)>TOL;
+ const gstOnAlcohol = alc>0 && Math.abs(gst-(food*expected/100))<=TOL && Math.abs(gst-legalGst)>TOL;
+
+ if(gstOnSC){
+  bad=true;lines.push(U.rGstOnSC);
+ }else if(gstOnAlcohol){
+  bad=true;lines.push(fill('',U.rAlc,{a:alc.toLocaleString('en-IN')}));
+ }else if(Math.abs(gst-legalGst)>TOL){
+  bad=true;
+  lines.push(fill('',U.rWrongRate,{p:pct,e:expected,x:(gst-legalGst).toFixed(2)}));
+ }else{
+  lines.push(fill('',U.rOk,{p:pct}));
+  if(type==='premium')lines.push(U.rPremium);
+ }
+ show('r',bad,lines,U.rLaw);
+}
+
+function checkHotel(){
+ const U=UI[L];
+ const tariff=num('hTariff'),nights=Math.max(1,num('hNights')),gst=num('hGst');
+ if(tariff<=0){alert(U.fillAll);return;}
+ const expected=tariff<=7500?5:18;
+ const base=tariff*nights;
+ const legal=base*expected/100;
+ const pct=base>0?Math.round(gst/base*1000)/10:0;
+ const lines=[];let bad=false;
+ if(gst>legal+base*0.006){
+  bad=true;
+  lines.push(fill('',U.hWrong,{t:tariff.toLocaleString('en-IN'),e:expected,p:pct,x:(gst-legal).toFixed(2)}));
+ }else{
+  lines.push(fill('',U.hOk,{p:pct}));
+ }
+ show('h',bad,lines,U.hLaw);
+}
+
+function checkShop(){
+ const U=UI[L];
+ const mrp=num('sMrp'),charged=num('sCharged'),gstAdded=num('sGstAdded');
+ if(mrp<=0||charged<=0){alert(U.fillAll);return;}
+ const lines=[];let bad=false;
+ if(gstAdded>0){bad=true;
+  lines.push(fill('',U.sGstOnMrp,{g:gstAdded.toFixed(2)}));}
+ const eff=charged+gstAdded;
+ if(eff>mrp+0.009){bad=true;
+  lines.push(fill('',U.sOverMrp,{c:eff.toFixed(2),m:mrp.toFixed(2),d:(eff-mrp).toFixed(2)}));}
+ if(!bad)lines.push(U.sOk);
+ show('s',bad,lines,U.sLaw);
+}
+
+function shareComplaint(kind){
+ if(!lastIssues.length)return;
+ const U=UI[L];
+ const msg=U.waTpl
+  .replace('{date}',new Date().toLocaleDateString('en-IN'))
+  .replace('{issues}',lastIssues.map(i=>'• '+i.replace(/<[^>]*>/g,'')).join('\n'))
+  .replace('{law}',lastLaw);
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+document.addEventListener('DOMContentLoaded',render);
+</script>
+<script>
+/* Language persistence — remembers choice across all pages */
+document.addEventListener('DOMContentLoaded',function(){
+ try{
+  var langs=['en','te','hi'];
+  var btns=document.querySelectorAll('.nav-lang');
+  btns.forEach(function(b,i){
+   b.addEventListener('click',function(){try{localStorage.setItem('lsLang',langs[i]);}catch(e){}});
+  });
+  var s=localStorage.getItem('lsLang');
+  if(s&&typeof setLang==='function'){
+   var i=langs.indexOf(s);
+   if(i>0&&btns[i])setLang(s,btns[i]);
+  }
+ }catch(e){}
+});
+</script>
+</body>
+</html>
