@@ -46,6 +46,10 @@ font-size:10px;font-weight:800;color:var(--ink2);cursor:pointer;text-align:cente
 .tab.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 .panel{display:none;}
 .panel.active{display:block;}
+
+.notice-band{background:var(--sky-bg);border:1.5px solid var(--sky);border-radius:12px;padding:11px 13px;
+margin-bottom:12px;font-size:11.5px;color:var(--sky-d);line-height:1.65;}
+.notice-band b{color:var(--sky-d);}
 .card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
 .f-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin:10px 0 4px;}
 .f-label:first-child{margin-top:0;}
@@ -116,6 +120,7 @@ background:var(--gold-pale);border:1px solid var(--gold);border-radius:14px;padd
   <!-- PANEL 0: GSTIN -->
   <div class="panel active" id="panel0">
     <div class="card">
+      <div class="notice-band" id="gNotice"></div>
       <div class="f-label" id="g1L"></div>
       <input class="f-input" id="gstin" maxlength="15" placeholder="36ABCDE1234F1Z5" style="text-transform:uppercase;letter-spacing:1px;">
       <button class="go-btn" onclick="checkGstin()" id="gBtn"></button>
@@ -226,15 +231,15 @@ en:{navBrand:'🕵️ GST Fraud Checker',navBack:'← Home',
  sRef3:'<b>18%:</b> chocolates, packaged beverages, electronics, services',
  sRef4:'<b>40%:</b> sugary/aerated drinks, energy drinks, pan masala — yes, forty!',
  fillAll:'Please fill the required numbers first.',
- badge:{bad:'🚨 VIOLATION DETECTED',good:'✅ Bill looks correct',info:'ℹ️ Check the details'},
+ badge:{bad:'🚨 VIOLATION DETECTED',good:'✅ Bill looks correct',info:'ℹ️ Check the details',verify:'⚠️ COULD NOT CONFIRM — verify before acting'},
  wa:'📲 Generate Complaint (WhatsApp)',
  // verdict strings
  gLen:'GSTIN must be exactly 15 characters — you entered {n}.',
  gFmt:'Format invalid. Correct pattern: 2-digit state + 10-char PAN + entity + Z + check character.',
- gChk:'CHECKSUM FAILED — mathematically invalid. Fake or mistyped. A business using an invalid GSTIN while collecting GST is committing an offence.',
- gValid:'Structure and checksum are VALID.',gState:'Registered state: {s}',gPan:'PAN embedded: {p}',
- gLaw:'CGST Act 2017, Section 32 — only registered persons may collect GST · Section 122 — penalty for unauthorised collection',
- gVerify:'Now confirm registration is ACTIVE: services.gst.gov.in → Search Taxpayer (free, 30 seconds).',
+ gChk:'This GSTIN does not match the standard checksum format. This can mean a typing error (by you or on the bill), OR a genuinely invalid number. It does NOT confirm the business is doing anything wrong — GST registration can also change, be updated, or the format check can be affected by unusual entity types. Please verify directly before drawing any conclusion or raising it with the business.',
+ gValid:'This GSTIN matches the standard 15-character format and checksum.',gState:'Registered state: {s}',gPan:'PAN embedded: {p}',
+ gLaw:'This is a format check only, not a legal finding. For the legal position see CGST Act 2017 Section 32 (registered persons may collect GST) — but confirm registration status officially first.',
+ gVerify:'IMPORTANT — this format check is NOT proof either way. Before assuming anything, confirm the real, current registration status for free: go to services.gst.gov.in → \'Search Taxpayer\' → \'Search by GSTIN\', type in the number, and see the official record (name, status, registration date). This takes about 30 seconds and is the only reliable source.',gNotice:'🧮 This tool only checks the GSTIN\'s number format (math), not its real government registration status. A \"could not confirm\" result may still be a genuine, valid GST number — please always verify officially before concluding anything or contacting a business.',
  rWrongRate:'This restaurant charged {p}% but the legal rate is {e}% — excess of ₹{x}. Since 22 Sept 2025, standalone restaurants must charge flat 5%.',
  rPremium:'18% is legal only because this is inside a premium hotel (rooms > ₹7,500). If the hotel is NOT premium, this is overcharging.',
  rGstOnSC:'GST appears to be calculated on the service charge too. Service charge is not part of the taxable food value the way it was billed here — and remember, service charge itself is OPTIONAL (CCPA 2022). You can refuse it entirely.',
@@ -279,14 +284,14 @@ te:{navBrand:'🕵️ GST మోసం తనిఖీ',navBack:'← హోమ�
  sRef3:'<b>18%:</b> చాక్లెట్లు, ప్యాకేజ్డ్ పానీయాలు, ఎలక్ట్రానిక్స్, సేవలు',
  sRef4:'<b>40%:</b> చక్కెర/సోడా పానీయాలు, ఎనర్జీ డ్రింక్స్, పాన్ మసాలా — అవును, నలభై!',
  fillAll:'ముందుగా అవసరమైన సంఖ్యలు నింపండి.',
- badge:{bad:'🚨 ఉల్లంఘన గుర్తించబడింది',good:'✅ బిల్లు సరిగ్గా ఉంది',info:'ℹ️ వివరాలు తనిఖీ చేయండి'},
+ badge:{bad:'🚨 ఉల్లంఘన గుర్తించబడింది',good:'✅ బిల్లు సరిగ్గా ఉంది',info:'ℹ️ వివరాలు తనిఖీ చేయండి',verify:'⚠️ నిర్ధారించలేకపోయాం — చర్య ముందు ధృవీకరించండి'},
  wa:'📲 ఫిర్యాదు తయారు చేయండి (WhatsApp)',
  gLen:'GSTIN ఖచ్చితంగా 15 అక్షరాలు — మీరు {n} ఇచ్చారు.',
  gFmt:'ఫార్మాట్ తప్పు. సరైన నమూనా: 2-అంకెల రాష్ట్రం + 10-అక్షరాల PAN + ఎంటిటీ + Z + చెక్ అక్షరం.',
- gChk:'చెక్‌సమ్ విఫలం — గణితపరంగా చెల్లదు. నకిలీ లేదా తప్పు టైపింగ్. చెల్లని GSTINతో GST వసూలు చేయడం నేరం.',
- gValid:'నిర్మాణం మరియు చెక్‌సమ్ సరైనవి.',gState:'నమోదిత రాష్ట్రం: {s}',gPan:'లోపలి PAN: {p}',
- gLaw:'CGST చట్టం 2017, Section 32 — నమోదిత వ్యక్తులు మాత్రమే GST వసూలు చేయగలరు · Section 122 — అనధికార వసూలుకు జరిమానా',
- gVerify:'ఇప్పుడు నమోదు యాక్టివ్‌గా ఉందో నిర్ధారించండి: services.gst.gov.in → Search Taxpayer (ఉచితం, 30 సెకన్లు).',
+ gChk:'ఈ GSTIN ప్రామాణిక చెక్‌సమ్ ఫార్మాట్‌తో సరిపోలడం లేదు. ఇది టైపింగ్ పొరపాటు కావచ్చు (మీది లేదా బిల్లుపైనది), లేదా నిజంగా చెల్లని నంబర్ కావచ్చు. వ్యాపారం తప్పు చేస్తోందని ఇది నిర్ధారించదు — నమోదు మారి ఉండవచ్చు, నవీకరించబడి ఉండవచ్చు. ఏ నిర్ణయానికైనా ముందు దయచేసి నేరుగా ధృవీకరించండి.',
+ gValid:'ఈ GSTIN ప్రామాణిక 15-అక్షరాల ఫార్మాట్ మరియు చెక్‌సమ్‌తో సరిపోతుంది.',gState:'నమోదిత రాష్ట్రం: {s}',gPan:'లోపలి PAN: {p}',
+ gLaw:'ఇది ఫార్మాట్ తనిఖీ మాత్రమే, చట్టపరమైన నిర్ధారణ కాదు. చట్టపరమైన స్థితి కోసం CGST చట్టం 2017 Section 32 చూడండి — కానీ ముందుగా అధికారికంగా నమోదు స్థితిని నిర్ధారించండి.',
+ gVerify:'ముఖ్యం — ఈ ఫార్మాట్ తనిఖీ ఏ విధంగానూ రుజువు కాదు. ఏదైనా అనుకునే ముందు, ఉచితంగా నిజమైన, ప్రస్తుత నమోదు స్థితిని ధృవీకరించండి: services.gst.gov.in → \'Search Taxpayer\' → \'Search by GSTIN\' కి వెళ్ళి నంబర్ టైప్ చేసి అధికారిక రికార్డు చూడండి. దాదాపు 30 సెకన్లు పడుతుంది మరియు ఇదే నమ్మదగిన మూలం.',gNotice:'🧮 ఈ సాధనం GSTIN నంబర్ ఫార్మాట్ (గణితం) మాత్రమే తనిఖీ చేస్తుంది, నిజమైన ప్రభుత్వ నమోదు స్థితి కాదు. \"నిర్ధారించలేకపోయాం\" ఫలితం వచ్చినా అది నిజమైన, చెల్లుబాటు అయ్యే GST నంబర్ కావచ్చు — ఏదైనా నిర్ధారణకు లేదా వ్యాపారాన్ని సంప్రదించే ముందు ఎల్లప్పుడూ అధికారికంగా ధృవీకరించండి.',
  rWrongRate:'ఈ రెస్టారెంట్ {p}% వసూలు చేసింది కానీ చట్టబద్ధ రేటు {e}% — ₹{x} అధికం. 22 సెప్టెంబర్ 2025 నుండి సాధారణ రెస్టారెంట్లు ఫ్లాట్ 5% మాత్రమే.',
  rPremium:'ప్రీమియం హోటల్ లోపల (గదులు ₹7,500+) కాబట్టే 18% చట్టబద్ధం. హోటల్ ప్రీమియం కాకపోతే, ఇది అధిక వసూలు.',
  rGstOnSC:'సర్వీస్ ఛార్జ్‌పై కూడా GST లెక్కించినట్లుంది. గుర్తుంచుకోండి — సర్వీస్ ఛార్జ్ ఐచ్ఛికం (CCPA 2022). పూర్తిగా నిరాకరించవచ్చు.',
@@ -331,14 +336,15 @@ hi:{navBrand:'🕵️ GST धोखाधड़ी जांच',navBack:'← �
  sRef3:'<b>18%:</b> चॉकलेट, पैकेज्ड पेय, इलेक्ट्रॉनिक्स, सेवाएं',
  sRef4:'<b>40%:</b> मीठे/सोडा पेय, एनर्जी ड्रिंक, पान मसाला — हां, चालीस!',
  fillAll:'पहले आवश्यक संख्याएं भरें।',
- badge:{bad:'🚨 उल्लंघन पकड़ा गया',good:'✅ बिल सही लगता है',info:'ℹ️ विवरण जांचें'},
+ badge:{bad:'🚨 उल्लंघन पकड़ा गया',good:'✅ बिल सही लगता है',info:'ℹ️ विवरण जांचें',verify:'⚠️ पुष्टि नहीं हो सकी — कार्रवाई से पहले सत्यापित करें'},
  wa:'📲 शिकायत तैयार करें (WhatsApp)',
  gLen:'GSTIN ठीक 15 अक्षर — आपने {n} डाले।',
  gFmt:'फॉर्मेट गलत। सही पैटर्न: 2-अंक राज्य + 10-अक्षर PAN + इकाई + Z + चेक अक्षर।',
- gChk:'चेकसम विफल — गणितीय रूप से अमान्य। नकली या गलत टाइप। अमान्य GSTIN से GST वसूलना अपराध है।',
- gValid:'संरचना और चेकसम मान्य हैं।',gState:'पंजीकृत राज्य: {s}',gPan:'निहित PAN: {p}',
- gLaw:'CGST अधिनियम 2017, धारा 32 — केवल पंजीकृत व्यक्ति GST वसूल सकते हैं · धारा 122 — अनधिकृत वसूली पर दंड',
- gVerify:'अब पंजीकरण सक्रिय है या नहीं पुष्टि करें: services.gst.gov.in → Search Taxpayer (मुफ्त, 30 सेकंड)।',
+ gChk:'यह GSTIN मानक चेकसम फॉर्मेट से मेल नहीं खाता। यह टाइपिंग त्रुटि हो सकती है (आपकी या बिल पर), या वास्तव में अमान्य नंबर हो सकता है। इससे यह साबित नहीं होता कि व्यवसाय कुछ गलत कर रहा है — पंजीकरण बदला या अपडेट हुआ हो सकता है। कोई भी निष्कर्ष निकालने से पहले कृपया सीधे सत्यापित करें।',
+ gValid:'यह GSTIN मानक 15-अक्षर फॉर्मेट और चेकसम से मेल खाता है।',gState:'पंजीकृत राज्य: {s}',gPan:'निहित PAN: {p}',
+ gLaw:'यह केवल एक फॉर्मेट जांच है, कानूनी निष्कर्ष नहीं। कानूनी स्थिति के लिए CGST अधिनियम 2017 धारा 32 देखें — पर पहले आधिकारिक पंजीकरण स्थिति की पुष्टि करें।',
+ gVerify:'महत्वपूर्ण — यह फॉर्मेट जांच किसी भी तरह से प्रमाण नहीं है। कुछ भी मान लेने से पहले, मुफ्त में असली, वर्तमान पंजीकरण स्थिति सत्यापित करें: services.gst.gov.in → \'Search Taxpayer\' → \'Search by GSTIN\' पर जाएं, नंबर डालें और आधिकारिक रिकॉर्ड देखें। लगभग 30 सेकंड लगते हैं और यही विश्वसनीय स्रोत है।',
+ gNotice:'🧮 यह उपकरण केवल GSTIN के नंबर फॉर्मेट (गणित) की जांच करता है, वास्तविक सरकारी पंजीकरण स्थिति की नहीं। "पुष्टि नहीं हो सकी" परिणाम फिर भी एक असली, वैध GST नंबर हो सकता है — कोई भी निष्कर्ष निकालने या व्यवसाय से संपर्क करने से पहले हमेशा आधिकारिक रूप से सत्यापित करें।',
  rWrongRate:'रेस्तरां ने {p}% वसूला पर वैध दर {e}% है — ₹{x} अधिक। 22 सितंबर 2025 से सामान्य रेस्तरां फ्लैट 5% ही ले सकते हैं।',
  rPremium:'प्रीमियम होटल के अंदर (कमरे ₹7,500+) होने से ही 18% वैध है। होटल प्रीमियम नहीं है तो यह अधिक वसूली है।',
  rGstOnSC:'सर्विस चार्ज पर भी GST लगाया गया लगता है। याद रखें — सर्विस चार्ज वैकल्पिक है (CCPA 2022)। पूरी तरह मना कर सकते हैं।',
@@ -413,26 +419,28 @@ function show(prefix,bad,lines,law){
 function checkGstin(){
  const U=UI[L];
  const g=(document.getElementById('gstin').value||'').toUpperCase().trim();
- const lines=[];let bad=false;
+ const lines=[];let needsVerify=false;
  const fmt=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
- if(g.length!==15){bad=true;lines.push(fill('',U.gLen,{n:g.length}));}
- else if(!fmt.test(g)){bad=true;lines.push(U.gFmt);}
+ if(g.length!==15){needsVerify=true;lines.push(fill('',U.gLen,{n:g.length}));}
+ else if(!fmt.test(g)){needsVerify=true;lines.push(U.gFmt);}
  else{
   const expect=gstinCheckChar(g.slice(0,14));
-  if(expect!==g[14]){bad=true;lines.push(U.gChk);}
+  if(expect!==g[14]){needsVerify=true;lines.push(U.gChk);}
   else{
    const st=GST_STATES[g.slice(0,2)];
    lines.push(U.gValid);
    lines.push(fill('',U.gState,{s:st||('code '+g.slice(0,2))}));
    lines.push(fill('',U.gPan,{p:g.slice(2,12)}));
-   lines.push(U.gVerify);
   }
  }
- document.getElementById('gVT').textContent=bad?U.badge.bad:U.badge.good;
+ // Always show the verify-officially reminder, pass or fail — we never make the final call.
+ lines.push(U.gVerify);
+ document.getElementById('gVT').textContent=needsVerify?U.badge.verify:U.badge.info;
  document.getElementById('gVL').innerHTML=lines.map(l=>`<div class="v-line">• ${l}</div>`).join('');
- document.getElementById('gVLaw').textContent=bad?U.gLaw:'';
- document.getElementById('gVerdict').className='verdict show '+(bad?'bad':'good');
- if(bad){lastIssues=lines;lastLaw=U.gLaw;}
+ document.getElementById('gVLaw').textContent=U.gLaw;
+ document.getElementById('gVerdict').className='verdict show '+(needsVerify?'bad':'info');
+ // GSTIN check never feeds the "file a complaint" share flow — we don't accuse anyone based on math alone.
+ lastIssues=[];lastLaw='';
 }
 
 function checkRestaurant(){
