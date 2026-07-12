@@ -109,6 +109,40 @@ border:1px solid rgba(201,162,39,.4);color:var(--gold-l);font-size:12px;font-wei
 padding:9px 16px;border-radius:10px;text-decoration:none;}
 
 
+
+/* LAWCET SEASON BANNER — self-expiring, remove after counselling window */
+.lawcet-band{background:linear-gradient(90deg,#7C2D12,#C2410C,#7C2D12);background-size:200% 100%;
+animation:lawcetShift 6s ease infinite;padding:10px 14px;text-align:center;position:relative;overflow:hidden;}
+@keyframes lawcetShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.lawcet-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
+.lawcet-badge{background:#FDE047;color:#7C2D12;font-size:9px;font-weight:900;letter-spacing:1.5px;
+padding:3px 9px;border-radius:10px;text-transform:uppercase;animation:lawcetPulse 1.8s ease infinite;flex-shrink:0;}
+@keyframes lawcetPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+.lawcet-text{font-size:12px;font-weight:800;color:#FFF7ED;}
+.lawcet-links{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%;margin-top:6px;}
+.lawcet-link{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);
+border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:6px 11px;
+border-radius:16px;text-decoration:none;}
+.lawcet-link:active{background:rgba(255,255,255,.28);}
+
+/* LAWCET TOOLS STRIP (mid-page, richer cards) */
+.lawcet-strip{background:linear-gradient(145deg,#7C2D12,#9A3412);border-radius:18px;padding:16px;margin-bottom:24px;
+border:1.5px solid #FDE047;position:relative;overflow:hidden;}
+.lawcet-strip::before{content:'🎓';position:absolute;right:-10px;top:-15px;font-size:110px;opacity:.08;pointer-events:none;}
+.lawcet-strip-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.lawcet-strip-badge{background:#FDE047;color:#7C2D12;font-size:9px;font-weight:900;letter-spacing:1.5px;
+padding:3px 10px;border-radius:10px;text-transform:uppercase;}
+.lawcet-strip-title{font-size:15px;font-weight:900;color:#FFF7ED;}
+.lawcet-strip-sub{font-size:11.5px;color:rgba(255,247,237,.7);line-height:1.6;margin-bottom:12px;}
+.lawcet-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.lawcet-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:12px;
+padding:11px;text-decoration:none;transition:all .2s;}
+.lawcet-card:active{background:rgba(255,255,255,.18);transform:scale(.97);}
+.lawcet-card-icon{font-size:22px;display:block;margin-bottom:4px;}
+.lawcet-card-name{font-size:12px;font-weight:800;color:#fff;line-height:1.3;}
+.lawcet-card-desc{font-size:10px;color:rgba(255,247,237,.65);margin-top:2px;line-height:1.4;}
+.lawcet-countdown{font-size:10px;color:#FDE047;font-weight:700;text-align:center;margin-top:10px;}
+
 /* TICKER */
 .ticker-wrap{background:var(--navy);border-top:1px solid rgba(201,162,39,.15);
 border-bottom:2px solid var(--gold);overflow:hidden;position:relative;}
@@ -235,6 +269,17 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 </head>
 <body>
+<div class="lawcet-band" id="lawcetBand">
+  <div class="lawcet-inner">
+    <span class="lawcet-badge" id="lcBadge"></span>
+    <span class="lawcet-text" id="lcText"></span>
+    <div class="lawcet-links">
+      <a class="lawcet-link" href="https://lawsticker-ai.com/seat_predictor.html" id="lcL1"></a>
+      <a class="lawcet-link" href="https://lawsticker-ai.com/seat_predict_5y.html" id="lcL2"></a>
+      <a class="lawcet-link" href="https://lawsticker-ai.com/lawcet_predict.html" id="lcL3"></a>
+    </div>
+  </div>
+</div>
 <nav>
   <div class="nav-r1">
     <div class="nav-brand">⚖️ LawSticker AI <span id="navSub"></span></div>
@@ -265,6 +310,38 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="stat"><div class="stat-n">3</div><div class="stat-l" id="st4"></div></div>
 </div>
 
+<div class="page" style="padding-bottom:0;margin-bottom:-6px;">
+<div class="lawcet-strip" id="lawcetStrip">
+  <div class="lawcet-strip-hd">
+    <span class="lawcet-strip-badge" id="lsBadge"></span>
+  </div>
+  <div class="lawcet-strip-title" id="lsTitle"></div>
+  <div class="lawcet-strip-sub" id="lsSub"></div>
+  <div class="lawcet-grid">
+    <a class="lawcet-card" href="https://lawsticker-ai.com/seat_predictor.html">
+      <span class="lawcet-card-icon">🎯</span>
+      <span class="lawcet-card-name" id="lc1n"></span>
+      <span class="lawcet-card-desc" id="lc1d"></span>
+    </a>
+    <a class="lawcet-card" href="https://lawsticker-ai.com/seat_predict_5y.html">
+      <span class="lawcet-card-icon">📊</span>
+      <span class="lawcet-card-name" id="lc2n"></span>
+      <span class="lawcet-card-desc" id="lc2d"></span>
+    </a>
+    <a class="lawcet-card" href="https://lawsticker-ai.com/lawcet_predict.html">
+      <span class="lawcet-card-icon">🔮</span>
+      <span class="lawcet-card-name" id="lc3n"></span>
+      <span class="lawcet-card-desc" id="lc3d"></span>
+    </a>
+    <a class="lawcet-card" href="https://lawsticker-ai.com/tglawcetrank-guide.html">
+      <span class="lawcet-card-icon">📘</span>
+      <span class="lawcet-card-name" id="lc4n"></span>
+      <span class="lawcet-card-desc" id="lc4d"></span>
+    </a>
+  </div>
+  <div class="lawcet-countdown" id="lcCountdown"></div>
+</div>
+</div>
 <div class="ticker-wrap">
   <span class="ticker-label" id="tickLabel">⚡ Rights</span>
   <div class="ticker" id="ticker"></div>
@@ -633,6 +710,61 @@ const BUNDLES=[
   hn:{en:"Legal Aid",te:"న్యాయ సహాయం",hi:"कानूनी सहायता"},hp:"15100"},
 ];
 
+
+// ═══ LAWCET SEASON BANNER — self-expiring after counselling window ═══
+// End date: last day of NEXT month from when this was published (adjust LAWCET_END if needed)
+const LAWCET_END = new Date('2026-08-31T23:59:59+05:30');
+
+const LAWCET_UI = {
+ en:{badge:'🎓 LAWCET SEASON',text:'Counselling is on RIGHT NOW — check your seat before you decide',
+  l1:'🎯 Seat Predictor',l2:'📊 5-Year Trends',l3:'🔮 Rank Predictor',
+  stripBadge:'🔥 LIVE DURING COUNSELLING',stripTitle:'LAWCET Counselling Tools',
+  stripSub:'Free tools built from official allotment data — check your likely college before you lock your choice.',
+  c1n:'Seat Predictor',c1d:'Enter your rank, see likely colleges',
+  c2n:'5-Year Cutoff Trends',c2d:'How ranks moved over 5 years',
+  c3n:'Rank Predictor',c3d:'Estimate your LAWCET rank from marks',
+  c4n:'Complete Rank Guide',c4d:'Category-wise cutoff explained',
+  countdown:d=>`⏳ These tools are featured for ${d} more day${d===1?'':'s'} — counselling season only`},
+ te:{badge:'🎓 LAWCET సీజన్',text:'కౌన్సెలింగ్ ఇప్పుడే జరుగుతోంది — నిర్ణయించే ముందు మీ సీటు చూడండి',
+  l1:'🎯 సీట్ ప్రిడిక్టర్',l2:'📊 5-సంవత్సరాల ట్రెండ్స్',l3:'🔮 ర్యాంక్ ప్రిడిక్టర్',
+  stripBadge:'🔥 కౌన్సెలింగ్ సమయంలో లైవ్',stripTitle:'LAWCET కౌన్సెలింగ్ సాధనాలు',
+  stripSub:'అధికారిక అలాట్‌మెంట్ డేటా నుండి ఉచిత సాధనాలు — మీ ఎంపిక ఖరారు చేసే ముందు అవకాశం ఉన్న కాలేజీ చూడండి.',
+  c1n:'సీట్ ప్రిడిక్టర్',c1d:'మీ ర్యాంక్ ఎంటర్ చేసి కాలేజీలు చూడండి',
+  c2n:'5-సంవత్సరాల కటాఫ్ ట్రెండ్స్',c2d:'5 సంవత్సరాల్లో ర్యాంకులు ఎలా మారాయి',
+  c3n:'ర్యాంక్ ప్రిడిక్టర్',c3d:'మార్కుల నుండి LAWCET ర్యాంక్ అంచనా',
+  c4n:'పూర్తి ర్యాంక్ గైడ్',c4d:'కేటగిరీ వారీగా కటాఫ్ వివరణ',
+  countdown:d=>`⏳ ఈ సాధనాలు మరో ${d} రోజులు హైలైట్ చేయబడతాయి — కౌన్సెలింగ్ సీజన్ మాత్రమే`},
+ hi:{badge:'🎓 LAWCET सीज़न',text:'काउंसलिंग अभी चल रही है — फैसला लेने से पहले अपनी सीट देखें',
+  l1:'🎯 सीट प्रेडिक्टर',l2:'📊 5-वर्ष ट्रेंड्स',l3:'🔮 रैंक प्रेडिक्टर',
+  stripBadge:'🔥 काउंसलिंग के दौरान लाइव',stripTitle:'LAWCET काउंसलिंग टूल्स',
+  stripSub:'आधिकारिक आवंटन डेटा से मुफ्त टूल्स — फैसला लेने से पहले संभावित कॉलेज देखें।',
+  c1n:'सीट प्रेडिक्टर',c1d:'अपनी रैंक डालें, संभावित कॉलेज देखें',
+  c2n:'5-वर्ष कटऑफ ट्रेंड्स',c2d:'5 सालों में रैंक कैसे बदली',
+  c3n:'रैंक प्रेडिक्टर',c3d:'मार्क्स से LAWCET रैंक अनुमान',
+  c4n:'पूरी रैंक गाइड',c4d:'श्रेणी-वार कटऑफ विवरण',
+  countdown:d=>`⏳ ये टूल्स अगले ${d} दिन और हाइलाइट रहेंगे — केवल काउंसलिंग सीज़न`},
+};
+
+function renderLawcet(){
+ const now = new Date();
+ const band = document.getElementById('lawcetBand');
+ const strip = document.getElementById('lawcetStrip');
+ if(now > LAWCET_END){
+  if(band) band.style.display='none';
+  if(strip) strip.parentElement.style.display='none';
+  return;
+ }
+ const U = LAWCET_UI[L] || LAWCET_UI.en;
+ const daysLeft = Math.max(1, Math.ceil((LAWCET_END - now) / 86400000));
+ const ids1 = {lcBadge:U.badge,lcText:U.text,lcL1:U.l1,lcL2:U.l2,lcL3:U.l3};
+ for(const id in ids1){const el=document.getElementById(id);if(el)el.textContent=ids1[id];}
+ const ids2 = {lsBadge:U.stripBadge,lsTitle:U.stripTitle,lsSub:U.stripSub,
+  lc1n:U.c1n,lc1d:U.c1d,lc2n:U.c2n,lc2d:U.c2d,lc3n:U.c3n,lc3d:U.c3d,lc4n:U.c4n,lc4d:U.c4d};
+ for(const id in ids2){const el=document.getElementById(id);if(el)el.textContent=ids2[id];}
+ const cd = document.getElementById('lcCountdown');
+ if(cd) cd.textContent = U.countdown(daysLeft);
+}
+
 let L='en', tagIdx=0, tagTimer=null;
 
 function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000);}
@@ -688,6 +820,7 @@ function render(){
  renderQuiz();
  // Rotating tagline
  rotateTag(true);
+ renderLawcet();
 }
 
 function rotateTag(reset){
