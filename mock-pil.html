@@ -120,6 +120,21 @@ border-radius:10px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:p
 .rev-src{font-size:10px;color:var(--muted);margin-top:5px;font-style:italic;}
 .share-btn{width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:12px;
 font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:16px;}
+
+.feedback-box{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px;margin:14px 0;}
+.fb-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:10px;}
+.fb-section{margin-bottom:12px;}
+.fb-section:last-child{margin-bottom:0;}
+.fb-label{font-size:11px;font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.fb-label.strong{color:var(--jade-d);}
+.fb-label.weak{color:var(--rose-d);}
+.fb-label.next{color:var(--gold-d);}
+.fb-text{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+.fb-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.fb-chip{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:10px;}
+.fb-chip.strong{background:var(--jade-bg);color:var(--jade-d);}
+.fb-chip.weak{background:var(--rose-bg);color:var(--rose-d);}
+
 .retry-link{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--muted);text-decoration:underline;}
 .disc{font-size:10px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;}
 </style>
@@ -188,6 +203,21 @@ font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:16p
     </div>
     <div class="topic-title">📊 Topic-Wise Analysis — Where to Focus</div>
     <div id="topicList"></div>
+    <div class="feedback-box" id="feedbackBox">
+      <div class="fb-title">💡 What This Means For You</div>
+      <div class="fb-section" id="fbStrongSection" style="display:none;">
+        <div class="fb-label strong">✅ You've got this down</div>
+        <div class="fb-text" id="fbStrongText"></div>
+      </div>
+      <div class="fb-section" id="fbWeakSection" style="display:none;">
+        <div class="fb-label weak">📖 Focus your revision here</div>
+        <div class="fb-text" id="fbWeakText"></div>
+      </div>
+      <div class="fb-section">
+        <div class="fb-label next">🎯 Next step</div>
+        <div class="fb-text" id="fbNextText"></div>
+      </div>
+    </div>
     <button class="review-toggle" onclick="toggleReview()" id="reviewToggle">📋 Show Full Answer Review</button>
     <div class="review-list" id="reviewList"></div>
     <button class="share-btn" onclick="shareResult()">📲 Share My Score on WhatsApp</button>
@@ -318,7 +348,40 @@ function submitExam(){
   </div>`;
  }).join('');
 
+
+ // ═══ Feedback engine: strengths, weak areas, next-step guidance ═══
+ const strong = topicArr.filter(t=>t.pct>=80).map(t=>t.name);
+ const weak = topicArr.filter(t=>t.pct<50).map(t=>t.name);
+ const mid = topicArr.filter(t=>t.pct>=50 && t.pct<80).map(t=>t.name);
+
+ const strongSec = document.getElementById('fbStrongSection');
+ const weakSec = document.getElementById('fbWeakSection');
+ if(strong.length){
+  strongSec.style.display='block';
+  document.getElementById('fbStrongText').innerHTML =
+   `You answered every question correctly in: <b>${strong.join(', ')}</b>. Solid grasp here — you can spend less revision time on these.`;
+ } else { strongSec.style.display='none'; }
+
+ if(weak.length){
+  weakSec.style.display='block';
+  document.getElementById('fbWeakText').innerHTML =
+   `These topics need the most attention: <b>${weak.join(', ')}</b>. Use "Show Full Answer Review" below — every question shows the correct answer and its legal source, so you can look each one up properly.`;
+ } else { weakSec.style.display='none'; }
+
+ let nextMsg;
+ if(pct>=80){
+  nextMsg = `You're exam-ready on this subject. A light final revision of ${mid.length?mid.join(', '):'the full syllabus'} the night before should be enough.`;
+ } else if(pct>=60){
+  nextMsg = `You're most of the way there. Spend focused time on the weak topics above, then retake this test in a day or two to confirm the gaps are closed — your score should jump.`;
+ } else if(pct>=40){
+  nextMsg = `This is normal for a first attempt — most students score in this range before revising. Pick ONE weak topic at a time, read the correct answers and sources below, then come back and retake just to check that one area improves.`;
+ } else {
+  nextMsg = `Everyone starts somewhere — this score just tells you where to begin, not how you'll do on the real exam. Don't try to fix everything at once: read through the review below fully once, focus on understanding (not memorising) 2-3 topics, then retake in a few days. You'll see real improvement.`;
+ }
+ document.getElementById('fbNextText').textContent = nextMsg;
+
  window._lastScore = score; window._lastPct = pct; window._lastTopics = topicArr;
+ window._lastStrong = strong; window._lastWeak = weak;
 }
 
 function toggleReview(){
@@ -329,8 +392,29 @@ function toggleReview(){
 }
 
 function shareResult(){
- const weakest = window._lastTopics && window._lastTopics[0];
- const msg = `⏱️ *Public International Law Mock Exam*\\n\\n${studentName} scored *${window._lastScore}/25* (${window._lastPct}%)!\\n\\n${weakest?`📚 Focus area: ${weakest.name}`:''}\\n\\nTake the free timed mock exam:\\nlawsticker-ai.com/mock-pil.html\\n\\n_Built for LLB students. Free forever._`;
+ const pct = window._lastPct;
+ const strong = window._lastStrong || [];
+ const weak = window._lastWeak || [];
+ let vibe;
+ if(pct>=80) vibe = "🏆 Exam ready!";
+ else if(pct>=60) vibe = "💪 Good progress!";
+ else if(pct>=40) vibe = "📚 Building up steadily!";
+ else vibe = "🎯 Just getting started!";
+
+ let lines = [];
+ lines.push("⏱️ *Public International Law Mock Exam*");
+ lines.push('');
+ lines.push(studentName + " scored *" + window._lastScore + "/25* (" + pct + "%) — " + vibe);
+ lines.push('');
+ if(strong.length) lines.push("✅ Strong on: " + strong.slice(0,2).join(', '));
+ if(weak.length) lines.push("📖 Revising: " + weak.slice(0,2).join(', '));
+ lines.push('');
+ lines.push('Take the free timed mock exam:');
+ lines.push('lawsticker-ai.com/mock-pil.html');
+ lines.push('');
+ lines.push('_Built for LLB students. Free forever._');
+
+ const msg = lines.join(String.fromCharCode(10));
  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 
