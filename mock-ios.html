@@ -121,6 +121,19 @@ border-radius:10px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:p
 .share-btn{width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:12px;
 font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:16px;}
 
+
+.cert-name-field{margin:14px 0 10px;}
+.cert-name-label{font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:5px;display:block;}
+.cert-name-input{width:100%;padding:12px 14px;border:2px solid var(--gold);border-radius:10px;
+font-family:inherit;font-size:15px;font-weight:700;text-align:center;}
+.cert-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#A88420);color:var(--navy);
+border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;margin-top:8px;}
+.cert-btn:active{transform:scale(.98);}
+.cert-preview-img{width:100%;border-radius:12px;border:1px solid var(--border);margin:12px 0;display:none;}
+.cert-hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;display:none;}
+.text-share-link{display:block;text-align:center;font-size:11px;color:var(--muted);
+text-decoration:underline;margin-top:10px;background:none;border:none;cursor:pointer;width:100%;padding:6px;}
+
 .feedback-box{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px;margin:14px 0;}
 .fb-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:10px;}
 .fb-section{margin-bottom:12px;}
@@ -220,7 +233,15 @@ font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:16p
     </div>
     <button class="review-toggle" onclick="toggleReview()" id="reviewToggle">📋 Show Full Answer Review</button>
     <div class="review-list" id="reviewList"></div>
-    <button class="share-btn" onclick="shareResult()">📲 Share My Score on WhatsApp</button>
+    <div class="cert-name-field">
+      <label class="cert-name-label">Your name (for the certificate)</label>
+      <input class="cert-name-input" id="certNameInput" placeholder="Enter your name" maxlength="30">
+    </div>
+    <button class="cert-btn" onclick="makeExamCert()">🏆 Generate My Certificate</button>
+    <img class="cert-preview-img" id="certPreviewImg">
+    <div class="cert-hint" id="certHintText">Certificate ready — long-press the image to save, or it downloaded automatically. Share it anywhere!</div>
+    <canvas id="examCertCanvas" width="1200" height="675" style="display:none;"></canvas>
+    <button class="text-share-link" onclick="shareResultText()">or share as text message instead</button>
     <a class="retry-link" href="https://lawsticker-ai.com/mock-ios.html" onclick="location.reload();return false;">↻ Retake this mock exam</a>
   </div>
 
@@ -391,7 +412,92 @@ function toggleReview(){
  btn.textContent = list.classList.contains('show') ? '📋 Hide Answer Review' : '📋 Show Full Answer Review';
 }
 
-function shareResult(){
+
+function tierLabel(pct){
+ if(pct>=80) return "DISTINCTION";
+ if(pct>=60) return "GOOD STANDING";
+ if(pct>=40) return "IN PROGRESS";
+ return "GETTING STARTED";
+}
+function tierColor(pct){
+ if(pct>=80) return "#059669";
+ if(pct>=60) return "#0EA5E9";
+ if(pct>=40) return "#D97706";
+ return "#DC2626";
+}
+
+function makeExamCert(){
+ const name=(document.getElementById('certNameInput').value||'').trim();
+ if(!name){document.getElementById('certNameInput').focus();return;}
+ const score=window._lastScore, pct=window._lastPct;
+ const strong=(window._lastStrong||[]).slice(0,2);
+ const weak=(window._lastWeak||[]).slice(0,2);
+ const cv=document.getElementById('examCertCanvas'), x=cv.getContext('2d');
+
+ // Background: clean academic parchment-style, not the gaming-trophy gold-navy style
+ const g=x.createLinearGradient(0,0,1200,675);
+ g.addColorStop(0,'#FEFCF5');g.addColorStop(1,'#FDF6DC');
+ x.fillStyle=g;x.fillRect(0,0,1200,675);
+
+ // Outer border — navy, formal
+ x.strokeStyle='#0D1117';x.lineWidth=6;x.strokeRect(30,30,1140,615);
+ x.strokeStyle='#C9A227';x.lineWidth=2;x.strokeRect(46,46,1108,583);
+
+ // Header band
+ x.fillStyle='#0D1117';x.fillRect(30,30,1140,90);
+ x.fillStyle='#F5D76E';x.font='900 26px Georgia, serif';x.textAlign='center';
+ x.fillText('LAWSTICKER AI  •  MOCK EXAM CERTIFICATE', 600, 85);
+
+ // Scales icon
+ x.font='54px serif';x.fillText('⚖️', 600, 175);
+
+ // Subject title
+ x.fillStyle='#8B6914';x.font='700 20px Georgia, serif';
+ x.fillText('LLB — Interpretation of Statutes'.toUpperCase(), 600, 215);
+
+ // "This certifies that"
+ x.fillStyle='#6B7280';x.font='italic 22px Georgia, serif';
+ x.fillText('This certifies that', 600, 260);
+
+ // Name
+ x.fillStyle='#0D1117';x.font='900 58px Georgia, serif';
+ x.fillText(name, 600, 330);
+ x.strokeStyle='#C9A227';x.lineWidth=3;
+ x.beginPath();x.moveTo(300,352);x.lineTo(900,352);x.stroke();
+
+ // Score — big, central
+ x.fillStyle='#374151';x.font='24px Georgia, serif';
+ x.fillText('completed the timed mock examination scoring', 600, 395);
+ x.fillStyle=tierColor(pct);x.font='900 92px Georgia, serif';
+ x.fillText(score+'/25', 600, 485);
+ x.fillStyle=tierColor(pct);x.font='900 28px Georgia, serif';
+ x.fillText(tierLabel(pct)+'  •  '+pct+'%', 600, 528);
+
+ // Strengths/focus line
+ x.fillStyle='#374151';x.font='18px Georgia, serif';
+ let footLine = '';
+ if(strong.length) footLine += 'Strong: ' + strong.join(', ');
+ if(weak.length) footLine += (footLine?'   |   ':'') + 'Focus: ' + weak.join(', ');
+ if(footLine) x.fillText(footLine, 600, 572);
+
+ // Footer
+ x.fillStyle='#8B6914';x.font='italic 18px Georgia, serif';
+ x.fillText('Know your rights. Know your remedies.', 600, 602);
+ x.fillStyle='#0D1117';x.font='900 22px Georgia, serif';
+ x.fillText('lawsticker-ai.com', 600, 630);
+
+ const img=document.getElementById('certPreviewImg');
+ img.src=cv.toDataURL('image/png');
+ img.style.display='block';
+ document.getElementById('certHintText').style.display='block';
+ try{
+  const a=document.createElement('a');
+  a.download='mock-ios-certificate.png';
+  a.href=img.src;a.click();
+ }catch(e){}
+}
+
+function shareResultText(){
  const pct = window._lastPct;
  const strong = window._lastStrong || [];
  const weak = window._lastWeak || [];
