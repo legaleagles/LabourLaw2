@@ -233,15 +233,11 @@ text-decoration:underline;margin-top:10px;background:none;border:none;cursor:poi
     </div>
     <button class="review-toggle" onclick="toggleReview()" id="reviewToggle">📋 Show Full Answer Review</button>
     <div class="review-list" id="reviewList"></div>
-    <div class="cert-name-field">
-      <label class="cert-name-label">Your name (for the certificate)</label>
-      <input class="cert-name-input" id="certNameInput" placeholder="Enter your name" maxlength="30">
-    </div>
     <button class="cert-btn" onclick="makeExamCert()">🏆 Generate My Certificate</button>
     <img class="cert-preview-img" id="certPreviewImg">
-    <div class="cert-hint" id="certHintText">Certificate ready — long-press the image to save, or it downloaded automatically. Share it anywhere!</div>
+    <div class="cert-hint" id="certHintText">Certificate ready! Share it as an image anywhere you like.</div>
+    <button class="cert-btn" id="certShareImgBtn" style="display:none;background:#25D366;color:#fff;" onclick="shareCertImage()">📤 Share Certificate Image</button>
     <canvas id="examCertCanvas" width="1200" height="675" style="display:none;"></canvas>
-    <button class="text-share-link" onclick="shareResultText()">or share as text message instead</button>
     <a class="retry-link" href="https://lawsticker-ai.com/mock-banking.html" onclick="location.reload();return false;">↻ Retake this mock exam</a>
   </div>
 
@@ -427,101 +423,84 @@ function tierColor(pct){
 }
 
 function makeExamCert(){
- const name=(document.getElementById('certNameInput').value||'').trim();
- if(!name){document.getElementById('certNameInput').focus();return;}
+ const name = studentName || 'Student';
  const score=window._lastScore, pct=window._lastPct;
  const strong=(window._lastStrong||[]).slice(0,2);
  const weak=(window._lastWeak||[]).slice(0,2);
  const cv=document.getElementById('examCertCanvas'), x=cv.getContext('2d');
 
- // Background: clean academic parchment-style, not the gaming-trophy gold-navy style
  const g=x.createLinearGradient(0,0,1200,675);
  g.addColorStop(0,'#FEFCF5');g.addColorStop(1,'#FDF6DC');
  x.fillStyle=g;x.fillRect(0,0,1200,675);
 
- // Outer border — navy, formal
  x.strokeStyle='#0D1117';x.lineWidth=6;x.strokeRect(30,30,1140,615);
  x.strokeStyle='#C9A227';x.lineWidth=2;x.strokeRect(46,46,1108,583);
 
- // Header band
  x.fillStyle='#0D1117';x.fillRect(30,30,1140,90);
- x.fillStyle='#F5D76E';x.font='900 26px Georgia, serif';x.textAlign='center';
- x.fillText('LAWSTICKER AI  •  MOCK EXAM CERTIFICATE', 600, 85);
+ x.fillStyle='#F5D76E';x.font='900 24px Georgia, serif';x.textAlign='center';
+ x.fillText('LAWSTICKER AI  •  CERTIFICATE OF ACHIEVEMENT', 600, 85);
 
- // Scales icon
  x.font='54px serif';x.fillText('⚖️', 600, 175);
 
- // Subject title
  x.fillStyle='#8B6914';x.font='700 20px Georgia, serif';
  x.fillText('LLB — Banking & Negotiable Instruments'.toUpperCase(), 600, 215);
 
- // "This certifies that"
  x.fillStyle='#6B7280';x.font='italic 22px Georgia, serif';
- x.fillText('This certifies that', 600, 260);
+ x.fillText('This is to certify that', 600, 260);
 
- // Name
  x.fillStyle='#0D1117';x.font='900 58px Georgia, serif';
  x.fillText(name, 600, 330);
  x.strokeStyle='#C9A227';x.lineWidth=3;
  x.beginPath();x.moveTo(300,352);x.lineTo(900,352);x.stroke();
 
- // Score — big, central
  x.fillStyle='#374151';x.font='24px Georgia, serif';
- x.fillText('completed the timed mock examination scoring', 600, 395);
+ x.fillText('has demonstrated proficiency in Banking & Negotiable Instruments, scoring', 600, 395);
  x.fillStyle=tierColor(pct);x.font='900 92px Georgia, serif';
  x.fillText(score+'/25', 600, 485);
  x.fillStyle=tierColor(pct);x.font='900 28px Georgia, serif';
  x.fillText(tierLabel(pct)+'  •  '+pct+'%', 600, 528);
 
- // Strengths/focus line
  x.fillStyle='#374151';x.font='18px Georgia, serif';
  let footLine = '';
  if(strong.length) footLine += 'Strong: ' + strong.join(', ');
  if(weak.length) footLine += (footLine?'   |   ':'') + 'Focus: ' + weak.join(', ');
  if(footLine) x.fillText(footLine, 600, 572);
 
- // Footer
  x.fillStyle='#8B6914';x.font='italic 18px Georgia, serif';
  x.fillText('Know your rights. Know your remedies.', 600, 602);
  x.fillStyle='#0D1117';x.font='900 22px Georgia, serif';
  x.fillText('lawsticker-ai.com', 600, 630);
 
+ // Store the data URL globally so share/download always use the JUST-drawn canvas, never a stale one
+ window._certDataUrl = cv.toDataURL('image/png');
  const img=document.getElementById('certPreviewImg');
- img.src=cv.toDataURL('image/png');
+ img.src=window._certDataUrl;
  img.style.display='block';
  document.getElementById('certHintText').style.display='block';
- try{
-  const a=document.createElement('a');
-  a.download='mock-banking-certificate.png';
-  a.href=img.src;a.click();
- }catch(e){}
+ document.getElementById('certShareImgBtn').style.display='block';
 }
 
-function shareResultText(){
- const pct = window._lastPct;
- const strong = window._lastStrong || [];
- const weak = window._lastWeak || [];
- let vibe;
- if(pct>=80) vibe = "🏆 Exam ready!";
- else if(pct>=60) vibe = "💪 Good progress!";
- else if(pct>=40) vibe = "📚 Building up steadily!";
- else vibe = "🎯 Just getting started!";
+function downloadCert(){
+ if(!window._certDataUrl)return;
+ const a=document.createElement('a');
+ a.download='mock-banking-certificate.png';
+ a.href=window._certDataUrl;a.click();
+}
 
- let lines = [];
- lines.push("⏱️ *Banking & NI Mock Exam*");
- lines.push('');
- lines.push(studentName + " scored *" + window._lastScore + "/25* (" + pct + "%) — " + vibe);
- lines.push('');
- if(strong.length) lines.push("✅ Strong on: " + strong.slice(0,2).join(', '));
- if(weak.length) lines.push("📖 Revising: " + weak.slice(0,2).join(', '));
- lines.push('');
- lines.push('Take the free timed mock exam:');
- lines.push('lawsticker-ai.com/mock-banking.html');
- lines.push('');
- lines.push('_Built for LLB students. Free forever._');
-
- const msg = lines.join(String.fromCharCode(10));
- window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+async function shareCertImage(){
+ if(!window._certDataUrl)return;
+ try{
+  const res = await fetch(window._certDataUrl);
+  const blob = await res.blob();
+  const file = new File([blob], 'mock-banking-certificate.png', {type:'image/png'});
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+   await navigator.share({files:[file], title:'Banking & Negotiable Instruments Certificate', text:'My Banking & Negotiable Instruments mock exam certificate from LawSticker AI'});
+   return;
+  }
+ }catch(e){}
+ // Fallback if native share unavailable: trigger download so the user can attach it manually
+ downloadCert();
+ alert('Certificate downloaded — attach it as an image in WhatsApp or wherever you want to share it.');
 }
 
 document.getElementById('studentName').addEventListener('keyup', function(){
