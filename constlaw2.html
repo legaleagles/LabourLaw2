@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Constitutional Law — II — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Constitutional Law — II</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Constitutional Law-II Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Constitutional Law — II</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Union Executive, Parliament, State Executive/Legislature, Centre-State Relations, Judiciary/Judicial Appointments, and Emergency Provisions from the OU LLB 2nd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Constitution of India — Parts V, VI, XI, XVIII</span>
+        <span class="hero-tag">Federalism &amp; Judicial Independence</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Article 74 aid & advice, Money Bill procedure, Governor\'s discretionary powers, S.R. Bommai\'s floor test principle, the Collegium/NJAC history, National vs President\'s Rule vs Financial Emergency — these appear almost every year in OU LLB Constitutional Law-II exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">S.R. Bommai v Union of India (1994 — 9-judge bench, Article 356 justiciable, floor test, federalism + secularism = Basic Structure) and SCAORA v Union of India / Fourth Judges Case (2015 — NJAC struck down, judicial independence = Basic Structure). Also know the full First/Second/Third Judges Case sequence.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">Article 74 (aid & advice), 110 (Money Bill), 226 vs 32 (writ scope), 352/356/360 (three emergencies), 44th Amendment 1978 (armed rebellion, Art 20/21 protection), 99th Amendment 2014 (NJAC, struck down 2015). Financial Emergency: NEVER invoked.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Union Executive, Parliament, State Executive/Legislature, Centre-State Relations, Judiciary, Emergency Provisions. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CONSTITUTIONAL LAW — II  |  Content data for lawsticker-ai.com
+// Osmania University LLB 2nd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Union Executive — President, Vice-President and Council of Ministers', marks:'Core Topic', content:`
+    <h4>The President of India (Articles 52-62)</h4>
+    <p>The President is the constitutional/nominal head of the Union Executive — elected indirectly by an Electoral College consisting of elected members of both Houses of Parliament and elected members of State Legislative Assemblies (Article 54). Executive power of the Union is vested in the President (Article 53), but is exercised on the AID AND ADVICE of the Council of Ministers headed by the Prime Minister (Article 74) — the President is generally bound by such advice, though may require it to be reconsidered once.</p>
+    <h4>Powers of the President</h4>
+    <ul>
+      <li><strong>Executive Powers</strong> — appointments (PM, Governors, judges, etc.), supreme command of armed forces</li>
+      <li><strong>Legislative Powers</strong> — summoning/proroguing Parliament, assent to Bills, Ordinance-making power (Article 123) when Parliament is not in session</li>
+      <li><strong>Judicial Powers</strong> — power to grant pardons, reprieves, respites, or remissions of punishment (Article 72)</li>
+      <li><strong>Emergency Powers</strong> — proclamation of National Emergency (352), President's Rule (356), Financial Emergency (360)</li>
+    </ul>
+    <h4>Vice-President (Articles 63-71)</h4>
+    <p>Ex-officio Chairman of the Rajya Sabha; acts as President during any vacancy in the President's office (until a new President is elected) or during the President's temporary inability to discharge functions.</p>
+    <h4>Council of Ministers (Article 74-75)</h4>
+    <p>Headed by the Prime Minister, appointed by the President on the PM's advice; COLLECTIVELY RESPONSIBLE to the Lok Sabha (House of the People) — meaning the entire Council must resign if it loses the confidence/majority of the Lok Sabha, embodying the core principle of Parliamentary (as opposed to Presidential) government.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Aid and advice" (Article 74) and "collective responsibility to the Lok Sabha" are THE defining features of India's Parliamentary system — always lead with these when contrasting India's system with a Presidential system (like the USA).</div>
+  `},
+  { id:'T2', title:'Parliament — Composition, Powers and Legislative Procedure', marks:'Core Topic', content:`
+    <h4>Composition of Parliament (Article 79)</h4>
+    <p>Parliament consists of the President and two Houses — the Lok Sabha (House of the People, directly elected) and the Rajya Sabha (Council of States, representing the States, elected by State Legislative Assemblies through proportional representation with single transferable vote).</p>
+    <h4>Legislative Procedure — Ordinary Bills</h4>
+    <p>A Bill may originate in either House (except Money Bills, which must originate ONLY in the Lok Sabha under Article 109), requiring passage by both Houses, followed by Presidential assent (Article 111) — the President may return a Bill (other than a Money Bill) for reconsideration once, but must give assent if the Bill is passed again by both Houses.</p>
+    <h4>Money Bills (Article 110)</h4>
+    <p>Bills dealing exclusively with specified financial matters (taxation, borrowing, appropriation of Consolidated Fund, etc.) — can be introduced ONLY in the Lok Sabha, and the Rajya Sabha's role is limited to making recommendations within 14 days, which the Lok Sabha may accept or reject; the Rajya Sabha cannot reject or substantially amend a Money Bill.</p>
+    <h4>Sessions and Quorum</h4>
+    <p>The President summons each House; the gap between two sessions cannot exceed 6 months (Article 85). Quorum for either House is one-tenth of the total membership.</p>
+    <h4>Parliamentary Privileges (Article 105)</h4>
+    <p>Members enjoy freedom of speech within Parliament (immune from court proceedings for anything said or votes given in Parliament), and other privileges necessary for the effective conduct of parliamentary business, collectively and individually.</p>
+    <h4>Anti-Defection Law (Tenth Schedule, 52nd Amendment 1985)</h4>
+    <p>Disqualifies a member of Parliament/State Legislature who voluntarily gives up membership of their party, or votes/abstains contrary to a party whip without prior permission (subject to specified exceptions, e.g., a merger of the original political party) — aimed at curbing political defections that destabilise governments.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Money Bill procedure (Rajya Sabha's limited 14-day recommendatory role, cannot reject/substantially amend) is a guaranteed short-answer question. Anti-Defection Law and its Tenth Schedule exceptions are frequently tested given ongoing political relevance.</div>
+  `},
+  { id:'T3', title:'State Executive and Legislature', marks:'Core Topic', content:`
+    <h4>Governor (Articles 153-162)</h4>
+    <p>The Governor is the constitutional/nominal head of the State Executive, appointed by the President (NOT elected), holding office during the President's pleasure. Executive power of the State is vested in the Governor (Article 154), exercised on the aid and advice of the State Council of Ministers headed by the Chief Minister (Article 163) — mirroring the Union structure, though the Governor retains limited DISCRETIONARY powers in specified circumstances (e.g., reserving a Bill for President's consideration, recommending President's Rule).</p>
+    <h4>Governor's Discretionary Powers — Controversial Areas</h4>
+    <p>Includes situations of a hung assembly (deciding whom to invite to form government), recommending imposition of Article 356, and reserving certain Bills for Presidential assent — the SCOPE of this discretion has been significantly narrowed and made subject to judicial scrutiny following cases like S.R. Bommai, which mandated that majority be tested on the Assembly floor rather than through the Governor's subjective assessment.</p>
+    <h4>State Council of Ministers (Article 163-164)</h4>
+    <p>Headed by the Chief Minister, COLLECTIVELY RESPONSIBLE to the State Legislative Assembly — mirroring the Union Council of Ministers' relationship with the Lok Sabha.</p>
+    <h4>State Legislature (Articles 168-212)</h4>
+    <p>May be UNICAMERAL (Legislative Assembly only) or BICAMERAL (Legislative Assembly + Legislative Council, in states that have opted to retain/create one under Article 169) — most Indian states are unicameral; only a handful (e.g., Telangana, Andhra Pradesh, Uttar Pradesh, Bihar, Maharashtra, Karnataka) retain a Legislative Council.</p>
+    <h4>Legislative Procedure at State Level</h4>
+    <p>Broadly mirrors the Union procedure — Bills require passage by the Assembly (and Council, where bicameral), followed by Governor's assent, who may reserve certain Bills for the President's consideration under Article 200 (particularly Bills that may derogate from High Court powers or otherwise raise significant constitutional concerns).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Governor's discretionary powers, especially in hung-assembly/floor-test scenarios, are heavily tested alongside S.R. Bommai's principles — always connect this topic to the Bommai case in Topic 4/Centre-State Relations. Unicameral vs Bicameral states is a frequently tested factual recall.</div>
+  `},
+  { id:'T4', title:'Centre-State Relations — Legislative, Administrative and Financial', marks:'Core Topic', content:`
+    <h4>Legislative Relations (Articles 245-255)</h4>
+    <p>Parliament may legislate for the whole of India (or any part); State Legislatures may legislate for their respective States. The SEVENTH SCHEDULE divides legislative subjects into three Lists: UNION LIST (exclusive Parliamentary jurisdiction — defence, foreign affairs, etc.), STATE LIST (exclusive State jurisdiction — police, public health, etc.), and CONCURRENT LIST (both Parliament and State Legislatures may legislate — in case of conflict, the CENTRAL law generally PREVAILS, subject to specific exceptions under Article 254).</p>
+    <h4>Administrative Relations (Articles 256-263)</h4>
+    <p>States must exercise executive power to ensure compliance with Union laws; the Union may give directions to States in specified circumstances. Inter-State Council (Article 263) may be established to inquire into and advise on disputes between States, or matters of common interest to the Union and States.</p>
+    <h4>Financial Relations (Articles 268-293)</h4>
+    <p>Distribution of taxation powers, grants-in-aid, and revenue sharing between Union and States — significantly reformed by the Finance Commission's periodic recommendations (Article 280) and, more recently, the Goods and Services Tax (GST) regime (101st Amendment 2016), which restructured indirect taxation into a shared Union-State framework administered through the GST Council.</p>
+    <div class="case-box"><strong>S.R. Bommai v. Union of India (1994), Supreme Court (9-judge bench):</strong> Following the politically-motivated dismissal of several state governments under Article 356, the Supreme Court delivered arguably the most significant Centre-State relations judgment in Indian constitutional history. The Court held: (1) a Presidential Proclamation under Article 356 is JUSTICIABLE — courts can examine whether it was issued on relevant material and not mala fide (though not the adequacy/sufficiency of that material); (2) the MAJORITY of a state government must be tested on the FLOOR OF THE ASSEMBLY, not through the Governor's subjective assessment; (3) FEDERALISM is part of the Constitution's Basic Structure; (4) SECULARISM is also part of the Basic Structure — a state government acting in a manifestly unsecular manner could attract Article 356 action; and (5) if a Proclamation is found unconstitutional, courts CAN restore the dismissed government and revive the dissolved Assembly.</div>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> S.R. Bommai is THE essential case for this entire topic — always mention the 9-judge bench, the floor-test principle, judicial review of Article 356, and BOTH federalism AND secularism as basic structure features (students often forget the secularism holding).</div>
+  `},
+  { id:'T5', title:'Judiciary — Supreme Court, High Courts and Judicial Appointments', marks:'Core Topic', content:`
+    <h4>Supreme Court of India (Articles 124-147)</h4>
+    <p>The apex court, court of record, with original, appellate, and advisory jurisdiction. ORIGINAL jurisdiction includes disputes between the Union and States, or between States (Article 131), and enforcement of Fundamental Rights (Article 32). APPELLATE jurisdiction covers constitutional, civil, and criminal matters, including via Special Leave Petition (Article 136). ADVISORY jurisdiction allows the President to seek the Supreme Court's opinion on questions of law/fact of public importance (Article 143).</p>
+    <h4>High Courts (Articles 214-231)</h4>
+    <p>Each State (or group of States/Union Territories) has a High Court, with original and appellate jurisdiction, and importantly, WRIT jurisdiction under Article 226 — notably BROADER than the Supreme Court's Article 32 writ jurisdiction, since Article 226 allows High Courts to issue writs for enforcement of Fundamental Rights AND for "any other purpose" (i.e., enforcement of ordinary legal rights too, not just Fundamental Rights).</p>
+    <h4>Appointment of Judges — The Collegium System</h4>
+    <p>Developed through three landmark judgments known as the "Three Judges Cases": <strong>First Judges Case (S.P. Gupta v. Union of India, 1981)</strong> — held "consultation" under Article 124 did NOT mean "concurrence," giving the Executive greater primacy. <strong>Second Judges Case (Supreme Court Advocates-on-Record Association v. Union of India, 1993)</strong> — reversed this, holding the CJI's opinion (formed in consultation with senior colleagues) would have PRIMACY, effectively creating the "Collegium" system. <strong>Third Judges Case (In re Presidential Reference, 1998)</strong> — clarified the Collegium should consist of the CJI and the FOUR senior-most judges of the Supreme Court.</p>
+    <div class="case-box"><strong>Supreme Court Advocates-on-Record Association v. Union of India (2015), Supreme Court (5-judge bench, the "Fourth Judges Case"):</strong> Parliament had enacted the 99th Constitutional Amendment and the National Judicial Appointments Commission (NJAC) Act 2014, seeking to REPLACE the Collegium system with a new body (NJAC) that would include the Law Minister and eminent persons alongside senior judges, aiming for greater transparency/accountability in judicial appointments. By a 4:1 majority, the Supreme Court STRUCK DOWN the NJAC Act and the 99th Amendment as UNCONSTITUTIONAL — holding that including executive-nominated members in judicial appointments compromised the INDEPENDENCE OF THE JUDICIARY, which is part of the Constitution's Basic Structure, and violated the doctrine of Separation of Powers. The Collegium system was thereby preserved (though the Court itself acknowledged the need for reforms in transparency).</div>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The Three/Fourth Judges Cases sequence is a guaranteed essay/timeline question — always give all four cases in order (1981 → 1993 → 1998 → 2015) with their core holdings. Article 226's BROADER scope compared to Article 32 (enforcing "any other" right, not just Fundamental Rights) is a frequently tested distinguishing feature.</div>
+  `},
+  { id:'T6', title:'Emergency Provisions', marks:'Core Topic', content:`
+    <h4>National Emergency (Article 352)</h4>
+    <p>Proclaimed by the President when satisfied that the security of India (or any part) is threatened by WAR, EXTERNAL AGGRESSION, or ARMED REBELLION (the word "internal disturbance" was replaced with "armed rebellion" by the 44th Amendment 1978, following the widely-criticised 1975 Emergency, to narrow the ground and prevent misuse). Must be approved by both Houses of Parliament within one month; once approved, may continue for 6 months at a time, renewable indefinitely with fresh Parliamentary approval.</p>
+    <h4>Effect of National Emergency</h4>
+    <p>Centre gains power to legislate on STATE LIST subjects; Fundamental Rights under Article 19 are automatically suspended (during the Emergency's operation); other Fundamental Rights may be suspended by specific Presidential Order (Article 359), EXCEPT Articles 20 and 21 (protection against ex-post-facto laws/double jeopardy/self-incrimination, and life/personal liberty) — which CANNOT be suspended even during a National Emergency, following the widely-criticised ADM Jabalpur case's later effective reversal, and the 44th Amendment's explicit protection.</p>
+    <h4>President's Rule / State Emergency (Article 356)</h4>
+    <p>Proclaimed when the President is satisfied (based on a Governor's report or otherwise) that the government of a State cannot be carried on in accordance with constitutional provisions. Effect: State's executive functions, and (subject to conditions) legislative functions, are assumed by the Union/Parliament; State Legislative Assembly may be dissolved or kept in suspended animation. Requires Parliamentary approval within 2 months; may continue up to 3 years with periodic (6-monthly) Parliamentary re-approval, subject to specific conditions post-44th Amendment restricting extension beyond 1 year absent a National Emergency or Election Commission's certification of election difficulty.</p>
+    <h4>Financial Emergency (Article 360)</h4>
+    <p>Proclaimed when the President is satisfied that the financial stability or credit of India (or any part) is threatened. Effect: Union may give directions to States regarding financial matters, including reduction of salaries of persons serving the State (and, in specified circumstances, even judges). NEVER INVOKED in India's constitutional history to date, remaining a purely theoretical provision so far.</p>
+    <h4>Judicial Review of Emergency Proclamations</h4>
+    <p>Following the 44th Amendment and subsequent judicial interpretation (including principles reinforced by S.R. Bommai for Article 356 specifically), Emergency proclamations are generally subject to LIMITED judicial review — courts can examine whether the proclamation was based on relevant material and not issued mala fide, though the underlying "satisfaction" itself retains a degree of deference given the subject matter's sensitive, security-related nature.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Internal disturbance" replaced by "armed rebellion" (44th Amendment, post-1975 Emergency) is a guaranteed short-answer question explaining WHY the change was made. Always note Financial Emergency (Article 360) has NEVER been invoked — a frequently tested factual point. Articles 20 and 21's non-suspendable status even during National Emergency is essential.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1994', name:'S.R. Bommai v. Union of India', tag:'Article 356 & Federalism', tagColor:'gold', story:'Between 1950 and 1994, Article 356 had been invoked over 90 times — often not because a state government genuinely could not function constitutionally, but simply because a different political party had come to power at the Centre and wanted to remove opposition-led state governments. When S.R. Bommai\'s Janata Dal government in Karnataka was dismissed in 1989, ostensibly for losing its majority through defections — but WITHOUT ever being given the chance to prove that majority on the floor of the Assembly — Bommai challenged the dismissal, and his case was clubbed with several similar challenges from Meghalaya, Nagaland, Madhya Pradesh, Himachal Pradesh, and Rajasthan. A 9-judge bench finally settled decades of political misuse. The Court refused to accept that the President\'s "satisfaction" under Article 356 was beyond all judicial scrutiny — while it could not question whether the material was ADEQUATE, it could certainly ask whether relevant material existed at all, and whether the power was being used in good faith or as a political weapon.', principle:'A Presidential Proclamation under Article 356 is justiciable — courts can examine whether it was based on relevant material and was not mala fide. A state government\'s majority must be tested on the floor of the Legislative Assembly, not through the Governor\'s subjective assessment. Federalism AND secularism are both part of the Constitution\'s Basic Structure. If a Proclamation is found unconstitutional, courts can restore the dismissed government and revive the dissolved Assembly.' },
+  { year:'2015', name:'Supreme Court Advocates-on-Record Association v. Union of India (Fourth Judges Case)', tag:'Judicial Independence', tagColor:'teal', story:'For decades, critics had complained that India\'s "Collegium" system of judges appointing judges lacked transparency and accountability — a closed process where the reasoning behind appointments was rarely made public. In 2014, Parliament tried to fix this: the 99th Constitutional Amendment and the National Judicial Appointments Commission Act created a new body to replace the Collegium, including not just senior judges but also the Law Minister and two "eminent persons" selected through a broader process — a genuine attempt to open up judicial appointments to more diverse input. The Supreme Court Advocates-on-Record Association immediately challenged this, arguing it fundamentally threatened judicial independence. A 5-judge bench heard the matter, and by a 4:1 majority, struck the entire scheme down — holding that once the executive gained a real seat at the table in choosing judges, the judiciary\'s independence from political influence, part of the Constitution\'s untouchable Basic Structure, was placed in genuine jeopardy, regardless of how well-intentioned the reform.', principle:'The 99th Constitutional Amendment and the NJAC Act, which sought to replace the Collegium system with a body including executive-nominated members, are unconstitutional — they violate the independence of the judiciary, a core part of the Basic Structure, and the doctrine of Separation of Powers. The Collegium system (CJI plus four senior-most judges) was thereby preserved, though the Court itself acknowledged the need for reforms to improve its transparency.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Union Executive', v:'President (nominal head) + Council of Ministers headed by PM (real power, aid & advice under Article 74)' },
+    { k:'Three Legislative Lists', v:'Union List (exclusive Parliament) + State List (exclusive States) + Concurrent List (both — Union law prevails on conflict)' },
+    { k:'Three/Four Judges Cases', v:'1st(1981, S.P. Gupta, Executive primacy) → 2nd(1993, Collegium created) → 3rd(1998, CJI+4 senior judges) → 4th(2015, NJAC struck down, Collegium preserved)' },
+    { k:'Three Emergencies', v:'National(352, war/external aggression/armed rebellion) + President\'s Rule(356, state constitutional breakdown) + Financial(360, never invoked)' },
+    { k:'S.R. Bommai Key Holdings', v:'Justiciable + Floor Test + Federalism=Basic Structure + Secularism=Basic Structure + Courts can restore government' }
+  ]},
+  { icon:'📅', title:'Key Numbers & Sections', items:[
+    { k:'Article 74', v:'President bound by aid and advice of Council of Ministers' },
+    { k:'Article 110', v:'Money Bill definition — Lok Sabha exclusive origination' },
+    { k:'Article 163', v:'Governor bound by aid and advice of State Council of Ministers' },
+    { k:'Article 226 vs 32', v:'226 (High Court) is BROADER — "any other purpose," not just Fundamental Rights like Article 32' },
+    { k:'Article 352', v:'National Emergency — war, external aggression, armed rebellion' },
+    { k:'44th Amendment 1978', v:'Changed "internal disturbance" to "armed rebellion" (Art 352); protected Arts 20/21 from suspension' },
+    { k:'Article 356', v:'President\'s Rule — state constitutional machinery breakdown' },
+    { k:'Article 360', v:'Financial Emergency — NEVER invoked in Indian history' },
+    { k:'99th Amendment 2014', v:'Created NJAC — struck down in 2015 Fourth Judges Case' },
+    { k:'GST/101st Amendment', v:'2016 — restructured indirect taxation, shared Union-State framework' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'S.R. Bommai v. Union of India (1994)', v:'9-judge bench. Article 356 justiciable, floor test mandatory, federalism + secularism = Basic Structure.' },
+    { k:'SCAORA v. Union of India / Fourth Judges Case (2015)', v:'5-judge bench, 4:1 majority. NJAC/99th Amendment struck down — judicial independence = Basic Structure.' },
+    { k:'S.P. Gupta v. Union of India / First Judges Case (1981)', v:'"Consultation" ≠ "concurrence" — gave Executive primacy in judicial appointments (later reversed).' },
+    { k:'SCAORA v. Union of India / Second Judges Case (1993)', v:'Reversed First Judges Case — CJI\'s opinion given primacy, creating the Collegium system.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Governor vs President appointment', v:'Governor is APPOINTED by the President (not elected). President is elected by an Electoral College.' },
+    { k:'Collegium composition', v:'CJI + 4 senior-most Supreme Court judges (established by the Third Judges Case, 1998).' },
+    { k:'Money Bill — Rajya Sabha role', v:'Only RECOMMENDATORY, within 14 days — cannot reject or substantially amend a Money Bill.' },
+    { k:'Bicameral States (examples)', v:'Only a handful retain a Legislative Council — e.g., Telangana, Andhra Pradesh, UP, Bihar, Maharashtra, Karnataka. Most states are unicameral.' },
+    { k:'Article 20/21 during Emergency', v:'CANNOT be suspended even during a National Emergency — the only Fundamental Rights with this absolute protection.' },
+    { k:'Anti-Defection Law', v:'Tenth Schedule, added by the 52nd Amendment 1985 — disqualifies members defecting or voting against party whip without permission.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Under Article 74, the President of India is generally bound to act on the:', opts:['Advice of the Chief Justice of India', 'Aid and advice of the Council of Ministers headed by the Prime Minister', 'Advice of the Vice-President alone', 'Advice of individual Members of Parliament'], ans:1, exp:'Article 74 establishes that the President acts on the aid and advice of the Council of Ministers, the core feature of India\'s Parliamentary system.' },
+  { q:'A "Money Bill," under Article 110, may originate ONLY in:', opts:['The Rajya Sabha', 'The Lok Sabha', 'Either House equally', 'A joint sitting of both Houses'], ans:1, exp:'Money Bills can only be introduced in the Lok Sabha; the Rajya Sabha\'s role is limited to recommendations within 14 days.' },
+  { q:'The Governor of a State is:', opts:['Directly elected by the people of the State', 'Appointed by the President of India, holding office during the President\'s pleasure', 'Elected by the State Legislative Assembly', 'Appointed by the Chief Minister'], ans:1, exp:'Unlike the President (elected indirectly by an Electoral College), the Governor is appointed by the President.' },
+  { q:'Under the Seventh Schedule, if there is a conflict between a Union law and a State law on a Concurrent List subject, generally:', opts:['The State law always prevails', 'The Union (Central) law generally prevails, subject to specific exceptions under Article 254', 'Both laws are automatically void', 'The matter must always go to the Supreme Court before either law applies'], ans:1, exp:'Article 254 establishes the general rule of Union law supremacy on Concurrent List conflicts, with narrow exceptions.' },
+  { q:'In S.R. Bommai v. Union of India (1994), the Supreme Court held that a Presidential Proclamation under Article 356 is:', opts:['Completely immune from any judicial review whatsoever', 'JUSTICIABLE — courts can examine whether it was based on relevant material and not mala fide', 'Only reviewable by the President personally', 'Automatically valid once issued, with no possibility of challenge'], ans:1, exp:'Bommai established that Article 356 proclamations are subject to judicial review on these specific grounds, though not the adequacy of material.' },
+  { q:'Following S.R. Bommai, the majority/confidence of a State Government must be tested:', opts:['Through the Governor\'s personal subjective assessment alone', 'On the FLOOR of the Legislative Assembly', 'Only through a public opinion poll', 'By the President without any Assembly involvement'], ans:1, exp:'Bommai mandated that a floor test in the Assembly, not the Governor\'s subjective opinion, is the proper way to determine a government\'s majority.' },
+  { q:'S.R. Bommai v. Union of India held that which TWO principles are part of the Constitution\'s Basic Structure?', opts:['Only judicial review', 'Federalism AND Secularism', 'Only the right to property', 'Only Parliamentary sovereignty'], ans:1, exp:'Bommai extended Basic Structure protection to both federalism and secularism, a frequently overlooked dual holding.' },
+  { q:'The Supreme Court\'s appellate jurisdiction via "Special Leave Petition" is exercised under:', opts:['Article 32', 'Article 136', 'Article 226', 'Article 356'], ans:1, exp:'Article 136 grants the Supreme Court discretionary power to grant special leave to appeal from any court/tribunal in India.' },
+  { q:'Article 226 (High Court writ jurisdiction), as compared to Article 32 (Supreme Court writ jurisdiction), is generally considered:', opts:['Narrower, covering only Fundamental Rights', 'BROADER — covering enforcement of Fundamental Rights AND "any other purpose" (ordinary legal rights too)', 'Identical in every respect', 'Not applicable to Fundamental Rights at all'], ans:1, exp:'Article 226\'s "any other purpose" language gives High Courts a wider writ jurisdiction than the Supreme Court\'s Article 32.' },
+  { q:'The "Collegium" system of judicial appointments (CJI plus four senior-most Supreme Court judges) was clarified in which case?', opts:['S.P. Gupta v. Union of India (First Judges Case, 1981)', 'In re Presidential Reference (Third Judges Case, 1998)', 'Kesavananda Bharati v. State of Kerala (1973)', 'Shayara Bano v. Union of India (2017)'], ans:1, exp:'The Third Judges Case (1998) specifically clarified the Collegium\'s composition as the CJI plus the four senior-most judges.' },
+  { q:'In the First Judges Case (S.P. Gupta v. Union of India, 1981), the Supreme Court held that "consultation" under Article 124:', opts:['Meant "concurrence," giving the judiciary primacy', 'Did NOT mean "concurrence," giving the Executive greater primacy in appointments', 'Was irrelevant to judicial appointments', 'Applied only to High Court appointments, never the Supreme Court'], ans:1, exp:'The First Judges Case initially gave the Executive greater say by holding consultation did not require concurrence — a position later reversed.' },
+  { q:'In Supreme Court Advocates-on-Record Association v. Union of India (2015, the "Fourth Judges Case"), the Supreme Court:', opts:['Upheld the NJAC Act as constitutional', 'By a 4:1 majority, struck down the NJAC Act and 99th Amendment as unconstitutional, preserving the Collegium', 'Abolished the Collegium system entirely with no replacement', 'Transferred all appointment power to Parliament'], ans:1, exp:'The Fourth Judges Case struck down the NJAC as violating judicial independence (a Basic Structure feature), preserving the Collegium.' },
+  { q:'The National Judicial Appointments Commission (NJAC), struck down in 2015, was introduced by which constitutional amendment?', opts:['The 42nd Amendment', 'The 99th Amendment', 'The 44th Amendment', 'The 73rd Amendment'], ans:1, exp:'The 99th Constitutional Amendment 2014 created the NJAC, later struck down alongside the amendment itself.' },
+  { q:'A National Emergency under Article 352 may be proclaimed on grounds of:', opts:['Any political disagreement between Centre and State', 'War, external aggression, or armed rebellion', 'A simple economic downturn', 'Only a natural disaster'], ans:1, exp:'Article 352 restricts National Emergency grounds to these three specific categories, narrowed by the 44th Amendment.' },
+  { q:'The 44th Amendment 1978 changed the ground of "internal disturbance" (Article 352) to:', opts:['"Economic crisis"', '"Armed rebellion" — narrowing the ground following criticism of the 1975 Emergency\'s misuse', '"Foreign interference"', 'The ground was removed entirely with no replacement'], ans:1, exp:'This change was a direct, deliberate response to the widely-criticised misuse of "internal disturbance" during the 1975-77 Emergency.' },
+  { q:'During a National Emergency, which Fundamental Rights CANNOT be suspended, even by Presidential Order?', opts:['All Fundamental Rights can be suspended without exception', 'Articles 20 and 21 (protection against ex-post-facto laws/double jeopardy/self-incrimination, and life/personal liberty)', 'Only Article 19', 'Only Article 32'], ans:1, exp:'Articles 20 and 21 enjoy absolute protection from suspension, even during a National Emergency, following the 44th Amendment\'s reforms.' },
+  { q:'"President\'s Rule" under Article 356 is proclaimed when:', opts:['The President simply dislikes a particular State government', 'The President is satisfied that a State\'s government cannot be carried on in accordance with constitutional provisions', 'A State loses a cricket match', 'A State government requests voluntary dissolution for any reason'], ans:1, exp:'Article 356 requires a genuine breakdown of constitutional machinery, not mere political disagreement — a principle reinforced by Bommai.' },
+  { q:'"Financial Emergency" under Article 360, in India\'s constitutional history to date, has been:', opts:['Invoked multiple times', 'NEVER invoked, remaining a purely theoretical provision so far', 'Invoked exactly once, in 1991', 'Automatically triggered every budget cycle'], ans:1, exp:'Article 360 has never been formally proclaimed in India, unlike Articles 352 and 356, which have been invoked multiple times.' },
+  { q:'The Anti-Defection Law is contained in which Schedule of the Constitution?', opts:['Seventh Schedule', 'Tenth Schedule, added by the 52nd Amendment 1985', 'Ninth Schedule', 'First Schedule'], ans:1, exp:'The Tenth Schedule (52nd Amendment 1985) governs disqualification for defection from a political party.' },
+  { q:'Under the Anti-Defection Law, a member is generally disqualified if they:', opts:['Simply disagree privately with their party\'s policy', 'Voluntarily give up party membership, or vote/abstain against a party whip without prior permission (subject to specified exceptions)', 'Ask a question in Parliament', 'Take leave of absence for illness'], ans:1, exp:'The Tenth Schedule targets specific defection-related conduct, not mere policy disagreement or ordinary parliamentary activity.' },
+  { q:'Most Indian State Legislatures are:', opts:['Bicameral (Assembly + Council) in every single state', 'UNICAMERAL (Legislative Assembly only) — only a handful of states retain a Legislative Council', 'Tricameral, with three houses', 'Entirely appointed, with no elected members'], ans:1, exp:'Most states have only a Legislative Assembly; a small number (e.g., Telangana, UP, Bihar, Maharashtra, Karnataka) retain a Legislative Council under Article 169.' },
+  { q:'The Supreme Court\'s ORIGINAL jurisdiction under Article 131 covers:', opts:['Only criminal appeals from High Courts', 'Disputes between the Union and States, or between States themselves', 'Only matters relating to Fundamental Rights', 'Only election disputes'], ans:1, exp:'Article 131 gives the Supreme Court exclusive original jurisdiction over Centre-State and inter-State disputes.' },
+  { q:'The Inter-State Council, under Article 263, primarily serves to:', opts:['Replace the Supreme Court in Centre-State disputes', 'Inquire into and advise on disputes between States, or matters of common interest to the Union and States', 'Appoint State Governors', 'Control State budgets directly'], ans:1, exp:'The Inter-State Council is an advisory body facilitating cooperative federalism, distinct from judicial dispute resolution.' },
+  { q:'The Goods and Services Tax (GST) framework, restructuring Centre-State financial relations, was introduced by which constitutional amendment?', opts:['The 42nd Amendment', 'The 101st Amendment 2016', 'The 44th Amendment', 'The 86th Amendment'], ans:1, exp:'The 101st Amendment 2016 introduced GST, creating a shared Union-State indirect tax framework administered via the GST Council.' },
+  { q:'"Collective Responsibility" of the Council of Ministers to the Lok Sabha means that:', opts:['Each minister is individually accountable only to the Prime Minister', 'The entire Council of Ministers must resign if it loses the confidence/majority of the Lok Sabha', 'Ministers are never accountable to Parliament at all', 'Only the Prime Minister, not the full Council, bears any responsibility'], ans:1, exp:'Collective responsibility means the whole Council stands or falls together based on Lok Sabha confidence, a core Parliamentary-system feature.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
