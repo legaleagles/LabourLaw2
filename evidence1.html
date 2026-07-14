@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Law of Evidence (BSA) — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Law of Evidence</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Law of Evidence Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Law of Evidence (BSA)</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Relevancy &amp; Facts in Issue, Admissions &amp; Confessions, Dying Declarations, Burden of Proof &amp; Presumptions, Witnesses, and Documentary Evidence under the Bharatiya Sakshya Adhiniyam 2023, from the OU LLB 2nd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Bharatiya Sakshya Adhiniyam 2023</span>
+        <span class="hero-tag">Effective 1 July 2024</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Facts in Issue vs Relevant Facts, Admissions vs Confessions, Dying Declaration essentials, May/Shall Presume vs Conclusive Proof, Examination-in-Chief/Cross/Re-Examination sequence, Primary vs Secondary Evidence — these appear almost every year in OU LLB Law of Evidence exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Khushal Rao v State of Bombay (1958 — dying declaration alone can sustain conviction, no absolute corroboration rule) and Anvar P.V v P.K. Basheer (2014 — electronic evidence needs statutory certification). Also know Laxman v State of Maharashtra on medical certification.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">BSA effective 1 July 2024, Act No. 47 of 2023. Section 4 (facts in issue/relevant facts only), Section 23 (discovery exception), Section 25 (admissions not conclusive), Section 26(a) (dying declaration). 30 years = document genuineness presumption threshold.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Relevancy & Facts in Issue, Admissions & Confessions, Dying Declarations, Burden of Proof & Presumptions, Witnesses, Documentary Evidence. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// LAW OF EVIDENCE (BSA)  |  Content data for lawsticker-ai.com
+// Osmania University LLB 2nd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Introduction — Relevancy, Facts in Issue and the BSA 2023', marks:'Core Topic', content:`
+    <h4>The Bharatiya Sakshya Adhiniyam 2023 — Replacing the Indian Evidence Act</h4>
+    <p>The BSA 2023 (Act No. 47 of 2023) replaced the Indian Evidence Act 1872, coming into force on 1 July 2024 alongside the BNS and BNSS. It "consolidates and provides for general rules and principles of evidence for fair trial," retaining most IEA provisions and their underlying logic, while renumbering sections and expanding several provisions (notably regarding electronic evidence) to reflect modern realities.</p>
+    <h4>Key Definitions (Section 2)</h4>
+    <ul>
+      <li><strong>Evidence</strong> — includes (a) all statements, including electronic/digital records, which the Court permits/requires to be made before it by witnesses, in relation to matters of fact under inquiry (oral evidence); and (b) all documents, including electronic/digital records, produced for the Court's inspection (documentary evidence)</li>
+      <li><strong>Proved</strong> — a fact is "proved" when the Court believes it exists, or considers its existence so probable that a prudent person ought to act on that supposition</li>
+      <li><strong>Relevant</strong> — a fact is relevant to another when connected in any of the ways described in the Act's relevancy provisions</li>
+    </ul>
+    <h4>Facts in Issue vs Relevant Facts</h4>
+    <p><strong>Facts in Issue</strong> — facts from which the existence, non-existence, nature, or extent of a right/liability/disability asserted or denied in the proceeding necessarily follows. <strong>Relevant Facts</strong> — facts connected to a fact in issue, admissible to help prove or disprove it, even though not themselves directly in dispute. Evidence may generally be given ONLY of facts in issue and relevant facts (Section 4) — this is the foundational admissibility gate.</p>
+    <h4>Res Gestae — Facts Forming Part of the Same Transaction</h4>
+    <p>Facts which, though not themselves in issue, are so connected with a fact in issue as to form part of the same transaction are relevant, whether they occurred at the same time/place or at different times/places — the "res gestae" doctrine allows spontaneous statements/reactions closely bound up with the main event to be admitted, even though technically hearsay.</p>
+    <h4>Electronic and Digital Records — A Genuinely NEW BSA Feature</h4>
+    <p>The BSA significantly expands treatment of electronic evidence — classifying electronic records as PRIMARY evidence (a change from the IEA's treatment of them as secondary evidence), and explicitly including information stored in semiconductor memory, communication devices (smartphones, laptops), and similar modern formats — reflecting the digital realities of contemporary litigation.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Always know the exact commencement date (1 July 2024) and cite BSA as Act No. 47 of 2023. Facts in Issue vs Relevant Facts is THE foundational distinction for this entire subject — always be ready with a clear example of each. The electronic-records-as-primary-evidence shift is a frequently tested "what's new in BSA" question.</div>
+  `},
+  { id:'T2', title:'Admissions and Confessions', marks:'Core Topic', content:`
+    <h4>Admission — Definition</h4>
+    <p>A statement, oral or documentary (including electronic form), suggesting any inference as to a fact in issue or relevant fact, made by specified persons under specified circumstances (a party, their agent, or persons in specified representative capacities).</p>
+    <h4>Admissions Are Not Conclusive — Section 25</h4>
+    <p>Admissions are NOT conclusive proof of the matters admitted, but they may operate as ESTOPPELS (preventing the person who made the admission from later denying it, in appropriate circumstances) — a crucial distinction, since students often mistakenly assume an admission automatically and finally settles the matter.</p>
+    <h4>Confession — A Specific Kind of Admission (Criminal Context)</h4>
+    <p>A confession is an admission made by an accused person, in a criminal proceeding, stating or suggesting the inference that they committed the crime — narrower than an ordinary admission, specifically applicable to criminal liability.</p>
+    <h4>Confession to Police — Generally Inadmissible</h4>
+    <p>A confession made to a POLICE OFFICER is generally NOT admissible against the accused (reflecting deep-seated concerns about the reliability of confessions extracted during police custody/interrogation) — a settled, historically important protection carried forward from the IEA. Confessions made while in police custody (even if not TO a police officer directly) are similarly restricted, with limited exceptions.</p>
+    <h4>Exception — Confession Leading to Discovery (Section 23, BSA)</h4>
+    <p>Where a fact is DISCOVERED as a direct consequence of information received from an accused in police custody, so much of that information as DISTINCTLY relates to the fact discovered may be proved — even though the broader confession itself would otherwise be inadmissible. This narrow but important exception (corresponding to the former Section 27 IEA) allows verifiable, discovery-linked portions of an otherwise-excluded statement into evidence.</p>
+    <h4>Voluntary Nature Requirement</h4>
+    <p>A confession, to be admissible, must be VOLUNTARY — not obtained through inducement, threat, or promise from a person in authority, relating to the charge, and giving the accused reasonable grounds to suppose they would gain an advantage or avoid harm by confessing.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Confession to police is generally inadmissible, EXCEPT the narrow discovery exception" is a guaranteed short-answer/problem question — always explain WHY (concerns about coerced/unreliable confessions in custody) alongside the rule itself. Admissions being "not conclusive, but may estop" is a frequently tested nuance.</div>
+  `},
+  { id:'T3', title:'Dying Declarations and Statements by Persons Who Cannot Be Called as Witnesses', marks:'Core Topic', content:`
+    <h4>Section 26 — The General Framework</h4>
+    <p>Statements (written or verbal) of relevant facts made by a person who is DEAD, CANNOT BE FOUND, has become INCAPABLE of giving evidence, or whose attendance cannot be procured without unreasonable delay/expense, are themselves relevant facts in specified circumstances — an important, necessity-based exception to the general rule against hearsay.</p>
+    <h4>Section 26(a) — Dying Declarations Specifically</h4>
+    <p>A statement made by a person as to the CAUSE of their death, or as to any circumstances of the transaction which resulted in their death, is relevant — in ANY proceeding (civil or criminal) in which the cause of that person's death comes into question. Crucially, Indian law does NOT require the declarant to have been under an expectation of imminent death when making the statement (unlike the stricter English common law position) — a significant, deliberate divergence broadening the provision's scope.</p>
+    <h4>Rationale — Nemo Moriturus Praesumitur Mentire</h4>
+    <p>"A person about to die is presumed not to lie" — the traditional justification for admitting dying declarations as an exception to hearsay, on the theory that someone facing death has lost any motive for falsehood, alongside the practical NECESSITY that the victim is often the only witness to the crime committed against them.</p>
+    <div class="case-box"><strong>Khushal Rao v. State of Bombay (1958), Supreme Court:</strong> Laid down the foundational principles on the evidentiary value of dying declarations that remain fully applicable under the BSA today: each case must be assessed on its own facts and circumstances; there is NO absolute rule of law that a dying declaration cannot be the SOLE BASIS of conviction without corroboration; a TRUE and VOLUNTARY dying declaration needs no corroboration whatsoever; and if the Court is satisfied the declaration is true and voluntary, it can be sufficient by itself to sustain a conviction. A dying declaration is thus a SUBSTANTIVE piece of evidence, not merely corroborative material.</div>
+    <div class="case-box"><strong>Laxman v. State of Maharashtra (2002), Supreme Court:</strong> Clarified that a dying declaration is admissible even if NOT recorded by a Magistrate, and that MEDICAL CERTIFICATION of the declarant's fitness of mind, while preferred and strengthening reliability, is NOT a strict legal precondition ("sine qua non") for admissibility — the key factor is whether the declarant was actually in a fit state of mind to make the statement, which can be established through other means.</div>
+    <h4>Essentials for a Valid, Reliable Dying Declaration</h4>
+    <ul>
+      <li>The declarant must have died as a result of the incident (if they survive, it cannot be used as a dying declaration under Section 26(a) — though it may be usable for other purposes)</li>
+      <li>Must relate to the cause of death or circumstances of the transaction resulting in death</li>
+      <li>The declarant must be mentally competent at the time of the statement</li>
+      <li>The statement must be voluntary — free from tutoring, coercion, or prompting</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Khushal Rao's "no absolute rule requiring corroboration, sole basis of conviction is permissible if true and voluntary" holding is essential and frequently tested — always pair it with Laxman's clarification that magistrate-recording/medical certification are preferred but not strictly mandatory.</div>
+  `},
+  { id:'T4', title:'Burden of Proof, Presumptions and Estoppel', marks:'Core Topic', content:`
+    <h4>General Rule — Burden of Proof (Chapter VII, BSA)</h4>
+    <p>Whoever desires a Court to give judgment as to any legal right/liability dependent on the existence of facts they assert MUST PROVE those facts exist — the burden lies on the person who would fail if no evidence were given on either side. This is the foundational rule: "he who asserts must prove."</p>
+    <h4>Standard of Proof</h4>
+    <p>Civil cases: preponderance of probabilities (the balance of likelihood favouring one side). Criminal cases: proof BEYOND REASONABLE DOUBT — a materially higher standard, reflecting the severe consequences of a wrongful criminal conviction.</p>
+    <h4>Burden of Proving Particular Facts — Shifting Burden</h4>
+    <p>While the overall (legal) burden generally remains fixed on the party asserting a claim, the burden of proving specific/particular facts may shift during the trial as evidence is presented — e.g., once a plaintiff establishes a prima facie case, an evidentiary burden may shift to the defendant to rebut it, without changing who bears the ultimate legal burden.</p>
+    <h4>"May Presume," "Shall Presume," and "Conclusive Proof"</h4>
+    <table>
+      <tr><th>Term</th><th>Meaning</th></tr>
+      <tr><td>May Presume</td><td>Court has DISCRETION to regard a fact as proved, unless disproved — OR may call for further proof</td></tr>
+      <tr><td>Shall Presume</td><td>Court MUST regard the fact as proved, unless and until disproved — a MANDATORY (though rebuttable) presumption</td></tr>
+      <tr><td>Conclusive Proof</td><td>Once one fact is proved, the Court SHALL regard the other as proved, and NO evidence to disprove it is permitted — an IRREBUTTABLE presumption</td></tr>
+    </table>
+    <h4>Doctrine of Estoppel (Chapter VIII, BSA)</h4>
+    <p>Where a person, by declaration/act/omission, INTENTIONALLY causes/permits another to believe a thing to be true and to act on that belief, they (and their representatives) are ESTOPPED (prevented) from later denying the truth of that thing, in any proceeding between them and the person who acted on that belief. Estoppel operates as a RULE OF EVIDENCE, not a substantive right — it prevents a party from asserting facts inconsistent with their own prior representation.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "May Presume" vs "Shall Presume" vs "Conclusive Proof" is a guaranteed comparison question — always give the exact distinguishing feature (discretionary vs mandatory-but-rebuttable vs irrebuttable). The civil (preponderance) vs criminal (beyond reasonable doubt) standard-of-proof distinction is essential foundational knowledge.</div>
+  `},
+  { id:'T5', title:'Witnesses — Competency, Examination and Privileged Communications', marks:'Core Topic', content:`
+    <h4>Who May Testify — Competency of Witnesses</h4>
+    <p>All persons are generally COMPETENT to testify, UNLESS the Court considers they are prevented from understanding the questions put to them, or from giving rational answers, by reason of tender years, extreme old age, disease (of body or mind), or any similar cause. A child witness, however young, is generally competent PROVIDED the Court is satisfied they understand the duty of speaking truth and can give a rational account.</p>
+    <h4>Kinds of Witnesses</h4>
+    <ul>
+      <li><strong>Child Witness</strong> — competency assessed via a preliminary voir dire-style examination by the Court, not an automatic age bar</li>
+      <li><strong>Hostile Witness</strong> — a witness who, having been called by a party, testifies AGAINST the interest of that party or resiles from their earlier statement — the party calling them may, with the Court's permission, cross-examine (and even impeach the credit of) their own witness in such circumstances</li>
+      <li><strong>Accomplice</strong> — a person who participated in the crime with the accused; competent to testify against the accused, but courts apply caution, generally looking for CORROBORATION of an accomplice's testimony as a matter of prudence (not an absolute legal bar to conviction on uncorroborated accomplice evidence)</li>
+    </ul>
+    <h4>Order and Types of Examination</h4>
+    <p><strong>Examination-in-Chief</strong> — initial questioning by the party who called the witness, to elicit relevant facts supporting their case. <strong>Cross-Examination</strong> — questioning by the OPPOSING party, testing credibility and eliciting facts unfavourable to the examining party's case. <strong>Re-Examination</strong> — further questioning by the original party, limited to matters arising out of cross-examination, to clarify/explain.</p>
+    <h4>Leading Questions</h4>
+    <p>Questions suggesting the answer the questioner wishes/expects — generally NOT permitted in examination-in-chief (except on introductory/undisputed matters, with Court's permission), but generally PERMITTED in cross-examination, where testing the witness's account through suggestive questioning is a legitimate technique.</p>
+    <h4>Privileged Communications (Sections 128-134, BSA)</h4>
+    <ul>
+      <li><strong>Spousal Communication (Section 128)</strong> — communications made between spouses DURING the marriage are privileged; neither can generally be compelled to disclose them, even after the marriage has ended (subject to specified exceptions)</li>
+      <li><strong>Professional Communication</strong> — communications between an advocate/legal adviser and their client, made in the course of and for the purpose of the professional engagement, are generally privileged and protected from compelled disclosure</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Examination-in-Chief → Cross-Examination → Re-Examination (in that order) is a guaranteed sequence question. Leading questions being generally PROHIBITED in examination-in-chief but PERMITTED in cross-examination is a frequently tested rule, often via a problem question.</div>
+  `},
+  { id:'T6', title:'Documentary Evidence, Public Documents and Exclusion of Oral Evidence', marks:'Core Topic', content:`
+    <h4>Primary and Secondary Evidence (Documentary)</h4>
+    <p><strong>Primary Evidence</strong> — the ORIGINAL document itself, produced for the Court's inspection — regarded as the best/highest form of documentary proof. Under the BSA, ELECTRONIC RECORDS are now classified as PRIMARY evidence (a genuine change from the IEA's treatment of them as secondary). <strong>Secondary Evidence</strong> — evidence of a document's existence, condition, or contents OTHER than the original itself (e.g., certified copies, oral accounts of the document's contents by someone who has seen it) — generally admissible only in specified circumstances (e.g., the original is lost/destroyed, in the opposing party's possession and not produced despite notice, or is a public document).</p>
+    <h4>Public Documents and Private Documents</h4>
+    <p><strong>Public Documents</strong> — documents forming the acts/records of sovereign authority, official bodies, tribunals, or public officers (legislative, judicial, executive), and specified public records kept in a State for private document registration. <strong>Private Documents</strong> — all other documents, not falling within the public document definition.</p>
+    <h4>Presumptions as to Documents</h4>
+    <ul>
+      <li>Presumption of genuineness for documents produced from PROPER CUSTODY that are 30 YEARS OLD or more (subject to no suspicion of forgery/tampering) — the burden of proof shifts to the party challenging authenticity once this presumption applies</li>
+      <li>Presumptions regarding official Gazettes, newspapers, and other specified public/official documents, easing the burden of formal proof for routine, reliable categories of documents</li>
+      <li>Presumptions regarding powers-of-attorney and, notably, ELECTRONIC AGREEMENTS — a genuinely new BSA addition reflecting digital contracting realities</li>
+    </ul>
+    <h4>Exclusion of Oral Evidence by Documentary Evidence (Chapter VI, BSA)</h4>
+    <p>When the terms of a contract/grant/other disposition of property have been reduced to a written document, NO evidence may generally be given of those terms EXCEPT the document itself (or admissible secondary evidence of its contents) — oral evidence is generally excluded once the parties have reduced their agreement to writing, subject to specified exceptions (e.g., proving fraud, mistake, or a genuinely separate oral agreement not inconsistent with the written terms).</p>
+    <div class="case-box"><strong>Anvar P.V. v. P.K. Basheer (2014), Supreme Court:</strong> A landmark ruling on electronic evidence, holding that secondary electronic evidence (e.g., print-outs of electronic records) is admissible ONLY if accompanied by a certificate meeting the statutory requirements for authenticating electronic records — mere production of a print-out or CD without the required certification does not satisfy the admissibility requirements. This case remains highly relevant to the BSA's continued (and expanded) treatment of electronic evidence requirements.</div>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Primary vs Secondary Evidence, and the BSA's shift making electronic records PRIMARY evidence, is a guaranteed comparison/recent-development question. Anvar P.V. v. P.K. Basheer's certification requirement for electronic evidence is essential given its ongoing, expanded relevance under the BSA.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1958', name:'Khushal Rao v. State of Bombay', tag:'Dying Declaration', tagColor:'gold', story:'For years, Indian courts had wrestled with an uncomfortable question about dying declarations: could a conviction for murder rest ENTIRELY on the word of a victim who was no longer alive to be cross-examined, with no other supporting evidence at all? Some judges instinctively felt uneasy relying so heavily on a single, unchallengeable statement. When Khushal Rao\'s case reached the Supreme Court, the Court settled this uncertainty decisively — and in doing so, gave the dying declaration its full weight as genuine, standalone evidence rather than a second-class substitute for live testimony. If a dying declaration is found to be TRUE and made VOLUNTARILY, the Court held, there is no rigid rule of law demanding it be backed up by anything else — the declaration itself can be enough to convict.', principle:'There is no absolute rule of law requiring a dying declaration to be corroborated before it can support a conviction. A dying declaration found to be true and voluntary is a SUBSTANTIVE piece of evidence in its own right, and can by itself be sufficient to sustain a conviction — though each case must still be examined on its own particular facts and circumstances.' },
+  { year:'2014', name:'Anvar P.V. v. P.K. Basheer', tag:'Electronic Evidence', tagColor:'teal', story:'As digital communication became central to everyday life — and to litigation — Indian courts increasingly saw parties trying to introduce print-outs, CDs, and other electronic material as evidence, often with little formal verification of where the data actually came from or whether it had been altered. The question reaching the Supreme Court was a genuinely important one for the digital age: could a party simply hand over a print-out of an electronic record and expect the court to accept it at face value, the same way a physical original document might be accepted? The Court said no — electronic evidence, precisely because of how easily it can be copied, altered, or fabricated, needed a more rigorous authentication safeguard than ordinary physical documents, closing a gap that had left electronic evidence vulnerable to manipulation without meaningful judicial scrutiny.', principle:'Secondary electronic evidence (such as a print-out of an electronic record) is admissible only if accompanied by a certificate satisfying the statutory requirements for authenticating electronic records. Mere production of a print-out or storage device, without the required certification, does not meet the threshold for admissibility — a ruling that remains directly relevant to the BSA\'s continued and expanded electronic-evidence framework.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Facts in Issue vs Relevant Facts', v:'Facts in Issue = directly determine the right/liability claimed. Relevant Facts = connected to a fact in issue, help prove/disprove it.' },
+    { k:'3 Types of Presumption', v:'May Presume (discretionary) < Shall Presume (mandatory but rebuttable) < Conclusive Proof (irrebuttable)' },
+    { k:'Order of Witness Examination', v:'E-C-R = Examination-in-Chief (own side, no leading Qs) → Cross-Examination (opposing side, leading Qs OK) → Re-Examination (clarify cross-exam points only)' },
+    { k:'Dying Declaration Essentials', v:'Declarant DEAD + relates to CAUSE of death + declarant COMPETENT + statement VOLUNTARY' },
+    { k:'Confession Rule', v:'Confession to POLICE = generally inadmissible, EXCEPT the narrow discovery-of-fact exception (Section 23)' }
+  ]},
+  { icon:'📅', title:'Key Numbers & Sections', items:[
+    { k:'BSA commencement', v:'1 July 2024 (Act No. 47 of 2023)' },
+    { k:'Section 4', v:'Evidence may be given ONLY of facts in issue and relevant facts' },
+    { k:'Section 23', v:'Confession leading to discovery of a fact — narrow exception' },
+    { k:'Section 25', v:'Admissions not conclusive, but may operate as estoppel' },
+    { k:'Section 26(a)', v:'Dying declarations — relevant in ANY proceeding where cause of death is in question' },
+    { k:'Sections 128-134', v:'Privileged communications (spousal, professional/advocate-client)' },
+    { k:'30 years', v:'Threshold for presumption of genuineness of documents from proper custody' },
+    { k:'Civil standard', v:'Preponderance of probabilities' },
+    { k:'Criminal standard', v:'Proof beyond reasonable doubt' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'Khushal Rao v. State of Bombay (1958)', v:'No absolute rule requiring corroboration — a true, voluntary dying declaration alone can sustain a conviction.' },
+    { k:'Laxman v. State of Maharashtra (2002)', v:'Medical certification of fitness is preferred, NOT a strict legal precondition for a valid dying declaration.' },
+    { k:'Anvar P.V. v. P.K. Basheer (2014)', v:'Secondary electronic evidence requires a statutory certificate for admissibility — mere print-outs are insufficient.' },
+    { k:'Pakala Narayana Swami v. Emperor (1939)', v:'A dying declaration must have a proximate connection to the actual occurrence causing death, not unrelated matters.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Primary vs Secondary Evidence', v:'Primary = the ORIGINAL (electronic records now count as primary under BSA). Secondary = copies, certified copies, oral accounts of contents.' },
+    { k:'Public vs Private Documents', v:'Public = acts/records of sovereign/official bodies, courts, public officers. Private = everything else.' },
+    { k:'Admission vs Confession', v:'Admission = broader, any statement suggesting an inference (civil or criminal). Confession = narrower, specifically an ACCUSED admitting guilt in a criminal matter.' },
+    { k:'Res Gestae', v:'Facts forming part of the SAME TRANSACTION as a fact in issue are relevant, even if not the fact in issue itself.' },
+    { k:'Leading Questions', v:'Generally PROHIBITED in examination-in-chief; generally PERMITTED in cross-examination.' },
+    { k:'Nemo Moriturus Praesumitur Mentire', v:'"A person about to die is presumed not to lie" — the traditional rationale for admitting dying declarations.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'The Bharatiya Sakshya Adhiniyam 2023 (BSA), replacing the Indian Evidence Act 1872, came into force on:', opts:['26 January 2024', '1 July 2024', '15 August 2023', '25 December 2023'], ans:1, exp:'The BSA came into force on 1 July 2024, alongside the BNS and BNSS, though it received Presidential assent in December 2023.' },
+  { q:'Under Section 4 BSA, evidence may generally be given only of:', opts:['Any fact whatsoever, with no restriction', 'Facts in issue AND relevant facts, and no others', 'Only facts personally witnessed by a judge', 'Only documents, never oral testimony'], ans:1, exp:'Section 4 establishes the foundational admissibility gate — evidence is confined to facts in issue and relevant facts.' },
+  { q:'"Facts in Issue," as distinguished from "Relevant Facts," refer to:', opts:['Facts entirely unconnected to the dispute', 'Facts from which the existence/non-existence of the right or liability asserted or denied necessarily follows', 'Only facts admitted by both parties', 'Only facts proven by documentary evidence'], ans:1, exp:'Facts in Issue directly determine the outcome of the claimed right/liability, distinct from Relevant Facts which merely help prove or disprove them.' },
+  { q:'Under the BSA, electronic records are classified as:', opts:['Always inadmissible in any proceeding', 'PRIMARY evidence — a change from the IEA\'s treatment of them as secondary evidence', 'Only admissible in criminal cases, never civil', 'The same as oral testimony, with no special rules'], ans:1, exp:'The BSA reclassifies electronic records as primary evidence, reflecting the significance of digital records in modern litigation.' },
+  { q:'Under Section 25 BSA, an admission is:', opts:['Automatically conclusive proof of the matter admitted', 'NOT conclusive proof, but may operate as an estoppel preventing the person from later denying it', 'Entirely irrelevant to any proceeding', 'Only relevant in criminal cases'], ans:1, exp:'Admissions carry evidentiary weight but are not automatically conclusive — their real force often comes through the doctrine of estoppel.' },
+  { q:'A confession made by an accused person TO A POLICE OFFICER is generally:', opts:['Fully admissible against the accused without restriction', 'NOT admissible against the accused, reflecting concerns about reliability of custodial confessions', 'Admissible only if written in the accused\'s own hand', 'Admissible only in civil proceedings'], ans:1, exp:'Confessions to police officers are generally excluded, a longstanding protection against potentially coerced or unreliable custodial confessions.' },
+  { q:'Under the narrow exception in Section 23 BSA, where a fact is discovered as a consequence of information from an accused in police custody:', opts:['The entire confession becomes admissible without limit', 'So much of the information as DISTINCTLY relates to the fact discovered may be proved', 'Nothing from that information can ever be used', 'Only the police officer\'s opinion about the confession is admissible'], ans:1, exp:'This narrow exception allows only the verifiable, discovery-linked portion of an otherwise inadmissible confession into evidence.' },
+  { q:'Under Section 26(a) BSA, a dying declaration is relevant:', opts:['Only in criminal cases of murder specifically', 'In ANY proceeding, civil or criminal, in which the cause of that person\'s death comes into question', 'Only if the declarant expected to die at the time of making the statement', 'Only if recorded by a judge personally'], ans:1, exp:'Indian law takes a broader approach than English law — the declaration is relevant in both civil and criminal proceedings, without requiring the declarant to have expected death.' },
+  { q:'In Khushal Rao v. State of Bombay (1958), the Supreme Court held that a dying declaration:', opts:['Can never be the sole basis of a conviction under any circumstances', 'Requires NO absolute corroboration as a rule of law — a true, voluntary declaration can alone sustain a conviction', 'Is only relevant if the declarant was a public official', 'Must always be corroborated by at least two independent witnesses'], ans:1, exp:'Khushal Rao established that a dying declaration is substantive evidence in its own right, not requiring mandatory corroboration if found true and voluntary.' },
+  { q:'In Laxman v. State of Maharashtra (2002), the Supreme Court clarified that medical certification of the declarant\'s fitness of mind:', opts:['Is an absolute, mandatory legal precondition for any valid dying declaration', 'Is preferred and strengthens reliability, but is NOT a strict legal precondition ("sine qua non") for admissibility', 'Makes the dying declaration automatically inadmissible if absent', 'Is irrelevant to the dying declaration\'s evidentiary value'], ans:1, exp:'Laxman confirmed medical certification is a preferred but not mandatory element — the real test is whether the declarant was actually in a fit state of mind.' },
+  { q:'The general rule for Burden of Proof states that:', opts:['The Court itself must always independently investigate and prove all facts', 'Whoever desires the Court to give judgment based on facts they assert must prove those facts exist', 'The burden always lies on the defendant regardless of the claim', 'No party ever bears any burden of proof'], ans:1, exp:'This is the foundational "he who asserts must prove" principle underlying the burden of proof framework.' },
+  { q:'The standard of proof in a CRIMINAL case, as distinguished from a civil case, is:', opts:['Preponderance of probabilities, identical to civil cases', 'Proof BEYOND REASONABLE DOUBT — a materially higher standard than the civil standard', 'No standard of proof is required in criminal cases', 'Only the accused\'s own confession is required'], ans:1, exp:'Criminal cases require the higher "beyond reasonable doubt" standard, reflecting the severe consequences of wrongful conviction, versus civil cases\' preponderance-of-probabilities standard.' },
+  { q:'Under the BSA\'s presumption framework, "Shall Presume" means the Court:', opts:['Has complete discretion whether to presume the fact or not', 'MUST regard the fact as proved, unless and until it is disproved — a mandatory but rebuttable presumption', 'Can never presume that fact under any circumstances', 'Must treat the fact as an irrebuttable, conclusive matter'], ans:1, exp:'"Shall Presume" is mandatory but still rebuttable — distinct from the discretionary "May Presume" and the irrebuttable "Conclusive Proof."' },
+  { q:'"Conclusive Proof," as a term used in the BSA, means that once one fact is proved:', opts:['The Court has full discretion on whether to accept the other fact', 'The Court SHALL regard the other fact as proved, and NO evidence to disprove it is permitted — an irrebuttable presumption', 'Both facts must be independently proved separately', 'The presumption can always be freely disproved by either party'], ans:1, exp:'Conclusive Proof is the strongest form of presumption — genuinely irrebuttable, unlike the other two presumption categories.' },
+  { q:'The Doctrine of Estoppel under the BSA prevents a person from:', opts:['Ever testifying in any future proceeding', 'Later denying the truth of something they intentionally caused another person to believe and act upon', 'Being sued for any civil wrong whatsoever', 'Filing any future legal claim of any kind'], ans:1, exp:'Estoppel operates as a rule of evidence preventing inconsistent assertions where another party relied on an earlier representation.' },
+  { q:'A witness is generally considered COMPETENT to testify UNLESS the Court finds they are prevented from understanding questions or giving rational answers due to:', opts:['Simply being under 18 years of age', 'Tender years, extreme old age, disease of body or mind, or similar cause', 'Being a family member of a party', 'Having a different religion than the parties'], ans:1, exp:'Competency is based on genuine capacity to understand and respond rationally, not an automatic bar based on age or relationship alone.' },
+  { q:'A "Hostile Witness" is a witness who:', opts:['Refuses to appear in court at all', 'Testifies against the interest of the party who called them, or resiles from an earlier statement', 'Is always disqualified from testifying further', 'Can never be cross-examined by anyone'], ans:1, exp:'A hostile witness unexpectedly turns against the calling party\'s case, permitting that party (with Court permission) to cross-examine their own witness.' },
+  { q:'The correct order of witness examination is:', opts:['Cross-Examination, then Examination-in-Chief, then Re-Examination', 'Examination-in-Chief, then Cross-Examination, then Re-Examination', 'Re-Examination, then Cross-Examination, then Examination-in-Chief', 'There is no fixed order at all'], ans:1, exp:'This is the standard, settled sequence: the calling party questions first, the opposing party cross-examines, then limited re-examination follows.' },
+  { q:'"Leading Questions" (questions suggesting the desired answer) are generally:', opts:['Permitted freely in both examination-in-chief and cross-examination', 'PROHIBITED in examination-in-chief, but generally PERMITTED in cross-examination', 'Prohibited in all forms of witness examination without exception', 'Only permitted in re-examination'], ans:1, exp:'This asymmetric rule reflects the different purposes — chief examination should elicit the witness\'s own account, while cross-examination legitimately tests it through suggestive questioning.' },
+  { q:'Under Section 128 BSA (spousal privilege), communications made between spouses DURING the marriage:', opts:['Can always be freely disclosed by either spouse without restriction', 'Are generally privileged — neither spouse can be compelled to disclose them, even after the marriage ends (subject to exceptions)', 'Lose all privilege the moment the marriage ends', 'Are never protected under any circumstances'], ans:1, exp:'This privilege protects marital communications from compelled disclosure, generally surviving even after the marriage itself ends.' },
+  { q:'"Primary Evidence" of a document refers to:', opts:['Any certified copy of a document', 'The ORIGINAL document itself, produced for the Court\'s inspection', 'Only oral testimony about a document\'s contents', 'A summary prepared by a lawyer'], ans:1, exp:'Primary evidence is the original document itself — regarded as the strongest, most direct form of documentary proof.' },
+  { q:'Under the BSA, a document from proper custody that is 30 YEARS OLD or more generally benefits from:', opts:['No special treatment whatsoever', 'A presumption of genuineness, shifting the burden to the party challenging its authenticity', 'Automatic exclusion from evidence regardless of content', 'Treatment as oral evidence rather than documentary evidence'], ans:1, exp:'This presumption eases the burden of formally proving very old documents, provided they come from proper custody and show no suspicion of tampering.' },
+  { q:'In Anvar P.V. v. P.K. Basheer (2014), the Supreme Court held that secondary electronic evidence (like a print-out) is admissible:', opts:['Automatically, with no further requirements', 'ONLY if accompanied by a certificate satisfying the statutory requirements for authenticating electronic records', 'Never, under any circumstances', 'Only if approved in advance by the police'], ans:1, exp:'This case established the mandatory certification requirement for secondary electronic evidence, remaining highly relevant under the BSA framework.' },
+  { q:'"Exclusion of Oral Evidence by Documentary Evidence" (Chapter VI, BSA) generally means that once contract terms are reduced to writing:', opts:['Oral evidence of those terms becomes freely admissible alongside the document', 'No evidence of those terms may generally be given except the document itself (or admissible secondary evidence), subject to specified exceptions', 'The written document becomes entirely irrelevant', 'Only the opposing party can rely on the written document'], ans:1, exp:'This rule generally excludes oral evidence contradicting/varying a written contract\'s terms, subject to exceptions like proving fraud or mistake.' },
+  { q:'An "Accomplice" who testifies against an accused is:', opts:['Never competent to testify under any circumstances', 'Competent to testify, though courts generally look for corroboration as a matter of prudence, not an absolute legal bar', 'Automatically believed without question by the Court', 'Only permitted to testify in civil cases'], ans:1, exp:'Accomplice evidence is admissible but treated with judicial caution — corroboration is generally sought as a matter of prudent practice, though not a strict legal requirement barring conviction otherwise.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
