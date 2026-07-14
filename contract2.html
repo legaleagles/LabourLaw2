@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Law of Contract — II — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Law of Contract — II</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Contract Law-II Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Law of Contract — II</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Indemnity &amp; Guarantee, Bailment &amp; Pledge, Agency, Partnership, and Sale of Goods (Conditions/Warranties &amp; Transfer of Title) from the OU LLB 2nd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Indian Contract Act 1872</span>
+        <span class="hero-tag">Sale of Goods Act 1930</span>
+        <span class="hero-tag">Partnership Act 1932</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Co-extensive liability of surety, Particular vs General Lien, Delegatus non potest delegare, Mutual Agency test for Partnership, Condition vs Warranty, Nemo Dat Quod Non Habet exceptions — these appear almost every year in OU LLB Contract-II exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Lallan Prasad v Rahmat Ali (1967 — pawnee cannot double-recover) and Shaw & Co v Symmons & Sons (1917 — bailee\'s particular lien). These illustrate the core pledge and bailment principles most frequently tested.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">Sections 124-125 (Indemnity), 126-128 (Guarantee), 148 (Bailment), 170/171 (Lien types), 172-176 (Pledge), 182 (Agency), 201 (Termination). Partnership Act S.4 (mutual agency), S.69 (unregistered firm disability). Sale of Goods Act S.4, S.12-17, S.45-54.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Indemnity & Guarantee, Bailment & Pledge, Agency, Partnership, Sale of Goods (Conditions/Warranties), Transfer of Title & Remedies. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// LAW OF CONTRACT — II  |  Content data for lawsticker-ai.com
+// Osmania University LLB 2nd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Indemnity and Guarantee', marks:'Core Topic', content:`
+    <h4>Contract of Indemnity (Section 124)</h4>
+    <p>"A contract by which one party promises to save the other from loss caused to him by the conduct of the promisor himself, or by the conduct of any other person, is called a contract of indemnity." The party who promises to compensate is the INDEMNIFIER; the party protected is the INDEMNIFIED/INDEMNITY-HOLDER. All contracts of insurance (except life insurance, which is a contingent contract rather than pure indemnity) are contracts of indemnity.</p>
+    <h4>Rights of the Indemnity-Holder (Section 125)</h4>
+    <p>When sued in respect of any matter to which the promise to indemnify applies, the indemnity-holder is entitled to recover from the promisor: all damages compelled to pay, all costs reasonably incurred in defending the suit, and all sums paid under a compromise, provided the compromise was prudent/authorised.</p>
+    <h4>Contract of Guarantee (Section 126)</h4>
+    <p>"A contract of guarantee is a contract to perform the promise, or discharge the liability, of a third person in case of his default." THREE parties are involved: the PRINCIPAL DEBTOR (whose default is guaranteed), the SURETY (who gives the guarantee), and the CREDITOR (to whom the guarantee is given). A guarantee may be oral or written — no registration is required.</p>
+    <h4>Surety's Liability (Section 128)</h4>
+    <p>The surety's liability is CO-EXTENSIVE with that of the principal debtor, unless the contract provides otherwise — meaning the surety is liable for the same amount and to the same extent as the principal debtor, and the creditor need not first exhaust remedies against the principal debtor before proceeding against the surety.</p>
+    <h4>Discharge of Surety</h4>
+    <p>A surety is discharged from liability in several circumstances, including: (a) by any variance in the terms of the contract between principal debtor and creditor, made without the surety's consent (Section 133); (b) by release or discharge of the principal debtor (Section 134); (c) when the creditor compounds with, gives time to, or agrees not to sue the principal debtor, without the surety's consent (Section 135); (d) by the creditor's act/omission impairing the surety's eventual remedy against the principal debtor (Section 139). However, if the creditor merely obtains and later gives up ADDITIONAL security (beyond the original arrangement) without the surety's consent, the surety is generally NOT discharged.</p>
+    <h4>Co-Sureties' Right to Contribution (Sections 146-147)</h4>
+    <p>Where two or more persons act as co-sureties for the same debt, they are liable to contribute EQUALLY toward the payment of the principal debtor's default (unless their contract provides otherwise) — even if their guarantees are in different penalty amounts, contribution is calculated as equally as their respective contract limits permit.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Co-extensive liability" (Section 128) is a guaranteed short-answer/definition question. The distinction between the creditor giving up ORIGINAL security (discharges surety) vs ADDITIONAL security (does not discharge surety) is a frequently tested nuance — always give the reasoning: the surety's original bargain/risk assessment is preserved either way.</div>
+  `},
+  { id:'T2', title:'Bailment and Pledge', marks:'Core Topic', content:`
+    <h4>Bailment (Section 148)</h4>
+    <p>"The delivery of goods by one person to another for some purpose, upon a contract that they shall, when the purpose is accomplished, be returned or otherwise disposed of according to the directions of the person delivering them." The person delivering is the BAILOR; the person receiving is the BAILEE. Bailment applies only to MOVABLE goods, and requires an actual or constructive change of POSSESSION (not ownership).</p>
+    <h4>Duties of the Bailee</h4>
+    <ul>
+      <li>Take reasonable care of the goods bailed, as a person of ordinary prudence would take of their own goods of the same value (Sections 151-152)</li>
+      <li>Not make unauthorised use of the goods (Section 154) — unauthorised use makes the bailee liable for any resulting loss/damage even if caused by an accident</li>
+      <li>Return the goods after the purpose is accomplished, or on the bailor's demand (Section 160)</li>
+      <li>Not mix the bailor's goods with their own without consent (Sections 155-157)</li>
+    </ul>
+    <h4>Duties of the Bailor</h4>
+    <ul>
+      <li>Disclose known faults in the goods bailed (Section 150)</li>
+      <li>Bear extraordinary expenses incurred by a gratuitous bailee for the purpose of the bailment (Section 158)</li>
+      <li>Indemnify the bailee for loss arising from defective title of the bailor (Section 164)</li>
+    </ul>
+    <h4>Bailee's Right of Lien</h4>
+    <p><strong>Particular Lien (Section 170):</strong> A bailee who has, by skill/labour, improved the goods (e.g., repair, alteration) has a right to retain those SPECIFIC goods until charges for that particular service are paid — but only if the improvement was in accordance with an express or implied contract.</p>
+    <p><strong>General Lien (Section 171):</strong> Certain classes of bailees — bankers, factors, wharfingers, attorneys, and policy brokers — enjoy a broader right to retain ANY goods bailed to them as security for the GENERAL balance of account, not just charges relating to those specific goods (unless expressly excluded by contract).</p>
+    <h4>Pledge (Section 172) — A Special Kind of Bailment</h4>
+    <p>"The bailment of goods as security for payment of a debt or performance of a promise." The bailor here is called the PAWNOR (or pledger); the bailee is called the PAWNEE (or pledgee). Only MOVABLE goods can be pledged, and there must be delivery of possession (actual or constructive).</p>
+    <h4>Pawnee's Rights (Section 173-176)</h4>
+    <p>The pawnee has the right to retain the goods pledged for payment of the debt, interest due, and necessary expenses (Section 173) — this is a SPECIAL PROPERTY/INTEREST in the goods, distinct from ownership. On default by the pawnor, the pawnee may either SUE for the debt while retaining the goods as collateral, OR SELL the pledged goods after giving reasonable notice (Section 176) — but generally CANNOT do both simultaneously without accounting properly.</p>
+    <div class="case-box"><strong>Lallan Prasad v. Rahmat Ali (1967), Supreme Court:</strong> Held that a pawnee who retains the pledged goods cannot simultaneously sue for the full debt AND keep the goods without properly accounting for their value — reinforcing that the pawnee's remedies (retain-and-await-payment vs. sell-after-notice vs. sue-while-accounting) must be exercised consistently, not used to obtain a double recovery at the pawnor's expense.</div>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Particular Lien vs General Lien is a guaranteed comparison question — always name the specific classes of bailees (bankers, factors, wharfingers, attorneys, policy brokers) entitled to general lien. Lallan Prasad v. Rahmat Ali is the essential pledge case, testing whether students understand a pawnee cannot "double dip."</div>
+  `},
+  { id:'T3', title:'Law of Agency', marks:'Core Topic', content:`
+    <h4>Agent and Principal (Section 182)</h4>
+    <p>"An agent is a person employed to do any act for another, or to represent another in dealings with third persons. The person for whom such act is done, or who is so represented, is called the principal." The core maxim: "he who acts through another, acts himself" (qui facit per alium facit per se) — acts of the agent, within their authority, bind the principal as though the principal acted personally.</p>
+    <h4>Creation of Agency</h4>
+    <p>Agency may arise: by express agreement (oral or written), by implication from the conduct/situation of the parties, by ratification (principal subsequently adopts an unauthorised act done on their behalf), or by necessity (e.g., in emergencies where a person must act on another's behalf without prior authority to prevent loss).</p>
+    <h4>Extent of Agent's Authority (Sections 186-189)</h4>
+    <p>An agent's authority may be EXPRESS (given in words) or IMPLIED (inferred from circumstances). In an emergency, an agent has authority to do all such acts for the purpose of protecting the principal from loss as a person of ordinary prudence would do in similar circumstances of their own case.</p>
+    <h4>Delegation — "Delegatus Non Potest Delegare"</h4>
+    <p>As a GENERAL RULE, an agent CANNOT delegate their authority to a sub-agent (the maxim: a delegate cannot further delegate). EXCEPTIONS exist: where the nature of the work necessarily involves delegation (e.g., routine ministerial tasks), where trade custom permits it, or where the principal has expressly or impliedly consented to delegation (Section 190).</p>
+    <h4>Duties of an Agent</h4>
+    <ul>
+      <li>Conduct the principal's business according to directions, or (absent directions) according to the custom prevailing in similar businesses (Section 211)</li>
+      <li>Exercise reasonable skill and diligence (Section 212)</li>
+      <li>Render proper accounts to the principal (Section 213)</li>
+      <li>Not deal on their own account without the principal's consent (Sections 215-216) — a breach entitles the principal to repudiate the transaction and/or claim any resulting benefit/profit</li>
+    </ul>
+    <h4>Rights of an Agent</h4>
+    <p>Right to retainer/remuneration for services rendered (Section 219), right to be indemnified against consequences of lawful acts done in exercise of authority (Section 222), and a right of lien on the principal's goods/papers in their possession for unpaid remuneration and expenses (Section 221).</p>
+    <h4>Termination of Agency (Section 201)</h4>
+    <p>Agency may be terminated by: the principal revoking their authority, the agent renouncing the business, completion of the business, death/unsoundness of mind of either party, or the principal's insolvency.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Delegatus non potest delegare" and its exceptions is a guaranteed short-answer question. Always distinguish agency arising by NECESSITY (emergency, no prior consent) from ordinary express/implied agency — a frequently tested scenario-based distinction.</div>
+  `},
+  { id:'T4', title:'Law of Partnership', marks:'Core Topic', content:`
+    <p>Partnership, originally within the Contract Act, is now governed by the SEPARATE Indian Partnership Act 1932 (Chapter 11's Sections 239-266 of the original Contract Act were repealed and replaced).</p>
+    <h4>Definition of Partnership (Section 4, Partnership Act 1932)</h4>
+    <p>"The relation between persons who have agreed to share the profits of a business carried on by all or any of them acting for all." Essential elements: (1) an agreement between two or more persons, (2) to share profits of a business, (3) the business must be carried on by all or any of them acting for all (mutual agency is the defining hallmark).</p>
+    <h4>Mutual Agency — The Defining Test</h4>
+    <p>The single most important test distinguishing a genuine partnership from other arrangements (e.g., co-ownership, employer-employee, joint venture without mutual agency) is whether each partner acts as an AGENT for the other partners in the conduct of the business — this element of mutual agency is what makes a partnership legally distinctive.</p>
+    <h4>Registration of Firms (Sections 58-59)</h4>
+    <p>Registration of a partnership firm is NOT compulsory under Indian law, but an UNREGISTERED firm suffers significant practical DISABILITIES under Section 69 — most notably, an unregistered firm (or its partners) generally CANNOT bring a suit to enforce a right arising from a contract against a third party, though third parties CAN sue the unregistered firm.</p>
+    <h4>Types of Partners</h4>
+    <ul>
+      <li><strong>Active/Working Partner</strong> — actively participates in conducting the business</li>
+      <li><strong>Sleeping/Dormant Partner</strong> — contributes capital but does not participate in day-to-day management, though still liable to third parties</li>
+      <li><strong>Nominal Partner</strong> — lends their name to the firm without any real capital contribution or profit share, but is still liable to third parties as though a genuine partner</li>
+      <li><strong>Partner by Estoppel/Holding Out (Section 28)</strong> — a person who represents themselves (or knowingly permits themselves to be represented) as a partner, and is therefore liable to any person who, on the faith of such representation, gave credit to the firm — even though they are not actually a partner</li>
+      <li><strong>Minor's Position (Section 30)</strong> — a minor cannot be a full partner (since a minor cannot contract), but MAY be admitted to the BENEFITS of an existing partnership with the consent of all partners, sharing profits but not personally liable for losses beyond their share in the firm's property</li>
+    </ul>
+    <h4>Dissolution of Partnership</h4>
+    <p>A firm may be dissolved by agreement, by court order (on grounds like a partner's misconduct or incapacity), by operation of law (e.g., all partners or all but one becoming insolvent), or on the happening of certain contingencies (expiry of a fixed term, completion of the specific venture, death or insolvency of a partner, subject to a contrary agreement between partners).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Mutual agency" as the defining test of partnership (distinguishing it from co-ownership/joint venture) is essential — always lead with this test in any "is this a partnership?" problem question. Section 69's consequences for unregistered firms (cannot sue third parties, though third parties can sue them) is a frequently tested asymmetric rule.</div>
+  `},
+  { id:'T5', title:'Sale of Goods — Formation and Conditions/Warranties', marks:'Core Topic', content:`
+    <p>Originally part of the Contract Act, the law of sale of goods is now governed by the SEPARATE Sale of Goods Act 1930.</p>
+    <h4>Contract of Sale (Section 4, Sale of Goods Act)</h4>
+    <p>"A contract whereby the seller transfers or agrees to transfer the property in goods to the buyer for a price." Distinguishes between a SALE (property/ownership passes immediately) and an AGREEMENT TO SELL (property is to pass at a future time or subject to a condition to be fulfilled).</p>
+    <h4>Essentials of a Valid Contract of Sale</h4>
+    <ul>
+      <li>Two parties — buyer and seller (distinct persons, though a part-owner can sell to another part-owner)</li>
+      <li>Subject matter must be GOODS (movable property, excluding money and actionable claims, though it includes stocks, shares, growing crops, and things attached to/forming part of the land agreed to be severed before sale)</li>
+      <li>Price — the consideration must be in MONEY (distinguishing sale from barter/exchange)</li>
+      <li>Transfer of property (ownership), not merely possession — distinguishing sale from bailment</li>
+    </ul>
+    <h4>Conditions and Warranties (Sections 12-17)</h4>
+    <p>A CONDITION is a stipulation essential to the main purpose of the contract — breach entitles the aggrieved party to REPUDIATE the contract (treat it as void) AND/OR claim damages. A WARRANTY is a stipulation COLLATERAL to the main purpose — breach gives rise ONLY to a claim for damages, NOT a right to reject the goods/repudiate the contract. Whether a stipulation is a condition or a warranty depends on the construction of the contract, not merely the label used by the parties.</p>
+    <h4>Implied Conditions</h4>
+    <ul>
+      <li><strong>Condition as to Title (Section 14)</strong> — the seller has the right to sell the goods</li>
+      <li><strong>Sale by Description (Section 15)</strong> — goods must correspond with the description</li>
+      <li><strong>Condition as to Quality/Fitness (Section 16)</strong> — where the buyer relies on the seller's skill/judgment and makes known the particular purpose, there is an implied condition the goods are reasonably fit for that purpose</li>
+      <li><strong>Merchantable Quality</strong> — where goods are bought by description from a seller dealing in goods of that description, there is an implied condition of merchantable quality</li>
+      <li><strong>Sale by Sample (Section 17)</strong> — bulk must correspond with the sample in quality</li>
+    </ul>
+    <h4>Doctrine of Caveat Emptor and its Exceptions</h4>
+    <p>"Let the buyer beware" — as a general rule, the buyer must examine goods for defects; the seller is not automatically responsible for every defect. However, this general rule is significantly narrowed by the implied conditions above (fitness for purpose, merchantable quality) — meaning caveat emptor applies mainly to defects the buyer could reasonably have discovered through ordinary examination, not to hidden/latent defects covered by the statutory implied conditions.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Condition vs Warranty (and their different remedies — repudiation+damages vs damages only) is THE core distinction for this topic, always tested via a problem question. Caveat Emptor is frequently mis-stated as an absolute rule — always clarify it is significantly narrowed by the implied conditions/statutory exceptions.</div>
+  `},
+  { id:'T6', title:"Transfer of Title, Performance and Buyer's/Seller's Remedies", marks:'Core Topic', content:`
+    <h4>Transfer of Property/Title — General Rule (Nemo Dat Quod Non Habet)</h4>
+    <p>"No one can give what they do not have" — as a general rule, a seller cannot pass better title to the buyer than the seller themselves possessed. If the seller had no title (e.g., stolen goods), the buyer generally acquires no title either, regardless of good faith.</p>
+    <h4>Exceptions to Nemo Dat Quod Non Habet</h4>
+    <ul>
+      <li><strong>Sale by a Mercantile Agent</strong> — with the owner's consent to possess the goods, a bona fide buyer without notice of the agent's lack of authority may acquire good title</li>
+      <li><strong>Sale under Estoppel</strong> — where the true owner's own conduct led the buyer to reasonably believe the seller had the right to sell</li>
+      <li><strong>Sale by One of Joint Owners</strong> — a sole possessing joint owner may pass good title to a bona fide buyer</li>
+      <li><strong>Sale under a Voidable Contract</strong> — if the seller's own title (though voidable) had not yet been avoided/rescinded at the time of sale, a bona fide buyer without notice acquires good title</li>
+      <li><strong>Sale by Seller in Possession After Sale</strong> — where a seller, having sold goods, remains in possession and re-sells to a bona fide second buyer, that buyer gets good title</li>
+      <li><strong>Sale by Buyer in Possession Before Full Payment</strong> — similarly protects a bona fide sub-buyer from a buyer who has obtained possession under a conditional sale</li>
+    </ul>
+    <h4>Delivery and Acceptance</h4>
+    <p>Delivery may be actual (physical handing over), symbolic (delivery of a key/document representing control), or constructive (a change in the legal character of possession, e.g., the person holding goods for the seller agrees to hold them for the buyer instead).</p>
+    <h4>Unpaid Seller's Rights (Sections 45-54)</h4>
+    <p>An "unpaid seller" (who has not received the full price, or whose bill of exchange/negotiable instrument has been dishonoured) has, even after property has passed to the buyer: (1) a LIEN on the goods while still in possession, for the unpaid price, (2) a right of STOPPAGE IN TRANSIT if the buyer becomes insolvent while goods are still in transit, and (3) a right of RESALE in specified circumstances (e.g., perishable goods, or after giving notice and the buyer still fails to pay within a reasonable time).</p>
+    <h4>Buyer's Remedies for Breach</h4>
+    <p>Damages for non-delivery, a suit for specific performance (in appropriate circumstances, particularly for unique/ascertained goods), and a suit for breach of warranty (where the buyer has accepted the goods but the warranty was breached).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Nemo Dat Quod Non Habet's SIX recognised exceptions are a guaranteed list-recall question — always frame each exception around protecting a genuinely bona fide, good-faith purchaser. The Unpaid Seller's three-part remedy (Lien, Stoppage in Transit, Resale) is another essential list, frequently tested alongside the specific circumstances triggering each right.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1967', name:'Lallan Prasad v. Rahmat Ali', tag:'Pledge', tagColor:'gold', story:'A pawnee held goods pledged as security for a debt. When the pawnor failed to repay, the pawnee wanted to have it both ways — sue for the full amount of the debt in court, while ALSO simply keeping the pledged goods in his possession, without properly accounting for their value against what was owed. The Supreme Court had to decide whether a pawnee could pursue this "double recovery" — collecting a court judgment for the debt AND retaining valuable pledged property without offsetting its worth. The Court held this was not permissible: a pawnee\'s remedies exist to make the creditor whole, not to give a windfall recovery exceeding the actual debt owed.', principle:'A pawnee who retains possession of pledged goods cannot simultaneously obtain a full money decree for the debt without properly accounting for the value of the goods retained — the pawnee\'s rights under Section 173 (retention) and the option to sue for the debt must be exercised consistently, preventing unjust double recovery at the pawnor\'s expense.' },
+  { year:'1917', name:'Shaw & Co. v. Symmons & Sons', tag:'Bailment — Lien', tagColor:'teal', story:'A bookbinder was engaged to bind a set of books — a classic example of a bailee (the bookbinder) improving goods (the books) through skill and labour on the bailor\'s (the book owner\'s) instructions. When a dispute arose over payment for the binding work, the question was whether the bookbinder could retain the bound books until paid — illustrating the practical operation of a bailee\'s particular lien: a right to hold onto the SPECIFIC goods improved through one\'s labour, as security for the charges relating to THAT particular work, distinct from the broader "general lien" some professional bailees (bankers, factors) enjoy over any goods in their possession.', principle:'A bailee who has expended skill and labour improving specific goods (in accordance with the bailment\'s purpose) has a particular lien — the right to retain those specific goods until charges for that particular service are paid, illustrating the practical scope of Section 170 of the Indian Contract Act.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Special Contracts (5 types)', v:'I-G-B-P-A = Indemnity + Guarantee + Bailment + Pledge + Agency (Sections 124-238)' },
+    { k:'Discharge of Surety Grounds', v:'V-R-C-I = Variance without consent + Release of principal debtor + Compounding/giving time + Impairing eventual remedy' },
+    { k:'Bailee\'s Duties', v:'Reasonable Care + No Unauthorised Use + Return Goods + No Unauthorised Mixing' },
+    { k:'Nemo Dat Exceptions (6)', v:'Mercantile Agent + Estoppel + Joint Owner + Voidable Contract + Seller-in-possession + Buyer-in-possession' },
+    { k:'Unpaid Seller\'s Rights (3)', v:'L-S-R = Lien + Stoppage in Transit + Resale' }
+  ]},
+  { icon:'📅', title:'Key Numbers & Sections', items:[
+    { k:'Section 124-125', v:'Contract of Indemnity, Rights of Indemnity-Holder' },
+    { k:'Section 126, 128', v:'Contract of Guarantee, Co-extensive liability of Surety' },
+    { k:'Section 148', v:'Definition of Bailment' },
+    { k:'Section 170 vs 171', v:'Particular Lien vs General Lien' },
+    { k:'Section 172-176', v:'Pledge — definition, Pawnee\'s rights' },
+    { k:'Section 182', v:'Definition of Agent and Principal' },
+    { k:'Section 190', v:'Exceptions to delegatus non potest delegare' },
+    { k:'Section 201', v:'Termination of Agency' },
+    { k:'Indian Partnership Act, Section 4', v:'Definition of Partnership — mutual agency test' },
+    { k:'Partnership Act, Section 69', v:'Consequences of non-registration' },
+    { k:'Sale of Goods Act, Section 4', v:'Contract of Sale — distinguishes Sale from Agreement to Sell' },
+    { k:'Sale of Goods Act, Sections 12-17', v:'Conditions and Warranties' },
+    { k:'Sale of Goods Act, Sections 45-54', v:'Unpaid Seller\'s Rights' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'Lallan Prasad v. Rahmat Ali (1967)', v:'Pawnee cannot sue for full debt AND retain pledged goods without accounting — no double recovery.' },
+    { k:'Shaw & Co. v. Symmons & Sons (1917)', v:'Illustrates bailee\'s particular lien — retaining specific improved goods until charges for that work are paid.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Indemnity vs Guarantee', v:'Indemnity = TWO parties (indemnifier, indemnified). Guarantee = THREE parties (principal debtor, surety, creditor).' },
+    { k:'Bailment vs Sale', v:'Bailment = transfer of POSSESSION only, goods returned. Sale = transfer of OWNERSHIP/property, no return expected.' },
+    { k:'Particular Lien vs General Lien', v:'Particular = specific goods, charges for THAT work only. General = ANY goods in possession, for overall account balance (bankers, factors, wharfingers, attorneys, policy brokers only).' },
+    { k:'Condition vs Warranty', v:'Condition = essential term, breach allows REPUDIATION + damages. Warranty = collateral term, breach allows damages ONLY.' },
+    { k:'Sale vs Agreement to Sell', v:'Sale = property passes IMMEDIATELY. Agreement to Sell = property passes LATER or on a condition.' },
+    { k:'Minor and Partnership', v:'A minor cannot be a full partner, but MAY be admitted to the BENEFITS of partnership with all partners\' consent (Section 30, Partnership Act).' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Under Section 124 of the Indian Contract Act, a "contract of indemnity" involves how many parties?', opts:['Only one party', 'Two parties — the indemnifier and the indemnified', 'Three parties, same as a guarantee', 'Four parties'], ans:1, exp:'A contract of indemnity involves two parties: the indemnifier (who promises to compensate) and the indemnified/indemnity-holder (who is protected).' },
+  { q:'Under Section 126, a "contract of guarantee" involves which three parties?', opts:['Only the debtor and creditor', 'The Principal Debtor, the Surety, and the Creditor', 'Two indemnifiers and one indemnified party', 'The bailor, bailee, and a third-party witness'], ans:1, exp:'A guarantee is a tripartite arrangement: Principal Debtor (whose default is guaranteed), Surety (who guarantees), and Creditor (to whom the guarantee is given).' },
+  { q:'Under Section 128, a surety\'s liability is generally:', opts:['Limited to half the principal debtor\'s liability', 'Co-extensive with that of the principal debtor, unless the contract provides otherwise', 'Always less than the principal debtor\'s liability', 'Non-existent unless the creditor first sues the principal debtor'], ans:1, exp:'Section 128 establishes co-extensive liability — the surety is liable to the same extent as the principal debtor.' },
+  { q:'If a creditor, without the surety\'s consent, obtains additional security from the principal debtor and later gives it up, the surety is generally:', opts:['Automatically discharged from all liability', 'NOT discharged, since this differs from giving up the ORIGINAL security bargained for', 'Entitled to double compensation', 'Immediately substituted as the new principal debtor'], ans:1, exp:'Giving up merely ADDITIONAL security (beyond the original arrangement) generally does not discharge the surety, unlike giving up original security or varying the original contract terms without consent.' },
+  { q:'Under Section 148, "bailment" involves the delivery of:', opts:['Only immovable property', 'Movable goods, for a purpose, to be returned/disposed of as directed once the purpose is accomplished', 'Only money', 'Ownership of property permanently'], ans:1, exp:'Bailment applies specifically to movable goods, involving a temporary transfer of possession (not ownership) for a specific purpose.' },
+  { q:'A bailee\'s "Particular Lien" under Section 170 allows retention of:', opts:['Any goods of the bailor for any debt owed', 'The SPECIFIC goods improved through the bailee\'s skill/labour, until charges for THAT work are paid', 'Goods belonging to a third party', 'Only goods worth more than a specified amount'], ans:1, exp:'Particular lien is limited to the specific goods on which the bailee expended skill/labour, for charges relating to that particular work.' },
+  { q:'A "General Lien" under Section 171 is available to which specific classes of bailees?', opts:['All bailees without exception', 'Bankers, factors, wharfingers, attorneys, and policy brokers', 'Only government bodies', 'Only bailees who have a written contract'], ans:1, exp:'General lien (retention of ANY goods for the general balance of account) is limited by statute to these specific professional classes of bailees.' },
+  { q:'Under Section 172, a "pledge" is best described as:', opts:['A sale of goods with a right of repurchase', 'A bailment of goods as security for the payment of a debt or performance of a promise', 'A gift of goods with no strings attached', 'A lease of immovable property'], ans:1, exp:'Pledge is a special kind of bailment where goods secure a debt/promise, with the bailor called pawnor and bailee called pawnee.' },
+  { q:'In Lallan Prasad v. Rahmat Ali (1967), the Supreme Court held that a pawnee who retains pledged goods:', opts:['Can always sue for the full debt AND keep the goods without any accounting', 'Cannot obtain a full money decree for the debt without properly accounting for the retained goods\' value', 'Must always return the goods immediately regardless of default', 'Has no rights whatsoever if the pawnor defaults'], ans:1, exp:'The Court prevented "double recovery" — a pawnee cannot both sue for the full debt and retain the pledged goods without proper accounting.' },
+  { q:'Under Section 182, an "agent" is a person employed to:', opts:['Only perform manual labour for the principal', 'Do any act for another, or represent another in dealings with third persons', 'Only sign documents on behalf of another', 'Act exclusively in criminal matters'], ans:1, exp:'Section 182 broadly defines an agent as someone who acts for or represents a principal in dealings with third parties.' },
+  { q:'The maxim "delegatus non potest delegare" means that, as a general rule:', opts:['An agent may always freely delegate their authority to anyone', 'An agent CANNOT delegate their authority to a sub-agent, subject to specific exceptions', 'Only the principal can ever delegate authority', 'Delegation is always void regardless of consent'], ans:1, exp:'This maxim establishes the general rule against sub-delegation by an agent, subject to recognised exceptions (necessity, trade custom, principal\'s consent).' },
+  { q:'Agency arising "by necessity" typically occurs when:', opts:['The principal has given express written authority in advance', 'A person must act on another\'s behalf in an emergency to prevent loss, without prior authorisation', 'Two parties sign a formal agency agreement', 'A court specifically appoints an agent for routine matters'], ans:1, exp:'Agency by necessity arises in emergency situations requiring urgent action to protect the principal\'s interests, without the usual prior express/implied authorisation.' },
+  { q:'Under the Indian Partnership Act 1932, the defining test that distinguishes a genuine partnership from mere co-ownership is:', opts:['The number of people involved', 'Mutual agency — each partner acts as an agent for the others in conducting the business', 'Whether the business is profitable', 'Whether the business has a written constitution'], ans:1, exp:'Mutual agency (each partner acting as agent for the others) is the defining, distinguishing feature of a genuine partnership.' },
+  { q:'Under Section 69 of the Partnership Act, an UNREGISTERED partnership firm generally:', opts:['Can freely sue third parties to enforce contractual rights', 'CANNOT bring a suit to enforce a contractual right against a third party, though third parties CAN sue the firm', 'Cannot be sued by anyone', 'Automatically becomes void after one year'], ans:1, exp:'Section 69 creates an asymmetric disability — an unregistered firm cannot sue to enforce contract rights, but remains liable to being sued by others.' },
+  { q:'Under Section 30 of the Partnership Act, a minor:', opts:['Can be a full partner with unlimited personal liability', 'Cannot be a full partner, but may be admitted to the BENEFITS of an existing partnership with all partners\' consent', 'Can never have any connection to a partnership', 'Automatically becomes a full partner upon turning 16'], ans:1, exp:'A minor cannot contract and thus cannot be a full partner, but may share in profits as a beneficiary with the consent of all existing partners, without bearing personal liability for losses beyond their share.' },
+  { q:'A "Partner by Estoppel/Holding Out" (Section 28, Partnership Act) refers to a person who:', opts:['Is always a genuine, registered partner', 'Represents themselves (or knowingly allows representation) as a partner, becoming liable to those who relied on that representation', 'Has no legal liability whatsoever regardless of representations made', 'Must always be a family member of an actual partner'], ans:1, exp:'A person held out as a partner becomes liable to third parties who extended credit based on that representation, even without being a genuine partner.' },
+  { q:'Under Section 4 of the Sale of Goods Act, the key difference between a "Sale" and an "Agreement to Sell" is:', opts:['There is no legal difference between the two', 'In a Sale, property/ownership passes immediately; in an Agreement to Sell, property passes at a future time or upon a condition', 'A Sale can only involve immovable property', 'An Agreement to Sell always requires a written contract'], ans:1, exp:'The timing of property transfer is the defining distinction — immediate in a Sale, deferred in an Agreement to Sell.' },
+  { q:'A "Condition" in a contract of sale, as distinguished from a "Warranty," is a stipulation:', opts:['Collateral to the main purpose of the contract', 'Essential to the main purpose of the contract, breach of which allows repudiation AND damages', 'That can never be breached', 'Relevant only to immovable property'], ans:1, exp:'A condition is essential to the contract\'s main purpose; breach allows the aggrieved party to repudiate the contract and/or claim damages, unlike a warranty (damages only).' },
+  { q:'The doctrine of "Caveat Emptor" ("let the buyer beware") in sale of goods is:', opts:['An absolute rule with no exceptions whatsoever', 'A general rule significantly narrowed by statutory implied conditions like fitness for purpose and merchantable quality', 'A rule that only applies to immovable property', 'No longer part of Indian law in any form'], ans:1, exp:'While caveat emptor remains the general starting principle, it is substantially limited by implied conditions (Sections 15-17) protecting buyers against latent defects and unfitness.' },
+  { q:'The maxim "Nemo Dat Quod Non Habet" means:', opts:['Everyone can give whatever they wish', 'No one can give (transfer) what they do not themselves have (i.e., a seller generally cannot pass better title than they possess)', 'Only banks can transfer property', 'Goods can never be transferred without a written contract'], ans:1, exp:'This foundational rule of property/sale law limits a seller\'s ability to pass good title beyond what they themselves lawfully possess, subject to specific statutory exceptions.' },
+  { q:'Which of the following is a recognised EXCEPTION to Nemo Dat Quod Non Habet?', opts:['Sale by any random stranger with no connection to the goods', 'Sale by a Mercantile Agent in possession with the owner\'s consent, to a bona fide buyer without notice', 'Sale of stolen goods, regardless of buyer\'s knowledge', 'There are no exceptions to this rule under Indian law'], ans:1, exp:'A mercantile agent in possession with consent can pass good title to a genuinely bona fide purchaser, one of several recognised statutory exceptions.' },
+  { q:'An "Unpaid Seller" under the Sale of Goods Act, even after property has passed to the buyer, generally has which THREE rights?', opts:['Only the right to sue for damages, nothing else', 'Lien on the goods (while in possession), Stoppage in Transit (if buyer becomes insolvent), and Resale (in specified circumstances)', 'Only the right to cancel the entire sale unconditionally', 'Only the right to seize the buyer\'s other unrelated property'], ans:1, exp:'These three rights (Lien, Stoppage in Transit, Resale) form the unpaid seller\'s statutory remedy package under Sections 45-54.' },
+  { q:'"Stoppage in Transit" as an unpaid seller\'s right applies specifically when:', opts:['The goods have already been delivered and accepted by the buyer', 'The buyer becomes insolvent while the goods are still in transit to them', 'The seller simply changes their mind about the sale', 'Only for immovable property transactions'], ans:1, exp:'Stoppage in transit is triggered specifically by the buyer\'s insolvency while goods remain in transit, allowing the unpaid seller to resume possession.' },
+  { q:'"Delivery" under the Sale of Goods Act may take which of the following forms?', opts:['Only actual physical handing over of goods', 'Actual, symbolic, or constructive delivery', 'Only delivery by registered post', 'Delivery must always be witnessed by a magistrate'], ans:1, exp:'Delivery can be actual (physical), symbolic (e.g., handing over keys/documents of control), or constructive (a change in the legal character of possession).' },
+  { q:'In Shaw & Co. v. Symmons & Sons (1917), involving a bookbinder retaining bound books, the case illustrated the practical operation of:', opts:['General lien available to all bailees', 'A bailee\'s Particular Lien — retention of specific improved goods for charges relating to that specific work', 'The doctrine of caveat emptor', 'The Nemo Dat rule'], ans:1, exp:'This case illustrates a classic particular lien scenario — the bookbinder retaining the specific books they worked on, pending payment for that specific service.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
