@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Family Law — II (Muslim Law) — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Family Law — II</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Family Law-II Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Family Law — II (Muslim Law)</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Sources &amp; Schools, Essentials of Nikah, Dower (Mahr), Talaq, Maintenance, and Guardianship/Inheritance from the OU LLB 2nd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Muslim Personal Law (Shariat) Act 1937</span>
+        <span class="hero-tag">Muslim Women (Protection of Rights on Marriage) Act 2019</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Sahih/Fasid/Batil marriage classification, Prompt vs Deferred Dower, Talaq-e-Ahsan/Hasan/Biddat comparison, Section 144 BNSS maintenance rights, One-third Wasiyat limit, Hizanat vs Wilayat — these appear almost every year in OU LLB Family Law-II exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Shayara Bano v Union of India (2017 — triple talaq unconstitutional, 3:2 majority) and Mohd. Ahmed Khan v Shah Bano Begum (1985 — secular maintenance under Section 125 CrPC). Also know Danial Latifi v Union of India (2001) harmonising the 1986 Act with Shah Bano.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">1937 Shariat Application Act, 1939 Dissolution Act, 1986 Muslim Women (Protection of Rights on Divorce) Act, 2017 Shayara Bano, 2019 Criminalisation Act. Iddat: 3 months (divorce) / 4 months 10 days (widow). One-third bequest limit to non-heirs.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Sources & Schools, Essentials of Nikah, Dower (Mahr), Talaq, Maintenance, Guardianship & Inheritance. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// FAMILY LAW — II (Muslim Law)  |  Content data for lawsticker-ai.com
+// Osmania University LLB 2nd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Sources and Schools of Muslim Law', marks:'Core Topic', content:`
+    <h4>Sources of Muslim Law</h4>
+    <ul>
+      <li><strong>Quran</strong> — the primary, most authoritative source, the literal word of Allah as revealed to Prophet Muhammad</li>
+      <li><strong>Sunna/Hadith</strong> — the sayings, practices, and traditions of the Prophet, supplementing and explaining the Quran</li>
+      <li><strong>Ijma</strong> — consensus of Muslim jurists/scholars on a legal point not directly addressed by the Quran or Sunna</li>
+      <li><strong>Qiyas</strong> — analogical reasoning, extending an established rule to a new, similar situation not directly covered by the primary sources</li>
+    </ul>
+    <h4>Two Major Schools</h4>
+    <p><strong>Sunni Law</strong> — followed by the majority of Indian Muslims, with four sub-schools (Hanafi, Maliki, Shafi'i, Hanbali) — the HANAFI school is the most widely followed in India. <strong>Shia Law</strong> — followed by a minority, with distinct rules on several matters including certain succession principles and the validity of temporary (Muta) marriage.</p>
+    <h4>Muslim Marriage — A Civil Contract, Not a Sacrament</h4>
+    <p>Unlike Hindu marriage (traditionally sacramental), Muslim marriage (Nikah) is fundamentally a CIVIL CONTRACT — requiring offer (Ijab) and acceptance (Qabul), free consent of both parties, and consideration in the form of Mahr (dower). This contractual nature has significant legal consequences, including the availability of contractual remedies and conditions the parties may lawfully stipulate in the Nikahnama (marriage contract).</p>
+    <h4>Application of Muslim Personal Law</h4>
+    <p>Governed primarily by the Muslim Personal Law (Shariat) Application Act 1937, which mandates that Muslim Personal Law (not custom) governs matters of marriage, dissolution of marriage, maintenance, dower, guardianship, gifts, and inheritance for Muslims in India — subject to specific statutory modifications like the Dissolution of Muslim Marriages Act 1939 and the Muslim Women (Protection of Rights on Marriage) Act 2019.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Marriage as a civil contract, not a sacrament" is THE foundational distinguishing feature of Muslim law versus Hindu law — always lead with this contrast in any comparative question. Know the four sources (Quran, Sunna, Ijma, Qiyas) and be able to briefly explain each.</div>
+  `},
+  { id:'T2', title:'Essentials and Kinds of Muslim Marriage (Nikah)', marks:'Core Topic', content:`
+    <h4>Essentials of a Valid Marriage (Sahih Nikah)</h4>
+    <ul>
+      <li><strong>Proposal and Acceptance</strong> — Ijab (offer) by one party, Qabul (acceptance) by the other, made at the same meeting, in the presence of witnesses (under Sunni law — Shia law does not require witnesses for validity)</li>
+      <li><strong>Free Consent</strong> — both parties must be of sound mind and, having attained puberty (generally presumed at 15 years, absent evidence otherwise), give free consent — a minor/person of unsound mind may be validly married through a guardian (Wali)</li>
+      <li><strong>Competency of Parties</strong> — parties must not fall within a prohibited relationship</li>
+      <li><strong>Mahr (Dower)</strong> — while not strictly a condition for the marriage's validity itself, Mahr is an essential incident/consequence of a valid Muslim marriage — a sum of money or property the husband is obligated to pay/settle on the wife as a mark of respect and financial security</li>
+    </ul>
+    <h4>Prohibited Relationships (Bars to Marriage)</h4>
+    <p><strong>Absolute prohibition</strong> — consanguinity (blood relations), affinity (relations by marriage), and fosterage (breastfeeding relationships) render a marriage VOID. <strong>Relative prohibition</strong> — includes marrying a fifth wife (exceeding the permitted limit), marrying without proper witnesses (under Sunni law), or marrying during the subsistence of certain other relationships — generally rendering the marriage IRREGULAR (Fasid) rather than void, meaning it can be regularised by removing the impediment.</p>
+    <h4>Classification of Marriages by Validity</h4>
+    <ul>
+      <li><strong>Sahih (Valid)</strong> — satisfies all essential conditions; confers full legal rights (mutual inheritance, legitimacy of children, dower, maintenance)</li>
+      <li><strong>Fasid (Irregular)</strong> — has a removable defect (e.g., marriage without witnesses under Sunni law, marriage with a fifth wife) — NOT void, but produces limited legal consequences until regularised or dissolved; can be terminated by either party without formal divorce, but children born are legitimate</li>
+      <li><strong>Batil (Void)</strong> — violates an absolute prohibition (e.g., marriage within prohibited degrees) — has NO legal effect whatsoever, from the very beginning; no rights of inheritance, dower, or maintenance arise, and children are NOT considered legitimate under Sunni law (Shia law's position differs on some specifics)</li>
+    </ul>
+    <h4>Muta Marriage (Shia Law Only)</h4>
+    <p>A TEMPORARY marriage for a fixed, specified duration, recognised only under SHIA (specifically Ithna Ashari) law — NOT recognised under Sunni law. Automatically terminates upon expiry of the specified term without need for formal divorce; children born are legitimate.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Sahih vs Fasid vs Batil is a guaranteed classification question — always give the key legal consequences of each (especially the legitimacy-of-children distinction between Fasid and Batil). Muta marriage's Shia-only, fixed-term nature is a frequently tested distinguishing feature.</div>
+  `},
+  { id:'T3', title:'Dower (Mahr)', marks:'Core Topic', content:`
+    <h4>Nature of Mahr</h4>
+    <p>Mahr is a sum of money or property the husband is bound to pay or settle upon the wife as a mark of respect for her, and as an incident of the marriage — it is the WIFE'S EXCLUSIVE PROPERTY, not subject to the husband's control. Historically explained as a gift the husband gives in consideration of the marriage, though modern jurisprudence increasingly recognises it as more akin to a genuine financial security/right belonging to the wife rather than a "price" for marriage.</p>
+    <h4>Kinds of Mahr</h4>
+    <ul>
+      <li><strong>Specified (Mahr-i-Musamma)</strong> — a specific amount fixed by agreement of the parties (or their guardians) at or after the time of marriage</li>
+      <li><strong>Proper/Customary (Mahr-i-Misl)</strong> — where no amount is specified, the wife is entitled to a "proper" dower, assessed by reference to the social status/family background of the wife and prevailing customary amounts for women of similar standing</li>
+    </ul>
+    <h4>Prompt and Deferred Dower</h4>
+    <p><strong>Prompt Dower (Mu'ajjal)</strong> — payable immediately on demand, at any time before or after consummation; the wife may refuse to live with her husband (and, under some interpretations, refuse consummation) until prompt dower is paid. <strong>Deferred Dower (Mu'wajjal)</strong> — payable only upon dissolution of the marriage (by divorce or death), or on the occurrence of a specified event agreed between the parties.</p>
+    <h4>Wife's Right to Refuse Cohabitation</h4>
+    <p>Until prompt dower is actually paid, the wife has a right to refuse to live with her husband and refuse consummation of the marriage — this right is available even if she voluntarily agreed to the marriage, distinguishing the dower obligation from an ordinary debt.</p>
+    <h4>Widow's Right of Retention (Right of Lien)</h4>
+    <p>Where a husband dies without paying dower, the widow has a right to retain possession of the husband's property (to the extent lawfully in her possession) until her dower debt is satisfied — a form of lien recognised specifically in Muslim law, giving the widow priority in recovering unpaid dower from the deceased husband's estate.</p>
+    <h4>Effect of Divorce on Dower</h4>
+    <p>If the marriage is dissolved BEFORE consummation, the wife is entitled to HALF the specified dower. If dissolved AFTER consummation, she is entitled to the FULL specified dower (or proper dower, if unspecified).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Prompt vs Deferred dower and the wife's right to refuse cohabitation until prompt dower is paid is a guaranteed distinguish/problem question. The half-dower-before-consummation vs full-dower-after-consummation rule is frequently tested numerically.</div>
+  `},
+  { id:'T4', title:'Talaq — Forms of Divorce Under Muslim Law', marks:'Core Topic', content:`
+    <h4>Talaq by Husband — Traditional Forms</h4>
+    <ul>
+      <li><strong>Talaq-e-Ahsan (Most Approved Form)</strong> — a SINGLE pronouncement of talaq made during a Tuhr (period of purity, when the wife is not menstruating), followed by the Iddat waiting period (approximately 3 months). REVOCABLE at any time during Iddat, becoming irrevocable/final only if not revoked by the end of Iddat.</li>
+      <li><strong>Talaq-e-Hasan (Approved Form)</strong> — THREE separate pronouncements, one in each successive Tuhr — each of the first two pronouncements is revocable; the third pronouncement (in the third Tuhr) makes the divorce final/irrevocable.</li>
+      <li><strong>Talaq-e-Biddat (Triple Talaq/Instant Talaq)</strong> — three pronouncements made in a SINGLE sitting/instance ("talaq, talaq, talaq"), taking effect IMMEDIATELY and irrevocably, without any opportunity for reconciliation during Iddat. Regarded as a "sinful" or disapproved innovation even within traditional Islamic jurisprudence, though it had historically been recognised as legally valid by some Indian courts before being definitively struck down.</li>
+    </ul>
+    <div class="case-box"><strong>Shayara Bano v. Union of India (2017), Supreme Court (5-judge Constitution Bench, 3:2 majority):</strong> Shayara Bano was divorced by her husband via talaq-e-biddat after 15 years of marriage, without her consent or any opportunity for reconciliation. She challenged the practice as unconstitutional. The Supreme Court, by a 3:2 majority, declared talaq-e-biddat UNCONSTITUTIONAL — the majority held it was "manifestly arbitrary" and violated Article 14, while a concurring opinion found it contrary to the Quran itself and lacking valid legal sanction, since it denies any opportunity for reconciliation that the Quran otherwise contemplates. The judgment directed Parliament to legislate on the matter, leading directly to the Muslim Women (Protection of Rights on Marriage) Act, 2019, which made pronouncing talaq-e-biddat a CRIMINAL OFFENCE, punishable with imprisonment up to 3 years.</div>
+    <h4>Other Forms of Divorce</h4>
+    <ul>
+      <li><strong>Khula</strong> — divorce initiated BY THE WIFE, with the husband's consent, typically involving the wife giving up her claim to dower (or other consideration) in exchange for release from the marriage</li>
+      <li><strong>Mubarat</strong> — divorce by MUTUAL consent of both spouses</li>
+      <li><strong>Ila</strong> — husband's vow of continence (abstaining from marital relations) for a specified period, resulting in dissolution if not revoked</li>
+      <li><strong>Lian</strong> — arising when a husband falsely accuses his wife of adultery/unchastity, giving the wife a right to seek dissolution of the marriage through court</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Shayara Bano is essential — always name the 3:2 majority, the "manifestly arbitrary"/Article 14 holding, and the resulting 2019 Act criminalising the practice. The Ahsan/Hasan/Biddat comparison (single pronouncement+revocable vs three pronouncements over three Tuhrs+revocable vs single-sitting+instant+irrevocable) is a guaranteed table-comparison question.</div>
+  `},
+  { id:'T5', title:'Maintenance of Muslim Wife', marks:'Core Topic', content:`
+    <p>A Muslim wife is entitled to maintenance from her husband under BOTH Muslim personal law and secular statutory law — with significant judicial development on how these interact.</p>
+    <div class="case-box"><strong>Mohd. Ahmed Khan v. Shah Bano Begum (1985), Supreme Court:</strong> After 43 years of marriage, Mohd. Ahmed Khan divorced his wife Shah Bano and refused to pay maintenance beyond the Iddat period, arguing Muslim Personal Law limited his obligation to Iddat alone. The Supreme Court held that Section 125 of the CrPC (a SECULAR provision providing maintenance to any wife, regardless of religion, unable to maintain herself) applies EQUALLY to Muslim women — the husband's obligation to maintain his divorced wife under Section 125 is NOT restricted to the Iddat period, and continues if she remains unable to maintain herself and has not remarried. This triggered significant political controversy and led to Parliament enacting the Muslim Women (Protection of Rights on Divorce) Act, 1986, seemingly to counter the ruling by seeking to limit maintenance to the Iddat period.</div>
+    <div class="case-box"><strong>Danial Latifi v. Union of India (2001), Supreme Court (5-judge Constitution Bench):</strong> Upheld the CONSTITUTIONAL VALIDITY of the 1986 Act — but interpreted Section 3(1)(a) of the Act PROGRESSIVELY: the phrase "within the Iddat period" was held to refer to the TIMING by which the husband must make arrangement/provision for the wife's maintenance — NOT a limitation confining the maintenance amount to cover only three months. The husband must, within Iddat, arrange a sum ADEQUATE to sustain the wife for her ENTIRE FUTURE life (or until remarriage) — effectively harmonising the 1986 Act with the substance of Shah Bano's ruling despite the Act's apparently restrictive text.</div>
+    <h4>Current Legal Position</h4>
+    <p>Following Danial Latifi and subsequent cases (Shabana Bano v. Imran Khan, Khatoon Nisa v. State of UP, and recent Supreme Court rulings), it is now settled that a divorced Muslim woman may claim maintenance EITHER under Section 125 CrPC (now re-enacted as Section 144, BNSS 2023) OR under the 1986 Act — WHICHEVER provides a more favourable outcome — and Section 125/144's secular right generally PREVAILS over any argument that the 1986 Act is the exclusive remedy.</p>
+    <h4>Maintenance During Iddat and Beyond</h4>
+    <p>The husband's obligation to maintain the wife during Iddat is well-established across Muslim law generally. The key doctrinal development (through Shah Bano and Danial Latifi) has been extending meaningful, adequate financial protection to the divorced wife's situation BEYOND the bare three-month Iddat period, addressing the risk of destitution.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Shah Bano and Danial Latifi are BOTH essential and frequently tested together — always explain how Danial Latifi harmonised the 1986 Act's text with Shah Bano's substance ("within Iddat" = timing of arrangement, not amount limitation). Section 125 CrPC is now Section 144 BNSS 2023 — a recent, testable renumbering.</div>
+  `},
+  { id:'T6', title:'Guardianship, Inheritance and Wills under Muslim Law', marks:'Core Topic', content:`
+    <h4>Guardianship (Hizanat and Wilayat)</h4>
+    <p><strong>Hizanat</strong> — the right of CUSTODY of a minor child, generally vested in the MOTHER for young children (until a specified age, e.g., 7 for a son and puberty for a daughter under some interpretations, subject to variation across schools), even where the FATHER remains the natural GUARDIAN of the child's person/property (Wilayat) for other legal purposes. This distinction — custody (Hizanat) separate from legal guardianship (Wilayat) — is a distinctive feature of Muslim law.</p>
+    <h4>Testamentary Guardianship</h4>
+    <p>A father may appoint a testamentary guardian for his minor children by will, to take effect after his death — generally recognised as valid, subject to the appointed guardian being a fit and proper person.</p>
+    <h4>Inheritance — General Principles</h4>
+    <p>Muslim law of inheritance is governed by Quranic principles as interpreted through Sunni/Shia jurisprudence — a person's estate devolves upon their heirs according to fixed shares, with certain heirs (Sharers) entitled to specific fractional shares, and others (Residuaries) entitled to the remainder after Sharers are satisfied.</p>
+    <h4>Sharers and Residuaries (Sunni Law)</h4>
+    <p><strong>Sharers</strong> — specified relatives (e.g., spouse, parents, daughters in certain configurations) entitled to FIXED, Quran-specified fractional shares of the estate. <strong>Residuaries</strong> — relatives (typically male agnatic relations) who take the REMAINDER of the estate after Sharers' shares are distributed, in a specified order of priority.</p>
+    <h4>Wills (Wasiyat) under Muslim Law</h4>
+    <p>A Muslim may bequeath property by will (Wasiyat), but subject to an important RESTRICTION: under both Sunni and Shia law, a bequest to a NON-HEIR generally cannot exceed ONE-THIRD of the testator's net estate (after debts and funeral expenses), UNLESS the other legal heirs consent to a larger bequest after the testator's death. A bequest to an HEIR is generally not valid at all unless the other heirs consent, since it would otherwise disturb the fixed Quranic shares.</p>
+    <h4>Rationale for the One-Third Restriction</h4>
+    <p>This limitation is designed to protect the fixed inheritance shares the Quran itself allocates to specified heirs — preventing a testator from effectively disinheriting their Quranic heirs through excessive testamentary bequests to outsiders.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The "one-third bequest limit to non-heirs" (and that bequests to heirs need other heirs' consent) is THE most tested numerical rule in Muslim succession law — always state it precisely. Hizanat (custody) vs Wilayat (legal guardianship) as SEPARATE concepts is a frequently tested distinction, since many students conflate the two.</div>
+  `}
+];
+
+const CASES = [
+  { year:'2017', name:'Shayara Bano v. Union of India', tag:'Triple Talaq', tagColor:'gold', story:'After 15 years of marriage, Shayara Bano received a talaqnama from her husband Rizwan Ahmed — divorcing her instantly through talaq-e-biddat, the practice of pronouncing "talaq" three times in a single sitting, with no requirement for her consent and no opportunity for reconciliation. She had no money, and her children were taken from her. Rather than accept this silently, Shayara Bano filed a writ petition before the Supreme Court, challenging talaq-e-biddat, along with polygamy and nikah-halala, as unconstitutional. A 5-judge Constitution Bench heard the matter, ultimately splitting 3:2. The majority held the practice was "manifestly arbitrary" — giving Muslim husbands unchecked, unilateral power to end a marriage instantly, with no chance for reconciliation, in a manner that violated the constitutional guarantee of equality. A concurring judge went further, finding the practice was not even a genuine part of Islamic law, being contrary to the Quran\'s own emphasis on reconciliation before divorce.', principle:'Talaq-e-biddat (instant triple talaq) is unconstitutional, being manifestly arbitrary and violative of Article 14 — it denies any opportunity for reconciliation and gives husbands unchecked unilateral power over the marriage. This 3:2 majority ruling directly led to the Muslim Women (Protection of Rights on Marriage) Act 2019, criminalising the practice with imprisonment up to 3 years.' },
+  { year:'1985', name:'Mohd. Ahmed Khan v. Shah Bano Begum', tag:'Maintenance', tagColor:'teal', story:'After 43 years of marriage, Mohd. Ahmed Khan divorced his wife Shah Bano and stopped paying her maintenance, arguing that under Muslim Personal Law his obligation ended once the three-month Iddat period concluded. Shah Bano, left without financial support, sought maintenance under Section 125 of the Criminal Procedure Code — a secular, religion-neutral provision available to any wife (of any faith) unable to maintain herself. The Supreme Court sided decisively with Shah Bano: Section 125 CrPC is a secular law of general application, and a Muslim husband\'s obligation under it is NOT confined to the Iddat period merely because Muslim Personal Law might suggest otherwise. This judgment ignited significant political controversy across the country, ultimately prompting Parliament to pass the Muslim Women (Protection of Rights on Divorce) Act, 1986 — legislation that appeared, on its face, to limit maintenance strictly to the Iddat period, seemingly overriding the Court\'s ruling.', principle:'Section 125 CrPC (a secular maintenance provision) applies to Muslim women exactly as it applies to women of any other faith — a Muslim husband\'s obligation to maintain his divorced wife under this secular law is not automatically limited to the Iddat period by virtue of Muslim Personal Law, if she remains unable to maintain herself and has not remarried.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Sources of Muslim Law', v:'Q-S-I-Q = Quran + Sunna/Hadith + Ijma (consensus) + Qiyas (analogy)' },
+    { k:'Marriage Validity Classes', v:'S-F-B = Sahih (valid) + Fasid (irregular, removable defect) + Batil (void, absolute prohibition)' },
+    { k:'Forms of Talaq (severity order)', v:'Ahsan (1 pronouncement, most approved) < Hasan (3 pronouncements over 3 Tuhrs) < Biddat (3 in one sitting, instant, now unconstitutional)' },
+    { k:'Other Divorce Forms', v:'K-M-I-L = Khula (wife-initiated) + Mubarat (mutual) + Ila (vow of continence) + Lian (false adultery accusation)' },
+    { k:'Dower Timing', v:'Prompt (Mu\'ajjal) = payable on demand. Deferred (Mu\'wajjal) = payable on dissolution/death.' }
+  ]},
+  { icon:'📅', title:'Key Numbers & Dates', items:[
+    { k:'Muslim Personal Law (Shariat) Application Act', v:'1937' },
+    { k:'Dissolution of Muslim Marriages Act', v:'1939' },
+    { k:'Muslim Women (Protection of Rights on Divorce) Act', v:'1986 (post-Shah Bano)' },
+    { k:'Shayara Bano judgment date', v:'22 August 2017 (5-judge bench, 3:2 majority)' },
+    { k:'Muslim Women (Protection of Rights on Marriage) Act', v:'2019 (criminalised talaq-e-biddat, up to 3 years imprisonment)' },
+    { k:'Iddat period (divorce)', v:'3 menstrual cycles / 3 lunar months (longer if pregnant, until delivery)' },
+    { k:'Iddat period (widow)', v:'4 lunar months and 10 days' },
+    { k:'Age of Puberty (marriage capacity)', v:'Presumed at 15 years, absent evidence otherwise' },
+    { k:'Maximum Bequest to Non-Heir (Wasiyat)', v:'One-third (1/3) of net estate, without other heirs\' consent' },
+    { k:'Section 125 CrPC', v:'Now re-enacted as Section 144, BNSS 2023' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'Shayara Bano v. Union of India (2017)', v:'Talaq-e-biddat unconstitutional, 3:2 majority, "manifestly arbitrary," Article 14 violation; led to the 2019 Act.' },
+    { k:'Mohd. Ahmed Khan v. Shah Bano Begum (1985)', v:'Section 125 CrPC (secular maintenance) applies to Muslim women, not limited to Iddat.' },
+    { k:'Danial Latifi v. Union of India (2001)', v:'Upheld the 1986 Act\'s validity, but interpreted "within Iddat" as the TIMING of arrangement, not an amount limitation — harmonised with Shah Bano.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Muslim Marriage — Nature', v:'A CIVIL CONTRACT, not a sacrament — requires offer, acceptance, free consent, and Mahr.' },
+    { k:'Fasid vs Batil — key consequence', v:'Fasid (irregular): children legitimate, terminable without formal divorce. Batil (void): NO legal effect at all, children not legitimate (Sunni law).' },
+    { k:'Muta Marriage', v:'SHIA LAW ONLY — temporary, fixed-term marriage, automatically ends on term expiry, not recognised under Sunni law.' },
+    { k:'Hizanat vs Wilayat', v:'Hizanat = CUSTODY (often mother, for young children). Wilayat = legal GUARDIANSHIP of person/property (typically father) — two SEPARATE concepts.' },
+    { k:'Dower on Divorce', v:'BEFORE consummation = HALF specified dower. AFTER consummation = FULL specified/proper dower.' },
+    { k:'Current Maintenance Position', v:'Divorced Muslim woman may claim under Section 144 BNSS (secular) OR the 1986 Act, whichever is more favourable — secular right generally prevails.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Under Muslim law, marriage (Nikah) is fundamentally regarded as:', opts:['A religious sacrament, exactly like Hindu marriage', 'A CIVIL CONTRACT, requiring offer, acceptance, and consideration in the form of Mahr', 'An arrangement with no legal significance whatsoever', 'Valid only if registered with the government'], ans:1, exp:'Muslim marriage is fundamentally contractual in nature, distinguishing it from the sacramental view traditionally associated with Hindu marriage.' },
+  { q:'Which of the following is NOT one of the four traditional sources of Muslim law?', opts:['Quran', 'Sunna/Hadith', 'Ijma (consensus)', 'Custom alone, independent of the other sources'], ans:3, exp:'The four traditional sources are Quran, Sunna, Ijma, and Qiyas — custom alone is not an independent primary source in the traditional classification.' },
+  { q:'A "Fasid" (irregular) marriage under Muslim law is best distinguished from a "Batil" (void) marriage by the fact that:', opts:['They are legally identical in every respect', 'A Fasid marriage has a removable defect and children born are legitimate; a Batil marriage has NO legal effect at all and violates an absolute prohibition', 'Batil marriages are always valid, while Fasid marriages are never valid', 'Only Fasid marriages require a formal divorce to end'], ans:1, exp:'Fasid marriages have removable defects with legitimate children; Batil marriages are void ab initio with no legal effect, violating absolute prohibitions like consanguinity.' },
+  { q:'"Muta" marriage — a temporary marriage for a fixed duration — is recognised:', opts:['Under both Sunni and Shia law equally', 'ONLY under Shia (Ithna Ashari) law, not under Sunni law', 'Only under Sunni law', 'Nowhere in Muslim law'], ans:1, exp:'Muta marriage is a distinctive feature of Shia law only, automatically terminating upon expiry of the specified term.' },
+  { q:'"Mahr" (dower) under Muslim law is:', opts:['The husband\'s exclusive property', 'The WIFE\'S exclusive property, payable/settled by the husband as an essential incident of marriage', 'Property jointly owned by both spouses', 'A payment made by the wife to the husband'], ans:1, exp:'Mahr is the wife\'s own exclusive property — a financial right belonging to her, not subject to the husband\'s control.' },
+  { q:'"Prompt Dower" (Mu\'ajjal), as distinguished from "Deferred Dower," is:', opts:['Payable only upon the husband\'s death', 'Payable on demand, at any time before or after consummation', 'Never actually payable under any circumstances', 'Only applicable to second marriages'], ans:1, exp:'Prompt dower is payable immediately on the wife\'s demand, giving her the right to refuse cohabitation until it is paid.' },
+  { q:'If a Muslim marriage is dissolved BEFORE consummation, the wife is generally entitled to:', opts:['No dower whatsoever', 'HALF of the specified dower', 'Full dower plus additional compensation', 'Only deferred dower, never prompt dower'], ans:1, exp:'Dissolution before consummation entitles the wife to half the specified dower; dissolution after consummation entitles her to the full amount.' },
+  { q:'"Talaq-e-Ahsan," considered the most approved form of divorce, involves:', opts:['Three pronouncements made in a single sitting', 'A SINGLE pronouncement made during a Tuhr, followed by the Iddat period, revocable throughout Iddat', 'No pronouncement at all, only mutual silence', 'A pronouncement that takes effect instantly with no waiting period'], ans:1, exp:'Talaq-e-Ahsan is a single pronouncement during a period of purity (Tuhr), remaining revocable throughout the subsequent Iddat period.' },
+  { q:'"Talaq-e-Biddat" (triple talaq), as declared in Shayara Bano v. Union of India (2017), is:', opts:['Constitutionally valid and still legally recognised', 'UNCONSTITUTIONAL — struck down by a 3:2 Supreme Court majority as manifestly arbitrary', 'Only valid if performed in writing', 'A form recognised exclusively under Shia law'], ans:1, exp:'Shayara Bano declared talaq-e-biddat unconstitutional; the subsequent 2019 Act made pronouncing it a criminal offence.' },
+  { q:'Following the Shayara Bano judgment, Parliament enacted which legislation to criminalise talaq-e-biddat?', opts:['The Dissolution of Muslim Marriages Act 1939', 'The Muslim Women (Protection of Rights on Marriage) Act 2019', 'The Hindu Marriage Act 1955', 'The Special Marriage Act 1954'], ans:1, exp:'The 2019 Act made pronouncing talaq-e-biddat a criminal offence, punishable with imprisonment up to 3 years.' },
+  { q:'"Khula" as a form of divorce under Muslim law refers to:', opts:['Divorce initiated unilaterally by the husband alone', 'Divorce initiated BY THE WIFE, with the husband\'s consent, typically involving her relinquishing her dower claim', 'A divorce that can never actually be finalised', 'Divorce granted only by a court, never by the parties themselves'], ans:1, exp:'Khula is wife-initiated divorce, requiring the husband\'s consent, generally in exchange for the wife giving up her dower or other consideration.' },
+  { q:'In Mohd. Ahmed Khan v. Shah Bano Begum (1985), the Supreme Court held that Section 125 CrPC (secular maintenance provision):', opts:['Does not apply to Muslim women at all', 'Applies to Muslim women exactly as to women of any other faith, and is NOT automatically limited to the Iddat period', 'Applies only during the marriage, never after divorce', 'Was struck down as unconstitutional in this case'], ans:1, exp:'Shah Bano established that the secular Section 125 CrPC maintenance right is not confined to Iddat merely because of Muslim Personal Law.' },
+  { q:'The Muslim Women (Protection of Rights on Divorce) Act, 1986 was enacted:', opts:['Before the Shah Bano judgment, unrelated to it', 'In apparent response to the Shah Bano judgment, seemingly limiting maintenance to the Iddat period on its face', 'To abolish all maintenance rights for Muslim women entirely', 'To extend Hindu Marriage Act provisions to Muslims'], ans:1, exp:'The 1986 Act followed political controversy after Shah Bano, appearing to restrict maintenance obligations to the Iddat period.' },
+  { q:'In Danial Latifi v. Union of India (2001), the Supreme Court interpreted "within the Iddat period" (Section 3(1)(a) of the 1986 Act) to mean:', opts:['Maintenance is strictly limited to only three months of payment, with nothing more', 'The TIMING by which the husband must arrange adequate provision for the wife\'s entire future life — not a limitation on the total amount', 'The Act was entirely unconstitutional and void', 'Iddat no longer applies to any Muslim divorce'], ans:1, exp:'Danial Latifi harmonised the 1986 Act with Shah Bano\'s substance, interpreting the phrase as a timing requirement, not an amount cap.' },
+  { q:'Following recent developments, a divorced Muslim woman seeking maintenance in India may generally claim under:', opts:['Only the 1986 Act, with Section 125 CrPC/144 BNSS being unavailable to her', 'EITHER Section 144 BNSS (formerly Section 125 CrPC) OR the 1986 Act, whichever provides a more favourable outcome', 'Neither provision applies to Muslim women', 'Only if she remarries within the Iddat period'], ans:1, exp:'Current settled position allows a divorced Muslim woman to choose whichever remedy (secular Section 144 BNSS or the 1986 Act) is more favourable.' },
+  { q:'"Hizanat" under Muslim law refers to:', opts:['Legal guardianship of a minor\'s property', 'The right of CUSTODY of a minor child, often vested in the mother for young children', 'A form of divorce', 'A type of dower payment'], ans:1, exp:'Hizanat is specifically the right of custody, distinct from Wilayat (legal guardianship of person/property, typically the father).' },
+  { q:'"Wilayat" under Muslim law, as distinguished from Hizanat, refers to:', opts:['The same concept as Hizanat, with no real distinction', 'Legal GUARDIANSHIP of a minor\'s person/property, typically vested in the father', 'A form of dower', 'A type of testamentary bequest'], ans:1, exp:'Wilayat is legal guardianship (distinct from custody/Hizanat), typically held by the father even where the mother has custody of a young child.' },
+  { q:'Under Muslim law, a bequest by will (Wasiyat) to a NON-HEIR generally cannot exceed what fraction of the testator\'s net estate, without other heirs\' consent?', opts:['One-half (1/2)', 'One-third (1/3)', 'Two-thirds (2/3)', 'There is no limitation whatsoever'], ans:1, exp:'The one-third limitation protects the fixed Quranic shares allocated to legal heirs from being defeated by excessive bequests to outsiders.' },
+  { q:'A bequest by will to a person who IS already a legal HEIR under Muslim law is generally:', opts:['Always automatically valid with no restrictions', 'Not valid unless the OTHER legal heirs consent to it after the testator\'s death', 'Prohibited under all circumstances, even with consent', 'Only valid if made orally, never in writing'], ans:1, exp:'Bequests to existing heirs require the consent of the other heirs, since such bequests would otherwise disturb the fixed Quranic distribution shares.' },
+  { q:'Under Sunni law\'s inheritance scheme, "Sharers" are heirs who:', opts:['Receive no share whatsoever', 'Are entitled to FIXED, Quran-specified fractional shares of the estate', 'Only inherit if there are no other heirs at all', 'Are limited exclusively to male relatives'], ans:1, exp:'Sharers receive specific fixed fractional shares as laid down by Quranic principles, distinct from Residuaries who take the remainder.' },
+  { q:'Under Muslim law, a testamentary guardian for minor children may generally be appointed by:', opts:['Only a court, never the father', 'The father, by will, to take effect after his death', 'Only the mother, never the father', 'No one — testamentary guardianship is not recognised'], ans:1, exp:'A father may validly appoint a testamentary guardian by will for his minor children, subject to the appointee being fit and proper.' },
+  { q:'The Muslim Personal Law (Shariat) Application Act, 1937 primarily:', opts:['Abolished all Muslim personal law in India', 'Mandated that Muslim Personal Law (not custom) governs specified matters including marriage, dower, and inheritance for Muslims in India', 'Applied only to Hindu citizens', 'Was repealed immediately after enactment'], ans:1, exp:'The 1937 Act established that codified/interpreted Muslim Personal Law, rather than potentially varying local custom, governs these specified matters for Indian Muslims.' },
+  { q:'Under Muslim law, the "Iddat" period observed by a widow after her husband\'s death is generally:', opts:['3 menstrual cycles, same as divorce', '4 lunar months and 10 days', 'Exactly one calendar year', 'There is no Iddat period for widows'], ans:1, exp:'The widow\'s Iddat period (4 lunar months and 10 days) is longer than the standard divorce Iddat period (3 menstrual cycles/months).' },
+  { q:'Under Muslim law, where a husband dies without paying dower owed to his wife, the widow generally has:', opts:['No remedy whatsoever regarding the unpaid dower', 'A right to retain possession of the husband\'s property (lawfully in her possession) until her dower debt is satisfied', 'The right to automatically inherit the husband\'s entire estate', 'Only the right to remarry immediately'], ans:1, exp:'The widow\'s right of retention (a form of lien) gives her priority in recovering unpaid dower from property in her possession from the deceased\'s estate.' },
+  { q:'"Talaq-e-Hasan," as distinguished from Talaq-e-Ahsan, involves:', opts:['A single pronouncement only', 'THREE separate pronouncements, one in each successive Tuhr, with the first two revocable and only the third making it final', 'Pronouncements made entirely in writing with no verbal component', 'A form recognised only under Shia law'], ans:1, exp:'Talaq-e-Hasan spreads three pronouncements across three successive Tuhrs, distinct from Ahsan\'s single pronouncement and Biddat\'s single-sitting instant form.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
