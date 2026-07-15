@@ -46,6 +46,14 @@ font-variant-numeric:tabular-nums;display:none;}
 .i-stat{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;}
 .i-stat-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-d);}
 .i-stat-l{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+.length-picker{margin:0 0 16px;}
+.length-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:8px;}
+.length-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;}
+.length-btn{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s;}
+.length-btn.active{border-color:var(--gold-d);background:var(--gold-pale);}
+.length-btn-n{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--ink);}
+.length-btn-l{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-top:1px;}
+.length-btn.active .length-btn-n{color:var(--gold-d);}
 .intro-rules{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;}
 .rules-title{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:10px;}
 .rule-item{font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:6px;padding-left:20px;position:relative;}
@@ -151,8 +159,12 @@ border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:90
     </div>
     <div class="intro-stats">
       <div class="i-stat"><div class="i-stat-n" id="statQ">25</div><div class="i-stat-l">Questions</div></div>
-      <div class="i-stat"><div class="i-stat-n">30</div><div class="i-stat-l">Minutes</div></div>
+      <div class="i-stat"><div class="i-stat-n" id="statMin">30</div><div class="i-stat-l">Minutes</div></div>
       <div class="i-stat"><div class="i-stat-n" id="statT">—</div><div class="i-stat-l">Topics</div></div>
+    </div>
+    <div class="length-picker" id="lengthPicker" style="display:none;">
+      <div class="length-label">Choose test length</div>
+      <div class="length-opts" id="lengthOpts"></div>
     </div>
     <div class="intro-rules">
       <div class="rules-title">Exam Rules</div>
@@ -224,9 +236,12 @@ border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:90
 // ═══ Load subject from URL: exam.html?subject=pil ═══
 const params = new URLSearchParams(window.location.search);
 const SUBJECT_SLUG = params.get('subject') || '';
+const REQUESTED_COUNT = parseInt(params.get('count'), 10) || null;
 let SUBJECT_TITLE = '';
 let QUESTIONS_BANK = [];
 let QUESTIONS = [];
+let SELECTED_LENGTH = null;
+const LENGTH_TIME_MIN = {30:30, 60:60, 90:90, 100:100};
 let currentQ = 0, answers = {}, examStartTime = null, timerInterval = null, timeLeftSec = 30*60, studentName = '';
 
 async function loadExam(){
@@ -242,21 +257,69 @@ async function loadExam(){
   QUESTIONS_BANK = data.questions;
 
   document.title = SUBJECT_TITLE + ' Mock Exam — Timed MCQ Test | LawSticker AI';
-  document.getElementById('pageDesc').setAttribute('content', 'Free 30-minute timed mock exam for ' + SUBJECT_TITLE + ' (LLB) — 25 MCQs with topic-wise score analysis.');
+  document.getElementById('pageDesc').setAttribute('content', 'Free timed mock exam for ' + SUBJECT_TITLE + ' (LLB) — pick your own test length, with topic-wise score analysis.');
   document.getElementById('pageCanonical').setAttribute('href', 'https://lawsticker-ai.com/exam.html?subject=' + SUBJECT_SLUG);
   document.getElementById('navBrand').textContent = '⏱️ ' + SUBJECT_TITLE;
   document.getElementById('introTitle').textContent = SUBJECT_TITLE + ' — Timed Mock Exam';
-  document.getElementById('introSub').textContent = 'LLB · ' + QUESTIONS_BANK.length + ' MCQs. Get topic-wise analysis of where you stand.';
-  document.getElementById('statQ').textContent = QUESTIONS_BANK.length;
-  const topicCount = new Set(QUESTIONS_BANK.map(q=>q.topic)).size;
-  document.getElementById('statT').textContent = topicCount;
-  document.getElementById('rScoreMax').textContent = QUESTIONS_BANK.length;
 
+  setupLengthPicker();
+
+  document.getElementById('rScoreMax').textContent = QUESTIONS_BANK.length;
   document.getElementById('loadingMsg').style.display = 'none';
   document.getElementById('intro').classList.add('ready');
  }catch(e){
   document.getElementById('loadingMsg').textContent = 'Could not load this exam (' + SUBJECT_SLUG + '). Please check the link or go back to the Mock Exams Hub.';
  }
+}
+
+function setupLengthPicker(){
+ const poolSize = QUESTIONS_BANK.length;
+ const standardLengths = [30, 60, 90, 100];
+ const available = standardLengths.filter(n => n <= poolSize);
+ // Always offer the full pool as an option too, even if it doesn't match a standard length
+ if(!available.includes(poolSize)) available.push(poolSize);
+ available.sort((a,b) => a-b);
+
+ if(available.length <= 1){
+  // Pool too small for any real choice — just use the whole pool, hide the picker
+  SELECTED_LENGTH = poolSize;
+  updateIntroStatsForLength(poolSize);
+  return;
+ }
+
+ const picker = document.getElementById('lengthPicker');
+ const optsWrap = document.getElementById('lengthOpts');
+ optsWrap.innerHTML = '';
+ // Pick a sensible default: REQUESTED_COUNT if valid and available, else the smallest standard option, else full pool
+ let defaultLen = available.includes(REQUESTED_COUNT) ? REQUESTED_COUNT : available[0];
+
+ available.forEach(n => {
+  const btn = document.createElement('div');
+  btn.className = 'length-btn' + (n === defaultLen ? ' active' : '');
+  btn.innerHTML = '<div class="length-btn-n">' + n + '</div><div class="length-btn-l">' + (n === poolSize ? 'Full Pool' : 'Qs') + '</div>';
+  btn.onclick = function(){
+   document.querySelectorAll('.length-btn').forEach(b => b.classList.remove('active'));
+   btn.classList.add('active');
+   SELECTED_LENGTH = n;
+   updateIntroStatsForLength(n);
+  };
+  optsWrap.appendChild(btn);
+ });
+
+ picker.style.display = 'block';
+ SELECTED_LENGTH = defaultLen;
+ updateIntroStatsForLength(defaultLen);
+}
+
+function updateIntroStatsForLength(n){
+ const minutes = LENGTH_TIME_MIN[n] || Math.max(15, Math.round(n * 1.0));
+ document.getElementById('statQ').textContent = n;
+ document.getElementById('statMin').textContent = minutes;
+ const topicsInSample = new Set(QUESTIONS_BANK.slice(0, n).map(q=>q.topic)).size;
+ const totalTopics = new Set(QUESTIONS_BANK.map(q=>q.topic)).size;
+ document.getElementById('statT').textContent = totalTopics;
+ document.getElementById('introSub').textContent = 'LLB · ' + n + ' MCQs, ' + minutes + ' minutes. Get topic-wise analysis of where you stand.';
+ document.getElementById('startBtn').textContent = '⏱️ Start ' + minutes + '-Minute Mock Exam (' + n + ' Qs)';
 }
 
 function shuffleArray(arr){
@@ -279,7 +342,11 @@ function shuffleQuestionSet(qs){
 
 function startExam(){
  studentName = (document.getElementById('studentName').value||'').trim() || 'Student';
- QUESTIONS = shuffleQuestionSet(QUESTIONS_BANK);
+ const targetLen = SELECTED_LENGTH || QUESTIONS_BANK.length;
+ const shuffledFull = shuffleQuestionSet(QUESTIONS_BANK);
+ QUESTIONS = shuffledFull.slice(0, targetLen);
+ const minutes = LENGTH_TIME_MIN[targetLen] || Math.max(15, Math.round(targetLen * 1.0));
+ timeLeftSec = minutes * 60;
  document.getElementById('intro').style.display = 'none';
  document.getElementById('exam').classList.add('show');
  document.getElementById('timerPill').classList.add('show');
@@ -348,7 +415,8 @@ function tierColor(pct){
 
 function submitExam(){
  clearInterval(timerInterval);
- const timeTakenSec = 30*60 - timeLeftSec;
+ const examMinutes = LENGTH_TIME_MIN[QUESTIONS.length] || Math.max(15, Math.round(QUESTIONS.length * 1.0));
+ const timeTakenSec = (examMinutes*60) - timeLeftSec;
  document.getElementById('exam').classList.remove('show');
  document.getElementById('timerPill').classList.remove('show');
  const result = document.getElementById('result');
