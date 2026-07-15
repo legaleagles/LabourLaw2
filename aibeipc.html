@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIBE Practice — IPC / BNS — lawsticker-ai.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">AIBE: IPC / BNS</div>
+  <div class="splash-sub">AIBE Bar Exam Practice · All India</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">AIBE IPC/BNS Practice</div>
+  <div class="topbar-badge">AIBE</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>AIBE: IPC / BNS</h1>
+      <p>All India Bar Examination practice set — the IPC-to-BNS correspondence table, Murder's 4 clauses and 5 exceptions, and Assertion-Reason/Statement questions in the exact format the real AIBE 20 (2025) paper actually used.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">AIBE XXI Syllabus</span>
+        <span class="hero-tag">30 Practice Questions</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">30</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Fact Bank</div>
+        <div class="qc-count">4 topic areas</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 landmark cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">30 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ Trainer's Top Priority</div>
+      <div class="exam-tip-text">Master the IPC-to-BNS correspondence table -- including the S.303 trap (murder-by-life-convict under IPC, THEFT under BNS, same number, totally different offence). Then drill Section 101's four clauses and five exceptions until you can spot which exception a scenario fits instantly.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Mithu v. State of Punjab (1983, struck down mandatory death) and Virsa Singh v. State of Punjab (1958, objective sufficiency test). Also know Bachan Singh ("rarest of rare"), Basdev v. State of Pepsu (intention vs knowledge), and K.M. Nanavati (time gap defeats "sudden" provocation).</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">Culpable Homicide: 299=100. Murder: 300=101. Punishment: 302=103. Attempt formula: up to 1/2 the max term. Conspiracy: mere agreement suffices ONLY for death/life/2+yr offences. Consent exception (S.5): deceased must be above 18.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 4 topic areas -- IPC-BNS Correspondence Table, Culpable Homicide & Murder, General Exceptions/Abetment/Conspiracy, Landmark Case Law. 30 AIBE-style questions, order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// AIBE PRACTICE — IPC / BNS  |  lawsticker-ai.com
+// Built using real AIBE 20 (2025) paper as a style reference --
+// adopts Assertion-Reason, Statement-I/II, and List-Matching
+// formats confirmed as heavily used in actual AIBE papers,
+// alongside direct-recall questions.
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'IPC-to-BNS Correspondence — Master This First', marks:'~8-10 Qs draw directly from this', content:`
+    <p><strong>Trainer's note:</strong> Exactly like CrPC/BNSS, AIBE tests IPC AND BNS section numbers together. This table is your highest-yield investment for this subject.</p>
+    <table>
+      <tr><th>Concept</th><th>Old IPC</th><th>New BNS</th></tr>
+      <tr><td>Culpable Homicide</td><td>Section 299</td><td>Section 100</td></tr>
+      <tr><td>Murder</td><td>Section 300</td><td>Section 101</td></tr>
+      <tr><td>Punishment for Murder</td><td>Section 302</td><td>Section 103</td></tr>
+      <tr><td>Punishment for Murder by Life Convict</td><td>Section 303 (struck down, Mithu v. State of Punjab)</td><td>Section 104</td></tr>
+      <tr><td>Culpable Homicide Not Amounting to Murder (Punishment)</td><td>Section 304</td><td>Section 105</td></tr>
+      <tr><td>Death by Negligence</td><td>Section 304A</td><td>Section 106</td></tr>
+      <tr><td>Abetment of Suicide</td><td>Section 306</td><td>Section 108</td></tr>
+      <tr><td>Attempt to Murder</td><td>Section 307</td><td>Section 109</td></tr>
+      <tr><td>Grievous Hurt (voluntarily causing)</td><td>Section 325</td><td>Section 117 area</td></tr>
+      <tr><td>Criminal Force</td><td>Section 350</td><td>Section 129</td></tr>
+      <tr><td>Assault</td><td>Section 351</td><td>Section 130</td></tr>
+      <tr><td>Kidnapping</td><td>Section 359</td><td>Section 137</td></tr>
+      <tr><td>Abduction</td><td>Section 362</td><td>Section 138</td></tr>
+      <tr><td>Unlawful Assembly</td><td>Section 141</td><td>Section 189</td></tr>
+      <tr><td>Public Nuisance</td><td>Section 268</td><td>Section 270</td></tr>
+      <tr><td>Theft</td><td>Section 378</td><td>Section 303</td></tr>
+      <tr><td>Extortion</td><td>Section 383</td><td>Section 308</td></tr>
+      <tr><td>Attempt (general provision)</td><td>Section 511</td><td>Section 62</td></tr>
+      <tr><td>Criminal Conspiracy</td><td>Section 120A/120B</td><td>Sections 61-62</td></tr>
+    </table>
+    <h4>Structural Change — Chapter Numbering</h4>
+    <p>BNS has 358 SECTIONS (vs IPC's 511) across 20 CHAPTERS. Chapter III (Sections 14-44 area) = General Exceptions. Chapter VI = Offences Affecting the Human Body (murder, hurt, kidnapping) — this ROUGHLY corresponds to IPC's old Chapter XVI, but the numbering has shifted substantially.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Section 303 is a genuinely tricky trap: under the OLD IPC, Section 303 was "Punishment for Murder by Life Convict" (struck down as unconstitutional in Mithu v. State of Punjab, 1983, for violating Articles 14 and 21). Under BNS, Section 303 is now THEFT — a completely different offence. Never assume a section number means the same thing across both codes.</div>
+  `},
+  { id:'T2', title:'Culpable Homicide, Murder and the Five Exceptions', marks:'~6-8 Qs', content:`
+    <h4>Culpable Homicide — Section 100 BNS (Section 299 IPC)</h4>
+    <p>Whoever causes death by an act done: (a) with the INTENTION of causing death; (b) with the intention of causing such bodily injury as is LIKELY to cause death; or (c) with the KNOWLEDGE that the act is likely to cause death, commits culpable homicide.</p>
+    <h4>Murder — Section 101 BNS (Section 300 IPC) — The Four Clauses</h4>
+    <p>Culpable homicide IS murder if the act is done: (a) with the intention of causing death; (b) with the intention of causing bodily injury the offender KNOWS is likely to cause death; (c) with the intention of causing bodily injury SUFFICIENT IN THE ORDINARY COURSE OF NATURE to cause death; or (d) with the KNOWLEDGE the act is so IMMINENTLY DANGEROUS it must, in all probability, cause death, done WITHOUT ANY EXCUSE for incurring that risk.</p>
+    <h4>Culpable Homicide vs Murder — The Core Distinction (Genus/Species)</h4>
+    <p>Culpable homicide is the GENUS; murder is a SPECIES of it. ALL murders are culpable homicide, but NOT all culpable homicide is murder. The word "likely" in Section 100 indicates a LOWER probability of death; the same word "likely" in Section 101 (specifically clause (b)) is read alongside a HIGHER, more certain probability standard — the key distinguishing factor is the DEGREE of probability/certainty of death, not merely its possibility.</p>
+    <h4>The Five Exceptions to Murder (Section 101, Exceptions 1-5)</h4>
+    <ol>
+      <li><strong>Grave and Sudden Provocation</strong> — subject to provisos: provocation must NOT be self-sought/voluntarily provoked as an excuse; NOT given by anything done in obedience to law or by a public servant in lawful exercise of power; NOT given while the offender was doing something in the lawful exercise of the right of private defence</li>
+      <li><strong>Exceeding the Right of Private Defence</strong> — in GOOD FAITH, without premeditation, without intention of doing more harm than necessary</li>
+      <li><strong>Public Servant Exceeding Powers</strong> — acting for advancement of public justice, in good faith believing the act lawful/necessary, WITHOUT ILL-WILL</li>
+      <li><strong>Sudden Fight</strong> — without premeditation, in the heat of passion upon a sudden quarrel, without undue advantage or cruel/unusual conduct</li>
+      <li><strong>Consent</strong> — the deceased, ABOVE EIGHTEEN years of age, voluntarily consented to the risk of death or to death itself</li>
+    </ol>
+    <h4>Illustrative Application — A Classic AIBE-Style Scenario</h4>
+    <p>If provocation is grave and sudden but was itself given by an act done in the LAWFUL exercise of a public servant's power (e.g., a lawful arrest), Exception 1 does NOT apply — the killing remains MURDER, not culpable homicide. Similarly, if the offender was the original aggressor and merely claims "self-defence" after escalating a confrontation they started, Exception 2 will generally fail.</p>
+    <h4>Punishment — Section 103 BNS</h4>
+    <p>Murder is punishable with DEATH or IMPRISONMENT FOR LIFE, plus fine. Section 103(2) — a GENUINELY NEW provision — punishes murder by a GROUP OF FIVE OR MORE persons acting in concert on grounds of race, caste, community, sex, place of birth, language, personal belief, or similar grounds (mob lynching), with each member liable to death or life imprisonment.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Assertion-Reason questions on this topic love testing WHY an exception fails on its provisos, not just whether the exception exists in the abstract. Always check: was the provocation self-sought? Was the "private defence" claimant actually the aggressor? Section 103(2)'s mob-lynching provision is a frequently tested "what's new in BNS" fact.</div>
+  `},
+  { id:'T3', title:'General Exceptions, Abetment and Criminal Conspiracy', marks:'~6-8 Qs', content:`
+    <h4>General Exceptions — Chapter III, BNS (Chapter IV, IPC)</h4>
+    <ul>
+      <li><strong>Mistake of Fact</strong> — bound/believing in good faith to be bound by law, NOT mistake of law</li>
+      <li><strong>Judicial Acts, Accident</strong> — acts done in the lawful exercise of judicial power; accidents occurring without criminal intent during a lawful act done with proper care</li>
+      <li><strong>Necessity</strong> — done in good faith to prevent OTHER harm</li>
+      <li><strong>Infancy</strong> — Section 20 (under 7, absolute incapacity); Section 21 (7-12, depends on maturity of understanding)</li>
+      <li><strong>Unsoundness of Mind</strong> — incapable of knowing the nature of the act, or that it is wrong/contrary to law</li>
+      <li><strong>Intoxication</strong> — involuntary intoxication treated similarly to unsoundness of mind; voluntary intoxication generally NOT a defence</li>
+      <li><strong>Consent</strong> — subject to specified limits, does not extend to consent to death (except narrowly under Exception 5 to Section 101)</li>
+      <li><strong>Right of Private Defence</strong> — Sections 34-44, covering body and property, subject to Section 37's restrictions (no more harm than necessary, no right if time to seek public authorities)</li>
+    </ul>
+    <h4>Abetment — Chapter V, BNS (Sections 45-50)</h4>
+    <p>A person ABETS an offence who: (a) INSTIGATES another to commit it; (b) engages in a CONSPIRACY with others to commit it, and an act/illegal omission takes place in pursuance of that conspiracy; or (c) INTENTIONALLY AIDS, by act or illegal omission, the commission of the offence. The abettor's LIABILITY generally depends on whether the offence abetted was actually COMMITTED, or merely ATTEMPTED — different punishment consequences attach to each scenario.</p>
+    <h4>Criminal Conspiracy — Chapter VI, BNS (Sections 61-62)</h4>
+    <p>Where TWO OR MORE persons AGREE to do, or cause to be done: (a) an ILLEGAL act, or (b) a LEGAL act by ILLEGAL means, such an agreement is designated criminal conspiracy — PROVIDED that no agreement except an agreement to commit an OFFENCE amounts to criminal conspiracy UNLESS some ACT BESIDES the bare agreement is done by one or more parties to such agreement in pursuance thereof. This is a significant nuance: for offences generally, the MERE AGREEMENT itself is not always sufficient — an overt act may be required, EXCEPT where the intended crime itself is punishable with death, life imprisonment, or rigorous imprisonment of 2+ years, in which case mere agreement alone suffices to constitute the offence.</p>
+    <h4>Attempt — Section 62, BNS (Section 511, IPC — General Attempt Provision)</h4>
+    <p>Where a person attempts to commit an offence punishable with imprisonment for LIFE or otherwise, and in such attempt does any act toward the commission of the offence, but the offence is NOT completed, they are punishable with imprisonment for a term which may extend to ONE-HALF of the longest term provided for that offence, or with fine, or both — a genuinely tested numerical formula (half the maximum term).</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> The Criminal Conspiracy nuance — "mere agreement is sufficient ONLY if the intended offence carries death/life imprisonment/2+ years rigorous imprisonment; otherwise an overt act beyond mere agreement is required" — is a genuinely subtle, frequently tested distinction that many candidates miss. The attempt formula (half the maximum term for the completed offence) is a guaranteed numerical-recall question.</div>
+  `},
+  { id:'T4', title:'Landmark Case Law — Repeat AIBE Questions', marks:'Distributed across the paper', content:`
+    <table>
+      <tr><th>Case</th><th>Principle</th></tr>
+      <tr><td>Mithu v. State of Punjab (1983)</td><td>Struck down Section 303 IPC (mandatory death for murder by a life-convict) as unconstitutional, violating Articles 14 and 21 -- mandatory death sentences with no judicial discretion are impermissible</td></tr>
+      <tr><td>Bachan Singh v. State of Punjab (1980)</td><td>"Rarest of rare" doctrine -- life imprisonment is the RULE for murder, death sentence the EXCEPTION, requiring special reasons to be recorded (now reflected in BNSS procedural requirements)</td></tr>
+      <tr><td>Basdev v. State of Pepsu (1956)</td><td>Distinguished INTENTION from KNOWLEDGE in the culpable homicide/murder analysis -- voluntary intoxication may negate specific intent in limited circumstances but does not automatically excuse liability</td></tr>
+      <tr><td>Virsa Singh v. State of Punjab (1958)</td><td>Clarified the test for Section 300(3)/Section 101(c) BNS ("bodily injury sufficient in the ordinary course of nature to cause death") -- the prosecution need only prove the injury was objectively sufficient to cause death, not that the accused subjectively intended death itself</td></tr>
+      <tr><td>K.M. Nanavati v. State of Maharashtra (1961)</td><td>Landmark case on grave and sudden provocation (Exception 1) -- held the provocation was not "sudden" since there was a time gap allowing passion to cool, making the killing murder, not culpable homicide</td></tr>
+    </table>
+    <h4>Trainer's Final Strategy Note for This Subject</h4>
+    <p>IPC/BNS rewards precise recall of the EXACT clauses of Section 101/300 and its five exceptions -- vague, general understanding is not enough, since AIBE frequently tests whether a SPECIFIC scenario fits a SPECIFIC exception's provisos (e.g., was the provocation self-sought? Was the private defence claimant the original aggressor?). Combine this with the mandatory correspondence-table drilling from Topic 1, and this subject becomes genuinely high-yield relative to the effort invested.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Virsa Singh's "objective sufficiency, not subjective intent to kill" test for Section 101(c)/300(3) is a genuinely advanced, frequently tested nuance -- many candidates wrongly assume the prosecution must prove the accused specifically WANTED the victim to die.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1983', name:'Mithu v. State of Punjab', tag:'Unconstitutional Mandatory Death', tagColor:'gold', story:'Under the old Section 303 IPC, if a person already serving a life sentence committed murder, the law gave the judge no choice at all -- death was the ONLY sentence available, with zero discretion to consider mitigating circumstances, however compelling. A Full Bench of the Supreme Court had to confront a genuinely fundamental question: could Parliament ever validly strip judges of all sentencing discretion in a matter as final and irreversible as a death sentence, treating every single case -- regardless of its unique facts -- identically? The Court\'s answer permanently reshaped how Indian criminal law approaches mandatory sentencing.', principle:'Section 303 IPC (mandatory death sentence for murder committed by a person already under sentence of life imprisonment, with no judicial discretion whatsoever) was struck down as UNCONSTITUTIONAL, violating Article 14 (equality) and Article 21 (life and personal liberty) -- a mandatory death sentence removing all judicial discretion is impermissible, since it cannot account for the genuinely varied circumstances of individual cases.' },
+  { year:'1958', name:'Virsa Singh v. State of Punjab', tag:'Section 101(c)/300(3) Test', tagColor:'teal', story:'When a person inflicts an injury that turns out to be fatal, how does a court decide whether this counts as murder under the specific "sufficient in the ordinary course of nature to cause death" clause, without turning every trial into an impossible inquiry into what the accused was subjectively thinking in that exact moment? The Supreme Court laid out a genuinely practical, influential test that has anchored this specific clause of the murder definition for well over six decades -- one that deliberately shifts the inquiry away from the accused\'s inner state of mind and toward something a court can actually, objectively assess.', principle:'For an act to fall under Section 101(c) BNS (Section 300(3) IPC), the prosecution need only prove that the bodily injury inflicted was OBJECTIVELY SUFFICIENT, in the ordinary course of nature, to cause death -- it is NOT necessary to separately prove the accused subjectively intended for the victim to actually die. The focus is on the objective medical/physical sufficiency of the injury, not the accused\'s inner mental state regarding the ultimate outcome.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'AIBE Number Bank — The Core Correspondence', items:[
+    { k:'Culpable Homicide: IPC 299 = BNS 100', v:'Intention/knowledge of causing death or likely-fatal injury' },
+    { k:'Murder: IPC 300 = BNS 101', v:'Four clauses (a)-(d), five exceptions' },
+    { k:'Punishment for Murder: IPC 302 = BNS 103', v:'Death or life imprisonment + fine; S.103(2) NEW mob-lynching provision' },
+    { k:'Attempt to Murder: IPC 307 = BNS 109', v:'' },
+    { k:'Kidnapping: IPC 359 = BNS 137', v:'' },
+    { k:'⚠ TRAP: IPC 303 ≠ BNS 303', v:'IPC 303 = murder by life convict (struck down). BNS 303 = THEFT. Completely different offences, same number.' }
+  ]},
+  { icon:'📅', title:'AIBE Number Bank — Exceptions & Formulas', items:[
+    { k:'5 Exceptions to Murder (S.101/S.300)', v:'Provocation + Exceeding private defence + Public servant exceeding powers + Sudden fight + Consent (18+)' },
+    { k:'Consent exception age', v:'Deceased must be ABOVE 18 years' },
+    { k:'Attempt punishment formula', v:'Up to ONE-HALF of the longest term for the completed offence' },
+    { k:'Criminal Conspiracy — overt act rule', v:'Mere agreement suffices ONLY for offences carrying death/life/2+ years rigorous imprisonment; otherwise an overt act is required' },
+    { k:'BNS total sections/chapters', v:'358 sections, 20 chapters (vs IPC\'s 511 sections)' }
+  ]},
+  { icon:'🏛️', title:'Case Law Quick-Match', items:[
+    { k:'Mithu v. State of Punjab (1983)', v:'Struck down mandatory death (S.303 IPC) as unconstitutional -- violates Arts 14 & 21.' },
+    { k:'Bachan Singh v. State of Punjab (1980)', v:'"Rarest of rare" doctrine -- life imprisonment is the rule, death the exception.' },
+    { k:'Virsa Singh v. State of Punjab (1958)', v:'S.101(c)/300(3) test -- objective sufficiency of injury, not subjective intent to kill.' },
+    { k:'K.M. Nanavati v. State of Maharashtra (1961)', v:'Time gap defeats "sudden" provocation -- passion had time to cool.' }
+  ]},
+  { icon:'⚖️', title:'Trap Questions to Watch For', items:[
+    { k:'Culpable Homicide vs Murder', v:'Culpable Homicide = GENUS. Murder = SPECIES. All murder is culpable homicide, NOT vice versa.' },
+    { k:'Provocation by a public servant\'s LAWFUL act', v:'Does NOT satisfy Exception 1 -- provocation must not stem from lawful exercise of power.' },
+    { k:'Self-sought provocation', v:'Does NOT satisfy Exception 1 -- cannot manufacture your own excuse to kill.' },
+    { k:'Original aggressor claiming private defence', v:'Exception 2 generally FAILS if the claimant started the confrontation.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Culpable Homicide is defined under Section 100 of the BNS, which corresponds to which section of the old IPC?', opts:['Section 300', 'Section 299', 'Section 302', 'Section 304'], ans:1, exp:'Section 100 BNS corresponds directly to Section 299 IPC -- the definition of culpable homicide.' },
+  { q:'Murder is defined under Section 101 of the BNS, corresponding to which section of the old IPC?', opts:['Section 299', 'Section 300', 'Section 302', 'Section 304A'], ans:1, exp:'Section 101 BNS corresponds to Section 300 IPC -- the definition of murder as an aggravated species of culpable homicide.' },
+  { q:'Assertion (A): Culpable homicide is the genus, and murder is a species of it. Reason (R): All culpable homicide amounts to murder, and all murder amounts to culpable homicide. Which is correct?', opts:['Both (A) and (R) are true, and (R) correctly explains (A)', '(A) is true, but (R) is FALSE -- not all culpable homicide amounts to murder, though all murder is culpable homicide', 'Both (A) and (R) are false', '(A) is false, but (R) is true'], ans:1, exp:'This is a classic genus-species trap: (A) is correct, but (R) wrongly claims the relationship works in both directions -- it does not.' },
+  { q:'Under Section 101 BNS (Section 300 IPC), Exception 1 (Grave and Sudden Provocation) will NOT apply if:', opts:['The provocation was genuinely sudden and unexpected', 'The provocation was SELF-SOUGHT by the offender as an excuse for the killing', 'The offender had no time to plan the act', 'The victim was a stranger to the offender'], ans:1, exp:'One of the key provisos to Exception 1 excludes self-sought or voluntarily provoked provocation used as a pretext.' },
+  { q:'If grave and sudden provocation was given by something done by a public servant in the LAWFUL exercise of their power, Exception 1 to Murder:', opts:['Applies fully, reducing the offence to culpable homicide', 'Does NOT apply -- the killing remains MURDER', 'Applies only if the public servant was off-duty', 'Is irrelevant to the classification of the offence'], ans:1, exp:'A specific proviso excludes provocation stemming from a public servant\'s lawful exercise of power -- Exception 1 fails in this scenario.' },
+  { q:'Under Exception 2 to Murder (Exceeding the Right of Private Defence), the offender\'s act must be done:', opts:['With premeditation and intent to cause maximum harm', 'In GOOD FAITH, WITHOUT premeditation, and without intention of doing more harm than necessary', 'Only against a stranger, never a family member', 'Only in daylight hours'], ans:1, exp:'Exception 2 requires good faith, absence of premeditation, and no intention to exceed necessary harm -- all three conditions must be met.' },
+  { q:'Statement 1: An offender who was the ORIGINAL AGGRESSOR in a confrontation can generally still successfully claim Exception 2 (exceeding private defence). Statement 2: Exception 2 requires the private defence to have been genuinely exercised in good faith. Which is correct?', opts:['Both statements are true', 'Only Statement 1 is true', 'Only Statement 2 is true', 'Both statements are false'], ans:2, exp:'Statement 1 is false -- an original aggressor generally cannot claim private defence at all, defeating Exception 2. Statement 2 correctly reflects the good-faith requirement.' },
+  { q:'Under Exception 5 to Murder (Consent), for this exception to apply, the deceased must have been:', opts:['Any age, with any form of consent', 'ABOVE EIGHTEEN years of age, voluntarily consenting to the risk of death or to death itself', 'A close relative of the accused', 'Below eighteen years of age'], ans:1, exp:'Exception 5 specifically requires the deceased to be above 18 and to have genuinely, voluntarily consented.' },
+  { q:'Section 103(2) BNS, a GENUINELY NEW provision absent from the original IPC, punishes murder committed by:', opts:['A single individual acting alone', 'A GROUP OF FIVE OR MORE persons acting in concert on grounds like caste, race, community, or personal belief (mob lynching)', 'Only government officials', 'Only during a declared national emergency'], ans:1, exp:'Section 103(2) is a new BNS provision specifically targeting group/mob-based murders motivated by identity-based grounds.' },
+  { q:'In Mithu v. State of Punjab (1983), the Supreme Court struck down Section 303 IPC (mandatory death sentence for murder by a life-convict) for violating:', opts:['Only Article 19', 'Article 14 and Article 21', 'Only Article 32', 'Only Article 300A'], ans:1, exp:'Mithu held mandatory death sentences with no judicial discretion violate both equality (Art 14) and life/personal liberty (Art 21).' },
+  { q:'In Bachan Singh v. State of Punjab (1980), the Supreme Court established the "rarest of rare" doctrine, holding that:', opts:['Death sentence should be the default rule for all murder convictions', 'LIFE IMPRISONMENT is the rule for murder, and DEATH SENTENCE the exception, requiring special reasons', 'All murder convictions require exactly the same sentence', 'Judicial discretion in sentencing should be entirely eliminated'], ans:1, exp:'Bachan Singh established that death sentences require special justification, with life imprisonment as the default rule.' },
+  { q:'In Virsa Singh v. State of Punjab (1958), the Supreme Court clarified that for Section 101(c) BNS/Section 300(3) IPC to apply, the prosecution must prove:', opts:['The accused subjectively intended for the victim to die', 'The bodily injury inflicted was OBJECTIVELY SUFFICIENT, in the ordinary course of nature, to cause death', 'The accused had a documented motive for the killing', 'The victim survived for at least 24 hours after the injury'], ans:1, exp:'Virsa Singh established an objective sufficiency test, not a subjective intent-to-kill requirement, for this specific murder clause.' },
+  { q:'In K.M. Nanavati v. State of Maharashtra (1961), the Supreme Court held that the provocation in question was NOT "sudden" because:', opts:['The victim provoked the accused repeatedly over many years', 'There was a TIME GAP allowing the accused\'s passion to cool before the killing', 'The accused had no weapon available', 'The provocation occurred in a public place'], ans:1, exp:'The time gap allowing for cooling of passion defeated the "sudden" element required for Exception 1 to apply, resulting in a murder conviction.' },
+  { q:'Under the old IPC, Section 303 dealt with "Punishment for Murder by Life Convict." Under the NEW BNS, Section 303 deals with an entirely DIFFERENT offence:', opts:['Kidnapping', 'THEFT', 'Criminal conspiracy', 'Abetment of suicide'], ans:1, exp:'A classic trap -- Section 303 has completely different meanings under IPC (murder by life convict, now struck down) versus BNS (theft). Never assume identical section numbers mean identical offences across the two codes.' },
+  { q:'General Exceptions under BNS Chapter III include "Mistake of Fact" -- this excuses an act done by a person:', opts:['Under a mistake of LAW, regardless of good faith', 'Bound, or believing in good faith to be bound, by LAW to do it', 'Purely out of personal convenience', 'Only if the mistake benefited a third party'], ans:1, exp:'Mistake of fact (not mistake of law) can excuse liability, where the person genuinely, reasonably believed they were legally bound/justified.' },
+  { q:'Under Section 20 BNS (General Exceptions), a child UNDER 7 years of age has:', opts:['Full criminal liability like an adult', 'ABSOLUTE incapacity -- nothing done by them is an offence', 'Liability only for serious offences', 'Liability determined case-by-case with no fixed rule'], ans:1, exp:'Section 20 creates an absolute, irrebuttable incapacity for children under 7.' },
+  { q:'Abetment, under Chapter V BNS, may occur through which THREE means?', opts:['Only through direct physical participation', 'INSTIGATION, engaging in a CONSPIRACY (with an act/omission in pursuance), or INTENTIONALLY AIDING the commission of the offence', 'Only through written communication', 'Only if the abettor is present at the scene'], ans:1, exp:'These are the three recognised means by which a person can abet an offence under the BNS abetment provisions.' },
+  { q:'Under Criminal Conspiracy (Sections 61-62 BNS), for an agreement between two or more persons to constitute the offence, generally:', opts:['The mere agreement is ALWAYS sufficient regardless of the intended offence', 'The mere agreement suffices ONLY where the intended offence carries death/life imprisonment/2+ years rigorous imprisonment; OTHERWISE an overt act beyond the agreement is required', 'No agreement can ever constitute a criminal conspiracy', 'Only written agreements count as criminal conspiracy'], ans:1, exp:'This nuanced rule distinguishes serious offences (mere agreement suffices) from lesser offences (an overt act beyond agreement is additionally required).' },
+  { q:'Under Section 62 BNS (the general Attempt provision, corresponding to Section 511 IPC), where an attempted offence is NOT completed, the punishment may extend to:', opts:['The FULL maximum term for the completed offence', 'ONE-HALF of the longest term provided for the completed offence, or fine, or both', 'Double the maximum term as a deterrent', 'No punishment applies to mere attempts'], ans:1, exp:'This is the precise numerical formula for general attempt liability -- up to half the maximum term for the completed offence.' },
+  { q:'Assertion (A): BNS has 358 sections across 20 chapters. Reason (R): This represents a significant reduction from the IPC\'s 511 sections, reflecting consolidation of provisions and removal of obsolete/struck-down sections. Which is correct?', opts:['Both (A) and (R) are true, and (R) correctly explains (A)', 'Both (A) and (R) are true, but (R) does not explain (A)', '(A) is true, but (R) is false', '(A) is false, but (R) is true'], ans:0, exp:'Both statements are accurate, and the reduction genuinely reflects consolidation rather than a narrowing of substantive criminal law coverage.' },
+  { q:'"Kidnapping" under BNS is governed by Section 137, corresponding to which IPC section?', opts:['Section 350', 'Section 359', 'Section 362', 'Section 378'], ans:1, exp:'Section 137 BNS corresponds to Section 359 IPC on kidnapping.' },
+  { q:'"Abduction" under BNS is governed by Section 138, corresponding to which IPC section?', opts:['Section 359', 'Section 362', 'Section 378', 'Section 383'], ans:1, exp:'Section 138 BNS corresponds to Section 362 IPC on abduction, distinct from the kidnapping provision.' },
+  { q:'In the general exceptions framework, "Necessity" excuses an act done:', opts:['For purely personal financial gain', 'In GOOD FAITH to prevent OTHER, greater harm to person or property', 'Only by government officials', 'Only when no alternative exists whatsoever, with no good faith requirement'], ans:1, exp:'The necessity exception requires genuine good faith and a real purpose of avoiding greater harm, not a pretext.' },
+  { q:'"Voluntary Intoxication," under the general exceptions framework, is generally treated as:', opts:['An automatic, complete defence to any criminal charge', 'NOT a defence generally, though it may be relevant to whether specific intent for certain offences was actually formed', 'Identical in legal effect to involuntary intoxication', 'A defence available only to first-time offenders'], ans:1, exp:'Voluntary intoxication does not generally excuse criminal liability, though courts may consider it in assessing specific intent requirements for particular offences.' },
+  { q:'"Criminal Force," under BNS Section 129 (corresponding to IPC Section 350), as distinguished from "Assault," involves:', opts:['Only the apprehension of force, not actual contact', 'The intentional USE of ACTUAL force on another person without consent', 'Only verbal threats with no physical component', 'A tort, not a criminal offence'], ans:1, exp:'Criminal Force involves actual application of force, distinguished from Assault (mere apprehension of imminent force).' },
+  { q:'Under the right of private defence framework (Sections 34-44 BNS), Section 37\'s restrictions include that the right:', opts:['Extends without limit to any amount of harm the defender chooses', 'NEVER extends to inflicting MORE HARM than necessary for the purpose of defence', 'Applies only to defence of property, never the body', 'Requires prior police permission before being exercised'], ans:1, exp:'Section 37 caps the right of private defence, ensuring it never extends beyond what is genuinely necessary for the defensive purpose.' },
+  { q:'Match the following murder-exception scenarios with their correct classification: (i) Offender exceeds private defence in good faith without premeditation (ii) Offender kills after provocation they themselves sought as a pretext (iii) Sudden fight without undue advantage (iv) Deceased, aged 20, voluntarily consented to the risk of death', opts:['(i)-Exception 2, (ii)-Exception 1 applies, (iii)-Exception 4, (iv)-Exception 5', '(i)-Exception 2, (ii)-Exception 1 does NOT apply (self-sought), (iii)-Exception 4, (iv)-Exception 5', '(i)-Exception 1, (ii)-Exception 2, (iii)-Exception 3, (iv)-Exception 4', '(i)-Exception 5, (ii)-Exception 4, (iii)-Exception 3, (iv)-Exception 2'], ans:1, exp:'Correctly matching: (i) exceeding private defence = Exception 2; (ii) self-sought provocation defeats Exception 1 entirely; (iii) sudden fight = Exception 4; (iv) valid adult consent = Exception 5.' },
+  { q:'Under Section 105 BNS (Section 304 IPC, Punishment for Culpable Homicide Not Amounting to Murder), the punishment differs based on whether the act was done:', opts:['On a weekday versus a weekend', 'With the INTENTION of causing death/likely-fatal injury (higher punishment) versus mere KNOWLEDGE it was likely to cause death without such intention (lower punishment)', 'Indoors versus outdoors', 'By a first-time versus repeat offender only'], ans:1, exp:'Section 105 BNS prescribes two distinct punishment tiers based on whether intention or mere knowledge was the operative mental element.' },
+  { q:'"Grievous Hurt" under BNS (corresponding to IPC Section 320) includes categories such as:', opts:['Any momentary bodily discomfort, however minor', 'Emasculation, permanent privation of sight/hearing, fracture/dislocation of a bone, or hurt causing severe pain/inability to pursue ordinary activities for 20 days', 'Only hurt caused by a specifically named weapon', 'Only hurt resulting in immediate death'], ans:1, exp:'Grievous Hurt is a specifically enumerated, more serious category of hurt than the ordinary threshold, covering these listed severe categories.' },
+  { q:'Statement 1: Attempt to Murder (Section 109 BNS/Section 307 IPC) requires that death actually resulted from the accused\'s act. Statement 2: An attempt to murder can be punished even where the intended victim survives the attack. Which is correct?', opts:['Both statements are true', 'Only Statement 1 is true', 'Only Statement 2 is true', 'Both statements are false'], ans:2, exp:'Statement 1 is false -- attempt to murder specifically does NOT require death to have occurred (if it did, the offence would be murder itself, not attempt). Statement 2 is correct -- the offence is complete even if the victim survives.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
