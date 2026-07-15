@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Labour Law — I — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Labour Law — I</div>
+  <div class="splash-sub">LLB 3rd Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Labour Law-I Study App</div>
+  <div class="topbar-badge">3rd Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Labour Law — I</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Industry &amp; Workman Definitions, Lay-Off/Retrenchment/Closure, Strikes &amp; Dispute Machinery, Trade Unions, and Standing Orders, covering BOTH the Industrial Disputes Act 1947 framework AND the current Industrial Relations Code 2020, from the OU LLB 3rd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Industrial Disputes Act 1947</span>
+        <span class="hero-tag">Industrial Relations Code 2020</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Bangalore Water Supply's "industry" test, Lay-Off vs Retrenchment, Section 25F conditions, the dispute-settlement ladder, trade union registration, Standing Orders thresholds -- and current updates under the Industrial Relations Code 2020 (300-worker threshold, negotiating unions) -- appear almost every year in OU LLB Labour Law-I exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Bangalore Water Supply v A. Rajappa (1978, 7-judge bench -- expansive "industry" definition) and State Bank of India v N. Sundara Money (1976 -- non-renewal as retrenchment, later partly reversed by the 1984 Amendment). Also know Hospital Mazdoor Sabha on hospitals as "industry."</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">IR Code 2020 in force 21 Nov 2025. ID Act threshold 100 workers RAISED to 300 under IR Code (lay-off/retrenchment/closure permission AND Standing Orders). Section 25F: 1-month notice + 15 days' pay/year + govt notice. Trade union registration: 7+ members. Negotiating union: 51%+; council: 20%+ per union.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Industry/Workman Definitions, Lay-Off & Retrenchment, Strikes & Dispute Machinery, Trade Unions, Standing Orders (ID Act + IR Code 2020). Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// LABOUR LAW — I  |  Content data for lawsticker-ai.com
+// Osmania University LLB 3rd Semester
+// Covers BOTH the Industrial Disputes Act 1947 (historical/classical framework,
+// case law basis) AND the Industrial Relations Code 2020 (current law, in force
+// since 21 November 2025, having repealed the ID Act 1947).
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'From the Industrial Disputes Act 1947 to the Industrial Relations Code 2020', marks:'Core Topic', content:`
+    <div class="alert-box"><strong>📌 Important Legal Update:</strong> The Industrial Disputes Act 1947 (ID Act) — the classical framework this subject was historically built on — was REPEALED effective 21 November 2025, subsumed into the INDUSTRIAL RELATIONS CODE 2020 (IR Code), which also absorbed the Trade Unions Act 1926 and the Industrial Employment (Standing Orders) Act 1946. This topic covers BOTH frameworks, since university syllabi and existing case law continue to reference ID Act terminology and section numbers extensively, while the IR Code is now the operative law.</div>
+    <h4>The Industrial Disputes Act 1947 — Historical Framework</h4>
+    <p>India's foundational post-independence labour statute, providing machinery for investigation and settlement of industrial disputes, with provisions on lay-off, retrenchment, strikes, lock-outs, and closure. Grew out of the earlier Trade Disputes Act 1929.</p>
+    <h4>The Industrial Relations Code 2020 — Current Law</h4>
+    <p>Received Presidential Assent on 28 September 2020; came into force (along with the three other Labour Codes — Wage Code, Social Security Code, OSH Code) on 21 NOVEMBER 2025. Consolidates and modernises the ID Act 1947, the Trade Unions Act 1926, and the Industrial Employment (Standing Orders) Act 1946 into a SINGLE code — 14 Chapters, 104 Sections, 3 Schedules. As of the 2026 transition period, Central Rules and many State-specific rules remain in a phased rollout, with existing provisions/notifications generally continuing in force during this transition.</p>
+    <h4>Key Terminological Shift — "Workman" to "Worker"</h4>
+    <p>The ID Act used the term "WORKMAN" (Section 2(s)). The IR Code uses "WORKER" (Section 2(zr)) — broadly similar in substance, but the IR Code ADDS explicit coverage for working journalists and sales promotion employees, while a person in a SUPERVISORY capacity earning WAGES UP TO Rs. 18,000/month (or as notified) is now explicitly included as a "worker." The IR Code also newly defines "EMPLOYEE" (Section 2(l)) — a BROADER category than "worker," encompassing managerial/administrative roles the older "workman" definition excluded.</p>
+    <h4>Why This Transition Matters for Students</h4>
+    <p>Case law developed under the ID Act (interpreting "industry," "workman," retrenchment principles) remains highly RELEVANT for interpreting the IR Code's substantially similar provisions — courts are expected to draw heavily on this established jurisprudence even under the new framework, since the IR Code largely retains the ID Act's core concepts while modernising thresholds, adding new categories (fixed-term employment, negotiating unions), and consolidating three separate statutes into one.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Always be ready to answer EITHER under the ID Act framework (traditional section numbers: 2(s), 2(k), 25F) OR the IR Code framework (2(zr), Chapter IX Sections 65-76) — many exam questions may still reference the ID Act by name given syllabus lag, but current practice increasingly requires IR Code awareness too.</div>
+  `},
+  { id:'T2', title:'Definition of Industry, Workman/Worker, and Industrial Dispute', marks:'Core Topic', content:`
+    <h4>"Industry" — Section 2(j), ID Act</h4>
+    <p>Defined broadly as any business, trade, undertaking, manufacture, or calling of employers, including any calling, service, employment, handicraft, or industrial occupation/avocation of workmen.</p>
+    <div class="case-box"><strong>Bangalore Water Supply and Sewage Board v. A. Rajappa (1978), Supreme Court (7-judge bench):</strong> Gave an extraordinarily EXPANSIVE interpretation to "industry" — holding that PROFIT MOTIVE or a desire to generate income is NOT necessary for an undertaking to be covered. Any SYSTEMATIC ACTIVITY organised through COOPERATION between employer and employees, for the production/distribution of goods or services calculated to satisfy human wants/wishes, qualifies as an "industry" — bringing hospitals, educational institutions, and even certain charitable/non-profit undertakings within the Act's protective scope. This dramatically broadened the reach of industrial dispute protections beyond traditional profit-driven commercial enterprises. (This precise "systematic activity/cooperation" test remains highly influential in interpreting "industry" under the IR Code's own updated Section 2 definition.)</div>
+    <h4>"Workman" — Section 2(s), ID Act / "Worker" — Section 2(zr), IR Code</h4>
+    <p>Broadly: any person (including an apprentice) employed to do manual, unskilled, skilled, technical, operational, clerical, or supervisory work for hire/reward, whether express or implied terms of employment — and, for proceedings relating to an industrial dispute, INCLUDES a person dismissed/discharged/retrenched in connection with, or as a consequence of, that dispute. EXCLUDED: persons employed mainly in a MANAGERIAL or ADMINISTRATIVE capacity, and persons in a SUPERVISORY capacity drawing wages ABOVE a specified threshold (Rs. 18,000/month under the IR Code, or as further notified) who exercise mainly managerial functions.</p>
+    <h4>"Industrial Dispute" — Section 2(k), ID Act</h4>
+    <p>Any DISPUTE or DIFFERENCE between employers and employers, employers and workmen, or workmen and workmen, connected with EMPLOYMENT, NON-EMPLOYMENT, or the TERMS of employment or CONDITIONS of labour of any person. Section 2A extends this: where an employer discharges/dismisses/retrenches/terminates an INDIVIDUAL workman, this is DEEMED an industrial dispute even without any other workman/union being party to it — an important protective extension for individual grievances.</p>
+    <h4>Other Established "Industry" Case Law</h4>
+    <p>Following Bangalore Water Supply's expansive approach, courts have held that hospitals (State of Bombay v. Hospital Mazdoor Sabha) and musical/entertainment undertakings (D.N. Banerjee v. P.R. Mukherjee) fall within "industry" — though certain limited categories (e.g., purely sovereign/regal government functions, or genuinely charitable activities run on a purely voluntary, non-systematic basis) may still fall outside the definition depending on specific facts.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Bangalore Water Supply v. A. Rajappa is THE essential case for this topic — always mention the 7-judge bench, "profit motive not necessary," and the "systematic activity through employer-employee cooperation" test. Workman/Worker's managerial-exclusion threshold (Rs. 18,000/month under IR Code) is a frequently tested current-law detail.</div>
+  `},
+  { id:'T3', title:'Lay-Off, Retrenchment and Closure', marks:'Core Topic', content:`
+    <h4>Lay-Off — Section 2(kkk), ID Act</h4>
+    <p>The FAILURE, REFUSAL, or INABILITY of an employer, on account of shortage of coal/power/raw materials, accumulation of stocks, machinery breakdown, natural calamity, or similar connected reason, to give employment to a workman whose name is on the muster roll — the EMPLOYMENT RELATIONSHIP CONTINUES, but work is temporarily unavailable. Section 25C entitles a workman with at least 1 year of continuous service to LAY-OFF COMPENSATION equal to 50% of basic wages plus dearness allowance for each day laid off.</p>
+    <h4>Retrenchment — Section 2(oo), ID Act</h4>
+    <p>Termination by the EMPLOYER of a workman's service for ANY REASON WHATSOEVER, OTHER than as punishment by way of disciplinary action — EXCLUDING: voluntary retirement, retirement on superannuation, termination due to non-renewal of a fixed-term contract (added by the 1984 Amendment), and termination on grounds of continued ill-health.</p>
+    <div class="case-box"><strong>State Bank of India v. N. Sundara Money (1976), Supreme Court:</strong> Held that non-renewal of a fixed-term contract, on its expiry, amounted to "retrenchment" under Section 2(oo) as it then stood — a broad, worker-protective reading. This position was PARTLY REVERSED by the 1984 Amendment, which added Section 2(oo)(bb), explicitly EXCLUDING termination resulting from NON-RENEWAL of a contract (on its own terms) from the definition of retrenchment — illustrating how legislative amendment can directly respond to and narrow an expansive judicial interpretation.</div>
+    <h4>Section 25F — Conditions Precedent to Valid Retrenchment (ID Act)</h4>
+    <p>No workman with at least 1 year of continuous service may be retrenched UNTIL: (a) ONE MONTH's written notice (or wages in lieu) is given, stating reasons; (b) COMPENSATION is paid at 15 DAYS' AVERAGE PAY for every completed year of continuous service; (c) NOTICE is served on the appropriate Government. Non-compliance renders the retrenchment ILLEGAL AND VOID.</p>
+    <h4>Section 25G and 25H — "Last Come, First Go" and Re-employment</h4>
+    <p>Section 25G: in retrenching workmen of a particular category, the employer should ordinarily retrench the workman who was the LAST person EMPLOYED in that category FIRST ("last come, first go"), unless departed from for recorded reasons. Section 25H: retrenched workmen have a PREFERENTIAL RIGHT of re-employment if the employer later proposes to take on workmen again.</p>
+    <h4>Closure — Section 2(cc) / 25FFA</h4>
+    <p>The PERMANENT closing down of a place of employment or part of it. Requires (for establishments meeting specified worker thresholds) 60 days' advance notice before intended closure, with compensation payable to affected workmen equivalent to retrenchment compensation.</p>
+    <h4>Under the IR Code 2020 — Chapter IX, Sections 65-76</h4>
+    <p>Substantially RETAINS the ID Act's core lay-off/retrenchment/closure framework and compensation formulas — but RAISES the threshold requiring GOVERNMENT PERMISSION before lay-off/retrenchment/closure from 100 WORKERS (ID Act, applicable to factories/mines/plantations) to 300 WORKERS — giving employers below this threshold significantly greater flexibility without prior government approval. Also introduces a "RE-SKILLING FUND" (Section 83) — the employer must contribute an amount equal to 15 DAYS' last-drawn wages of a retrenched worker, credited to the worker within 45 days, funding re-skilling/retraining support.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Section 25F's THREE conditions (notice, compensation, government notification) is a guaranteed list-recall question under the ID Act framework. The threshold shift from 100 to 300 workers under the IR Code is THE most important, frequently tested current-law update for this topic. Always distinguish Lay-Off (temporary, employment continues) from Retrenchment (permanent termination).</div>
+  `},
+  { id:'T4', title:'Strikes, Lock-Outs and Machinery for Dispute Settlement', marks:'Core Topic', content:`
+    <h4>Strike — Definition</h4>
+    <p>Under the ID Act (Section 2(q)): a CESSATION of work by a body of workers acting in COMBINATION, or a CONCERTED REFUSAL (or refusal under a common understanding) of workers to continue work. Under the IR Code, the definition is EXPANDED to explicitly include "CONCERTED CASUAL LEAVE" — where 50% or more workers take casual leave on a given day in a coordinated manner, this is now deemed a strike, closing a loophole employers previously faced.</p>
+    <h4>Lock-Out — Definition</h4>
+    <p>The TEMPORARY CLOSING of a place of employment, SUSPENSION of work, or an employer's REFUSAL to continue employing any number of persons — essentially the employer-side counterpart to a strike.</p>
+    <h4>Notice Requirements for Strikes/Lock-Outs</h4>
+    <p>Under the ID Act, notice requirements applied specifically to PUBLIC UTILITY SERVICES. Under the IR Code, this has been SIGNIFICANTLY EXPANDED: notice requirements now apply to ALL industrial establishments (not merely public utility services) — requiring 60 DAYS' advance notice before a strike/lock-out, with the strike/lock-out only permissible AFTER 14 DAYS from the date of that notice (and the notice remaining valid for a maximum of 60 days). Strikes/lock-outs are also prohibited during the PENDENCY of conciliation proceedings (and for 7 days after their conclusion) and during pendency of proceedings before a Tribunal/National Tribunal (and 60 days after conclusion).</p>
+    <h4>Machinery for Settlement of Industrial Disputes</h4>
+    <ul>
+      <li><strong>Works Committee</strong> — for establishments with 100+ workers (ID Act) — a joint employer-worker body promoting harmonious relations and resolving minor day-to-day grievances at the workplace level, as the FIRST tier of dispute resolution</li>
+      <li><strong>Conciliation Officer</strong> — appointed to mediate/promote settlement of industrial disputes; conciliation proceedings are DEEMED to commence from the date of the first meeting held by the officer</li>
+      <li><strong>Board of Conciliation</strong> — a larger body for more complex/serious disputes</li>
+      <li><strong>Labour Court</strong> — adjudicates disputes relating to matters in the Second Schedule (e.g., legality of an order, standing orders interpretation, discharge/dismissal disputes)</li>
+      <li><strong>Industrial Tribunal</strong> — constituted under Section 7A (ID Act) — adjudicates disputes relating to matters in the Second AND Third Schedules (broader jurisdiction than Labour Courts, including wages, bonus, retrenchment)</li>
+      <li><strong>National Tribunal</strong> — for disputes of NATIONAL IMPORTANCE, or affecting industrial establishments in MORE THAN ONE STATE</li>
+      <li><strong>Voluntary Arbitration</strong> — parties may voluntarily refer a dispute to an arbitrator of their choosing, rather than proceeding through the statutory adjudication machinery</li>
+    </ul>
+    <h4>Under the IR Code — Structural Continuity with Modernisation</h4>
+    <p>Retains the Works Committee → Conciliation → Tribunal adjudication ladder in substance, while introducing a formal "NEGOTIATING UNION/NEGOTIATING COUNCIL" mechanism — a REGISTERED trade union with 51% or more worker support becomes the SOLE recognised negotiating union; where no single union reaches that threshold, a negotiating COUNCIL is formed from unions each holding at least 20% support.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The full adjudication ladder (Works Committee → Conciliation Officer → Board of Conciliation → Labour Court/Industrial Tribunal → National Tribunal) is a guaranteed essay/sequence question. The IR Code's expansion of strike-notice requirements to ALL establishments (not just public utilities), and the new 51%/20% negotiating union/council thresholds, are essential current-law updates.</div>
+  `},
+  { id:'T5', title:'Trade Unions', marks:'Core Topic', content:`
+    <h4>The Trade Unions Act 1926 — Historical Framework</h4>
+    <p>India's foundational trade union legislation, providing for the REGISTRATION of trade unions and defining their rights, liabilities, and legal status — since SUBSUMED into the IR Code 2020's Chapter III (Trade Unions provisions).</p>
+    <h4>Definition of "Trade Union"</h4>
+    <p>Any COMBINATION (whether temporary or permanent) formed primarily for REGULATING relations between workers and employers, or between workers and workers, or between employers and employers, or for imposing RESTRICTIVE CONDITIONS on the conduct of any trade/business — includes a federation of two or more trade unions.</p>
+    <h4>Registration of Trade Unions</h4>
+    <p>Any trade union with SEVEN OR MORE MEMBERS may apply for registration under the IR Code (continuing the ID Act/Trade Unions Act's historical minimum). Registration confers important legal advantages: a registered trade union is a BODY CORPORATE with perpetual succession, capable of owning property, entering contracts, and suing/being sued in its own name — and its office-bearers/members enjoy IMMUNITY from certain civil and criminal liability for acts done in FURTHERANCE of a genuine trade dispute (e.g., protection from conspiracy charges merely for organising a lawful strike).</p>
+    <h4>Rights and Immunities of Registered Trade Unions</h4>
+    <ul>
+      <li><strong>Immunity from Civil Suit</strong> — in specified circumstances, for acts done in contemplation/furtherance of a trade dispute, provided the act itself is not independently unlawful</li>
+      <li><strong>Immunity from Criminal Conspiracy</strong> — mere agreement to do an act in furtherance of a trade dispute is not criminal conspiracy, UNLESS the act itself would be punishable as an offence if done by an individual</li>
+      <li><strong>Right to Maintain a General Fund</strong> and a separate SEPARATE POLITICAL FUND (for specified political objectives, funded only by MEMBERS WHO OPT IN)</li>
+    </ul>
+    <h4>"Negotiating Union" and "Negotiating Council" — Genuinely NEW under the IR Code</h4>
+    <p>Where ONLY ONE registered trade union exists in an establishment, the employer must RECOGNISE it as the SOLE negotiating union. Where MULTIPLE registered unions exist: a union with 51% OR MORE of workers on the muster roll is recognised as the sole negotiating union; where NO union reaches 51%, a NEGOTIATING COUNCIL is formed, comprising representative(s) from each union holding AT LEAST 20% support (with proportional seat allocation). This structured recognition mechanism DID NOT EXIST under the earlier Trade Unions Act 1926 framework.</p>
+    <h4>Regulation of Strikes and the Trade Union Connection</h4>
+    <p>A registered trade union's genuine, properly-noticed strike (complying with the notice/timing requirements discussed in Topic 4) is a LEGITIMATE exercise of collective bargaining power — but strikes conducted in BREACH of statutory notice/timing requirements are rendered ILLEGAL, exposing participants to specified penalties (though the IR Code notably REMOVED imprisonment as a penalty for EMPLOYER offences under the Code, while retaining imprisonment/fine for illegal strike participation by employees).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The "7 or more members" minimum for trade union registration, and the specific IMMUNITIES (civil suit, criminal conspiracy) registration confers, are guaranteed short-answer questions. The Negotiating Union (51%) / Negotiating Council (20% threshold per union) mechanism is THE essential genuinely-new IR Code feature for this topic.</div>
+  `},
+  { id:'T6', title:'Standing Orders and Miscellaneous Provisions', marks:'Core Topic', content:`
+    <h4>The Industrial Employment (Standing Orders) Act 1946 — Historical Framework</h4>
+    <p>Required employers in industrial establishments to formally DEFINE, with sufficient PRECISION, the conditions of employment under them, and make those conditions known to workmen — reducing arbitrary, unilateral variation of employment terms. Also since subsumed into the IR Code 2020.</p>
+    <h4>What "Standing Orders" Cover</h4>
+    <p>Matters such as: classification of workers (permanent, temporary, probationary, casual, etc.), manner of informing workers about working hours/holidays/paydays/wage rates, requirements to enter premises by certain gates and liability to search, suspension/dismissal for misconduct, and grievance redressal mechanisms.</p>
+    <h4>Applicability Threshold — A Major Shift</h4>
+    <p>Under the ID Act/Standing Orders Act framework, standing orders were generally required for establishments with 100 OR MORE workers. Under the IR Code, this threshold has been RAISED to 300 OR MORE WORKERS employed on any day during the preceding 12 months — a significant relaxation for medium-sized establishments, removing a substantial compliance burden they previously bore.</p>
+    <h4>Certification Process</h4>
+    <p>The employer must prepare DRAFT standing orders (based on the Central Government's MODEL standing order) within a specified period, in consultation with the recognised negotiating union/council, and submit them to a CERTIFYING OFFICER for certification — who examines whether the draft's provisions are fair and reasonable, hears objections from the union/worker representatives, and certifies (with any necessary modifications) within a prescribed timeframe.</p>
+    <h4>Grievance Redressal Committee</h4>
+    <p>Mandatory (under the IR Code) for establishments employing 20 OR MORE workers — a joint body (maximum 10 members) with EQUAL representation of employer and worker sides, and mandated WOMEN'S REPRESENTATION proportional to their share of the workforce — providing a structured internal mechanism for resolving individual worker grievances before they escalate to formal dispute-resolution machinery.</p>
+    <h4>Fixed-Term Employment — A Genuinely New IR Code Concept</h4>
+    <p>Allows an employer to engage a worker for a FIXED PERIOD under a WRITTEN CONTRACT — such workers are entitled to the SAME statutory benefits (wages, working hours, statutory benefits including gratuity) as PERMANENT workers doing similar work, EXCEPT that retrenchment compensation and prior notice on contract expiry are NOT applicable (since the definition of "retrenchment" itself excludes termination from mere non-renewal of a fixed-term contract on its own terms).</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The Standing Orders applicability threshold shift (100 → 300 workers) is a frequently tested current-law update, directly paralleling the same shift for lay-off/retrenchment/closure permission requirements. Fixed-Term Employment's "same benefits EXCEPT retrenchment compensation" nuance is essential and a genuinely new IR Code concept with no ID Act equivalent.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1978', name:'Bangalore Water Supply and Sewage Board v. A. Rajappa', tag:'Definition of "Industry"', tagColor:'gold', story:'For decades, Indian courts had struggled with a genuinely tricky question: exactly which organisations counted as an "industry" under the Industrial Disputes Act, entitled to its protective machinery for resolving disputes? Earlier rulings had drawn inconsistent, often narrow lines — suggesting that genuinely charitable or non-profit-driven activities, like running a hospital or a university, might fall entirely outside the Act\'s reach, leaving their workers without the same statutory protections available to commercial factory workers. A 7-judge bench of the Supreme Court finally confronted this uncertainty head-on, in a dispute over whether municipal water supply and sewage board employees — clearly a public service, not a profit-driven commercial venture — were nonetheless entitled to the Act\'s protections. The Court\'s answer reshaped the entire landscape of who counted as a protected worker under Indian labour law.', principle:'Profit motive or a desire to generate income is NOT necessary for an undertaking to be covered as an "industry." Any systematic activity organised through cooperation between employer and employees, for the production or distribution of goods or services calculated to satisfy human wants or wishes, qualifies — bringing hospitals, educational institutions, and similar undertakings within the Act\'s protective scope, dramatically broadening the reach of industrial dispute protections beyond traditional profit-driven commercial enterprises.' },
+  { year:'1976', name:'State Bank of India v. N. Sundara Money', tag:'Retrenchment', tagColor:'teal', story:'When a fixed-term employment contract simply expired and the employer chose not to renew it, was that genuinely different from the employer actively firing the worker — or was it, in substance, just another form of termination the law should treat the same way, with the same notice and compensation protections? The State Bank of India argued the two situations were fundamentally different: a contract expiring on its own terms wasn\'t really a "termination" the employer had chosen to inflict at all, so why should retrenchment protections apply? The Supreme Court took a genuinely worker-protective view, reading the statutory definition of "retrenchment" broadly enough to capture even this situation — reasoning that if employers could simply structure employment as a series of expiring fixed-term contracts, the entire retrenchment-protection scheme built into the Act could be sidestepped entirely, defeating its protective purpose.', principle:'Non-renewal of a fixed-term contract, on its expiry, amounted to "retrenchment" under the then-existing Section 2(oo), attracting the Act\'s notice and compensation protections — a broad, worker-protective interpretation. This position was later partly reversed by the 1984 Amendment, which added an explicit exclusion for genuine non-renewal of fixed-term contracts, illustrating how legislative amendment can directly respond to and narrow an expansive judicial interpretation.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'ID Act to IR Code Consolidation', v:'IR Code 2020 absorbed: Trade Unions Act 1926 + Industrial Employment (Standing Orders) Act 1946 + Industrial Disputes Act 1947' },
+    { k:'Lay-Off vs Retrenchment', v:'Lay-Off = TEMPORARY, employment CONTINUES. Retrenchment = PERMANENT termination (except specified exclusions).' },
+    { k:'Section 25F — 3 Conditions (ID Act)', v:'N-C-N = 1-month Notice (or pay in lieu) + Compensation (15 days\' pay/year) + Notice to appropriate government' },
+    { k:'Dispute Machinery Ladder', v:'Works Committee → Conciliation Officer → Board of Conciliation → Labour Court/Industrial Tribunal → National Tribunal' },
+    { k:'Negotiating Union/Council thresholds', v:'51%+ of workers = SOLE negotiating union. Below 51%, no majority union = negotiating COUNCIL (20%+ per union, proportional seats)' }
+  ]},
+  { icon:'📅', title:'Key Dates & Thresholds', items:[
+    { k:'ID Act 1947 enacted / effective', v:'1947, following the earlier Trade Disputes Act 1929' },
+    { k:'IR Code 2020 — Presidential Assent', v:'28 September 2020' },
+    { k:'IR Code 2020 — came into force', v:'21 November 2025 (with the other 3 Labour Codes)' },
+    { k:'ID Act threshold — permission for lay-off/retrenchment/closure', v:'100+ workers (factories/mines/plantations)' },
+    { k:'IR Code threshold — same requirement', v:'RAISED to 300+ workers' },
+    { k:'Standing Orders threshold — ID Act', v:'100+ workers' },
+    { k:'Standing Orders threshold — IR Code', v:'RAISED to 300+ workers' },
+    { k:'Strike notice — ID Act', v:'Public utility services only' },
+    { k:'Strike notice — IR Code', v:'ALL establishments — 60 days advance notice, strike only after 14 days' },
+    { k:'Trade Union registration minimum', v:'7 or more members' },
+    { k:'Grievance Redressal Committee threshold (IR Code)', v:'20+ workers, max 10 members, equal representation' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'Bangalore Water Supply v. A. Rajappa (1978)', v:'7-judge bench. "Industry" needs no profit motive — systematic activity + employer-worker cooperation suffices. Brought hospitals, universities within scope.' },
+    { k:'State Bank of India v. N. Sundara Money (1976)', v:'Non-renewal of fixed-term contract = retrenchment (later partly reversed by 1984 Amendment adding Section 2(oo)(bb) exclusion).' },
+    { k:'State of Bombay v. Hospital Mazdoor Sabha', v:'Hospitals fall within "industry."' },
+    { k:'D.N. Banerjee v. P.R. Mukherjee', v:'Municipal/civic bodies can fall within "industry."' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'"Workman" (ID Act) vs "Worker" (IR Code)', v:'Broadly similar; IR Code adds journalists/sales promotion employees explicitly, and includes supervisory staff earning up to Rs. 18,000/month.' },
+    { k:'Strike (ID Act) vs Strike (IR Code)', v:'IR Code EXPANDS the definition to include "concerted casual leave" by 50%+ of workers on a given day.' },
+    { k:'Fixed-Term Employment', v:'Genuinely NEW under IR Code — same benefits as permanent workers EXCEPT retrenchment compensation/notice on contract expiry.' },
+    { k:'Re-skilling Fund', v:'NEW under IR Code (Section 83) — employer contributes 15 days\' last-drawn wages for a retrenched worker, credited within 45 days.' },
+    { k:'"Last Come, First Go" (Section 25G)', v:'In category-based retrenchment, the LAST-hired workman in that category is ordinarily retrenched FIRST, absent recorded reasons for departure.' },
+    { k:'Employer penalty change (IR Code)', v:'IMPRISONMENT removed as a penalty for employer offences; imprisonment/fine RETAINED for illegal strike participation by workers.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'The Industrial Disputes Act 1947 was repealed and subsumed into which legislation, effective 21 November 2025?', opts:['The Companies Act 2013', 'The Industrial Relations Code 2020', 'The Factories Act 1948', 'The Minimum Wages Act 1948'], ans:1, exp:'The IR Code 2020 came into force on 21 November 2025, repealing and consolidating the ID Act 1947 along with the Trade Unions Act 1926 and the Industrial Employment (Standing Orders) Act 1946.' },
+  { q:'The Industrial Relations Code 2020 received Presidential Assent on:', opts:['21 November 2025', '28 September 2020', '1 July 2024', '26 January 2020'], ans:1, exp:'The IR Code received Presidential Assent on 28 September 2020, though it did not come into force until 21 November 2025.' },
+  { q:'In Bangalore Water Supply and Sewage Board v. A. Rajappa (1978), the Supreme Court held that for an undertaking to be an "industry":', opts:['Profit motive is absolutely essential', 'Profit motive is NOT necessary; systematic activity through employer-employee cooperation for producing/distributing goods or services suffices', 'Only manufacturing establishments qualify', 'The undertaking must have at least 500 employees'], ans:1, exp:'This 7-judge bench ruling dramatically broadened "industry" to include hospitals, educational institutions, and similar undertakings regardless of profit motive.' },
+  { q:'Under the ID Act, "Lay-Off," as distinguished from "Retrenchment," involves:', opts:['Permanent termination of employment', 'A TEMPORARY failure/inability to provide work, with the employment relationship CONTINUING', 'Voluntary resignation by the worker', 'Termination as a disciplinary punishment'], ans:1, exp:'Lay-off is temporary — the employment relationship continues, distinguishing it from retrenchment\'s permanent termination.' },
+  { q:'Under Section 25F of the ID Act, valid retrenchment of a workman with 1+ year of continuous service requires:', opts:['No formalities whatsoever', 'One month\'s notice (or pay in lieu), compensation of 15 days\' average pay per completed year, and notice to the appropriate government', 'Only a verbal explanation', 'Approval from the workman\'s family'], ans:1, exp:'These are the three mandatory conditions precedent under Section 25F; non-compliance renders retrenchment illegal and void.' },
+  { q:'In State Bank of India v. N. Sundara Money (1976), the Supreme Court initially held that non-renewal of a fixed-term contract:', opts:['Could never amount to retrenchment under any circumstances', 'Amounted to "retrenchment" under Section 2(oo) as it then stood -- later partly reversed by the 1984 Amendment', 'Was outside the ID Act\'s scope entirely', 'Required no compensation regardless of the ruling'], ans:1, exp:'This broad, worker-protective reading was later narrowed when the 1984 Amendment added Section 2(oo)(bb) excluding genuine contract non-renewal.' },
+  { q:'Under the ID Act, government permission before lay-off/retrenchment/closure was generally required for establishments (factories/mines/plantations) employing:', opts:['10 or more workers', '100 or more workers', '1000 or more workers', 'Any number of workers, without exception'], ans:1, exp:'The ID Act set this threshold at 100 workers for the relevant categories of establishments.' },
+  { q:'Under the IR Code 2020, the threshold for requiring government permission before lay-off/retrenchment/closure has been:', opts:['Lowered to 50 workers', 'RAISED to 300 workers', 'Abolished entirely with no threshold', 'Kept identical to the ID Act at 100 workers'], ans:1, exp:'This is one of the most significant current-law changes -- the threshold was raised from 100 to 300 workers, giving employers below this level greater flexibility.' },
+  { q:'Under Section 25G of the ID Act ("last come, first go"), when retrenching workmen of a particular category, the employer should ordinarily retrench:', opts:['The most senior workman in that category first', 'The workman who was LAST employed in that category, absent recorded reasons for departure', 'Workmen in alphabetical order', 'Only workmen who are trade union members'], ans:1, exp:'Section 25G embodies the "last come, first go" principle, protecting workers with greater seniority absent a documented justification for deviation.' },
+  { q:'Under the IR Code 2020, a "Re-skilling Fund" (Section 83) requires the employer to contribute, for a retrenched worker:', opts:['Nothing whatsoever', 'An amount equal to 15 days\' last-drawn wages, credited to the worker within 45 days', 'A full year\'s salary immediately', 'Only a formal apology letter'], ans:1, exp:'This is a genuinely new IR Code feature supporting retrenched workers\' re-skilling/retraining through a dedicated employer-funded contribution.' },
+  { q:'Under the ID Act, strike/lock-out notice requirements traditionally applied specifically to:', opts:['All industrial establishments without exception', 'PUBLIC UTILITY SERVICES specifically', 'Only government-owned enterprises', 'Only establishments with fewer than 10 workers'], ans:1, exp:'The traditional ID Act framework limited mandatory strike notice requirements to public utility services.' },
+  { q:'Under the IR Code 2020, strike/lock-out notice requirements have been EXPANDED to apply to:', opts:['No establishments at all, having been abolished', 'ALL industrial establishments, requiring 60 days\' advance notice with the strike permissible only after 14 days', 'Only establishments outside major cities', 'Only public utility services, unchanged from the ID Act'], ans:1, exp:'This is a major current-law expansion -- notice requirements under the IR Code now apply universally, not merely to public utilities.' },
+  { q:'The IR Code\'s definition of "Strike" has been expanded to explicitly include:', opts:['Only physical work stoppage on factory premises', '"Concerted casual leave" taken by 50% or more workers on a given day', 'Only strikes lasting more than 30 days', 'Only strikes called by registered political parties'], ans:1, exp:'This closes a loophole -- coordinated mass casual leave is now explicitly deemed a strike under the IR Code, unlike the older ID Act framework.' },
+  { q:'The correct sequence of the traditional dispute-settlement machinery ladder is generally:', opts:['Industrial Tribunal directly, with no earlier stages', 'Works Committee → Conciliation Officer → Board of Conciliation → Labour Court/Industrial Tribunal → National Tribunal', 'National Tribunal first, then working backward', 'There is no defined sequence at all'], ans:1, exp:'This is the settled, progressively escalating dispute-resolution ladder under Indian labour law, largely retained in substance under the IR Code.' },
+  { q:'A "National Tribunal" is constituted for disputes:', opts:['Involving only two employees', 'Of national importance, or affecting industrial establishments in more than one State', 'Only within a single small town', 'Only relating to trade union registration'], ans:1, exp:'National Tribunals handle disputes with cross-state significance or genuine national importance, distinct from ordinary Labour Courts/Industrial Tribunals.' },
+  { q:'For registration under Indian trade union law, a trade union must generally have:', opts:['At least 1000 members', 'SEVEN OR MORE members', 'Only management-approved members', 'No minimum membership requirement at all'], ans:1, exp:'Seven members is the traditional minimum threshold for trade union registration, continuing under the IR Code framework.' },
+  { q:'A registered trade union\'s office-bearers generally enjoy immunity from:', opts:['All criminal liability of any kind whatsoever', 'Criminal conspiracy charges for acts done in furtherance of a genuine trade dispute, unless the act itself would independently be an offence', 'Only civil liability, never criminal liability', 'No immunity of any kind'], ans:1, exp:'This immunity protects legitimate trade union activity (like organising a lawful strike) from being criminalised as conspiracy, while not shielding independently unlawful acts.' },
+  { q:'Under the IR Code, where a SINGLE registered trade union has 51% or more of workers on the muster roll, it is recognised as:', opts:['Only an advisory, non-binding body', 'The SOLE negotiating union of that establishment', 'Automatically dissolved', 'Required to merge with a rival union'], ans:1, exp:'The 51% threshold grants sole recognised negotiating status -- a genuinely new, structured mechanism absent from the earlier Trade Unions Act framework.' },
+  { q:'Where NO single trade union reaches the 51% threshold under the IR Code, the employer must instead constitute:', opts:['No body at all -- negotiation becomes impossible', 'A NEGOTIATING COUNCIL, comprising representatives from unions each holding at least 20% support', 'A single management-appointed representative', 'A court-appointed arbitrator automatically'], ans:1, exp:'The negotiating council mechanism ensures structured, proportional representation even where no single union commands majority support.' },
+  { q:'Under the ID Act/Standing Orders Act framework, formal Standing Orders were generally required for establishments with:', opts:['10 or more workers', '100 or more workers', '1000 or more workers', 'No minimum threshold whatsoever'], ans:1, exp:'The traditional threshold for mandatory standing orders was 100 or more workers.' },
+  { q:'Under the IR Code 2020, the Standing Orders applicability threshold has been:', opts:['Lowered to 50 workers', 'RAISED to 300 or more workers', 'Left completely unchanged at 100 workers', 'Abolished entirely'], ans:1, exp:'This mirrors the same threshold increase seen for lay-off/retrenchment/closure permission requirements -- a consistent IR Code theme of raising compliance thresholds.' },
+  { q:'"Fixed-Term Employment," a genuinely new concept under the IR Code 2020, entitles such workers to:', opts:['No benefits whatsoever compared to permanent workers', 'The SAME statutory benefits (wages, hours, gratuity) as permanent workers, EXCEPT retrenchment compensation/notice on contract expiry', 'Only benefits equal to half of what permanent workers receive', 'Benefits only after 10 years of continuous fixed-term renewal'], ans:1, exp:'Fixed-term employees receive parity with permanent workers on most benefits, but retrenchment compensation does not apply since non-renewal is excluded from the "retrenchment" definition.' },
+  { q:'A "Grievance Redressal Committee," mandatory under the IR Code for establishments with 20+ workers, must have:', opts:['Only employer-appointed members with no worker representation', 'EQUAL representation of employer and worker sides, with proportional women\'s representation, up to a maximum of 10 members', 'Exactly 3 members regardless of establishment size', 'No fixed composition requirements at all'], ans:1, exp:'This mandated equal-representation, gender-inclusive structure ensures a genuinely balanced internal grievance mechanism.' },
+  { q:'Under the IR Code, the penalty structure for offences has changed such that:', opts:['Imprisonment now applies equally to both employers and employees for all offences', 'Imprisonment has been REMOVED as a penalty for employer offences, while RETAINED for illegal strike participation by employees', 'All penalties have been abolished entirely', 'Only employers, never employees, can now face any penalty'], ans:1, exp:'This asymmetric change reflects the IR Code\'s broader "ease of doing business" orientation for employers, while maintaining deterrence against illegal strikes.' },
+  { q:'"Industrial Dispute" under Section 2A of the ID Act extends "deemed" industrial dispute status even to disputes involving:', opts:['Only disputes involving an entire registered trade union', 'An INDIVIDUAL workman\'s discharge, dismissal, retrenchment, or termination, even without any other workman or union being party to it', 'Only disputes exceeding a specified monetary value', 'Only disputes between two different employers'], ans:1, exp:'Section 2A provides an important protective extension, allowing individual workers to pursue statutory dispute-resolution machinery even without collective/union backing.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
