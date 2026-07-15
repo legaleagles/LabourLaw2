@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIBE Practice — CrPC / BNSS — lawsticker-ai.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">AIBE: CrPC / BNSS</div>
+  <div class="splash-sub">AIBE Bar Exam Practice · All India</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">AIBE CrPC/BNSS Practice</div>
+  <div class="topbar-badge">AIBE</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>AIBE: CrPC / BNSS</h1>
+      <p>All India Bar Examination practice set — the CrPC-to-BNSS correspondence table, FIR/arrest/bail rules, and repeat case-law questions. Coaches rate this among the highest-scoring AIBE subjects, since questions repeat heavily year over year.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">AIBE XXI Syllabus</span>
+        <span class="hero-tag">30 Practice Questions</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">30</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Fact Bank</div>
+        <div class="qc-count">4 topic areas</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 landmark cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">30 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ Trainer's Top Priority</div>
+      <div class="exam-tip-text">Master the CrPC-to-BNSS correspondence table FIRST -- coaches rate this the single highest-yield thing you can do for this subject. A large share of repeated questions is simply "which section is this now?" between the old and new codes.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Lalita Kumari v. State of U.P. (2014, mandatory FIR) and D.K. Basu v. State of West Bengal (1997, arrest/custody safeguards). Also know Joginder Kumar, State of Rajasthan v. Balchand ("bail is the rule"), and Satender Kumar Antil v. CBI (2022).</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">FIR: 154 CrPC = 173 BNSS. Arrest: 41 = 35. Anticipatory Bail: 438 = 482. Default Bail: 167(2) = 187. BNSS came into force 1 July 2024, has 531 sections vs CrPC's 484. Section 479: first-time offenders released after 1/3 max sentence.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 4 topic areas -- CrPC/BNSS Correspondence Table, FIR/Arrest/Bail, Courts & Trial Types, Landmark Case Law. 30 AIBE-style questions, order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// AIBE PRACTICE — CrPC / BNSS  |  lawsticker-ai.com
+// Trainer note: this subject is graded "highly scoring" by AIBE
+// coaches because questions repeat with only wording changes
+// year over year. Master the CrPC-to-BNSS correspondence table
+// below FIRST -- it is the single highest-yield thing you can do.
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'The CrPC-to-BNSS Correspondence Table — Master This First', marks:'~8-10 Qs draw directly from this', content:`
+    <p><strong>Trainer's note:</strong> AIBE tests BOTH the old CrPC section numbers (still used in most bare acts, case law, and older PYQs) AND the new BNSS numbers. The single highest-yield thing you can do for this subject is memorise this correspondence table cold — a huge share of repeated questions is just "which section is this now?"</p>
+    <table>
+      <tr><th>Concept</th><th>Old CrPC</th><th>New BNSS</th></tr>
+      <tr><td>Definitions</td><td>Section 2</td><td>Section 2</td></tr>
+      <tr><td>Information in Cognizable Cases (FIR)</td><td>Section 154</td><td>Section 173</td></tr>
+      <tr><td>Information in Non-Cognizable Cases</td><td>Section 155</td><td>Section 174</td></tr>
+      <tr><td>Police power to investigate cognizable case</td><td>Section 156</td><td>Section 175</td></tr>
+      <tr><td>Police power to summon persons (during investigation)</td><td>Section 160</td><td>Section 179 area / 195</td></tr>
+      <tr><td>Statement of witnesses to police</td><td>Section 161</td><td>Section 180</td></tr>
+      <tr><td>Confessions/statements recorded by Magistrate</td><td>Section 164</td><td>Section 183</td></tr>
+      <tr><td>Police inquiry into suicide/accidental/suspicious death</td><td>Section 174</td><td>Section 194</td></tr>
+      <tr><td>Completion of investigation / charge sheet</td><td>Section 173</td><td>Section 193</td></tr>
+      <tr><td>Arrest without warrant — grounds</td><td>Section 41</td><td>Section 35</td></tr>
+      <tr><td>Grounds of arrest must be informed</td><td>Section 50</td><td>Section 47/48 area</td></tr>
+      <tr><td>Arrest with warrant</td><td>Section 70+</td><td>Section 44+</td></tr>
+      <tr><td>Production before Magistrate within 24 hrs</td><td>Section 57</td><td>Section 58</td></tr>
+      <tr><td>Maintenance of wives, children, parents</td><td>Section 125</td><td>Section 144</td></tr>
+      <tr><td>Bail — bailable offences (as of right)</td><td>Section 436</td><td>Section 478</td></tr>
+      <tr><td>Bail — non-bailable offences (court discretion)</td><td>Section 437</td><td>Section 480</td></tr>
+      <tr><td>Anticipatory Bail</td><td>Section 438</td><td>Section 482</td></tr>
+      <tr><td>High Court / Sessions Court powers re: bail</td><td>Section 439</td><td>Section 483</td></tr>
+      <tr><td>Default bail (chargesheet not filed in time)</td><td>Section 167(2)</td><td>Section 187</td></tr>
+      <tr><td>Undertrial release after 1/2 max sentence served</td><td>Section 436A</td><td>Section 479</td></tr>
+      <tr><td>Power to tender pardon</td><td>Section 306</td><td>Section 343</td></tr>
+      <tr><td>Quashing of FIR / inherent powers of High Court</td><td>Section 482</td><td>Section 528</td></tr>
+    </table>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Notice the pattern: BNSS numbers are consistently HIGHER than the old CrPC numbers for equivalent provisions, since BNSS has 531 sections vs CrPC's 484. When a question doesn't specify old/new, check the options — if answer choices include numbers like "35" and "41," it's likely testing whether YOU know both refer to the SAME concept (arrest without warrant).</div>
+  `},
+  { id:'T2', title:'FIR, Arrest and Bail — Trainer\'s High-Yield Facts', marks:'~6-8 Qs', content:`
+    <h4>FIR — First Information Report (Section 173 BNSS / 154 CrPC)</h4>
+    <ul>
+      <li>MANDATORY for any information disclosing a COGNIZABLE offence — police CANNOT refuse registration (settled in Lalita Kumari v. State of U.P.)</li>
+      <li>Can be given ORALLY or by ELECTRONIC COMMUNICATION (a genuinely new BNSS addition)</li>
+      <li>ZERO FIR continues under BNSS — can be filed at ANY police station regardless of jurisdiction, later transferred to the correct one</li>
+      <li>Complainant is entitled to a FREE COPY of the FIR</li>
+      <li>For NON-cognizable offences, police CANNOT investigate without the Magistrate's permission — this is Section 174 BNSS (Section 155 CrPC)</li>
+      <li>NEW in BNSS: for offences punishable 3-7 years, police MAY conduct a PRELIMINARY ENQUIRY (with DySP-rank permission) within 14 DAYS before formally registering, to check for a prima facie case — a genuinely new, frequently tested provision absent from the old CrPC</li>
+    </ul>
+    <h4>Arrest Without Warrant (Section 35 BNSS / 41 CrPC)</h4>
+    <ul>
+      <li>Permitted for cognizable offences, proclaimed offenders, and specified other categories</li>
+      <li>Arrested person must be INFORMED of grounds of arrest (Section 50 CrPC area)</li>
+      <li>NEW in BNSS — arrest is generally an EXCEPTION, not the default, for offences punishable with LESS than 7 years — police must record reasons for arresting rather than merely issuing a notice</li>
+      <li>Production before Magistrate: within 24 HOURS of arrest, EXCLUDING travel time (Article 22 of the Constitution + Section 58 BNSS/57 CrPC)</li>
+    </ul>
+    <h4>Bail — The Four Types Every Candidate Must Know</h4>
+    <table>
+      <tr><th>Type</th><th>When</th></tr>
+      <tr><td>Regular Bail</td><td>Accused already in custody applies for release</td></tr>
+      <tr><td>Anticipatory Bail (S.482 BNSS / 438 CrPC)</td><td>BEFORE arrest, in anticipation of being accused of a non-bailable offence</td></tr>
+      <tr><td>Default/Statutory Bail (S.187 BNSS / 167(2) CrPC)</td><td>Chargesheet not filed within 60 or 90 days (depending on offence severity)</td></tr>
+      <tr><td>Interim Bail</td><td>Temporary, pending decision on a regular/anticipatory bail application</td></tr>
+    </table>
+    <h4>Bailable vs Non-Bailable — The Core Distinction</h4>
+    <p>BAILABLE offence — bail is a MATTER OF RIGHT (Section 478 BNSS / 436 CrPC), the accused MUST be released on furnishing bail/bond. NON-BAILABLE offence — bail is DISCRETIONARY (Section 480 BNSS / 437 CrPC), granted or refused by the court considering factors like severity of offence, likelihood of repeat offence, risk of tampering with evidence.</p>
+    <h4>Genuinely New BNSS Reform — Section 479 (First-Time Offender Release)</h4>
+    <p>An undertrial who is a FIRST-TIME offender and has served ONE-THIRD of the maximum sentence for the alleged offence is entitled to release on bond — the Superintendent of Jail must PROACTIVELY apply on their behalf (not wait for the prisoner to apply). This does NOT apply to offences punishable with death or life imprisonment. A frequently tested "what's new" provision.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Trainer tip: whenever a question describes a SCENARIO (a fact pattern) rather than asking directly "which section," first identify whether it's about (a) registering a complaint = FIR rules, (b) taking someone into custody = arrest rules, or (c) getting someone released = bail rules. This three-way sorting instantly narrows your options even before you recall the exact section number.</div>
+  `},
+  { id:'T3', title:'Cognizable/Non-Cognizable, Courts and Trial Types', marks:'~6-8 Qs', content:`
+    <h4>Cognizable vs Non-Cognizable — The Foundational Distinction</h4>
+    <p><strong>Cognizable Offence</strong> — police CAN arrest WITHOUT a warrant and investigate WITHOUT prior Magistrate permission (e.g., murder, rape, robbery — generally serious offences). <strong>Non-Cognizable Offence</strong> — police CANNOT arrest without a warrant, and need the Magistrate's PERMISSION before investigating (e.g., defamation, simple assault — generally less serious offences).</p>
+    <h4>Bailable vs Non-Bailable — Do NOT Confuse with Cognizable/Non-Cognizable</h4>
+    <p>Trainer warning: AIBE frequently sets a TRAP pairing these two distinct classifications. A cognizable offence is NOT automatically non-bailable, and vice versa — always check the SPECIFIC offence's classification independently for each of the two categories; don't assume one from the other.</p>
+    <h4>Hierarchy of Criminal Courts</h4>
+    <ul>
+      <li><strong>Supreme Court</strong> — apex appellate/constitutional criminal jurisdiction</li>
+      <li><strong>High Court</strong> — appeals, revisions, and INHERENT POWERS (Section 528 BNSS / 482 CrPC — quashing FIRs, preventing abuse of court process)</li>
+      <li><strong>Sessions Court</strong> — tries serious offences (Sessions Trial); also handles bail applications under Section 483 BNSS/439 CrPC</li>
+      <li><strong>Magistrate Courts</strong> — Judicial Magistrate First/Second Class, Metropolitan Magistrate (note: BNSS ELIMINATES the specific "Metropolitan Magistrate"/"Metropolitan Area" designation that existed under the old CrPC — a frequently tested "what changed" fact)</li>
+      <li><strong>Executive Magistrates</strong> — administrative/law-and-order functions (distinct from Judicial Magistrates)</li>
+    </ul>
+    <h4>Four Kinds of Trial — By Offence Severity</h4>
+    <table>
+      <tr><th>Trial Type</th><th>Applies To</th></tr>
+      <tr><td>Sessions Trial</td><td>Most serious offences (e.g., murder), tried by Sessions Court</td></tr>
+      <tr><td>Warrant Trial</td><td>Offences punishable with imprisonment EXCEEDING 2 years</td></tr>
+      <tr><td>Summons Trial</td><td>Minor offences, punishment NOT exceeding 2 years</td></tr>
+      <tr><td>Summary Trial</td><td>Petty offences, decided quickly with simplified procedure</td></tr>
+    </table>
+    <h4>Confessions and Statements</h4>
+    <p>A confession/statement recorded by a MAGISTRATE under Section 183 BNSS (Section 164 CrPC) carries significant evidentiary weight. Only a CHIEF JUDICIAL MAGISTRATE or METROPOLITAN MAGISTRATE (specific authority) may tender a PARDON under Section 343 BNSS (Section 306 CrPC) — if tendered by an unauthorised magistrate, the proceedings are VITIATED (a specific, frequently repeated AIBE trap question).</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> The BNSS elimination of "Metropolitan Magistrate" as a distinct designation (unlike the old CrPC, which had special provisions for cities with 1 million+ population) is a genuinely new, frequently tested "what changed" fact. Always double-check whether a question is asking about Cognizable/Non-Cognizable OR Bailable/Non-Bailable — they are NOT the same classification.</div>
+  `},
+  { id:'T4', title:'Landmark Case Law — Repeat AIBE Questions', marks:'Distributed across the paper', content:`
+    <table>
+      <tr><th>Case</th><th>Principle</th></tr>
+      <tr><td>Lalita Kumari v. State of U.P. (2014)</td><td>Registration of FIR is MANDATORY when information discloses a cognizable offence — police cannot refuse or insist on a preliminary inquiry first (subject to the later, narrow preliminary-enquiry exceptions now codified in BNSS)</td></tr>
+      <tr><td>D.K. Basu v. State of West Bengal (1997)</td><td>Laid down mandatory guidelines for arrest and detention to prevent custodial torture — arrest memo, right to inform a relative/friend, medical examination</td></tr>
+      <tr><td>Joginder Kumar v. State of U.P. (1994)</td><td>Arrest is NOT mandatory merely because it is lawful — arrest should be justified by genuine necessity for investigation/prevention of further offence</td></tr>
+      <tr><td>State of Rajasthan v. Balchand alias Baliay (1977)</td><td>"Bail is the rule, jail is the exception" — a foundational principle on personal liberty guiding bail decisions</td></tr>
+      <tr><td>Satender Kumar Antil v. CBI (2022)</td><td>Called for streamlined, more liberal bail practices; directly influenced BNSS's Section 479 first-time-offender release reform</td></tr>
+      <tr><td>Uday Mohanlal Acharya v. State of Maharashtra (2001)</td><td>Clarified the operation of default/statutory bail rights and when they crystallise versus lapse</td></tr>
+    </table>
+    <h4>Trainer's Final Strategy Note for This Subject</h4>
+    <p>CrPC/BNSS is rated "highly scoring" by experienced AIBE coaches specifically BECAUSE the question pool repeats heavily with only minor wording changes year over year. Unlike Constitutional Law (which demands broad memorisation across many articles), this subject rewards deep mastery of a NARROWER set of high-frequency provisions: FIR rules, arrest grounds, the four bail types, and the correspondence table. Spend disproportionate practice time here relative to its already-high weightage — the return on effort is exceptional.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Case-law questions in this subject test the ONE-LINE PRINCIPLE, not detailed facts — practice recognising "Lalita Kumari = mandatory FIR" and "D.K. Basu = arrest guidelines" as instant, automatic recall pairs.</div>
+  `}
+];
+
+const CASES = [
+  { year:'2014', name:'Lalita Kumari v. State of U.P.', tag:'FIR', tagColor:'gold', story:'A father whose minor daughter had gone missing went to the police station to register a complaint -- only to be told that no FIR could be filed until the police first conducted their own preliminary inquiry to decide whether the case was genuine. This practice was disturbingly common across India, and it meant precious hours or days could be lost in cases where every moment counted. The Supreme Court, confronting this practice head-on, drew a hard line: when information genuinely discloses a cognizable offence, there is simply no room for police discretion about whether to record it.', principle:'Registration of an FIR is MANDATORY when information discloses a cognizable offence -- police cannot refuse registration or insist on a preliminary inquiry as a precondition, subject only to the narrow, later-codified exceptions (e.g., matrimonial/family disputes, medical negligence, corruption cases) where a limited preliminary enquiry may still be appropriate.' },
+  { year:'1997', name:'D.K. Basu v. State of West Bengal', tag:'Arrest & Custody Guidelines', tagColor:'teal', story:'Reports of custodial deaths and torture in police stations across India prompted the Supreme Court to lay down comprehensive, mandatory safeguards -- transforming vague constitutional protections into concrete, checklist-style procedural requirements every arresting officer must follow.', principle:'Laid down mandatory guidelines for arrest and detention, including preparation of an arrest memo, the arrested person\'s right to have a relative or friend informed, and the right to a medical examination -- procedural safeguards now substantially reflected in the BNSS framework itself.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'AIBE Number Bank — Correspondence Table (Memorise)', items:[
+    { k:'FIR: CrPC 154 = BNSS 173', v:'The single most tested cross-reference in this entire subject' },
+    { k:'Arrest without warrant: CrPC 41 = BNSS 35', v:'BNSS makes arrest an exception (not default) for offences under 7 years' },
+    { k:'Anticipatory Bail: CrPC 438 = BNSS 482', v:'Granted only by Sessions Court / High Court, never a Magistrate' },
+    { k:'Default Bail: CrPC 167(2) = BNSS 187', v:'Chargesheet not filed within 60/90 days depending on offence severity' },
+    { k:'Maintenance: CrPC 125 = BNSS 144', v:'Wife, children, parents unable to maintain themselves' },
+    { k:'Inherent Powers/Quashing: CrPC 482 = BNSS 528', v:'High Court only -- to prevent abuse of process or secure justice' }
+  ]},
+  { icon:'📅', title:'AIBE Number Bank — Key Facts', items:[
+    { k:'BNSS total sections', v:'531 (vs CrPC\'s 484)' },
+    { k:'BNSS came into force', v:'1 July 2024' },
+    { k:'Production before Magistrate', v:'Within 24 hours of arrest, excluding travel time' },
+    { k:'First-time offender release (S.479 BNSS)', v:'After serving 1/3 of max sentence; jail superintendent must apply proactively' },
+    { k:'Preliminary enquiry (NEW in BNSS)', v:'For offences punishable 3-7 years, within 14 days, with DySP-rank permission' },
+    { k:'Pardon can only be tendered by', v:'Chief Judicial Magistrate or Metropolitan Magistrate -- otherwise proceedings are VITIATED' }
+  ]},
+  { icon:'🏛️', title:'Case Law Quick-Match', items:[
+    { k:'Lalita Kumari v. State of U.P. (2014)', v:'FIR registration is mandatory for cognizable offences.' },
+    { k:'D.K. Basu v. State of West Bengal (1997)', v:'Mandatory arrest/custody safeguards against torture.' },
+    { k:'Joginder Kumar v. State of U.P. (1994)', v:'Arrest is not automatic just because it is lawful -- must be justified by necessity.' },
+    { k:'State of Rajasthan v. Balchand (1977)', v:'"Bail is the rule, jail is the exception."' },
+    { k:'Satender Kumar Antil v. CBI (2022)', v:'Called for liberal, streamlined bail practice -- influenced BNSS Section 479.' }
+  ]},
+  { icon:'⚖️', title:'Trap Questions to Watch For', items:[
+    { k:'Cognizable ≠ Non-Bailable', v:'These are TWO SEPARATE classifications -- never assume one from the other.' },
+    { k:'"Metropolitan Magistrate"', v:'ELIMINATED as a distinct designation under BNSS -- a frequently tested "what changed" fact.' },
+    { k:'Pardon by wrong Magistrate', v:'Vitiates the entire proceeding -- a classic repeated trap question.' },
+    { k:'Old vs New section numbers', v:'If a question doesn\'t say "CrPC" or "BNSS," check option style -- BNSS numbers are consistently HIGHER for equivalent provisions.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Under which section is a First Information Report (FIR) recorded under BNSS 2023?', opts:['Section 154', 'Section 173', 'Section 190', 'Section 41'], ans:1, exp:'Section 173 BNSS corresponds to the old Section 154 CrPC -- FIR registration.' },
+  { q:'What was the equivalent provision for FIR registration under the OLD CrPC, 1973?', opts:['Section 154', 'Section 173', 'Section 41', 'Section 125'], ans:0, exp:'Section 154 CrPC was the FIR provision, now Section 173 under BNSS.' },
+  { q:'Which section provides for Anticipatory Bail under the BNSS?', opts:['Section 436', 'Section 478', 'Section 482', 'Section 483'], ans:2, exp:'Section 482 BNSS corresponds to Section 438 CrPC -- Anticipatory Bail.' },
+  { q:'Who can grant anticipatory bail?', opts:['A Magistrate of any class', 'Sessions Court or High Court', 'Only the police', 'Only the Supreme Court'], ans:1, exp:'Anticipatory bail can only be granted by the Sessions Court or High Court, never a Magistrate.' },
+  { q:'Under the old CrPC, Section 125 deals with:', opts:['FIR registration', 'Arrest without warrant', 'Maintenance of wives, children, and parents', 'Search and seizure'], ans:2, exp:'Section 125 CrPC (now Section 144 BNSS) governs maintenance obligations.' },
+  { q:'Under BNSS, arrest without a warrant is governed by which section, corresponding to Section 41 of the old CrPC?', opts:['Section 35', 'Section 44', 'Section 58', 'Section 50'], ans:0, exp:'Section 35 BNSS corresponds to Section 41 CrPC on arrest without warrant.' },
+  { q:'A person arrested must be produced before a Magistrate within how many hours, excluding travel time?', opts:['12 hours', '24 hours', '48 hours', '72 hours'], ans:1, exp:'This is a constitutional requirement (Article 22) mirrored in Section 58 BNSS/Section 57 CrPC.' },
+  { q:'Which of the following correctly describes registration of an FIR for a COGNIZABLE offence?', opts:['Police may refuse and require a preliminary inquiry first in every case', 'Registration is MANDATORY -- police cannot refuse (per Lalita Kumari v. State of U.P.)', 'Only a Magistrate can register an FIR', 'FIR can only be filed within 24 hours of the offence'], ans:1, exp:'Lalita Kumari v. State of U.P. (2014) made FIR registration mandatory for cognizable offences, subject to narrow later exceptions.' },
+  { q:'The genuinely NEW "Zero FIR" provision under BNSS allows:', opts:['FIR to be filed only at the police station with territorial jurisdiction', 'FIR to be filed at ANY police station regardless of jurisdiction, later transferred to the correct one', 'FIR to be filed only online', 'No FIR to be filed for offences committed abroad'], ans:1, exp:'Zero FIR removes jurisdictional barriers to initial FIR registration, with later transfer to the appropriate police station.' },
+  { q:'For a NON-cognizable offence, the police:', opts:['Can arrest without a warrant and investigate freely', 'CANNOT arrest without a warrant, and need the Magistrate\'s permission before investigating', 'Have identical powers to cognizable offences', 'Cannot ever register any complaint'], ans:1, exp:'Non-cognizable offences require both an arrest warrant AND magisterial permission to investigate, unlike cognizable offences.' },
+  { q:'"Bailable" vs "Non-Bailable" offences, as distinguished from "Cognizable" vs "Non-Cognizable" offences, are:', opts:['Exactly the same classification under different names', 'TWO SEPARATE, independent classifications -- a cognizable offence is not automatically non-bailable', 'Only relevant for civil cases', 'Abolished entirely under BNSS'], ans:1, exp:'These are two independent classification systems -- a frequently tested AIBE trap where candidates wrongly assume one from the other.' },
+  { q:'In a BAILABLE offence, bail is:', opts:['Entirely at the court\'s discretion', 'A MATTER OF RIGHT -- the accused must be released on furnishing bail/bond', 'Never available under any circumstances', 'Available only to first-time offenders'], ans:1, exp:'Section 478 BNSS (Section 436 CrPC) makes bail a matter of right in bailable offences.' },
+  { q:'In a NON-BAILABLE offence, bail is:', opts:['Automatically granted in every case', 'DISCRETIONARY -- granted or refused by the court based on relevant factors', 'Only available to women', 'Impossible to obtain under any circumstances'], ans:1, exp:'Section 480 BNSS (Section 437 CrPC) makes non-bailable offence bail a matter of judicial discretion.' },
+  { q:'"Default Bail" (or "Statutory Bail") arises when:', opts:['The accused simply requests it verbally', 'The chargesheet is NOT filed within the statutory 60 or 90-day period', 'The accused has a clean prior record', 'The victim withdraws the complaint'], ans:1, exp:'Section 187 BNSS (Section 167(2) CrPC) creates a statutory right to bail if investigation/chargesheet filing exceeds the prescribed period.' },
+  { q:'Under the genuinely NEW Section 479 BNSS, a first-time offender who has served how much of the maximum sentence is entitled to release on bond?', opts:['One-half', 'One-third', 'Two-thirds', 'The entire sentence'], ans:1, exp:'Section 479 BNSS entitles first-time offenders to release after serving one-third of the maximum sentence, with the jail superintendent required to apply proactively.' },
+  { q:'Section 479 BNSS\'s first-time offender release provision does NOT apply to offences punishable with:', opts:['Simple imprisonment only', 'Death or life imprisonment', 'Fine only', 'Any offence whatsoever, it applies universally'], ans:1, exp:'This important carve-out excludes the most serious offences from the accelerated release mechanism.' },
+  { q:'A confession or statement recorded by a Magistrate is governed under BNSS by which section, corresponding to Section 164 CrPC?', opts:['Section 173', 'Section 183', 'Section 193', 'Section 35'], ans:1, exp:'Section 183 BNSS corresponds to Section 164 CrPC on Magistrate-recorded confessions/statements.' },
+  { q:'A "Pardon" under Section 343 BNSS (Section 306 CrPC) may be tendered ONLY by:', opts:['Any Magistrate of any class', 'A Chief Judicial Magistrate or Metropolitan Magistrate specifically', 'A police officer', 'The complainant'], ans:1, exp:'If tendered by an unauthorised Magistrate, the entire proceeding is VITIATED -- a frequently repeated AIBE trap question.' },
+  { q:'Which of the following classifications was ELIMINATED as a distinct designation under BNSS, unlike the old CrPC?', opts:['Sessions Court', 'Metropolitan Magistrate', 'High Court', 'Executive Magistrate'], ans:1, exp:'BNSS removed the specific "Metropolitan Magistrate"/"Metropolitan Area" designation that existed for large cities under the old CrPC.' },
+  { q:'A "Warrant Trial" applies to offences punishable with imprisonment:', opts:['Not exceeding 2 years', 'EXCEEDING 2 years', 'Only capital punishment cases', 'Only fine, no imprisonment'], ans:1, exp:'Warrant trials handle more serious offences (over 2 years), distinct from Summons Trials for lesser offences.' },
+  { q:'A "Summons Trial" applies to offences punishable with imprisonment:', opts:['Exceeding 5 years', 'NOT exceeding 2 years', 'Only life imprisonment', 'Death penalty cases'], ans:1, exp:'Summons trials are for relatively minor offences with punishment not exceeding 2 years.' },
+  { q:'In D.K. Basu v. State of West Bengal (1997), the Supreme Court laid down guidelines primarily addressing:', opts:['Bail procedures only', 'Arrest and custody safeguards to prevent custodial torture', 'Only civil procedure matters', 'Tax law compliance'], ans:1, exp:'D.K. Basu established mandatory safeguards including arrest memos, informing a relative/friend, and medical examination.' },
+  { q:'In Joginder Kumar v. State of U.P. (1994), the Supreme Court held that:', opts:['Arrest must always happen whenever an offence is lawfully alleged', 'Arrest is NOT mandatory merely because it is lawful -- it must be justified by genuine necessity', 'Only women can refuse arrest', 'Arrest requires no justification whatsoever'], ans:1, exp:'This case established that arrest requires genuine necessity, not merely legal permissibility -- a principle now reflected in BNSS\'s arrest-as-exception approach for offences under 7 years.' },
+  { q:'The maxim "Bail is the rule, jail is the exception" is most associated with which case?', opts:['Lalita Kumari v. State of U.P.', 'State of Rajasthan v. Balchand alias Baliay (1977)', 'D.K. Basu v. State of West Bengal', 'Joginder Kumar v. State of U.P.'], ans:1, exp:'This foundational principle on personal liberty and bail comes from State of Rajasthan v. Balchand.' },
+  { q:'Satender Kumar Antil v. CBI (2022) is significant because it:', opts:['Abolished all bail provisions', 'Called for streamlined, more liberal bail practices, directly influencing BNSS Section 479', 'Dealt exclusively with civil procedure', 'Was overturned immediately after being decided'], ans:1, exp:'This Supreme Court ruling directly shaped the BNSS reform introducing accelerated first-time offender release.' },
+  { q:'The BNSS 2023 contains how many total sections, compared to the CrPC\'s 484?', opts:['450 sections', '531 sections', '380 sections', '600 sections'], ans:1, exp:'BNSS has 531 sections, more than the CrPC\'s 484, reflecting both consolidation and new additions.' },
+  { q:'BNSS 2023 came into force on:', opts:['26 January 2024', '1 July 2024', '15 August 2024', '1 January 2025'], ans:1, exp:'BNSS, along with BNS and BSA, came into force on 1 July 2024.' },
+  { q:'Under BNSS, for offences punishable with imprisonment of 3 to 7 years, police may now:', opts:['Never investigate under any circumstances', 'Conduct a PRELIMINARY ENQUIRY (with DySP-rank permission) within 14 days before formal FIR registration', 'Arrest immediately without any procedure', 'Only investigate with a High Court order'], ans:1, exp:'This is a genuinely new BNSS provision for this specific punishment-severity band, frequently tested as a "what\'s new" question.' },
+  { q:'The Inherent Powers of the High Court (e.g., to quash an FIR) are governed under BNSS by which section, corresponding to Section 482 CrPC?', opts:['Section 173', 'Section 439', 'Section 528', 'Section 35'], ans:2, exp:'Section 528 BNSS corresponds to the well-known Section 482 CrPC inherent powers provision.' },
+  { q:'A complainant registering an FIR is entitled to:', opts:['No copy of the FIR under any circumstances', 'A FREE COPY of the FIR', 'A copy only after paying a fee', 'A copy only if the case goes to trial'], ans:1, exp:'BNSS confirms the complainant\'s right to receive a free copy of the registered FIR.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
