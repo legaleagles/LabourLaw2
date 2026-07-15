@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIBE Practice — Constitutional Law — lawsticker-ai.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">AIBE: Constitutional Law</div>
+  <div class="splash-sub">AIBE Bar Exam Practice · All India</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">AIBE Constitutional Law Practice</div>
+  <div class="topbar-badge">AIBE</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>AIBE: Constitutional Law</h1>
+      <p>All India Bar Examination practice set — precise Article numbers, Amendment years, Schedule contents, and repeat case-law questions, in the exact factual style AIBE actually tests. Constitutional Law is typically the single highest-weightage AIBE subject.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">AIBE XXI Syllabus</span>
+        <span class="hero-tag">30 Practice Questions</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">30</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Fact Bank</div>
+        <div class="qc-count">4 topic areas</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">10 repeat AIBE cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">30 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ AIBE Weightage Fact</div>
+      <div class="exam-tip-text">Constitutional Law contributes 20-25% of the entire AIBE paper (typically ~10 direct questions) -- the single highest-weightage subject in the exam. Questions are direct, factual, and heavily repeated year over year -- exact Article numbers and Amendment years score marks, not conceptual essays.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Most-Repeated Case Sequence</div>
+      <div class="exam-tip-text">Shankari Prasad (1951) -> Golaknath (1967) -> Kesavananda Bharati (1973) -> Minerva Mills (1980) is one of the single most repeated AIBE question patterns across multiple past papers. Know all four, in order, with exact years and one-line holdings.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">42nd Amendment 1976 (Preamble words + Fundamental Duties). 44th Amendment 1978 (armed rebellion). 86th Amendment 2002 (Art 21A). President min age 35, term 5 years. SC judges retire at 65, HC judges at 62. Article 22: 24-hour production before Magistrate.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 4 topic areas -- Preamble/FRs/DPSPs, Writs/Emergency/Amendment, Union/State Structure/Schedules, Landmark Case Law. 30 AIBE-style questions, order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// AIBE PRACTICE — CONSTITUTIONAL LAW  |  lawsticker-ai.com
+// AIBE-style: precise, factual, bare-act/amendment/article recall
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Preamble, Fundamental Rights and Directive Principles — AIBE Fact Bank', marks:'~10 Qs in Actual Exam', content:`
+    <h4>The Preamble — Key Amendment</h4>
+    <p>The words "SOCIALIST," "SECULAR," and "INTEGRITY" were inserted into the Preamble by the 42ND AMENDMENT ACT, 1976 — often called the "Mini-Constitution" due to its sweeping scope. The Preamble is NOT amendable in a way that alters the Constitution's Basic Structure (Kesavananda Bharati, 1973).</p>
+    <h4>Fundamental Rights — Fast Facts (Articles 12-35)</h4>
+    <ul>
+      <li><strong>Article 12</strong> — defines "State" for Part III purposes (includes Government/Parliament of India, Government/Legislature of States, local/other authorities within India or under Government control)</li>
+      <li><strong>Article 14</strong> — Equality before law and equal protection of laws; permits REASONABLE CLASSIFICATION (must satisfy intelligible differentia + rational nexus to the object sought)</li>
+      <li><strong>Article 19(1)</strong> — SIX freedoms: (a) speech/expression, (b) assemble peaceably without arms, (c) form associations/unions, (d) move freely throughout India, (e) reside/settle in any part of India, (g) practise any profession/trade/business</li>
+      <li><strong>Article 21</strong> — Right to Life and Personal Liberty; "procedure established by law" reinterpreted in Maneka Gandhi (1978) to require the procedure be FAIR, JUST, and REASONABLE, not merely enacted</li>
+      <li><strong>Article 21A</strong> — Right to Education (ages 6-14), inserted by the 86TH AMENDMENT, 2002</li>
+      <li><strong>Article 22</strong> — Protection against arrest/detention; requires production before a Magistrate within 24 HOURS (excluding travel time)</li>
+      <li><strong>Article 32</strong> — Right to Constitutional Remedies (Supreme Court writ jurisdiction); Dr. B.R. Ambedkar called it "the HEART AND SOUL of the Constitution"</li>
+    </ul>
+    <h4>Grounds of Discrimination Prohibited — Article 15</h4>
+    <p>Article 15(1) prohibits discrimination on grounds of RELIGION, RACE, CASTE, SEX, PLACE OF BIRTH (or any of them) — note this list does NOT include "residence" or "age" (a frequently tested distractor).</p>
+    <h4>Directive Principles of State Policy (Part IV, Articles 36-51)</h4>
+    <p>NON-JUSTICIABLE (not enforceable by courts), yet declared "fundamental in the governance of the country" (Article 37). Landmark harmonisation: Minerva Mills v. Union of India (1980) held Fundamental Rights and DPSPs must be BALANCED — neither has absolute primacy over the other, together forming the Constitution's core identity.</p>
+    <h4>Fundamental Duties — Article 51A</h4>
+    <p>Inserted by the 42ND AMENDMENT, 1976 (originally 10 duties; an 11th — duty of parents/guardians to provide education to children aged 6-14 — added by the 86TH AMENDMENT, 2002, as Article 51A(k)). Fundamental Duties are also NON-JUSTICIABLE.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> AIBE questions in this section are DIRECT and FACTUAL — exact Amendment numbers, exact Article numbers, and precise word-for-word lists (e.g., the 5 grounds under Article 15, NOT 6) are what score marks. Memorise numbers precisely; conceptual understanding alone is not enough for this exam's style.</div>
+  `},
+  { id:'T2', title:'Writs, Emergency Provisions and Amendment — AIBE Fact Bank', marks:'Part of ~10 Qs', content:`
+    <h4>The Five Writs — Article 32 / Article 226</h4>
+    <ul>
+      <li><strong>Habeas Corpus</strong> — "to have the body"; against illegal detention</li>
+      <li><strong>Mandamus</strong> — "we command"; compels performance of a public duty</li>
+      <li><strong>Prohibition</strong> — issued to a subordinate court/tribunal to prevent it exceeding jurisdiction (BEFORE decision)</li>
+      <li><strong>Certiorari</strong> — quashes a decision already made without/in excess of jurisdiction (AFTER decision)</li>
+      <li><strong>Quo Warranto</strong> — "by what authority"; challenges unlawful occupation of a public office</li>
+    </ul>
+    <p>Article 226 (High Courts) is WIDER than Article 32 (Supreme Court) — Article 226 covers Fundamental Rights AND "any other purpose."</p>
+    <h4>Emergency Provisions — Exact Numbers</h4>
+    <ul>
+      <li><strong>Article 352</strong> — National Emergency (war, external aggression, ARMED REBELLION — changed from "internal disturbance" by the 44TH AMENDMENT, 1978)</li>
+      <li><strong>Article 356</strong> — President's Rule (State Emergency); Parliamentary approval within 2 MONTHS; maximum duration ordinarily 3 YEARS (with 6-monthly re-approval)</li>
+      <li><strong>Article 360</strong> — Financial Emergency; NEVER invoked in Indian history to date</li>
+    </ul>
+    <h4>Amendment Procedure — Article 368</h4>
+    <p>Three modes: (1) SIMPLE MAJORITY of Parliament (for matters not specified as requiring special procedure); (2) SPECIAL MAJORITY — 2/3 of members present and voting, AND majority of total membership of each House; (3) SPECIAL MAJORITY + RATIFICATION by at least ONE-HALF of State Legislatures (for federal-structure-affecting provisions, e.g., Article 368 itself, election of the President, distribution of legislative powers).</p>
+    <h4>Basic Structure Doctrine — Landmark Sequence</h4>
+    <table>
+      <tr><th>Case</th><th>Year</th><th>Holding</th></tr>
+      <tr><td>Shankari Prasad</td><td>1951</td><td>Parliament CAN amend Fundamental Rights under Article 368</td></tr>
+      <tr><td>Golaknath</td><td>1967</td><td>Parliament CANNOT amend Fundamental Rights (reversed the earlier position)</td></tr>
+      <tr><td>Kesavananda Bharati</td><td>1973</td><td>Parliament CAN amend any part INCLUDING Fundamental Rights, but CANNOT alter the "Basic Structure" — the definitive, still-binding position</td></tr>
+      <tr><td>Minerva Mills</td><td>1980</td><td>Reaffirmed Kesavananda; judicial review itself is part of the Basic Structure</td></tr>
+    </table>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> The Shankari Prasad → Golaknath → Kesavananda Bharati → Minerva Mills sequence, with exact years, is one of the single most repeated AIBE question patterns across multiple past papers. Know all four, in order, with their one-line holdings.</div>
+  `},
+  { id:'T3', title:'Union & State Structure, Schedules — AIBE Fact Bank', marks:'Part of ~10 Qs', content:`
+    <h4>The Twelve Schedules — What Each Covers (High-Yield)</h4>
+    <ul>
+      <li><strong>First Schedule</strong> — States and Union Territories</li>
+      <li><strong>Second Schedule</strong> — Salaries/allowances of President, Governors, judges, CAG, Speaker, etc.</li>
+      <li><strong>Seventh Schedule</strong> — Union List, State List, Concurrent List (legislative distribution of powers)</li>
+      <li><strong>Eighth Schedule</strong> — Officially recognised languages (22 languages)</li>
+      <li><strong>Ninth Schedule</strong> — Laws protected from judicial review on Fundamental Rights grounds (added by the 1ST AMENDMENT, 1951) — though post-Kesavananda, even Ninth Schedule laws are reviewable if they damage the Basic Structure (I.R. Coelho v. State of Tamil Nadu, 2007)</li>
+      <li><strong>Tenth Schedule</strong> — Anti-Defection provisions (added by the 52ND AMENDMENT, 1985)</li>
+      <li><strong>Eleventh Schedule</strong> — Powers of Panchayats (added by the 73RD AMENDMENT, 1992)</li>
+      <li><strong>Twelfth Schedule</strong> — Powers of Municipalities (added by the 74TH AMENDMENT, 1992)</li>
+    </ul>
+    <h4>President — Key Numbers</h4>
+    <p>Elected by an Electoral College (elected members of both Houses of Parliament + elected members of State Legislative Assemblies) via PROPORTIONAL REPRESENTATION with SINGLE TRANSFERABLE VOTE. Minimum age: 35 YEARS. Term: 5 YEARS. Article 61 — impeachment procedure "for violation of the Constitution."</p>
+    <h4>Parliament — Key Numbers</h4>
+    <p>Rajya Sabha: maximum 250 members (238 elected representing States/UTs + 12 nominated by the President for distinction in literature, science, art, social service). Lok Sabha: directly elected, maximum strength as per the Constitution (post-delimitation figures apply). A Money Bill (Article 110) can be introduced ONLY in the Lok Sabha.</p>
+    <h4>Judiciary — Key Numbers</h4>
+    <p>Supreme Court judges retire at 65 YEARS. High Court judges retire at 62 YEARS. Article 124 — Supreme Court composition and appointment. Article 226 — High Court writ jurisdiction (wider than Article 32). NJAC/99th Amendment struck down in the Fourth Judges Case (2015), preserving the Collegium system.</p>
+    <h4>Panchayati Raj and Municipalities</h4>
+    <p>73rd Amendment (1992) — three-tier Panchayati Raj system (Village, Intermediate, District levels); mandatory reservation for SC/ST and women (not less than one-third of seats). 74th Amendment (1992) — constitutional status to Municipalities/urban local bodies.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> Schedule-number-to-content matching is a guaranteed, frequently repeated AIBE question type — memorise this table exactly. Retirement ages (SC judges 65, HC judges 62) and the President's minimum age (35) are frequently tested exact numbers.</div>
+  `},
+  { id:'T4', title:'Landmark Case Law — AIBE Repeat Questions', marks:'Distributed across the paper', content:`
+    <h4>The Most-Repeated AIBE Constitutional Law Cases</h4>
+    <table>
+      <tr><th>Case</th><th>Principle</th></tr>
+      <tr><td>Kesavananda Bharati v. State of Kerala (1973)</td><td>Basic Structure Doctrine — 13-judge bench, largest in Indian history, 7:6 majority</td></tr>
+      <tr><td>Maneka Gandhi v. Union of India (1978)</td><td>Article 21 "procedure established by law" must be fair, just, reasonable — the "Golden Triangle" (Arts 14+19+21)</td></tr>
+      <tr><td>Golaknath v. State of Punjab (1967)</td><td>Parliament cannot abridge Fundamental Rights (later overruled in substance by Kesavananda)</td></tr>
+      <tr><td>Minerva Mills v. Union of India (1980)</td><td>Judicial review is part of the Basic Structure; FRs and DPSPs must be balanced</td></tr>
+      <tr><td>S.R. Bommai v. Union of India (1994)</td><td>Article 356 justiciable; floor test mandatory; federalism + secularism = Basic Structure</td></tr>
+      <tr><td>Indra Sawhney v. Union of India (1992)</td><td>Upheld OBC reservation; introduced the 50% reservation ceiling (Mandal Commission case)</td></tr>
+      <tr><td>Shreya Singhal v. Union of India (2015)</td><td>Struck down Section 66A IT Act — vague/over-broad restriction on free speech</td></tr>
+      <tr><td>Navtej Singh Johar v. Union of India (2018)</td><td>Decriminalised consensual homosexual acts — read down Section 377 IPC</td></tr>
+      <tr><td>Puttaswamy v. Union of India (2017)</td><td>Right to Privacy is a Fundamental Right under Article 21 (9-judge bench)</td></tr>
+      <tr><td>Hussainara Khatoon v. State of Bihar (1979)</td><td>Right to Speedy Trial is part of Article 21 — landmark on undertrial prisoners</td></tr>
+    </table>
+    <h4>Father of PIL in India</h4>
+    <p>Justice V.R. KRISHNA IYER is generally credited as the father of Public Interest Litigation (PIL) in India, with Justice P.N. Bhagwati playing a major role in developing and popularising the mechanism through the 1980s.</p>
+    <h4>Doctrine of Pith and Substance</h4>
+    <p>Used to determine the TRUE NATURE of a law when it appears to touch upon subjects in different Legislative Lists — courts examine the law's true character/substance, not its incidental effects, to decide which legislature validly enacted it.</p>
+    <h4>Doctrine of Colourable Legislation</h4>
+    <p>"What cannot be done directly cannot be done indirectly" — a legislature cannot do indirectly what it lacks the power to do directly; examines legislative COMPETENCE, not the law's bona fides/motive.</p>
+    <div class="alert-box"><strong>⚠ AIBE Alert:</strong> This case-name-to-principle table format is EXACTLY how AIBE tests case law — a one-line case name matched to a one-line principle. Practice recognising cases from just the name and year, since AIBE rarely gives you the facts.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1973', name:'Kesavananda Bharati v. State of Kerala', tag:'Basic Structure', tagColor:'gold', story:'The single most repeated AIBE case-law question. A 13-judge bench -- the largest Constitution Bench ever assembled in Indian judicial history -- was convened to settle whether Parliament\'s amending power under Article 368 was truly unlimited. By a knife-edge 7:6 majority, the Court drew a line that has held for over five decades since.', principle:'Parliament CAN amend any part of the Constitution, including Fundamental Rights, but CANNOT alter its "Basic Structure" -- the definitive, still-binding rule on the extent of the amending power.' },
+  { year:'1978', name:'Maneka Gandhi v. Union of India', tag:'Article 21', tagColor:'teal', story:'When Maneka Gandhi\'s passport was impounded with no notice or hearing, the resulting case reshaped how "procedure established by law" under Article 21 would be understood for every generation of law students and AIBE candidates since.', principle:'"Procedure established by law" under Article 21 must be FAIR, JUST, and REASONABLE, not merely any procedure a legislature happens to enact -- establishing the interlinked "Golden Triangle" of Articles 14, 19, and 21.' },
+  { year:'1967', name:'I.C. Golaknath v. State of Punjab', tag:'Basic Structure (Superseded)', tagColor:'gold', story:'Before Kesavananda Bharati settled the question, the Supreme Court took a far more restrictive position -- one AIBE still tests as part of the full historical sequence, even though it was later effectively overturned.', principle:'Parliament CANNOT amend or abridge Fundamental Rights at all -- a position later modified by Kesavananda Bharati, which permitted amendment subject to the Basic Structure limitation.' },
+  { year:'1980', name:'Minerva Mills v. Union of India', tag:'Basic Structure', tagColor:'teal', story:'Reaffirming and refining Kesavananda Bharati just seven years later, this case added a further, frequently-tested layer to the Basic Structure doctrine.', principle:'Judicial review is itself part of the Constitution\'s Basic Structure; Fundamental Rights and Directive Principles must be harmoniously balanced, with neither having absolute primacy over the other.' },
+  { year:'1994', name:'S.R. Bommai v. Union of India', tag:'Article 356', tagColor:'gold', story:'Following decades of politically-motivated misuse of President\'s Rule, a 9-judge bench finally imposed real, judicially-enforceable limits on this power.', principle:'A Presidential Proclamation under Article 356 is justiciable; a state government\'s majority must be tested on the floor of the Assembly; federalism AND secularism are both part of the Basic Structure.' },
+  { year:'1992', name:'Indra Sawhney v. Union of India', tag:'Reservation', tagColor:'teal', story:'The landmark "Mandal Commission case," resolving a nationwide controversy over OBC reservation in government employment.', principle:'Upheld OBC reservation in public employment, while introducing the important 50% ceiling on total reservations (subject to limited, later-recognised exceptions).' },
+  { year:'2015', name:'Shreya Singhal v. Union of India', tag:'Free Speech', tagColor:'gold', story:'A challenge to Section 66A of the Information Technology Act, criminalising vaguely-defined "offensive" online speech, became a landmark free-speech ruling for the digital age.', principle:'Struck down Section 66A IT Act as unconstitutionally vague and over-broad, creating a "chilling effect" on protected speech under Article 19(1)(a).' },
+  { year:'2018', name:'Navtej Singh Johar v. Union of India', tag:'Article 21', tagColor:'teal', story:'A landmark ruling decriminalising consensual homosexual acts between adults, reading down a colonial-era provision of the Indian Penal Code.', principle:'Read down Section 377 IPC to decriminalise consensual sexual acts between adults of the same sex, grounding the decision in dignity, privacy, and equality under the Constitution.' },
+  { year:'2017', name:'K.S. Puttaswamy v. Union of India', tag:'Right to Privacy', tagColor:'gold', story:'A 9-judge bench was convened specifically to resolve, once and for all, whether privacy enjoyed constitutional protection in India.', principle:'The Right to Privacy is a Fundamental Right, flowing from Article 21\'s guarantee of life and personal liberty.' },
+  { year:'1979', name:'Hussainara Khatoon v. State of Bihar', tag:'Article 21', tagColor:'teal', story:'A landmark case highlighting the plight of undertrial prisoners languishing in jail for periods exceeding the maximum sentence for their alleged offence, decided years before their trials even concluded.', principle:'The Right to a Speedy Trial is part of the Right to Life and Personal Liberty guaranteed under Article 21.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'AIBE Number Bank — Memorise Exactly', items:[
+    { k:'42nd Amendment (1976)', v:'Added Socialist/Secular/Integrity to Preamble + Fundamental Duties (Art 51A) + "armed rebellion" wording groundwork' },
+    { k:'44th Amendment (1978)', v:'Changed "internal disturbance" to "armed rebellion" (Art 352); protected Arts 20/21 from suspension' },
+    { k:'73rd/74th Amendments (1992)', v:'Panchayati Raj (73rd) / Municipalities (74th) — constitutional status to local self-government' },
+    { k:'86th Amendment (2002)', v:'Article 21A (Right to Education) + Article 51A(k) (parents\' duty to educate children 6-14)' },
+    { k:'99th Amendment (2014) / struck down 2015', v:'Created the NJAC — struck down in the Fourth Judges Case, preserving the Collegium' },
+    { k:'101st Amendment (2016)', v:'Introduced GST — Goods and Services Tax framework' }
+  ]},
+  { icon:'📅', title:'AIBE Number Bank — Ages & Terms', items:[
+    { k:'President minimum age', v:'35 years' },
+    { k:'President term', v:'5 years' },
+    { k:'Supreme Court judge retirement age', v:'65 years' },
+    { k:'High Court judge retirement age', v:'62 years' },
+    { k:'Article 22 — production before Magistrate', v:'Within 24 hours (excluding travel time)' },
+    { k:'Rajya Sabha maximum strength', v:'250 (238 elected + 12 nominated)' },
+    { k:'Reservation ceiling (Indra Sawhney)', v:'50% (with limited exceptions recognised later)' }
+  ]},
+  { icon:'🏛️', title:'Basic Structure Sequence — Exact Order', items:[
+    { k:'Shankari Prasad (1951)', v:'Parliament CAN amend Fundamental Rights' },
+    { k:'Golaknath (1967)', v:'Parliament CANNOT amend Fundamental Rights' },
+    { k:'Kesavananda Bharati (1973)', v:'CAN amend, but NOT the Basic Structure — the definitive rule, 13-judge bench, 7:6' },
+    { k:'Minerva Mills (1980)', v:'Reaffirmed Kesavananda; judicial review = part of Basic Structure' }
+  ]},
+  { icon:'⚖️', title:'Schedule Quick-Match', items:[
+    { k:'7th Schedule', v:'Union/State/Concurrent Lists' },
+    { k:'8th Schedule', v:'22 officially recognised languages' },
+    { k:'9th Schedule', v:'Laws shielded from FR-based judicial review (added by 1st Amendment, 1951)' },
+    { k:'10th Schedule', v:'Anti-Defection Law (52nd Amendment, 1985)' },
+    { k:'11th Schedule', v:'Panchayat powers (73rd Amendment)' },
+    { k:'12th Schedule', v:'Municipality powers (74th Amendment)' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'The words "SOCIALIST," "SECULAR," and "INTEGRITY" were inserted into the Preamble by which Amendment?', opts:['44th Amendment, 1978', '42nd Amendment, 1976', '86th Amendment, 2002', '73rd Amendment, 1992'], ans:1, exp:'The 42nd Amendment Act 1976, often called the "Mini-Constitution," inserted these words into the Preamble.' },
+  { q:'Article 19(1) of the Constitution guarantees how many distinct freedoms?', opts:['Four', 'Five', 'Six', 'Seven'], ans:2, exp:'Article 19(1) guarantees six freedoms: speech/expression, assembly, association, movement, residence, and profession/trade/business.' },
+  { q:'The grounds of prohibited discrimination under Article 15(1) are:', opts:['Religion, race, caste, sex, place of birth, and age', 'Religion, race, caste, sex, and place of birth', 'Religion, race, caste, sex, place of birth, and residence', 'Religion, caste, sex, and language'], ans:1, exp:'Article 15(1) lists exactly five grounds — religion, race, caste, sex, place of birth — and notably does NOT include age or residence.' },
+  { q:'In Maneka Gandhi v. Union of India (1978), the Supreme Court held that "procedure established by law" under Article 21 must be:', opts:['Simply any procedure enacted by a competent legislature, regardless of fairness', 'FAIR, JUST, and REASONABLE, not merely enacted', 'Only applicable to citizens, never foreigners', 'Applicable only to criminal proceedings'], ans:1, exp:'Maneka Gandhi read substantive due process into Article 21, requiring the procedure itself to be fair, just, and reasonable.' },
+  { q:'Article 21A (Right to Education) was inserted by which Amendment, and covers which age group?', opts:['42nd Amendment; ages 3-18', '86th Amendment, 2002; ages 6-14', '73rd Amendment; ages 6-18', '44th Amendment; ages 5-16'], ans:1, exp:'The 86th Amendment 2002 inserted Article 21A, guaranteeing free and compulsory education for children aged 6-14.' },
+  { q:'A person arrested must be produced before the nearest Magistrate within how many hours under Article 22?', opts:['12 hours', '24 hours (excluding travel time)', '48 hours', '72 hours'], ans:1, exp:'Article 22 requires production before a Magistrate within 24 hours, excluding the time necessary for travel from the place of arrest.' },
+  { q:'Dr. B.R. Ambedkar referred to which Article as "the heart and soul of the Constitution"?', opts:['Article 21', 'Article 32', 'Article 14', 'Article 19'], ans:1, exp:'Article 32 (Right to Constitutional Remedies) was famously described by Ambedkar in these terms.' },
+  { q:'The Directive Principles of State Policy (Part IV) are:', opts:['Fully enforceable by courts, exactly like Fundamental Rights', 'NON-JUSTICIABLE, yet declared fundamental in the governance of the country under Article 37', 'Only applicable during a national emergency', 'Enforceable only against private individuals'], ans:1, exp:'DPSPs are expressly non-justiciable under Article 37, though declared fundamental to governance.' },
+  { q:'The writ of "Certiorari" is used to:', opts:['Prevent a proceeding before it concludes', 'QUASH a decision already made by a subordinate court/tribunal acting without or in excess of jurisdiction', 'Compel performance of a public duty', 'Challenge unlawful occupation of public office'], ans:1, exp:'Certiorari is corrective — it quashes an already-made decision, distinct from Prohibition\'s preventive function.' },
+  { q:'Article 226 (High Court writ jurisdiction), compared to Article 32 (Supreme Court), is generally:', opts:['Narrower, covering only Fundamental Rights', 'WIDER — covering Fundamental Rights AND "any other purpose"', 'Identical in every respect', 'Not applicable to Fundamental Rights at all'], ans:1, exp:'Article 226\'s "any other purpose" language gives it broader scope than Article 32.' },
+  { q:'The word "internal disturbance" in Article 352 was replaced with "armed rebellion" by which Amendment?', opts:['42nd Amendment, 1976', '44th Amendment, 1978', '86th Amendment, 2002', '52nd Amendment, 1985'], ans:1, exp:'The 44th Amendment 1978, responding to the 1975 Emergency\'s misuse, made this change.' },
+  { q:'"Financial Emergency" under Article 360, in India\'s constitutional history to date, has been:', opts:['Invoked multiple times', 'NEVER invoked', 'Invoked exactly once', 'Automatically triggered annually'], ans:1, exp:'Article 360 remains a purely theoretical provision, never formally proclaimed in India.' },
+  { q:'Under Article 368, amendments affecting the federal structure (e.g., Article 368 itself, Presidential election) require:', opts:['A simple majority only', 'Special majority PLUS ratification by at least one-half of State Legislatures', 'Only Presidential assent, no Parliamentary vote', 'A national referendum'], ans:1, exp:'This third, most stringent amendment mode protects genuinely federal-structure-affecting provisions.' },
+  { q:'In Kesavananda Bharati v. State of Kerala (1973), the Basic Structure Doctrine was established by a bench of how many judges, with what majority?', opts:['5 judges, unanimous', '13 judges, 7:6 majority', '9 judges, 6:3 majority', '7 judges, 5:2 majority'], ans:1, exp:'This remains the largest Constitution Bench in Indian history, deciding by a narrow 7:6 majority.' },
+  { q:'Which of the following correctly represents the chronological sequence of the Basic Structure case law?', opts:['Kesavananda Bharati → Golaknath → Shankari Prasad → Minerva Mills', 'Shankari Prasad → Golaknath → Kesavananda Bharati → Minerva Mills', 'Minerva Mills → Kesavananda Bharati → Golaknath → Shankari Prasad', 'Golaknath → Shankari Prasad → Minerva Mills → Kesavananda Bharati'], ans:1, exp:'The correct chronological sequence is Shankari Prasad (1951) → Golaknath (1967) → Kesavananda Bharati (1973) → Minerva Mills (1980).' },
+  { q:'The Ninth Schedule, which shields specified laws from Fundamental-Rights-based judicial review, was added by:', opts:['The 42nd Amendment, 1976', 'The 1st Amendment, 1951', 'The 44th Amendment, 1978', 'The original Constitution itself'], ans:1, exp:'The Ninth Schedule was added by the very first constitutional amendment in 1951.' },
+  { q:'Following I.R. Coelho v. State of Tamil Nadu (2007), laws placed in the Ninth Schedule are:', opts:['Completely immune from judicial review under all circumstances', 'STILL reviewable if they damage the Constitution\'s Basic Structure', 'Automatically void', 'Reviewable only by the President'], ans:1, exp:'I.R. Coelho clarified that Ninth Schedule protection does not extend to laws that violate the Basic Structure.' },
+  { q:'The Tenth Schedule, dealing with Anti-Defection provisions, was added by which Amendment?', opts:['52nd Amendment, 1985', '73rd Amendment, 1992', '42nd Amendment, 1976', '99th Amendment, 2014'], ans:0, exp:'The 52nd Amendment 1985 inserted the Tenth Schedule governing disqualification for defection.' },
+  { q:'The Eleventh and Twelfth Schedules, dealing with Panchayat and Municipality powers respectively, were added by:', opts:['The 42nd and 44th Amendments', 'The 73rd and 74th Amendments, 1992', 'The 86th and 99th Amendments', 'The original Constitution'], ans:1, exp:'The 73rd Amendment (Panchayats, Eleventh Schedule) and 74th Amendment (Municipalities, Twelfth Schedule), both 1992, established constitutional status for local self-government.' },
+  { q:'The minimum age to be eligible for election as President of India is:', opts:['25 years', '30 years', '35 years', '40 years'], ans:2, exp:'Article 58 sets the minimum age qualification for the Presidency at 35 years.' },
+  { q:'Supreme Court judges retire upon attaining the age of:', opts:['58 years', '60 years', '62 years', '65 years'], ans:3, exp:'Supreme Court judges have a retirement age of 65, distinct from High Court judges\' retirement age of 62.' },
+  { q:'High Court judges retire upon attaining the age of:', opts:['58 years', '60 years', '62 years', '65 years'], ans:2, exp:'High Court judges retire at 62, while Supreme Court judges retire at 65 — a frequently tested distinguishing pair.' },
+  { q:'The National Judicial Appointments Commission (NJAC), introduced by the 99th Amendment 2014, was:', opts:['Upheld as constitutional and remains in force today', 'STRUCK DOWN in 2015 (Fourth Judges Case), preserving the Collegium system', 'Never brought before the Supreme Court', 'Replaced by a fully executive-controlled appointment system'], ans:1, exp:'The Fourth Judges Case (2015) struck down the NJAC as violating judicial independence, a Basic Structure feature.' },
+  { q:'In Indra Sawhney v. Union of India (1992), the Supreme Court, while upholding OBC reservation, introduced which important ceiling?', opts:['A 25% reservation ceiling', 'A 50% reservation ceiling', 'A 75% reservation ceiling', 'No ceiling was introduced'], ans:1, exp:'The 50% reservation ceiling (with limited later-recognised exceptions) is one of Indra Sawhney\'s most cited holdings.' },
+  { q:'Justice V.R. Krishna Iyer is generally credited as:', opts:['The first Chief Justice of independent India', 'The father of Public Interest Litigation (PIL) in India', 'The author of the Preamble', 'The chairman of the Constituent Assembly Drafting Committee'], ans:1, exp:'Justice Krishna Iyer is widely regarded as the pioneering figure behind PIL in India, with Justice P.N. Bhagwati also central to its development.' },
+  { q:'In Puttaswamy v. Union of India (2017), a 9-judge bench of the Supreme Court held that:', opts:['Right to Privacy is not protected by the Constitution', 'Right to Privacy IS a Fundamental Right under Article 21', 'Right to Privacy applies only to public figures', 'Right to Privacy was left undecided'], ans:1, exp:'This landmark 9-judge bench ruling firmly established privacy as a Fundamental Right flowing from Article 21.' },
+  { q:'The "Doctrine of Pith and Substance" is used by courts to:', opts:['Determine the punishment for a criminal offence', 'Determine the TRUE NATURE of a law when it appears to touch subjects in different Legislative Lists', 'Calculate compensation in land acquisition cases', 'Interpret international treaties'], ans:1, exp:'This doctrine examines a law\'s true character/substance to determine which legislature validly enacted it, rather than its incidental effects.' },
+  { q:'The "Doctrine of Colourable Legislation" is based on the principle that:', opts:['A legislature can do indirectly what it cannot do directly, without restriction', 'What CANNOT be done directly CANNOT be done indirectly — examining legislative competence, not motive', 'Only the judiciary can enact colourable legislation', 'It applies exclusively to Money Bills'], ans:1, exp:'This doctrine focuses on whether a legislature had the constitutional competence to enact a law, regardless of its stated purpose.' },
+  { q:'In Navtej Singh Johar v. Union of India (2018), the Supreme Court:', opts:['Upheld Section 377 IPC in its entirety', 'Read down Section 377 IPC, decriminalising consensual homosexual acts between adults', 'Struck down the entire Indian Penal Code', 'Declined to address the constitutional question'], ans:1, exp:'This landmark ruling decriminalised consensual same-sex relations between adults by reading down Section 377.' },
+  { q:'In Hussainara Khatoon v. State of Bihar (1979), the Supreme Court held that the Right to a SPEEDY TRIAL is:', opts:['Not part of any constitutional right', 'Part of the Right to Life and Personal Liberty under Article 21', 'Only applicable to civil cases, never criminal', 'A statutory right under the CrPC only, with no constitutional basis'], ans:1, exp:'This landmark case, concerning undertrial prisoners, established speedy trial as a facet of Article 21.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
