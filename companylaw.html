@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Company Law — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Company Law</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Company Law Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Company Law</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Separate Legal Entity, Lifting the Corporate Veil, Incorporation/Memorandum/Articles, Directors\' Duties, Oppression &amp; Mismanagement, and Winding Up from the OU LLB 3rd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Companies Act 2013</span>
+        <span class="hero-tag">NCLT &amp; NCLAT</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Salomon\'s separate legal entity, judicial & statutory grounds for lifting the veil, Memorandum vs Articles, Section 166 directors\' duties, Section 241 oppression grounds, Section 244 thresholds, just & equitable winding up — these appear almost every year in OU LLB Company Law exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">Salomon v Salomon & Co Ltd (1897 — foundational separate legal entity doctrine) and Needle Industries v Needle Industries Newey (1981 — directors\' fiduciary duty to all members). Also know Vodafone v Union of India (2012, refused to lift the veil) and Shanti Prasad Jain v Kalinga Tubes (1965, oppression test).</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">Companies Act 2013 Sections: 2(20) definition, 7 (certificate of incorporation), 9 (effect of registration), 166 (directors\' duties), 241/242/244 (oppression, powers, thresholds), 339/447 (fraud provisions). IBC 2016 reshaped winding-up.</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Separate Legal Entity, Lifting the Veil, Incorporation & Memorandum, Directors' Duties, Oppression & Mismanagement, Winding Up. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// COMPANY LAW  |  Content data for lawsticker-ai.com
+// Osmania University LLB 3rd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Nature of a Company and the Doctrine of Separate Legal Entity', marks:'Core Topic', content:`
+    <h4>Meaning and Definition of a Company</h4>
+    <p>Under Section 2(20) of the Companies Act 2013, a "company" means a company INCORPORATED under this Act or any previous company law. A company is essentially an ARTIFICIAL LEGAL PERSON, created by law, with a distinct legal identity separate from its members/shareholders.</p>
+    <h4>Characteristics of a Company</h4>
+    <ul>
+      <li><strong>Separate Legal Entity</strong> — the company is a legal "person" distinct from its shareholders/members, capable of owning property, entering contracts, suing and being sued in its own name</li>
+      <li><strong>Limited Liability</strong> — members' liability for the company's debts is generally limited to the unpaid amount (if any) on their shares (for a company limited by shares), protecting personal assets beyond that</li>
+      <li><strong>Perpetual Succession</strong> — the company's existence is unaffected by changes in membership (death, insolvency, or exit of members); it continues until formally wound up according to law</li>
+      <li><strong>Common Seal / Signature</strong> — historically a common seal, now (post-2015 amendments) optional, with authorised signatories able to bind the company</li>
+      <li><strong>Transferable Shares</strong> — shares are generally freely transferable (subject to restrictions in a private company's articles)</li>
+      <li><strong>Separate Property</strong> — company property belongs to the company itself, not to individual members, even though members collectively "own" the company through shares</li>
+    </ul>
+    <div class="case-box"><strong>Salomon v. Salomon & Co. Ltd. (1897), House of Lords:</strong> Salomon incorporated his shoe-manufacturing business into a company, receiving shares and secured debentures in exchange, with his wife and children holding one share each (satisfying the then-minimum of seven subscribers). When the company later failed, unsecured creditors argued the company was merely Salomon's "alter ego" — a sham, an agent conducting business FOR him — and that he should be personally liable for the company's debts. The House of Lords firmly rejected this: once properly incorporated in compliance with statutory formalities, "the company is at law a different person altogether from the subscribers to the memorandum" — the motives behind incorporation are legally IRRELEVANT, and the same persons managing the business before and after incorporation does not undermine the company's separate legal existence. This case established the doctrine of SEPARATE LEGAL ENTITY (also called Separate Legal Personality) as the absolute foundation of modern company law.</div>
+    <h4>Codification in India — Section 9, Companies Act 2013</h4>
+    <p>From the date of incorporation stated in the Certificate of Incorporation (issued under Section 7), the subscribers to the memorandum become a body corporate — capable of exercising all functions of an incorporated company, with perpetual succession, the power to acquire/hold/dispose of property, and to sue/be sued in its own name.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Salomon v. Salomon is THE single most important case in this entire subject — always quote the exact holding ("a different person altogether from the subscribers"), the fact motives are irrelevant, and that this remains the foundation of over 1.4 million registered companies in India today. The full list of company characteristics is a guaranteed list-recall question.</div>
+  `},
+  { id:'T2', title:'Lifting of the Corporate Veil', marks:'Core Topic', content:`
+    <h4>What "Lifting/Piercing the Corporate Veil" Means</h4>
+    <p>An EXCEPTION to Salomon's separate legal entity principle, where courts DISREGARD the company's separate personality and look BEHIND the "veil" to hold the persons actually controlling/operating the company personally liable — reserved for situations where the corporate structure is being genuinely MISUSED/ABUSED, not applied lightly or routinely.</p>
+    <h4>Judicial Grounds for Lifting the Veil</h4>
+    <ul>
+      <li><strong>Fraud or Improper Conduct</strong> — where the company is used as a vehicle to perpetrate fraud, deceive creditors, or evade an existing legal obligation</li>
+      <li><strong>Tax Evasion</strong> — where the corporate form is used purely as a device to reduce/evade legitimate tax liability, with no genuine independent business purpose</li>
+      <li><strong>Company Acting as an Agent/Sham</strong> — where the "company" is shown to be a mere façade, not conducting any genuine independent business of its own</li>
+      <li><strong>Group/Single Economic Unit</strong> — in specific circumstances, where a holding company exercises such complete, pervasive control over a subsidiary that they are treated as a single economic entity (applied cautiously, not routinely)</li>
+      <li><strong>Protecting Public Policy</strong> — where upholding the separate entity would defeat an important public policy objective (e.g., trading with an enemy nation during wartime)</li>
+    </ul>
+    <div class="case-box"><strong>Vodafone International Holdings v. Union of India (2012), Supreme Court:</strong> Indian tax authorities sought to levy capital gains tax on Vodafone's acquisition of Hutchison's Indian telecom assets, structured through an offshore holding company arrangement, by attempting to "look through" the corporate structure. The Supreme Court REFUSED to lift the corporate veil, holding that the separate legal entity principle remains the DEFAULT rule — the veil should be lifted only where there is CLEAR evidence the corporate structure is a fraudulent myth, a sham, or a deceptive device created solely to evade legal obligations. Where a corporate structure serves legitimate, genuine global commercial operations, its independent identity must be RESPECTED, even if it also happens to be tax-efficient. This remains an important modern illustration that lifting the veil requires genuinely compelling evidence of abuse, not merely commercial tax planning.</div>
+    <h4>Statutory Grounds for Lifting the Veil (Companies Act 2013)</h4>
+    <ul>
+      <li><strong>Section 447 (Punishment for Fraud)</strong> — where a person is found guilty of fraud through/within a company, they face personal criminal/civil liability; the company cannot shield them</li>
+      <li><strong>Section 339 (Fraudulent Trading during Winding Up)</strong> — where business was carried on with intent to defraud creditors during winding up, courts may declare participants personally liable</li>
+      <li><strong>Section 3A (Reduction of Membership below Statutory Minimum)</strong> — if membership falls below the statutory minimum and remains so beyond 6 months, remaining members become personally liable for debts incurred after that period</li>
+      <li><strong>Misrepresentation in Prospectus (Sections 34-35)</strong> — directors/promoters/persons responsible for prospectus issuance face personal civil/criminal liability for false statements</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Vodafone is essential as a MODERN, contemporary illustration that courts still generally REFUSE to lift the veil absent clear fraud — a frequently tested contrast with older, more readily-veil-lifting cases. The distinction between JUDICIAL grounds (case-law developed) and STATUTORY grounds (explicitly in the Act) for lifting the veil is a guaranteed comparison question.</div>
+  `},
+  { id:'T3', title:'Incorporation, Memorandum and Articles of Association', marks:'Core Topic', content:`
+    <h4>Kinds of Companies</h4>
+    <ul>
+      <li><strong>Private Company</strong> — restricts the right to transfer shares, limits members to 200 (excluding employee-members), and prohibits public invitation to subscribe for securities</li>
+      <li><strong>Public Company</strong> — no such restrictions; may freely invite the public to subscribe for shares/debentures</li>
+      <li><strong>One Person Company (OPC)</strong> — a genuinely new concept under the 2013 Act, allowing a SINGLE person to form a company with limited liability protection</li>
+      <li><strong>Company Limited by Shares / by Guarantee / Unlimited Company</strong> — classified by the nature of members' liability</li>
+    </ul>
+    <h4>Procedure for Incorporation</h4>
+    <p>Involves reserving a name, drafting and filing the Memorandum and Articles of Association, obtaining necessary declarations/affidavits from subscribers and directors, and filing with the Registrar of Companies (RoC) — upon satisfaction, the RoC issues a CERTIFICATE OF INCORPORATION (Section 7), which is conclusive evidence that all statutory incorporation requirements have been complied with.</p>
+    <h4>Memorandum of Association (MOA) — The Company's "Charter"</h4>
+    <p>The foundational document defining the company's fundamental scope and objects — it cannot be altered as freely as ordinary internal rules, and any act BEYOND the objects specified in the MOA is generally ULTRA VIRES (beyond the company's powers) and void, protecting shareholders and creditors from the company venturing into unauthorised activities.</p>
+    <h4>Key Clauses of the Memorandum</h4>
+    <ul>
+      <li><strong>Name Clause</strong> — the company's name, ending in "Limited"/"Private Limited" as applicable</li>
+      <li><strong>Registered Office Clause</strong> — the state in which the registered office is situated</li>
+      <li><strong>Objects Clause</strong> — the purposes/activities the company is formed to carry out (defines the scope of the company's powers)</li>
+      <li><strong>Liability Clause</strong> — states whether members' liability is limited (by shares/guarantee) or unlimited</li>
+      <li><strong>Capital Clause</strong> — the amount of share capital and its division into shares (for companies having share capital)</li>
+    </ul>
+    <h4>Articles of Association (AOA) — Internal Rules and Regulations</h4>
+    <p>Governs the company's INTERNAL management — rules for conducting meetings, appointment/removal of directors, share transfer procedures, dividend declaration, and similar operational matters. The Articles are SUBORDINATE to the Memorandum — any Article provision inconsistent with the Memorandum (or the Act itself) is void to that extent.</p>
+    <h4>Doctrine of Indoor Management — A Protective Counterbalance</h4>
+    <p>While outsiders dealing with a company are presumed to have constructive notice of the PUBLIC documents (Memorandum, Articles), they are NOT expected to investigate whether the company's own INTERNAL procedural requirements were actually followed — an outsider dealing in good faith can generally assume internal formalities (proper board resolutions, etc.) were duly complied with, protecting bona fide third parties from purely internal irregularities they have no realistic means of verifying.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Memorandum vs Articles (external "charter" defining scope vs internal management rules, and the subordination of Articles to Memorandum) is a guaranteed comparison question. The Doctrine of Indoor Management as a protective counterbalance to the doctrine of constructive notice is frequently tested via a problem question.</div>
+  `},
+  { id:'T4', title:'Directors — Appointment, Duties and Liabilities', marks:'Core Topic', content:`
+    <h4>Who Is a Director?</h4>
+    <p>A person appointed to the Board of Directors, responsible for the overall management, direction, and supervision of the company's affairs — directors act collectively through Board decisions, though they also bear significant individual responsibilities and duties.</p>
+    <h4>Kinds of Directors</h4>
+    <ul>
+      <li><strong>Executive/Whole-time Director</strong> — actively involved in day-to-day management</li>
+      <li><strong>Non-Executive Director</strong> — not involved in daily operations, providing broader oversight/strategic input</li>
+      <li><strong>Independent Director</strong> — meets specified statutory independence criteria (no material pecuniary relationship with the company), required for specified classes of companies to strengthen governance/objectivity</li>
+      <li><strong>Nominee Director</strong> — appointed to represent the interests of a specific institution/shareholder (e.g., a lending bank, a major investor)</li>
+    </ul>
+    <h4>Directors' Duties — Section 166, Companies Act 2013</h4>
+    <p>Section 166 codifies the FIDUCIARY duties directors owe to the company, requiring a director to: (a) act in accordance with the company's Articles; (b) act in GOOD FAITH to promote the company's objects for the benefit of its members as a whole, and in the best interests of the company, its employees, shareholders, community, and environment; (c) exercise DUE AND REASONABLE CARE, skill, and diligence, and exercise independent judgment; (d) AVOID situations involving a direct/indirect CONFLICT of interest with the company; (e) NOT achieve/attempt to achieve any UNDUE GAIN or advantage, either for themselves or for relatives/associates; and (f) NOT assign their office (any assignment is void).</p>
+    <div class="case-box"><strong>Needle Industries (India) Ltd. v. Needle Industries Newey (India) Holding Ltd. (1981), Supreme Court:</strong> A foreign holding company, seeking to avoid its own losses, attempted to wind up its Indian subsidiary in a manner the Supreme Court found genuinely prejudicial to minority shareholders' interests — a clear illustration of directors/controllers failing their fiduciary obligations. The Court held that directors and those controlling a company's affairs must act BONA FIDE and in the interests of the company and its members as a whole, not merely to serve a controlling shareholder's separate agenda — and where conduct is shown to be prejudicial, harsh, and wrongful (not merely an isolated lapse), it constitutes a breach warranting relief. The Court denied the winding-up sought and instead permitted a fair-value buyout, protecting minority shareholders while avoiding the more drastic remedy of dissolving an otherwise viable, solvent company.</div>
+    <h4>Consequences of Breach of Directors' Duties</h4>
+    <p>A director in breach of Section 166 is liable to PAY COMPENSATION to the company for resulting loss, and may face penalties under the Act — the underlying principle being that directors occupy a position of TRUST, and personal gain at the company's expense (or genuine disregard for proper governance) attracts both civil and potentially criminal consequences.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Section 166's six specific duty categories should be given comprehensively, not summarised loosely — examiners look for the specific language (good faith, due care, avoid conflict, no undue gain). Needle Industries is essential for illustrating directors'/controllers' fiduciary obligations to minority shareholders, connecting directly to Topic 5's oppression/mismanagement framework.</div>
+  `},
+  { id:'T5', title:'Prevention of Oppression and Mismanagement — Sections 241-246', marks:'Core Topic', content:`
+    <h4>Rationale — Protecting Minority Shareholders</h4>
+    <p>Corporate governance is fundamentally structured on MAJORITY RULE — directors are elected by majority vote, and majority shareholders effectively control company decisions. Chapter XVI of the Companies Act (Sections 241-246) provides a critical statutory SAFETY NET, allowing members to seek relief from the National Company Law Tribunal (NCLT) where the majority's power is genuinely ABUSED to the detriment of the minority or the company itself.</p>
+    <h4>Section 241 — Oppression and Mismanagement</h4>
+    <p>Any member may apply to the NCLT complaining that: (a) the company's affairs HAVE BEEN or ARE BEING conducted in a manner PREJUDICIAL to public interest, OR oppressive to any member(s), OR prejudicial to the interests of the company; OR (b) a material change has occurred in the company's management/control that is likely to be prejudicial to the company's interests or a class of members. Note the "have been or are being" language (extending to PAST conduct, not merely ongoing/continuing conduct) — a deliberate broadening compared to the earlier 1956 Act's framing.</p>
+    <div class="case-box"><strong>Shanti Prasad Jain v. Kalinga Tubes Ltd. (1965), Supreme Court:</strong> A foundational ruling on what genuinely constitutes "oppression" — the Court held that oppression requires majority shareholders acting AGAINST minority members specifically IN THEIR CAPACITY AS MEMBERS, with the conduct examined not in ISOLATION but as part of a CONTINUOUS, connected course of dealing. The conduct must be genuinely BURDENSOME, HARSH, and WRONGFUL — a mere breakdown of mutual confidence/trust between majority and minority is, by itself, INSUFFICIENT unless that lack of confidence itself SPRINGS FROM oppressive conduct in the management of company affairs. This case set a meaningfully high threshold, preventing "oppression" from becoming a loose catch-all for any shareholder disagreement.</div>
+    <h4>What Constitutes "Mismanagement"</h4>
+    <p>Under Section 241(1)(a), mismanagement covers GROSS mismanagement of company affairs and acts genuinely PREJUDICIAL to the company's interests — including diversion of funds for improper purposes, gross negligence in management, and conduct materially harming the company's financial position. Mere unwise, inefficient, or careless conduct by a director, WITHOUT more, generally does NOT rise to the level of actionable mismanagement (as clarified in Needle Industries).</p>
+    <h4>Section 244 — Threshold Requirement for Standing to Apply</h4>
+    <p>To apply under Section 241, a member (in a company WITH share capital) must generally hold: at least 100 members OR one-tenth of total members (whichever is LESS), OR members holding at least 10% of issued share capital (with all calls paid up). For a company WITHOUT share capital: at least one-fifth of total members. The NCLT may, however, WAIVE these threshold requirements in appropriate circumstances (as occurred in the high-profile Tata-Mistry dispute), recognising exceptional cases warranting relief despite not strictly meeting the numerical threshold.</p>
+    <h4>Section 242 — Powers of the Tribunal</h4>
+    <p>Where the NCLT is satisfied the case is made out, it may pass orders including: regulating the company's future conduct of affairs, purchase of shares/interests of members by other members or the company, termination/modification of agreements, removal of the managing director or any director, or (in appropriate cases) any other order it considers just and equitable — deliberately AVOIDING winding up wherever a less drastic remedy can adequately address the oppression/mismanagement.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Shanti Prasad Jain's "burdensome, harsh, wrongful, continuous course of conduct" test for oppression is essential and frequently tested. Section 244's exact numerical thresholds (100 members OR 1/10th, whichever is less; OR 10% of share capital) must be stated precisely — a guaranteed short-answer question.</div>
+  `},
+  { id:'T6', title:'Winding Up of Companies', marks:'Core Topic', content:`
+    <h4>Meaning of Winding Up</h4>
+    <p>The legal process by which a company's existence is brought to an END — its assets are realised/liquidated, liabilities discharged/settled according to a specified priority order, and any surplus distributed among members — ultimately resulting in the company being formally DISSOLVED and struck off the register.</p>
+    <h4>Modes of Winding Up</h4>
+    <ul>
+      <li><strong>Winding Up by the Tribunal (Compulsory Winding Up)</strong> — ordered by the NCLT on specified grounds, including: the company's inability to pay its debts, a special resolution of the company resolving to be wound up by the Tribunal, the company acting against India's sovereignty/security/friendly foreign relations, or where the Tribunal finds it JUST AND EQUITABLE to wind up the company (a flexible, discretionary ground often invoked in deadlock or oppression cases where no other adequate remedy exists)</li>
+      <li><strong>Voluntary Winding Up</strong> — initiated by the company's own members/creditors (now largely governed alongside insolvency proceedings under the Insolvency and Bankruptcy Code framework for many circumstances, following significant 2016-era legislative reform reducing the Companies Act's own voluntary winding-up provisions)</li>
+    </ul>
+    <h4>"Just and Equitable" Ground — A Flexible Safety Valve</h4>
+    <p>Courts have recognised several illustrative (non-exhaustive) situations justifying winding up on just-and-equitable grounds: genuine DEADLOCK in management (particularly in closely-held, quasi-partnership-style companies where mutual trust has completely broken down), the company's SUBSTRATUM/main object having genuinely failed or become impossible to achieve, and situations of persistent oppression where no other remedy is realistically adequate.</p>
+    <h4>Priority of Payment on Winding Up</h4>
+    <p>Broadly, on winding up, payments follow a specified priority: secured creditors first (to the extent of their security), followed by costs/expenses of the winding-up process itself, workmen's dues (which rank alongside secured creditors' claims in specified circumstances under the "workmen's portion" concept), other preferential/statutory dues, unsecured creditors, and finally, any remaining surplus is distributed among members according to their respective rights.</p>
+    <h4>Role of the Liquidator</h4>
+    <p>A liquidator is appointed (by the Tribunal, in compulsory winding up) to take custody/control of the company's assets, realise them, settle the list of creditors/contributories, discharge liabilities according to the statutory priority, and ultimately report to the Tribunal for the company's formal dissolution.</p>
+    <h4>Relationship with the Insolvency and Bankruptcy Code 2016</h4>
+    <p>The IBC 2016 has significantly reshaped the practical landscape of corporate insolvency/winding up in India, providing a comprehensive, time-bound framework for resolving corporate insolvency (through the Corporate Insolvency Resolution Process) as an alternative/precursor to traditional liquidation — with many matters now channelled through the IBC/NCLT framework rather than the Companies Act's own historical winding-up provisions, reflecting a significant, relatively recent legislative shift toward prioritising REVIVAL/RESOLUTION over straightforward liquidation wherever genuinely viable.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> "Just and Equitable" winding up grounds (deadlock, failed substratum, persistent oppression) is a guaranteed essay/problem question — always give concrete illustrative examples for each category. The IBC 2016's significant reshaping of the traditional winding-up landscape is an important, frequently tested "recent developments" point.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1897', name:'Salomon v. Salomon & Co. Ltd.', tag:'Separate Legal Entity', tagColor:'gold', story:'Mr. Salomon had run a successful shoe-manufacturing business for years as a sole trader, before deciding to incorporate it into a limited company — transferring his business to the new entity in exchange for shares and secured debentures, with his wife and five children each subscribing for a single share to satisfy the statutory minimum of seven members. When the business later fell into financial trouble and the company was wound up, the unsecured creditors were furious to discover that Salomon himself, as a secured debenture-holder, would be paid BEFORE them. They argued the whole company was nothing but a legal fiction — a thin disguise Salomon had used to keep running his own business exactly as before, while dodging personal responsibility for its debts. The Court of Appeal agreed, calling the company a "myth" and an "agent" for Salomon. But when the case reached the House of Lords, the judges took a fundamentally different, far more consequential view of what incorporation actually means.', principle:'Once a company is duly and properly incorporated in compliance with the Companies Act\'s statutory formalities, it becomes a legal person entirely distinct from its subscribers/shareholders — "the company is at law a different person altogether from the subscribers to the memorandum." The motives behind incorporation are legally irrelevant; the company is not the agent or trustee of its members, and members are not personally liable for its debts beyond what the Act itself provides. This ruling established the Doctrine of Separate Legal Entity, the absolute foundation of all modern company law.' },
+  { year:'1981', name:'Needle Industries (India) Ltd. v. Needle Industries Newey (India) Holding Ltd.', tag:'Directors\' Fiduciary Duty', tagColor:'teal', story:'A foreign holding company, facing its own financial troubles, decided the cleanest solution was simply to wind up its profitable Indian subsidiary — even though the subsidiary itself was a genuinely viable, solvent business with minority shareholders who had every reason to expect it would continue operating. The minority shareholders pushed back, arguing this wasn\'t a legitimate business decision at all, but the controlling shareholder using its dominant position to serve its own separate interests at the direct expense of the minority and the company itself. When the dispute reached the Supreme Court, the justices had to grapple with a fundamental question of corporate governance: does the party controlling a company\'s affairs owe genuine, meaningful duties to the company and ALL its members — or can they simply wield their controlling power however suits them, so long as they technically stay within the letter of company procedure?', principle:'Directors and persons controlling a company\'s affairs must act bona fide and in the genuine interests of the company and its members as a whole — not merely to advance a controlling shareholder\'s separate agenda. Conduct that is prejudicial, harsh, and wrongful (assessed as a continuous course of dealing, not an isolated lapse) constitutes a breach warranting relief. Rather than the drastic remedy of winding up a viable company, courts may instead order a fair-value buyout, protecting minority interests while preserving a genuinely solvent business.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Characteristics of a Company', v:'S-L-P-C-T-S = Separate legal entity + Limited liability + Perpetual succession + Common seal/signature + Transferable shares + Separate property' },
+    { k:'Directors\' Duties (S.166)', v:'Act per Articles + Good faith + Due care/diligence + Avoid conflict of interest + No undue gain + Cannot assign office' },
+    { k:'Section 241 Grounds', v:'Prejudicial to PUBLIC interest OR oppressive to MEMBER(s) OR prejudicial to COMPANY\'S interest OR material change prejudicial to company/class of members' },
+    { k:'Section 244 Thresholds', v:'100 members OR 1/10th total members (whichever LESS) OR 10% issued share capital (share capital company); 1/5th total members (no share capital)' },
+    { k:'Just & Equitable Winding Up Grounds', v:'Deadlock in management + Failed substratum + Persistent oppression with no adequate alternative remedy' }
+  ]},
+  { icon:'📅', title:'Key Sections & Numbers', items:[
+    { k:'Section 2(20)', v:'Definition of "Company"' },
+    { k:'Section 7', v:'Certificate of Incorporation — conclusive evidence of compliance' },
+    { k:'Section 9', v:'Effect of registration — body corporate from incorporation date' },
+    { k:'Section 166', v:'Duties of Directors' },
+    { k:'Section 241', v:'Application to Tribunal for relief in oppression/mismanagement' },
+    { k:'Section 242', v:'Powers of the Tribunal (NCLT)' },
+    { k:'Section 244', v:'Numerical threshold for standing to apply' },
+    { k:'Section 339', v:'Fraudulent trading during winding up' },
+    { k:'Section 447', v:'Punishment for fraud' },
+    { k:'IBC 2016', v:'Reshaped corporate insolvency/winding-up landscape' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'Salomon v. Salomon & Co. Ltd. (1897)', v:'Foundational Separate Legal Entity doctrine — company is a distinct person from its subscribers, motives irrelevant.' },
+    { k:'Vodafone International Holdings v. Union of India (2012)', v:'Refused to lift the corporate veil — separate entity remains the default rule absent clear fraud/sham evidence.' },
+    { k:'Needle Industries v. Needle Industries Newey (1981)', v:'Directors/controllers must act bona fide for the company and members as a whole; fair-value buyout preferred over winding up.' },
+    { k:'Shanti Prasad Jain v. Kalinga Tubes Ltd. (1965)', v:'Oppression requires burdensome, harsh, wrongful conduct as a continuous course of dealing — not mere loss of confidence.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Memorandum vs Articles', v:'Memorandum = external "charter," defines scope/objects. Articles = internal management rules, SUBORDINATE to the Memorandum.' },
+    { k:'Judicial vs Statutory veil-lifting', v:'Judicial = case-law developed grounds (fraud, sham, single economic unit). Statutory = explicit Act provisions (S.339, S.447, S.3A).' },
+    { k:'Oppression vs Mismanagement', v:'Oppression = burdensome/harsh/wrongful conduct against members AS MEMBERS. Mismanagement = gross mismanagement prejudicial to the COMPANY\'S interests.' },
+    { k:'Doctrine of Indoor Management', v:'Outsiders need NOT verify a company\'s INTERNAL procedural compliance — protects bona fide third parties, counterbalancing constructive notice of public documents.' },
+    { k:'Compulsory vs Voluntary Winding Up', v:'Compulsory = ordered BY the Tribunal on specified grounds. Voluntary = initiated BY the company\'s own members/creditors.' },
+    { k:'One Person Company (OPC)', v:'A genuinely NEW concept under the 2013 Act — allows a SINGLE person to form a company with limited liability protection.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Under Section 2(20) of the Companies Act 2013, a "company" refers to:', opts:['Any business run by a sole proprietor', 'A company incorporated under this Act or any previous company law', 'Only government-owned enterprises', 'Only foreign business entities'], ans:1, exp:'Section 2(20) defines "company" specifically by reference to due incorporation under the Act or prior company law.' },
+  { q:'In Salomon v. Salomon & Co. Ltd. (1897), the House of Lords held that a duly incorporated company is:', opts:['Merely an agent of its subscribers/members', 'A different, distinct legal person altogether from the subscribers to the memorandum', 'Identical in every legal respect to a partnership', 'Only recognised as separate if it has more than 100 shareholders'], ans:1, exp:'Salomon established that a properly incorporated company is a genuinely distinct legal person from its subscribers — the foundation of separate legal entity doctrine.' },
+  { q:'In Salomon\'s case, the House of Lords held that the MOTIVES behind incorporating a company are:', opts:['The single most important factor in determining validity', 'Legally IRRELEVANT, so long as statutory formalities were properly complied with', 'Grounds for automatic dissolution of the company', 'Relevant only for tax purposes'], ans:1, exp:'The Court held motives for incorporation do not affect the company\'s legal validity once formalities are properly satisfied.' },
+  { q:'"Perpetual Succession," as a characteristic of a company, means that:', opts:['The company must be dissolved every 10 years', 'The company\'s existence is unaffected by changes in membership (death, insolvency, exit of members) until formally wound up', 'Directors hold office for life', 'Shares can never be transferred'], ans:1, exp:'Perpetual succession ensures the company continues regardless of changes among its individual members, until lawfully dissolved.' },
+  { q:'"Lifting the Corporate Veil" refers to courts:', opts:['Automatically dissolving every company under any dispute', 'Disregarding the company\'s separate personality in specific circumstances to hold controlling persons personally liable', 'Renaming a company without its consent', 'A routine, frequently-applied procedure with no special threshold'], ans:1, exp:'Veil-lifting is an exception to Salomon, reserved for genuine misuse/abuse of the corporate structure, not applied routinely.' },
+  { q:'In Vodafone International Holdings v. Union of India (2012), the Supreme Court:', opts:['Lifted the corporate veil to levy tax on the transaction', 'REFUSED to lift the corporate veil, holding separate entity remains the default rule absent clear fraud/sham evidence', 'Abolished the doctrine of separate legal entity entirely', 'Ordered the company to be wound up'], ans:1, exp:'Vodafone illustrates that courts require genuinely compelling evidence of abuse before lifting the veil — legitimate global commercial structuring, even if tax-efficient, is respected.' },
+  { q:'Under Section 339 of the Companies Act (Fraudulent Trading), where business is carried on with intent to defraud creditors during winding up:', opts:['No consequence attaches to anyone', 'Courts may declare participating persons personally liable', 'Only the company itself (not individuals) can ever be liable', 'The company automatically continues operating normally'], ans:1, exp:'Section 339 is a statutory ground for lifting the veil, attaching personal liability to those who fraudulently carried on business during winding up.' },
+  { q:'A "One Person Company (OPC)," a genuinely new concept under the Companies Act 2013, allows:', opts:['Only government entities to incorporate', 'A SINGLE person to form a company with limited liability protection', 'Only foreign nationals to incorporate in India', 'Companies to exist without any legal formalities'], ans:1, exp:'OPC is a novel structural innovation of the 2013 Act, extending limited liability protection to single-person enterprises.' },
+  { q:'The Memorandum of Association, as distinguished from the Articles of Association, is best described as:', opts:['A document governing only internal day-to-day management', 'The company\'s foundational "charter" defining its fundamental scope/objects, to which the Articles are subordinate', 'A document that can be freely ignored once the company is incorporated', 'Identical in legal function to the Articles'], ans:1, exp:'The Memorandum is the foundational charter defining scope, while Articles (internal management rules) must remain consistent with it.' },
+  { q:'An act by a company genuinely BEYOND the objects specified in its Memorandum is generally considered:', opts:['Fully valid and binding regardless of the Memorandum', 'ULTRA VIRES (beyond the company\'s powers) and void', 'Automatically ratified by shareholders', 'Only relevant for tax purposes'], ans:1, exp:'The ultra vires doctrine protects shareholders/creditors from a company venturing beyond its authorised scope of objects.' },
+  { q:'The Doctrine of Indoor Management protects outsiders dealing with a company by:', opts:['Requiring them to personally verify every internal board resolution before any transaction', 'Allowing them to generally ASSUME the company\'s internal procedural requirements were duly complied with, absent notice to the contrary', 'Making the outsider automatically liable for the company\'s debts', 'Applying only to government-owned companies'], ans:1, exp:'Indoor Management counterbalances constructive notice of public documents — outsiders need not investigate internal compliance they cannot realistically verify.' },
+  { q:'Under Section 166, a director\'s duties include acting in GOOD FAITH to promote the company\'s objects, and:', opts:['Achieving personal financial gain wherever legally possible', 'Exercising due and reasonable care, avoiding conflicts of interest, and not achieving undue gain for themselves or associates', 'Assigning their office freely to any third party', 'Ignoring the interests of employees and community entirely'], ans:1, exp:'Section 166 comprehensively codifies fiduciary duties including care/diligence, avoiding conflicts, and prohibiting undue personal gain.' },
+  { q:'In Needle Industries (India) Ltd. v. Needle Industries Newey (India) Holding Ltd. (1981), the Supreme Court held that directors/controllers must:', opts:['Act solely in the interest of the controlling shareholder, regardless of minority interests', 'Act bona fide and in the genuine interests of the company and its members as a whole', 'Have no fiduciary obligations whatsoever', 'Always dissolve the company if any dispute arises'], ans:1, exp:'Needle Industries established that controllers owe genuine fiduciary obligations to the company and ALL members, not merely a controlling shareholder\'s separate agenda.' },
+  { q:'In Needle Industries, rather than ordering the winding up of a viable, solvent company, the Supreme Court instead ordered:', opts:['Immediate dissolution with no compensation', 'A fair-value buyout of the minority shareholders\' interests', 'Complete transfer of the company to the government', 'No remedy whatsoever'], ans:1, exp:'The Court preferred a less drastic remedy (fair-value buyout) over winding up, preserving the viable business while protecting minority interests.' },
+  { q:'Under Section 241, a member may apply to the NCLT complaining that the company\'s affairs:', opts:['Are always conducted perfectly with no possible complaint', 'HAVE BEEN or ARE BEING conducted in a manner prejudicial to public interest, oppressive to members, or prejudicial to company interests', 'Can only be challenged if the company has already been dissolved', 'Cannot be challenged by any member under any circumstances'], ans:1, exp:'Section 241\'s "have been or are being" language extends to past conduct, not merely continuing/ongoing conduct — a deliberate broadening from the 1956 Act.' },
+  { q:'In Shanti Prasad Jain v. Kalinga Tubes Ltd. (1965), the Supreme Court held that "oppression" requires conduct that is:', opts:['Any single, isolated disagreement between shareholders', 'BURDENSOME, HARSH, and WRONGFUL, examined as a continuous course of dealing, not in isolation', 'Simply a difference of business opinion', 'Present only if the company has already been dissolved'], ans:1, exp:'This case set a meaningfully high threshold for oppression, requiring genuinely burdensome and wrongful conduct as part of a continuous pattern.' },
+  { q:'According to Shanti Prasad Jain, a mere BREAKDOWN of mutual confidence between majority and minority shareholders, by itself, is:', opts:['Always sufficient to establish oppression automatically', 'INSUFFICIENT unless that lack of confidence itself springs from oppressive conduct in company management', 'Grounds for automatic criminal prosecution', 'Irrelevant to any company law proceeding'], ans:1, exp:'Mere loss of confidence alone does not establish oppression — it must be shown to arise from genuinely oppressive management conduct.' },
+  { q:'Under Section 244, for a company WITH share capital, the numerical threshold for standing to apply under Section 241 is generally:', opts:['Any single shareholder regardless of shareholding', 'At least 100 members OR one-tenth of total members (whichever is LESS), or members holding at least 10% of issued share capital', 'Exactly 50% of all shareholders', 'Only the company\'s founding members'], ans:1, exp:'This is the precise Section 244 threshold formula that must be stated accurately for full marks.' },
+  { q:'The NCLT may WAIVE the Section 244 threshold requirements in appropriate exceptional circumstances, as occurred in:', opts:['No case has ever seen such a waiver', 'The high-profile Tata-Mistry (Cyrus Investments v. Tata Sons) dispute', 'Only cases involving government companies', 'Cases decided before 1956'], ans:1, exp:'The NCLAT ruling in the Tata-Mistry matter is the well-known illustration of the Tribunal exercising its waiver power under Section 244.' },
+  { q:'Under Section 242, the NCLT\'s powers upon finding oppression/mismanagement generally include:', opts:['Only the power to immediately wind up the company with no other option', 'Regulating future conduct of company affairs, ordering share purchases, removing directors, or other orders it considers just and equitable', 'No power to grant any relief whatsoever', 'Only the power to impose criminal fines'], ans:1, exp:'Section 242 gives the Tribunal broad, flexible remedial powers, deliberately avoiding winding up wherever a less drastic remedy suffices.' },
+  { q:'"Compulsory Winding Up," as distinguished from "Voluntary Winding Up," is:', opts:['Always initiated by the company\'s own members', 'Ordered BY the Tribunal (NCLT) on specified statutory grounds', 'A process that no longer exists under Indian law', 'Only applicable to government companies'], ans:1, exp:'Compulsory winding up is Tribunal-ordered, distinct from voluntary winding up initiated by the company\'s own members/creditors.' },
+  { q:'The "Just and Equitable" ground for winding up is illustrated by situations including:', opts:['Only cases where the company has already ceased all operations', 'Genuine deadlock in management, failure of the company\'s substratum/main object, or persistent oppression with no adequate alternative remedy', 'Only cases involving less than 10 employees', 'Situations where the company has too many profits'], ans:1, exp:'These are recognised, illustrative (non-exhaustive) categories where courts have found winding up just and equitable.' },
+  { q:'The Insolvency and Bankruptcy Code (IBC) 2016 has:', opts:['Had no effect whatsoever on company winding-up procedures', 'Significantly reshaped the corporate insolvency/winding-up landscape, providing a comprehensive resolution-focused framework', 'Abolished the NCLT entirely', 'Applied only to individual (non-corporate) insolvency'], ans:1, exp:'The IBC 2016 introduced a major, relatively recent legislative shift toward prioritising revival/resolution over straightforward liquidation.' },
+  { q:'On winding up, the general priority of payment typically places WHICH creditors FIRST (to the extent of their security)?', opts:['Unsecured creditors', 'Secured creditors', 'Ordinary shareholders', 'Preference shareholders always come before any creditor'], ans:1, exp:'Secured creditors generally rank first (to the extent of their security), ahead of unsecured creditors and members\' distributions.' },
+  { q:'An "Independent Director," under the Companies Act 2013, is generally characterised by:', opts:['Being a close relative of the company\'s promoter', 'Meeting specified statutory independence criteria, with no material pecuniary relationship with the company', 'Having no qualifications whatsoever', 'Being appointed solely to represent a specific lending bank\'s interests'], ans:1, exp:'Independent directors must meet statutory independence standards, strengthening governance objectivity — distinct from nominee directors representing specific institutional interests.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
