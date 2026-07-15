@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Administrative Law — Study Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --navy: #0f2044;
+  --navy-light: #1a3260;
+  --gold: #c8960c;
+  --gold-light: #f0b429;
+  --cream: #faf8f2;
+  --teal: #0d6e6e;
+  --teal-light: #1a9090;
+  --red: #c0392b;
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --card-bg: #ffffff;
+  --border: #e2ddd0;
+  --text: #1a1a2e;
+  --text-muted: #6b6478;
+  --shadow: 0 4px 24px rgba(15,32,68,0.10);
+  --shadow-lg: 0 8px 40px rgba(15,32,68,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; z-index: 1000; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.6s ease, transform 0.6s ease; }
+#splash.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.splash-icon { font-size: 64px; animation: pulse 2s infinite; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-align: center; line-height: 1.2; padding: 0 20px; }
+.splash-sub { color: var(--gold-light); font-size: 13px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.splash-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.splash-fill { height: 100%; background: var(--gold-light); animation: load 1.8s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── TOPBAR ── */
+#topbar { position: sticky; top: 0; z-index: 100; background: var(--navy); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+.topbar-icon { font-size: 22px; }
+.topbar-title { font-family: 'Playfair Display', serif; color: white; font-size: 16px; font-weight: 700; flex: 1; }
+.topbar-badge { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+#bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--navy); display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; transition: all 0.2s; position: relative; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--gold-light); border-radius: 0 0 2px 2px; }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── MAIN ── */
+#main { padding: 16px 16px 90px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HOME ── */
+.home-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 20px; padding: 24px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.home-hero::before { content: '💡'; position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.07; }
+.home-hero h1 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; line-height: 1.3; margin-bottom: 6px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.hero-tag { background: rgba(255,255,255,0.12); color: var(--gold-light); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.quick-card:active { transform: scale(0.97); }
+.quick-card .qc-icon { font-size: 28px; margin-bottom: 8px; }
+.quick-card .qc-label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.quick-card .qc-count { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.quick-card.gold { border-color: var(--gold); }
+.quick-card.teal { border-color: var(--teal); }
+.quick-card.red { border-color: var(--red); }
+.quick-card.green { border-color: var(--green); }
+.qc-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.quick-card.gold .qc-bar { background: var(--gold); }
+.quick-card.teal .qc-bar { background: var(--teal); }
+.quick-card.red .qc-bar { background: var(--red); }
+.quick-card.green .qc-bar { background: var(--green); }
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 4px; }
+.stat-card { background: var(--navy); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; }
+.stat-label { color: rgba(255,255,255,0.55); font-size: 10px; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── EXAM TIPS ── */
+.exam-tip-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+.exam-tip-title { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.exam-tip-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-block { background: #f5f0e8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+.disclaimer-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.disclaimer-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TOPICS / ANSWERS ── */
+.part-header { background: var(--navy); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.part-header.gold { background: linear-gradient(135deg, #8B6914, var(--gold)); }
+.part-header.teal { background: linear-gradient(135deg, #085050, var(--teal)); }
+.part-header.red { background: linear-gradient(135deg, #8B1a10, var(--red)); }
+.part-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; }
+.part-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.topic-card { background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.topic-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.topic-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.topic-icon.gold { background: #fef7e0; }
+.topic-icon.teal { background: #e0f7f7; }
+.topic-icon.red { background: #fde8e6; }
+.topic-meta { flex: 1; }
+.topic-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.topic-marks { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.topic-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.topic-card.open .topic-chevron { transform: rotate(180deg); }
+.topic-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.topic-card.open .topic-body { display: block; }
+.topic-body h4 { font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+.topic-body p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.topic-body ul { margin: 6px 0 10px 16px; }
+.topic-body ul li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+.topic-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+.topic-body table th { background: var(--navy); color: white; padding: 8px 6px; text-align: left; font-size: 11px; }
+.topic-body table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.topic-body table tr:nth-child(even) td { background: #f8f8f8; }
+.case-box { background: #e8f0fc; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #3b5bdb; font-size: 12px; line-height: 1.6; }
+.alert-box { background: #fff8e1; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.twist-box { background: #f0faf0; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--green); font-size: 12px; line-height: 1.6; }
+.maxim-box { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center; font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+/* ── VIDEOS ── */
+.video-card { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.video-thumb { background: var(--navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-play { font-size: 52px; color: white; opacity: 0.85; }
+.video-info { padding: 14px; }
+.video-unit { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.video-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.video-topic-tag { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--text-muted); }
+
+/* ── CASES ── */
+.cases-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cases-filter::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.case-story-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; cursor: pointer; }
+.case-story-header { padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.case-year { background: var(--navy); color: var(--gold-light); border-radius: 8px; padding: 6px 10px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.case-name { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+.case-tag { display: inline-block; margin-top: 5px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.case-tag.gold { background: #fef7e0; color: #8B6914; }
+.case-tag.teal { background: #e0f7f7; color: #085050; }
+.case-tag.red { background: #fde8e6; color: #8B1a10; }
+.case-tag.green { background: var(--green-light); color: var(--green); }
+.case-tag.blue { background: #e8f0fc; color: #2b4acb; }
+.case-story-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.case-story-card.open .case-story-body { display: block; }
+.case-story-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+.case-principle { background: var(--navy); color: var(--gold-light); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px; line-height: 1.6; font-weight: 600; }
+.case-principle::before { content: '⚖ Legal Principle: '; font-weight: 900; }
+
+/* ── QUIZ ── */
+.quiz-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.quiz-mode-card { background: white; border-radius: 14px; padding: 16px 14px; cursor: pointer; box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+.quiz-mode-card:active { transform: scale(0.96); }
+.quiz-mode-card.selected { border-color: var(--teal); background: #e0f7f7; }
+.qm-icon { font-size: 30px; margin-bottom: 8px; }
+.qm-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.qm-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.quiz-start-btn { width: 100%; padding: 16px; background: var(--teal); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 20px; }
+#quiz-active { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.quiz-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.quiz-prog-text { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.quiz-q-card { background: white; border-radius: 16px; padding: 20px 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.quiz-q-text { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 16px; }
+.quiz-option { padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-option.wrong { background: #fde8e6; border-color: var(--red); color: var(--red); font-weight: 700; }
+.quiz-explanation { background: #f0faf0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; border-left: 3px solid var(--green); display: none; }
+.quiz-next-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; display: none; }
+.quiz-result-card { background: white; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.result-score { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: var(--teal); }
+.result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-grade { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+.quiz-restart-btn { padding: 14px 28px; background: var(--teal); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* ── VISUAL NOTES ── */
+.notes-topnav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.notes-topnav::-webkit-scrollbar { display: none; }
+.n-pill { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.n-pill.active, .n-pill:active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.n-section { display: none; }
+.n-section.active { display: block; }
+.n-unit-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.n-unit-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.n-hook { background: linear-gradient(135deg, #fff8e1, #fffde7); border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-hook-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+.n-hook-text { font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; }
+.n-grid { display: grid; gap: 10px; margin-bottom: 14px; }
+.n-grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.n-grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.n-grid-4 { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.n-card { background: white; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.n-card.navy { border-color: var(--navy); background: #f0f4ff; }
+.n-card.gold { border-color: var(--gold); background: #fffbf0; }
+.n-card.teal { border-color: var(--teal); background: #f0fbfb; }
+.n-card.red { border-color: var(--red); background: #fff5f4; }
+.n-card.green { border-color: var(--green); background: #f0fbf4; }
+.n-card-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.n-card-title { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+.n-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.n-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.n-table th { background: var(--navy); color: white; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.n-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); background: white; vertical-align: top; line-height: 1.5; }
+.n-table tr:last-child td { border-bottom: none; }
+.n-table tr:nth-child(even) td { background: #faf8f2; }
+.n-table .n-key { font-weight: 700; color: var(--navy); }
+.n-flow { margin-bottom: 14px; }
+.n-flow-step { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 12px; line-height: 1.5; position: relative; box-shadow: var(--shadow); }
+.n-flow-step::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 16px; font-weight: 700; }
+.n-flow-step:last-child::after { display: none; }
+.n-flow-step strong { display: block; font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.n-case { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+.n-case-head { background: linear-gradient(135deg, var(--navy), #1a3260); padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.n-case-icon { font-size: 24px; flex-shrink: 0; }
+.n-case-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+.n-case-meta { font-size: 11px; color: var(--gold-light); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.n-case-body { background: white; }
+.n-case-row { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 70px 1fr; gap: 10px; }
+.n-case-row:last-child { border-bottom: none; }
+.n-tag { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+.n-tag.story { background: #fde8e6; color: #8B1a10; }
+.n-tag.held { background: var(--green-light); color: var(--green); }
+.n-tag.exam { background: #fef7e0; color: #8B6914; }
+.n-tag.why { background: #ede7f6; color: #5e35b1; }
+.n-alert { background: #fde8e6; border-left: 4px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-alert-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-key-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
+.n-key-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.n-recall { background: var(--navy); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.n-recall-label { font-size: 10px; font-weight: 700; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.n-recall-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+.n-excl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.n-excl-item { background: #fff5f4; border: 1px solid #f0b3ac; border-radius: 8px; padding: 9px 8px; text-align: center; }
+.n-excl-sec { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.n-excl-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.n-excl-label { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.n-spectrum { margin-bottom: 14px; }
+.n-spectrum-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.n-spectrum-bar { display: flex; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.n-sp-seg { flex: 1; padding: 10px 6px; text-align: center; font-size: 10px; line-height: 1.4; }
+.n-sp-seg strong { display: block; font-weight: 700; margin-bottom: 2px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+.n-sp-seg:nth-child(1) { background: #c0392b; color: white; }
+.n-sp-seg:nth-child(2) { background: #d35400; color: white; }
+.n-sp-seg:nth-child(3) { background: #f39c12; color: #333; }
+.n-sp-seg:nth-child(4) { background: #27ae60; color: white; }
+.n-sp-seg:nth-child(5) { background: var(--teal); color: white; }
+.n-timeline { position: relative; padding-left: 22px; margin-bottom: 14px; }
+.n-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal)); }
+.n-tl-item { position: relative; margin-bottom: 14px; }
+.n-tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream); }
+.n-tl-year { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+.n-tl-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.n-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cheat-section { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.cheat-section-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.cheat-section-icon { font-size: 24px; }
+.cheat-section-title { font-size: 14px; font-weight: 700; color: var(--navy); flex: 1; }
+.cheat-section-chevron { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; }
+.cheat-section.open .cheat-section-chevron { transform: rotate(180deg); }
+.cheat-section-body { display: none; border-top: 1px solid var(--border); }
+.cheat-section.open .cheat-section-body { display: block; }
+.cheat-item { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-key { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 120px; flex-shrink: 0; line-height: 1.4; }
+.cheat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-icon">💡</div>
+  <div class="splash-title">Administrative Law</div>
+  <div class="splash-sub">LLB 1st Semester · Osmania University</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-icon">💡</div>
+  <div class="topbar-title">Administrative Law Study App</div>
+  <div class="topbar-badge">1st Sem</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Administrative Law</h1>
+      <p>Model answers, landmark cases and an exam cheat sheet — covering Nature &amp; Sources, Delegated Legislation, Judicial Control, Natural Justice, Judicial Review &amp; Writs, and Tribunals/State Liability from the OU LLB 3rd Semester syllabus.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Constitutional Foundations</span>
+        <span class="hero-tag">Writs &amp; Judicial Review</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Landmark Cases</div></div>
+      <div class="stat-card"><div class="stat-num">25</div><div class="stat-label">Quiz Qs</div></div>
+    </div>
+
+    <p class="section-title">Quick Access</p>
+    <div class="quick-grid">
+      <div class="quick-card gold" onclick="goTo('screen-topics')">
+        <div class="qc-icon">📚</div>
+        <div class="qc-label">Model Answers</div>
+        <div class="qc-count">6 core topics</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card red" onclick="goTo('screen-cases')">
+        <div class="qc-icon">⚖️</div>
+        <div class="qc-label">Landmark Cases</div>
+        <div class="qc-count">2 must-know cases</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card teal" onclick="goTo('screen-quiz')">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-label">Quick Quiz</div>
+        <div class="qc-count">25 questions</div>
+        <div class="qc-bar"></div>
+      </div>
+      <div class="quick-card green" onclick="goTo('screen-cheat')">
+        <div class="qc-icon">📋</div>
+        <div class="qc-label">Cheat Sheet</div>
+        <div class="qc-count">Sections, cases, mnemonics</div>
+        <div class="qc-bar"></div>
+      </div>
+    </div>
+
+    <p class="section-title">Exam Strategy</p>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">⚡ High Frequency Topics</div>
+      <div class="exam-tip-text">Functional separation of powers, essential legislative functions, substantive vs procedural ultra vires, the two rules of natural justice, post-decisional hearing, threefold judicial review grounds, the five writs — these appear almost every year in OU LLB Administrative Law exams.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🏛️ Must-Know Cases</div>
+      <div class="exam-tip-text">In Re Delhi Laws Act (1951, 7-judge bench — essential legislative functions cannot be delegated) and Maneka Gandhi v Union of India (1978 — post-decisional hearing doctrine). Also know Ram Jawaya Kapur v State of Punjab (1955) on functional separation of powers.</div>
+    </div>
+    <div class="exam-tip-card">
+      <div class="exam-tip-title">🔢 Numbers That Fetch Marks</div>
+      <div class="exam-tip-text">In Re Delhi Laws Act was the FIRST Presidential Reference under Article 143. Administrative Tribunals Act 1985 (CAT). Article 299 (government contract formalities). Threefold review: Illegality + Irrationality + Procedural Impropriety (Lord Diplock, GCHQ).</div>
+    </div>
+
+    <p class="section-title">Disclaimers</p>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Educational Purpose Only</div>
+      <div class="disclaimer-text">This platform provides free study material for LLB examination preparation purposes only. Content is intended to supplement classroom learning and does not constitute legal advice. Students are advised to verify all information with official sources, prescribed textbooks and faculty members.</div>
+    </div>
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">📌 Independent Platform — Not Affiliated</div>
+      <div class="disclaimer-text">LawSticker AI is an independent educational platform created by students for students. It is NOT affiliated with, endorsed by, or officially connected to Osmania University or any academic institution. All Acts, Sections and court judgments referenced are publicly available official documents.</div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div id="screen-topics" class="screen"></div>
+
+  <!-- CASES -->
+  <div id="screen-cases" class="screen">
+    <div id="cases-container"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <p class="section-title">Ready to Test Yourself?</p>
+      <div class="exam-tip-card" style="margin-bottom:16px;">
+        <div class="exam-tip-title">🎯 25 Questions</div>
+        <div class="exam-tip-text">Covers all 6 topics — Nature & Sources, Delegated Legislation, Judicial Control, Natural Justice, Judicial Review & Writs, Tribunals & State Liability. Order shuffles each time.</div>
+      </div>
+      <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+    <div id="quiz-active" style="display:none;"></div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div id="screen-cheat" class="screen">
+    <div id="cheat-container"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav" style="grid-template-columns:repeat(5,1fr);">
+  <button class="nav-btn active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="goTo('screen-topics')"><span class="nav-icon">📚</span><span class="nav-label">Answers</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cases')"><span class="nav-icon">⚖️</span><span class="nav-label">Cases</span></button>
+  <button class="nav-btn" onclick="goTo('screen-quiz')"><span class="nav-icon">🎯</span><span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" onclick="goTo('screen-cheat')"><span class="nav-icon">📋</span><span class="nav-label">Cheat</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ADMINISTRATIVE LAW  |  Content data for lawsticker-ai.com
+// Osmania University LLB 3rd Semester
+// ═══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:'T1', title:'Nature, Scope and Sources of Administrative Law', marks:'Core Topic', content:`
+    <h4>Meaning of Administrative Law</h4>
+    <p>Administrative Law is the branch of public law governing the ORGANISATION, POWERS, DUTIES, and FUNCTIONS of administrative/executive authorities, and the LEGAL REMEDIES available to persons affected by the exercise of those powers — it primarily addresses the RELATIONSHIP between citizens and administrative authorities, and the CONTROL mechanisms (judicial, legislative, and internal) that keep administrative action within legal bounds.</p>
+    <h4>Why Administrative Law Has Grown — The Rise of the Welfare State</h4>
+    <p>Historically, government functions were largely confined to defence, foreign affairs, and maintaining law and order. The shift toward a WELFARE STATE — with government actively regulating economic activity, providing social services, and intervening extensively in citizens' daily lives — has vastly expanded the scope and volume of administrative/executive action, correspondingly expanding the need for a robust body of law controlling how that power is exercised.</p>
+    <h4>Administrative Law vs Constitutional Law</h4>
+    <p>Constitutional Law deals with the STRUCTURE of the state and the general principles of governmental organisation (fundamentally, the "grundnorm"/foundational framework). Administrative Law deals with the actual FUNCTIONING/OPERATION of administrative agencies within that structure — the day-to-day exercise of executive power and its legal control. The two overlap substantially (e.g., writ jurisdiction, natural justice principles derive from constitutional guarantees) but are analytically distinct.</p>
+    <h4>Doctrine of Separation of Powers — A Functional, Not Rigid, Application in India</h4>
+    <div class="case-box"><strong>Ram Jawaya Kapur v. State of Punjab (1955), Supreme Court:</strong> Held that while the Indian Constitution broadly allocates functions among the legislature, executive, and judiciary, it does NOT embody a RIGID, watertight separation of powers in the strict American sense. The Court recognised that modern governance inherently involves SOME overlap between these organs (e.g., delegated legislation by the executive, quasi-judicial functions performed by administrative bodies) — India follows a FUNCTIONAL separation, with checks and balances, rather than an absolute, rigid division.</div>
+    <h4>Sources of Administrative Law in India</h4>
+    <ul>
+      <li>The Constitution itself (Articles 32, 226 — writ jurisdiction; Article 14 — equality/non-arbitrariness; Article 21 — due process elements)</li>
+      <li>Statutes creating administrative bodies/tribunals and defining their powers</li>
+      <li>Delegated/subordinate legislation (rules, regulations, notifications issued under statutory authority)</li>
+      <li>Judicial decisions developing principles like natural justice, ultra vires, proportionality, and legitimate expectation</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Ram Jawaya Kapur's "functional, not rigid" separation of powers holding is essential and frequently tested — always state clearly that India does NOT follow strict American-style separation. Administrative Law vs Constitutional Law is a guaranteed short-answer distinguish question.</div>
+  `},
+  { id:'T2', title:'Delegated Legislation', marks:'Core Topic', content:`
+    <h4>Meaning of Delegated Legislation</h4>
+    <p>Law-making power EXERCISED BY THE EXECUTIVE (or another subordinate authority) under powers CONFERRED/DELEGATED by the primary legislature through a "parent" or "enabling" statute — also called subordinate legislation. Examples: rules, regulations, orders, notifications, bye-laws issued by government departments/agencies under statutory authorisation.</p>
+    <h4>Why Delegated Legislation Is Necessary</h4>
+    <ul>
+      <li>Parliament lacks the TIME to enact every technical/detailed rule needed for complex modern governance</li>
+      <li>Executive agencies possess greater TECHNICAL EXPERTISE for specialised areas (e.g., environmental standards, financial regulations)</li>
+      <li>Allows FLEXIBILITY to adapt/amend detailed rules more quickly than the full legislative process would permit</li>
+      <li>Enables handling of EMERGENCY situations requiring prompt regulatory response</li>
+    </ul>
+    <div class="case-box"><strong>In Re Delhi Laws Act (1951), Supreme Court (7-judge bench, the first-ever Presidential Reference under Article 143):</strong> The President referred the question of whether Parliament could validly delegate legislative power to the executive, following the Delhi Laws Act 1912's provisions allowing the Central Government to extend/modify laws for Delhi Province with wide discretion. By majority, the Court established the foundational DOCTRINE OF EXCESSIVE DELEGATION: the legislature CAN delegate legislative power to the executive for ANCILLARY/SUBORDINATE matters, but CANNOT delegate its ESSENTIAL LEGISLATIVE FUNCTIONS — namely, determining/laying down legislative POLICY and formally enacting that policy into a binding rule of conduct. If the legislature delegates without providing sufficient GUIDANCE/POLICY GUIDELINES for the exercise of that power, the delegation is EXCESSIVE and unconstitutional. The Court also confirmed India does NOT follow a rigid separation-of-powers doctrine that would otherwise bar all delegation.</div>
+    <h4>The "Essential Legislative Function" Test</h4>
+    <p>What CANNOT be delegated: determining fundamental legislative POLICY, creating criminal offences with penal consequences (reaffirmed in subsequent cases), and matters requiring genuine legislative deliberation/choice. What CAN be delegated: filling in procedural/technical details, adapting general policy to varying local circumstances, and administrative implementation mechanics — provided the parent Act supplies adequate policy guidance/standards to constrain the delegate's discretion.</p>
+    <h4>Types of Delegated Legislation</h4>
+    <ul>
+      <li><strong>Conditional Legislation</strong> — the legislature itself completes the essential legislative function, merely leaving to the executive the determination of WHEN or under WHAT CONDITIONS the (already-complete) law comes into operation</li>
+      <li><strong>Sub-delegation</strong> — where the delegate itself further delegates rule-making power to another subordinate authority, generally requiring express or clearly implied authorisation in the parent statute</li>
+      <li><strong>Henry VIII Clause</strong> — a provision empowering the executive to MODIFY or even AMEND provisions of the parent Act itself to remove difficulties in implementation — viewed with particular judicial caution given its potential to undermine legislative supremacy</li>
+    </ul>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> In Re Delhi Laws Act is THE essential case — always state the exact holding: "essential legislative functions" (policy determination) cannot be delegated, but ancillary/subordinate matters can be, with the 7-judge bench and 1951 date. "Conditional Legislation" vs ordinary "Delegated Legislation" is a frequently tested, subtle distinction.</div>
+  `},
+  { id:'T3', title:'Judicial Control of Delegated Legislation', marks:'Core Topic', content:`
+    <h4>Doctrine of Ultra Vires</h4>
+    <p>The foundational judicial control mechanism — an administrative authority may act only WITHIN the scope of powers CONFERRED by the parent statute (or the Constitution); action BEYOND those powers is "ultra vires" (beyond powers) and therefore VOID/unenforceable. Courts, on judicial review, can strike down delegated legislation found to be ultra vires the enabling Act.</p>
+    <h4>Substantive Ultra Vires vs Procedural Ultra Vires</h4>
+    <p><strong>Substantive Ultra Vires</strong> — the delegated legislation itself goes beyond the SUBSTANTIVE scope/subject-matter authorised by the parent Act (e.g., regulating a matter the parent Act never empowered the authority to regulate at all). <strong>Procedural Ultra Vires</strong> — the delegated legislation, though within substantive scope, fails to comply with a MANDATORY PROCEDURE the parent Act itself requires for valid rule-making (e.g., mandatory prior publication, consultation requirements, or specific notification procedures).</p>
+    <h4>Grounds for Judicial Review of Delegated Legislation</h4>
+    <ul>
+      <li><strong>Exceeding the parent Act's scope</strong> — the delegate has regulated a matter genuinely outside what was authorised</li>
+      <li><strong>Violating Fundamental Rights</strong> — delegated legislation contravening Articles 14, 19, 21, or other constitutional guarantees is void</li>
+      <li><strong>Unreasonableness/Arbitrariness</strong> — rules that are manifestly arbitrary or unreasonable can be struck down under Article 14's non-arbitrariness principle</li>
+      <li><strong>Mala Fides</strong> — delegated legislation made in genuine bad faith, for a collateral/improper purpose unrelated to the statute's actual objects</li>
+      <li><strong>Failure to follow mandatory procedural requirements</strong> — e.g., where the parent Act mandates prior publication/consultation and this was not observed</li>
+    </ul>
+    <h4>Parliamentary/Legislative Control</h4>
+    <p>Alongside judicial control, Parliament retains general oversight mechanisms — requiring delegated legislation to be LAID before Parliament (subject to modification/annulment through specified procedures), Parliamentary committees scrutinising subordinate legislation, and Parliament's ultimate power to AMEND or REPEAL the parent Act itself, thereby curtailing/removing the delegated power altogether.</p>
+    <h4>Presumption of Constitutionality</h4>
+    <p>Delegated legislation, like primary legislation, generally enjoys a PRESUMPTION of validity/constitutionality — the burden lies on the party CHALLENGING the delegated legislation to establish it is genuinely ultra vires, unreasonable, or otherwise invalid; courts do not lightly interfere with duly enacted subordinate legislation absent a clear, established ground for invalidity.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Substantive vs Procedural Ultra Vires is a guaranteed comparison question — always give a concrete example distinguishing the two. The full list of judicial review grounds (scope, Fundamental Rights, arbitrariness, mala fides, procedural failure) should be given comprehensively, not just one or two grounds.</div>
+  `},
+  { id:'T4', title:'Principles of Natural Justice', marks:'Core Topic', content:`
+    <h4>Meaning and Foundation of Natural Justice</h4>
+    <p>A body of FAIRNESS-BASED procedural principles that administrative/quasi-judicial authorities must follow when their decisions ADVERSELY AFFECT the civil rights, liberties, or interests of an individual — even where the governing statute is SILENT on procedure, natural justice principles are generally read INTO the process by courts, since fairness is considered an implicit requirement of any lawful exercise of power affecting individual rights.</p>
+    <h4>Rule 1 — Nemo Judex in Causa Sua (Rule Against Bias)</h4>
+    <p>"No one should be a judge in their own cause" — the decision-maker must be genuinely IMPARTIAL, free from personal, financial, or other disqualifying interest in the outcome. Bias may be PECUNIARY (financial interest), PERSONAL (relationship/enmity with a party), or arise from PRIOR INVOLVEMENT in the matter creating a reasonable apprehension of prejudgment.</p>
+    <h4>Rule 2 — Audi Alteram Partem (Rule of Fair Hearing)</h4>
+    <p>"Hear the other side" — no person should be condemned, or have their rights/interests adversely affected, WITHOUT being given a REASONABLE OPPORTUNITY to be heard. This generally requires: (1) proper NOTICE of the case/allegations against them, (2) disclosure of the evidence/material relied upon, (3) a genuine opportunity to present their own case/response, and (4) (in appropriate cases) the right to legal representation.</p>
+    <div class="case-box"><strong>Maneka Gandhi v. Union of India (1978), Supreme Court (7-judge bench):</strong> Beyond its celebrated constitutional-law holding on Article 21, this case is ALSO a foundational administrative law authority. The government impounded Maneka Gandhi's passport under Section 10(3)(c) of the Passport Act, refusing to give her ANY prior notice or hearing, and refusing to disclose reasons "in the interest of the general public" under Section 10(5). The Supreme Court held that the impounding order, being an ADMINISTRATIVE ORDER, was open to challenge on grounds including being unreasonable, made in bad faith, denying natural justice, or ultra vires. Critically for administrative law specifically, the Court developed the concept of "POST-DECISIONAL HEARING" as a pragmatic middle ground — where a genuine PRE-decisional hearing would frustrate the very purpose of urgent administrative action (e.g., an emergency impounding), a hearing provided AFTER the decision may sufficiently satisfy audi alteram partem, so long as the affected person's case is still genuinely, meaningfully considered.</div>
+    <h4>Exceptions to Natural Justice</h4>
+    <p>Natural justice requirements may be EXCLUDED, expressly or by necessary implication, in specified circumstances: genuine EMERGENCY situations demanding immediate action (where the harm from delay would defeat the purpose entirely), situations where the natural justice requirement would itself be an "empty formality" causing no real prejudice, and cases of purely LEGISLATIVE (as opposed to administrative/quasi-judicial) action, which generally does not attract natural justice requirements in the same way.</p>
+    <h4>Reasoned Decisions ("Speaking Orders")</h4>
+    <p>An emerging, increasingly recognised THIRD principle — requiring administrative/quasi-judicial authorities to provide clear, logical REASONS for their decisions, enabling meaningful judicial review and ensuring the decision-maker has genuinely applied their mind to the relevant considerations, rather than merely reaching an unexplained conclusion.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Maneka Gandhi's "post-decisional hearing" doctrine is THE essential concept specifically for administrative law (distinct from its constitutional Article 21 holding) — always explain the emergency-justification rationale for allowing hearing AFTER rather than BEFORE the decision. The two core natural justice rules (bias, fair hearing) plus the emerging reasoned-decision requirement should all be covered.</div>
+  `},
+  { id:'T5', title:'Judicial Review of Administrative Action', marks:'Core Topic', content:`
+    <h4>Meaning and Purpose of Judicial Review</h4>
+    <p>The power of courts to examine the LEGALITY of administrative/executive action, and to strike down action found to be unlawful, ultra vires, procedurally improper, or otherwise defective — a fundamental check ensuring administrative power remains subject to the RULE OF LAW, not exercised arbitrarily or beyond legal limits.</p>
+    <h4>Grounds of Judicial Review — The Classic Threefold Classification (Lord Diplock, GCHQ Case)</h4>
+    <ul>
+      <li><strong>Illegality</strong> — the decision-maker misunderstood/misapplied the law, or acted beyond their legal powers (ultra vires in its broadest sense)</li>
+      <li><strong>Irrationality (Wednesbury Unreasonableness)</strong> — a decision SO UNREASONABLE that no reasonable authority, properly applying its mind to the relevant considerations, could ever have arrived at it — a deliberately HIGH threshold, not merely a decision the court itself disagrees with</li>
+      <li><strong>Procedural Impropriety</strong> — failure to follow required procedures, including natural justice violations and failure to comply with mandatory statutory procedural requirements</li>
+    </ul>
+    <h4>Doctrine of Proportionality — An Increasingly Applied Additional Ground</h4>
+    <p>Indian courts have increasingly applied PROPORTIONALITY as an independent, additional ground of review (particularly in Fundamental Rights contexts) — examining whether the administrative action, even if pursuing a legitimate objective, went FURTHER than genuinely necessary to achieve that objective, imposing a disproportionate burden relative to the aim pursued.</p>
+    <h4>Writs — Article 32 (Supreme Court) and Article 226 (High Courts)</h4>
+    <ul>
+      <li><strong>Habeas Corpus</strong> — "produce the body"; challenges unlawful detention/imprisonment, requiring the detaining authority to justify the detention's legality</li>
+      <li><strong>Mandamus</strong> — "we command"; compels a public authority to perform a PUBLIC DUTY it has failed/refused to perform</li>
+      <li><strong>Prohibition</strong> — issued by a superior court to a subordinate court/tribunal to PREVENT it from exceeding its jurisdiction (available BEFORE the proceeding concludes)</li>
+      <li><strong>Certiorari</strong> — issued to QUASH a decision already made by a subordinate court/tribunal/authority that acted without/in excess of jurisdiction, or in violation of natural justice</li>
+      <li><strong>Quo Warranto</strong> — "by what authority"; challenges a person's RIGHT to hold a public office they are occupying without proper legal authority/qualification</li>
+    </ul>
+    <h4>Locus Standi and Public Interest Litigation</h4>
+    <p>Traditionally, only a person with a DIRECT, personal legal interest ("locus standi") could approach courts. Indian courts, however, have significantly LIBERALISED this requirement through Public Interest Litigation (PIL) — allowing genuinely concerned citizens/organisations to approach courts on behalf of persons/groups unable to effectively access justice themselves (e.g., due to poverty, social disadvantage), a distinctively Indian judicial development expanding access to judicial review.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> The threefold Illegality/Irrationality/Procedural Impropriety classification (with Proportionality as an emerging fourth ground) is a guaranteed essay question — always structure judicial review answers around this framework. Prohibition (preventive, before conclusion) vs Certiorari (corrective, after decision made) is a frequently confused, essential distinction.</div>
+  `},
+  { id:'T6', title:'Administrative Tribunals and Liability of the State', marks:'Core Topic', content:`
+    <h4>Administrative Tribunals — Meaning and Rationale</h4>
+    <p>Specialised adjudicatory bodies established by statute to decide DISPUTES within a particular technical/specialised field (e.g., service matters, tax, consumer disputes, environmental matters) — created to provide SPEEDIER, more TECHNICALLY-INFORMED, and less FORMALISTIC dispute resolution than ordinary civil courts, given the volume and specialised nature of disputes arising from expanding administrative/regulatory activity.</p>
+    <h4>Distinguishing Tribunals from Ordinary Courts</h4>
+    <p>Tribunals typically have SPECIALISED, LIMITED jurisdiction (confined to their specific statutory subject-matter), may be staffed partly by TECHNICAL/EXPERT members (not exclusively judges), often follow more FLEXIBLE procedure than the strict Civil Procedure Code framework, yet remain subject to JUDICIAL REVIEW/SUPERVISION by the High Courts and Supreme Court to ensure they act within their jurisdiction and observe natural justice.</p>
+    <h4>Central Administrative Tribunal (CAT) — Illustrative Example</h4>
+    <p>Established under the Administrative Tribunals Act 1985 to adjudicate disputes/complaints regarding RECRUITMENT and SERVICE CONDITIONS of persons in Union public services — an example of the specialised tribunal model, subject to judicial review by High Courts under Article 226 and the Supreme Court under Article 32/136.</p>
+    <h4>Liability of the State in Tort — Historical Background</h4>
+    <p>Traditionally, the doctrine of SOVEREIGN IMMUNITY (inherited from English common law — "the King can do no wrong") shielded the State from tort liability for acts done in exercise of "sovereign" functions (e.g., defence, legislation, core governmental functions), while permitting liability for "non-sovereign"/commercial functions performed like any private party.</p>
+    <h4>Modern Erosion of Sovereign Immunity</h4>
+    <p>Indian courts have increasingly NARROWED the sovereign immunity distinction, recognising that the traditional sovereign/non-sovereign dichotomy is increasingly ill-suited to a modern welfare state engaged extensively in commercial, developmental, and service-delivery functions far beyond traditional core sovereign activities — with growing judicial willingness to hold the State liable for negligence/wrongful acts of its officials/agencies, particularly where genuine harm to citizens results from administrative negligence, subject to the specific facts and nature of the function involved in each case.</p>
+    <h4>Liability of the State in Contract — Article 299</h4>
+    <p>Government contracts must be EXPRESSED to be made by the President/Governor (as appropriate), EXECUTED on their behalf by a person AUTHORISED for that purpose — a contract not complying with these formal requirements under Article 299 is generally NOT enforceable against the government in the ordinary way, though courts have developed limited equitable remedies (e.g., under the principle of unjust enrichment) in specific circumstances to prevent complete injustice where the government has knowingly accepted benefits under a defectively-executed contract.</p>
+    <div class="alert-box"><strong>⚠ Exam Alert:</strong> Sovereign vs Non-Sovereign function distinction (and its progressive judicial erosion in modern welfare-state conditions) is essential and frequently tested via a problem question. Article 299's formal requirements for government contracts (expressed in the President/Governor's name, executed by an authorised person) is a guaranteed short-answer question.</div>
+  `}
+];
+
+const CASES = [
+  { year:'1951', name:'In Re Delhi Laws Act', tag:'Delegated Legislation', tagColor:'gold', story:'India\'s newly independent Parliament faced a practical problem: the country had inherited a patchwork of laws that varied wildly across different regions, and bringing legal uniformity to Delhi and other territories required extending, modifying, and adapting existing statutes on a scale no legislature could realistically debate line-by-line. So Parliament passed laws giving the executive broad power to extend and modify existing legislation for these territories as it saw fit — but this raised a genuinely fundamental question that had never been definitively settled in independent India: could the legislature simply hand its own law-making power to the executive, or did the Constitution itself impose some limit on how much lawmaking authority could ever be delegated away? The President, in the very first reference of its kind under the Constitution\'s Article 143, asked the Supreme Court to settle the question once and for all. A 7-judge bench delivered a genuinely landmark, foundational answer.', principle:'The legislature can validly delegate legislative power to the executive for ancillary and subordinate matters, but CANNOT delegate its "essential legislative functions" — namely, determining fundamental legislative policy and formally enacting that policy into a binding rule of conduct. Delegation without adequate policy guidance from the parent Act constitutes "excessive delegation" and is unconstitutional. This case established the foundational framework for judicial control of delegated legislation in India.' },
+  { year:'1978', name:'Maneka Gandhi v. Union of India', tag:'Natural Justice & Post-Decisional Hearing', tagColor:'teal', story:'When the government impounded journalist Maneka Gandhi\'s passport "in the public interest," giving her no advance notice and refusing to even explain why, the case became one of India\'s most celebrated constitutional rulings — but it is equally foundational to ADMINISTRATIVE law specifically. The government\'s lawyers argued something genuinely tricky: if they had given Maneka Gandhi advance notice that her passport was about to be impounded, she might simply have used it to leave the country before the order took effect — defeating the entire purpose of impounding it in the first place. So how could the principle of "hear the other side" possibly survive in situations exactly like this one, where advance warning would sabotage the very administrative action being taken? The Supreme Court found a genuinely creative, pragmatic middle path — one that has shaped how emergency administrative action works in India ever since.', principle:'Where a genuine pre-decisional hearing would frustrate the very purpose of urgent administrative action, a hearing provided AFTER the decision (a "post-decisional hearing") may sufficiently satisfy the audi alteram partem principle of natural justice — so long as the affected person\'s case is still genuinely and meaningfully considered. Administrative orders remain open to challenge on grounds of unreasonableness, bad faith, denial of natural justice, or being ultra vires.' }
+];
+
+const CHEAT_SECTIONS = [
+  { icon:'🗝️', title:'Mnemonics — Must Memorise', items:[
+    { k:'Two Rules of Natural Justice', v:'Nemo Judex in Causa Sua (no bias) + Audi Alteram Partem (fair hearing) — plus emerging "Reasoned Decisions"' },
+    { k:'Threefold Judicial Review Grounds', v:'I-I-P = Illegality + Irrationality (Wednesbury) + Procedural Impropriety (+ emerging Proportionality)' },
+    { k:'Five Writs', v:'H-M-P-C-Q = Habeas Corpus + Mandamus + Prohibition + Certiorari + Quo Warranto' },
+    { k:'Prohibition vs Certiorari', v:'Prohibition = PREVENTIVE, stops proceedings BEFORE conclusion. Certiorari = CORRECTIVE, quashes a decision AFTER it\'s made.' },
+    { k:'Substantive vs Procedural Ultra Vires', v:'Substantive = exceeds SCOPE/subject-matter authorised. Procedural = fails a MANDATORY PROCEDURE required by the parent Act.' }
+  ]},
+  { icon:'📅', title:'Key Cases & Dates', items:[
+    { k:'Ram Jawaya Kapur v. State of Punjab (1955)', v:'India follows FUNCTIONAL, not rigid, separation of powers' },
+    { k:'In Re Delhi Laws Act (1951)', v:'First Presidential Reference (Art. 143); essential legislative functions cannot be delegated' },
+    { k:'Maneka Gandhi v. Union of India (1978)', v:'Post-decisional hearing doctrine; administrative orders challengeable for unreasonableness/bad faith/natural justice denial/ultra vires' },
+    { k:'A.K. Kraipak v. Union of India', v:'Natural justice applies to administrative (not just quasi-judicial) actions affecting rights' },
+    { k:'Administrative Tribunals Act', v:'1985 — established the Central Administrative Tribunal (CAT)' },
+    { k:'Article 299', v:'Formal requirements for enforceable government contracts' },
+    { k:'GCHQ Case (Lord Diplock)', v:'Established the threefold Illegality/Irrationality/Procedural Impropriety classification' }
+  ]},
+  { icon:'🏛️', title:'Must-Know Cases', items:[
+    { k:'In Re Delhi Laws Act (1951)', v:'7-judge bench. Essential legislative functions cannot be delegated; ancillary matters can be. Foundational excessive-delegation doctrine.' },
+    { k:'Maneka Gandhi v. Union of India (1978)', v:'7-judge bench. Post-decisional hearing doctrine for urgent administrative action; administrative orders open to multiple grounds of challenge.' },
+    { k:'Ram Jawaya Kapur v. State of Punjab (1955)', v:'India follows functional (not rigid) separation of powers, permitting overlap between branches.' }
+  ]},
+  { icon:'⚖️', title:'Exam Quick Reference', items:[
+    { k:'Delegated Legislation vs Conditional Legislation', v:'Delegated = executive determines the RULE\'S CONTENT within policy guidelines. Conditional = legislature completes the rule; executive merely decides WHEN it applies.' },
+    { k:'Sovereign vs Non-Sovereign functions', v:'Sovereign (traditionally immune) = core governmental functions like defence. Non-Sovereign (liability applies) = commercial/proprietary activities — distinction increasingly narrowed by courts.' },
+    { k:'Wednesbury Unreasonableness', v:'A decision SO unreasonable no reasonable authority could have made it — a deliberately HIGH threshold, not mere judicial disagreement.' },
+    { k:'Mandamus availability', v:'Compels performance of a PUBLIC duty already owed — cannot be used to create a new duty that doesn\'t already exist in law.' },
+    { k:'Locus Standi liberalisation', v:'Traditional requirement of direct personal interest significantly relaxed through Public Interest Litigation (PIL), allowing concerned citizens to litigate on behalf of disadvantaged groups.' },
+    { k:'Article 299 government contracts', v:'Must be EXPRESSED in the name of President/Governor + EXECUTED by an authorised person — non-compliance generally makes the contract unenforceable against government.' }
+  ]}
+];
+
+const QUIZ = [
+  { q:'Administrative Law primarily governs:', opts:['Only criminal proceedings', 'The organisation, powers, duties, and functions of administrative authorities, and remedies available against their action', 'Only international treaties', 'Only private contract disputes'], ans:1, exp:'Administrative Law addresses the relationship between citizens and administrative/executive authorities and the control mechanisms over administrative power.' },
+  { q:'In Ram Jawaya Kapur v. State of Punjab (1955), the Supreme Court held that India follows:', opts:['A rigid, strict separation of powers exactly like the United States', 'A FUNCTIONAL, not rigid, separation of powers, permitting some overlap between branches', 'No separation of powers whatsoever', 'Separation of powers only at the state level, not the Union level'], ans:1, exp:'Ram Jawaya Kapur confirmed India\'s functional approach to separation of powers, acknowledging necessary overlap in modern governance.' },
+  { q:'"Delegated Legislation" refers to law-making power:', opts:['Exercised exclusively by the judiciary', 'Exercised by the executive (or another subordinate authority) under powers conferred by a parent/enabling statute', 'That requires no statutory authorisation whatsoever', 'Exercised only by foreign governments'], ans:1, exp:'Delegated (subordinate) legislation is executive rule-making under authority granted by the legislature through an enabling Act.' },
+  { q:'In In Re Delhi Laws Act (1951), the Supreme Court held that the legislature:', opts:['Can delegate absolutely any legislative power without limit', 'Can delegate ancillary/subordinate matters, but CANNOT delegate its "essential legislative functions" (determining policy)', 'Cannot delegate any legislative power under any circumstances', 'Can only delegate power to the judiciary, never the executive'], ans:1, exp:'This case established the foundational excessive-delegation doctrine — essential legislative functions (policy determination) cannot be delegated, unlike ancillary implementation matters.' },
+  { q:'In Re Delhi Laws Act (1951) was significant procedurally because it was:', opts:['A routine civil appeal', 'The FIRST Presidential Reference under Article 143 of the Constitution', 'A criminal trial', 'A dispute between two state governments'], ans:1, exp:'This was the first-ever use of the Article 143 Presidential Reference mechanism, decided by a 7-judge bench.' },
+  { q:'"Excessive Delegation" occurs when the parent statute delegates legislative power:', opts:['With clear, sufficient policy guidance for the delegate', 'WITHOUT providing adequate guidance/policy guidelines constraining the delegate\'s discretion', 'To a court of law', 'Only for a specified short duration'], ans:1, exp:'Excessive delegation is unconstitutional precisely because it lacks the policy guidance needed to keep the delegate\'s discretion within proper legislative bounds.' },
+  { q:'"Substantive Ultra Vires," as distinguished from "Procedural Ultra Vires," refers to delegated legislation that:', opts:['Fails to follow a mandatory procedure required by the parent Act', 'Exceeds the SUBSTANTIVE scope/subject-matter authorised by the parent Act', 'Is always automatically valid regardless of content', 'Applies only to criminal matters'], ans:1, exp:'Substantive ultra vires concerns the CONTENT/scope of the delegated legislation exceeding what was authorised, distinct from procedural defects in HOW it was made.' },
+  { q:'Under the Rule Against Bias (Nemo Judex in Causa Sua), a decision-maker must be free from:', opts:['Any connection to the case whatsoever, even purely administrative involvement', 'Personal, financial (pecuniary), or other disqualifying interest that could compromise genuine impartiality', 'Any prior legal training', 'Requirements to give reasons for decisions'], ans:1, exp:'The rule against bias requires genuine impartiality, free from pecuniary, personal, or prejudgment-based disqualifying interests.' },
+  { q:'"Audi Alteram Partem" requires that a person adversely affected by an administrative decision generally receive:', opts:['No opportunity to respond at all', 'Proper notice of the case against them and a genuine, reasonable opportunity to be heard/respond', 'Only a written apology after the decision', 'The right to appeal to a foreign court'], ans:1, exp:'Audi alteram partem (hear the other side) requires notice and a genuine opportunity to present one\'s case before an adverse decision is made.' },
+  { q:'In Maneka Gandhi v. Union of India (1978), the Supreme Court developed the concept of "Post-Decisional Hearing" to address situations where:', opts:['A hearing is never required under any circumstances', 'A genuine pre-decisional hearing would frustrate the very purpose of urgent administrative action', 'The government wishes to avoid all forms of hearing permanently', 'Only criminal cases are involved'], ans:1, exp:'Post-decisional hearing is a pragmatic compromise for urgent situations where advance notice would defeat the administrative action\'s purpose, while still preserving meaningful natural justice.' },
+  { q:'Following Maneka Gandhi, an administrative order can generally be challenged on grounds including:', opts:['Only if it involves a criminal matter', 'Being unreasonable, made in bad faith, denying natural justice, or being ultra vires', 'Only if made by a specific named official', 'Only within 24 hours of being issued'], ans:1, exp:'The case established multiple grounds on which administrative orders remain open to legal challenge.' },
+  { q:'Natural justice requirements may generally be EXCLUDED in circumstances such as:', opts:['Whenever the government simply prefers not to provide a hearing', 'Genuine emergency situations demanding immediate action, where delay would defeat the purpose entirely', 'Only for disputes below a certain monetary value', 'Only on weekends and public holidays'], ans:1, exp:'Recognised exceptions to natural justice include genuine emergencies and situations where the requirement would be an empty formality causing no real prejudice.' },
+  { q:'Under the classic threefold classification of judicial review grounds, "Irrationality" (Wednesbury Unreasonableness) means a decision:', opts:['The court simply personally disagrees with', 'SO unreasonable that no reasonable authority, properly applying its mind, could have arrived at it', 'That was made too quickly', 'That involves a large amount of money'], ans:1, exp:'Wednesbury unreasonableness sets a deliberately high threshold — mere judicial disagreement with a decision is insufficient; the decision must be genuinely irrational.' },
+  { q:'"Procedural Impropriety," as a ground of judicial review, includes:', opts:['Only errors of substantive law', 'Failure to follow required procedures, including natural justice violations and non-compliance with mandatory statutory procedures', 'Only decisions made in a foreign language', 'Only decisions taken by more than one official'], ans:1, exp:'Procedural impropriety covers both natural justice failures and non-compliance with statutorily mandated procedures for administrative decision-making.' },
+  { q:'The writ of "Mandamus" is used to:', opts:['Quash a decision already made by a tribunal', 'COMPEL a public authority to perform a public duty it has failed or refused to perform', 'Challenge someone\'s right to hold public office', 'Challenge unlawful detention'], ans:1, exp:'Mandamus ("we command") compels performance of an existing public duty, distinct from the other writs\' specific functions.' },
+  { q:'The writ of "Certiorari," as distinguished from "Prohibition," is used to:', opts:['Prevent a proceeding before it concludes', 'QUASH a decision ALREADY MADE by a subordinate court/tribunal/authority acting without or in excess of jurisdiction', 'Compel performance of a duty', 'Challenge unlawful detention only'], ans:1, exp:'Certiorari is corrective (quashing a completed decision), while Prohibition is preventive (stopping proceedings before they conclude) — a frequently tested distinction.' },
+  { q:'The writ of "Quo Warranto" challenges:', opts:['A person\'s unlawful detention', 'A person\'s RIGHT to hold a public office they occupy without proper legal authority/qualification', 'A tribunal\'s procedural errors', 'The validity of a private contract'], ans:1, exp:'Quo Warranto ("by what authority") specifically questions the legal authority behind someone\'s occupation of a public office.' },
+  { q:'The traditional requirement of "Locus Standi" (a direct personal legal interest to approach court) has been significantly liberalised in India through:', opts:['Complete abolition of all standing requirements', 'Public Interest Litigation (PIL), allowing concerned citizens/organisations to litigate on behalf of disadvantaged groups', 'Requiring even MORE strict personal interest than before', 'Only allowing government officials to file cases'], ans:1, exp:'PIL represents a distinctively Indian judicial development significantly expanding access to judicial review beyond traditional standing requirements.' },
+  { q:'Administrative Tribunals are generally established to provide:', opts:['Slower, more formalistic dispute resolution than ordinary courts', 'SPEEDIER, more technically-informed, and less formalistic resolution of specialised disputes', 'No possibility of appeal or judicial review whatsoever', 'Resolution only of purely criminal matters'], ans:1, exp:'Tribunals offer specialised, efficient dispute resolution for technical/specific subject matters, while remaining subject to judicial review.' },
+  { q:'The Central Administrative Tribunal (CAT), established under the Administrative Tribunals Act 1985, primarily adjudicates disputes relating to:', opts:['International trade disputes', 'Recruitment and service conditions of persons in Union public services', 'Only criminal appeals', 'Only tax matters'], ans:1, exp:'CAT specifically handles service-related disputes for Union government employees, illustrating the specialised tribunal model.' },
+  { q:'The traditional doctrine of "Sovereign Immunity" historically shielded the State from tort liability for acts done in exercise of:', opts:['Any function whatsoever, with no distinction', '"Sovereign" functions (e.g., defence, core governmental activity), while permitting liability for "non-sovereign"/commercial functions', 'Only functions performed outside India', 'Only functions performed by private contractors'], ans:1, exp:'Sovereign immunity traditionally distinguished sovereign (immune) from non-sovereign/commercial (liable) governmental functions.' },
+  { q:'Modern Indian judicial trends regarding sovereign immunity have generally:', opts:['Expanded sovereign immunity to cover all government functions without exception', 'NARROWED the sovereign/non-sovereign distinction, recognising it is increasingly ill-suited to a modern welfare state\'s extensive activities', 'Abolished the concept of the State entirely', 'Applied only to foreign governments, never the Indian government'], ans:1, exp:'Courts have progressively eroded rigid sovereign immunity, reflecting the reality that a welfare state performs many functions beyond traditional core sovereign activities.' },
+  { q:'Under Article 299, a government contract is generally enforceable against the government only if:', opts:['Made verbally by any government employee', 'EXPRESSED to be made by the President/Governor and EXECUTED by a person duly AUTHORISED for that purpose', 'Signed by any citizen willing to contract with the government', 'Made without any formal documentation at all'], ans:1, exp:'Article 299 imposes specific formal requirements — express attribution to the President/Governor and execution by an authorised person — for enforceable government contracts.' },
+  { q:'A "Henry VIII Clause" in delegated legislation refers to a provision empowering the executive to:', opts:['Create an entirely new, unrelated statute', 'MODIFY or even AMEND provisions of the parent Act itself to remove implementation difficulties', 'Only interpret existing law, never modify it', 'Delegate power exclusively to foreign authorities'], ans:1, exp:'Henry VIII Clauses are viewed with particular judicial caution, since they allow the executive to alter the very primary legislation that authorised it, potentially undermining legislative supremacy.' },
+  { q:'The Doctrine of Proportionality, increasingly applied by Indian courts as an additional ground of review, examines whether administrative action:', opts:['Was taken by the correct department', 'Went further than genuinely necessary to achieve a legitimate objective, imposing a disproportionate burden relative to the aim pursued', 'Was published in the Official Gazette', 'Was taken within office working hours'], ans:1, exp:'Proportionality assesses whether the means used were excessive relative to the legitimate end sought, an increasingly significant ground of judicial review particularly in Fundamental Rights contexts.' }
+];
+
+
+// ═══ APP LOGIC (lighter: Home/Topics/Cases/Quiz/Cheat only) ═══
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  const idx = ['screen-home','screen-topics','screen-cases','screen-quiz','screen-cheat'].indexOf(screen);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildTopics() {
+  let html = '<p class="section-title">Model Answers — 6 Core Topics</p>';
+  TOPICS.forEach(t => {
+    html += `<div class="topic-card" id="card-${t.id}">
+      <div class="topic-header" onclick="toggleTopic('${t.id}')">
+        <div class="topic-icon gold">💡</div>
+        <div class="topic-meta"><div class="topic-title">${t.title}</div><div class="topic-marks">${t.marks}</div></div>
+        <div class="topic-chevron">›</div>
+      </div>
+      <div class="topic-body">${t.content}</div>
+    </div>`;
+  });
+  document.getElementById('screen-topics').innerHTML = html;
+}
+function toggleTopic(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  card.querySelector('.topic-chevron').textContent = card.classList.contains('open') ? '‹' : '›';
+}
+
+function buildCases() {
+  document.getElementById('cases-container').innerHTML = CASES.map((c, i) => `
+    <div class="case-story-card" id="case-${i}">
+      <div class="case-story-header" onclick="toggleCase(${i})">
+        <div class="case-year">${c.year}</div>
+        <div><div class="case-name">${c.name}</div><span class="case-tag ${c.tagColor}">${c.tag}</span></div>
+      </div>
+      <div class="case-story-body">
+        <div class="case-story-text">${c.story}</div>
+        <div class="case-principle">${c.principle}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleCase(i) { document.getElementById('case-' + i).classList.toggle('open'); }
+
+function startQuiz() {
+  quizPool = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  if (quizIndex >= quizPool.length) { showResult(); return; }
+  answered = false;
+  const q = quizPool[quizIndex];
+  const pct = Math.round((quizIndex / quizPool.length) * 100);
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-prog-text">${quizIndex + 1}/${quizPool.length}</div>
+    </div>
+    <div class="quiz-q-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${o}</div>`).join('')}
+      <div class="quiz-explanation" id="qexp">${q.exp}</div>
+    </div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQuestion()">Next Question →</button>`;
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = quizPool[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.ans].classList.add('correct');
+  if (i !== q.ans) opts[i].classList.add('wrong'); else quizScore++;
+  document.getElementById('qexp').style.display = 'block';
+  document.getElementById('qnext').style.display = 'block';
+}
+function nextQuestion() { quizIndex++; showQuestion(); }
+function showResult() {
+  const pct = Math.round((quizScore / quizPool.length) * 100);
+  const grade = pct >= 80 ? '🏆 Distinction!' : pct >= 60 ? '✅ Pass' : '📚 Keep Revising';
+  document.getElementById('quiz-active').innerHTML = `
+    <div class="quiz-result-card">
+      <div class="result-score">${quizScore}/${quizPool.length}</div>
+      <div class="result-label">Questions answered correctly</div>
+      <div class="result-grade">${grade}</div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">Try Again</button>
+    </div>`;
+}
+function resetQuiz() {
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-active').innerHTML = '';
+}
+
+function buildCheat() {
+  document.getElementById('cheat-container').innerHTML = CHEAT_SECTIONS.map((s, i) => `
+    <div class="cheat-section" id="cheat-${i}">
+      <div class="cheat-section-header" onclick="toggleCheat(${i})">
+        <span class="cheat-section-icon">${s.icon}</span>
+        <span class="cheat-section-title">${s.title}</span>
+        <span class="cheat-section-chevron">›</span>
+      </div>
+      <div class="cheat-section-body">
+        ${s.items.map(item => `<div class="cheat-item"><div class="cheat-key">${item.k}</div><div class="cheat-val">${item.v}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheat(i) { document.getElementById('cheat-' + i).classList.toggle('open'); }
+
+// Splash + init
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1400);
+  buildTopics();
+  buildCases();
+  buildCheat();
+});
+</script>
+</body>
+</html>
