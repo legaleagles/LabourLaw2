@@ -250,9 +250,17 @@ async function loadExam(){
   return;
  }
  try{
-  const res = await fetch('https://lawsticker-ai.com/questions/' + SUBJECT_SLUG + '.json');
-  if(!res.ok) throw new Error('not found');
-  const data = await res.json();
+  let data;
+  if(SUBJECT_SLUG === 'aibe-mixed'){
+   // Dynamically-built mixed-subject mock, handed off from aibe-mock.html via sessionStorage
+   const stored = sessionStorage.getItem('aibeMixedPool');
+   if(!stored) throw new Error('no mixed pool found -- please start from the AIBE Mock page');
+   data = JSON.parse(stored);
+  } else {
+   const res = await fetch('https://lawsticker-ai.com/questions/' + SUBJECT_SLUG + '.json');
+   if(!res.ok) throw new Error('not found');
+   data = await res.json();
+  }
   SUBJECT_TITLE = data.subject;
   QUESTIONS_BANK = data.questions;
 
