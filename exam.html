@@ -421,6 +421,71 @@ function tierColor(pct){
  return "#DC2626";
 }
 
+const WEAK_Q_STORAGE_KEY = 'lawstickerWeakQuestions';
+const WEAK_Q_LIMIT = 300; // cap stored weak questions to avoid unbounded growth
+
+function loadWeakStore(){
+ try{
+  const raw = localStorage.getItem(WEAK_Q_STORAGE_KEY);
+  return raw ? JSON.parse(raw) : {};
+ }catch(e){ return {}; }
+}
+
+function saveWeakStore(store){
+ try{ localStorage.setItem(WEAK_Q_STORAGE_KEY, JSON.stringify(store)); }catch(e){ /* storage unavailable, fail silently */ }
+}
+
+function saveWeakQuestions(questionsAttempted, userAnswers){
+ const store = loadWeakStore();
+ questionsAttempted.forEach((q,i)=>{
+  const wasCorrect = userAnswers[i] === q.a;
+  const key = q.q; // question text as unique key
+  if(wasCorrect){
+   // Answered correctly this time -- remove from weak store if it was there
+   if(store[key]) delete store[key];
+  }else{
+   // Wrong or unanswered -- store/update it, tracking miss count and subject
+   store[key] = {
+    topic: q.topic, q: q.q, o: q.o, a: q.a, src: q.src,
+    subjectKey: q.subjectKey || null,
+    misses: (store[key] ? store[key].misses : 0) + 1,
+    lastMissed: Date.now()
+   };
+  }
+ });
+ // Cap store size -- if over limit, drop the oldest-missed entries first
+ const keys = Object.keys(store);
+ if(keys.length > WEAK_Q_LIMIT){
+  const sorted = keys.map(k => ({k, t: store[k].lastMissed})).sort((a,b)=>a.t-b.t);
+  const toRemove = sorted.slice(0, keys.length - WEAK_Q_LIMIT);
+  toRemove.forEach(item => delete store[item.k]);
+ }
+ saveWeakStore(store);
+}
+
+function getWeakQuestionCount(){
+ return Object.keys(loadWeakStore()).length;
+}
+
+function startWeakDrill(){
+ const store = loadWeakStore();
+ const weakQs = Object.values(store);
+ if(weakQs.length === 0){
+  alert('No weak questions saved yet -- complete a mock test first, and any questions you get wrong will show up here for focused practice.');
+  return;
+ }
+ // Shuffle and cap at a reasonable drill size
+ const shuffled = weakQs.slice();
+ for(let i = shuffled.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
+ const drillSet = shuffled.slice(0, Math.min(50, shuffled.length));
+ const payload = {
+  subject: 'Weak-Area Drill (' + drillSet.length + ' Questions You\'ve Missed Before)',
+  questions: drillSet.map(q => ({ topic: q.topic, q: q.q, o: q.o, a: q.a, src: q.src }))
+ };
+ sessionStorage.setItem('aibeMixedPool', JSON.stringify(payload));
+ window.location.href = 'https://lawsticker-ai.com/exam.html?subject=aibe-mixed&count=' + drillSet.length;
+}
+
 function submitExam(){
  clearInterval(timerInterval);
  const examMinutes = LENGTH_TIME_MIN[QUESTIONS.length] || Math.max(15, Math.round(QUESTIONS.length * 1.0));
@@ -460,6 +525,8 @@ function submitExam(){
    <div class="tr-bar-bg"><div class="tr-bar-fill" style="width:${t.pct}%"></div></div>
   </div>`;
  }).join('');
+
+ saveWeakQuestions(QUESTIONS, answers);
 
  document.getElementById('reviewList').innerHTML = QUESTIONS.map((q,i)=>{
   const yourAns = answers[i];

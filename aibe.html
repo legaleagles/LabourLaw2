@@ -83,7 +83,7 @@ border-radius:16px;padding:15px 16px;text-decoration:none;transition:all .2s;}
 </div>
 <div class="page">
 
-  <a href="https://lawsticker-ai.com/aibe-mock.html" style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#4338CA,#6366F1);border-radius:16px;padding:16px;margin-bottom:22px;text-decoration:none;box-shadow:0 6px 20px rgba(67,56,202,.3);">
+  <a href="https://lawsticker-ai.com/aibe-mock.html" style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#4338CA,#6366F1);border-radius:16px;padding:16px;margin-bottom:14px;text-decoration:none;box-shadow:0 6px 20px rgba(67,56,202,.3);">
     <span style="font-size:32px;">🎯</span>
     <span style="flex:1;">
       <span style="display:block;font-size:15px;font-weight:900;color:white;">Build Your Own Mock Test</span>
@@ -91,6 +91,45 @@ border-radius:16px;padding:15px 16px;text-decoration:none;transition:all .2s;}
     </span>
     <span style="font-size:20px;color:white;font-weight:900;">→</span>
   </a>
+
+  <a id="weakDrillCard" href="https://lawsticker-ai.com/exam.html?subject=aibe-weak-drill" style="display:none;align-items:center;gap:12px;background:linear-gradient(135deg,#DC2626,#F87171);border-radius:16px;padding:16px;margin-bottom:22px;text-decoration:none;box-shadow:0 6px 20px rgba(220,38,38,.3);">
+    <span style="font-size:32px;">🎯</span>
+    <span style="flex:1;">
+      <span style="display:block;font-size:15px;font-weight:900;color:white;" id="weakDrillTitle">Drill Your Weak Areas</span>
+      <span style="display:block;font-size:11.5px;color:rgba(255,255,255,.85);font-weight:600;margin-top:2px;" id="weakDrillSub">Retake only the questions you've gotten wrong before — the fastest way to close real gaps</span>
+    </span>
+    <span style="font-size:20px;color:white;font-weight:900;">→</span>
+  </a>
+  <script>
+  (function(){
+    try{
+      var raw = localStorage.getItem('lawstickerWeakQuestions');
+      var store = raw ? JSON.parse(raw) : {};
+      var keys = Object.keys(store);
+      if(keys.length > 0){
+        document.getElementById('weakDrillCard').style.display = 'flex';
+        document.getElementById('weakDrillTitle').textContent = 'Drill Your Weak Areas (' + keys.length + ')';
+        document.getElementById('weakDrillCard').addEventListener('click', function(e){
+          e.preventDefault();
+          // Build the drill session directly here (same logic as exam.html's startWeakDrill),
+          // since we already have the weak-question store loaded in this page's context.
+          var weakQs = keys.map(function(k){ return store[k]; });
+          for(var i = weakQs.length - 1; i > 0; i--){
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = weakQs[i]; weakQs[i] = weakQs[j]; weakQs[j] = tmp;
+          }
+          var drillSet = weakQs.slice(0, Math.min(50, weakQs.length));
+          var payload = {
+            subject: "Weak-Area Drill (" + drillSet.length + " Questions You've Missed Before)",
+            questions: drillSet.map(function(q){ return { topic: q.topic, q: q.q, o: q.o, a: q.a, src: q.src }; })
+          };
+          sessionStorage.setItem('aibeMixedPool', JSON.stringify(payload));
+          window.location.href = 'https://lawsticker-ai.com/exam.html?subject=aibe-mixed&count=' + drillSet.length;
+        });
+      }
+    }catch(e){ /* localStorage unavailable, card stays hidden */ }
+  })();
+  </script>
 
   <div class="sem-title">🔴 Highest Weightage (~10 Qs each)</div>
   <div class="card-grid">
@@ -135,6 +174,16 @@ border-radius:16px;padding:15px 16px;text-decoration:none;transition:all .2s;}
   <div class="weight-box">
     <div class="weight-title">📊 AIBE XXI 2026 — Quick Facts</div>
     <div class="weight-text">100 MCQs · ~3 hours · 19 subjects · No negative marking · CLOSED-BOOK since 2020 — you may carry ONLY clean bare acts (no notes, highlights, or commentary); no other books or study material permitted · Qualifying: 45% General/OBC, 40% SC/ST/PwD · Constitutional Law, CPC, and CrPC/BNSS carry the highest weightage (~10 Qs each) · Always verify against the current official BCI notification before your exam</div>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    <div class="info-title">🗓️ A Realistic Study Plan</div>
+    <div class="info-item" style="padding-left:0;"><b>Week 1 — Start with the two easiest wins:</b> CPC and IPC/BNS. Coaches consistently rate CPC as the easiest AIBE subject to score well in — it's procedural and predictable, not conceptually hard. Master the CPC "Core Four" (Sections 9/10/11/20) and the IPC-BNS correspondence table first; these alone cover a meaningful share of two ~9-mark subjects.</div>
+    <div class="info-item" style="padding-left:0;"><b>Week 2 — Move to the two highest-weightage subjects:</b> Constitutional Law (~11 marks) and CrPC/BNSS (~9 marks). These carry the most marks in the whole exam, so they deserve real depth, not a skim. Constitutional Law rewards precise Article/Amendment recall; CrPC/BNSS rewards knowing exactly which old-CrPC section maps to which new-BNSS section.</div>
+    <div class="info-item" style="padding-left:0;"><b>Week 3 — Evidence Act/BSA, then the mid-weight cluster:</b> Evidence (~7 marks) is trickier than CPC or IPC — its doctrines (dying declaration, burden of proof, admissions) need careful distinction, not just section numbers. Follow with Contract Law, Professional Ethics, and Labour Law, each carrying real but smaller weightage.</div>
+    <div class="info-item" style="padding-left:0;"><b>Week 4 — The remaining lower-weightage subjects</b> (Environmental Law, PIL, Arbitration/ADR, and the rest of the 19) — cover them, but don't over-invest here relative to their marks.</div>
+    <div class="info-item" style="padding-left:0;"><b>Final stretch — attempt full mixed mocks.</b> Once you've covered every subject at least once, start taking 60- and then 100-question Mixed mocks from the "Build Your Own Mock Test" tool above, under real timed conditions. This is the only way to practice the actual skill AIBE tests: jumping between 19 subjects without warning, the way the real paper does.</div>
+    <div class="info-item" style="padding-left:0;"><b>Throughout — use the weak-area drill.</b> Every mock you take saves your wrong answers automatically. Once you've missed a few, a "Drill Your Weak Areas" card appears above — use it between mocks to specifically hammer the gaps you actually have, not the ones you assume you have.</div>
   </div>
 
   <div class="info-box">
