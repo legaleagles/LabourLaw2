@@ -2,103 +2,169 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>PDF Merge & Split — Free, Private, In-Browser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free PDF Merge & Split Tool — Private, In-Browser | LawSticker AI</title>
+<meta name="description" content="Merge multiple PDFs into one, or split a PDF into separate pages — free, no upload, everything happens in your browser. Reorder files, select exact pages visually.">
+<link rel="canonical" href="https://lawsticker-ai.com/pdf-tools.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/pdf-tools.html">
+<meta property="og:title" content="Free PDF Merge & Split Tool | LawSticker AI">
+<meta property="og:description" content="Merge or split PDFs — free, private, in-browser. No file upload to any server.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free PDF Merge & Split Tool | LawSticker AI">
+<meta name="twitter:description" content="Merge or split PDFs — free, private, in-browser.">
+<meta name="twitter:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
-:root{--navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;--border:#D1D5DB;--gold:#C9A227;--gold-l:#F5D76E;--jade:#059669;--jade-bg:#ECFDF5;--jade-border:#A7F3D0;--rose:#DC2626;--rose-bg:#FEF2F2;--sky:#0EA5E9;--sky-bg:#F0F9FF;}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);}
-.nav{background:var(--navy);padding:14px 20px;}
-.nav-title{font-size:16px;font-weight:800;color:var(--gold-l);}
-.wrap{max-width:900px;margin:0 auto;padding:20px 16px 60px;}
-.hero{text-align:center;padding:20px 0 24px;}
-.hero h1{font-size:24px;font-weight:800;margin-bottom:8px;}
-.hero p{font-size:13.5px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.6;}
-.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:var(--jade-bg);border:1px solid var(--jade-border);color:var(--jade);font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:20px;margin-top:10px;}
-.mode-tabs{display:flex;gap:8px;margin-bottom:18px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:5px;}
-.mode-tab{flex:1;text-align:center;padding:11px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
+:root {
+  --navy:    #0D1117;
+  --navy2:   #161B27;
+  --gold:    #D4A017;
+  --gold-l:  #F5D76E;
+  --teal:    #0D9488;
+  --cream:   #FEFCF5;
+  --mist:    #F3F4F6;
+  --silver:  #8B95A8;
+  --ink:     #1A1208;
+  --jade:    #10B981;
+  --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0;
+  --rose:    #DC2626;
+  --rose-bg: #FEF2F2;
+  --border:  #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(212,160,23,0.02) 40px,rgba(212,160,23,0.02) 41px)}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,0.5);margin-bottom:10px;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;position:relative}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;position:relative}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;position:relative;}
+
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 20px;}
+
+.mode-tabs{display:flex;gap:8px;margin-bottom:16px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:5px;}
+.mode-tab{flex:1;text-align:center;padding:11px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--silver);transition:all .2s;}
 .mode-tab.active{background:var(--navy);color:var(--gold-l);}
 .panel{display:none;}
 .panel.active{display:block;}
-.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;}
 .dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
-.dropzone-icon{font-size:40px;margin-bottom:10px;}
-.dropzone-title{font-size:15px;font-weight:800;margin-bottom:4px;}
-.dropzone-sub{font-size:12px;color:var(--muted);}
+.dropzone-icon{font-size:38px;margin-bottom:8px;}
+.dropzone-title{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.dropzone-sub{font-size:11.5px;color:var(--silver);}
 input[type=file]{display:none;}
-.file-list{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+
+.file-list{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
 .file-item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
 .file-move-col{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
-.file-move-btn{width:26px;height:20px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:10px;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.file-move-btn{width:26px;height:20px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:10px;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
 .file-move-btn:disabled{opacity:.25;cursor:not-allowed;}
-.file-num{width:24px;height:24px;border-radius:50%;background:var(--sky-bg);color:var(--sky);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.file-num{width:24px;height:24px;border-radius:50%;background:#EFF6FF;color:#0369A1;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .file-info{flex:1;min-width:0;}
 .file-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.file-meta{font-size:10.5px;color:var(--muted);}
+.file-meta{font-size:10.5px;color:var(--silver);}
 .file-remove{background:var(--rose-bg);color:var(--rose);border:none;width:26px;height:26px;border-radius:8px;font-size:14px;font-weight:800;cursor:pointer;flex-shrink:0;}
+
 .action-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .action-btn:disabled{opacity:.4;cursor:not-allowed;}
 .action-btn.jade{background:var(--jade);color:white;}
 .result-box{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:16px;padding:18px;text-align:center;margin-top:16px;}
-.result-box h3{font-size:15px;font-weight:800;color:#065F46;margin-bottom:10px;}
+.result-box h3{font-size:14.5px;font-weight:800;color:#065F46;margin-bottom:10px;}
 .download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--jade);color:white;padding:11px 22px;border-radius:12px;font-weight:800;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;}
-.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:16px;}
+
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:14px;}
 .thumb{position:relative;border:2.5px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;background:#fff;transition:all .15s;}
 .thumb.selected{border-color:var(--jade);box-shadow:0 0 0 3px var(--jade-bg);}
 .thumb canvas{width:100%;display:block;}
 .thumb-num{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.65);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;}
 .thumb-check{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:white;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;}
 .thumb.selected .thumb-check{background:var(--jade);border-color:var(--jade);color:white;}
-.split-toolbar{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
-.split-toolbar button{flex:1;min-width:120px;padding:9px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2);}
-.hint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;}
-.progress-text{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;}
-.loading{opacity:.5;pointer-events:none;}
-.lib-status{max-width:900px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;}
-.lib-status.loading{color:var(--muted);opacity:1;pointer-events:auto;}
-.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;}
+
+.split-toolbar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.split-toolbar button{flex:1;min-width:110px;padding:9px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:11.5px;font-weight:700;cursor:pointer;color:var(--ink);}
+
+.hint{font-size:11px;color:var(--silver);text-align:center;margin-top:8px;}
+.progress-text{font-size:12px;color:var(--silver);text-align:center;margin-top:8px;}
+
+.lib-status{max-width:720px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--silver);}
+.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;text-align:left;}
 .lib-status.ok{display:none;}
 .app-body{display:none;}
 .app-body.ready{display:block;}
+
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;align-items:center;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
 </head>
 <body>
-<div class="nav"><div class="nav-title">📄 PDF Merge &amp; Split</div></div>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com">← Home</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>PDF <span class="g">Merge</span> &amp; Split</h1>
+  <div class="hero-sub">Reorder files before merging, or click exact pages before splitting. Nothing you upload ever leaves your device.</div>
+  <div class="privacy-badge">🔒 100% in-browser — no file ever touches a server</div>
+</div>
+
 <div class="lib-status loading" id="libStatus">⏳ Loading PDF engine…</div>
 <div class="app-body" id="appBody">
 <div class="wrap">
-  <div class="hero">
-    <h1>Merge or Split PDFs — Free</h1>
-    <p>Drag files to reorder before merging. Click pages to select before splitting. Everything happens right here in your browser.</p>
-    <div class="privacy-badge">🔒 Files never leave your device — no upload, no server</div>
-  </div>
 
   <div class="mode-tabs">
     <div class="mode-tab active" id="tabMerge" onclick="switchMode('merge')">🔗 Merge PDFs</div>
     <div class="mode-tab" id="tabSplit" onclick="switchMode('split')">✂️ Split PDF</div>
   </div>
 
-  <!-- MERGE PANEL -->
   <div class="panel active" id="panelMerge">
     <div class="dropzone" id="mergeDropzone" onclick="document.getElementById('mergeInput').click()">
       <div class="dropzone-icon">📚</div>
-      <div class="dropzone-title">Drop PDFs here or click to browse</div>
+      <div class="dropzone-title">Drop PDFs here or tap to browse</div>
       <div class="dropzone-sub">Select 2 or more files — you can reorder them after</div>
       <input type="file" id="mergeInput" accept="application/pdf" multiple>
     </div>
     <div class="file-list" id="mergeFileList"></div>
-    <div class="hint" id="mergeHint" style="display:none;">↕️ Use the ▲ ▼ buttons to reorder files before merging — works on phone and desktop</div>
+    <div class="hint" id="mergeHint" style="display:none;">↕️ Use the ▲ ▼ buttons to reorder files before merging</div>
     <button class="action-btn" id="mergeBtn" disabled onclick="doMerge()">🔗 Merge PDFs</button>
     <div class="progress-text" id="mergeProgress"></div>
     <div id="mergeResult"></div>
   </div>
 
-  <!-- SPLIT PANEL -->
   <div class="panel" id="panelSplit">
     <div class="dropzone" id="splitDropzone" onclick="document.getElementById('splitInput').click()">
       <div class="dropzone-icon">📄</div>
-      <div class="dropzone-title">Drop a PDF here or click to browse</div>
-      <div class="dropzone-sub">You'll see every page as a thumbnail — click the ones you want</div>
+      <div class="dropzone-title">Drop a PDF here or tap to browse</div>
+      <div class="dropzone-sub">You'll see every page as a thumbnail — tap the ones you want</div>
       <input type="file" id="splitInput" accept="application/pdf">
     </div>
     <div id="splitControls" style="display:none;">
@@ -114,7 +180,20 @@ input[type=file]{display:none;}
       <div id="splitResult"></div>
     </div>
   </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">Why this is safe to use</div>
+    <div class="info-strip-text">Most free PDF tools upload your file to their server to process it. This tool doesn't — the merging and splitting happens entirely in your phone or computer's browser using open-source libraries, and your files are never transmitted anywhere. Good for personal documents, certificates, or anything you'd rather not upload to an unknown server.</div>
+  </div>
+
 </div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
 </div>
 
 <script>
