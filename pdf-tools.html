@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PDF Merge & Split — Free, Private, In-Browser</title>
+<style>
+:root{--navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;--border:#D1D5DB;--gold:#C9A227;--gold-l:#F5D76E;--jade:#059669;--jade-bg:#ECFDF5;--jade-border:#A7F3D0;--rose:#DC2626;--rose-bg:#FEF2F2;--sky:#0EA5E9;--sky-bg:#F0F9FF;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);}
+.nav{background:var(--navy);padding:14px 20px;}
+.nav-title{font-size:16px;font-weight:800;color:var(--gold-l);}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 60px;}
+.hero{text-align:center;padding:20px 0 24px;}
+.hero h1{font-size:24px;font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13.5px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.6;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:var(--jade-bg);border:1px solid var(--jade-border);color:var(--jade);font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:20px;margin-top:10px;}
+.mode-tabs{display:flex;gap:8px;margin-bottom:18px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:5px;}
+.mode-tab{flex:1;text-align:center;padding:11px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
+.mode-tab.active{background:var(--navy);color:var(--gold-l);}
+.panel{display:none;}
+.panel.active{display:block;}
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
+.dropzone-icon{font-size:40px;margin-bottom:10px;}
+.dropzone-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+.dropzone-sub{font-size:12px;color:var(--muted);}
+input[type=file]{display:none;}
+.file-list{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+.file-item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
+.file-move-col{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
+.file-move-btn{width:26px;height:20px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:10px;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.file-move-btn:disabled{opacity:.25;cursor:not-allowed;}
+.file-num{width:24px;height:24px;border-radius:50%;background:var(--sky-bg);color:var(--sky);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.file-info{flex:1;min-width:0;}
+.file-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-meta{font-size:10.5px;color:var(--muted);}
+.file-remove{background:var(--rose-bg);color:var(--rose);border:none;width:26px;height:26px;border-radius:8px;font-size:14px;font-weight:800;cursor:pointer;flex-shrink:0;}
+.action-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.action-btn.jade{background:var(--jade);color:white;}
+.result-box{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:16px;padding:18px;text-align:center;margin-top:16px;}
+.result-box h3{font-size:15px;font-weight:800;color:#065F46;margin-bottom:10px;}
+.download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--jade);color:white;padding:11px 22px;border-radius:12px;font-weight:800;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;}
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:16px;}
+.thumb{position:relative;border:2.5px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;background:#fff;transition:all .15s;}
+.thumb.selected{border-color:var(--jade);box-shadow:0 0 0 3px var(--jade-bg);}
+.thumb canvas{width:100%;display:block;}
+.thumb-num{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.65);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;}
+.thumb-check{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:white;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;}
+.thumb.selected .thumb-check{background:var(--jade);border-color:var(--jade);color:white;}
+.split-toolbar{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.split-toolbar button{flex:1;min-width:120px;padding:9px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2);}
+.hint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;}
+.loading{opacity:.5;pointer-events:none;}
+.lib-status{max-width:900px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;}
+.lib-status.loading{color:var(--muted);opacity:1;pointer-events:auto;}
+.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;}
+.lib-status.ok{display:none;}
+.app-body{display:none;}
+.app-body.ready{display:block;}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-title">📄 PDF Merge &amp; Split</div></div>
+<div class="lib-status loading" id="libStatus">⏳ Loading PDF engine…</div>
+<div class="app-body" id="appBody">
+<div class="wrap">
+  <div class="hero">
+    <h1>Merge or Split PDFs — Free</h1>
+    <p>Drag files to reorder before merging. Click pages to select before splitting. Everything happens right here in your browser.</p>
+    <div class="privacy-badge">🔒 Files never leave your device — no upload, no server</div>
+  </div>
+
+  <div class="mode-tabs">
+    <div class="mode-tab active" id="tabMerge" onclick="switchMode('merge')">🔗 Merge PDFs</div>
+    <div class="mode-tab" id="tabSplit" onclick="switchMode('split')">✂️ Split PDF</div>
+  </div>
+
+  <!-- MERGE PANEL -->
+  <div class="panel active" id="panelMerge">
+    <div class="dropzone" id="mergeDropzone" onclick="document.getElementById('mergeInput').click()">
+      <div class="dropzone-icon">📚</div>
+      <div class="dropzone-title">Drop PDFs here or click to browse</div>
+      <div class="dropzone-sub">Select 2 or more files — you can reorder them after</div>
+      <input type="file" id="mergeInput" accept="application/pdf" multiple>
+    </div>
+    <div class="file-list" id="mergeFileList"></div>
+    <div class="hint" id="mergeHint" style="display:none;">↕️ Use the ▲ ▼ buttons to reorder files before merging — works on phone and desktop</div>
+    <button class="action-btn" id="mergeBtn" disabled onclick="doMerge()">🔗 Merge PDFs</button>
+    <div class="progress-text" id="mergeProgress"></div>
+    <div id="mergeResult"></div>
+  </div>
+
+  <!-- SPLIT PANEL -->
+  <div class="panel" id="panelSplit">
+    <div class="dropzone" id="splitDropzone" onclick="document.getElementById('splitInput').click()">
+      <div class="dropzone-icon">📄</div>
+      <div class="dropzone-title">Drop a PDF here or click to browse</div>
+      <div class="dropzone-sub">You'll see every page as a thumbnail — click the ones you want</div>
+      <input type="file" id="splitInput" accept="application/pdf">
+    </div>
+    <div id="splitControls" style="display:none;">
+      <div class="split-toolbar">
+        <button onclick="selectAllPages(true)">☑️ Select All</button>
+        <button onclick="selectAllPages(false)">⬜ Select None</button>
+        <button onclick="selectOddPages()">🔢 Odd Pages</button>
+        <button onclick="selectEvenPages()">🔢 Even Pages</button>
+      </div>
+      <div class="thumb-grid" id="thumbGrid"></div>
+      <button class="action-btn jade" id="splitBtn" disabled onclick="doSplit()">✂️ Extract Selected Pages</button>
+      <div class="progress-text" id="splitProgress"></div>
+      <div id="splitResult"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const LIB_URLS = [
+ 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
+ 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'
+];
+
+function loadScript(src){
+ return new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(src);
+  s.onerror = () => reject(new Error('Failed to load: ' + src));
+  document.head.appendChild(s);
+ });
+}
+
+let PDFDocument = null;
+
+async function initApp(){
+ const statusEl = document.getElementById('libStatus');
+ const bodyEl = document.getElementById('appBody');
+ try{
+  await Promise.all(LIB_URLS.map(loadScript));
+  if(typeof PDFLib === 'undefined' || typeof pdfjsLib === 'undefined'){
+   throw new Error('PDF libraries loaded but did not initialize correctly.');
+  }
+  PDFDocument = PDFLib.PDFDocument;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  statusEl.className = 'lib-status ok';
+  bodyEl.className = 'app-body ready';
+  wireUpApp();
+ }catch(err){
+  statusEl.className = 'lib-status error';
+  statusEl.innerHTML = '⚠️ <strong>The PDF engine could not load.</strong><br><br>This usually means your browser or network is blocking scripts from cdnjs.cloudflare.com. Try: a different browser, disabling any ad-blocker/script-blocker for this page, or a different network connection.<br><br><span style="font-size:11px;opacity:.8;">Technical detail: ' + escapeHtml(err.message || String(err)) + '</span>';
+ }
+}
+
+function escapeHtml(s){
+ const d = document.createElement('div');
+ d.textContent = s;
+ return d.innerHTML;
+}
+
+initApp();
+
+function wireUpApp(){
+
+let mergeFiles = [];
+let splitPdfBytes = null;
+let splitPageCount = 0;
+let selectedPages = new Set();
+let dragSrcIndex = null; // retained for potential future desktop-only enhancement layer, unused in the mobile-safe tap flow
+
+function moveMergeFile(i, direction){
+ const target = i + direction;
+ if(target < 0 || target >= mergeFiles.length) return;
+ const tmp = mergeFiles[i];
+ mergeFiles[i] = mergeFiles[target];
+ mergeFiles[target] = tmp;
+ renderMergeList();
+}
+
+function removeMergeFile(i){
+ mergeFiles.splice(i, 1);
+ renderMergeList();
+}
+
+function switchMode(mode){
+ document.getElementById('tabMerge').classList.toggle('active', mode==='merge');
+ document.getElementById('tabSplit').classList.toggle('active', mode==='split');
+ document.getElementById('panelMerge').classList.toggle('active', mode==='merge');
+ document.getElementById('panelSplit').classList.toggle('active', mode==='split');
+}
+
+// ═══ MERGE LOGIC ═══
+function setupDropzone(zoneId, inputId, handler){
+ const zone = document.getElementById(zoneId);
+ const input = document.getElementById(inputId);
+ input.addEventListener('change', e => handler(Array.from(e.target.files)));
+ zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+ zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+ zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('drag');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+  handler(files);
+ });
+}
+
+setupDropzone('mergeDropzone', 'mergeInput', files => {
+ mergeFiles = mergeFiles.concat(files);
+ renderMergeList();
+});
+
+function renderMergeList(){
+ const list = document.getElementById('mergeFileList');
+ const hint = document.getElementById('mergeHint');
+ const btn = document.getElementById('mergeBtn');
+ list.innerHTML = '';
+ hint.style.display = mergeFiles.length > 1 ? 'block' : 'none';
+ btn.disabled = mergeFiles.length < 2;
+ mergeFiles.forEach((file, i) => {
+  const item = document.createElement('div');
+  item.className = 'file-item';
+  item.innerHTML = `
+   <span class="file-move-col">
+     <button class="file-move-btn" ${i===0?'disabled':''} onclick="moveMergeFile(${i},-1)" aria-label="Move up">▲</button>
+     <button class="file-move-btn" ${i===mergeFiles.length-1?'disabled':''} onclick="moveMergeFile(${i},1)" aria-label="Move down">▼</button>
+   </span>
+   <span class="file-num">${i+1}</span>
+   <span class="file-info">
+     <div class="file-name">${escapeHtml(file.name)}</div>
+     <div class="file-meta">${(file.size/1024).toFixed(0)} KB</div>
+   </span>
+   <button class="file-remove" onclick="removeMergeFile(${i})">✕</button>
+  `;
+  list.appendChild(item);
+ });
+}
+
+async function doMerge(){
+ const btn = document.getElementById('mergeBtn');
+ const progress = document.getElementById('mergeProgress');
+ btn.disabled = true;
+ try{
+  const mergedPdf = await PDFDocument.create();
+  for(let i = 0; i < mergeFiles.length; i++){
+   progress.textContent = `Processing ${mergeFiles[i].name} (${i+1}/${mergeFiles.length})...`;
+   const bytes = await mergeFiles[i].arrayBuffer();
+   const srcDoc = await PDFDocument.load(bytes);
+   const pages = await mergedPdf.copyPages(srcDoc, srcDoc.getPageIndices());
+   pages.forEach(p => mergedPdf.addPage(p));
+  }
+  progress.textContent = 'Finalizing...';
+  const mergedBytes = await mergedPdf.save();
+  const blob = new Blob([mergedBytes], {type:'application/pdf'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('mergeResult').innerHTML = `
+   <div class="result-box">
+     <h3>✅ Merged ${mergeFiles.length} PDFs — ${mergedPdf.getPageCount()} pages total</h3>
+     <a class="download-btn" href="${url}" download="merged.pdf">⬇️ Download merged.pdf</a>
+   </div>`;
+  progress.textContent = '';
+ }catch(err){
+  progress.textContent = '';
+  document.getElementById('mergeResult').innerHTML = `<div class="result-box" style="background:#FEF2F2;border-color:#FECACA;"><h3 style="color:#991B1B;">⚠️ ${escapeHtml(err.message || 'Something went wrong. Make sure all files are valid PDFs.')}</h3></div>`;
+ }
+ btn.disabled = mergeFiles.length < 2;
+}
+
+// ═══ SPLIT LOGIC ═══
+setupDropzone('splitDropzone', 'splitInput', async files => {
+ if(files.length === 0) return;
+ await loadSplitFile(files[0]);
+});
+
+async function loadSplitFile(file){
+ document.getElementById('splitProgress').textContent = 'Loading pages...';
+ splitPdfBytes = await file.arrayBuffer();
+ const loadingTask = pdfjsLib.getDocument({data: splitPdfBytes.slice(0)});
+ const pdf = await loadingTask.promise;
+ splitPageCount = pdf.numPages;
+ selectedPages = new Set();
+ const grid = document.getElementById('thumbGrid');
+ grid.innerHTML = '';
+ document.getElementById('splitControls').style.display = 'block';
+
+ for(let i = 1; i <= splitPageCount; i++){
+  const page = await pdf.getPage(i);
+  const viewport = page.getViewport({scale: 0.35});
+  const canvas = document.createElement('canvas');
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  const ctx = canvas.getContext('2d');
+  await page.render({canvasContext: ctx, viewport}).promise;
+
+  const thumb = document.createElement('div');
+  thumb.className = 'thumb';
+  thumb.dataset.page = i;
+  thumb.innerHTML = `<span class="thumb-num">${i}</span><span class="thumb-check">✓</span>`;
+  thumb.appendChild(canvas);
+  thumb.addEventListener('click', () => togglePage(i, thumb));
+  grid.appendChild(thumb);
+ }
+ document.getElementById('splitProgress').textContent = `${splitPageCount} pages loaded — click to select`;
+}
+
+function togglePage(pageNum, el){
+ if(selectedPages.has(pageNum)){
+  selectedPages.delete(pageNum);
+  el.classList.remove('selected');
+ }else{
+  selectedPages.add(pageNum);
+  el.classList.add('selected');
+ }
+ document.getElementById('splitBtn').disabled = selectedPages.size === 0;
+}
+
+function selectAllPages(all){
+ selectedPages = new Set();
+ document.querySelectorAll('.thumb').forEach(el => {
+  const p = parseInt(el.dataset.page);
+  el.classList.toggle('selected', all);
+  if(all) selectedPages.add(p);
+ });
+ document.getElementById('splitBtn').disabled = selectedPages.size === 0;
+}
+
+function selectOddPages(){
+ selectedPages = new Set();
+ document.querySelectorAll('.thumb').forEach(el => {
+  const p = parseInt(el.dataset.page);
+  const isOdd = p % 2 === 1;
+  el.classList.toggle('selected', isOdd);
+  if(isOdd) selectedPages.add(p);
+ });
+ document.getElementById('splitBtn').disabled = selectedPages.size === 0;
+}
+
+function selectEvenPages(){
+ selectedPages = new Set();
+ document.querySelectorAll('.thumb').forEach(el => {
+  const p = parseInt(el.dataset.page);
+  const isEven = p % 2 === 0;
+  el.classList.toggle('selected', isEven);
+  if(isEven) selectedPages.add(p);
+ });
+ document.getElementById('splitBtn').disabled = selectedPages.size === 0;
+}
+
+async function doSplit(){
+ const btn = document.getElementById('splitBtn');
+ const progress = document.getElementById('splitProgress');
+ btn.disabled = true;
+ try{
+  progress.textContent = 'Extracting selected pages...';
+  const srcDoc = await PDFDocument.load(splitPdfBytes);
+  const newDoc = await PDFDocument.create();
+  const sortedPages = Array.from(selectedPages).sort((a,b) => a-b);
+  const indices = sortedPages.map(p => p - 1);
+  const pages = await newDoc.copyPages(srcDoc, indices);
+  pages.forEach(p => newDoc.addPage(p));
+  const newBytes = await newDoc.save();
+  const blob = new Blob([newBytes], {type:'application/pdf'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('splitResult').innerHTML = `
+   <div class="result-box">
+     <h3>✅ Extracted ${sortedPages.length} page${sortedPages.length===1?'':'s'} (${sortedPages.join(', ')})</h3>
+     <a class="download-btn" href="${url}" download="extracted.pdf">⬇️ Download extracted.pdf</a>
+   </div>`;
+  progress.textContent = '';
+ }catch(err){
+  progress.textContent = '';
+  document.getElementById('splitResult').innerHTML = `<div class="result-box" style="background:#FEF2F2;border-color:#FECACA;"><h3 style="color:#991B1B;">⚠️ ${escapeHtml(err.message || 'Something went wrong.')}</h3></div>`;
+ }
+ btn.disabled = selectedPages.size === 0;
+}
+
+// Inline onclick="" HTML attributes resolve against the global (window) scope, but the
+// functions above are declared inside wireUpApp()'s local scope, so they must be attached
+// to window explicitly, from right here, while they're still in scope.
+window.switchMode = switchMode;
+window.moveMergeFile = moveMergeFile;
+window.removeMergeFile = removeMergeFile;
+window.doMerge = doMerge;
+window.selectAllPages = selectAllPages;
+window.selectOddPages = selectOddPages;
+window.selectEvenPages = selectEvenPages;
+window.doSplit = doSplit;
+
+} // end wireUpApp
+</script>
+</body>
+</html>
