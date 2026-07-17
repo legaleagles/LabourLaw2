@@ -553,15 +553,24 @@ async function runBillOcr(){
 // and leaves everything editable, since it WILL get some bills wrong.
 function parseBillAmounts(rawText){
  const text = rawText.replace(/\r/g, '');
- const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+ const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+ // Lines that are clearly address/contact metadata, not bill amounts, get excluded entirely
+ // before any number extraction runs -- this is what goes wrong on invoices with a PIN code,
+ // GSTIN, phone number, or state code sitting near words like "total"/"amount".
+ const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|-\s*\d{6}\s*,|,\s*\d{6}\s*$)/i;
+ const lines = rawLines.filter(l => !addressLikePattern.test(l));
 
  function extractNumber(line){
-  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts)
+  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts),
+  // and explicitly excludes anything shaped like a 6-digit PIN code or a phone-number
+  // fragment, even if it slipped past the line-level address filter above.
   const matches = line.match(/[\d,]+\.?\d{0,2}/g);
   if(!matches) return null;
   const nums = matches
    .map(m => parseFloat(m.replace(/,/g, '')))
-   .filter(n => !isNaN(n) && n > 0 && n < 1000000);
+   .filter(n => !isNaN(n) && n > 0 && n < 100000)
+   .filter(n => !(Number.isInteger(n) && n >= 100000 === false && String(n).length === 6)); // exclude bare 6-digit PIN-shaped values
   return nums.length ? nums[nums.length - 1] : null;
  }
 
@@ -578,16 +587,24 @@ function parseBillAmounts(rawText){
 
  const result = {
   total: findByKeywords(['grand total', 'total amount', 'net amount', 'net payable', 'amount payable']),
-  gst: findByKeywords(['gst', 'cgst', 'sgst', 'tax']),
-  serviceCharge: findByKeywords(['service charge', 'svc charge', 'service chg']),
+  gst: findByKeywords(['total gst', 'gst', 'cgst', 'sgst', 'tax']),
+  serviceCharge: findByKeywords(['convenience fee', 'service charge', 'svc charge', 'service chg']),
   subtotal: findByKeywords(['sub total', 'subtotal', 'food total', 'item total']),
  };
 
  // Fallback: if no labelled "total" line matched, use the single largest number found
- // anywhere in the bill as a reasonable guess for the grand total.
+ // anywhere in the (already address-filtered) bill as a reasonable guess for the grand total.
  if(result.total === null){
   const allNums = lines.map(extractNumber).filter(n => n !== null);
   if(allNums.length) result.total = Math.max(...allNums);
+ }
+
+ // Plausibility guard: a grand total should never be wildly smaller than its own GST +
+ // service charge components -- if it is, something was almost certainly misread (e.g. a
+ // PIN code or phone fragment slipped through), so drop it rather than show a nonsense figure.
+ const componentSum = (result.gst || 0) + (result.serviceCharge || 0) + (result.subtotal || 0);
+ if(result.total !== null && componentSum > 0 && result.total < componentSum * 0.5){
+  result.total = null;
  }
 
  result.matchCount = Object.keys(result).filter(k => k !== 'matchCount' && result[k] !== null).length;
