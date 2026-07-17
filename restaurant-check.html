@@ -125,6 +125,28 @@ gtag('config', 'G-TJXHVW6XCL');
     ℹ️ <strong>Your rights:</strong> Service charge is <strong>NOT mandatory</strong> — you can legally refuse it. GST is mandatory but must be at correct rate (5% for restaurants without AC/liquor, 18% for AC restaurants).
   </div>
 
+  <div class="card" id="billViewerCard">
+    <div class="card-title">📷 Have a Photo of Your Bill?</div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Upload it here to view it clearly alongside the calculator — read off the numbers and type them in below. Your bill stays on your device; nothing is uploaded anywhere.</div>
+    <div id="billUploadZone" style="border:2.5px dashed var(--light);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--teal-pale);" onclick="document.getElementById('billFileInput').click()">
+      <div style="font-size:32px;margin-bottom:6px;">🧾</div>
+      <div style="font-size:13.5px;font-weight:800;color:var(--teal-deep);">Tap to upload a photo or PDF of your bill</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px;">JPG, PNG, or PDF</div>
+      <input type="file" id="billFileInput" accept="image/*,application/pdf" style="display:none;">
+    </div>
+    <div id="billViewerResult" style="display:none;margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:11px;font-weight:700;color:var(--teal-deep);">📄 <span id="billFileName"></span></span>
+        <button onclick="clearBillUpload()" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">✕ Remove</button>
+      </div>
+      <div id="billImageWrap" style="position:relative;border:1px solid var(--light);border-radius:12px;overflow:hidden;background:#000;">
+        <img id="billImagePreview" style="width:100%;display:block;cursor:zoom-in;" onclick="toggleBillZoom(this)">
+      </div>
+      <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;">Tap the image to zoom in and read exact figures — then fill in the amounts below</div>
+      <iframe id="billPdfPreview" style="width:100%;height:420px;border:1px solid var(--light);border-radius:12px;display:none;"></iframe>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title" id="c1">Bill Details</div>
     <div class="row2">
@@ -383,6 +405,73 @@ function calculate(){
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
 }
 function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
+
+// ═══ BILL PHOTO/PDF VIEWER (upload, view, zoom -- no OCR, purely a reading aid) ═══
+document.getElementById('billFileInput').addEventListener('change', function(e){
+ const file = e.target.files[0];
+ if(!file) return;
+ handleBillFile(file);
+});
+
+document.getElementById('billUploadZone').addEventListener('dragover', function(e){
+ e.preventDefault();
+ this.style.background = '#E0F2F1';
+});
+document.getElementById('billUploadZone').addEventListener('dragleave', function(){
+ this.style.background = 'var(--teal-pale)';
+});
+document.getElementById('billUploadZone').addEventListener('drop', function(e){
+ e.preventDefault();
+ this.style.background = 'var(--teal-pale)';
+ const file = e.dataTransfer.files[0];
+ if(file) handleBillFile(file);
+});
+
+function handleBillFile(file){
+ const isImage = file.type.startsWith('image/');
+ const isPdf = file.type === 'application/pdf';
+ if(!isImage && !isPdf){
+  alert('Please upload a JPG, PNG, or PDF file.');
+  return;
+ }
+ const url = URL.createObjectURL(file);
+ document.getElementById('billFileName').textContent = file.name;
+ document.getElementById('billViewerResult').style.display = 'block';
+ document.getElementById('billUploadZone').style.display = 'none';
+
+ const img = document.getElementById('billImagePreview');
+ const pdfFrame = document.getElementById('billPdfPreview');
+ if(isImage){
+  img.src = url;
+  img.style.display = 'block';
+  pdfFrame.style.display = 'none';
+ }else{
+  pdfFrame.src = url;
+  pdfFrame.style.display = 'block';
+  img.style.display = 'none';
+ }
+}
+
+function toggleBillZoom(img){
+ if(img.style.transform === 'scale(2)'){
+  img.style.transform = 'scale(1)';
+  img.style.cursor = 'zoom-in';
+ }else{
+  img.style.transform = 'scale(2)';
+  img.style.transformOrigin = 'center top';
+  img.style.cursor = 'zoom-out';
+ }
+}
+
+function clearBillUpload(){
+ document.getElementById('billFileInput').value = '';
+ document.getElementById('billViewerResult').style.display = 'none';
+ document.getElementById('billUploadZone').style.display = 'block';
+ const img = document.getElementById('billImagePreview');
+ img.src = '';
+ img.style.transform = 'scale(1)';
+ document.getElementById('billPdfPreview').src = '';
+}
 applyLang();
 </script>
 <script>
