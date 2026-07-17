@@ -555,23 +555,29 @@ function parseBillAmounts(rawText){
  const text = rawText.replace(/\r/g, '');
  const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 
- // Lines that are clearly address/contact metadata, not bill amounts, get excluded entirely
- // before any number extraction runs -- this is what goes wrong on invoices with a PIN code,
- // GSTIN, phone number, or state code sitting near words like "total"/"amount".
- const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|-\s*\d{6}\s*,|,\s*\d{6}\s*$)/i;
+ // Lines that are clearly address/contact/identifier metadata, not bill amounts, get excluded
+ // entirely before any number extraction runs -- this is what goes wrong on invoices where a
+ // PIN code, GSTIN, phone number, state code, invoice number, or order number sits near words
+ // like "total"/"amount", or where OCR line-breaks merge two unrelated lines together.
+ const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|invoice no|invoice number|invoice date|order\s*#|order no|order number|bill no|receipt no|-\s*\d{6}\s*,|,\s*\d{6}\s*$)/i;
  const lines = rawLines.filter(l => !addressLikePattern.test(l));
 
  function extractNumber(line){
-  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts),
-  // and explicitly excludes anything shaped like a 6-digit PIN code or a phone-number
-  // fragment, even if it slipped past the line-level address filter above.
+  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts).
+  // Deliberately requires the line to look money-shaped: either it has a currency symbol/
+  // word (Rs, INR, ₹) somewhere on it, OR the matched number has a decimal point (most
+  // invoice/order/reference numbers are bare integers, real bill amounts are very often
+  // written with paise, e.g. "84.75") -- this rules out picking up ID-shaped digit strings
+  // by accident.
+  const hasCurrencyMarker = /(rs\.?|inr|₹|rupees)/i.test(line);
   const matches = line.match(/[\d,]+\.?\d{0,2}/g);
   if(!matches) return null;
   const nums = matches
-   .map(m => parseFloat(m.replace(/,/g, '')))
-   .filter(n => !isNaN(n) && n > 0 && n < 100000)
-   .filter(n => !(Number.isInteger(n) && n >= 100000 === false && String(n).length === 6)); // exclude bare 6-digit PIN-shaped values
-  return nums.length ? nums[nums.length - 1] : null;
+   .map(m => ({ raw: m, val: parseFloat(m.replace(/,/g, '')) }))
+   .filter(x => !isNaN(x.val) && x.val > 0 && x.val < 100000)
+   .filter(x => !(Number.isInteger(x.val) && String(Math.round(x.val)).length === 6)) // exclude bare 6-digit PIN-shaped values
+   .filter(x => hasCurrencyMarker || x.raw.includes('.')); // require a currency marker OR a decimal amount
+  return nums.length ? nums[nums.length - 1].val : null;
  }
 
  function findByKeywords(keywords){
