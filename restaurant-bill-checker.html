@@ -65,6 +65,9 @@ nav{background:var(--navy);position:sticky;top:0;z-index:200;}
 .res-final-l{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);}
 .res-final-n{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--gold-l);margin-top:2px;}
 .res-pay{font-size:12px;color:rgba(255,255,255,.7);margin-top:6px;}
+.calc-btn{width:100%;padding:16px;margin-bottom:14px;border-radius:14px;border:none;background:var(--navy);color:var(--gold-l);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(13,17,23,.25);}
+.calc-btn:active{transform:scale(.98);}
+.res-ok{font-size:13px;color:var(--gold-l);font-weight:700;line-height:1.7;margin-top:10px;padding:0 6px;}
 .share-btn{width:100%;padding:14px;margin-top:16px;border-radius:12px;border:none;background:var(--gold);color:var(--navy);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 .share-note{font-size:10px;color:rgba(255,255,255,.35);text-align:center;margin-top:8px;line-height:1.6;}
 .rights{background:var(--navy);border-radius:18px;padding:20px 16px;margin:24px 0;}
@@ -185,7 +188,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
   </div>
 
   <div class="step">
-    <div class="step-h"><div class="step-n">7</div><div><div class="step-t" data-i18n="s7_t">Pay the smart way</div><div class="step-d" data-i18n="s7_d">Before you actually pay</div></div></div>
+    <div class="step-h"><div class="step-n">7</div><div><div class="step-t" data-i18n="s7b_t">Water bottle / packaged items</div><div class="step-d" data-i18n="s7b_d">Charged above the MRP printed on the bottle or pack?</div></div></div>
+    <div class="yn">
+      <button id="s7byes" onclick="setBottle(true)" data-i18n="yes">Yes</button>
+      <button id="s7bno" onclick="setBottle(false)" data-i18n="no">No / not applicable</button>
+    </div>
+    <div id="bottleBox" class="hidden" style="margin-top:8px">
+      <div class="row2">
+        <div class="field"><label data-i18n="bottle_mrp_label">MRP printed on bottle/pack (₹)</label><input type="number" id="bottleMRP" placeholder="20" oninput="calc()"></div>
+        <div class="field"><label data-i18n="bottle_charged_label">Amount actually charged (₹)</label><input type="number" id="bottleCharged" placeholder="40" oninput="calc()"></div>
+      </div>
+      <div class="hint" data-i18n="bottle_hint">Under the Legal Metrology Act, no seller — including restaurants — can charge more than the MRP printed on a packaged item, regardless of "chilled" or "service" framing. This applies per bottle/pack, so multiply if there were several.</div>
+      <div class="field" style="margin-top:6px"><label data-i18n="bottle_qty_label">Number of bottles/packs overcharged</label><input type="number" id="bottleQty" placeholder="1" oninput="calc()"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-h"><div class="step-n">8</div><div><div class="step-t" data-i18n="s7_t">Pay the smart way</div><div class="step-d" data-i18n="s7_d">Before you actually pay</div></div></div>
     <div class="field"><label data-i18n="app_q">Paying through a dining app (Swiggy Dineout, Zomato District, EazyDiner)?</label>
       <div class="row2"><input type="number" id="appPct" placeholder="Discount %" oninput="calc()"></div>
     </div>
@@ -194,20 +213,24 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
   </div>
 
-  <div class="result">
+  <button class="calc-btn" onclick="finalCalculate()" data-i18n="calc_btn">🧮 Calculate My Bill</button>
+
+  <div class="result hidden" id="resultBox">
     <div class="res-line"><span data-i18n="r_food">Food subtotal</span><b id="rFood">₹0</b></div>
     <div class="res-line"><span data-i18n="r_disc">Discount applied</span><b id="rDisc">− ₹0</b></div>
     <div class="res-line"><span data-i18n="r_sc">Service charge</span><b id="rSC">₹0</b></div>
     <div class="res-line"><span data-i18n="r_tip">Tip</span><b id="rTip">₹0</b></div>
     <div class="res-line"><span data-i18n="r_gst">GST (correct slab)</span><b id="rGST">₹0</b></div>
+    <div class="res-line" id="rBottleRow" style="display:none"><span data-i18n="r_bottle">Bottle/pack overcharge</span><b id="rBottle">₹0</b></div>
     <div class="res-line save"><span data-i18n="r_savings">Total you save</span><b id="rSaveLine">₹0</b></div>
     <div class="res-final">
-      <div class="res-final-l" data-i18n="res_l">You save</div>
+      <div class="res-final-l" id="resLabel" data-i18n="res_l">You save</div>
       <div class="res-final-n" id="resSave">₹0</div>
-      <div class="res-pay"><span data-i18n="res_pay">Pay approx.</span> <b id="resPay">₹0</b> <span data-i18n="res_of">instead of</span> <b id="resOrig">₹0</b></div>
+      <div class="res-pay" id="resPayWrap"><span data-i18n="res_pay">Pay approx.</span> <b id="resPay">₹0</b> <span data-i18n="res_of">instead of</span> <b id="resOrig">₹0</b></div>
+      <div class="res-ok hidden" id="resOkMsg" data-i18n="res_ok_msg">✅ Bill verified — no overcharges found on what you entered. Nice, this restaurant billed you fairly.</div>
     </div>
-    <button class="share-btn" onclick="shareImage()">📲 <span data-i18n="share_btn">Share savings on WhatsApp Status</span></button>
-    <div class="share-note" data-i18n="share_note">Generates an image card with your savings — nothing about your bill items is shared, only the summary.</div>
+    <button class="share-btn" onclick="shareImage()">📲 <span data-i18n="share_btn">Share on WhatsApp Status</span></button>
+    <div class="share-note" data-i18n="share_note">Generates an image card with your summary — nothing about your bill items is shared, only the summary.</div>
   </div>
 
   <div class="rights">
@@ -238,7 +261,7 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 let items=[{name:'',price:''}];
-let useCart=null, scOn=null, gstOn=null, hotelHigh=null, alcOn=null, discOn=null;
+let useCart=null, scOn=null, gstOn=null, hotelHigh=null, alcOn=null, discOn=null, bottleOn=null, calculated=false;
 
 function toggleCart(v){
   useCart=v;
@@ -269,6 +292,7 @@ function setGST(v){gstOn=v;document.getElementById('s4yes').classList.toggle('se
 function setHotel(v){hotelHigh=v;document.getElementById('hotelYes').classList.toggle('sel',v===true);document.getElementById('hotelNo').classList.toggle('sel',v===false);calc();}
 function setAlc(v){alcOn=v;document.getElementById('s5yes').classList.toggle('sel',v===true);document.getElementById('s5no').classList.toggle('sel',v===false);document.getElementById('alcBox').classList.toggle('hidden',!v);calc();}
 function setDisc(v){discOn=v;document.getElementById('s6yes').classList.toggle('sel',v===true);document.getElementById('s6no').classList.toggle('sel',v===false);document.getElementById('discBox').classList.toggle('hidden',!v);calc();}
+function setBottle(v){bottleOn=v;document.getElementById('s7byes').classList.toggle('sel',v===true);document.getElementById('s7bno').classList.toggle('sel',v===false);document.getElementById('bottleBox').classList.toggle('hidden',!v);calc();}
 
 function fmt(n){return '₹'+Math.round(Math.max(n,0)).toLocaleString('en-IN');}
 
@@ -312,6 +336,16 @@ function calc(){
     gstAmtCorrect=0; gstAmtCharged=0;
   }
 
+  let bottleOvercharge=0;
+  if(bottleOn){
+    const mrp=parseFloat(document.getElementById('bottleMRP').value)||0;
+    const charged=parseFloat(document.getElementById('bottleCharged').value)||0;
+    const qty=parseFloat(document.getElementById('bottleQty').value)||1;
+    bottleOvercharge=Math.max(charged-mrp,0)*qty;
+  }
+  document.getElementById('rBottleRow').style.display = bottleOvercharge>0 ? 'flex':'none';
+  document.getElementById('rBottle').textContent=fmt(bottleOvercharge);
+
   const appPct=parseFloat(document.getElementById('appPct').value)||0;
   const bankPct=parseFloat(document.getElementById('bankPct').value)||0;
 
@@ -321,7 +355,7 @@ function calc(){
   const bankSave = afterApp*bankPct/100;
 
   const gstOvercharge = Math.max(gstAmtCharged-gstAmtCorrect,0);
-  const finalPay = Math.max(preAppTotal - appSave - bankSave,0);
+  const finalPay = Math.max(preAppTotal - appSave - bankSave,0) - bottleOvercharge;
   const originalPrinted = subtotalRaw + scAmt + tipAmt + gstAmtCharged;
 
   document.getElementById('rFood').textContent=fmt(subtotal);
@@ -329,12 +363,38 @@ function calc(){
   document.getElementById('rSC').textContent=fmt(scAmt);
   document.getElementById('rTip').textContent=fmt(tipAmt);
   document.getElementById('rGST').textContent=fmt(gstAmtCorrect);
-  document.getElementById('rSaveLine').textContent=fmt(gstOvercharge+appSave+bankSave);
-  document.getElementById('resSave').textContent=fmt(gstOvercharge+appSave+bankSave);
+  const totalSave = gstOvercharge+appSave+bankSave+bottleOvercharge;
+  document.getElementById('rSaveLine').textContent=fmt(totalSave);
+  document.getElementById('resSave').textContent=fmt(totalSave);
   document.getElementById('resPay').textContent=fmt(finalPay);
   document.getElementById('resOrig').textContent=fmt(originalPrinted);
 
-  window._lastCalc={subtotal,scAmt,tipAmt,gstAmtCorrect,gstOvercharge,appSave,bankSave,finalPay,originalPrinted,totalSave:gstOvercharge+appSave+bankSave};
+  const okMsg=document.getElementById('resOkMsg');
+  const label=document.getElementById('resLabel');
+  const saveN=document.getElementById('resSave');
+  const payWrap=document.getElementById('resPayWrap');
+  if(totalSave<1){
+    okMsg.classList.remove('hidden');
+    label.textContent = label.dataset.i18n==='res_l' ? '' : '';
+    saveN.style.display='none';
+    label.style.display='none';
+    payWrap.style.display='block';
+  } else {
+    okMsg.classList.add('hidden');
+    saveN.style.display='block';
+    label.style.display='block';
+  }
+
+  window._lastCalc={subtotal,scAmt,tipAmt,gstAmtCorrect,gstOvercharge,appSave,bankSave,bottleOvercharge,finalPay,originalPrinted,totalSave};
+  if(calculated){document.getElementById('resultBox').classList.remove('hidden');}
+}
+
+function finalCalculate(){
+  calculated=true;
+  calc();
+  document.getElementById('resultBox').classList.remove('hidden');
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth',block:'start'});
+  try{gtag('event','calculate_bill');}catch(e){}
 }
 function renderCartTotalOnly(){document.getElementById('cartTotalN').textContent=fmt(cartSum());}
 
@@ -361,15 +421,23 @@ function shareImage(){
 
   ctx.fillStyle='rgba(255,255,255,.5)';
   ctx.font='600 30px DM Sans, sans-serif';
-  ctx.fillText('I just saved', 540, 420);
+  ctx.fillText(save>0?'I just saved':'I checked my bill —', 540, 420);
 
-  ctx.fillStyle='#F5D76E';
-  ctx.font='900 130px Playfair Display, serif';
-  ctx.fillText('₹'+save.toLocaleString('en-IN'), 540, 570);
-
-  ctx.fillStyle='rgba(255,255,255,.55)';
-  ctx.font='600 28px DM Sans, sans-serif';
-  ctx.fillText('on a ₹'+orig.toLocaleString('en-IN')+' bill — paid ₹'+pay.toLocaleString('en-IN')+' instead', 540, 640);
+  if(save>0){
+    ctx.fillStyle='#F5D76E';
+    ctx.font='900 130px Playfair Display, serif';
+    ctx.fillText('₹'+save.toLocaleString('en-IN'), 540, 570);
+    ctx.fillStyle='rgba(255,255,255,.55)';
+    ctx.font='600 28px DM Sans, sans-serif';
+    ctx.fillText('on a ₹'+orig.toLocaleString('en-IN')+' bill — paid ₹'+pay.toLocaleString('en-IN')+' instead', 540, 640);
+  } else {
+    ctx.fillStyle='#ECFDF5';
+    ctx.font='900 68px Playfair Display, serif';
+    ctx.fillText('✅ No overcharges', 540, 500);
+    ctx.fillStyle='rgba(255,255,255,.55)';
+    ctx.font='600 28px DM Sans, sans-serif';
+    ctx.fillText('found on my ₹'+orig.toLocaleString('en-IN')+' bill', 540, 570);
+  }
 
   const lines=[
     d.gstOvercharge>0?('✓ Fixed GST slab overcharge — ₹'+Math.round(d.gstOvercharge).toLocaleString('en-IN')):null,
@@ -432,9 +500,15 @@ s5_t:"మద్యం",s5_d:"మద్యం సర్వ్ చేసి బి
 alc_hint:"మద్యంపై సాధారణంగా GST కాకుండా రాష్ట్ర VAT వర్తిస్తుంది. రాష్ట్రాన్ని బట్టి మారుతుంది — బిల్లు సరిచూసుకోండి.",
 s6_t:"డిస్కౌంట్",s6_d:"బిల్లుపై ఇప్పటికే డిస్కౌంట్ వేశారా?",disc_label:"వేసిన డిస్కౌంట్ (₹)",
 s7_t:"తెలివిగా చెల్లించండి",s7_d:"చెల్లించే ముందు",app_q:"డైనింగ్ యాప్ ద్వారా చెల్లిస్తున్నారా?",bank_q:"బ్యాంక్ / కార్డ్ ఆఫర్ ఉందా?",
+s7b_t:"వాటర్ బాటిల్ / ప్యాకేజ్డ్ ఐటమ్స్",s7b_d:"బాటిల్‌పై ముద్రించిన MRP కంటే ఎక్కువ వసూలు చేశారా?",
+bottle_mrp_label:"బాటిల్/ప్యాక్‌పై MRP (₹)",bottle_charged_label:"వసూలు చేసిన మొత్తం (₹)",
+bottle_hint:"లీగల్ మెట్రాలజీ చట్టం ప్రకారం, ఏ విక్రేత అయినా — రెస్టారెంట్లతో సహా — ప్యాకేజ్డ్ ఐటమ్‌పై ముద్రించిన MRP కంటే ఎక్కువ వసూలు చేయకూడదు, 'చల్లగా' ఉందనే కారణం చెప్పినా సరే. ఇది ప్రతి బాటిల్/ప్యాక్‌కు వర్తిస్తుంది.",
+bottle_qty_label:"ఎక్కువ వసూలు చేసిన బాటిళ్లు/ప్యాక్‌ల సంఖ్య",
+calc_btn:"🧮 నా బిల్లు లెక్కించండి",r_bottle:"బాటిల్/ప్యాక్ అధిక వసూలు",
+res_ok_msg:"✅ బిల్లు ధృవీకరించబడింది — మీరు నమోదు చేసిన వివరాల ప్రకారం అధిక వసూలు లేదు. ఈ రెస్టారెంట్ న్యాయంగా బిల్లు వేసింది.",
 r_food:"ఆహార మొత్తం",r_disc:"వేసిన డిస్కౌంట్",r_sc:"సర్వీస్ ఛార్జ్",r_tip:"టిప్",r_gst:"GST (సరైన స్లాబ్)",r_savings:"మొత్తం ఆదా",
 res_l:"మీరు ఆదా చేసింది",res_pay:"చెల్లించాల్సింది సుమారు",res_of:"కి బదులు",
-share_btn:"WhatsApp స్టేటస్‌లో ఆదా షేర్ చేయండి",share_note:"ఆదా చూపే ఇమేజ్ కార్డ్ తయారవుతుంది — బిల్లు వివరాలు షేర్ కావు, సారాంశం మాత్రమే.",
+share_btn:"WhatsApp స్టేటస్‌లో షేర్ చేయండి",share_note:"సారాంశం చూపే ఇమేజ్ కార్డ్ తయారవుతుంది — బిల్లు వివరాలు షేర్ కావు.",
 r_title:"మీకు చట్టపరమైన మద్దతు",
 r1_b:"CCPA మార్గదర్శకాలు, 4 జూలై 2022",r1_s:"సర్వీస్ ఛార్జ్‌ను ఆటోమేటిక్‌గా వేయకూడదు, సేవకు షరతుగా పెట్టకూడదు.",
 r2_b:"ఢిల్లీ హైకోర్టు, 2025",r2_s:"CCPA మార్గదర్శకాలను సమర్థించింది — తప్పనిసరి సర్వీస్ ఛార్జ్ అన్యాయం. చెల్లించడం మీ ఇష్టం.",
@@ -461,9 +535,15 @@ s5_t:"शराब",s5_d:"शराब सर्व और बिल की ग�
 alc_hint:"शराब पर आमतौर पर GST की जगह राज्य VAT लगता है। राज्य अनुसार अलग हो सकता है — बिल जांच लें।",
 s6_t:"डिस्काउंट",s6_d:"बिल पर पहले से डिस्काउंट लगा है?",disc_label:"लगाया गया डिस्काउंट (₹)",
 s7_t:"समझदारी से भुगतान करें",s7_d:"भुगतान से पहले",app_q:"डाइनिंग ऐप से भुगतान कर रहे हैं?",bank_q:"बैंक / कार्ड ऑफ़र है?",
+s7b_t:"पानी की बोतल / पैक्ड आइटम",s7b_d:"बोतल पर छपे MRP से ज़्यादा वसूला गया?",
+bottle_mrp_label:"बोतल/पैक पर MRP (₹)",bottle_charged_label:"असल में वसूली गई राशि (₹)",
+bottle_hint:"लीगल मेट्रोलॉजी एक्ट के तहत कोई भी विक्रेता — रेस्टोरेंट सहित — पैक्ड आइटम पर छपे MRP से ज़्यादा नहीं वसूल सकता, चाहे 'ठंडा' या 'सर्विस' का हवाला ही क्यों न दिया जाए। यह हर बोतल/पैक पर लागू होता है।",
+bottle_qty_label:"ज़्यादा वसूली गई बोतलों/पैक की संख्या",
+calc_btn:"🧮 मेरा बिल जांचें",r_bottle:"बोतल/पैक ओवरचार्ज",
+res_ok_msg:"✅ बिल सत्यापित — आपकी दी गई जानकारी के अनुसार कोई ओवरचार्ज नहीं मिला। इस रेस्टोरेंट ने सही बिल बनाया।",
 r_food:"खाने की राशि",r_disc:"लगाया गया डिस्काउंट",r_sc:"सर्विस चार्ज",r_tip:"टिप",r_gst:"GST (सही दर)",r_savings:"कुल बचत",
 res_l:"आपने बचाया",res_pay:"लगभग चुकाना होगा",res_of:"की जगह",
-share_btn:"WhatsApp स्टेटस पर बचत शेयर करें",share_note:"बचत दिखाने वाला इमेज कार्ड बनेगा — बिल की डिटेल शेयर नहीं होगी, सिर्फ़ सारांश।",
+share_btn:"WhatsApp स्टेटस पर शेयर करें",share_note:"सारांश दिखाने वाला इमेज कार्ड बनेगा — बिल की डिटेल शेयर नहीं होगी।",
 r_title:"आपका कानूनी आधार",
 r1_b:"CCPA दिशानिर्देश, 4 जुलाई 2022",r1_s:"सर्विस चार्ज अपने आप नहीं जोड़ा जा सकता, न ही सेवा की शर्त बनाया जा सकता है।",
 r2_b:"दिल्ली हाई कोर्ट, 2025",r2_s:"CCPA दिशानिर्देश बरकरार — अनिवार्य सर्विस चार्ज अनुचित है। देना आपकी मर्ज़ी है।",
