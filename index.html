@@ -16,13 +16,18 @@
 <style>
 :root{--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;
 --border:#D1D5DB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
---jade:#059669;--jade-bg:#ECFDF5;--sky:#0EA5E9;--sky-bg:#F0F9FF;--rose:#DC2626;--violet:#7C3AED;--amber:#D97706;}
+--jade:#059669;--jade-bg:#ECFDF5;--sky:#0EA5E9;--sky-bg:#F0F9FF;--rose:#DC2626;--violet:#7C3AED;--amber:#D97706;
+--shadow-soft:0 2px 14px rgba(13,17,23,.06);--shadow-lift:0 12px 32px rgba(13,17,23,.12);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;position:relative;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
 
 /* NAV */
-nav{background:var(--navy);position:sticky;top:0;z-index:200;}
+nav{background:rgba(13,17,23,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,162,39,.15);}
 .nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);}
 .nav-brand span{color:rgba(255,255,255,.5);font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;}
@@ -34,31 +39,40 @@ color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:700;c
 /* HERO */
 .hero{background:linear-gradient(135deg,#0D1117 0%,#1a2436 40%,#2a2410 75%,#0D1117 100%);
 background-size:300% 300%;animation:heroShift 14s ease infinite;
-padding:44px 22px 40px;text-align:center;position:relative;overflow:hidden;}
+padding:50px 22px 42px;text-align:center;position:relative;overflow:hidden;isolation:isolate;}
 @keyframes heroShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
 .hero::before,.hero::after{pointer-events:none;}
-.hero::before{content:'⚖️';position:absolute;left:-25px;top:-25px;font-size:150px;opacity:.05;transform:rotate(-12deg);}
-.hero::after{content:'🛠️';position:absolute;right:-20px;bottom:-30px;font-size:150px;opacity:.05;transform:rotate(12deg);}
+.hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.35;
+background-image:radial-gradient(rgba(245,215,110,.18) 1px,transparent 1px);background-size:22px 22px;
+mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000,transparent);}
+.hero::after{content:'';position:absolute;right:-60px;bottom:-60px;width:260px;height:260px;z-index:-1;
+background:radial-gradient(circle,rgba(201,162,39,.16),transparent 70%);border-radius:50%;filter:blur(4px);}
+.hero-scale{width:52px;height:52px;margin:0 auto 14px;opacity:.9;filter:drop-shadow(0 0 10px rgba(245,215,110,.35));}
 .hero-badge{display:inline-block;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.35);
 color:var(--gold-l);font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
-padding:6px 16px;border-radius:20px;margin-bottom:16px;}
+padding:6px 16px;border-radius:20px;margin-bottom:16px;backdrop-filter:blur(4px);}
 .hero-title{font-family:'Playfair Display',serif;font-size:31px;font-weight:900;color:white;line-height:1.15;margin-bottom:6px;}
-.hero-title .gold{color:var(--gold-l);}
+.hero-title .gold{background:linear-gradient(120deg,#F5D76E 20%,#fff 45%,#F5D76E 70%);background-size:220% auto;
+-webkit-background-clip:text;background-clip:text;color:transparent;animation:foil 5s linear infinite;}
+@keyframes foil{0%{background-position:0% 50%;}100%{background-position:220% 50%;}}
 .hero-tag{font-size:15px;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:6px;min-height:24px;}
 .hero-sub{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.75;max-width:440px;margin:0 auto 20px;}
 .hero-cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .hero-cta{padding:13px 24px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;
 text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
-.hero-cta.primary{background:var(--gold);color:var(--navy);}
+.hero-cta.primary{background:var(--gold);color:var(--navy);box-shadow:0 8px 22px rgba(201,162,39,.35);}
+.hero-cta.primary:active{box-shadow:0 4px 12px rgba(201,162,39,.3);}
 .hero-cta.ghost{background:rgba(255,255,255,.06);color:white;border:1px solid rgba(255,255,255,.15);}
 .hero-cta:active{transform:scale(.97);}
 
 /* STATS STRIP */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--navy2);
-border-top:1px solid rgba(201,162,39,.2);padding:14px 8px;}
-.stat{text-align:center;}
-.stat-n{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--gold-l);}
-.stat-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+border-top:1px solid rgba(201,162,39,.2);padding:16px 10px;gap:4px;}
+.stat{text-align:center;border-right:1px solid rgba(255,255,255,.06);padding:2px 2px;}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;
+background:linear-gradient(180deg,#F5D76E,#C9A227);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-l{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
 
 .page{max-width:700px;margin:0 auto;padding:20px 14px 96px;}
 .sec-eyebrow{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:6px;text-align:center;}
@@ -72,7 +86,7 @@ background:linear-gradient(180deg,var(--gold),var(--jade),var(--sky));border-rad
 .j-step{display:flex;gap:16px;margin-bottom:14px;position:relative;text-decoration:none;}
 .j-num{width:62px;height:62px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
 justify-content:center;font-size:26px;border:3px solid;background:#fff;z-index:1;
-box-shadow:0 4px 14px rgba(0,0,0,.1);}
+box-shadow:0 4px 14px rgba(0,0,0,.1),0 0 0 4px rgba(255,255,255,.6);}
 .j-step:nth-child(1) .j-num{border-color:var(--gold);}
 .j-step:nth-child(2) .j-num{border-color:var(--jade);}
 .j-step:nth-child(3) .j-num{border-color:var(--sky);}
@@ -224,11 +238,12 @@ font-family:inherit;cursor:pointer;}
 /* FEATURE SHOWCASE */
 .feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
 .feat{border-radius:16px;padding:16px 14px;text-decoration:none;position:relative;overflow:hidden;
-border:1px solid var(--border);background:#fff;transition:all .2s;}
-.feat:active{transform:scale(.97);}
+border:1px solid var(--border);background:#fff;transition:all .25s cubic-bezier(.2,.8,.2,1);box-shadow:var(--shadow-soft);}
+.feat:active{transform:scale(.97) translateY(1px);box-shadow:var(--shadow-lift);}
 .feat.wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;}
-.feat-icon{font-size:30px;margin-bottom:8px;display:block;}
-.feat.wide .feat-icon{margin-bottom:0;font-size:36px;flex-shrink:0;}
+.feat-icon{font-size:22px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;
+width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.7);box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);}
+.feat.wide .feat-icon{margin-bottom:0;font-size:26px;width:50px;height:50px;flex-shrink:0;}
 .feat-name{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
 .feat-desc{font-size:11px;color:var(--muted);line-height:1.55;}
 .feat-new{position:absolute;top:10px;right:10px;background:var(--rose);color:white;font-size:8px;
@@ -318,6 +333,9 @@ gtag('config', 'G-TJXHVW6XCL');
 </nav>
 
 <div class="hero">
+  <svg class="hero-scale" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 6v40M14 18h36M14 18l-8 16a9 9 0 0018 0l-8-16zM50 18l-8 16a9 9 0 0018 0l-8-16zM22 54h20" stroke="#F5D76E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
   <div class="hero-badge" id="heroBadge"></div>
   <div class="hero-title" id="heroTitle"></div>
   <div class="hero-tag" id="heroTag"></div>
@@ -383,7 +401,7 @@ gtag('config', 'G-TJXHVW6XCL');
 <div class="page">
 
   <!-- DAILY QUIZ -->
-  <div class="quiz" id="quiz">
+  <div class="quiz reveal" id="quiz">
     <div class="quiz-top">
       <span class="quiz-badge" id="qBadge"></span>
       <span class="quiz-streak" id="qStreak"></span>
@@ -409,7 +427,7 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="sit-grid" id="sitGrid"></div>
 
   <!-- TODAY'S RIGHT BUNDLE -->
-  <div class="today">
+  <div class="today reveal">
     <div class="today-badge" id="tBadge"></div>
     <div class="today-fact" id="tFact"></div>
     <div class="today-law" id="tLaw"></div>
@@ -429,7 +447,7 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="sec-eyebrow" id="jEye"></div>
   <div class="sec-title" id="jTitle"></div>
   <div class="sec-sub" id="jSub"></div>
-  <div class="journey">
+  <div class="journey reveal">
     <a class="j-step" href="https://lawsticker-ai.com/rights-hub.html">
       <div class="j-num">⚖️</div>
       <div class="j-card"><div class="j-k" id="j1k"></div><div class="j-t" id="j1t"></div><div class="j-d" id="j1d"></div><span class="j-arr">→</span></div>
@@ -448,7 +466,7 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="sec-eyebrow" id="fEye"></div>
   <div class="sec-title" id="fTitle"></div>
   <div class="sec-sub" id="fSub"></div>
-  <div class="feat-grid">
+  <div class="feat-grid reveal">
     <a class="feat wide f-gold" href="https://lawsticker-ai.com/rights-shorts.html">
       <span class="feat-icon">📇</span>
       <span><span class="feat-name" id="f1n"></span><br><span class="feat-desc" id="f1d"></span></span>
@@ -1052,6 +1070,16 @@ document.addEventListener('DOMContentLoaded',function(){
   }
  }catch(e){}
 });
+</script>
+<script>
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  var els=document.querySelectorAll('.reveal');
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
 </script>
 </body>
 </html>
