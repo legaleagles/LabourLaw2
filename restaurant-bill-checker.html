@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Restaurant Bill Checker — Spot Overcharges, Save Money | LawSticker AI</title>
+<meta name="description" content="Before you pay a restaurant bill in India: check service charge (it's voluntary), verify GST 5% vs 18%, catch hidden add-ons. Free trilingual tool — Telugu, English, Hindi.">
+<link rel="canonical" href="https://lawsticker-ai.com/restaurant-bill-checker.html">
+<meta property="og:title" content="Restaurant Bill Checker — Know Before You Pay">
+<meta property="og:description" content="Service charge is voluntary. GST should be 5%, not 18%. Check your bill in 60 seconds.">
+<meta property="og:site_name" content="LawSticker AI">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;
+--border:#D1D5DB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
+--jade:#059669;--jade-bg:#ECFDF5;--sky:#0EA5E9;--sky-bg:#F0F9FF;--rose:#DC2626;--rose-bg:#FEF2F2;--violet:#7C3AED;--amber:#D97706;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+nav{background:var(--navy);position:sticky;top:0;z-index:200;}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;display:block;}
+.nav-brand span{color:rgba(255,255,255,.5);font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;}
+.nav-langs{display:flex;gap:5px;}
+.nav-lang{padding:5px 11px;border-radius:14px;border:1px solid rgba(201,162,39,.2);background:transparent;
+color:rgba(255,255,255,.35);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold);}
+
+.hero{background:linear-gradient(135deg,#0D1117 0%,#1a2436 40%,#2a2410 75%,#0D1117 100%);
+background-size:300% 300%;animation:heroShift 14s ease infinite;
+padding:38px 22px 34px;text-align:center;position:relative;overflow:hidden;}
+@keyframes heroShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+@media (prefers-reduced-motion:reduce){.hero{animation:none;}}
+.hero::before{content:'🧾';position:absolute;left:-25px;top:-25px;font-size:150px;opacity:.05;transform:rotate(-12deg);pointer-events:none;}
+.hero::after{content:'⚖️';position:absolute;right:-20px;bottom:-30px;font-size:150px;opacity:.05;transform:rotate(12deg);pointer-events:none;}
+.hero-badge{display:inline-block;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.35);
+color:var(--gold-l);font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+padding:6px 16px;border-radius:20px;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:29px;font-weight:900;color:white;line-height:1.15;margin-bottom:8px;}
+.hero-title .gold{color:var(--gold-l);}
+.hero-sub{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.75;max-width:440px;margin:0 auto;}
+
+.page{max-width:700px;margin:0 auto;padding:22px 14px 96px;}
+.sec-eyebrow{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:6px;text-align:center;}
+.sec-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;color:var(--navy);text-align:center;margin-bottom:4px;}
+.sec-sub{font-size:12px;color:var(--muted);text-align:center;line-height:1.7;max-width:420px;margin:0 auto 18px;}
+
+/* CALCULATOR */
+.calc{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:20px 18px;box-shadow:0 4px 18px rgba(0,0,0,.06);margin-bottom:34px;}
+.calc-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:6px;display:block;}
+.calc-input{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;
+font-size:18px;font-weight:700;color:var(--ink);background:var(--light);}
+.calc-input:focus{outline:2px solid var(--gold);border-color:var(--gold);background:#fff;}
+.toggles{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+.tgl{display:flex;align-items:flex-start;gap:11px;background:var(--light);border:1.5px solid var(--border);
+border-radius:14px;padding:12px 13px;cursor:pointer;transition:all .2s;}
+.tgl.on{background:var(--jade-bg);border-color:var(--jade);}
+.tgl input{width:20px;height:20px;margin-top:1px;accent-color:var(--jade);flex-shrink:0;}
+.tgl-t{font-size:13px;font-weight:700;color:var(--ink);line-height:1.4;}
+.tgl-d{font-size:11px;color:var(--muted);line-height:1.55;margin-top:2px;}
+.tgl-save{font-size:11px;font-weight:800;color:var(--jade);margin-top:3px;}
+.result{margin-top:18px;background:linear-gradient(135deg,var(--navy),#1a2436);border-radius:16px;padding:18px;text-align:center;}
+.result-l{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:4px;}
+.result-n{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--gold-l);}
+.result-pay{font-size:12px;color:rgba(255,255,255,.65);margin-top:6px;font-weight:600;}
+.result-note{font-size:10px;color:rgba(255,255,255,.35);margin-top:8px;line-height:1.6;}
+
+/* CHECKLIST */
+.chk-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.chk-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.chk-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.chk-card:nth-of-type(1) .chk-icon{background:var(--gold-pale);}
+.chk-card:nth-of-type(2) .chk-icon{background:var(--rose-bg);}
+.chk-card:nth-of-type(3) .chk-icon{background:var(--sky-bg);}
+.chk-card:nth-of-type(4) .chk-icon{background:var(--jade-bg);}
+.chk-t{font-size:15px;font-weight:800;color:var(--ink);}
+.chk-items{list-style:none;}
+.chk-items li{display:flex;gap:9px;font-size:12.5px;color:var(--ink2);line-height:1.65;padding:5px 0;}
+.chk-items li::before{content:'✓';color:var(--jade);font-weight:800;flex-shrink:0;}
+
+/* RIGHTS BOX */
+.rights{background:var(--navy);border-radius:20px;padding:22px 18px;margin:30px 0;}
+.rights-t{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--gold-l);margin-bottom:12px;text-align:center;}
+.right-row{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.right-row:last-child{border-bottom:none;}
+.right-icon{font-size:18px;flex-shrink:0;}
+.right-b{font-size:12.5px;font-weight:700;color:#fff;line-height:1.5;}
+.right-s{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-top:2px;}
+.helpline{margin-top:14px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.3);border-radius:12px;
+padding:12px;text-align:center;font-size:12px;color:var(--gold-l);font-weight:700;line-height:1.6;}
+.helpline a{color:var(--gold-l);}
+
+.disclaimer{background:var(--light);border:1px solid var(--border);border-radius:12px;padding:13px 14px;
+font-size:10.5px;color:var(--muted);line-height:1.7;margin-top:26px;}
+.back{display:block;text-align:center;margin-top:22px;font-size:13px;font-weight:800;color:var(--gold-d);text-decoration:none;}
+
+footer{background:var(--navy);padding:26px 18px;text-align:center;}
+.f-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);margin-bottom:4px;}
+.f-tag{font-size:11px;color:rgba(255,255,255,.4);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <a class="nav-brand" href="index.html">⚖️ LawSticker AI <span data-i18n="nav_free">· Free</span></a>
+    <div class="nav-langs">
+      <button class="nav-lang active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="nav-lang" data-lang="te" onclick="setLang('te')">తెలుగు</button>
+      <button class="nav-lang" data-lang="hi" onclick="setLang('hi')">हिंदी</button>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge" data-i18n="hero_badge">Consumer Rights Tool</div>
+  <h1 class="hero-title" data-i18n-html="hero_title">Check Your Restaurant Bill <span class="gold">Before You Pay</span></h1>
+  <p class="hero-sub" data-i18n="hero_sub">Service charge is voluntary. GST should usually be 5%, not 18%. Most families overpay without knowing. 60 seconds with this checklist can save 20–30% — legally.</p>
+</div>
+
+<div class="page">
+
+  <!-- SAVINGS CALCULATOR -->
+  <div class="sec-eyebrow" data-i18n="calc_eyebrow">Step 1 · Calculate</div>
+  <h2 class="sec-title" data-i18n="calc_title">How much can you save on this bill?</h2>
+  <p class="sec-sub" data-i18n="calc_sub">Enter your bill total, tick what applies, and see your estimated savings live.</p>
+
+  <div class="calc">
+    <label class="calc-label" for="billAmt" data-i18n="calc_label">Bill total (₹)</label>
+    <input class="calc-input" id="billAmt" type="number" inputmode="numeric" placeholder="2,500" min="0" oninput="calc()">
+    <div class="toggles">
+      <label class="tgl" id="tglSC">
+        <input type="checkbox" id="cbSC" onchange="calc()">
+        <div>
+          <div class="tgl-t" data-i18n="sc_t">Ask to remove service charge (10%)</div>
+          <div class="tgl-d" data-i18n="sc_d">It's voluntary — CCPA Guidelines 2022, upheld by Delhi High Court (2025). Politely ask; they must remove it.</div>
+          <div class="tgl-save" id="saveSC"></div>
+        </div>
+      </label>
+      <label class="tgl" id="tglGST">
+        <input type="checkbox" id="cbGST" onchange="calc()">
+        <div>
+          <div class="tgl-t" data-i18n="gst_t">Wrong GST rate — charged 18% instead of 5%</div>
+          <div class="tgl-d" data-i18n="gst_d">Standalone restaurants: 5% GST. 18% applies only inside hotels with room tariff above ₹7,500/night.</div>
+          <div class="tgl-save" id="saveGST"></div>
+        </div>
+      </label>
+      <label class="tgl" id="tglAPP">
+        <input type="checkbox" id="cbAPP" onchange="calc()">
+        <div>
+          <div class="tgl-t" data-i18n="app_t">Pay via a dining app (~20% off)</div>
+          <div class="tgl-d" data-i18n="app_d">Swiggy Dineout, Zomato District, EazyDiner, magicpin — check before paying, works even without a reservation.</div>
+          <div class="tgl-save" id="saveAPP"></div>
+        </div>
+      </label>
+      <label class="tgl" id="tglBANK">
+        <input type="checkbox" id="cbBANK" onchange="calc()">
+        <div>
+          <div class="tgl-t" data-i18n="bank_t">Bank / card dining offer (~10% off)</div>
+          <div class="tgl-d" data-i18n="bank_d">Open your bank app and check dining tie-ups, or simply ask the staff: "any bank offer today?"</div>
+          <div class="tgl-save" id="saveBANK"></div>
+        </div>
+      </label>
+    </div>
+    <div class="result">
+      <div class="result-l" data-i18n="res_l">Estimated savings</div>
+      <div class="result-n" id="resSave">₹0</div>
+      <div class="result-pay"><span data-i18n="res_pay">You pay approx.</span> <b id="resPay">₹0</b></div>
+      <div class="result-note" data-i18n="res_note">Estimate only. App and bank discounts usually apply to the food value and can't always be combined — your actual saving depends on the offer terms.</div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="sec-eyebrow" data-i18n="chk_eyebrow">Step 2 · Verify</div>
+  <h2 class="sec-title" data-i18n="chk_title">The 60-Second Bill Checklist</h2>
+  <p class="sec-sub" data-i18n="chk_sub">Run through these four checks every time the bill arrives.</p>
+
+  <div class="chk-card">
+    <div class="chk-head"><div class="chk-icon">🧾</div><div class="chk-t" data-i18n="c1_t">Check every line item</div></div>
+    <ul class="chk-items">
+      <li data-i18n="c1_1">Match items and quantities against what you actually ordered</li>
+      <li data-i18n="c1_2">Watch for billed "complimentary" items — papad, chutney, water</li>
+      <li data-i18n="c1_3">Question any "cover charge" you weren't told about upfront</li>
+    </ul>
+  </div>
+
+  <div class="chk-card">
+    <div class="chk-head"><div class="chk-icon">⚠️</div><div class="chk-t" data-i18n="c2_t">Verify the GST</div></div>
+    <ul class="chk-items">
+      <li data-i18n="c2_1">Standalone restaurant / dhaba / café → GST must be 5%</li>
+      <li data-i18n="c2_2">18% is valid only in hotels with room tariff above ₹7,500/night</li>
+      <li data-i18n="c2_3">A valid 15-digit GSTIN must be printed — no GSTIN means they cannot legally collect GST at all</li>
+      <li data-i18n="c2_4">GST must never be calculated on top of the service charge</li>
+    </ul>
+  </div>
+
+  <div class="chk-card">
+    <div class="chk-head"><div class="chk-icon">🙅</div><div class="chk-t" data-i18n="c3_t">Service charge — your call, not theirs</div></div>
+    <ul class="chk-items">
+      <li data-i18n="c3_1">5–10% "service charge" is NOT a government tax — it is optional</li>
+      <li data-i18n="c3_2">Politely say: "Please remove the service charge" — they must comply</li>
+      <li data-i18n="c3_3">If you keep it, don't tip separately — that's paying twice</li>
+      <li data-i18n="c3_4">If they refuse: note it, keep the bill, complain on 1915</li>
+    </ul>
+  </div>
+
+  <div class="chk-card">
+    <div class="chk-head"><div class="chk-icon">💳</div><div class="chk-t" data-i18n="c4_t">Pay the smart way</div></div>
+    <ul class="chk-items">
+      <li data-i18n="c4_1">Before paying, check dining apps for instant pay-bill discounts (15–30%)</li>
+      <li data-i18n="c4_2">Check your credit card's dining offers — many run weekday tie-ups</li>
+      <li data-i18n="c4_3">Ask staff directly about running offers — they rarely volunteer them</li>
+      <li data-i18n="c4_4">Tip on the pre-tax food amount, not the grand total</li>
+    </ul>
+  </div>
+
+  <!-- RIGHTS -->
+  <div class="rights">
+    <div class="rights-t" data-i18n="r_title">Your Legal Backing</div>
+    <div class="right-row">
+      <div class="right-icon">📜</div>
+      <div>
+        <div class="right-b" data-i18n="r1_b">CCPA Guidelines, 4 July 2022</div>
+        <div class="right-s" data-i18n="r1_s">No hotel or restaurant shall add service charge automatically or by default, and it cannot be made a condition of entry or service.</div>
+      </div>
+    </div>
+    <div class="right-row">
+      <div class="right-icon">⚖️</div>
+      <div>
+        <div class="right-b" data-i18n="r2_b">Delhi High Court, 2025</div>
+        <div class="right-s" data-i18n="r2_s">Upheld the CCPA guidelines — mandatory service charge is an unfair trade practice. Paying it is the customer's choice.</div>
+      </div>
+    </div>
+    <div class="right-row">
+      <div class="right-icon">🛡️</div>
+      <div>
+        <div class="right-b" data-i18n="r3_b">Consumer Protection Act, 2019</div>
+        <div class="right-s" data-i18n="r3_s">Overcharging, fake taxes, and forced charges are unfair trade practices. You can complain and claim a refund.</div>
+      </div>
+    </div>
+    <div class="helpline" data-i18n-html="r_help">📞 National Consumer Helpline: <a href="tel:1915">1915</a> · WhatsApp 8800001915 · <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener" style="color:inherit">consumerhelpline.gov.in</a></div>
+  </div>
+
+  <div class="disclaimer" data-i18n="disc">This page is general legal information, not legal advice. GST rates and guidelines are as notified up to 2026 and may change — always verify the current position. LawSticker AI is a free educational platform and does not represent any restaurant, app, or bank. Discount figures are indicative examples, not guarantees.</div>
+
+  <a class="back" href="calculators.html" data-i18n="back">← All Calculators &amp; Tools</a>
+</div>
+
+<footer>
+  <div class="f-brand">⚖️ LawSticker AI</div>
+  <div class="f-tag" data-i18n="f_tag">Your rights. Your language. Free.</div>
+</footer>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+
+<script>
+const I18N = {
+en:{
+nav_free:"· Free",
+hero_badge:"Consumer Rights Tool",
+hero_title:'Check Your Restaurant Bill <span class="gold">Before You Pay</span>',
+hero_sub:"Service charge is voluntary. GST should usually be 5%, not 18%. Most families overpay without knowing. 60 seconds with this checklist can save 20–30% — legally.",
+calc_eyebrow:"Step 1 · Calculate",
+calc_title:"How much can you save on this bill?",
+calc_sub:"Enter your bill total, tick what applies, and see your estimated savings live.",
+calc_label:"Bill total (₹)",
+sc_t:"Ask to remove service charge (10%)",
+sc_d:"It's voluntary — CCPA Guidelines 2022, upheld by Delhi High Court (2025). Politely ask; they must remove it.",
+gst_t:"Wrong GST rate — charged 18% instead of 5%",
+gst_d:"Standalone restaurants: 5% GST. 18% applies only inside hotels with room tariff above ₹7,500/night.",
+app_t:"Pay via a dining app (~20% off)",
+app_d:"Swiggy Dineout, Zomato District, EazyDiner, magicpin — check before paying, works even without a reservation.",
+bank_t:"Bank / card dining offer (~10% off)",
+bank_d:'Open your bank app and check dining tie-ups, or simply ask the staff: "any bank offer today?"',
+res_l:"Estimated savings",
+res_pay:"You pay approx.",
+res_note:"Estimate only. App and bank discounts usually apply to the food value and can't always be combined — your actual saving depends on the offer terms.",
+chk_eyebrow:"Step 2 · Verify",
+chk_title:"The 60-Second Bill Checklist",
+chk_sub:"Run through these four checks every time the bill arrives.",
+c1_t:"Check every line item",
+c1_1:"Match items and quantities against what you actually ordered",
+c1_2:'Watch for billed "complimentary" items — papad, chutney, water',
+c1_3:'Question any "cover charge" you weren\'t told about upfront',
+c2_t:"Verify the GST",
+c2_1:"Standalone restaurant / dhaba / café → GST must be 5%",
+c2_2:"18% is valid only in hotels with room tariff above ₹7,500/night",
+c2_3:"A valid 15-digit GSTIN must be printed — no GSTIN means they cannot legally collect GST at all",
+c2_4:"GST must never be calculated on top of the service charge",
+c3_t:"Service charge — your call, not theirs",
+c3_1:'5–10% "service charge" is NOT a government tax — it is optional',
+c3_2:'Politely say: "Please remove the service charge" — they must comply',
+c3_3:"If you keep it, don't tip separately — that's paying twice",
+c3_4:"If they refuse: note it, keep the bill, complain on 1915",
+c4_t:"Pay the smart way",
+c4_1:"Before paying, check dining apps for instant pay-bill discounts (15–30%)",
+c4_2:"Check your credit card's dining offers — many run weekday tie-ups",
+c4_3:"Ask staff directly about running offers — they rarely volunteer them",
+c4_4:"Tip on the pre-tax food amount, not the grand total",
+r_title:"Your Legal Backing",
+r1_b:"CCPA Guidelines, 4 July 2022",
+r1_s:"No hotel or restaurant shall add service charge automatically or by default, and it cannot be made a condition of entry or service.",
+r2_b:"Delhi High Court, 2025",
+r2_s:"Upheld the CCPA guidelines — mandatory service charge is an unfair trade practice. Paying it is the customer's choice.",
+r3_b:"Consumer Protection Act, 2019",
+r3_s:"Overcharging, fake taxes, and forced charges are unfair trade practices. You can complain and claim a refund.",
+r_help:'📞 National Consumer Helpline: <a href="tel:1915">1915</a> · WhatsApp 8800001915 · <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener" style="color:inherit">consumerhelpline.gov.in</a>',
+disc:"This page is general legal information, not legal advice. GST rates and guidelines are as notified up to 2026 and may change — always verify the current position. LawSticker AI is a free educational platform and does not represent any restaurant, app, or bank. Discount figures are indicative examples, not guarantees.",
+back:"← All Calculators & Tools",
+f_tag:"Your rights. Your language. Free."
+},
+te:{
+nav_free:"· ఉచితం",
+hero_badge:"వినియోగదారుల హక్కుల సాధనం",
+hero_title:'బిల్లు కట్టే ముందు <span class="gold">ఒకసారి చెక్ చేయండి</span>',
+hero_sub:"సర్వీస్ ఛార్జ్ మీ ఇష్టం — తప్పనిసరి కాదు. GST సాధారణంగా 5% మాత్రమే, 18% కాదు. తెలియక చాలా కుటుంబాలు ఎక్కువ చెల్లిస్తున్నాయి. ఈ చెక్‌లిస్ట్‌తో 60 సెకన్లలో 20–30% ఆదా చేయవచ్చు — చట్టబద్ధంగా.",
+calc_eyebrow:"దశ 1 · లెక్కించండి",
+calc_title:"ఈ బిల్లుపై మీరు ఎంత ఆదా చేయవచ్చు?",
+calc_sub:"బిల్లు మొత్తం నమోదు చేసి, వర్తించేవి టిక్ చేయండి — ఆదా వెంటనే కనిపిస్తుంది.",
+calc_label:"బిల్లు మొత్తం (₹)",
+sc_t:"సర్వీస్ ఛార్జ్ (10%) తొలగించమని అడగండి",
+sc_d:"ఇది ఐచ్ఛికం — CCPA మార్గదర్శకాలు 2022, ఢిల్లీ హైకోర్టు (2025) సమర్థించింది. మర్యాదగా అడగండి; వారు తొలగించాలి.",
+gst_t:"తప్పు GST రేటు — 5% బదులు 18% వేశారు",
+gst_d:"సాధారణ రెస్టారెంట్లలో GST 5% మాత్రమే. రూమ్ టారిఫ్ ₹7,500 పైన ఉన్న హోటళ్లలో మాత్రమే 18% చెల్లుతుంది.",
+app_t:"డైనింగ్ యాప్ ద్వారా చెల్లించండి (~20% తగ్గింపు)",
+app_d:"Swiggy Dineout, Zomato District, EazyDiner, magicpin — చెల్లించే ముందు చూడండి, రిజర్వేషన్ లేకపోయినా పనిచేస్తుంది.",
+bank_t:"బ్యాంక్ / కార్డ్ డైనింగ్ ఆఫర్ (~10% తగ్గింపు)",
+bank_d:'బ్యాంక్ యాప్‌లో డైనింగ్ ఆఫర్లు చూడండి, లేదా స్టాఫ్‌ని అడగండి: "ఈరోజు ఏదైనా బ్యాంక్ ఆఫర్ ఉందా?"',
+res_l:"అంచనా ఆదా",
+res_pay:"మీరు చెల్లించేది సుమారు",
+res_note:"ఇది అంచనా మాత్రమే. యాప్, బ్యాంక్ తగ్గింపులు సాధారణంగా ఆహార విలువపై వర్తిస్తాయి, అన్నీ కలపలేము — అసలు ఆదా ఆఫర్ నిబంధనలపై ఆధారపడుతుంది.",
+chk_eyebrow:"దశ 2 · సరిచూడండి",
+chk_title:"60 సెకన్ల బిల్లు చెక్‌లిస్ట్",
+chk_sub:"బిల్లు వచ్చిన ప్రతిసారి ఈ నాలుగు తనిఖీలు చేయండి.",
+c1_t:"ప్రతి ఐటమ్ సరిచూడండి",
+c1_1:"మీరు ఆర్డర్ చేసినవాటితో ఐటమ్స్, పరిమాణాలు సరిపోల్చండి",
+c1_2:'బిల్లులో వేసిన "కాంప్లిమెంటరీ" ఐటమ్స్ గమనించండి — పాపడ్, చట్నీ, నీళ్లు',
+c1_3:'ముందుగా చెప్పని "కవర్ ఛార్జ్" గురించి ప్రశ్నించండి',
+c2_t:"GST సరిచూడండి",
+c2_1:"సాధారణ రెస్టారెంట్ / ధాబా / కేఫ్ → GST 5% మాత్రమే ఉండాలి",
+c2_2:"రూమ్ టారిఫ్ ₹7,500 పైన ఉన్న హోటళ్లలో మాత్రమే 18% చెల్లుతుంది",
+c2_3:"బిల్లుపై 15-అంకెల GSTIN ఉండాలి — GSTIN లేకపోతే వారు GST వసూలు చేయలేరు",
+c2_4:"సర్వీస్ ఛార్జ్ మీద GST లెక్కించడం తప్పు",
+c3_t:"సర్వీస్ ఛార్జ్ — మీ నిర్ణయం, వారిది కాదు",
+c3_1:'5–10% "సర్వీస్ ఛార్జ్" ప్రభుత్వ పన్ను కాదు — ఇది ఐచ్ఛికం',
+c3_2:'మర్యాదగా చెప్పండి: "సర్వీస్ ఛార్జ్ తీసేయండి" — వారు తీసేయాలి',
+c3_3:"సర్వీస్ ఛార్జ్ చెల్లిస్తే, విడిగా టిప్ ఇవ్వకండి — అది రెండుసార్లు చెల్లించడమే",
+c3_4:"వారు నిరాకరిస్తే: బిల్లు భద్రపరచండి, 1915కి ఫిర్యాదు చేయండి",
+c4_t:"తెలివిగా చెల్లించండి",
+c4_1:"చెల్లించే ముందు డైనింగ్ యాప్స్‌లో తక్షణ తగ్గింపులు (15–30%) చూడండి",
+c4_2:"మీ క్రెడిట్ కార్డ్ డైనింగ్ ఆఫర్లు చూడండి — వారంలో చాలా ఆఫర్లు ఉంటాయి",
+c4_3:"స్టాఫ్‌ని నేరుగా ఆఫర్ల గురించి అడగండి — వారు చెప్పరు",
+c4_4:"టిప్ ఆహార విలువపై ఇవ్వండి, మొత్తం బిల్లుపై కాదు",
+r_title:"మీకు చట్టపరమైన మద్దతు",
+r1_b:"CCPA మార్గదర్శకాలు, 4 జూలై 2022",
+r1_s:"ఏ హోటల్ లేదా రెస్టారెంట్ సర్వీస్ ఛార్జ్‌ను ఆటోమేటిక్‌గా వేయకూడదు, సేవకు షరతుగా పెట్టకూడదు.",
+r2_b:"ఢిల్లీ హైకోర్టు, 2025",
+r2_s:"CCPA మార్గదర్శకాలను సమర్థించింది — తప్పనిసరి సర్వీస్ ఛార్జ్ అన్యాయ వ్యాపార పద్ధతి. చెల్లించడం వినియోగదారుడి ఇష్టం.",
+r3_b:"వినియోగదారుల రక్షణ చట్టం, 2019",
+r3_s:"అధిక వసూలు, నకిలీ పన్నులు, బలవంతపు ఛార్జీలు అన్యాయ వ్యాపార పద్ధతులు. మీరు ఫిర్యాదు చేసి రీఫండ్ పొందవచ్చు.",
+r_help:'📞 జాతీయ వినియోగదారుల హెల్ప్‌లైన్: <a href="tel:1915">1915</a> · WhatsApp 8800001915 · <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener" style="color:inherit">consumerhelpline.gov.in</a>',
+disc:"ఈ పేజీ సాధారణ చట్ట సమాచారం మాత్రమే, న్యాయ సలహా కాదు. GST రేట్లు, మార్గదర్శకాలు 2026 వరకు ఉన్నవి — మారవచ్చు, ప్రస్తుత స్థితిని ధృవీకరించుకోండి. LawSticker AI ఉచిత విద్యా వేదిక — ఏ రెస్టారెంట్, యాప్, బ్యాంక్‌కు ప్రాతినిధ్యం వహించదు. తగ్గింపు అంకెలు ఉదాహరణలు మాత్రమే, హామీలు కావు.",
+back:"← అన్ని కాలిక్యులేటర్లు & సాధనాలు",
+f_tag:"మీ హక్కులు. మీ భాష. ఉచితం."
+},
+hi:{
+nav_free:"· मुफ़्त",
+hero_badge:"उपभोक्ता अधिकार टूल",
+hero_title:'बिल चुकाने से पहले <span class="gold">एक बार ज़रूर जाँचें</span>',
+hero_sub:"सर्विस चार्ज देना आपकी मर्ज़ी है — अनिवार्य नहीं। GST आमतौर पर 5% होना चाहिए, 18% नहीं। ज़्यादातर परिवार अनजाने में ज़्यादा चुकाते हैं। इस चेकलिस्ट से 60 सेकंड में 20–30% बचाएँ — कानूनी तरीके से।",
+calc_eyebrow:"चरण 1 · गणना करें",
+calc_title:"इस बिल पर आप कितना बचा सकते हैं?",
+calc_sub:"बिल की कुल राशि डालें, जो लागू हो उसे टिक करें — बचत तुरंत दिखेगी।",
+calc_label:"बिल कुल (₹)",
+sc_t:"सर्विस चार्ज (10%) हटाने को कहें",
+sc_d:"यह वैकल्पिक है — CCPA दिशानिर्देश 2022, दिल्ली हाई कोर्ट (2025) ने बरकरार रखा। विनम्रता से कहें; उन्हें हटाना होगा।",
+gst_t:"गलत GST दर — 5% की जगह 18% लगाया",
+gst_d:"सामान्य रेस्टोरेंट में GST 5% ही है। 18% सिर्फ़ उन होटलों में लगता है जहाँ रूम टैरिफ ₹7,500 से ऊपर है।",
+app_t:"डाइनिंग ऐप से भुगतान करें (~20% छूट)",
+app_d:"Swiggy Dineout, Zomato District, EazyDiner, magicpin — भुगतान से पहले देखें, बिना रिज़र्वेशन भी चलता है।",
+bank_t:"बैंक / कार्ड डाइनिंग ऑफ़र (~10% छूट)",
+bank_d:'बैंक ऐप में डाइनिंग ऑफ़र देखें, या स्टाफ़ से पूछें: "आज कोई बैंक ऑफ़र है?"',
+res_l:"अनुमानित बचत",
+res_pay:"आप लगभग चुकाएँगे",
+res_note:"यह केवल अनुमान है। ऐप और बैंक छूट आमतौर पर खाने की राशि पर लागू होती हैं और हमेशा जोड़ी नहीं जा सकतीं — असली बचत ऑफ़र की शर्तों पर निर्भर करती है।",
+chk_eyebrow:"चरण 2 · जाँचें",
+chk_title:"60 सेकंड की बिल चेकलिस्ट",
+chk_sub:"हर बार बिल आने पर ये चार जाँच करें।",
+c1_t:"हर आइटम जाँचें",
+c1_1:"आइटम और मात्रा अपने ऑर्डर से मिलाएँ",
+c1_2:'बिल में जुड़े "कॉम्प्लिमेंटरी" आइटम देखें — पापड़, चटनी, पानी',
+c1_3:'पहले न बताए गए "कवर चार्ज" पर सवाल करें',
+c2_t:"GST जाँचें",
+c2_1:"सामान्य रेस्टोरेंट / ढाबा / कैफ़े → GST 5% ही होना चाहिए",
+c2_2:"18% सिर्फ़ ₹7,500 से ऊपर रूम टैरिफ वाले होटलों में मान्य है",
+c2_3:"बिल पर 15 अंकों का GSTIN छपा होना चाहिए — GSTIN नहीं तो वे GST वसूल ही नहीं सकते",
+c2_4:"सर्विस चार्ज के ऊपर GST लगाना गलत है",
+c3_t:"सर्विस चार्ज — फ़ैसला आपका, उनका नहीं",
+c3_1:'5–10% "सर्विस चार्ज" सरकारी टैक्स नहीं है — यह वैकल्पिक है',
+c3_2:'विनम्रता से कहें: "सर्विस चार्ज हटा दीजिए" — उन्हें मानना होगा',
+c3_3:"अगर सर्विस चार्ज दे रहे हैं, तो अलग से टिप न दें — यह दोहरा भुगतान है",
+c3_4:"मना करें तो: बिल संभालकर रखें, 1915 पर शिकायत करें",
+c4_t:"समझदारी से भुगतान करें",
+c4_1:"भुगतान से पहले डाइनिंग ऐप्स पर तुरंत छूट (15–30%) देखें",
+c4_2:"अपने क्रेडिट कार्ड के डाइनिंग ऑफ़र देखें — हफ़्ते में कई ऑफ़र चलते हैं",
+c4_3:"स्टाफ़ से सीधे ऑफ़र पूछें — वे खुद नहीं बताते",
+c4_4:"टिप खाने की राशि पर दें, कुल बिल पर नहीं",
+r_title:"आपका कानूनी आधार",
+r1_b:"CCPA दिशानिर्देश, 4 जुलाई 2022",
+r1_s:"कोई होटल या रेस्टोरेंट सर्विस चार्ज अपने आप नहीं जोड़ सकता, न ही इसे सेवा की शर्त बना सकता है।",
+r2_b:"दिल्ली हाई कोर्ट, 2025",
+r2_s:"CCPA दिशानिर्देशों को बरकरार रखा — अनिवार्य सर्विस चार्ज अनुचित व्यापार प्रथा है। देना ग्राहक की मर्ज़ी है।",
+r3_b:"उपभोक्ता संरक्षण अधिनियम, 2019",
+r3_s:"ज़्यादा वसूली, नकली टैक्स और ज़बरदस्ती के चार्ज अनुचित व्यापार प्रथाएँ हैं। आप शिकायत कर रिफ़ंड पा सकते हैं।",
+r_help:'📞 राष्ट्रीय उपभोक्ता हेल्पलाइन: <a href="tel:1915">1915</a> · WhatsApp 8800001915 · <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener" style="color:inherit">consumerhelpline.gov.in</a>',
+disc:"यह पृष्ठ सामान्य कानूनी जानकारी है, कानूनी सलाह नहीं। GST दरें व दिशानिर्देश 2026 तक की अधिसूचनाओं के अनुसार हैं और बदल सकते हैं — वर्तमान स्थिति ज़रूर जाँचें। LawSticker AI एक मुफ़्त शैक्षिक मंच है — किसी रेस्टोरेंट, ऐप या बैंक का प्रतिनिधित्व नहीं करता। छूट के आँकड़े केवल उदाहरण हैं, गारंटी नहीं।",
+back:"← सभी कैलकुलेटर व टूल",
+f_tag:"आपके अधिकार। आपकी भाषा। मुफ़्त।"
+}
+};
+
+function setLang(l){
+  document.querySelectorAll('.nav-lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
+  const d=I18N[l];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(d[k])el.textContent=d[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.dataset.i18nHtml;if(d[k])el.innerHTML=d[k];});
+  document.documentElement.lang=l;
+  try{gtag('event','lang_switch',{page:'restaurant-bill-checker',lang:l});}catch(e){}
+  calc();
+}
+
+function fmt(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+
+function calc(){
+  const bill=parseFloat(document.getElementById('billAmt').value)||0;
+  const sc=document.getElementById('cbSC').checked;
+  const gst=document.getElementById('cbGST').checked;
+  const app=document.getElementById('cbAPP').checked;
+  const bank=document.getElementById('cbBANK').checked;
+
+  // Decompose printed total: base food F + (SC 10% of F if billed) + GST on F.
+  // Printed total ≈ F*(1 + scRate + gstRate). Solve for F.
+  const gstBilled=gst?0.18:0.05;     // rate they charged
+  const F=bill/(1+(sc?0.10:0)+gstBilled);
+
+  let save=0;
+  const savSC=sc?F*0.10:0;
+  const savGST=gst?F*(0.18-0.05):0;
+  save+=savSC+savGST;
+  const afterLegal=bill-save;
+  const savAPP=app?afterLegal*0.20:0;
+  const remain=afterLegal-savAPP;
+  const savBANK=bank?remain*0.10:0;
+  save+=savAPP+savBANK;
+
+  document.getElementById('saveSC').textContent=sc&&bill?('− '+fmt(savSC)):'';
+  document.getElementById('saveGST').textContent=gst&&bill?('− '+fmt(savGST)):'';
+  document.getElementById('saveAPP').textContent=app&&bill?('− '+fmt(savAPP)):'';
+  document.getElementById('saveBANK').textContent=bank&&bill?('− '+fmt(savBANK)):'';
+  document.getElementById('resSave').textContent=fmt(save);
+  document.getElementById('resPay').textContent=fmt(Math.max(bill-save,0));
+
+  ['SC','GST','APP','BANK'].forEach(k=>{
+    document.getElementById('tgl'+k).classList.toggle('on',document.getElementById('cb'+k).checked);
+  });
+}
+calc();
+</script>
+</body>
+</html>
