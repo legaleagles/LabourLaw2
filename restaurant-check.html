@@ -107,6 +107,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-TJXHVW6XCL');
 </script>
+<!-- Tesseract.js (OCR engine) is loaded dynamically at scan-time, not here -- see runBillOcr() -->
 </head>
 <body>
 <nav>
@@ -144,6 +145,19 @@ gtag('config', 'G-TJXHVW6XCL');
       </div>
       <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;">Tap the image to zoom in and read exact figures — then fill in the amounts below</div>
       <iframe id="billPdfPreview" style="width:100%;height:420px;border:1px solid var(--light);border-radius:12px;display:none;"></iframe>
+      <button id="ocrScanBtn" onclick="runBillOcr()" style="width:100%;margin-top:10px;padding:12px;background:var(--teal);color:white;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;">✨ Try Auto-Fill from Photo (Beta)</button>
+      <div id="ocrProgress" style="display:none;text-align:center;margin-top:8px;">
+        <div style="font-size:12px;color:var(--teal-deep);font-weight:700;" id="ocrProgressText">Reading your bill…</div>
+        <div style="background:var(--light);border-radius:8px;height:6px;margin-top:6px;overflow:hidden;"><div id="ocrProgressBar" style="background:var(--teal);height:100%;width:0%;transition:width .2s;"></div></div>
+      </div>
+      <div id="ocrResult" style="display:none;margin-top:10px;background:var(--jade-bg);border:1px solid #A7F3D0;border-radius:12px;padding:12px;">
+        <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:4px;">✅ Auto-filled below — please double-check every number</div>
+        <div style="font-size:10.5px;color:#065F46;line-height:1.5;">This is a Beta feature and can make mistakes, especially on blurry or angled photos. Always compare against your actual bill before trusting the result.</div>
+      </div>
+      <div id="ocrNoMatch" style="display:none;margin-top:10px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;">
+        <div style="font-size:11px;font-weight:800;color:#78350F;">⚠️ Couldn't confidently read the numbers from this photo</div>
+        <div style="font-size:10.5px;color:#78350F;line-height:1.5;margin-top:3px;">Try a clearer, well-lit, straight-on photo — or just type the amounts in manually below using the zoomed view.</div>
+      </div>
     </div>
   </div>
 
@@ -463,6 +477,134 @@ function toggleBillZoom(img){
  }
 }
 
+// ═══ OCR AUTO-FILL (Beta) -- Tesseract.js, entirely in-browser, no server, no API key ═══
+let tesseractLoaded = false;
+
+function loadTesseract(){
+ return new Promise((resolve, reject) => {
+  if(typeof Tesseract !== 'undefined'){ tesseractLoaded = true; resolve(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js';
+  s.onload = () => { tesseractLoaded = true; resolve(); };
+  s.onerror = () => reject(new Error('Could not load the text-recognition engine.'));
+  document.head.appendChild(s);
+ });
+}
+
+async function runBillOcr(){
+ const img = document.getElementById('billImagePreview');
+ if(!img.src || img.style.display === 'none'){
+  alert('Auto-fill currently works on photo uploads only (not PDF) -- please upload a JPG or PNG of your bill.');
+  return;
+ }
+ const btn = document.getElementById('ocrScanBtn');
+ const progressBox = document.getElementById('ocrProgress');
+ const progressText = document.getElementById('ocrProgressText');
+ const progressBar = document.getElementById('ocrProgressBar');
+ const resultBox = document.getElementById('ocrResult');
+ const noMatchBox = document.getElementById('ocrNoMatch');
+
+ btn.disabled = true;
+ resultBox.style.display = 'none';
+ noMatchBox.style.display = 'none';
+ progressBox.style.display = 'block';
+ progressText.textContent = 'Loading text-recognition engine…';
+ progressBar.style.width = '10%';
+
+ try{
+  await loadTesseract();
+  progressText.textContent = 'Reading your bill…';
+  progressBar.style.width = '30%';
+
+  const { data } = await Tesseract.recognize(img.src, 'eng', {
+   logger: m => {
+    if(m.status === 'recognizing text' && m.progress){
+     const pct = 30 + Math.round(m.progress * 60);
+     progressBar.style.width = pct + '%';
+    }
+   }
+  });
+
+  progressText.textContent = 'Finding the amounts…';
+  progressBar.style.width = '95%';
+
+  const extracted = parseBillAmounts(data.text);
+  applyExtractedAmounts(extracted);
+
+  progressBar.style.width = '100%';
+  setTimeout(() => { progressBox.style.display = 'none'; }, 300);
+
+  if(extracted.matchCount > 0){
+   resultBox.style.display = 'block';
+  }else{
+   noMatchBox.style.display = 'block';
+  }
+ }catch(err){
+  progressBox.style.display = 'none';
+  noMatchBox.style.display = 'block';
+  document.getElementById('ocrNoMatch').querySelector('div:last-child').textContent = 'Something went wrong reading this photo (' + (err.message || 'unknown error') + '). Please type the amounts in manually below.';
+ }
+ btn.disabled = false;
+}
+
+// Parses raw OCR text for likely bill amounts. This is pattern-matching on common Indian
+// restaurant-bill phrasing, not true document understanding -- it looks for currency-like
+// numbers near recognisable keywords, picks the most plausible candidate for each field,
+// and leaves everything editable, since it WILL get some bills wrong.
+function parseBillAmounts(rawText){
+ const text = rawText.replace(/\r/g, '');
+ const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+ function extractNumber(line){
+  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts)
+  const matches = line.match(/[\d,]+\.?\d{0,2}/g);
+  if(!matches) return null;
+  const nums = matches
+   .map(m => parseFloat(m.replace(/,/g, '')))
+   .filter(n => !isNaN(n) && n > 0 && n < 1000000);
+  return nums.length ? nums[nums.length - 1] : null;
+ }
+
+ function findByKeywords(keywords){
+  for(const line of lines){
+   const lower = line.toLowerCase();
+   if(keywords.some(k => lower.includes(k))){
+    const n = extractNumber(line);
+    if(n !== null) return n;
+   }
+  }
+  return null;
+ }
+
+ const result = {
+  total: findByKeywords(['grand total', 'total amount', 'net amount', 'net payable', 'amount payable']),
+  gst: findByKeywords(['gst', 'cgst', 'sgst', 'tax']),
+  serviceCharge: findByKeywords(['service charge', 'svc charge', 'service chg']),
+  subtotal: findByKeywords(['sub total', 'subtotal', 'food total', 'item total']),
+ };
+
+ // Fallback: if no labelled "total" line matched, use the single largest number found
+ // anywhere in the bill as a reasonable guess for the grand total.
+ if(result.total === null){
+  const allNums = lines.map(extractNumber).filter(n => n !== null);
+  if(allNums.length) result.total = Math.max(...allNums);
+ }
+
+ result.matchCount = Object.keys(result).filter(k => k !== 'matchCount' && result[k] !== null).length;
+ return result;
+}
+
+function applyExtractedAmounts(extracted){
+ if(extracted.subtotal !== null) document.getElementById('food-total').value = extracted.subtotal;
+ else if(extracted.total !== null && extracted.gst === null && extracted.serviceCharge === null){
+  // If we only found a grand total with no breakdown, use it as a starting point for food total too
+  document.getElementById('food-total').value = extracted.total;
+ }
+ if(extracted.gst !== null) document.getElementById('gst-billed').value = extracted.gst;
+ if(extracted.serviceCharge !== null) document.getElementById('sc-billed').value = extracted.serviceCharge;
+ if(extracted.total !== null) document.getElementById('total-billed').value = extracted.total;
+}
+
 function clearBillUpload(){
  document.getElementById('billFileInput').value = '';
  document.getElementById('billViewerResult').style.display = 'none';
@@ -471,6 +613,9 @@ function clearBillUpload(){
  img.src = '';
  img.style.transform = 'scale(1)';
  document.getElementById('billPdfPreview').src = '';
+ document.getElementById('ocrResult').style.display = 'none';
+ document.getElementById('ocrNoMatch').style.display = 'none';
+ document.getElementById('ocrProgress').style.display = 'none';
 }
 applyLang();
 </script>
