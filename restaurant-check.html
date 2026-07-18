@@ -138,12 +138,12 @@ gtag('config', 'G-TJXHVW6XCL');
     <div id="billViewerResult" style="display:none;margin-top:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
         <span style="font-size:11px;font-weight:700;color:var(--teal-deep);">📄 <span id="billFileName"></span></span>
-        <button onclick="clearBillUpload()" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">✕ Remove</button>
+        <button onclick="resetBillChecker()" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Everything</button>
       </div>
       <div id="billImageWrap" style="position:relative;border:1px solid var(--light);border-radius:12px;overflow:hidden;background:#000;">
         <img id="billImagePreview" style="width:100%;display:block;cursor:zoom-in;" onclick="toggleBillZoom(this)">
       </div>
-      <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;">Tap the image to zoom in and read exact figures — then fill in the amounts below</div>
+      <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;">Tap the image to zoom in and read exact figures — then fill in the cart below</div>
       <iframe id="billPdfPreview" style="width:100%;height:420px;border:1px solid var(--light);border-radius:12px;display:none;"></iframe>
       <button id="ocrScanBtn" onclick="runBillOcr()" style="width:100%;margin-top:10px;padding:12px;background:var(--teal);color:white;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;">✨ Try Auto-Fill from Photo (Beta)</button>
       <div id="ocrProgress" style="display:none;text-align:center;margin-top:8px;">
@@ -151,31 +151,50 @@ gtag('config', 'G-TJXHVW6XCL');
         <div style="background:var(--light);border-radius:8px;height:6px;margin-top:6px;overflow:hidden;"><div id="ocrProgressBar" style="background:var(--teal);height:100%;width:0%;transition:width .2s;"></div></div>
       </div>
       <div id="ocrResult" style="display:none;margin-top:10px;background:var(--jade-bg);border:1px solid #A7F3D0;border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:4px;">✅ Auto-filled below — please double-check every number</div>
+        <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:4px;">✅ Auto-filled below — please double-check every item and number</div>
         <div style="font-size:10.5px;color:#065F46;line-height:1.5;">This is a Beta feature and can make mistakes, especially on blurry or angled photos. Always compare against your actual bill before trusting the result.</div>
       </div>
       <div id="ocrNoMatch" style="display:none;margin-top:10px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:#78350F;">⚠️ Couldn't confidently read the numbers from this photo</div>
-        <div style="font-size:10.5px;color:#78350F;line-height:1.5;margin-top:3px;">Try a clearer, well-lit, straight-on photo — or just type the amounts in manually below using the zoomed view.</div>
+        <div style="font-size:11px;font-weight:800;color:#78350F;">⚠️ Couldn't confidently read this photo</div>
+        <div style="font-size:10.5px;color:#78350F;line-height:1.5;margin-top:3px;" id="ocrNoMatchText">Try a clearer, well-lit, straight-on photo — or just type the items in manually below using the zoomed view.</div>
+        <button id="ocrRetryBtn" onclick="retryBillOcr()" style="width:100%;margin-top:8px;padding:9px;background:#fff;border:1.5px solid var(--amber);border-radius:10px;font-size:12px;font-weight:700;color:#78350F;cursor:pointer;display:none;">🔁 Try a Different Reading Technique</button>
       </div>
 
-      <div id="itemListSection" style="display:none;margin-top:12px;">
-        <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🍽️ Items We Found — Edit If Needed</div>
+      <div id="itemCartSection" style="display:none;margin-top:14px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🛒 Your Bill Items — Add, Edit, or Remove</div>
         <div id="itemListRows"></div>
-        <button onclick="addItemRow('', '')" style="width:100%;margin-top:6px;padding:9px;background:#fff;border:1.5px dashed var(--light);border-radius:10px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;">+ Add Missing Item</button>
+        <button onclick="addItemRow('', '')" style="width:100%;margin-top:6px;padding:9px;background:#fff;border:1.5px dashed var(--light);border-radius:10px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;">+ Add Item</button>
         <div id="itemSumDisplay" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;">Items Total: ₹0.00</div>
+
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--light);">
+          <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Also Shows</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">GST / Tax Charged</label>
+              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-gst" value="0" step="0.01" style="padding-left:24px;"></div>
+            </div>
+            <div>
+              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Service Charge</label>
+              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sc" value="0" step="0.01" style="padding-left:24px;"></div>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Is this restaurant AC, or does it serve liquor?</label>
+            <select id="cart-restaurant-type" style="width:100%;margin-top:4px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12.5px;">
+              <option value="non-ac">No — Non-AC, no liquor (5% GST expected)</option>
+              <option value="ac">Yes — AC or serves liquor (18% GST expected)</option>
+              <option value="unsure">I'm not sure</option>
+            </select>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;">This tells us which GST rate is actually correct for this bill, before we judge it. <span style="color:var(--teal-deep);font-weight:700;">(Coming later: we plan to verify this automatically against the restaurant's real GST registration using an official GST lookup API — for now, please confirm it yourself.)</span></div>
+          </div>
+        </div>
+
+        <button id="completeCartBtn" onclick="completeCart()" style="width:100%;margin-top:14px;padding:13px;background:var(--teal-deep);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;">✅ Complete Cart &amp; Check My Bill</button>
       </div>
 
-      <div id="sumValidationWarn" style="display:none;margin-top:10px;background:var(--rose-bg);border:1px solid var(--rose);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:var(--rose);">⚠️ Discrepancy Found</div>
-        <div style="font-size:11px;color:#7F1D1D;line-height:1.6;margin-top:3px;" id="sumValidationWarnText"></div>
-      </div>
-
-      <div id="gstValidationWarn" style="display:none;margin-top:10px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:#78350F;">⚠️ Unusual GST Rate</div>
-        <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;" id="gstValidationWarnText"></div>
-      </div>
+      <div id="verdictSection" style="display:none;margin-top:14px;"></div>
     </div>
+  </div>
   </div>
 
   <div class="card">
@@ -239,7 +258,6 @@ gtag('config', 'G-TJXHVW6XCL');
 
     <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← Check Another Bill</button>
   </div>
-</div>
 <footer><span id="footer-txt">Restaurant Bill Checker · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
 <script>
 let lang='en';
@@ -514,39 +532,38 @@ async function runBillOcr(){
   alert('Auto-fill currently works on photo uploads only (not PDF) -- please upload a JPG or PNG of your bill.');
   return;
  }
+ await performOcrPass(1);
+}
+
+// Runs one OCR "technique" pass. technique 1 = normal read. technique 2 = upscaled
+// render (helps with faint/small text). technique 3 = high-contrast black & white
+// render (helps with low-contrast thermal-printer receipts, common for small shops).
+// Each technique is a genuinely different image transformation, not a cosmetic retry --
+// per the user's request for 2-3 real reading techniques before handing off to manual editing.
+async function performOcrPass(technique){
+ const img = document.getElementById('billImagePreview');
  const btn = document.getElementById('ocrScanBtn');
  const progressBox = document.getElementById('ocrProgress');
  const progressText = document.getElementById('ocrProgressText');
  const progressBar = document.getElementById('ocrProgressBar');
  const resultBox = document.getElementById('ocrResult');
  const noMatchBox = document.getElementById('ocrNoMatch');
+ const retryBtn = document.getElementById('ocrRetryBtn');
 
  btn.disabled = true;
  resultBox.style.display = 'none';
  noMatchBox.style.display = 'none';
+ retryBtn.style.display = 'none';
  progressBox.style.display = 'block';
  progressText.textContent = 'Loading text-recognition engine…';
  progressBar.style.width = '10%';
 
  try{
   await loadTesseract();
-  progressText.textContent = 'Reading your bill…';
-  progressBar.style.width = '30%';
 
-  let { data } = await Tesseract.recognize(img.src, 'eng', {
-   logger: m => {
-    if(m.status === 'recognizing text' && m.progress){
-     const pct = 30 + Math.round(m.progress * 60);
-     progressBar.style.width = pct + '%';
-    }
-   }
-  });
-
-  // If Tesseract's own confidence score is low, retry once at a different image scale --
-  // sometimes a slightly enlarged render helps it pick up faint or small text it missed
-  // the first time. This is a real, mechanically-motivated retry, not a cosmetic one.
-  if(data.confidence < 60){
-   progressText.textContent = 'Low confidence — trying a clearer pass…';
+  let sourceForOcr = img.src;
+  if(technique === 2){
+   progressText.textContent = 'Reading (enlarged pass)…';
    const canvas = document.createElement('canvas');
    const scale = 1.6;
    canvas.width = img.naturalWidth * scale;
@@ -554,46 +571,74 @@ async function runBillOcr(){
    const ctx = canvas.getContext('2d');
    ctx.imageSmoothingEnabled = false; // avoid blurring text edges when upscaling
    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-   const retryResult = await Tesseract.recognize(canvas.toDataURL('image/png'), 'eng', {
-    logger: m => {
-     if(m.status === 'recognizing text' && m.progress){
-      const pct = 60 + Math.round(m.progress * 35);
-      progressBar.style.width = pct + '%';
-     }
-    }
-   });
-   if(retryResult.data.confidence > data.confidence){
-    data = retryResult.data; // keep whichever pass was actually more confident
+   sourceForOcr = canvas.toDataURL('image/png');
+  }else if(technique === 3){
+   progressText.textContent = 'Reading (high-contrast pass)…';
+   const canvas = document.createElement('canvas');
+   canvas.width = img.naturalWidth;
+   canvas.height = img.naturalHeight;
+   const ctx = canvas.getContext('2d');
+   ctx.drawImage(img, 0, 0);
+   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+   const d = imageData.data;
+   for(let i = 0; i < d.length; i += 4){
+    const gray = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+    const bw = gray > 140 ? 255 : 0; // hard black/white threshold, helps faded thermal print
+    d[i] = d[i+1] = d[i+2] = bw;
    }
+   ctx.putImageData(imageData, 0, 0);
+   sourceForOcr = canvas.toDataURL('image/png');
+  }else{
+   progressText.textContent = 'Reading your bill…';
   }
+  progressBar.style.width = '30%';
 
-  progressText.textContent = 'Finding the amounts…';
+  const { data } = await Tesseract.recognize(sourceForOcr, 'eng', {
+   logger: m => {
+    if(m.status === 'recognizing text' && m.progress){
+     const pct = 30 + Math.round(m.progress * 65);
+     progressBar.style.width = pct + '%';
+    }
+   }
+  });
+
+  progressText.textContent = 'Finding the items…';
   progressBar.style.width = '95%';
 
-  const extracted = parseBillAmounts(data.text);
-  applyExtractedAmounts(extracted);
-
   billItems = extractLineItems(data.text);
-  if(billItems.length > 0){
-   document.getElementById('itemListSection').style.display = 'block';
-   renderItemRows();
-  }
-  runValidations();
+  const extracted = parseBillAmounts(data.text);
+  if(extracted.gst !== null) document.getElementById('cart-gst').value = extracted.gst;
+  if(extracted.serviceCharge !== null) document.getElementById('cart-sc').value = extracted.serviceCharge;
 
   progressBar.style.width = '100%';
   setTimeout(() => { progressBox.style.display = 'none'; }, 300);
 
-  if(extracted.matchCount > 0){
+  if(billItems.length > 0){
+   document.getElementById('itemCartSection').style.display = 'block';
+   renderItemRows();
    resultBox.style.display = 'block';
   }else{
    noMatchBox.style.display = 'block';
+   lastOcrTechnique = technique;
+   if(technique < 3){
+    document.getElementById('ocrRetryBtn').style.display = 'block';
+   }else{
+    document.getElementById('ocrNoMatchText').textContent = 'We tried multiple reading techniques and still could not confidently find items on this photo. Please add your items manually below using the zoomed view — it only takes a moment.';
+    document.getElementById('itemCartSection').style.display = 'block';
+   }
   }
  }catch(err){
   progressBox.style.display = 'none';
   noMatchBox.style.display = 'block';
-  document.getElementById('ocrNoMatch').querySelector('div:last-child').textContent = 'Something went wrong reading this photo (' + (err.message || 'unknown error') + '). Please type the amounts in manually below.';
+  document.getElementById('ocrNoMatchText').textContent = 'Something went wrong reading this photo (' + (err.message || 'unknown error') + '). Please add your items manually below.';
+  document.getElementById('itemCartSection').style.display = 'block';
  }
  btn.disabled = false;
+}
+
+let lastOcrTechnique = 1;
+function retryBillOcr(){
+ performOcrPass(lastOcrTechnique + 1);
 }
 
 // Attempts to extract individual line items (name + price) from raw OCR bill text.
@@ -607,37 +652,86 @@ function extractLineItems(rawText){
  const text = rawText.replace(/\r/g, '');
  const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 
- const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|invoice no|invoice number|invoice date|order\s*#|order no|order number|bill no|receipt no|-\s*\d{6}\s*,|,\s*\d{6}\s*$)/i;
+ // Excludes address/contact/identifier lines, PLUS (found via real user bill testing)
+ // date/time stamps, bill/employee ID lines, disclaimer boilerplate, and HSN codes --
+ // all of which have digits on the same line as real-looking words and were getting
+ // mistaken for items before this list was extended.
+ const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|invoice no|invoice number|invoice date|order\s*#|order no|order number|bill no|receipt no|emp\s*id|cashier|sales\s*man|customer name|customer phone|-\s*\d{6}\s*,|,\s*\d{6}\s*$|\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}|\d{1,2}:\d{2}(:\d{2})?|hsn\s*#?|fssai|estd\.?\s*\d{4}|once sold|shall not be|taken back|exchanged|thanks for visiting|received qty|s\.?no\.?\s*item|qty\s+mrp|\bnh\s*\d+\b|\bnear\b|\bnagar\b|\bfloor\b|\bganj\b|\bcolony\b|\bstreet\b|\broad\b|\bpost\s*office\b|,\s*telangana|,\s*india\b)/i;
  const totalLikeKeywords = ['grand total', 'total amount', 'net amount', 'net payable', 'amount payable',
   'total gst', 'gst', 'cgst', 'sgst', 'tax', 'convenience fee', 'service charge', 'svc charge',
-  'service chg', 'sub total', 'subtotal', 'food total', 'item total', 'discount', 'round off', 'qty', 'quantity'];
+  'service chg', 'sub total', 'subtotal', 'food total', 'item total', 'discount', 'round off',
+  'qty', 'quantity', 'taxable', 'bill amount', 'date:', 'time:'];
+
+ function isExcludedLine(line){
+  const lower = line.toLowerCase();
+  return addressLikePattern.test(line) || totalLikeKeywords.some(k => lower.includes(k));
+ }
+
+ function cleanItemName(name){
+  name = name.replace(/[\-–—.:]+$/, '').trim();
+  name = name.replace(/^\d{1,3}\s+/, '').trim(); // strip a leading serial number
+  return name;
+ }
 
  const items = [];
- for(const line of rawLines){
-  const lower = line.toLowerCase();
-  if(addressLikePattern.test(line)) continue;
-  if(totalLikeKeywords.some(k => lower.includes(k))) continue;
+ const consumedLineIndices = new Set();
 
-  // Must contain at least 2 consecutive letters (a real item name, not just numbers/symbols)
-  if(!/[a-zA-Z]{2,}/.test(line)) continue;
+ // Pass 1: single-line items (name and price on the same line)
+ for(let i = 0; i < rawLines.length; i++){
+  const line = rawLines[i];
+  if(isExcludedLine(line)) continue;
+  if(!/[a-zA-Z]{3,}/.test(line)) continue;
 
   const matches = line.match(/[\d,]+\.?\d{0,2}/g);
   if(!matches) continue;
   const priceCandidates = matches
    .map(m => parseFloat(m.replace(/,/g, '')))
    .filter(n => !isNaN(n) && n > 0 && n < 100000)
-   .filter(n => !(Number.isInteger(n) && String(Math.round(n)).length === 6)); // exclude PIN-shaped values
+   .filter(n => !(Number.isInteger(n) && String(Math.round(n)).length === 6)) // exclude PIN-shaped values
+   .filter(n => !(Number.isInteger(n) && n >= 1900 && n <= 2100)); // exclude bare 4-digit years (e.g. "Estd. 1948")
   if(priceCandidates.length === 0) continue;
 
   const price = priceCandidates[priceCandidates.length - 1];
-  // Item name is whatever text precedes the price match on the line
   const priceIdx = line.lastIndexOf(matches[matches.length - 1]);
-  let name = line.slice(0, priceIdx).trim();
-  name = name.replace(/[\-–—.:]+$/, '').trim(); // strip trailing separators like "Butter Chicken --- "
-  if(name.length < 2) continue; // no usable name text left
+  const name = cleanItemName(line.slice(0, priceIdx));
+  if(name.length < 3) continue;
 
   items.push({ name, price });
+  consumedLineIndices.add(i);
  }
+
+ // Pass 2: two-line items -- a line that is ALL letters (an item name, no numbers at all)
+ // immediately followed by a line that is ALL numbers (quantity, unit price, amount, e.g.
+ // "3   45.00   135.00"). This pattern is common on receipts where the item name is too
+ // long to fit on the same line as its price columns. Only runs on lines Pass 1 didn't
+ // already use, so nothing is double-counted.
+ for(let i = 0; i < rawLines.length - 1; i++){
+  if(consumedLineIndices.has(i) || consumedLineIndices.has(i + 1)) continue;
+  const nameLine = rawLines[i];
+  const numberLine = rawLines[i + 1];
+
+  if(isExcludedLine(nameLine) || isExcludedLine(numberLine)) continue;
+  if(!/^[a-zA-Z][a-zA-Z\s\-]{2,}$/.test(nameLine)) continue; // name line: letters/spaces/hyphens only, no digits
+  if(!/^[\d,.\s]+$/.test(numberLine)) continue; // number line: only digits, commas, dots, spaces
+
+  const numMatches = numberLine.match(/[\d,]+\.?\d{0,2}/g);
+  if(!numMatches || numMatches.length === 0) continue;
+  const nums = numMatches
+   .map(m => parseFloat(m.replace(/,/g, '')))
+   .filter(n => !isNaN(n) && n > 0 && n < 100000);
+  if(nums.length === 0) continue;
+
+  // The rightmost number on a qty/price/amount row is the line amount (bills consistently
+  // right-align the final amount column)
+  const price = nums[nums.length - 1];
+  const name = cleanItemName(nameLine);
+  if(name.length < 3) continue;
+
+  items.push({ name, price });
+  consumedLineIndices.add(i);
+  consumedLineIndices.add(i + 1);
+ }
+
  return items;
 }
 
@@ -748,18 +842,7 @@ function parseBillAmounts(rawText){
  return result;
 }
 
-function applyExtractedAmounts(extracted){
- if(extracted.subtotal !== null) document.getElementById('food-total').value = extracted.subtotal;
- else if(extracted.total !== null && extracted.gst === null && extracted.serviceCharge === null){
-  // If we only found a grand total with no breakdown, use it as a starting point for food total too
-  document.getElementById('food-total').value = extracted.total;
- }
- if(extracted.gst !== null) document.getElementById('gst-billed').value = extracted.gst;
- if(extracted.serviceCharge !== null) document.getElementById('sc-billed').value = extracted.serviceCharge;
- if(extracted.total !== null) document.getElementById('total-billed').value = extracted.total;
-}
-
-// ═══ ITEM LIST (editable) + VALIDATION DISPLAY ═══
+// ═══ ITEM CART (add/edit/remove) ═══
 let billItems = [];
 
 // Escapes HTML special characters so item names typed/OCR'd from a bill can't break
@@ -789,6 +872,7 @@ function renderItemRows(){
 function addItemRow(name, price){
  billItems.push({ name: name || '', price: parseFloat(price) || 0 });
  renderItemRows();
+ document.getElementById('itemCartSection').style.display = 'block';
 }
 
 function removeItemRow(i){
@@ -800,7 +884,6 @@ function updateItemField(i, field, value){
  if(field === 'price') billItems[i].price = parseFloat(value) || 0;
  else billItems[i].name = value;
  updateItemSumDisplay();
- runValidations();
 }
 
 function updateItemSumDisplay(){
@@ -808,36 +891,91 @@ function updateItemSumDisplay(){
  document.getElementById('itemSumDisplay').textContent = 'Items Total: ₹' + sum.toFixed(2);
 }
 
-// Re-runs both validations against current item-list and field state -- called after
-// OCR completes, and again whenever the user edits an item, since a manual correction
-// might resolve (or newly reveal) a discrepancy.
-function runValidations(){
- const sumWarnBox = document.getElementById('sumValidationWarn');
- const gstWarnBox = document.getElementById('gstValidationWarn');
- const subtotalVal = parseFloat(document.getElementById('food-total').value) || null;
- const gstVal = parseFloat(document.getElementById('gst-billed').value) || null;
-
- const sumCheck = validateItemSum(billItems, subtotalVal);
- if(sumCheck && !sumCheck.matches){
-  sumWarnBox.style.display = 'block';
-  document.getElementById('sumValidationWarnText').textContent =
-   'Your items add up to ₹' + sumCheck.itemSum.toFixed(2) + ', but the Food & Drinks Total field shows ₹' + sumCheck.statedSubtotal.toFixed(2) +
-   ' — a difference of ₹' + sumCheck.diff.toFixed(2) + '. Double-check both against your actual bill; an item may be missing from the list, or a total may have been misread.';
- }else{
-  sumWarnBox.style.display = 'none';
+// ═══ COMPLETE CART -- the ONE place calculations and the verdict happen ═══
+// Deliberately gated behind an explicit user action (the Complete Cart button), rather
+// than firing automatically after OCR -- OCR/extraction can be wrong, and showing a
+// confident "Overcharged!" verdict built on unreviewed, possibly-garbage data is worse
+// than showing nothing. The user reviews and fixes the cart FIRST; only then do we judge.
+function completeCart(){
+ if(billItems.length === 0){
+  alert('Please add at least one item to your bill before checking it.');
+  return;
  }
 
- const gstCheck = validateGstPattern(gstVal, subtotalVal);
- if(gstCheck && !gstCheck.matchesStandardRate){
-  gstWarnBox.style.display = 'block';
-  document.getElementById('gstValidationWarnText').textContent =
-   'The GST charged works out to about ' + gstCheck.actualRatePct.toFixed(1) + '% of your food total, but standard restaurant GST rates are 5% (non-AC/no liquor) or 18% (AC or serves liquor) — this does not match either. This could be an OCR misread, or worth asking the restaurant about.';
- }else{
-  gstWarnBox.style.display = 'none';
+ const itemSum = billItems.reduce((s, item) => s + item.price, 0);
+ const gstCharged = parseFloat(document.getElementById('cart-gst').value) || 0;
+ const scCharged = parseFloat(document.getElementById('cart-sc').value) || 0;
+ const restaurantType = document.getElementById('cart-restaurant-type').value;
+ const totalCharged = itemSum + gstCharged + scCharged;
+
+ const verdictBox = document.getElementById('verdictSection');
+ let html = '';
+
+ html += `<div style="background:#fff;border:1.5px solid var(--light);border-radius:14px;padding:14px;margin-bottom:10px;">
+   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Summary</div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Items Total</span><span style="font-weight:700;">₹${itemSum.toFixed(2)}</span></div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">GST Charged</span><span style="font-weight:700;">₹${gstCharged.toFixed(2)}</span></div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Service Charge</span><span style="font-weight:700;">₹${scCharged.toFixed(2)}</span></div>
+   <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;margin-top:6px;border-top:1px solid var(--light);"><span style="font-weight:800;">Total</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalCharged.toFixed(2)}</span></div>
+ </div>`;
+
+ // GST mathematical validation, aware of the restaurant-type answer
+ const gstCheck = validateGstPattern(gstCharged, itemSum);
+ if(gstCheck){
+  if(restaurantType === 'unsure'){
+   html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
+     <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ GST Rate: ${gstCheck.actualRatePct.toFixed(1)}%</div>
+     <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">This works out closest to the ${gstCheck.closestStandardRate}% slab. Since you're not sure if this restaurant is AC/serves liquor, we can't confirm if that's the CORRECT slab for them — non-AC/no-liquor places should charge 5%, AC or liquor-serving places should charge 18%. Worth checking their menu or asking staff.</div>
+   </div>`;
+  }else{
+   const expectedRate = restaurantType === 'ac' ? 18 : 5;
+   const rateMatchesExpected = Math.abs(gstCheck.actualRatePct - expectedRate) <= 0.5;
+   if(rateMatchesExpected){
+    html += `<div style="background:var(--jade-bg);border:1px solid #A7F3D0;border-radius:12px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:800;color:#065F46;">✅ GST Rate Correct: ${gstCheck.actualRatePct.toFixed(1)}%</div>
+      <div style="font-size:11px;color:#065F46;line-height:1.6;margin-top:3px;">This matches the expected ${expectedRate}% rate for a ${restaurantType === 'ac' ? 'AC/liquor-serving' : 'non-AC, no-liquor'} restaurant.</div>
+    </div>`;
+   }else{
+    html += `<div style="background:var(--rose-bg);border:1px solid var(--rose);border-radius:12px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:800;color:var(--rose);">⚠️ GST Rate Mismatch: ${gstCheck.actualRatePct.toFixed(1)}%</div>
+      <div style="font-size:11px;color:#7F1D1D;line-height:1.6;margin-top:3px;">You told us this restaurant is ${restaurantType === 'ac' ? 'AC/serves liquor' : 'non-AC, no liquor'}, which should mean ${expectedRate}% GST — but the bill shows ${gstCheck.actualRatePct.toFixed(1)}%. This is worth questioning directly with the restaurant.</div>
+    </div>`;
+   }
+  }
+  html += `<div style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.4;">🔮 Coming later: we plan to verify a restaurant's actual registered GST slab automatically via an official GST lookup API, instead of relying on your answer above.</div>`;
  }
+
+ // Service charge is never mandatory -- always worth restating regardless of the numbers
+ if(scCharged > 0){
+  html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ Service Charge is Not Mandatory</div>
+    <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">You were charged ₹${scCharged.toFixed(2)} in service charge. This is legally optional in India — you can ask for it to be removed if you're unhappy with the service.</div>
+  </div>`;
+ }
+
+ // Overall fairness verdict -- deliberately understated language (not "OVERCHARGED!" in
+ // large red text) since this is now built on a cart the user has actually reviewed,
+ // but a wrong verdict is still costly to get loudly wrong
+ const gstIsWrong = gstCheck && restaurantType !== 'unsure' && Math.abs(gstCheck.actualRatePct - (restaurantType === 'ac' ? 18 : 5)) > 0.5;
+ if(gstIsWrong){
+  html += `<div style="background:var(--rose-bg);border:2px solid var(--rose);border-radius:14px;padding:16px;text-align:center;">
+    <div style="font-size:15px;font-weight:900;color:var(--rose);">This bill may have an incorrect GST rate</div>
+    <div style="font-size:11.5px;color:#7F1D1D;margin-top:4px;">Worth raising with the restaurant, calmly and with this breakdown in hand.</div>
+  </div>`;
+ }else{
+  html += `<div style="background:var(--jade-bg);border:2px solid #A7F3D0;border-radius:14px;padding:16px;text-align:center;">
+    <div style="font-size:15px;font-weight:900;color:#065F46;">This bill looks correctly charged</div>
+    <div style="font-size:11.5px;color:#065F46;margin-top:4px;">Based on the items and GST rate you confirmed above.</div>
+  </div>`;
+ }
+
+ verdictBox.innerHTML = html;
+ verdictBox.style.display = 'block';
+ verdictBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function clearBillUpload(){
+// ═══ FULL RESET ═══
+function resetBillChecker(){
  document.getElementById('billFileInput').value = '';
  document.getElementById('billViewerResult').style.display = 'none';
  document.getElementById('billUploadZone').style.display = 'block';
@@ -847,7 +985,16 @@ function clearBillUpload(){
  document.getElementById('billPdfPreview').src = '';
  document.getElementById('ocrResult').style.display = 'none';
  document.getElementById('ocrNoMatch').style.display = 'none';
+ document.getElementById('ocrRetryBtn').style.display = 'none';
  document.getElementById('ocrProgress').style.display = 'none';
+ document.getElementById('itemCartSection').style.display = 'none';
+ document.getElementById('verdictSection').style.display = 'none';
+ document.getElementById('verdictSection').innerHTML = '';
+ document.getElementById('cart-gst').value = '0';
+ document.getElementById('cart-sc').value = '0';
+ document.getElementById('cart-restaurant-type').value = 'non-ac';
+ billItems = [];
+ lastOcrTechnique = 1;
 }
 applyLang();
 </script>
