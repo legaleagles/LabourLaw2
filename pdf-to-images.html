@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free PDF to Images Converter | LawSticker AI</title>
+<meta name="description" content="Convert each page of a PDF into a downloadable JPG or PNG image — free, no upload, everything happens in your browser.">
+<link rel="canonical" href="https://lawsticker-ai.com/pdf-to-images.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/pdf-to-images.html">
+<meta property="og:title" content="Free PDF to Images Converter | LawSticker AI">
+<meta property="og:description" content="Convert PDF pages to images — free, private, in-browser.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 20px;}
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
+.dropzone-icon{font-size:38px;margin-bottom:8px;}
+.dropzone-title{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.dropzone-sub{font-size:11.5px;color:var(--silver);}
+input[type=file]{display:none;}
+.lib-status{max-width:720px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--silver);}
+.lib-status.error{background:#FEF2F2;border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;text-align:left;}
+.lib-status.ok{display:none;}
+.app-body{display:none;}
+.app-body.ready{display:block;}
+.format-row{display:flex;gap:8px;margin-bottom:14px;}
+.format-opt{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:12px;text-align:center;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);background:#fff;}
+.format-opt.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.page-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;}
+.page-card{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;text-align:center;padding:8px;}
+.page-card canvas{width:100%;border-radius:6px;}
+.page-num{font-size:10px;font-weight:700;color:var(--silver);margin-top:6px;}
+.page-dl{margin-top:6px;width:100%;padding:6px;background:var(--jade);color:white;border:none;border-radius:8px;font-size:10.5px;font-weight:700;cursor:pointer;}
+.action-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;}
+.action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.progress-text{font-size:12px;color:var(--silver);text-align:center;margin-top:8px;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>PDF to <span class="g">Images</span></h1>
+  <div class="hero-sub">Convert every page of a PDF into a downloadable image — useful for sharing a single page or using it in a slide deck.</div>
+  <div class="privacy-badge">🔒 100% in-browser — no file ever touches a server</div>
+</div>
+
+<div class="lib-status loading" id="libStatus">⏳ Loading PDF engine…</div>
+<div class="app-body" id="appBody">
+<div class="wrap">
+
+  <div class="dropzone" id="pdfDropzone" onclick="document.getElementById('pdfInput').click()">
+    <div class="dropzone-icon">📄</div>
+    <div class="dropzone-title">Drop a PDF here or tap to browse</div>
+    <div class="dropzone-sub">Every page becomes a downloadable image</div>
+    <input type="file" id="pdfInput" accept="application/pdf">
+  </div>
+
+  <div id="convertSection" style="display:none;">
+    <div class="format-row">
+      <div class="format-opt active" data-fmt="png" onclick="setImgFormat('png', this)">PNG (sharper)</div>
+      <div class="format-opt" data-fmt="jpeg" onclick="setImgFormat('jpeg', this)">JPG (smaller)</div>
+    </div>
+    <div class="page-grid" id="pageGrid"></div>
+    <button class="action-btn" id="downloadAllBtn" onclick="downloadAllPages()">⬇️ Download All as Images</button>
+    <div class="progress-text" id="convertProgress"></div>
+  </div>
+
+</div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+
+function loadScript(src){
+ return new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(src);
+  s.onerror = () => reject(new Error('Failed to load: ' + src));
+  document.head.appendChild(s);
+ });
+}
+
+async function initApp(){
+ const statusEl = document.getElementById('libStatus');
+ const bodyEl = document.getElementById('appBody');
+ try{
+  await loadScript(PDFJS_URL);
+  if(typeof pdfjsLib === 'undefined'){
+   throw new Error('PDF library loaded but did not initialize correctly.');
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  statusEl.className = 'lib-status ok';
+  bodyEl.className = 'app-body ready';
+  wireUpApp();
+ }catch(err){
+  statusEl.className = 'lib-status error';
+  statusEl.innerHTML = '⚠️ <strong>The PDF engine could not load.</strong><br><br>This usually means your browser or network is blocking scripts from cdnjs.cloudflare.com. Try: a different browser, disabling any ad-blocker/script-blocker for this page, or a different network connection.<br><br><span style="font-size:11px;opacity:.8;">Technical detail: ' + escapeHtml(err.message || String(err)) + '</span>';
+ }
+}
+
+function escapeHtml(s){
+ const d = document.createElement('div');
+ d.textContent = s;
+ return d.innerHTML;
+}
+
+initApp();
+
+function wireUpApp(){
+
+let pdfJsDoc = null;
+let imgFormat = 'png';
+let pageCanvases = [];
+
+document.getElementById('pdfInput').addEventListener('change', e => {
+ const file = e.target.files[0];
+ if(file) loadPdf(file);
+});
+
+const dropzone = document.getElementById('pdfDropzone');
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+ e.preventDefault();
+ dropzone.classList.remove('drag');
+ const file = e.dataTransfer.files[0];
+ if(file && file.type === 'application/pdf') loadPdf(file);
+});
+
+async function loadPdf(file){
+ const bytes = await file.arrayBuffer();
+ pdfJsDoc = await pdfjsLib.getDocument({data: bytes}).promise;
+ document.getElementById('pdfDropzone').style.display = 'none';
+ document.getElementById('convertSection').style.display = 'block';
+ await renderAllPages();
+}
+
+function setImgFormat(fmt, el){
+ imgFormat = fmt;
+ document.querySelectorAll('.format-opt').forEach(o => o.classList.remove('active'));
+ if(el) el.classList.add('active');
+}
+
+async function renderAllPages(){
+ const grid = document.getElementById('pageGrid');
+ grid.innerHTML = '';
+ pageCanvases = [];
+ for(let i = 1; i <= pdfJsDoc.numPages; i++){
+  const page = await pdfJsDoc.getPage(i);
+  const viewport = page.getViewport({scale: 1.5});
+  const canvas = document.createElement('canvas');
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  const ctx = canvas.getContext('2d');
+  await page.render({canvasContext: ctx, viewport}).promise;
+  pageCanvases.push(canvas);
+
+  const card = document.createElement('div');
+  card.className = 'page-card';
+  const thumbCanvas = document.createElement('canvas');
+  const thumbCtx = thumbCanvas.getContext('2d');
+  thumbCanvas.width = viewport.width * 0.25;
+  thumbCanvas.height = viewport.height * 0.25;
+  thumbCtx.drawImage(canvas, 0, 0, thumbCanvas.width, thumbCanvas.height);
+  card.appendChild(thumbCanvas);
+  const numLabel = document.createElement('div');
+  numLabel.className = 'page-num';
+  numLabel.textContent = 'Page ' + i;
+  card.appendChild(numLabel);
+  const dlBtn = document.createElement('button');
+  dlBtn.className = 'page-dl';
+  dlBtn.textContent = '⬇️ Download';
+  dlBtn.onclick = () => downloadSinglePage(i - 1);
+  card.appendChild(dlBtn);
+  grid.appendChild(card);
+ }
+}
+
+function downloadSinglePage(idx){
+ const canvas = pageCanvases[idx];
+ const mime = imgFormat === 'png' ? 'image/png' : 'image/jpeg';
+ const ext = imgFormat === 'png' ? 'png' : 'jpg';
+ canvas.toBlob(blob => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'page-' + (idx + 1) + '.' + ext;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+ }, mime, 0.92);
+}
+
+async function downloadAllPages(){
+ const btn = document.getElementById('downloadAllBtn');
+ const progress = document.getElementById('convertProgress');
+ btn.disabled = true;
+ for(let i = 0; i < pageCanvases.length; i++){
+  progress.textContent = 'Downloading page ' + (i + 1) + ' of ' + pageCanvases.length + '…';
+  downloadSinglePage(i);
+  // Small delay between downloads so the browser doesn't block/merge rapid-fire downloads
+  await new Promise(resolve => setTimeout(resolve, 300));
+ }
+ progress.textContent = 'All ' + pageCanvases.length + ' pages downloaded.';
+ btn.disabled = false;
+}
+
+window.setImgFormat = setImgFormat;
+window.downloadAllPages = downloadAllPages;
+window.downloadSinglePage = downloadSinglePage;
+
+} // end wireUpApp
+</script>
+</body>
+</html>

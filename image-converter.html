@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image Format Converter — JPG, PNG, WebP | LawSticker AI</title>
+<meta name="description" content="Convert images between JPG, PNG, and WebP formats — free, no upload, everything happens in your browser.">
+<link rel="canonical" href="https://lawsticker-ai.com/image-converter.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/image-converter.html">
+<meta property="og:title" content="Free Image Format Converter | LawSticker AI">
+<meta property="og:description" content="Convert images between JPG, PNG, and WebP — free, private, in-browser.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --rose:#DC2626; --rose-bg:#FEF2F2; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:600px;margin:0 auto;padding:18px 16px 20px;}
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
+.dropzone-icon{font-size:38px;margin-bottom:8px;}
+.dropzone-title{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.dropzone-sub{font-size:11.5px;color:var(--silver);}
+input[type=file]{display:none;}
+.preview-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-top:16px;text-align:center;}
+.preview-card img{max-width:100%;max-height:200px;border-radius:10px;border:1px solid var(--border);}
+.format-row{display:flex;gap:8px;margin-top:14px;}
+.format-opt{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:12px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);background:#fff;}
+.format-opt.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--jade);color:white;padding:11px 22px;border-radius:12px;font-weight:800;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;width:100%;justify-content:center;margin-top:14px;}
+.warn-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11.5px;color:#78350F;line-height:1.5;display:none;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>Image Format <span class="g">Converter</span></h1>
+  <div class="hero-sub">Convert between JPG, PNG, and WebP — useful when a site or app only accepts one specific format.</div>
+  <div class="privacy-badge">🔒 100% in-browser — no file ever touches a server</div>
+</div>
+<div class="wrap">
+
+  <div class="dropzone" id="imgDropzone" onclick="document.getElementById('imgInput').click()">
+    <div class="dropzone-icon">🖼️</div>
+    <div class="dropzone-title">Drop an image here or tap to browse</div>
+    <div class="dropzone-sub">JPG, PNG, or WebP</div>
+    <input type="file" id="imgInput" accept="image/jpeg,image/png,image/webp">
+  </div>
+
+  <div class="preview-card" id="previewCard" style="display:none;">
+    <img id="previewImg">
+    <div style="font-size:11.5px;color:var(--silver);margin-top:8px;" id="currentFormatLabel"></div>
+
+    <div class="format-row">
+      <div class="format-opt active" data-fmt="jpeg" onclick="setFormat('jpeg', this)">JPG</div>
+      <div class="format-opt" data-fmt="png" onclick="setFormat('png', this)">PNG</div>
+      <div class="format-opt" data-fmt="webp" onclick="setFormat('webp', this)">WebP</div>
+    </div>
+
+    <div class="warn-note" id="pngToJpgWarn">⚠️ Converting to JPG removes transparency — any transparent areas will become solid white.</div>
+
+    <button class="download-btn" onclick="downloadConverted()">⬇️ Download Converted Image</button>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">Which format should I pick?</div>
+    <div class="info-strip-text"><strong>JPG</strong> — smaller files, best for photos, no transparency support. <strong>PNG</strong> — larger files, supports transparency, best for logos/graphics/screenshots. <strong>WebP</strong> — modern format, smaller than both, but a few older apps don't accept it yet.</div>
+  </div>
+
+</div>
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+let sourceImg = null;
+let sourceFile = null;
+let targetFormat = 'jpeg';
+const FORMAT_EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' };
+const FORMAT_MIME = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+
+document.getElementById('imgInput').addEventListener('change', e => {
+ const file = e.target.files[0];
+ if(file) loadImage(file);
+});
+
+const dropzone = document.getElementById('imgDropzone');
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+ e.preventDefault();
+ dropzone.classList.remove('drag');
+ const file = e.dataTransfer.files[0];
+ if(file && file.type.startsWith('image/')) loadImage(file);
+});
+
+function loadImage(file){
+ sourceFile = file;
+ const url = URL.createObjectURL(file);
+ const img = new Image();
+ img.onload = () => {
+  sourceImg = img;
+  document.getElementById('previewImg').src = url;
+  document.getElementById('currentFormatLabel').textContent = 'Current format: ' + (file.type.split('/')[1] || 'unknown').toUpperCase();
+  document.getElementById('previewCard').style.display = 'block';
+  document.getElementById('imgDropzone').style.display = 'none';
+  updateWarning();
+ };
+ img.src = url;
+}
+
+function setFormat(fmt, el){
+ targetFormat = fmt;
+ document.querySelectorAll('.format-opt').forEach(o => o.classList.remove('active'));
+ if(el) el.classList.add('active');
+ updateWarning();
+}
+
+function updateWarning(){
+ const warnEl = document.getElementById('pngToJpgWarn');
+ const isSourcePng = sourceFile && sourceFile.type === 'image/png';
+ warnEl.style.display = (isSourcePng && targetFormat === 'jpeg') ? 'block' : 'none';
+}
+
+function downloadConverted(){
+ if(!sourceImg) return;
+ const canvas = document.createElement('canvas');
+ canvas.width = sourceImg.naturalWidth;
+ canvas.height = sourceImg.naturalHeight;
+ const ctx = canvas.getContext('2d');
+ if(targetFormat === 'jpeg'){
+  // JPEG has no transparency channel -- fill white first so transparent PNG areas
+  // don't render as black (canvas default) in the converted output.
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+ }
+ ctx.drawImage(sourceImg, 0, 0);
+
+ canvas.toBlob(blob => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'converted.' + FORMAT_EXT[targetFormat];
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+ }, FORMAT_MIME[targetFormat], 0.92);
+}
+
+window.setFormat = setFormat;
+window.downloadConverted = downloadConverted;
+</script>
+</body>
+</html>
