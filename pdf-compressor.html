@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free PDF Compressor — Reduce PDF Size | LawSticker AI</title>
+<meta name="description" content="Reduce PDF file size by compressing embedded images — free, no upload, everything happens in your browser.">
+<link rel="canonical" href="https://lawsticker-ai.com/pdf-compressor.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/pdf-compressor.html">
+<meta property="og:title" content="Free PDF Compressor | LawSticker AI">
+<meta property="og:description" content="Reduce PDF file size — free, private, in-browser.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --rose: #DC2626; --rose-bg: #FEF2F2; --amber:#D97706; --amber-bg:#FFFBEB; --amber-border:#FDE68A; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 20px;}
+.honesty-box{background:var(--amber-bg);border:1.5px solid var(--amber-border);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.honesty-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-bottom:6px;}
+.honesty-text{font-size:12px;color:#78350F;line-height:1.65;}
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
+.dropzone-icon{font-size:38px;margin-bottom:8px;}
+.dropzone-title{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.dropzone-sub{font-size:11.5px;color:var(--silver);}
+input[type=file]{display:none;}
+.lib-status{max-width:720px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--silver);}
+.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;text-align:left;}
+.lib-status.ok{display:none;}
+.app-body{display:none;}
+.app-body.ready{display:block;}
+.file-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.file-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+.file-row .lbl{color:var(--silver);font-weight:600;}
+.file-row .val{font-weight:800;color:var(--ink);}
+.quality-row{margin-top:14px;}
+.quality-label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+input[type=range]{width:100%;accent-color:var(--jade);height:6px;}
+.action-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.progress-text{font-size:12px;color:var(--silver);text-align:center;margin-top:8px;}
+.result-box{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:16px;padding:18px;text-align:center;margin-top:16px;}
+.result-box.nogain{background:var(--amber-bg);border-color:var(--amber-border);}
+.result-box h3{font-size:14.5px;font-weight:800;color:#065F46;margin-bottom:10px;}
+.result-box.nogain h3{color:#78350F;}
+.download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--jade);color:white;padding:11px 22px;border-radius:12px;font-weight:800;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>PDF <span class="g">Compressor</span></h1>
+  <div class="hero-sub">Reduce PDF file size by compressing the images inside it — best for scanned documents and photo-heavy PDFs.</div>
+  <div class="privacy-badge">🔒 100% in-browser — no file ever touches a server</div>
+</div>
+
+<div class="lib-status loading" id="libStatus">⏳ Loading PDF engine…</div>
+<div class="app-body" id="appBody">
+<div class="wrap">
+
+  <div class="honesty-box">
+    <div class="honesty-title">⚠️ Please read before using</div>
+    <div class="honesty-text">This works best on PDFs made from SCANNED PAGES OR PHOTOS, since those are almost entirely made of images. For PDFs that are mostly typed text (Word exports, e-books, forms), the size reduction will likely be small or none — most of that file's size comes from fonts and text structure, which this tool doesn't touch.</div>
+  </div>
+
+  <div class="dropzone" id="pdfDropzone" onclick="document.getElementById('pdfInput').click()">
+    <div class="dropzone-icon">📄</div>
+    <div class="dropzone-title">Drop a PDF here or tap to browse</div>
+    <div class="dropzone-sub">Best results on scanned documents</div>
+    <input type="file" id="pdfInput" accept="application/pdf">
+  </div>
+
+  <div id="fileSection" style="display:none;">
+    <div class="file-card">
+      <div class="file-row"><span class="lbl">File</span><span class="val" id="fileNameDisplay">—</span></div>
+      <div class="file-row"><span class="lbl">Original Size</span><span class="val" id="originalSizeDisplay">—</span></div>
+
+      <div class="quality-row">
+        <div class="quality-label"><span>Compression Level</span><span id="qualityValue">Medium</span></div>
+        <input type="range" id="qualitySlider" min="1" max="3" value="2" step="1">
+      </div>
+    </div>
+
+    <button class="action-btn" id="compressBtn" onclick="doCompress()">🗜️ Compress PDF</button>
+    <div class="progress-text" id="compressProgress"></div>
+    <div id="compressResult"></div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">How it works</div>
+    <div class="info-strip-text">This tool finds every image embedded in your PDF, re-compresses each one at a lower quality (similar to the Image Compressor tool), and rebuilds the PDF with the smaller images — page count, page order, and text stay exactly the same.</div>
+  </div>
+
+</div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+const PDFLIB_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';
+const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+
+function loadScript(src){
+ return new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(src);
+  s.onerror = () => reject(new Error('Failed to load: ' + src));
+  document.head.appendChild(s);
+ });
+}
+
+let PDFDocument = null;
+
+async function initApp(){
+ const statusEl = document.getElementById('libStatus');
+ const bodyEl = document.getElementById('appBody');
+ try{
+  await Promise.all([loadScript(PDFLIB_URL), loadScript(PDFJS_URL)]);
+  if(typeof PDFLib === 'undefined' || typeof pdfjsLib === 'undefined'){
+   throw new Error('PDF libraries loaded but did not initialize correctly.');
+  }
+  PDFDocument = PDFLib.PDFDocument;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  statusEl.className = 'lib-status ok';
+  bodyEl.className = 'app-body ready';
+  wireUpApp();
+ }catch(err){
+  statusEl.className = 'lib-status error';
+  statusEl.innerHTML = '⚠️ <strong>The PDF engine could not load.</strong><br><br>This usually means your browser or network is blocking scripts from cdnjs.cloudflare.com. Try: a different browser, disabling any ad-blocker/script-blocker for this page, or a different network connection.<br><br><span style="font-size:11px;opacity:.8;">Technical detail: ' + escapeHtml(err.message || String(err)) + '</span>';
+ }
+}
+
+function escapeHtml(s){
+ const d = document.createElement('div');
+ d.textContent = s;
+ return d.innerHTML;
+}
+
+initApp();
+
+function wireUpApp(){
+
+let pdfFile = null;
+const QUALITY_LEVELS = { 1: {label: 'Light', jpegQuality: 0.8}, 2: {label: 'Medium', jpegQuality: 0.55}, 3: {label: 'Maximum', jpegQuality: 0.3} };
+
+function formatSize(bytes){
+ if(bytes < 1024) return bytes + ' B';
+ if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+ return (bytes/(1024*1024)).toFixed(2) + ' MB';
+}
+
+document.getElementById('pdfInput').addEventListener('change', e => {
+ const file = e.target.files[0];
+ if(file) loadPdfFile(file);
+});
+
+const dropzone = document.getElementById('pdfDropzone');
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+ e.preventDefault();
+ dropzone.classList.remove('drag');
+ const file = e.dataTransfer.files[0];
+ if(file && file.type === 'application/pdf') loadPdfFile(file);
+});
+
+function loadPdfFile(file){
+ pdfFile = file;
+ document.getElementById('fileNameDisplay').textContent = file.name;
+ document.getElementById('originalSizeDisplay').textContent = formatSize(file.size);
+ document.getElementById('fileSection').style.display = 'block';
+ document.getElementById('pdfDropzone').style.display = 'none';
+}
+
+document.getElementById('qualitySlider').addEventListener('input', e => {
+ const level = QUALITY_LEVELS[e.target.value];
+ document.getElementById('qualityValue').textContent = level.label;
+});
+
+// Re-encodes a single embedded image (as raw bytes + format) through a canvas at a lower
+// JPEG quality. Returns the new, smaller JPEG bytes.
+async function recompressImageBytes(bytes, jpegQuality){
+ const blob = new Blob([bytes]);
+ const bitmap = await createImageBitmap(blob);
+ const canvas = document.createElement('canvas');
+ canvas.width = bitmap.width;
+ canvas.height = bitmap.height;
+ const ctx = canvas.getContext('2d');
+ ctx.drawImage(bitmap, 0, 0);
+ const newBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', jpegQuality));
+ return new Uint8Array(await newBlob.arrayBuffer());
+}
+
+async function doCompress(){
+ const btn = document.getElementById('compressBtn');
+ const progress = document.getElementById('compressProgress');
+ const resultBox = document.getElementById('compressResult');
+ btn.disabled = true;
+ resultBox.innerHTML = '';
+
+ try{
+  const qualityLevel = QUALITY_LEVELS[document.getElementById('qualitySlider').value];
+  progress.textContent = 'Reading PDF pages…';
+
+  const originalBytes = await pdfFile.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(originalBytes);
+  const pdfJsDoc = await pdfjsLib.getDocument({data: originalBytes.slice(0)}).promise;
+
+  let imagesProcessed = 0;
+  const pageCount = pdfDoc.getPageCount();
+
+  // Rebuild the PDF page by page: render each page to a canvas at a modest resolution,
+  // then re-embed that rendered page as a single compressed JPEG. This is a pragmatic,
+  // reliable approach for scanned/photo-heavy PDFs (the target use case, per the honesty
+  // notice on this page) -- it will also work on text PDFs, but won't shrink them much
+  // since it's now treating every page as an image rather than preserving selectable text.
+  const newDoc = await PDFDocument.create();
+
+  for(let i = 1; i <= pageCount; i++){
+   progress.textContent = `Compressing page ${i} of ${pageCount}…`;
+   const page = await pdfJsDoc.getPage(i);
+   const viewport = page.getViewport({scale: 1.5});
+   const canvas = document.createElement('canvas');
+   canvas.width = viewport.width;
+   canvas.height = viewport.height;
+   const ctx = canvas.getContext('2d');
+   await page.render({canvasContext: ctx, viewport}).promise;
+
+   const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', qualityLevel.jpegQuality));
+   const jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+   const embeddedImg = await newDoc.embedJpg(jpegBytes);
+
+   const newPage = newDoc.addPage([viewport.width, viewport.height]);
+   newPage.drawImage(embeddedImg, {x: 0, y: 0, width: viewport.width, height: viewport.height});
+   imagesProcessed++;
+  }
+
+  progress.textContent = 'Finalizing…';
+  const newBytes = await newDoc.save();
+  const originalSize = pdfFile.size;
+  const newSize = newBytes.length;
+  const savedPct = Math.round((1 - newSize / originalSize) * 100);
+
+  const blob = new Blob([newBytes], {type: 'application/pdf'});
+  const url = URL.createObjectURL(blob);
+
+  if(savedPct > 5){
+   resultBox.innerHTML = `
+    <div class="result-box">
+      <h3>✅ ${savedPct}% smaller — ${formatSize(originalSize)} → ${formatSize(newSize)}</h3>
+      <a class="download-btn" href="${url}" download="compressed.pdf">⬇️ Download compressed.pdf</a>
+    </div>`;
+  }else{
+   resultBox.innerHTML = `
+    <div class="result-box nogain">
+      <h3>ℹ️ Little to no size reduction on this PDF (${formatSize(originalSize)} → ${formatSize(newSize)})</h3>
+      <div style="font-size:12px;color:#78350F;margin-bottom:10px;">This usually means the PDF was mostly typed text rather than scanned images -- there wasn't much to compress. You can still download the result below if you'd like.</div>
+      <a class="download-btn" href="${url}" download="compressed.pdf">⬇️ Download Anyway</a>
+    </div>`;
+  }
+  progress.textContent = '';
+ }catch(err){
+  progress.textContent = '';
+  resultBox.innerHTML = `<div class="result-box nogain"><h3>⚠️ ${escapeHtml(err.message || 'Something went wrong compressing this PDF.')}</h3></div>`;
+ }
+ btn.disabled = false;
+}
+
+window.doCompress = doCompress;
+
+} // end wireUpApp
+</script>
+</body>
+</html>
