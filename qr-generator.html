@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free QR Code Generator — Instant, Private | LawSticker AI</title>
+<meta name="description" content="Generate a QR code from any text, link, or phone number — free, no upload, everything happens in your browser. Download as PNG instantly.">
+<link rel="canonical" href="https://lawsticker-ai.com/qr-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/qr-generator.html">
+<meta property="og:title" content="Free QR Code Generator | LawSticker AI">
+<meta property="og:description" content="Generate a QR code instantly — free, private, in-browser.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --rose:#DC2626; --rose-bg:#FEF2F2; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:600px;margin:0 auto;padding:18px 16px 20px;}
+.type-tabs{display:flex;gap:6px;margin-bottom:14px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:5px;flex-wrap:wrap;}
+.type-tab{flex:1;min-width:70px;text-align:center;padding:9px 6px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--silver);}
+.type-tab.active{background:var(--navy);color:var(--gold-l);}
+.input-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;}
+.input-card label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:6px;}
+.input-card input{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);}
+.qr-output{text-align:center;margin-top:16px;}
+.qr-canvas-wrap{display:inline-block;background:white;padding:16px;border-radius:16px;border:1px solid var(--border);min-height:80px;}
+.qr-actions{display:flex;gap:8px;margin-top:14px;}
+.qr-actions button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;}
+.dl-btn{background:var(--jade);color:white;}
+.lib-status{max-width:600px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--silver);}
+.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;text-align:left;}
+.lib-status.ok{display:none;}
+.app-body{display:none;}
+.app-body.ready{display:block;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>QR Code <span class="g">Generator</span></h1>
+  <div class="hero-sub">Create a QR code for a link, text, or phone number — instantly, right here.</div>
+  <div class="privacy-badge">🔒 100% in-browser — nothing you type is ever sent anywhere</div>
+</div>
+
+<div class="lib-status loading" id="libStatus">⏳ Loading QR engine…</div>
+<div class="app-body" id="appBody">
+<div class="wrap">
+
+  <div class="type-tabs">
+    <div class="type-tab active" data-type="url" onclick="switchType('url', this)">🔗 Link</div>
+    <div class="type-tab" data-type="text" onclick="switchType('text', this)">📝 Text</div>
+    <div class="type-tab" data-type="phone" onclick="switchType('phone', this)">📞 Phone</div>
+    <div class="type-tab" data-type="email" onclick="switchType('email', this)">✉️ Email</div>
+  </div>
+
+  <div class="input-card">
+    <label id="inputLabel">Website / Link</label>
+    <input type="text" id="qrInput" placeholder="https://example.com" oninput="generateQr()">
+  </div>
+
+  <div class="qr-output" id="qrOutput" style="display:none;">
+    <div class="qr-canvas-wrap" id="qrCanvasWrap"></div>
+    <div class="qr-actions">
+      <button class="dl-btn" onclick="downloadQr()">⬇️ Download PNG</button>
+    </div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">Tips</div>
+    <div class="info-strip-text">Test your QR code with a phone camera before printing or sharing it widely. Longer text/links create a denser code — for very long text, consider using a link shortener first.</div>
+  </div>
+
+</div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+// qrcode.js (davidshimjs) -- a small, widely-used, battle-tested open-source QR library.
+// Loaded dynamically, same pattern as pdf-lib/pdf.js elsewhere on this site, so a load
+// failure shows a clear error instead of a blank page.
+const QR_LIB_URL = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+
+function loadScript(src){
+ return new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(src);
+  s.onerror = () => reject(new Error('Failed to load: ' + src));
+  document.head.appendChild(s);
+ });
+}
+
+async function initApp(){
+ const statusEl = document.getElementById('libStatus');
+ const bodyEl = document.getElementById('appBody');
+ try{
+  await loadScript(QR_LIB_URL);
+  if(typeof QRCode === 'undefined'){
+   throw new Error('QR library loaded but did not initialize correctly.');
+  }
+  statusEl.className = 'lib-status ok';
+  bodyEl.className = 'app-body ready';
+ }catch(err){
+  statusEl.className = 'lib-status error';
+  statusEl.innerHTML = '⚠️ <strong>The QR engine could not load.</strong><br><br>This usually means your browser or network is blocking scripts from cdnjs.cloudflare.com. Try: a different browser, disabling any ad-blocker/script-blocker for this page, or a different network connection.<br><br><span style="font-size:11px;opacity:.8;">Technical detail: ' + escapeHtml(err.message || String(err)) + '</span>';
+ }
+}
+
+function escapeHtml(s){
+ const d = document.createElement('div');
+ d.textContent = s;
+ return d.innerHTML;
+}
+
+initApp();
+
+let currentType = 'url';
+let qrInstance = null;
+const TYPE_CONFIG = {
+ url: { label: 'Website / Link', placeholder: 'https://example.com' },
+ text: { label: 'Plain Text', placeholder: 'Any text you want to encode' },
+ phone: { label: 'Phone Number', placeholder: '+91 98765 43210' },
+ email: { label: 'Email Address', placeholder: 'name@example.com' },
+};
+
+function switchType(type, el){
+ currentType = type;
+ document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+ if(el) el.classList.add('active');
+ const cfg = TYPE_CONFIG[type];
+ document.getElementById('inputLabel').textContent = cfg.label;
+ document.getElementById('qrInput').placeholder = cfg.placeholder;
+ document.getElementById('qrInput').value = '';
+ document.getElementById('qrOutput').style.display = 'none';
+}
+
+function formatPayload(raw){
+ if(currentType === 'phone') return 'tel:' + raw.replace(/\s+/g, '');
+ if(currentType === 'email') return 'mailto:' + raw.trim();
+ return raw;
+}
+
+function generateQr(){
+ const raw = document.getElementById('qrInput').value.trim();
+ const output = document.getElementById('qrOutput');
+ const wrap = document.getElementById('qrCanvasWrap');
+ if(!raw){ output.style.display = 'none'; return; }
+
+ wrap.innerHTML = ''; // clear previous QR before regenerating
+ try{
+  qrInstance = new QRCode(wrap, {
+   text: formatPayload(raw),
+   width: 220,
+   height: 220,
+   correctLevel: QRCode.CorrectLevel.M
+  });
+  output.style.display = 'block';
+ }catch(err){
+  output.style.display = 'none';
+  alert('Could not generate a QR code for this input — it may be too long. Try shorter text, or a link shortener for long URLs.');
+ }
+}
+
+function downloadQr(){
+ const wrap = document.getElementById('qrCanvasWrap');
+ const canvas = wrap.querySelector('canvas');
+ if(!canvas) return;
+ const url = canvas.toDataURL('image/png');
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = 'qrcode.png';
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+}
+
+window.switchType = switchType;
+window.downloadQr = downloadQr;
+window.generateQr = generateQr;
+</script>
+</body>
+</html>
