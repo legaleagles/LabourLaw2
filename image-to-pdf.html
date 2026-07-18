@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image to PDF Converter — Private, In-Browser | LawSticker AI</title>
+<meta name="description" content="Convert JPG or PNG photos into a single PDF document — free, no upload, everything happens in your browser. Reorder pages before converting.">
+<link rel="canonical" href="https://lawsticker-ai.com/image-to-pdf.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/image-to-pdf.html">
+<meta property="og:title" content="Free Image to PDF Converter | LawSticker AI">
+<meta property="og:description" content="Convert photos into a PDF — free, private, in-browser.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy:    #0D1117;
+  --gold:    #D4A017;
+  --gold-l:  #F5D76E;
+  --cream:   #FEFCF5;
+  --silver:  #8B95A8;
+  --ink:     #1A1208;
+  --jade:    #10B981;
+  --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0;
+  --rose:    #DC2626;
+  --rose-bg: #FEF2F2;
+  --border:  #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;position:relative;overflow:hidden}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,0.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 20px;}
+
+.dropzone{background:#fff;border:2.5px dashed var(--border);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;}
+.dropzone.drag{border-color:var(--jade);background:var(--jade-bg);}
+.dropzone-icon{font-size:38px;margin-bottom:8px;}
+.dropzone-title{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.dropzone-sub{font-size:11.5px;color:var(--silver);}
+input[type=file]{display:none;}
+
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:14px;}
+.img-card{position:relative;border:2px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;}
+.img-card img{width:100%;height:110px;object-fit:cover;display:block;}
+.img-num{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.65);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;}
+.img-remove{position:absolute;top:5px;right:5px;background:var(--rose);color:white;border:none;width:22px;height:22px;border-radius:50%;font-size:12px;font-weight:800;cursor:pointer;}
+.img-move-row{position:absolute;bottom:5px;left:5px;right:5px;display:flex;gap:4px;}
+.img-move-btn{flex:1;background:rgba(255,255,255,.92);border:none;border-radius:6px;font-size:11px;padding:4px 0;cursor:pointer;font-weight:800;color:var(--ink);}
+.img-move-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+.hint{font-size:11px;color:var(--silver);text-align:center;margin-top:10px;}
+.action-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.progress-text{font-size:12px;color:var(--silver);text-align:center;margin-top:8px;}
+.result-box{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:16px;padding:18px;text-align:center;margin-top:16px;}
+.result-box h3{font-size:14.5px;font-weight:800;color:#065F46;margin-bottom:10px;}
+.download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--jade);color:white;padding:11px 22px;border-radius:12px;font-weight:800;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;}
+
+.lib-status{max-width:720px;margin:0 auto;padding:14px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--silver);}
+.lib-status.error{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;color:#991B1B;margin:14px 16px;padding:16px;line-height:1.6;text-align:left;}
+.lib-status.ok{display:none;}
+.app-body{display:none;}
+.app-body.ready{display:block;}
+
+.page-size-row{display:flex;gap:8px;margin-top:14px;}
+.page-size-opt{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);background:#fff;}
+.page-size-opt.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>Image to <span class="g">PDF</span></h1>
+  <div class="hero-sub">Turn your photos, scans, or screenshots into a single PDF document. Reorder pages before converting.</div>
+  <div class="privacy-badge">🔒 100% in-browser — no file ever touches a server</div>
+</div>
+
+<div class="lib-status loading" id="libStatus">⏳ Loading PDF engine…</div>
+<div class="app-body" id="appBody">
+<div class="wrap">
+
+  <div class="dropzone" id="imgDropzone" onclick="document.getElementById('imgInput').click()">
+    <div class="dropzone-icon">🖼️</div>
+    <div class="dropzone-title">Drop photos here or tap to browse</div>
+    <div class="dropzone-sub">Select one or more JPG/PNG images</div>
+    <input type="file" id="imgInput" accept="image/jpeg,image/png,image/webp" multiple>
+  </div>
+
+  <div class="img-grid" id="imgGrid"></div>
+  <div class="hint" id="imgHint" style="display:none;">↕️ Use ◀ ▶ on each photo to reorder — works on phone and desktop</div>
+
+  <div id="pageSizeSection" style="display:none;">
+    <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-top:16px;margin-bottom:8px;">Page Size</div>
+    <div class="page-size-row">
+      <div class="page-size-opt active" id="sizeA4" onclick="setPageSize('a4')">A4</div>
+      <div class="page-size-opt" id="sizeFit" onclick="setPageSize('fit')">Fit Image</div>
+    </div>
+  </div>
+
+  <button class="action-btn" id="convertBtn" disabled onclick="doConvert()">📄 Convert to PDF</button>
+  <div class="progress-text" id="convertProgress"></div>
+  <div id="convertResult"></div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">How it works</div>
+    <div class="info-strip-text">Each photo becomes one page in the final PDF, in the order shown above. Choose "A4" to fit each image onto a standard printable page (best for documents you'll print), or "Fit Image" to make each page exactly match your photo's own dimensions (best for keeping photos looking natural, e.g. scanned certificates).</div>
+  </div>
+
+</div>
+</div>
+
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+const LIB_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';
+
+function loadScript(src){
+ return new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(src);
+  s.onerror = () => reject(new Error('Failed to load: ' + src));
+  document.head.appendChild(s);
+ });
+}
+
+let PDFDocument = null;
+
+async function initApp(){
+ const statusEl = document.getElementById('libStatus');
+ const bodyEl = document.getElementById('appBody');
+ try{
+  await loadScript(LIB_URL);
+  if(typeof PDFLib === 'undefined'){
+   throw new Error('PDF library loaded but did not initialize correctly.');
+  }
+  PDFDocument = PDFLib.PDFDocument;
+  statusEl.className = 'lib-status ok';
+  bodyEl.className = 'app-body ready';
+  wireUpApp();
+ }catch(err){
+  statusEl.className = 'lib-status error';
+  statusEl.innerHTML = '⚠️ <strong>The PDF engine could not load.</strong><br><br>This usually means your browser or network is blocking scripts from cdnjs.cloudflare.com. Try: a different browser, disabling any ad-blocker/script-blocker for this page, or a different network connection.<br><br><span style="font-size:11px;opacity:.8;">Technical detail: ' + escapeHtml(err.message || String(err)) + '</span>';
+ }
+}
+
+function escapeHtml(s){
+ const d = document.createElement('div');
+ d.textContent = s;
+ return d.innerHTML;
+}
+
+initApp();
+
+function wireUpApp(){
+
+let imgFiles = []; // { file, previewUrl }
+let pageSizeMode = 'a4'; // 'a4' or 'fit'
+
+document.getElementById('imgInput').addEventListener('change', e => {
+ addImageFiles(Array.from(e.target.files));
+});
+
+const dropzone = document.getElementById('imgDropzone');
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+ e.preventDefault();
+ dropzone.classList.remove('drag');
+ const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+ addImageFiles(files);
+});
+
+function addImageFiles(files){
+ files.forEach(file => {
+  imgFiles.push({ file, previewUrl: URL.createObjectURL(file) });
+ });
+ renderImgGrid();
+}
+
+function renderImgGrid(){
+ const grid = document.getElementById('imgGrid');
+ const hint = document.getElementById('imgHint');
+ const btn = document.getElementById('convertBtn');
+ const sizeSection = document.getElementById('pageSizeSection');
+ grid.innerHTML = '';
+ hint.style.display = imgFiles.length > 1 ? 'block' : 'none';
+ btn.disabled = imgFiles.length === 0;
+ sizeSection.style.display = imgFiles.length > 0 ? 'block' : 'none';
+
+ imgFiles.forEach((item, i) => {
+  const card = document.createElement('div');
+  card.className = 'img-card';
+  card.innerHTML = `
+   <img src="${item.previewUrl}" alt="Page ${i+1}">
+   <span class="img-num">${i+1}</span>
+   <button class="img-remove" onclick="removeImg(${i})">✕</button>
+   <span class="img-move-row">
+     <button class="img-move-btn" ${i===0?'disabled':''} onclick="moveImg(${i},-1)">◀</button>
+     <button class="img-move-btn" ${i===imgFiles.length-1?'disabled':''} onclick="moveImg(${i},1)">▶</button>
+   </span>
+  `;
+  grid.appendChild(card);
+ });
+}
+
+function moveImg(i, direction){
+ const target = i + direction;
+ if(target < 0 || target >= imgFiles.length) return;
+ const tmp = imgFiles[i];
+ imgFiles[i] = imgFiles[target];
+ imgFiles[target] = tmp;
+ renderImgGrid();
+}
+
+function removeImg(i){
+ URL.revokeObjectURL(imgFiles[i].previewUrl);
+ imgFiles.splice(i, 1);
+ renderImgGrid();
+}
+
+function setPageSize(mode){
+ pageSizeMode = mode;
+ document.getElementById('sizeA4').classList.toggle('active', mode === 'a4');
+ document.getElementById('sizeFit').classList.toggle('active', mode === 'fit');
+}
+
+async function embedImageInDoc(pdfDoc, file){
+ const bytes = await file.arrayBuffer();
+ if(file.type === 'image/png'){
+  return await pdfDoc.embedPng(bytes);
+ }
+ // JPEG and most other browser-supported formats (webp gets canvas-converted below)
+ if(file.type === 'image/jpeg'){
+  return await pdfDoc.embedJpg(bytes);
+ }
+ // Fallback: draw unsupported formats (e.g. webp) onto a canvas and re-encode as PNG,
+ // since pdf-lib only natively embeds JPEG and PNG.
+ const dataUrl = await new Promise((resolve, reject) => {
+  const img = new Image();
+  img.onload = () => {
+   const canvas = document.createElement('canvas');
+   canvas.width = img.naturalWidth;
+   canvas.height = img.naturalHeight;
+   const ctx = canvas.getContext('2d');
+   ctx.drawImage(img, 0, 0);
+   resolve(canvas.toDataURL('image/png'));
+  };
+  img.onerror = () => reject(new Error('Could not read image: ' + file.name));
+  img.src = URL.createObjectURL(file);
+ });
+ const pngBytes = await fetch(dataUrl).then(r => r.arrayBuffer());
+ return await pdfDoc.embedPng(pngBytes);
+}
+
+async function doConvert(){
+ const btn = document.getElementById('convertBtn');
+ const progress = document.getElementById('convertProgress');
+ btn.disabled = true;
+ try{
+  const pdfDoc = await PDFDocument.create();
+  const A4_WIDTH = 595.28, A4_HEIGHT = 841.89; // A4 in PDF points
+
+  for(let i = 0; i < imgFiles.length; i++){
+   progress.textContent = `Adding photo ${i+1} of ${imgFiles.length}...`;
+   const embedded = await embedImageInDoc(pdfDoc, imgFiles[i].file);
+   const dims = embedded.scale(1);
+
+   if(pageSizeMode === 'fit'){
+    const page = pdfDoc.addPage([dims.width, dims.height]);
+    page.drawImage(embedded, { x: 0, y: 0, width: dims.width, height: dims.height });
+   }else{
+    const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
+    // Scale the image to fit within the A4 page while preserving aspect ratio, centered
+    const scale = Math.min(A4_WIDTH / dims.width, A4_HEIGHT / dims.height) * 0.95;
+    const w = dims.width * scale;
+    const h = dims.height * scale;
+    page.drawImage(embedded, {
+     x: (A4_WIDTH - w) / 2,
+     y: (A4_HEIGHT - h) / 2,
+     width: w,
+     height: h
+    });
+   }
+  }
+
+  progress.textContent = 'Finalizing PDF...';
+  const pdfBytes = await pdfDoc.save();
+  const blob = new Blob([pdfBytes], {type:'application/pdf'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('convertResult').innerHTML = `
+   <div class="result-box">
+     <h3>✅ Converted ${imgFiles.length} photo${imgFiles.length===1?'':'s'} into one PDF</h3>
+     <a class="download-btn" href="${url}" download="converted.pdf">⬇️ Download converted.pdf</a>
+   </div>`;
+  progress.textContent = '';
+ }catch(err){
+  progress.textContent = '';
+  document.getElementById('convertResult').innerHTML = `<div class="result-box" style="background:#FEF2F2;border-color:#FECACA;"><h3 style="color:#991B1B;">⚠️ ${escapeHtml(err.message || 'Something went wrong.')}</h3></div>`;
+ }
+ btn.disabled = imgFiles.length === 0;
+}
+
+window.moveImg = moveImg;
+window.removeImg = removeImg;
+window.setPageSize = setPageSize;
+window.doConvert = doConvert;
+
+} // end wireUpApp
+</script>
+</body>
+</html>
