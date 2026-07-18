@@ -162,8 +162,15 @@ gtag('config', 'G-TJXHVW6XCL');
 
       <div id="itemCartSection" style="display:none;margin-top:14px;">
         <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🛒 Your Bill Items — Add, Edit, or Remove</div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;padding:0 2px;">
+          <span style="flex:2;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;">Item</span>
+          <span style="width:44px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:center;">Qty</span>
+          <span style="width:64px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:center;">Price</span>
+          <span style="width:70px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:right;">Total</span>
+          <span style="width:30px;"></span>
+        </div>
         <div id="itemListRows"></div>
-        <button onclick="addItemRow('', '')" style="width:100%;margin-top:6px;padding:9px;background:#fff;border:1.5px dashed var(--light);border-radius:10px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;">+ Add Item</button>
+        <button onclick="addItemRow('', 1, '')" style="width:100%;margin-top:6px;padding:9px;background:#fff;border:1.5px dashed var(--light);border-radius:10px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;">+ Add Item</button>
         <div id="itemSumDisplay" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;">Items Total: ₹0.00</div>
 
         <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--light);">
@@ -197,67 +204,6 @@ gtag('config', 'G-TJXHVW6XCL');
   </div>
   </div>
 
-  <div class="card">
-    <div class="card-title" id="c1">Bill Details</div>
-    <div class="row2">
-      <div class="field">
-        <label id="l-food">Food & Drinks Total</label>
-        <div class="pfx"><span class="p">₹</span><input type="number" id="food-total" value="1000" step="10" oninput="runValidations()"></div>
-      </div>
-      <div class="field">
-        <label id="l-resttype">Restaurant Type</label>
-        <select id="rest-type" onchange="updateGstRate()">
-          <option value="5">Non-AC / No Liquor (5% GST)</option>
-          <option value="18">AC or Liquor served (18% GST)</option>
-        </select>
-      </div>
-    </div>
-    <div class="toggle-row">
-      <div class="tl" id="l-gstbilled">GST Charged on Bill <span class="sub" id="l-gstbilled-s">Amount shown on your bill</span></div>
-      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="gst-billed" value="50" step="1" style="padding-left:24px;background:var(--teal-pale)" oninput="runValidations()"></div></div>
-    </div>
-    <div class="toggle-row">
-      <div class="tl" id="l-sc">Service Charge on Bill <span class="sub" id="l-sc-s">Leave 0 if not charged</span></div>
-      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="sc-billed" value="100" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
-    </div>
-    <div class="toggle-row">
-      <div class="tl" id="l-other">Other Charges <span class="sub" id="l-other-s">Packaging, cover charge etc.</span></div>
-      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="other-billed" value="0" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
-    </div>
-    <div class="toggle-row">
-      <div class="tl" id="l-total-billed">Total Billed to You <span class="sub" id="l-total-billed-s">Grand total on your bill</span></div>
-      <div class="inline-in"><div class="pfx"><span class="p">₹</span><input type="number" class="mini" id="total-billed" value="1150" step="1" style="padding-left:24px;background:var(--teal-pale)"></div></div>
-    </div>
-  </div>
-
-  <button class="calc-btn" id="calc-btn" onclick="calculate()">Verify My Bill →</button>
-
-  <div id="results">
-    <div class="verdict" id="verdict-box">
-      <div class="verdict-icon" id="verdict-icon">✅</div>
-      <div class="verdict-title" id="verdict-title">Bill Looks Correct</div>
-      <div class="verdict-sub" id="verdict-sub">All charges verified</div>
-    </div>
-
-    <div class="bdown">
-      <div class="bdown-head" id="r-bd-head">Bill Breakdown & Verification</div>
-      <div id="r-rows"></div>
-    </div>
-
-    <div id="issues-section" style="display:none">
-      <div class="bdown">
-        <div class="bdown-head" id="r-issues-head">Issues Found</div>
-        <div class="issue-list" id="r-issues"></div>
-      </div>
-    </div>
-
-    <div class="rights-box">
-      <h3 id="rights-title">Your Legal Rights at a Restaurant</h3>
-      <div id="rights-list"></div>
-    </div>
-
-    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← Check Another Bill</button>
-  </div>
 <footer><span id="footer-txt">Restaurant Bill Checker · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
 <script>
 let lang='en';
@@ -380,81 +326,13 @@ function applyLang(){
   s('l-gstbilled',t.lGstBilled);s('l-gstbilled-s',t.lGstBilledS);
   s('l-sc',t.lSc);s('l-sc-s',t.lScS);
   s('l-other',t.lOther);s('l-other-s',t.lOtherS);
-  s('l-total-billed',t.lTotalBilled);s('l-total-billed-s',t.lTotalBilledS);
-  s('calc-btn',t.calcBtn);s('r-bd-head',t.rBdHead);s('r-issues-head',t.rIssuesHead||'');
-  s('rights-title',t.rightsTitle);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
-  buildRights();
+  s('footer-txt',t.footerTxt);
 }
 function setLang(l){
   lang_=l;
   document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
   applyLang();
 }
-function updateGstRate(){
-  const rate=parseInt(document.getElementById('rest-type').value);
-  const food=parseFloat(document.getElementById('food-total').value)||0;
-  document.getElementById('gst-billed').value=Math.round(food*rate/100);
-}
-function buildRights(){
-  const t=T[lang_];
-  document.getElementById('rights-list').innerHTML=t.rights.map(([title,body])=>
-    `<div class="right-item"><span>${title}:</span> ${body}</div>`).join('');
-}
-function calculate(){
-  const t=T[lang_];
-  const food=parseFloat(document.getElementById('food-total').value)||0;
-  const restType=parseInt(document.getElementById('rest-type').value);
-  const gstBilled=parseFloat(document.getElementById('gst-billed').value)||0;
-  const scBilled=parseFloat(document.getElementById('sc-billed').value)||0;
-  const otherBilled=parseFloat(document.getElementById('other-billed').value)||0;
-  const totalBilled=parseFloat(document.getElementById('total-billed').value)||0;
-
-  const correctGst=food*restType/100;
-  const gstDiff=gstBilled-correctGst;
-  const correctTotal=food+correctGst+otherBilled; // SC excluded as optional
-  const totalDiff=totalBilled-(food+gstBilled+scBilled+otherBilled);
-
-  const issues=[];
-  let severity='ok';
-
-  if(Math.abs(gstDiff)>2){
-    if(gstDiff>0){issues.push({type:'bad',msg:t.issues.gstHigh(gstDiff)});severity='bad';}
-    else{issues.push({type:'warn',msg:t.issues.gstLow(-gstDiff)});if(severity!=='bad')severity='warn';}
-  }
-  if(scBilled>0){issues.push({type:'warn',msg:t.issues.scIllegal(scBilled)});if(severity==='ok')severity='warn';}
-  if(Math.abs(totalDiff)>5){issues.push({type:'bad',msg:t.issues.totalMismatch(totalDiff)});severity='bad';}
-
-  // verdict
-  const vbox=document.getElementById('verdict-box');
-  const vmap={ok:{cls:'ok',icon:'✅',title:t.verdictOk,sub:t.verdictOkSub},warn:{cls:'warn',icon:'⚠️',title:t.verdictWarn,sub:t.verdictWarnSub},bad:{cls:'bad',icon:'❌',title:t.verdictBad,sub:t.verdictBadSub}};
-  const v=vmap[severity];
-  vbox.className='verdict '+v.cls;
-  document.getElementById('verdict-icon').textContent=v.icon;
-  document.getElementById('verdict-title').textContent=v.title;
-  document.getElementById('verdict-sub').textContent=v.sub;
-
-  // breakdown
-  const gstStatus=Math.abs(gstDiff)<2?'ok':gstDiff>0?'bad':'warn';
-  document.getElementById('r-rows').innerHTML=`
-    <div class="brow"><div class="bl">${t.foodTotal}</div><div class="ba">${fmt(food)}</div></div>
-    <div class="brow ${gstStatus}"><div class="bl">${t.gstRow} (${restType}%)<span class="bs">${t.correctGst}: ${fmt(correctGst)} · ${t.yourGst}: ${fmt(gstBilled)}</span></div><div class="ba">${Math.abs(gstDiff)<2?t.correct:gstDiff>0?'⚠️ +'+fmt(gstDiff)+' '+t.overcharged:'✓ -'+fmt(-gstDiff)}</div></div>
-    ${scBilled>0?`<div class="brow warn"><div class="bl">${t.serviceCharge}<span class="bs">Not mandatory — CCPA 2022</span></div><div class="ba">⚠️ ${fmt(scBilled)}</div></div>`:''}
-    ${otherBilled>0?`<div class="brow"><div class="bl">${t.lOther||'Other'}</div><div class="ba">${fmt(otherBilled)}</div></div>`:''}
-    <div class="brow tot"><div class="bl">${t.correctTotal} (excl. service charge)</div><div class="ba">${fmt(correctTotal)}</div></div>
-    <div class="brow"><div class="bl">${t.totalRow}</div><div class="ba">${fmt(totalBilled)}</div></div>`;
-
-  // issues
-  const issuesSec=document.getElementById('issues-section');
-  if(issues.length>0){
-    issuesSec.style.display='block';
-    document.getElementById('r-issues').innerHTML=issues.map(i=>`<div class="issue ${i.type}">${i.msg}</div>`).join('');
-  } else issuesSec.style.display='none';
-
-  document.getElementById('results').classList.add('visible');
-  document.getElementById('results').scrollIntoView({behavior:'smooth'});
-}
-function resetCalc(){document.getElementById('results').classList.remove('visible');window.scrollTo({top:0,behavior:'smooth'});}
-
 // ═══ BILL PHOTO/PDF VIEWER (upload, view, zoom -- no OCR, purely a reading aid) ═══
 document.getElementById('billFileInput').addEventListener('change', function(e){
  const file = e.target.files[0];
@@ -676,6 +554,25 @@ function extractLineItems(rawText){
  const items = [];
  const consumedLineIndices = new Set();
 
+ // Given a list of numbers found on a line, tries to detect the qty/unitPrice/amount
+ // pattern (three numbers where qty * unitPrice ≈ amount) -- common on itemized bills.
+ // Falls back to treating the single found number as a qty-1 item if the pattern doesn't
+ // hold, which is the safe default when a bill only shows a flat price per line.
+ function detectQtyAndUnitPrice(nums){
+  if(nums.length >= 3){
+   const qty = nums[nums.length - 3];
+   const unitPrice = nums[nums.length - 2];
+   const amount = nums[nums.length - 1];
+   const isWholeQty = Number.isInteger(qty) && qty >= 1 && qty <= 100;
+   const productMatches = Math.abs(qty * unitPrice - amount) <= Math.max(1, amount * 0.02);
+   if(isWholeQty && productMatches){
+    return { qty, unitPrice };
+   }
+  }
+  // Fallback: treat the last number as the line amount, quantity 1
+  return { qty: 1, unitPrice: nums[nums.length - 1] };
+ }
+
  // Pass 1: single-line items (name and price on the same line)
  for(let i = 0; i < rawLines.length; i++){
   const line = rawLines[i];
@@ -691,12 +588,15 @@ function extractLineItems(rawText){
    .filter(n => !(Number.isInteger(n) && n >= 1900 && n <= 2100)); // exclude bare 4-digit years (e.g. "Estd. 1948")
   if(priceCandidates.length === 0) continue;
 
-  const price = priceCandidates[priceCandidates.length - 1];
-  const priceIdx = line.lastIndexOf(matches[matches.length - 1]);
-  const name = cleanItemName(line.slice(0, priceIdx));
+  const { qty, unitPrice } = detectQtyAndUnitPrice(priceCandidates);
+  // When multiple numbers were found (qty/unitPrice/amount columns), the item name is
+  // everything before the FIRST number column, not just before the last one -- otherwise
+  // the quantity/price digits stay stuck onto the end of the name.
+  const nameEndIdx = matches.length >= 3 ? line.indexOf(matches[matches.length - 3]) : line.lastIndexOf(matches[matches.length - 1]);
+  const name = cleanItemName(line.slice(0, nameEndIdx));
   if(name.length < 3) continue;
 
-  items.push({ name, price });
+  items.push({ name, qty, unitPrice });
   consumedLineIndices.add(i);
  }
 
@@ -721,13 +621,11 @@ function extractLineItems(rawText){
    .filter(n => !isNaN(n) && n > 0 && n < 100000);
   if(nums.length === 0) continue;
 
-  // The rightmost number on a qty/price/amount row is the line amount (bills consistently
-  // right-align the final amount column)
-  const price = nums[nums.length - 1];
+  const { qty, unitPrice } = detectQtyAndUnitPrice(nums);
   const name = cleanItemName(nameLine);
   if(name.length < 3) continue;
 
-  items.push({ name, price });
+  items.push({ name, qty, unitPrice });
   consumedLineIndices.add(i);
   consumedLineIndices.add(i + 1);
  }
@@ -740,7 +638,10 @@ function extractLineItems(rawText){
 // either number, since OCR can miss an item OR misread a total.
 function validateItemSum(items, statedSubtotal){
  if(items.length === 0 || statedSubtotal === null) return null;
- const itemSum = items.reduce((sum, item) => sum + item.price, 0);
+ const itemSum = items.reduce((sum, item) => {
+  const lineTotal = (item.qty !== undefined) ? (item.qty * item.unitPrice) : item.price;
+  return sum + lineTotal;
+ }, 0);
  const diff = Math.abs(itemSum - statedSubtotal);
  // Allow a small tolerance (rounding, minor OCR noise on one digit) before flagging
  const tolerance = Math.max(2, statedSubtotal * 0.02); // 2 rupees or 2%, whichever is larger
@@ -857,20 +758,23 @@ function renderItemRows(){
  const container = document.getElementById('itemListRows');
  container.innerHTML = '';
  billItems.forEach((item, i) => {
+  const lineTotal = (item.qty || 1) * (item.unitPrice || 0);
   const row = document.createElement('div');
   row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center;';
   row.innerHTML = `
    <input type="text" value="${escapeHtml(item.name)}" placeholder="Item name" style="flex:2;padding:8px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;" oninput="updateItemField(${i}, 'name', this.value)">
-   <input type="number" value="${item.price}" placeholder="0.00" style="flex:1;padding:8px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;" oninput="updateItemField(${i}, 'price', this.value)">
-   <button onclick="removeItemRow(${i})" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;width:30px;height:30px;font-size:13px;cursor:pointer;">✕</button>
+   <input type="number" value="${item.qty}" min="1" step="1" style="width:44px;padding:8px 4px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;text-align:center;" oninput="updateItemField(${i}, 'qty', this.value)">
+   <input type="number" value="${item.unitPrice}" placeholder="0.00" style="width:64px;padding:8px 4px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;text-align:center;" oninput="updateItemField(${i}, 'unitPrice', this.value)">
+   <span style="width:70px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;">₹${lineTotal.toFixed(2)}</span>
+   <button onclick="removeItemRow(${i})" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;width:30px;height:30px;font-size:13px;cursor:pointer;flex-shrink:0;">✕</button>
   `;
   container.appendChild(row);
  });
  updateItemSumDisplay();
 }
 
-function addItemRow(name, price){
- billItems.push({ name: name || '', price: parseFloat(price) || 0 });
+function addItemRow(name, qty, unitPrice){
+ billItems.push({ name: name || '', qty: parseFloat(qty) || 1, unitPrice: parseFloat(unitPrice) || 0 });
  renderItemRows();
  document.getElementById('itemCartSection').style.display = 'block';
 }
@@ -881,13 +785,14 @@ function removeItemRow(i){
 }
 
 function updateItemField(i, field, value){
- if(field === 'price') billItems[i].price = parseFloat(value) || 0;
+ if(field === 'qty') billItems[i].qty = Math.max(1, parseFloat(value) || 1);
+ else if(field === 'unitPrice') billItems[i].unitPrice = parseFloat(value) || 0;
  else billItems[i].name = value;
- updateItemSumDisplay();
+ renderItemRows();
 }
 
 function updateItemSumDisplay(){
- const sum = billItems.reduce((s, item) => s + item.price, 0);
+ const sum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
  document.getElementById('itemSumDisplay').textContent = 'Items Total: ₹' + sum.toFixed(2);
 }
 
@@ -902,7 +807,7 @@ function completeCart(){
   return;
  }
 
- const itemSum = billItems.reduce((s, item) => s + item.price, 0);
+ const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
  const gstCharged = parseFloat(document.getElementById('cart-gst').value) || 0;
  const scCharged = parseFloat(document.getElementById('cart-sc').value) || 0;
  const restaurantType = document.getElementById('cart-restaurant-type').value;
