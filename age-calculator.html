@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Age Calculator — Exact Age, Years/Months/Days | LawSticker AI</title>
+<meta name="description" content="Calculate exact age in years, months, and days between two dates — free, private, no upload. Useful for eligibility checks with age cutoffs.">
+<link rel="canonical" href="https://lawsticker-ai.com/age-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/age-calculator.html">
+<meta property="og:title" content="Free Age Calculator | LawSticker AI">
+<meta property="og:description" content="Calculate exact age in years, months, and days — free, private.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --rose:#DC2626; --rose-bg:#FEF2F2; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:600px;margin:0 auto;padding:18px 16px 20px;}
+.input-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;}
+.input-row{margin-bottom:12px;}
+.input-row:last-child{margin-bottom:0;}
+.input-row label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:6px;}
+.input-row input{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);}
+.result-card{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:18px;padding:20px;margin-top:16px;text-align:center;display:none;}
+.result-big{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#065F46;margin-bottom:4px;}
+.result-sub{font-size:13px;color:#065F46;font-weight:600;}
+.result-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.breakdown-card{background:#fff;border-radius:12px;padding:10px 6px;}
+.breakdown-num{font-size:18px;font-weight:900;color:var(--navy);}
+.breakdown-lbl{font-size:9.5px;font-weight:700;color:var(--silver);text-transform:uppercase;margin-top:2px;}
+.error-box{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;padding:12px;margin-top:14px;color:#991B1B;font-size:12.5px;font-weight:700;text-align:center;display:none;}
+.calc-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>Age <span class="g">Calculator</span></h1>
+  <div class="hero-sub">Find your exact age in years, months, and days — as of today or any specific date, useful for checking eligibility cutoffs.</div>
+  <div class="privacy-badge">🔒 100% in-browser — nothing you enter is ever sent anywhere</div>
+</div>
+<div class="wrap">
+
+  <div class="input-card">
+    <div class="input-row">
+      <label>Date of Birth</label>
+      <input type="date" id="dobInput">
+    </div>
+    <div class="input-row">
+      <label>Calculate Age As Of</label>
+      <input type="date" id="asOfInput">
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculateAge()">🎂 Calculate Age</button>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-big" id="resultBig">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-breakdown">
+      <div class="breakdown-card"><div class="breakdown-num" id="breakdownDays">0</div><div class="breakdown-lbl">Total Days</div></div>
+      <div class="breakdown-card"><div class="breakdown-num" id="breakdownWeeks">0</div><div class="breakdown-lbl">Total Weeks</div></div>
+      <div class="breakdown-card"><div class="breakdown-num" id="breakdownMonths">0</div><div class="breakdown-lbl">Total Months</div></div>
+    </div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">Why "as of" matters</div>
+    <div class="info-strip-text">Many exams, jobs, and government schemes have an age cutoff calculated as of a SPECIFIC date (e.g. "must be under 30 as of August 1st"), not today's date. Use the "Calculate Age As Of" field to check your age on that exact cutoff date, not just your current age.</div>
+  </div>
+
+</div>
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+// Set "as of" default to today, for convenience
+(function(){
+ const today = new Date();
+ const iso = today.toISOString().split('T')[0];
+ document.getElementById('asOfInput').value = iso;
+})();
+
+// Computes calendar-correct years/months/days between two dates (accounts for varying
+// month lengths and leap years, not just a flat day-count division).
+function calculateAgeBreakdown(dob, asOf){
+ let years = asOf.getFullYear() - dob.getFullYear();
+ let cursor = new Date(dob.getFullYear() + years, dob.getMonth(), dob.getDate());
+ if(cursor > asOf){
+  years--;
+  cursor = new Date(dob.getFullYear() + years, dob.getMonth(), dob.getDate());
+ }
+
+ let months = 0;
+ let nextCursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, dob.getDate());
+ while(nextCursor <= asOf){
+  months++;
+  cursor = nextCursor;
+  nextCursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, dob.getDate());
+ }
+
+ const days = Math.round((asOf - cursor) / 86400000);
+ return { years, months, days };
+}
+
+function calculateAge(){
+ const dobStr = document.getElementById('dobInput').value;
+ const asOfStr = document.getElementById('asOfInput').value;
+ const errorBox = document.getElementById('errorBox');
+ const resultCard = document.getElementById('resultCard');
+
+ errorBox.style.display = 'none';
+ resultCard.style.display = 'none';
+
+ if(!dobStr){
+  errorBox.textContent = 'Please enter a date of birth.';
+  errorBox.style.display = 'block';
+  return;
+ }
+ if(!asOfStr){
+  errorBox.textContent = 'Please enter a date to calculate age as of.';
+  errorBox.style.display = 'block';
+  return;
+ }
+
+ const dob = new Date(dobStr + 'T00:00:00');
+ const asOf = new Date(asOfStr + 'T00:00:00');
+
+ if(asOf < dob){
+  errorBox.textContent = 'The "as of" date must be on or after the date of birth.';
+  errorBox.style.display = 'block';
+  return;
+ }
+
+ const breakdown = calculateAgeBreakdown(dob, asOf);
+ const totalDays = Math.floor((asOf - dob) / 86400000);
+ const totalWeeks = Math.floor(totalDays / 7);
+ const totalMonths = breakdown.years * 12 + breakdown.months;
+
+ document.getElementById('resultBig').textContent = breakdown.years + ' years, ' + breakdown.months + ' months, ' + breakdown.days + ' days';
+ document.getElementById('resultSub').textContent = 'as of ' + asOf.toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'});
+ document.getElementById('breakdownDays').textContent = totalDays.toLocaleString('en-IN');
+ document.getElementById('breakdownWeeks').textContent = totalWeeks.toLocaleString('en-IN');
+ document.getElementById('breakdownMonths').textContent = totalMonths.toLocaleString('en-IN');
+ resultCard.style.display = 'block';
+}
+
+window.calculateAge = calculateAge;
+</script>
+</body>
+</html>

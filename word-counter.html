@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Word & Character Counter | LawSticker AI</title>
+<meta name="description" content="Count words, characters, sentences, and paragraphs instantly — free, private, no upload. Useful for essays, applications, and social media limits.">
+<link rel="canonical" href="https://lawsticker-ai.com/word-counter.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/word-counter.html">
+<meta property="og:title" content="Free Word & Character Counter | LawSticker AI">
+<meta property="og:description" content="Count words, characters, and sentences instantly — free, private.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:680px;margin:0 auto;padding:18px 16px 20px;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center;}
+.stat-num{font-size:20px;font-weight:900;color:var(--navy);}
+.stat-lbl{font-size:9.5px;font-weight:700;color:var(--silver);text-transform:uppercase;letter-spacing:.3px;margin-top:2px;}
+textarea{width:100%;min-height:220px;padding:16px;border:1.5px solid var(--border);border-radius:16px;font-family:inherit;font-size:14px;color:var(--ink);resize:vertical;line-height:1.6;}
+.limit-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.limit-btn{flex:1;min-width:100px;padding:9px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:11.5px;font-weight:700;cursor:pointer;color:var(--ink);}
+.limit-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.limit-status{margin-top:10px;font-size:12.5px;font-weight:700;text-align:center;padding:9px;border-radius:10px;}
+.limit-status.ok{background:var(--jade-bg);color:#065F46;}
+.limit-status.over{background:#FEF2F2;color:#991B1B;}
+.clear-btn{width:100%;padding:12px;background:#fff;border:1.5px solid var(--border);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);margin-top:12px;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>Word &amp; Character <span class="g">Counter</span></h1>
+  <div class="hero-sub">Count words, characters, sentences, and paragraphs as you type or paste — useful for essays, applications, and character-limited forms.</div>
+  <div class="privacy-badge">🔒 100% in-browser — nothing you type is ever sent anywhere</div>
+</div>
+<div class="wrap">
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="statWords">0</div><div class="stat-lbl">Words</div></div>
+    <div class="stat-card"><div class="stat-num" id="statChars">0</div><div class="stat-lbl">Characters</div></div>
+    <div class="stat-card"><div class="stat-num" id="statCharsNoSpace">0</div><div class="stat-lbl">No Spaces</div></div>
+    <div class="stat-card"><div class="stat-num" id="statSentences">0</div><div class="stat-lbl">Sentences</div></div>
+    <div class="stat-card"><div class="stat-num" id="statParagraphs">0</div><div class="stat-lbl">Paragraphs</div></div>
+    <div class="stat-card"><div class="stat-num" id="statReadTime">0</div><div class="stat-lbl">Min. Read</div></div>
+  </div>
+
+  <textarea id="textInput" placeholder="Start typing or paste your text here…" oninput="updateCounts()"></textarea>
+
+  <div class="limit-row">
+    <button class="limit-btn" onclick="setLimit(280, this)">Twitter/X (280)</button>
+    <button class="limit-btn" onclick="setLimit(2200, this)">Instagram (2200)</button>
+    <button class="limit-btn" onclick="setLimit(0, this)" id="noLimitBtn">No Limit</button>
+  </div>
+  <div id="limitStatus" style="display:none;"></div>
+
+  <button class="clear-btn" onclick="clearText()">🗑️ Clear Text</button>
+
+  <div class="info-strip">
+    <div class="info-strip-title">How counts work</div>
+    <div class="info-strip-text">Words are counted by splitting on whitespace. Sentences are estimated by counting sentence-ending punctuation (. ! ?), so this is an approximation, not exact grammar parsing. Reading time assumes an average reading speed of 200 words per minute.</div>
+  </div>
+
+</div>
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+let charLimit = 0;
+
+function countWords(text){
+ const trimmed = text.trim();
+ if(trimmed.length === 0) return 0;
+ return trimmed.split(/\s+/).length;
+}
+
+function countSentences(text){
+ const trimmed = text.trim();
+ if(trimmed.length === 0) return 0;
+ const matches = trimmed.match(/[^.!?]*[.!?]+/g);
+ if(matches) return matches.length;
+ return trimmed.length > 0 ? 1 : 0; // no terminal punctuation, but non-empty text counts as one sentence-in-progress
+}
+
+function countParagraphs(text){
+ const trimmed = text.trim();
+ if(trimmed.length === 0) return 0;
+ const parts = trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+ return parts.length;
+}
+
+function updateCounts(){
+ const text = document.getElementById('textInput').value;
+ const words = countWords(text);
+ const chars = text.length;
+ const charsNoSpace = text.replace(/\s/g, '').length;
+ const sentences = countSentences(text);
+ const paragraphs = countParagraphs(text);
+ const readTime = Math.max(1, Math.ceil(words / 200));
+
+ document.getElementById('statWords').textContent = words;
+ document.getElementById('statChars').textContent = chars;
+ document.getElementById('statCharsNoSpace').textContent = charsNoSpace;
+ document.getElementById('statSentences').textContent = sentences;
+ document.getElementById('statParagraphs').textContent = paragraphs;
+ document.getElementById('statReadTime').textContent = words === 0 ? 0 : readTime;
+
+ updateLimitStatus(chars);
+}
+
+function setLimit(limit, btnEl){
+ charLimit = limit;
+ document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
+ if(btnEl) btnEl.classList.add('active');
+ updateLimitStatus(document.getElementById('textInput').value.length);
+}
+
+function updateLimitStatus(chars){
+ const statusEl = document.getElementById('limitStatus');
+ if(charLimit === 0){
+  statusEl.style.display = 'none';
+  return;
+ }
+ statusEl.style.display = 'block';
+ const remaining = charLimit - chars;
+ if(remaining >= 0){
+  statusEl.className = 'limit-status ok';
+  statusEl.textContent = '✅ ' + remaining + ' characters remaining';
+ }else{
+  statusEl.className = 'limit-status over';
+  statusEl.textContent = '⚠️ ' + Math.abs(remaining) + ' characters over the limit';
+ }
+}
+
+function clearText(){
+ document.getElementById('textInput').value = '';
+ updateCounts();
+}
+
+window.setLimit = setLimit;
+window.clearText = clearText;
+window.updateCounts = updateCounts;
+</script>
+</body>
+</html>
