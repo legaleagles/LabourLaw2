@@ -38,6 +38,15 @@ nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;jus
 .type-tab.active{background:var(--navy);color:var(--gold-l);}
 .input-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;}
 .input-card label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:6px;}
+.custom-row{display:flex;gap:12px;}
+.custom-field{flex:1;display:flex;flex-direction:column;gap:4px;}
+.custom-field-wide{flex:1;display:flex;flex-direction:column;gap:6px;}
+.custom-lbl{font-size:11.5px;font-weight:700;color:var(--ink);}
+.custom-field input[type=color]{width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;}
+.logo-row{display:flex;gap:8px;margin-top:14px;}
+.logo-btn{flex:1;padding:10px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);}
+.logo-clear-btn{padding:10px 14px;background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--rose);}
+.logo-warn{margin-top:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:9px 11px;font-size:11px;color:#78350F;line-height:1.5;}
 .input-card input{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);}
 .qr-output{text-align:center;margin-top:16px;}
 .qr-canvas-wrap{display:inline-block;background:white;padding:16px;border-radius:16px;border:1px solid var(--border);min-height:80px;}
@@ -93,6 +102,38 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="input-card">
     <label id="inputLabel">Website / Link</label>
     <input type="text" id="qrInput" placeholder="https://example.com" oninput="generateQr()">
+  </div>
+
+  <div class="input-card" style="margin-top:12px;">
+    <label>Customize</label>
+    <div class="custom-row">
+      <div class="custom-field">
+        <span class="custom-lbl">QR Color</span>
+        <input type="color" id="fgColor" value="#000000" oninput="generateQr()">
+      </div>
+      <div class="custom-field">
+        <span class="custom-lbl">Background</span>
+        <input type="color" id="bgColor" value="#ffffff" oninput="generateQr()">
+      </div>
+    </div>
+    <div class="custom-row" style="margin-top:12px;">
+      <div class="custom-field-wide">
+        <span class="custom-lbl">Size: <span id="sizeLabel">220px</span></span>
+        <input type="range" id="sizeSlider" min="120" max="400" value="220" oninput="updateSizeLabel(); generateQr()">
+      </div>
+    </div>
+    <div class="custom-row" style="margin-top:12px;">
+      <div class="custom-field-wide">
+        <span class="custom-lbl">Margin: <span id="marginLabel">Standard</span></span>
+        <input type="range" id="marginSlider" min="0" max="3" value="1" step="1" oninput="updateMarginLabel(); generateQr()">
+      </div>
+    </div>
+    <div class="logo-row">
+      <button class="logo-btn" onclick="document.getElementById('logoInput').click()">🖼️ Add Logo (Optional)</button>
+      <button class="logo-clear-btn" id="logoClearBtn" style="display:none;" onclick="clearLogo()">✕ Remove Logo</button>
+      <input type="file" id="logoInput" accept="image/png,image/jpeg" style="display:none;">
+    </div>
+    <div class="logo-warn" id="logoWarn" style="display:none;">⚠️ A logo covers part of the QR code. Always test-scan before printing or sharing widely — very large logos can make a code unreadable.</div>
   </div>
 
   <div class="qr-output" id="qrOutput" style="display:none;">
@@ -183,20 +224,82 @@ function formatPayload(raw){
  return raw;
 }
 
+let logoImg = null;
+
+const MARGIN_LABELS = ['None', 'Small', 'Standard', 'Large'];
+const MARGIN_PX = [0, 8, 16, 28];
+
+function updateSizeLabel(){
+ document.getElementById('sizeLabel').textContent = document.getElementById('sizeSlider').value + 'px';
+}
+
+function updateMarginLabel(){
+ const idx = parseInt(document.getElementById('marginSlider').value);
+ document.getElementById('marginLabel').textContent = MARGIN_LABELS[idx];
+}
+
+document.getElementById('logoInput').addEventListener('change', e => {
+ const file = e.target.files[0];
+ if(!file) return;
+ const img = new Image();
+ img.onload = () => {
+  logoImg = img;
+  document.getElementById('logoClearBtn').style.display = 'inline-block';
+  document.getElementById('logoWarn').style.display = 'block';
+  generateQr();
+ };
+ img.src = URL.createObjectURL(file);
+});
+
+function clearLogo(){
+ logoImg = null;
+ document.getElementById('logoInput').value = '';
+ document.getElementById('logoClearBtn').style.display = 'none';
+ document.getElementById('logoWarn').style.display = 'none';
+ generateQr();
+}
+
+function drawLogoOverlay(wrap, size){
+ const canvas = wrap.querySelector('canvas');
+ if(!canvas || !logoImg) return;
+ const ctx = canvas.getContext('2d');
+ // Cap the logo at ~22% of the QR's size -- large enough to be visible, small enough
+ // to preserve the error-correction margin the QR was generated with (correctLevel M
+ // tolerates roughly up to ~15% obstruction; staying under that with room to spare).
+ const logoSize = size * 0.22;
+ const x = (size - logoSize) / 2;
+ const y = (size - logoSize) / 2;
+ // White backing plate behind the logo so it reads cleanly against the QR pattern
+ ctx.fillStyle = '#ffffff';
+ ctx.fillRect(x - 4, y - 4, logoSize + 8, logoSize + 8);
+ ctx.drawImage(logoImg, x, y, logoSize, logoSize);
+}
+
 function generateQr(){
  const raw = document.getElementById('qrInput').value.trim();
  const output = document.getElementById('qrOutput');
  const wrap = document.getElementById('qrCanvasWrap');
  if(!raw){ output.style.display = 'none'; return; }
 
+ const size = parseInt(document.getElementById('sizeSlider').value);
+ const marginIdx = parseInt(document.getElementById('marginSlider').value);
+ const marginPx = MARGIN_PX[marginIdx];
+ const fgColor = document.getElementById('fgColor').value;
+ const bgColor = document.getElementById('bgColor').value;
+
  wrap.innerHTML = ''; // clear previous QR before regenerating
+ wrap.style.padding = marginPx + 'px';
+ wrap.style.background = bgColor;
  try{
   qrInstance = new QRCode(wrap, {
    text: formatPayload(raw),
-   width: 220,
-   height: 220,
+   width: size,
+   height: size,
+   colorDark: fgColor,
+   colorLight: bgColor,
    correctLevel: QRCode.CorrectLevel.M
   });
+  if(logoImg) drawLogoOverlay(wrap, size);
   output.style.display = 'block';
  }catch(err){
   output.style.display = 'none';
@@ -220,6 +323,9 @@ function downloadQr(){
 window.switchType = switchType;
 window.downloadQr = downloadQr;
 window.generateQr = generateQr;
+window.updateSizeLabel = updateSizeLabel;
+window.updateMarginLabel = updateMarginLabel;
+window.clearLogo = clearLogo;
 </script>
 </body>
 </html>
