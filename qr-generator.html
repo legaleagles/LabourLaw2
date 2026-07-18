@@ -148,6 +148,10 @@ gtag('config', 'G-TJXHVW6XCL');
       <button class="logo-clear-btn" id="logoClearBtn" style="display:none;" onclick="clearLogo()">✕ Remove Logo</button>
       <input type="file" id="logoInput" accept="image/png,image/jpeg" style="display:none;">
     </div>
+    <div id="logoSizeRow" style="display:none;margin-top:12px;">
+      <span class="custom-lbl">Logo Size: <span id="logoSizeLabel">32%</span></span>
+      <input type="range" id="logoSizeSlider" min="10" max="45" value="32" oninput="updateLogoSizeLabel(); generateQr()">
+    </div>
     <div class="logo-warn" id="logoWarn" style="display:none;">⚠️ A logo blended into a QR code still covers part of its data. Always test-scan before printing or sharing widely.</div>
   </div>
 
@@ -261,6 +265,10 @@ function updateSizeLabel(){
  document.getElementById('sizeLabel').textContent = document.getElementById('sizeSlider').value + 'px';
 }
 
+function updateLogoSizeLabel(){
+ document.getElementById('logoSizeLabel').textContent = document.getElementById('logoSizeSlider').value + '%';
+}
+
 document.getElementById('logoInput').addEventListener('change', e => {
  const file = e.target.files[0];
  if(!file) return;
@@ -269,6 +277,7 @@ document.getElementById('logoInput').addEventListener('change', e => {
   logoDataUrl = reader.result;
   document.getElementById('logoClearBtn').style.display = 'inline-block';
   document.getElementById('logoWarn').style.display = 'block';
+  document.getElementById('logoSizeRow').style.display = 'block';
   generateQr();
  };
  reader.readAsDataURL(file);
@@ -279,6 +288,7 @@ function clearLogo(){
  document.getElementById('logoInput').value = '';
  document.getElementById('logoClearBtn').style.display = 'none';
  document.getElementById('logoWarn').style.display = 'none';
+ document.getElementById('logoSizeRow').style.display = 'none';
  generateQr();
 }
 
@@ -306,11 +316,12 @@ function generateQr(){
  };
 
  if(logoDataUrl){
+  const logoSizePct = parseInt(document.getElementById('logoSizeSlider').value) / 100;
   options.image = logoDataUrl;
   options.imageOptions = {
    crossOrigin: 'anonymous',
    margin: 4,
-   imageSize: 0.32, // proportion of the QR's total area the logo may occupy
+   imageSize: logoSizePct, // proportion of the QR's total area the logo may occupy, user-adjustable
    hideBackgroundDots: true, // lets the QR's own dot pattern flow around the logo instead of a plain box sitting on top of it
   };
  }
@@ -337,6 +348,7 @@ window.generateQr = generateQr;
 window.setDotStyle = setDotStyle;
 window.setCornerStyle = setCornerStyle;
 window.updateSizeLabel = updateSizeLabel;
+window.updateLogoSizeLabel = updateLogoSizeLabel;
 window.clearLogo = clearLogo;
 </script>
 </body>
