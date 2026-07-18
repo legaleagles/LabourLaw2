@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Government Job & LLB Eligibility Calculator | LawSticker AI</title>
+<meta name="description" content="Enter your date of birth and category to check age eligibility for UPSC, SSC CGL, IBPS PO/Clerk, TSPSC Group 1/2, LAWCET, and AIBE — free, private, always verify with the official notification.">
+<link rel="canonical" href="https://lawsticker-ai.com/eligibility-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/eligibility-calculator.html">
+<meta property="og:title" content="Free Government Job & LLB Eligibility Calculator | LawSticker AI">
+<meta property="og:description" content="Check age eligibility for UPSC, SSC, IBPS, TSPSC, LAWCET, AIBE — free, private.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root {
+  --navy: #0D1117; --gold: #D4A017; --gold-l: #F5D76E; --cream: #FEFCF5;
+  --silver: #8B95A8; --ink: #1A1208; --jade: #10B981; --jade-bg: #ECFDF5;
+  --jade-border: #A7F3D0; --rose:#DC2626; --rose-bg:#FEF2F2; --amber:#D97706; --amber-bg:#FFFBEB; --amber-border:#FDE68A; --border: #D1D5DB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1A0A3A 100%);padding:32px 20px 26px;text-align:center;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(20px,6vw,30px);font-weight:900;color:#fff;margin-bottom:8px;}
+.hero h1 .g{color:var(--gold-l)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:440px;margin:0 auto 12px;line-height:1.65;}
+.privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.wrap{max-width:680px;margin:0 auto;padding:18px 16px 20px;}
+.master-warn{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:14px;padding:13px 15px;margin-bottom:14px;}
+.master-warn-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
+.master-warn-text{font-size:12.5px;color:#7F1D1D;line-height:1.65;}
+.input-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;}
+.input-row{margin-bottom:12px;}
+.input-row:last-child{margin-bottom:0;}
+.input-row label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:6px;}
+.input-row input, .input-row select{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);background:#fff;}
+.calc-btn{width:100%;padding:14px;background:var(--navy);color:var(--gold-l);border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:16px;}
+.error-box{background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:12px;padding:12px;margin-top:14px;color:#991B1B;font-size:12.5px;font-weight:700;text-align:center;display:none;}
+.results-wrap{margin-top:16px;display:none;}
+.age-display{background:var(--jade-bg);border:1.5px solid var(--jade-border);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px;}
+.age-display-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#065F46;}
+.scheme-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.scheme-card.eligible{border-color:var(--jade-border);}
+.scheme-card.ineligible{border-color:#FECACA;}
+.scheme-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.scheme-name{font-size:14px;font-weight:800;color:var(--ink);}
+.scheme-badge{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:8px;}
+.scheme-badge.yes{background:var(--jade-bg);color:#065F46;}
+.scheme-badge.no{background:var(--rose-bg);color:#991B1B;}
+.scheme-badge.check{background:var(--amber-bg);color:#78350F;}
+.scheme-detail{font-size:12px;color:var(--silver);line-height:1.6;}
+.scheme-detail b{color:var(--ink);}
+.verify-note{font-size:10.5px;color:#B45309;background:var(--amber-bg);padding:6px 9px;border-radius:8px;margin-top:8px;line-height:1.5;}
+.info-strip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.info-strip-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;}
+.info-strip-text{font-size:12px;color:var(--ink);line-height:1.6;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);border-top:1px solid rgba(255,255,255,.08);padding:8px 0 12px;display:flex;justify-content:space-around;z-index:100;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;}
+.bn-icon{font-size:20px;}
+.bn-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;}
+.bn-lbl.active{color:rgba(201,162,39,.85);}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="https://lawsticker-ai.com/tools.html">← Tools</a>
+  <a class="nav-brand" href="https://lawsticker-ai.com/tools.html">🛠️ Tools</a>
+  <span style="width:60px;"></span>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
+  <h1>Govt Job &amp; LLB <span class="g">Eligibility Calculator</span></h1>
+  <div class="hero-sub">Enter your date of birth and category to check age eligibility across UPSC, SSC CGL, IBPS, TSPSC, LAWCET, and AIBE — all at once.</div>
+  <div class="privacy-badge">🔒 100% in-browser — nothing you enter is ever sent anywhere</div>
+</div>
+<div class="wrap">
+
+  <div class="master-warn">
+    <div class="master-warn-title">⚠️ Read This Before You Rely On The Result</div>
+    <div class="master-warn-text">Age rules change with EVERY new exam notification and are set independently by each conducting body. This tool reflects rules researched as of mid-2026 and is a planning aid, NOT a substitute for the official notification of the specific exam year you're applying to. Where we could not confirm exact figures with confidence, we say so explicitly rather than guess.</div>
+  </div>
+
+  <div class="input-card">
+    <div class="input-row">
+      <label>Date of Birth</label>
+      <input type="date" id="dobInput">
+    </div>
+    <div class="input-row">
+      <label>Category</label>
+      <select id="categorySelect">
+        <option value="general">General / EWS</option>
+        <option value="obc">OBC (Non-Creamy Layer)</option>
+        <option value="scst">SC / ST</option>
+      </select>
+    </div>
+    <div class="input-row">
+      <label>Check Age As Of</label>
+      <input type="date" id="asOfInput">
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="checkEligibility()">📋 Check My Eligibility</button>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="results-wrap" id="resultsWrap">
+    <div class="age-display">
+      <div class="age-display-num" id="ageDisplayNum">—</div>
+    </div>
+    <div id="schemeResults"></div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-strip-title">Sources &amp; Method</div>
+    <div class="info-strip-text">Age is calculated as of the date you specify (most exams use 1st August of the exam year, or the notification's own cutoff — always confirm the exact date from the official notification). Category relaxations shown are the STANDARD relaxation for that category on the GENERAL upper limit; some exams also offer PwBD, ex-servicemen, and other relaxations not shown here — check the official notification for your specific situation.</div>
+  </div>
+
+</div>
+<div class="bottom-nav">
+  <a class="bn" href="https://lawsticker-ai.com"><span class="bn-icon">🏠</span><span class="bn-lbl">Home</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/tools.html"><span class="bn-icon">🛠️</span><span class="bn-lbl active">Tools</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/subjects.html"><span class="bn-icon">🎓</span><span class="bn-lbl">LLB Study</span></a>
+  <a class="bn" href="https://lawsticker-ai.com/aibe.html"><span class="bn-icon">⚖️</span><span class="bn-lbl">AIBE</span></a>
+</div>
+
+<script>
+// Set "as of" default to today
+(function(){
+ const today = new Date();
+ document.getElementById('asOfInput').value = today.toISOString().split('T')[0];
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// SCHEME DATA -- researched from multiple current (2026) sources,
+// cross-checked for agreement. Where sources disagreed or a figure
+// could not be confirmed with confidence, that is marked explicitly
+// with confirmed:false rather than guessed at.
+// ═══════════════════════════════════════════════════════════════
+const SCHEMES = [
+ {
+  name: 'UPSC Civil Services (IAS/IPS/IFS)',
+  minAge: 21,
+  maxAge: { general: 32, obc: 35, scst: 37 },
+  confirmed: true,
+  note: 'Cutoff is 1st August of the exam year. General/EWS: 6 attempts. OBC: 9 attempts. SC/ST: unlimited attempts within the age limit.'
+ },
+ {
+  name: 'SSC CGL',
+  minAge: 18,
+  maxAgeRange: true, // signals: show a range, not one number, per user decision
+  rangeText: '18 to 27–32 (varies by specific post)',
+  confirmed: false,
+  note: "The age limit for SSC CGL is set PER POST, not one number for the whole exam — different posts within the same notification carry different ceilings. OBC gets +3 years, SC/ST gets +5 years, added to whichever post's base limit applies. Check the specific post you're targeting in the official notification."
+ },
+ {
+  name: 'IBPS PO (Bank Probationary Officer)',
+  minAge: 20,
+  maxAge: { general: 30, obc: 33, scst: 35 },
+  confirmed: true,
+  note: 'Cutoff typically 1st August of the exam year. No fixed attempt limit — you may apply as long as you meet the age criteria.'
+ },
+ {
+  name: 'IBPS Clerk',
+  minAge: 20,
+  maxAge: { general: 28, obc: 31, scst: 33 },
+  confirmed: true,
+  note: 'Same relaxation pattern as IBPS PO. No fixed attempt limit.'
+ },
+ {
+  name: 'TSPSC Group 1',
+  minAge: 18,
+  maxAge: { general: 46, obc: 46, scst: 46 },
+  confirmed: false,
+  note: 'The 18-46 range is well-confirmed for the general limit, unusually generous compared to central exams. We could NOT confidently confirm exact category-wise relaxation figures beyond this ceiling — check the official TSPSC notification for your category.'
+ },
+ {
+  name: 'TSPSC Group 2',
+  minAge: 18,
+  maxAge: { general: 44, obc: 44, scst: 44 },
+  confirmed: false,
+  note: 'Same caveat as Group 1 — category relaxation beyond this ceiling not confidently confirmed. Check the official TSPSC notification.'
+ },
+ {
+  name: 'TS LAWCET — 5-Year LLB',
+  minAge: 17,
+  maxAge: null, // no upper limit
+  confirmed: true,
+  note: 'No upper age limit, per Bar Council of India communication (26 Nov 2018) removing the earlier cap. Some older articles online incorrectly still show an upper limit — this has been removed.'
+ },
+ {
+  name: 'TS LAWCET — 3-Year LLB',
+  minAge: 21,
+  maxAge: null,
+  confirmed: true,
+  note: 'No upper age limit, same BCI ruling as the 5-year programme. Requires a completed undergraduate degree.'
+ },
+ {
+  name: 'AIBE (All India Bar Examination)',
+  minAge: null,
+  maxAge: null,
+  confirmed: true,
+  note: 'No minimum or maximum age at all — the only requirement is a completed 3-year or 5-year LLB degree and enrolment with a State Bar Council. Unlimited attempts.'
+ },
+];
+
+function calculateAgeBreakdown(dob, asOf){
+ let years = asOf.getFullYear() - dob.getFullYear();
+ let cursor = new Date(dob.getFullYear() + years, dob.getMonth(), dob.getDate());
+ if(cursor > asOf){
+  years--;
+  cursor = new Date(dob.getFullYear() + years, dob.getMonth(), dob.getDate());
+ }
+ let months = 0;
+ let nextCursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, dob.getDate());
+ while(nextCursor <= asOf){
+  months++;
+  cursor = nextCursor;
+  nextCursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, dob.getDate());
+ }
+ const days = Math.round((asOf - cursor) / 86400000);
+ return { years, months, days };
+}
+
+function checkEligibility(){
+ const dobStr = document.getElementById('dobInput').value;
+ const asOfStr = document.getElementById('asOfInput').value;
+ const category = document.getElementById('categorySelect').value;
+ const errorBox = document.getElementById('errorBox');
+ const resultsWrap = document.getElementById('resultsWrap');
+
+ errorBox.style.display = 'none';
+ resultsWrap.style.display = 'none';
+
+ if(!dobStr){ errorBox.textContent = 'Please enter your date of birth.'; errorBox.style.display = 'block'; return; }
+ if(!asOfStr){ errorBox.textContent = 'Please enter a date to check eligibility as of.'; errorBox.style.display = 'block'; return; }
+
+ const dob = new Date(dobStr + 'T00:00:00');
+ const asOf = new Date(asOfStr + 'T00:00:00');
+ if(asOf < dob){ errorBox.textContent = 'The "as of" date must be on or after your date of birth.'; errorBox.style.display = 'block'; return; }
+
+ const breakdown = calculateAgeBreakdown(dob, asOf);
+ const ageInYears = breakdown.years;
+
+ document.getElementById('ageDisplayNum').textContent = breakdown.years + ' years, ' + breakdown.months + ' months, ' + breakdown.days + ' days';
+
+ const container = document.getElementById('schemeResults');
+ container.innerHTML = '';
+
+ SCHEMES.forEach(scheme => {
+  const card = document.createElement('div');
+  let isEligible = true;
+  let reasonParts = [];
+
+  if(scheme.minAge !== null && ageInYears < scheme.minAge){
+   isEligible = false;
+   reasonParts.push('minimum age is ' + scheme.minAge);
+  }
+
+  let effectiveMax = null;
+  if(scheme.maxAgeRange){
+   // Post-dependent scheme -- don't claim yes/no, always show "check" status
+  }else if(scheme.maxAge){
+   effectiveMax = scheme.maxAge[category];
+   if(ageInYears > effectiveMax){
+    isEligible = false;
+    reasonParts.push('maximum age for your category is ' + effectiveMax);
+   }
+  }
+  // scheme.maxAge === null means no upper limit at all -- always eligible on the upper end
+
+  card.className = 'scheme-card ' + (scheme.maxAgeRange || !scheme.confirmed ? '' : (isEligible ? 'eligible' : 'ineligible'));
+
+  let badgeHtml;
+  if(scheme.maxAgeRange || !scheme.confirmed){
+   badgeHtml = '<span class="scheme-badge check">CHECK OFFICIAL SOURCE</span>';
+  }else if(isEligible){
+   badgeHtml = '<span class="scheme-badge yes">✓ ELIGIBLE (AGE)</span>';
+  }else{
+   badgeHtml = '<span class="scheme-badge no">✗ NOT ELIGIBLE</span>';
+  }
+
+  let detailText;
+  if(scheme.maxAgeRange){
+   detailText = 'Age range: ' + scheme.rangeText + '. Your age (' + ageInYears + ') may fall inside or outside this depending on the exact post.';
+  }else if(scheme.maxAge === null){
+   detailText = 'No upper age limit' + (scheme.minAge !== null ? '. Minimum age: ' + scheme.minAge : '') + '.';
+  }else{
+   detailText = 'Age range for your category: ' + (scheme.minAge !== null ? scheme.minAge : 'no minimum') + ' to ' + effectiveMax + ' years.';
+  }
+
+  card.innerHTML = `
+   <div class="scheme-header">
+     <span class="scheme-name">${scheme.name}</span>
+     ${badgeHtml}
+   </div>
+   <div class="scheme-detail">${detailText}</div>
+   <div class="scheme-detail" style="margin-top:6px;">${scheme.note}</div>
+   ${!scheme.confirmed ? '<div class="verify-note">⚠️ We could not fully confirm all figures for this scheme — please verify with the official notification before relying on this.</div>' : ''}
+  `;
+  container.appendChild(card);
+ });
+
+ resultsWrap.style.display = 'block';
+}
+
+window.checkEligibility = checkEligibility;
+</script>
+</body>
+</html>
