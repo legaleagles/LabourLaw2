@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free QR Code Generator — Instant, Private | LawSticker AI</title>
-<meta name="description" content="Generate a QR code from any text, link, or phone number — free, no upload, everything happens in your browser. Download as PNG instantly.">
+<title>Free QR Code Generator — Instant, Private, Customizable | LawSticker AI</title>
+<meta name="description" content="Generate a custom QR code from any text, link, or phone number — free, no upload. Choose dot styles, colors, and add a logo. Everything happens in your browser.">
 <link rel="canonical" href="https://lawsticker-ai.com/qr-generator.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lawsticker-ai.com/qr-generator.html">
 <meta property="og:title" content="Free QR Code Generator | LawSticker AI">
-<meta property="og:description" content="Generate a QR code instantly — free, private, in-browser.">
+<meta property="og:description" content="Generate a custom QR code instantly — free, private, in-browser.">
 <meta property="og:site_name" content="LawSticker AI">
 <meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,16 +38,21 @@ nav{background:var(--navy);padding:14px 20px;display:flex;align-items:center;jus
 .type-tab.active{background:var(--navy);color:var(--gold-l);}
 .input-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;}
 .input-card label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:6px;}
+.input-card input{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);}
 .custom-row{display:flex;gap:12px;}
 .custom-field{flex:1;display:flex;flex-direction:column;gap:4px;}
 .custom-field-wide{flex:1;display:flex;flex-direction:column;gap:6px;}
 .custom-lbl{font-size:11.5px;font-weight:700;color:var(--ink);}
 .custom-field input[type=color]{width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;}
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px;}
+.style-opt{border:1.5px solid var(--border);border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;background:#fff;}
+.style-opt.active{border-color:var(--navy);background:var(--jade-bg);}
+.style-opt-icon{font-size:18px;}
+.style-opt-lbl{font-size:9.5px;font-weight:700;color:var(--ink);margin-top:2px;}
 .logo-row{display:flex;gap:8px;margin-top:14px;}
 .logo-btn{flex:1;padding:10px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);}
 .logo-clear-btn{padding:10px 14px;background:var(--rose-bg);border:1.5px solid #FECACA;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--rose);}
 .logo-warn{margin-top:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:9px 11px;font-size:11px;color:#78350F;line-height:1.5;}
-.input-card input{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink);}
 .qr-output{text-align:center;margin-top:16px;}
 .qr-canvas-wrap{display:inline-block;background:white;padding:16px;border-radius:16px;border:1px solid var(--border);min-height:80px;}
 .qr-actions{display:flex;gap:8px;margin-top:14px;}
@@ -84,7 +89,7 @@ gtag('config', 'G-TJXHVW6XCL');
 <div class="hero">
   <div class="hero-eyebrow">Free Tool · No Sign-Up</div>
   <h1>QR Code <span class="g">Generator</span></h1>
-  <div class="hero-sub">Create a QR code for a link, text, or phone number — instantly, right here.</div>
+  <div class="hero-sub">Create a custom QR code — pick a dot style, colors, and even blend in your logo.</div>
   <div class="privacy-badge">🔒 100% in-browser — nothing you type is ever sent anywhere</div>
 </div>
 
@@ -105,8 +110,24 @@ gtag('config', 'G-TJXHVW6XCL');
   </div>
 
   <div class="input-card" style="margin-top:12px;">
-    <label>Customize</label>
-    <div class="custom-row">
+    <label>Dot Style</label>
+    <div class="style-grid" id="dotStyleGrid">
+      <div class="style-opt active" data-style="square" onclick="setDotStyle('square', this)"><div class="style-opt-icon">▪️</div><div class="style-opt-lbl">Square</div></div>
+      <div class="style-opt" data-style="dots" onclick="setDotStyle('dots', this)"><div class="style-opt-icon">⚫</div><div class="style-opt-lbl">Dots</div></div>
+      <div class="style-opt" data-style="rounded" onclick="setDotStyle('rounded', this)"><div class="style-opt-icon">🔲</div><div class="style-opt-lbl">Rounded</div></div>
+      <div class="style-opt" data-style="classy" onclick="setDotStyle('classy', this)"><div class="style-opt-icon">💠</div><div class="style-opt-lbl">Classy</div></div>
+      <div class="style-opt" data-style="classy-rounded" onclick="setDotStyle('classy-rounded', this)"><div class="style-opt-icon">🔷</div><div class="style-opt-lbl">Classy Round</div></div>
+      <div class="style-opt" data-style="extra-rounded" onclick="setDotStyle('extra-rounded', this)"><div class="style-opt-icon">⭕</div><div class="style-opt-lbl">Extra Round</div></div>
+    </div>
+
+    <label style="margin-top:14px;">Corner Style</label>
+    <div class="style-grid" id="cornerStyleGrid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="style-opt active" data-cstyle="square" onclick="setCornerStyle('square', this)"><div class="style-opt-icon">⬛</div><div class="style-opt-lbl">Square</div></div>
+      <div class="style-opt" data-cstyle="dot" onclick="setCornerStyle('dot', this)"><div class="style-opt-icon">⚫</div><div class="style-opt-lbl">Dot</div></div>
+      <div class="style-opt" data-cstyle="extra-rounded" onclick="setCornerStyle('extra-rounded', this)"><div class="style-opt-icon">⭕</div><div class="style-opt-lbl">Rounded</div></div>
+    </div>
+
+    <div class="custom-row" style="margin-top:14px;">
       <div class="custom-field">
         <span class="custom-lbl">QR Color</span>
         <input type="color" id="fgColor" value="#000000" oninput="generateQr()">
@@ -118,14 +139,8 @@ gtag('config', 'G-TJXHVW6XCL');
     </div>
     <div class="custom-row" style="margin-top:12px;">
       <div class="custom-field-wide">
-        <span class="custom-lbl">Size: <span id="sizeLabel">220px</span></span>
-        <input type="range" id="sizeSlider" min="120" max="400" value="220" oninput="updateSizeLabel(); generateQr()">
-      </div>
-    </div>
-    <div class="custom-row" style="margin-top:12px;">
-      <div class="custom-field-wide">
-        <span class="custom-lbl">Margin: <span id="marginLabel">Standard</span></span>
-        <input type="range" id="marginSlider" min="0" max="3" value="1" step="1" oninput="updateMarginLabel(); generateQr()">
+        <span class="custom-lbl">Size: <span id="sizeLabel">260px</span></span>
+        <input type="range" id="sizeSlider" min="160" max="500" value="260" oninput="updateSizeLabel(); generateQr()">
       </div>
     </div>
     <div class="logo-row">
@@ -133,7 +148,7 @@ gtag('config', 'G-TJXHVW6XCL');
       <button class="logo-clear-btn" id="logoClearBtn" style="display:none;" onclick="clearLogo()">✕ Remove Logo</button>
       <input type="file" id="logoInput" accept="image/png,image/jpeg" style="display:none;">
     </div>
-    <div class="logo-warn" id="logoWarn" style="display:none;">⚠️ A logo covers part of the QR code. Always test-scan before printing or sharing widely — very large logos can make a code unreadable.</div>
+    <div class="logo-warn" id="logoWarn" style="display:none;">⚠️ A logo blended into a QR code still covers part of its data. Always test-scan before printing or sharing widely.</div>
   </div>
 
   <div class="qr-output" id="qrOutput" style="display:none;">
@@ -145,7 +160,7 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <div class="info-strip">
     <div class="info-strip-title">Tips</div>
-    <div class="info-strip-text">Test your QR code with a phone camera before printing or sharing it widely. Longer text/links create a denser code — for very long text, consider using a link shortener first.</div>
+    <div class="info-strip-text">Test your QR code with a phone camera before printing or sharing it widely. Fancier dot styles and logos look great but can reduce scan reliability on cheaper camera apps — if in doubt, Square dots with no logo is the most universally reliable option.</div>
   </div>
 
 </div>
@@ -159,10 +174,10 @@ gtag('config', 'G-TJXHVW6XCL');
 </div>
 
 <script>
-// qrcode.js (davidshimjs) -- a small, widely-used, battle-tested open-source QR library.
-// Loaded dynamically, same pattern as pdf-lib/pdf.js elsewhere on this site, so a load
-// failure shows a clear error instead of a blank page.
-const QR_LIB_URL = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+// qr-code-styling -- a well-established, widely-used open-source library that supports
+// module-level dot/corner shape rendering and image blending natively (unlike the
+// previous simpler QR library used here, which only rendered a fixed square grid).
+const QR_LIB_URL = 'https://cdnjs.cloudflare.com/ajax/libs/qr-code-styling/1.6.0-rc.1/qr-code-styling.js';
 
 function loadScript(src){
  return new Promise((resolve, reject) => {
@@ -179,7 +194,7 @@ async function initApp(){
  const bodyEl = document.getElementById('appBody');
  try{
   await loadScript(QR_LIB_URL);
-  if(typeof QRCode === 'undefined'){
+  if(typeof QRCodeStyling === 'undefined'){
    throw new Error('QR library loaded but did not initialize correctly.');
   }
   statusEl.className = 'lib-status ok';
@@ -199,7 +214,11 @@ function escapeHtml(s){
 initApp();
 
 let currentType = 'url';
-let qrInstance = null;
+let qrCodeInstance = null;
+let logoDataUrl = null;
+let dotStyle = 'square';
+let cornerStyle = 'square';
+
 const TYPE_CONFIG = {
  url: { label: 'Website / Link', placeholder: 'https://example.com' },
  text: { label: 'Plain Text', placeholder: 'Any text you want to encode' },
@@ -224,55 +243,43 @@ function formatPayload(raw){
  return raw;
 }
 
-let logoImg = null;
+function setDotStyle(style, el){
+ dotStyle = style;
+ document.querySelectorAll('#dotStyleGrid .style-opt').forEach(o => o.classList.remove('active'));
+ if(el) el.classList.add('active');
+ generateQr();
+}
 
-const MARGIN_LABELS = ['None', 'Small', 'Standard', 'Large'];
-const MARGIN_PX = [0, 8, 16, 28];
+function setCornerStyle(style, el){
+ cornerStyle = style;
+ document.querySelectorAll('#cornerStyleGrid .style-opt').forEach(o => o.classList.remove('active'));
+ if(el) el.classList.add('active');
+ generateQr();
+}
 
 function updateSizeLabel(){
  document.getElementById('sizeLabel').textContent = document.getElementById('sizeSlider').value + 'px';
 }
 
-function updateMarginLabel(){
- const idx = parseInt(document.getElementById('marginSlider').value);
- document.getElementById('marginLabel').textContent = MARGIN_LABELS[idx];
-}
-
 document.getElementById('logoInput').addEventListener('change', e => {
  const file = e.target.files[0];
  if(!file) return;
- const img = new Image();
- img.onload = () => {
-  logoImg = img;
+ const reader = new FileReader();
+ reader.onload = () => {
+  logoDataUrl = reader.result;
   document.getElementById('logoClearBtn').style.display = 'inline-block';
   document.getElementById('logoWarn').style.display = 'block';
   generateQr();
  };
- img.src = URL.createObjectURL(file);
+ reader.readAsDataURL(file);
 });
 
 function clearLogo(){
- logoImg = null;
+ logoDataUrl = null;
  document.getElementById('logoInput').value = '';
  document.getElementById('logoClearBtn').style.display = 'none';
  document.getElementById('logoWarn').style.display = 'none';
  generateQr();
-}
-
-function drawLogoOverlay(wrap, size){
- const canvas = wrap.querySelector('canvas');
- if(!canvas || !logoImg) return;
- const ctx = canvas.getContext('2d');
- // Cap the logo at ~22% of the QR's size -- large enough to be visible, small enough
- // to preserve the error-correction margin the QR was generated with (correctLevel M
- // tolerates roughly up to ~15% obstruction; staying under that with room to spare).
- const logoSize = size * 0.22;
- const x = (size - logoSize) / 2;
- const y = (size - logoSize) / 2;
- // White backing plate behind the logo so it reads cleanly against the QR pattern
- ctx.fillStyle = '#ffffff';
- ctx.fillRect(x - 4, y - 4, logoSize + 8, logoSize + 8);
- ctx.drawImage(logoImg, x, y, logoSize, logoSize);
 }
 
 function generateQr(){
@@ -282,24 +289,36 @@ function generateQr(){
  if(!raw){ output.style.display = 'none'; return; }
 
  const size = parseInt(document.getElementById('sizeSlider').value);
- const marginIdx = parseInt(document.getElementById('marginSlider').value);
- const marginPx = MARGIN_PX[marginIdx];
  const fgColor = document.getElementById('fgColor').value;
  const bgColor = document.getElementById('bgColor').value;
 
- wrap.innerHTML = ''; // clear previous QR before regenerating
- wrap.style.padding = marginPx + 'px';
- wrap.style.background = bgColor;
+ const options = {
+  width: size,
+  height: size,
+  type: 'canvas',
+  data: formatPayload(raw),
+  margin: 8,
+  qrOptions: { errorCorrectionLevel: logoDataUrl ? 'H' : 'M' }, // higher error correction when a logo will cover part of the code
+  dotsOptions: { color: fgColor, type: dotStyle },
+  cornersSquareOptions: { color: fgColor, type: cornerStyle },
+  cornersDotOptions: { color: fgColor },
+  backgroundOptions: { color: bgColor },
+ };
+
+ if(logoDataUrl){
+  options.image = logoDataUrl;
+  options.imageOptions = {
+   crossOrigin: 'anonymous',
+   margin: 4,
+   imageSize: 0.32, // proportion of the QR's total area the logo may occupy
+   hideBackgroundDots: true, // lets the QR's own dot pattern flow around the logo instead of a plain box sitting on top of it
+  };
+ }
+
  try{
-  qrInstance = new QRCode(wrap, {
-   text: formatPayload(raw),
-   width: size,
-   height: size,
-   colorDark: fgColor,
-   colorLight: bgColor,
-   correctLevel: QRCode.CorrectLevel.M
-  });
-  if(logoImg) drawLogoOverlay(wrap, size);
+  wrap.innerHTML = '';
+  qrCodeInstance = new QRCodeStyling(options);
+  qrCodeInstance.append(wrap);
   output.style.display = 'block';
  }catch(err){
   output.style.display = 'none';
@@ -308,23 +327,16 @@ function generateQr(){
 }
 
 function downloadQr(){
- const wrap = document.getElementById('qrCanvasWrap');
- const canvas = wrap.querySelector('canvas');
- if(!canvas) return;
- const url = canvas.toDataURL('image/png');
- const a = document.createElement('a');
- a.href = url;
- a.download = 'qrcode.png';
- document.body.appendChild(a);
- a.click();
- document.body.removeChild(a);
+ if(!qrCodeInstance) return;
+ qrCodeInstance.download({ name: 'qrcode', extension: 'png' });
 }
 
 window.switchType = switchType;
 window.downloadQr = downloadQr;
 window.generateQr = generateQr;
+window.setDotStyle = setDotStyle;
+window.setCornerStyle = setCornerStyle;
 window.updateSizeLabel = updateSizeLabel;
-window.updateMarginLabel = updateMarginLabel;
 window.clearLogo = clearLogo;
 </script>
 </body>
