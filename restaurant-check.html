@@ -851,15 +851,49 @@ function updateItemSumDisplay(){
 // current Items Total -- the user never types a GST amount by hand, since that text box
 // was error-prone (OCR sometimes captured the wrong number into it, and manual entry is
 // easy to fat-finger). CGST and SGST are always exactly half the total slab rate.
+// Computes CGST/SGST TWO different correct ways, since which one is right depends on
+// whether GST is added on top of the items total or already folded into it -- these are
+// genuinely different formulas, not the same math applied twice:
+//   - ADDED ON TOP: the items total IS the pre-tax (taxable) amount, so tax is simply
+//     itemSum x rate. This is the straightforward case.
+//   - ALREADY INCLUDED: the items total is a POST-tax amount that already contains the
+//     tax within it. You cannot just multiply the inclusive total by the rate -- that
+//     double-counts, since a percentage of a tax-inclusive figure isn't the same as a
+//     percentage of the pre-tax figure. The tax must be backed OUT first, using
+//     Taxable = Total / (1 + rate), then Tax = Total - Taxable. This distinction was
+//     missing before, and is exactly why a real bill (Taxable 223.86, not 235) produced
+//     a wrong 5.88 instead of matching the bill's own printed 5.57.
+function computeGstBothWays(itemSum, slabRatePct){
+ const rate = slabRatePct / 100;
+
+ // Case A: GST added on top -- itemSum is already the pre-tax base
+ const addedOnTopTax = itemSum * rate;
+ const addedOnTopCgst = addedOnTopTax / 2;
+ const addedOnTopSgst = addedOnTopTax / 2;
+
+ // Case B: GST already included -- back the tax OUT of the inclusive total
+ const includedTaxableBase = itemSum / (1 + rate);
+ const includedTax = itemSum - includedTaxableBase;
+ const includedCgst = includedTax / 2;
+ const includedSgst = includedTax / 2;
+
+ return {
+  addedOnTop: { cgst: addedOnTopCgst, sgst: addedOnTopSgst, tax: addedOnTopTax, taxableBase: itemSum },
+  included: { cgst: includedCgst, sgst: includedSgst, tax: includedTax, taxableBase: includedTaxableBase },
+ };
+}
+
 function onGstSlabChange(){
  const slabInput = document.querySelector('input[name="gst-slab"]:checked');
  const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
  const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
- const halfRate = slabRate / 2;
- const cgst = itemSum * halfRate / 100;
- const sgst = itemSum * halfRate / 100;
- document.getElementById('cart-cgst').value = cgst.toFixed(2);
- document.getElementById('cart-sgst').value = sgst.toFixed(2);
+ // The CGST/SGST fields shown while editing use the "added on top" numbers as the
+ // default working figures (completeCart() below computes and displays BOTH cases
+ // correctly regardless of what's shown here) -- this is just the live preview while
+ // still building the cart.
+ const both = computeGstBothWays(itemSum, slabRate);
+ document.getElementById('cart-cgst').value = both.addedOnTop.cgst.toFixed(2);
+ document.getElementById('cart-sgst').value = both.addedOnTop.sgst.toFixed(2);
 }
 
 function completeCart(){
@@ -871,17 +905,14 @@ function completeCart(){
  const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
  const slabInput = document.querySelector('input[name="gst-slab"]:checked');
  const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
- const cgst = parseFloat(document.getElementById('cart-cgst').value) || 0;
- const sgst = parseFloat(document.getElementById('cart-sgst').value) || 0;
- const gstAmount = cgst + sgst;
  const scCharged = parseFloat(document.getElementById('cart-sc').value) || 0;
+ const both = computeGstBothWays(itemSum, slabRate);
 
- // The tool doesn't ask the user to pre-decide whether GST is already inside the item
- // prices or added on top -- that's exactly the ambiguity that confused people. Instead,
- // BOTH possibilities are calculated and shown side by side, so the person can compare
- // either one against their bill's own printed final total and see immediately which one
- // matches -- no prior knowledge required.
- const totalIfAdded = itemSum + gstAmount + scCharged;
+ // Each interpretation gets its OWN correctly-derived tax breakdown -- "added on top"
+ // uses itemSum as the pre-tax base directly; "already included" backs the tax OUT of
+ // itemSum first (Taxable = Total / (1+rate)), since applying the rate directly to an
+ // already-inclusive total would double-count, which was the actual bug reported.
+ const totalIfAdded = itemSum + both.addedOnTop.tax + scCharged;
  const totalIfIncluded = itemSum + scCharged; // GST already inside itemSum in this case
 
  const verdictBox = document.getElementById('verdictSection');
@@ -890,14 +921,19 @@ function completeCart(){
  html += `<div style="background:#fff;border:1.5px solid var(--light);border-radius:14px;padding:14px;margin-bottom:10px;">
    <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Summary</div>
    <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Items Total</span><span style="font-weight:700;">₹${itemSum.toFixed(2)}</span></div>
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">GST (${slabRate}% = CGST ₹${cgst.toFixed(2)} + SGST ₹${sgst.toFixed(2)})</span><span style="font-weight:700;">₹${gstAmount.toFixed(2)}</span></div>
    ${scCharged > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Service Charge</span><span style="font-weight:700;">₹${scCharged.toFixed(2)}</span></div>` : ''}
  </div>`;
 
  html += `<div style="background:var(--teal-pale);border:1.5px solid var(--teal);border-radius:14px;padding:14px;margin-bottom:10px;">
    <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Compare Against Your Bill's Printed Total</div>
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--light);"><span>If GST is <b>added on top</b> of items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfAdded.toFixed(2)}</span></div>
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;"><span>If GST is <b>already included</b> in items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfIncluded.toFixed(2)}</span></div>
+   <div style="padding:8px 0;border-bottom:1px dashed var(--light);">
+     <div style="display:flex;justify-content:space-between;font-size:13px;"><span>If GST is <b>added on top</b> of items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfAdded.toFixed(2)}</span></div>
+     <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">Taxable base ₹${both.addedOnTop.taxableBase.toFixed(2)} → CGST ₹${both.addedOnTop.cgst.toFixed(2)} + SGST ₹${both.addedOnTop.sgst.toFixed(2)}</div>
+   </div>
+   <div style="padding:8px 0;">
+     <div style="display:flex;justify-content:space-between;font-size:13px;"><span>If GST is <b>already included</b> in items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfIncluded.toFixed(2)}</span></div>
+     <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">Taxable base ₹${both.included.taxableBase.toFixed(2)} → CGST ₹${both.included.cgst.toFixed(2)} + SGST ₹${both.included.sgst.toFixed(2)} (backed out of the ₹${itemSum.toFixed(2)} total, not added on top of it)</div>
+   </div>
    <div style="font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5;">Look at the FINAL total printed on your actual bill — whichever of the two numbers above it matches tells you which case applies. That's the correct total; the other one doesn't apply to this bill.</div>
  </div>`;
 
