@@ -1287,6 +1287,23 @@ buildExplainer();
 fetchGlobalVisits();
 </script>
 <script>
+/* Pull today's gold/silver rate from shared site-config.json (updated via hidden admin page).
+   Silently keeps the hardcoded default if the fetch fails — never blocks the calculator. */
+document.addEventListener('DOMContentLoaded',function(){
+  fetch('site-config.json').then(function(r){return r.json();}).then(function(cfg){
+    var g = cfg && cfg.rates && cfg.rates.gold_24k_per_gram_inr;
+    var s = cfg && cfg.rates && cfg.rates.silver_999_per_gram_inr;
+    var gEl = document.getElementById('g-rate');
+    var sEl = document.getElementById('s-rate');
+    if(g && gEl) gEl.value = g;
+    if(s && sEl) sEl.value = s;
+    if((g && gEl) || (s && sEl)){
+      try{ if(typeof calcGold==='function') calcGold(); }catch(e){}
+    }
+  }).catch(function(){ /* keep hardcoded defaults, no error shown to user */ });
+});
+</script>
+<script>
 /* Language persistence — remembers choice across all pages */
 document.addEventListener('DOMContentLoaded',function(){
  try{
