@@ -39,13 +39,17 @@ hr{border:none;border-top:1px dashed var(--border);margin:12px 0;}
 <div class="sub">Hidden admin page — not linked anywhere on the site. Update daily rates or other config values here; changes save directly to the live site.</div>
 
 <div class="warn-box">
-  Your GitHub token is used only in this browser tab and is never saved anywhere — you'll need to paste it again each time you visit. Use a token scoped to <b>this one repo, Contents: Read & Write only</b>, and revoke/rotate it periodically.
+  Your GitHub token is used only in this browser tab and is never saved anywhere — you'll need to paste it again each time you visit. Use a token scoped to <b>this one repo, Contents: Read & Write only</b>, and revoke/rotate it periodically. If you tick "Remember on this device," the token is saved in this browser's local storage only (never sent to the site itself or seen by visitors) — only do this on a device you trust, since anyone with access to this browser could reuse it.
 </div>
 
 <div class="card">
   <label>GitHub Token</label>
   <input type="password" id="pat" placeholder="github_pat_...">
+  <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-weight:600;margin-bottom:10px">
+    <input type="checkbox" id="remember-tog" style="width:auto;margin:0"> Remember on this device (saved only in this browser, never on the site)
+  </label>
   <button class="btn-primary" onclick="loadConfig()">Load Current Config</button>
+  <button style="background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose)" onclick="forgetToken()">Forget saved token</button>
   <div class="msg" id="load-msg"></div>
 </div>
 
@@ -76,10 +80,12 @@ const CONFIG_ITEMS = [
       const usdPerOz = gold.price;
       const usdToInr = fx.rates.INR;
       const gramsPerOz = 31.1034768;
-      const inrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
-      return Math.round(inrPerGram);
+      const spotInrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
+      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.india_premium_pct) || 15;
+      const adjusted = spotInrPerGram * (1 + premiumPct / 100);
+      return Math.round(adjusted);
     },
-    fetchNote: 'This is the international spot price converted to INR — it will not exactly match local jeweller association rates (which include import duty and local premium). Always cross-check before saving.'
+    fetchNote: 'International spot price + India import duty/premium adjustment (currently applied automatically). Still cross-check against GoodReturns — the adjustment is approximate and local dealer margins vary.'
   },
   {
     key: 'rates.silver_999_per_gram_inr',
@@ -97,10 +103,21 @@ const CONFIG_ITEMS = [
       const usdPerOz = silver.price;
       const usdToInr = fx.rates.INR;
       const gramsPerOz = 31.1034768;
-      const inrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
-      return Math.round(inrPerGram);
+      const spotInrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
+      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.india_premium_pct) || 15;
+      const adjusted = spotInrPerGram * (1 + premiumPct / 100);
+      return Math.round(adjusted);
     },
-    fetchNote: 'International spot price converted to INR — cross-check against local retail rate before saving.'
+    fetchNote: 'International spot price + India import duty/premium adjustment. Cross-check against local retail rate before saving.'
+  },
+  {
+    key: 'rates.india_premium_pct',
+    label: 'India Duty/Premium Adjustment (%)',
+    unit: '%',
+    crossCheckUrl: 'https://www.gold.org/goldhub',
+    crossCheckLabel: 'World Gold Council (duty news) →',
+    autoFetch: null,
+    fetchNote: 'Manual only — this is the % added to international spot price to approximate local retail rate. As of mid-2026, India\\'s gold import duty is 15% (raised from 6% in May 2026). Update this if the duty changes again; it affects the gold/silver auto-fetch above immediately.'
   }
 ];
 
@@ -122,15 +139,17 @@ function setByPath(obj, path, val){
 
 function renderItems(){
   const box = document.getElementById('items');
+  const updatedAt = liveConfig && liveConfig.rates && liveConfig.rates.updated_at;
   box.innerHTML = CONFIG_ITEMS.map((item, i) => {
     const currentVal = liveConfig ? getByPath(liveConfig, item.key) : null;
     return `
     <div class="card">
       <h2>${item.label}</h2>
       <div class="current">Current live value: <b>${currentVal !== null && currentVal !== undefined ? currentVal + ' ' + item.unit : '(load config first)'}</b></div>
+      ${updatedAt ? `<div class="current">Last refreshed: <b>${new Date(updatedAt).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</b></div>` : ''}
       <label>New value</label>
       <input type="number" id="val-${i}" placeholder="Enter or auto-fetch">
-      <button class="btn-fetch" onclick="doFetch(${i})">🔄 Auto-fetch</button>
+      ${item.autoFetch ? `<button class="btn-fetch" onclick="doFetch(${i})">🔄 Auto-fetch</button>` : ''}
       <button class="btn-save" onclick="doSave(${i})">💾 Save to Site</button>
       <div><a class="xlink" href="${item.crossCheckUrl}" target="_blank">${item.crossCheckLabel}</a></div>
       <div class="msg" id="msg-${i}"></div>
@@ -138,6 +157,34 @@ function renderItems(){
   }).join('');
 }
 renderItems();
+
+// ── Remember token on this device (opt-in, localStorage only, never sent to the site) ──
+(function(){
+  const saved = localStorage.getItem('lsAdminPat');
+  if(saved){
+    document.getElementById('pat').value = saved;
+    document.getElementById('remember-tog').checked = true;
+  }
+})();
+document.getElementById('pat').addEventListener('input', function(){
+  if(document.getElementById('remember-tog').checked){
+    localStorage.setItem('lsAdminPat', this.value);
+  }
+});
+document.getElementById('remember-tog').addEventListener('change', function(){
+  if(this.checked){
+    localStorage.setItem('lsAdminPat', document.getElementById('pat').value);
+  } else {
+    localStorage.removeItem('lsAdminPat');
+  }
+});
+function forgetToken(){
+  localStorage.removeItem('lsAdminPat');
+  document.getElementById('pat').value = '';
+  document.getElementById('remember-tog').checked = false;
+  const m = document.getElementById('load-msg');
+  m.className = 'msg ok'; m.textContent = 'Saved token cleared from this device.';
+}
 
 async function loadConfig(){
   const m = document.getElementById('load-msg');
