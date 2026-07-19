@@ -81,11 +81,11 @@ const CONFIG_ITEMS = [
       const usdToInr = fx.rates.INR;
       const gramsPerOz = 31.1034768;
       const spotInrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
-      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.india_premium_pct) || 15;
+      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.gold_india_premium_pct) || 15;
       const adjusted = spotInrPerGram * (1 + premiumPct / 100);
       return Math.round(adjusted);
     },
-    fetchNote: 'International spot price + India import duty/premium adjustment (currently applied automatically). Still cross-check against GoodReturns — the adjustment is approximate and local dealer margins vary.'
+    fetchNote: 'International spot price + India gold duty/premium adjustment. Still cross-check against GoodReturns — the adjustment is approximate and local dealer margins vary day to day.'
   },
   {
     key: 'rates.silver_999_per_gram_inr',
@@ -104,20 +104,29 @@ const CONFIG_ITEMS = [
       const usdToInr = fx.rates.INR;
       const gramsPerOz = 31.1034768;
       const spotInrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
-      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.india_premium_pct) || 15;
+      const premiumPct = (liveConfig && liveConfig.rates && liveConfig.rates.silver_india_premium_pct) || 32;
       const adjusted = spotInrPerGram * (1 + premiumPct / 100);
       return Math.round(adjusted);
     },
-    fetchNote: 'International spot price + India import duty/premium adjustment. Cross-check against local retail rate before saving.'
+    fetchNote: 'International spot price + India silver duty/premium adjustment. Silver typically carries a higher local premium than gold — cross-check against local retail rate before saving.'
   },
   {
-    key: 'rates.india_premium_pct',
-    label: 'India Duty/Premium Adjustment (%)',
+    key: 'rates.gold_india_premium_pct',
+    label: 'Gold: India Duty/Premium Adjustment (%)',
     unit: '%',
     crossCheckUrl: 'https://www.gold.org/goldhub',
     crossCheckLabel: 'World Gold Council (duty news) →',
     autoFetch: null,
-    fetchNote: 'Manual only — this is the % added to international spot price to approximate local retail rate. As of mid-2026, the gold import duty in India is 15% (raised from 6% in May 2026). Update this if the duty changes again; it affects the gold/silver auto-fetch above immediately.'
+    fetchNote: 'Manual only — the % added on top of international spot price for gold, to approximate the local retail rate. As of mid-2026, the gold import duty in India is 15% (raised from 6% in May 2026), which is the main driver of this number. If the auto-fetched gold price above keeps landing too high or too low compared to GoodReturns, adjust this number until it matches — that fixes the auto-fetch for every future day, not just today.'
+  },
+  {
+    key: 'rates.silver_india_premium_pct',
+    label: 'Silver: India Duty/Premium Adjustment (%)',
+    unit: '%',
+    crossCheckUrl: 'https://www.goodreturns.in/silver-rates/',
+    crossCheckLabel: 'Check GoodReturns →',
+    autoFetch: null,
+    fetchNote: 'Manual only — silver carries the same 15% customs duty as gold, but usually an extra local market premium on top (thinner physical market, more volatile). Currently set higher than gold to compensate. If auto-fetched silver keeps landing low (as it did today), raise this number a bit; if it lands high, lower it.'
   }
 ];
 
