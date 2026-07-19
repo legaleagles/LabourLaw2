@@ -606,14 +606,16 @@ const T = {
       ['Never reveal budget','Say "what can I get for ₹X" not "I have ₹X to spend" — the second locks you in.'],
     ],
     moves:{
-      makingHigh:(ctx,l)=>({title:`Cut Making from ${ctx.makingPct}% → 8%`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`You're paying ${ctx.makingPct}% — above average. Market norm is 8–12%. Mentioning competitor rates almost always brings it down.`,script:`"I checked — making charge in this area is around 8%. Can you match that? I'm ready to buy today."`}),
-      makingMed:(ctx,l)=>({title:`Push Making from ${ctx.makingPct}% → 5%`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`5% is achievable for plain designs (chains, bangles). Ask if the design is standard.`,script:`"Is this a standard design? I've seen 5% making for plain pieces elsewhere. Can you match that?"`}),
+      makingHigh:(ctx,l)=>({title:`Cut Making from ${ctx.makingPct}% → 10%`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`You're paying ${ctx.makingPct}% — above the normal 8–12% market range. Mentioning competitor rates almost always brings it down.`,script:`"I checked — making charge in this area is around 8–10%. Can you match that? I'm ready to buy today."`}),
+      makingFair:(ctx,l)=>({title:`${ctx.makingPct}% Is Already Within Market Norm`,saving:0,desc:`Market norm for making/VA is 8–12%, and ${ctx.makingPct}% sits inside that — often a fixed festival/scheme rate. Pushing for 5% usually won't work. Better ask: free hallmarking, waived making on old-gold exchange, or a small gift instead.`,script:`"Your making charge is already fair. Since I'm buying today, can you throw in free hallmarking or waive making on my old-gold exchange instead?"`}),
+      makingGood:(ctx,l)=>({title:`${ctx.makingPct}% Is Already a Strong Rate`,saving:0,desc:`${ctx.makingPct}% is at or below the typical 8–12% range — little room to push lower. Spend your energy verifying instead: BIS hallmark, purity stamp, itemised bill.`,script:`"This rate looks fair. Can you give me an itemised bill showing gold value, making, and GST separately, and confirm the BIS hallmark number?"`}),
       wastage:(ctx,l)=>({title:`Challenge the Wastage (${ctx.wastagePct}%)`,saving:ctx.wastageAmt,desc:`Wastage is often hidden profit. Good shops include it in making. Demand they remove wastage OR reduce making by same %.`,script:`"Most reputed jewellers include wastage inside making. Can you either remove it or reduce making by ${ctx.wastagePct}%?"`}),
       bulk:(ctx,l)=>({title:`Bulk Buyer — Ask for Flat ₹/gram Rate`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`Buying ${ctx.weight}g is significant. Switch from "% making" to "flat ₹/gram" — ₹500–600/g is often better than 8%+ on expensive gold.`,script:`"For ${ctx.weight}g today, I'd prefer ₹550/g flat making instead of percentage. Fair for both of us."`}),
       deduction:(ctx,l)=>({title:`Demand Zero Deduction on Old Gold`,saving:ctx.deductionAmt||0,desc:`If a shop offers zero deduction elsewhere, use it as leverage. Politely walk toward the door — deduction often disappears.`,script:`"Chennai Shopping Mall offers zero deduction right now. Can you match that? Otherwise I'll check there first."`}),
       cash:(ctx,l)=>({title:`Offer Cash — Unlock Informal Discount`,saving:ctx.total*0.01,desc:`Jewellers pay 1.5–2% MDR on card transactions. Cash on ₹30,000+ can unlock an informal 1% discount.`,script:`"If I pay cash today, can you give me 1% off for saving your card charges?"`}),
       freegift:(ctx,l)=>({title:`Ask for a Free Gold Coin or Gift`,saving:1500,desc:`On ₹50,000+ purchases jewellers have discretionary budgets — small gold coin (0.5–1g), silver article, or free lifetime polishing.`,script:`"I'm spending ₹${Math.round(ctx.total).toLocaleString('en-IN')} today — can you add a small gold coin as a loyalty gesture?"`}),
-      silverMaking:(ctx,l)=>({title:`Negotiate Silver Making Aggressively`,saving:ctx.baseVal*0.3,desc:`Silver making is the most negotiable charge in jewellery. 30–40% reduction is normal. Shops expect you to ask. Even ₹50/g less on 100g saves ₹5,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹${Math.max(50,ctx.makingRate-60)}/g? I'm buying ${ctx.weight}g today."`}),
+      silverMaking:(ctx,l)=>({title:`Negotiate Silver Making from ₹${ctx.makingRate}/g → ₹90/g`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g is above the typical ₹50–150/g silver making range. Silver making is highly negotiable — shops expect you to ask. Even ₹30/g less on 100g saves ₹3,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹90/g? I'm buying ${ctx.weight}g today."`}),
+      silverMakingFair:(ctx,l)=>({title:`₹${ctx.makingRate}/g Is Already Within Normal Range`,saving:0,desc:`Typical silver making runs ₹50–150/g, and ₹${ctx.makingRate}/g sits inside that. Instead of pushing the rate lower, ask for a small quantity discount or free polishing/cleaning service.`,script:`"This making rate looks fair. Since I'm buying ${ctx.weight}g, can you include free polishing or a small bulk discount?"`}),
       silverPurity:(ctx,l)=>({title:`Verify Purity With BIS Hallmark`,saving:0,desc:`German silver (800) is sometimes sold as sterling (925). Always check for BIS hallmark stamp (925 or 999) on the piece physically.`,script:`"Can you show me the BIS hallmark on this piece? I want to confirm the purity before buying."`}),
       diaGst:(ctx,l)=>({title:`Ask for Split GST Invoice`,saving:ctx.diaVal*0.015,desc:`Diamond GST (1.5%) and gold GST (3%) must be on separate line items by law. If the shop bundles them at 3%, you're overpaying. Demand a split invoice.`,script:`"Please show me the GST split — 3% on gold setting and 1.5% on diamond separately. I'd like a compliant invoice."`}),
       diaCert:(ctx,l)=>({title:`Only Buy Certified Diamonds`,saving:0,desc:`Uncertified diamonds have no verifiable price — you could be paying 2x. IGI/GIA certified diamonds have published Rapaport prices. Check online before entering the shop.`,script:`"Does this diamond come with IGI or GIA certification? I'd like to see the cert before we proceed."`}),
@@ -690,14 +692,16 @@ const T = {
       ['బడ్జెట్ చెప్పకండి','"₹X కు ఏమి వస్తుందో" అడగండి, "నా దగ్గర ₹X ఉంది" అని చెప్పకండి.'],
     ],
     moves:{
-      makingHigh:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 8%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`మీరు ${ctx.makingPct}% చెల్లిస్తున్నారు — సగటు కంటే ఎక్కువ. పోటీ దుకాణాల ధరలు చెప్పి అడిగితే తగ్గుతుంది.`,script:`"ఈ ప్రాంతంలో మేకింగ్ ఛార్జ్ 8% — మీరు ఇవ్వగలరా? నేను ఈరోజే కొనడానికి సిద్ధంగా ఉన్నాను."`}),
-      makingMed:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 5%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`సాదా డిజైన్లకు 5% సాధ్యమవుతుంది. ఈ ఆభరణం స్టాండర్డ్ డిజైన్ అని అడగండి.`,script:`"సాదా డిజైన్‌కు 5% మేకింగ్ ఇవ్వగలరా?"`}),
+      makingHigh:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 10%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`మీరు ${ctx.makingPct}% చెల్లిస్తున్నారు — సాధారణ 8–12% పరిధి కంటే ఎక్కువ. పోటీ దుకాణాల ధరలు చెప్పి అడిగితే తగ్గుతుంది.`,script:`"ఈ ప్రాంతంలో మేకింగ్ ఛార్జ్ 8–10% — మీరు ఇవ్వగలరా? నేను ఈరోజే కొనడానికి సిద్ధంగా ఉన్నాను."`}),
+      makingFair:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మార్కెట్ పరిధిలోనే ఉంది`,saving:0,desc:`మార్కెట్ సాధారణ పరిధి 8–12%, మీ ${ctx.makingPct}% అందులోనే ఉంది — ఇది తరచుగా పండుగ రేటుగా స్థిరంగా ఉంటుంది. 5%కి అడగడం పని చేయకపోవచ్చు. బదులుగా ఉచిత హాల్‌మార్కింగ్ లేదా మేకింగ్ మాఫీ అడగండి.`,script:`"మీ మేకింగ్ ఛార్జ్ ఇప్పటికే న్యాయంగా ఉంది. ఉచిత హాల్‌మార్కింగ్ ఇవ్వగలరా?"`}),
+      makingGood:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మంచి రేటు`,saving:0,desc:`${ctx.makingPct}% సాధారణ 8–12% పరిధి కంటే తక్కువ — ఇంకా తగ్గించడానికి అవకాశం తక్కువ. బదులుగా BIS హాల్‌మార్కింగ్, బిల్లు వివరాలు నిర్ధారించుకోండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. వేర్వేరుగా చూపే బిల్లు ఇవ్వగలరా?"`}),
       wastage:(ctx)=>({title:`వేస్టేజ్ (${ctx.wastagePct}%) తిరస్కరించండి`,saving:ctx.wastageAmt,desc:`వేస్టేజ్ తరచుగా దాచిన లాభం. వేస్టేజ్ తొలగించాలని లేదా అదే % మేకింగ్ తగ్గించాలని అడగండి.`,script:`"వేస్టేజ్ తొలగించగలరా లేదా మేకింగ్ ${ctx.wastagePct}% తగ్గించగలరా?"`}),
       bulk:(ctx)=>({title:`పెద్ద కొనుగోలు — గ్రాముకు నిర్ణీత రేటు అడగండి`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g పెద్ద కొనుగోలు. % మేకింగ్ బదులు గ్రాముకు ₹ నిర్ణీత రేటు అడగండి.`,script:`"${ctx.weight}g కోసం గ్రాముకు ₹550 నిర్ణీత మేకింగ్ ఇవ్వండి."`}),
       deduction:(ctx)=>({title:`పాత బంగారానికి జీరో తగ్గింపు అడగండి`,saving:ctx.deductionAmt||0,desc:`మరో దుకాణంలో జీరో తగ్గింపు ఆఫర్ ఉంటే దాన్ని లాభంగా వాడుకోండి.`,script:`"చెన్నై షాపింగ్ మాల్ జీరో తగ్గింపు ఇస్తోంది — మీరు ఇవ్వగలరా?"`}),
       cash:(ctx)=>({title:`నగదు చెల్లింపు — అనధికారిక తగ్గింపు`,saving:ctx.total*0.01,desc:`కార్డ్ ఛార్జీలు ఆదా చేస్తే 1% తగ్గింపు సాధ్యం.`,script:`"నేను నగదు చెల్లిస్తే 1% తగ్గింపు ఇవ్వగలరా?"`}),
       freegift:(ctx)=>({title:`ఉచిత బంగారు నాణెం అడగండి`,saving:1500,desc:`₹50,000+ కొనుగోళ్ళపై విచక్షణాత్మక బడ్జెట్ ఉంటుంది.`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} ఖర్చు చేస్తున్నాను — చిన్న నాణెం ఇవ్వగలరా?"`}),
-      silverMaking:(ctx)=>({title:`వెండి మేకింగ్ చర్చించండి`,saving:ctx.baseVal*0.3,desc:`వెండి మేకింగ్ అత్యంత చర్చించదగినది. 30–40% తగ్గింపు సాధ్యమే.`,script:`"మేకింగ్ ₹${Math.max(50,ctx.makingRate-60)}/g ఇవ్వగలరా?"`}),
+      silverMaking:(ctx)=>({title:`వెండి మేకింగ్ ₹${ctx.makingRate}/g నుండి ₹90/gకి తగ్గించండి`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g సాధారణ ₹50–150/g పరిధి కంటే ఎక్కువ. వెండి మేకింగ్ అత్యంత చర్చించదగినది.`,script:`"మేకింగ్ ₹90/g ఇవ్వగలరా? నేను ${ctx.weight}g కొంటున్నాను."`}),
+      silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g ఇప్పటికే సాధారణ పరిధిలోనే ఉంది`,saving:0,desc:`సాధారణ వెండి మేకింగ్ ₹50–150/g, మీది అందులోనే ఉంది. బదులుగా ఉచిత పాలిషింగ్ లేదా బల్క్ డిస్కౌంట్ అడగండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. ఉచిత పాలిషింగ్ ఇవ్వగలరా?"`}),
       silverPurity:(ctx)=>({title:`BIS హాల్‌మార్క్ తనిఖీ చేయండి`,saving:0,desc:`జర్మన్ సిల్వర్ (800) స్టెర్లింగ్ (925) గా అమ్మబడుతుంది. BIS హాల్‌మార్క్ తనిఖీ చేయండి.`,script:`"BIS హాల్‌మార్క్ చూపించగలరా?"`}),
       diaGst:(ctx)=>({title:`వేర్వేరు GST ఇన్వాయిస్ అడగండి`,saving:ctx.diaVal*0.015,desc:`వజ్రం GST (1.5%) మరియు బంగారు GST (3%) చట్టప్రకారం వేర్వేరుగా ఉండాలి.`,script:`"బంగారు 3% మరియు వజ్రం 1.5% GST వేర్వేరుగా చూపించిన ఇన్వాయిస్ ఇవ్వగలరా?"`}),
       diaCert:(ctx)=>({title:`సర్టిఫైడ్ వజ్రాలు మాత్రమే కొనండి`,saving:0,desc:`IGI/GIA సర్టిఫికేట్ లేకుండా ధర ధృవీకరించడం సాధ్యం కాదు.`,script:`"IGI లేదా GIA సర్టిఫికేట్ ఉందా?"`}),
@@ -774,14 +778,16 @@ const T = {
       ['बजट मत बताएं','"₹X में क्या मिलेगा?" पूछें, "मेरे पास ₹X है" मत कहें।'],
     ],
     moves:{
-      makingHigh:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 8% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-8)/100,desc:`आप ${ctx.makingPct}% दे रहे हैं — औसत से ज़्यादा। प्रतिस्पर्धी दुकानों का हवाला दें।`,script:`"इस इलाके में मेकिंग 8% है। क्या आप मैच कर सकते हैं? मैं आज ही खरीदने के लिए तैयार हूं।"`}),
-      makingMed:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 5% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-5)/100,desc:`सादे डिज़ाइन के लिए 5% संभव है।`,script:`"क्या यह स्टैंडर्ड डिज़ाइन है? 5% मेकिंग मिल सकती है?"`}),
+      makingHigh:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 10% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`आप ${ctx.makingPct}% दे रहे हैं — सामान्य 8–12% दायरे से ज़्यादा। प्रतिस्पर्धी दुकानों का हवाला दें।`,script:`"इस इलाके में मेकिंग 8–10% है। क्या आप मैच कर सकते हैं? मैं आज ही खरीदने के लिए तैयार हूं।"`}),
+      makingFair:(ctx)=>({title:`${ctx.makingPct}% पहले से ही बाज़ार के सामान्य दायरे में है`,saving:0,desc:`बाज़ार सामान्य दायरा 8–12% है, आपका ${ctx.makingPct}% उसी में है — यह अक्सर त्योहार रेट होता है। 5% की मांग करना अक्सर काम नहीं करेगा। इसके बजाय मुफ़्त हॉलमार्किंग या मेकिंग माफ़ी मांगें।`,script:`"आपका मेकिंग चार्ज पहले से उचित है। मुफ़्त हॉलमार्किंग दे सकते हैं?"`}),
+      makingGood:(ctx)=>({title:`${ctx.makingPct}% पहले से ही अच्छी दर है`,saving:0,desc:`${ctx.makingPct}% सामान्य 8–12% दायरे से कम है — घटाने की ज़्यादा गुंजाइश नहीं। इसके बजाय BIS हॉलमार्किंग और बिल विवरण जांचें।`,script:`"यह दर ठीक लगती है। अलग-अलग दिखाने वाला बिल दे सकते हैं?"`}),
       wastage:(ctx)=>({title:`वेस्टेज (${ctx.wastagePct}%) को चुनौती दें`,saving:ctx.wastageAmt,desc:`वेस्टेज अक्सर छुपा मुनाफा है। इसे हटाने या मेकिंग कम करने की मांग करें।`,script:`"वेस्टेज हटाएं या मेकिंग ${ctx.wastagePct}% कम करें।"`}),
       bulk:(ctx)=>({title:`बड़ी खरीद — फ्लैट ₹/ग्राम दर मांगें`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g बड़ी खरीद है। % मेकिंग की बजाय ₹/ग्राम फ्लैट मांगें।`,script:`"${ctx.weight}g के लिए ₹550/g फ्लैट मेकिंग दें।"`}),
       deduction:(ctx)=>({title:`पुराने सोने पर जीरो कटौती मांगें`,saving:ctx.deductionAmt||0,desc:`दूसरी दुकान का जीरो डिडक्शन ऑफर लीवरेज के रूप में उपयोग करें।`,script:`"चेन्नई शॉपिंग मॉल जीरो डिडक्शन दे रहा है — आप भी दे सकते हैं?"`}),
       cash:(ctx)=>({title:`नकद दें — अनौपचारिक छूट पाएं`,saving:ctx.total*0.01,desc:`₹30,000+ पर नकद देने पर 1% अनौपचारिक छूट संभव।`,script:`"नकद दूं तो 1% छूट मिल सकती है?"`}),
       freegift:(ctx)=>({title:`मुफ्त सोने का सिक्का मांगें`,saving:1500,desc:`₹50,000+ पर जौहरियों के पास विवेकाधीन बजट होता है।`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} खर्च कर रहा हूं — छोटा सिक्का मिल सकता है?"`}),
-      silverMaking:(ctx)=>({title:`चाँदी की मेकिंग पर जोरदार मोलभाव करें`,saving:ctx.baseVal*0.3,desc:`चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है। 30–40% कमी सामान्य है।`,script:`"मेकिंग ₹${Math.max(50,ctx.makingRate-60)}/g हो सकती है?"`}),
+      silverMaking:(ctx)=>({title:`चाँदी की मेकिंग ₹${ctx.makingRate}/g से ₹90/g करवाएं`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g सामान्य ₹50–150/g दायरे से ज़्यादा है। चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है।`,script:`"मेकिंग ₹90/g हो सकती है? मैं ${ctx.weight}g खरीद रहा हूं।"`}),
+      silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g पहले से सामान्य दायरे में है`,saving:0,desc:`सामान्य चाँदी मेकिंग ₹50–150/g है, आपकी उसी में है। इसके बजाय मुफ़्त पॉलिशिंग या बल्क छूट मांगें।`,script:`"यह दर ठीक लगती है। मुफ़्त पॉलिशिंग दे सकते हैं?"`}),
       silverPurity:(ctx)=>({title:`BIS हॉलमार्क से शुद्धता जांचें`,saving:0,desc:`जर्मन सिल्वर (800) को स्टर्लिंग (925) के रूप में बेचा जाता है।`,script:`"इस पीस पर BIS हॉलमार्क दिखा सकते हैं?"`}),
       diaGst:(ctx)=>({title:`अलग GST इनवॉइस मांगें`,saving:ctx.diaVal*0.015,desc:`हीरा GST (1.5%) और सोना GST (3%) कानूनन अलग होना चाहिए।`,script:`"सोने पर 3% और हीरे पर 1.5% GST अलग दिखाएं।"`}),
       diaCert:(ctx)=>({title:`केवल प्रमाणित हीरा खरीदें`,saving:0,desc:`IGI/GIA सर्टिफिकेट के बिना कीमत सत्यापित नहीं हो सकती।`,script:`"IGI या GIA सर्टिफिकेट है?"`}),
@@ -1052,15 +1058,17 @@ function buildNego(ctx){
   let applicable=[];
 
   if(ctx.mode==='gold'){
-    if(ctx.makingPct>10) applicable.push({priority:'high',...moves.makingHigh(ctx)});
-    else if(ctx.makingPct>=5) applicable.push({priority:'med',...moves.makingMed(ctx)});
+    if(ctx.makingPct>12) applicable.push({priority:'high',...moves.makingHigh(ctx)});
+    else if(ctx.makingPct>=8) applicable.push({priority:'low',...moves.makingFair(ctx)});
+    else applicable.push({priority:'low',...moves.makingGood(ctx)});
     if(ctx.wastageAmt>0) applicable.push({priority:'high',...moves.wastage(ctx)});
     if(ctx.weight>=20) applicable.push({priority:'high',...moves.bulk(ctx)});
     if(ctx.deductionAmt>0) applicable.push({priority:'high',...moves.deduction(ctx)});
     applicable.push({priority:'med',...moves.cash(ctx)});
     if(ctx.total>=50000) applicable.push({priority:'low',...moves.freegift(ctx)});
   } else if(ctx.mode==='silver'){
-    applicable.push({priority:'high',...moves.silverMaking(ctx)});
+    if(ctx.makingRate>150) applicable.push({priority:'high',...moves.silverMaking(ctx)});
+    else applicable.push({priority:'low',...moves.silverMakingFair(ctx)});
     applicable.push({priority:'med',...moves.silverPurity(ctx)});
     applicable.push({priority:'med',...moves.cash(ctx)});
   } else {
