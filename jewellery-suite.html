@@ -236,6 +236,12 @@ gtag('config', 'G-TJXHVW6XCL');
 </div>
 
 <div class="container">
+  <div class="card" style="margin-bottom:10px">
+    <div class="toggle-row">
+      <div class="tl" id="gl-nocard">Shop already waives card charges? <span class="sub" id="gl-nocard-s">e.g. "No credit/debit card charges" ads</span></div>
+      <input type="checkbox" id="g-nocard-toggle">
+    </div>
+  </div>
 
   <!-- ══ GOLD FORM ══ -->
   <div id="form-gold">
@@ -549,6 +555,7 @@ const T = {
   en:{
     navTitle:'💍 Jewellery Suite',
     mbGold:'Gold',mbSilver:'Silver',mbDiamond:'Diamond',
+    glNoCard:'Shop already waives card charges?',glNoCardS:'e.g. "No credit/debit card charges" ads',
     gC1:'Gold Details',gLWt:'Weight',gLPur:'Purity',gLRate:"Today's Gold Rate",gLRateH:'(₹/g for 24K)',
     gC2:'Making / VA Charges',gLMtype:'Making Type',gLMtypeS:'Flat % or ₹ per gram',
     gLMval:'Making Rate',gMvalHint:'e.g. 6.95% from ad',gLWaste:'Wastage',gLWasteS:'Some shops add 2–5%',
@@ -625,6 +632,7 @@ const T = {
       bulk:(ctx,l)=>({title:`Bulk Buyer — Ask for Flat ₹/gram Rate`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`Buying ${ctx.weight}g is significant. Switch from "% making" to "flat ₹/gram" — ₹500–600/g is often better than 8%+ on expensive gold.`,script:`"For ${ctx.weight}g today, I'd prefer ₹550/g flat making instead of percentage. Fair for both of us."`}),
       deduction:(ctx,l)=>({title:`Demand Zero Deduction on Old Gold`,saving:ctx.deductionAmt||0,desc:`If a shop offers zero deduction elsewhere, use it as leverage. Politely walk toward the door — deduction often disappears.`,script:`"Chennai Shopping Mall offers zero deduction right now. Can you match that? Otherwise I'll check there first."`}),
       cash:(ctx,l)=>({title:`Offer Cash — Unlock Informal Discount`,saving:ctx.total*0.01,desc:`Jewellers pay 1.5–2% MDR on card transactions. Cash on ₹30,000+ can unlock an informal 1% discount.`,script:`"If I pay cash today, can you give me 1% off for saving your card charges?"`}),
+      noCardAck:(ctx,l)=>({title:`This Shop Already Waives Card Charges`,saving:0,desc:`Since this shop doesn't pass on card MDR to you, the usual "pay cash for a discount" leverage doesn't apply here — you're already getting that benefit by default, whether you pay card or cash. Save your negotiating energy for making charges or a free gift instead.`,script:`"Since there's no card charge here anyway, can we focus on the making charge or a small loyalty gift instead?"`}),
       freegift:(ctx,l)=>({title:`Ask for a Free Gold Coin or Gift`,saving:1500,desc:`On ₹50,000+ purchases jewellers have discretionary budgets — small gold coin (0.5–1g), silver article, or free lifetime polishing.`,script:`"I'm spending ₹${Math.round(ctx.total).toLocaleString('en-IN')} today — can you add a small gold coin as a loyalty gesture?"`}),
       silverMaking:(ctx,l)=>({title:`Negotiate Silver Making from ₹${ctx.makingRate}/g → ₹90/g`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g is above the typical ₹50–150/g silver making range. Silver making is highly negotiable — shops expect you to ask. Even ₹30/g less on 100g saves ₹3,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹90/g? I'm buying ${ctx.weight}g today."`}),
       silverMakingFair:(ctx,l)=>({title:`₹${ctx.makingRate}/g Is Already Within Normal Range`,saving:0,desc:`Typical silver making runs ₹50–150/g, and ₹${ctx.makingRate}/g sits inside that. Instead of pushing the rate lower, ask for a small quantity discount or free polishing/cleaning service.`,script:`"This making rate looks fair. Since I'm buying ${ctx.weight}g, can you include free polishing or a small bulk discount?"`}),
@@ -639,6 +647,7 @@ const T = {
   te:{
     navTitle:'💍 ఆభరణాల సూట్',
     mbGold:'బంగారు',mbSilver:'వెండి',mbDiamond:'వజ్రం',
+    glNoCard:'దుకాణం ఇప్పటికే కార్డ్ ఛార్జీలు మాఫీ చేస్తోందా?',glNoCardS:'ఉదా: "క్రెడిట్/డెబిట్ కార్డ్ ఛార్జీలు లేవు" ప్రకటనలు',
     gC1:'బంగారం వివరాలు',gLWt:'బరువు',gLPur:'స్వచ్ఛత',gLRate:'నేటి బంగారం రేటు',gLRateH:'(₹/g 24K కోసం)',
     gC2:'మేకింగ్ / VA ఛార్జీలు',gLMtype:'మేకింగ్ రకం',gLMtypeS:'% లేదా గ్రాముకు ₹',
     gLMval:'మేకింగ్ రేటు',gMvalHint:'ఉదా: ప్రకటనలో 6.95%',gLWaste:'వేస్టేజ్',gLWasteS:'కొన్ని దుకాణాలు 2–5% వేస్తాయి',
@@ -714,6 +723,7 @@ const T = {
       bulk:(ctx)=>({title:`పెద్ద కొనుగోలు — గ్రాముకు నిర్ణీత రేటు అడగండి`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g పెద్ద కొనుగోలు. % మేకింగ్ బదులు గ్రాముకు ₹ నిర్ణీత రేటు అడగండి.`,script:`"${ctx.weight}g కోసం గ్రాముకు ₹550 నిర్ణీత మేకింగ్ ఇవ్వండి."`}),
       deduction:(ctx)=>({title:`పాత బంగారానికి జీరో తగ్గింపు అడగండి`,saving:ctx.deductionAmt||0,desc:`మరో దుకాణంలో జీరో తగ్గింపు ఆఫర్ ఉంటే దాన్ని లాభంగా వాడుకోండి.`,script:`"చెన్నై షాపింగ్ మాల్ జీరో తగ్గింపు ఇస్తోంది — మీరు ఇవ్వగలరా?"`}),
       cash:(ctx)=>({title:`నగదు చెల్లింపు — అనధికారిక తగ్గింపు`,saving:ctx.total*0.01,desc:`కార్డ్ ఛార్జీలు ఆదా చేస్తే 1% తగ్గింపు సాధ్యం.`,script:`"నేను నగదు చెల్లిస్తే 1% తగ్గింపు ఇవ్వగలరా?"`}),
+      noCardAck:(ctx)=>({title:`ఈ దుకాణం ఇప్పటికే కార్డ్ ఛార్జీలు మాఫీ చేస్తోంది`,saving:0,desc:`ఈ దుకాణం కార్డ్ ఛార్జీలు వసూలు చేయదు కాబట్టి, "నగదుకు తగ్గింపు" అనే వ్యూహం ఇక్కడ వర్తించదు. బదులుగా మేకింగ్ ఛార్జ్ లేదా గిఫ్ట్‌పై దృష్టి పెట్టండి.`,script:`"ఇక్కడ కార్డ్ ఛార్జ్ లేదు కాబట్టి, మేకింగ్ ఛార్జ్ లేదా చిన్న గిఫ్ట్‌పై దృష్టి పెట్టవచ్చా?"`}),
       freegift:(ctx)=>({title:`ఉచిత బంగారు నాణెం అడగండి`,saving:1500,desc:`₹50,000+ కొనుగోళ్ళపై విచక్షణాత్మక బడ్జెట్ ఉంటుంది.`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} ఖర్చు చేస్తున్నాను — చిన్న నాణెం ఇవ్వగలరా?"`}),
       silverMaking:(ctx)=>({title:`వెండి మేకింగ్ ₹${ctx.makingRate}/g నుండి ₹90/gకి తగ్గించండి`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g సాధారణ ₹50–150/g పరిధి కంటే ఎక్కువ. వెండి మేకింగ్ అత్యంత చర్చించదగినది.`,script:`"మేకింగ్ ₹90/g ఇవ్వగలరా? నేను ${ctx.weight}g కొంటున్నాను."`}),
       silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g ఇప్పటికే సాధారణ పరిధిలోనే ఉంది`,saving:0,desc:`సాధారణ వెండి మేకింగ్ ₹50–150/g, మీది అందులోనే ఉంది. బదులుగా ఉచిత పాలిషింగ్ లేదా బల్క్ డిస్కౌంట్ అడగండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. ఉచిత పాలిషింగ్ ఇవ్వగలరా?"`}),
@@ -728,6 +738,7 @@ const T = {
   hi:{
     navTitle:'💍 ज्वेलरी सूट',
     mbGold:'सोना',mbSilver:'चाँदी',mbDiamond:'हीरा',
+    glNoCard:'क्या दुकान पहले से कार्ड चार्ज माफ़ करती है?',glNoCardS:'जैसे "क्रेडिट/डेबिट कार्ड चार्ज नहीं" वाले विज्ञापन',
     gC1:'सोने की जानकारी',gLWt:'वजन',gLPur:'शुद्धता',gLRate:'आज की सोने की दर',gLRateH:'(₹/g 24K के लिए)',
     gC2:'मेकिंग / VA शुल्क',gLMtype:'मेकिंग का प्रकार',gLMtypeS:'% या ₹ प्रति ग्राम',
     gLMval:'मेकिंग दर',gMvalHint:'जैसे विज्ञापन में 6.95%',gLWaste:'वेस्टेज',gLWasteS:'कुछ दुकानें 2–5% लेती हैं',
@@ -803,6 +814,7 @@ const T = {
       bulk:(ctx)=>({title:`बड़ी खरीद — फ्लैट ₹/ग्राम दर मांगें`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g बड़ी खरीद है। % मेकिंग की बजाय ₹/ग्राम फ्लैट मांगें।`,script:`"${ctx.weight}g के लिए ₹550/g फ्लैट मेकिंग दें।"`}),
       deduction:(ctx)=>({title:`पुराने सोने पर जीरो कटौती मांगें`,saving:ctx.deductionAmt||0,desc:`दूसरी दुकान का जीरो डिडक्शन ऑफर लीवरेज के रूप में उपयोग करें।`,script:`"चेन्नई शॉपिंग मॉल जीरो डिडक्शन दे रहा है — आप भी दे सकते हैं?"`}),
       cash:(ctx)=>({title:`नकद दें — अनौपचारिक छूट पाएं`,saving:ctx.total*0.01,desc:`₹30,000+ पर नकद देने पर 1% अनौपचारिक छूट संभव।`,script:`"नकद दूं तो 1% छूट मिल सकती है?"`}),
+      noCardAck:(ctx)=>({title:`यह दुकान पहले से कार्ड चार्ज माफ़ करती है`,saving:0,desc:`यह दुकान कार्ड MDR आप पर नहीं डालती, तो "नकद पर छूट" वाली रणनीति यहां काम नहीं करेगी। इसके बजाय मेकिंग चार्ज या गिफ्ट पर ध्यान दें।`,script:`"यहां कार्ड चार्ज नहीं है, तो क्या हम मेकिंग चार्ज या छोटे गिफ्ट पर बात कर सकते हैं?"`}),
       freegift:(ctx)=>({title:`मुफ्त सोने का सिक्का मांगें`,saving:1500,desc:`₹50,000+ पर जौहरियों के पास विवेकाधीन बजट होता है।`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} खर्च कर रहा हूं — छोटा सिक्का मिल सकता है?"`}),
       silverMaking:(ctx)=>({title:`चाँदी की मेकिंग ₹${ctx.makingRate}/g से ₹90/g करवाएं`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g सामान्य ₹50–150/g दायरे से ज़्यादा है। चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है।`,script:`"मेकिंग ₹90/g हो सकती है? मैं ${ctx.weight}g खरीद रहा हूं।"`}),
       silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g पहले से सामान्य दायरे में है`,saving:0,desc:`सामान्य चाँदी मेकिंग ₹50–150/g है, आपकी उसी में है। इसके बजाय मुफ़्त पॉलिशिंग या बल्क छूट मांगें।`,script:`"यह दर ठीक लगती है। मुफ़्त पॉलिशिंग दे सकते हैं?"`}),
@@ -823,6 +835,7 @@ function applyLang() {
   const t = T[lang];
   s('nav-title',t.navTitle);
   s('mb-gold',t.mbGold);s('mb-silver',t.mbSilver);s('mb-diamond',t.mbDiamond);
+  s('gl-nocard',t.glNoCard);s('gl-nocard-s',t.glNoCardS);
   // gold
   s('g-c1',t.gC1);s('g-l-wt',t.gLWt);s('g-l-pur',t.gLPur);s('g-l-rate',t.gLRate);s('g-l-rate-h',t.gLRateH);
   s('g-c2',t.gC2);s('g-l-mtype',t.gLMtype);s('g-l-mtype-s',t.gLMtypeS);
@@ -968,7 +981,7 @@ function calcGold(){
 
   const ctx={mode:'gold',weight:wt,purity:pur,baseVal:goldVal,makingPct:mtype==='pct'?mval:0,
     makingRate:mtype==='pgram'?mval:0,wastageAmt:wastage,wastagePct:wPct,hallmark:hall,
-    total:finalTotal,deductionAmt:deduction,surcharge};
+    total:finalTotal,deductionAmt:deduction,surcharge,noCardFee:el('g-nocard-toggle').checked};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1017,7 +1030,7 @@ function calcSilver(){
   el('r-rows').innerHTML=rows;
 
   const ctx={mode:'silver',weight:wt,baseVal:silverVal,makingPct:mtype==='pct'?mval:0,
-    makingRate:mtype==='pgram'?mval:0,total,bulkOn,bulkAmt};
+    makingRate:mtype==='pgram'?mval:0,total,bulkOn,bulkAmt,noCardFee:el('g-nocard-toggle').checked};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1062,7 +1075,7 @@ function calcDiamond(){
     <div class="brow neg"><div class="bl">${t.goldSetGst}</div><div class="ba">+ ${fmt(goldGstAmt)}</div></div>
     <div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
 
-  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making,ppc,carat};
+  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making,ppc,carat,noCardFee:el('g-nocard-toggle').checked};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1089,20 +1102,23 @@ function buildNego(ctx){
     if(ctx.wastageAmt>0) applicable.push({priority:'high',...moves.wastage(ctx)});
     if(ctx.weight>=20) applicable.push({priority:'high',...moves.bulk(ctx)});
     if(ctx.deductionAmt>0) applicable.push({priority:'high',...moves.deduction(ctx)});
-    applicable.push({priority:'med',...moves.cash(ctx)});
+    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
+    else applicable.push({priority:'med',...moves.cash(ctx)});
     if(ctx.total>=50000) applicable.push({priority:'low',...moves.freegift(ctx)});
   } else if(ctx.mode==='silver'){
     if(ctx.makingRate>150) applicable.push({priority:'high',...moves.silverMaking(ctx)});
     else applicable.push({priority:'low',...moves.silverMakingFair(ctx)});
     applicable.push({priority:'med',...moves.silverPurity(ctx)});
     if(ctx.bulkOn && ctx.bulkAmt>0) applicable.push({priority:'med',...moves.silverBulk(ctx)});
-    applicable.push({priority:'med',...moves.cash(ctx)});
+    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
+    else applicable.push({priority:'med',...moves.cash(ctx)});
   } else {
     applicable.push({priority:'high',...moves.diaGst(ctx)});
     applicable.push({priority:'high',...moves.diaCert(ctx)});
     if(ctx.ppc>0) applicable.push({priority:'med',...moves.diaBenchmark(ctx)});
     applicable.push({priority:'med',...moves.diaLoose(ctx)});
-    applicable.push({priority:'med',...moves.cash(ctx)});
+    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
+    else applicable.push({priority:'med',...moves.cash(ctx)});
   }
 
   const score=Math.min(10,Math.round(
