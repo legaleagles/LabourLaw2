@@ -65,6 +65,16 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .tac-what{font-size:11.5px;color:var(--ink2);line-height:1.6;margin-bottom:6px;}
 .tac-leverage{background:var(--jade-bg);border-radius:9px;padding:8px 10px;font-size:11px;color:#065F46;line-height:1.6;font-weight:600;}
 .tac-leverage b{color:#065F46;}
+.spot-counter{position:sticky;top:56px;z-index:150;background:var(--navy);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(0,0,0,.15);}
+.spot-counter-l{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;}
+.spot-counter-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-l);}
+.spot-share{background:var(--gold);color:var(--navy);border:none;border-radius:10px;padding:8px 14px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
+.tac-card{cursor:pointer;transition:all .2s;position:relative;}
+.tac-card.spotted{border-color:var(--gold);background:var(--gold-pale);box-shadow:0 4px 14px rgba(201,162,39,.2);}
+.tac-spot-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;color:var(--gold-d);background:rgba(201,162,39,.15);padding:4px 9px;border-radius:8px;display:none;}
+.tac-card.spotted .tac-spot-badge{display:block;}
+.tac-tap-hint{font-size:9.5px;color:var(--muted);font-style:italic;margin-top:6px;text-align:right;}
+.tac-card.spotted .tac-tap-hint{display:none;}
 .result{background:linear-gradient(135deg,var(--navy),#2a1436);border-radius:18px;padding:20px;margin-top:6px;}
 .res-line{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.6);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);}
 .res-line b{color:#fff;font-weight:700;}
@@ -195,47 +205,72 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
 
   <div class="tactics-intro">
     <div class="tactics-eyebrow" data-i18n="tac_eyebrow">Know Before You Shop</div>
-    <div class="tactics-title" data-i18n="tac_title">Common Sale Tactics — Decoded</div>
-    <div class="tactics-sub" data-i18n="tac_sub">Every tactic here can work FOR you if you know how it's built. Here's the flip side of each one.</div>
+    <div class="tactics-title" data-i18n="tac_title">Spot the Gimmick — Tap What You See</div>
+    <div class="tactics-sub" data-i18n="tac_sub">Reading an ad or standing at the shop? Tap each tactic you spot right now — the counter tells you how loaded this deal really is, and each one flips into a tip you can use immediately.</div>
   </div>
 
-  <div class="tac-card">
+  <div class="spot-counter">
+    <div><div class="spot-counter-l" data-i18n="spot_label">Tactics spotted</div><div class="spot-counter-n" id="spotCount">0 / 7</div></div>
+    <button class="spot-share" onclick="shareSpotted()" data-i18n="spot_share_btn">📲 Share</button>
+  </div>
+
+  <div class="tac-card" id="tac1" onclick="toggleSpot(1)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">⚖️</div><div class="tac-name" data-i18n="t1_n">"Kg Sale" — Sarees Sold by Weight</div></div>
     <div class="tac-what" data-i18n="t1_w">A pile of mixed sarees priced per kilogram instead of per piece — often clearing old or mixed-quality stock, weight includes any zari/embellishment which makes some pieces "cost" more just by being heavier.</div>
     <div class="tac-leverage" data-i18n="t1_l"><b>Leverage it:</b> Go early, before the pile is picked over. Separate pieces you actually like, weigh them individually if allowed, and don't let staff bundle-weigh your pile with random extra pieces "to help you." A heavier saree isn't automatically better quality.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <div class="tac-card">
+  <div class="tac-card" id="tac2" onclick="toggleSpot(2)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">🏭</div><div class="tac-name" data-i18n="t2_n">"Direct from Weaver / Wholesale Price"</div></div>
     <div class="tac-what" data-i18n="t2_w">Implies you're skipping the middleman markup — sometimes true (especially at genuine handloom exhibitions), sometimes just a phrase printed on every banner regardless of actual sourcing.</div>
     <div class="tac-leverage" data-i18n="t2_l"><b>Leverage it:</b> Ask directly which weaving cluster/cooperative it's from (Pochampally, Gadwal, Uppada, etc.) — a genuine direct-sourcing seller can usually answer specifically. Compare the quoted price against 2 other "wholesale" claims before trusting any single one.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <div class="tac-card">
+  <div class="tac-card" id="tac3" onclick="toggleSpot(3)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">⏱️</div><div class="tac-name" data-i18n="t3_n">"First 100 Customers Only"</div></div>
     <div class="tac-what" data-i18n="t3_w">Urgency and scarcity to make you decide fast without comparing. Sometimes a real limited quota, often just a recurring line used every single sale.</div>
     <div class="tac-leverage" data-i18n="t3_l"><b>Leverage it:</b> Ask for your token/queue number — a shop actually running a real limited offer will have one. No token system usually means the "first 100" line is just decoration; shop at your own pace.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <div class="tac-card">
+  <div class="tac-card" id="tac4" onclick="toggleSpot(4)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">🚪</div><div class="tac-name" data-i18n="t4_n">The "Closing Sale" That Never Closes</div></div>
     <div class="tac-what" data-i18n="t4_w">Some stores run a "stock clearance / closing down" banner for months or years — it's a permanent discount framing, not an actual closure.</div>
     <div class="tac-leverage" data-i18n="t4_l"><b>Leverage it:</b> This isn't necessarily bad for you — a permanently discounted price is still a discount. Just don't let the fake urgency stop you from comparing prices elsewhere first; there's no real deadline pushing you.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <div class="tac-card">
+  <div class="tac-card" id="tac5" onclick="toggleSpot(5)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">👰</div><div class="tac-name" data-i18n="t5_n">"Bridal Exclusive Collection"</div></div>
     <div class="tac-what" data-i18n="t5_w">A separate, often heavily marked-up section for wedding shopping, priced on emotion and occasion rather than the fabric/craft itself.</div>
     <div class="tac-leverage" data-i18n="t5_l"><b>Leverage it:</b> Ask to see similar craftsmanship/fabric outside the "bridal" section — often the same weave at a lower price without the wedding-collection label. Shop 2–3 months before the wedding season peak, when the same pieces are cheaper.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <div class="tac-card">
+  <div class="tac-card" id="tac6" onclick="toggleSpot(6)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
+    <div class="tac-head"><div class="tac-icon">🌟</div><div class="tac-name" data-i18n="t7_n">Celebrity / Film Star in the Ad</div></div>
+    <div class="tac-what" data-i18n="t7_w">A well-known actor's face builds instant trust and warmth — but it tells you nothing about the actual price, quality, or fairness of the offer. The endorsement fee is baked into what you pay, one way or another.</div>
+    <div class="tac-leverage" data-i18n="t7_l"><b>Leverage it:</b> Enjoy the ad, but evaluate the deal exactly as you would without the celebrity — same GST check, same MRP-math check, same per-piece combo math. A famous face has never once lowered your bill.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
+  </div>
+
+  <div class="tac-card" id="tac7" onclick="toggleSpot(7)">
+    <div class="tac-spot-badge" data-i18n="spotted_badge">👁️ SPOTTED</div>
     <div class="tac-head"><div class="tac-icon">👯</div><div class="tac-name" data-i18n="t6_n">Group Buying / Kitty-Party Bulk Deals</div></div>
     <div class="tac-what" data-i18n="t6_w">Shops sometimes offer better per-piece rates for group purchases (5+ women buying together) — this one's a genuine leverage point, not a trick.</div>
     <div class="tac-leverage" data-i18n="t6_l"><b>Leverage it:</b> Actively use this — organise the trip with friends or a kitty-party group and ask upfront for a group rate before anyone picks pieces. Shops are far more likely to negotiate on a confirmed group of 5–10 buyers than one person alone.</div>
+    <div class="tac-tap-hint" data-i18n="tap_hint">Tap if you see this →</div>
   </div>
 
-  <button class="calc-btn" onclick="finalCalculate()" data-i18n="calc_btn">🧮 Calculate My Savings</button>
+  <button class="calc-btn" onclick="finalCalculate()" data-i18n="calc_btn">🧮 Also Check My Bill Math</button>
 
   <div class="result hidden" id="resultBox">
     <div class="res-line"><span data-i18n="r_subtotal">Bill subtotal (before GST)</span><b id="rSubtotal">₹0</b></div>
@@ -367,6 +402,90 @@ function calc(){
   if(calculated){document.getElementById('resultBox').classList.remove('hidden');}
 }
 
+let spottedSet = new Set();
+function toggleSpot(i){
+  const card = document.getElementById('tac'+i);
+  if(spottedSet.has(i)){
+    spottedSet.delete(i);
+    card.classList.remove('spotted');
+  } else {
+    spottedSet.add(i);
+    card.classList.add('spotted');
+  }
+  document.getElementById('spotCount').textContent = spottedSet.size + ' / 7';
+  try{gtag('event','tactic_spotted',{count:spottedSet.size});}catch(e){}
+}
+
+function shareSpotted(){
+  const names = Array.from(spottedSet).sort().map(i=>{
+    const el = document.querySelector('#tac'+i+' .tac-name');
+    return el ? el.textContent : '';
+  }).filter(Boolean);
+
+  const c = document.createElement('canvas');
+  c.width=1080;c.height=1200;
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0,0,1080,1200);
+  g.addColorStop(0,'#0D1117');g.addColorStop(.5,'#2a1436');g.addColorStop(1,'#0D1117');
+  ctx.fillStyle=g;ctx.fillRect(0,0,1080,1200);
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#F5D76E';
+  ctx.font='800 34px DM Sans, sans-serif';
+  ctx.fillText('⚖️ LAWSTICKER AI', 540, 110);
+  ctx.fillStyle='rgba(255,255,255,.4)';
+  ctx.font='700 22px DM Sans, sans-serif';
+  ctx.fillText('SALE TACTIC SCANNER', 540, 148);
+
+  ctx.fillStyle='rgba(255,255,255,.5)';
+  ctx.font='600 28px DM Sans, sans-serif';
+  ctx.fillText('I spotted', 540, 260);
+  ctx.fillStyle='#F5D76E';
+  ctx.font='900 110px Playfair Display, serif';
+  ctx.fillText(spottedSet.size + ' / 7', 540, 390);
+  ctx.fillStyle='rgba(255,255,255,.55)';
+  ctx.font='600 26px DM Sans, sans-serif';
+  ctx.fillText('sale tactics before spending a rupee', 540, 440);
+
+  ctx.textAlign='left';
+  ctx.font='600 24px DM Sans, sans-serif';
+  let y = 540;
+  names.slice(0,7).forEach(n=>{
+    ctx.fillStyle='#ECFDF5';
+    const short = n.length>42 ? n.slice(0,42)+'…' : n;
+    ctx.fillText('✓ ' + short, 90, y);
+    y += 46;
+  });
+  if(!names.length){
+    ctx.fillStyle='rgba(255,255,255,.5)';
+    ctx.fillText('Went in prepared — no tactics needed spotting today.', 90, y);
+  }
+
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,.35)';
+  ctx.font='600 24px DM Sans, sans-serif';
+  ctx.fillText('Scan your next sale free at', 540, 1080);
+  ctx.fillStyle='#F5D76E';
+  ctx.font='800 30px DM Sans, sans-serif';
+  ctx.fillText('lawsticker-ai.com', 540, 1120);
+
+  c.toBlob(async blob=>{
+    const file=new File([blob],'sale-tactics-spotted.png',{type:'image/png'});
+    try{
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:'Sale tactics I spotted'});
+        try{gtag('event','share_tactics_spotted');}catch(e){}
+      } else {
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');a.href=url;a.download='sale-tactics-spotted.png';a.click();
+      }
+    }catch(e){
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');a.href=url;a.download='sale-tactics-spotted.png';a.click();
+    }
+  },'image/png');
+}
+
 function finalCalculate(){
   calculated = true;
   calc();
@@ -478,8 +597,12 @@ r2_b:"లీగల్ మెట్రాలజీ చట్టం",r2_s:"చూ�
 r3_b:"వినియోగదారుల రక్షణ చట్టం, 2019",r3_s:"తప్పుదోవ పట్టించే తగ్గింపు క్లెయిమ్‌లు అన్యాయ వ్యాపార పద్ధతులు. ఫిర్యాదు చేయవచ్చు.",
 r_help:'📞 జాతీయ వినియోగదారుల హెల్ప్‌లైన్: <a href="tel:1915" style="color:inherit">1915</a> · WhatsApp 8800001915',
 disc:"<b>ఇది న్యాయ లేదా పన్ను సలహా కాదు.</b> GST రేట్లు 22 సెప్టెంబర్ 2025 నుండి అమల్లో ఉన్న ఫ్రేమ్‌వర్క్‌ను ప్రతిబింబిస్తాయి, మరింత సవరించబడవచ్చు — ప్రస్తుత రేట్లు ధృవీకరించుకోండి. LawSticker AI ఏ రిటైలర్‌కూ ప్రాతినిధ్యం వహించదు.",
-tac_eyebrow:"షాపింగ్ ముందు తెలుసుకోండి",tac_title:"సాధారణ సేల్ ట్రిక్‌లు — వివరణ",
-tac_sub:"ఇక్కడ ప్రతి ట్రిక్ మీకు తెలిస్తే మీ అనుకూలంగా మార్చుకోవచ్చు. ప్రతిదానికి తిరగబడ్డ కోణం ఇదిగో.",
+tac_eyebrow:"షాపింగ్ ముందు తెలుసుకోండి",tac_title:"గిమ్మిక్ కనిపెట్టండి — చూసినవి తాకండి",
+tac_sub:"ప్రకటన చదువుతున్నారా లేదా దుకాణంలో ఉన్నారా? మీరు చూసిన ప్రతి ట్రిక్‌ను తాకండి — కౌంటర్ ఈ డీల్ ఎంత లోడ్ అయ్యిందో చెబుతుంది, ప్రతి ఒక్కటీ వెంటనే వాడగల చిట్కాగా మారుతుంది.",
+spot_label:"కనిపెట్టిన ట్రిక్‌లు",spot_share_btn:"📲 షేర్ చేయండి",spotted_badge:"👁️ కనిపెట్టారు",tap_hint:"ఇది కనిపిస్తే తాకండి →",
+t7_n:"ప్రకటనలో సినీ నటుడు/నటి",
+t7_w:"ప్రసిద్ధ నటుడి ముఖం తక్షణ నమ్మకం కలిగిస్తుంది — కానీ ఆఫర్ ధర, నాణ్యత, న్యాయబద్ధత గురించి ఏమీ చెప్పదు. ఎండార్స్‌మెంట్ ఫీజు మీరు చెల్లించే దానిలో ఏదో ఒక రూపంలో కలిసే ఉంటుంది.",
+t7_l:"<b>అనుకూలంగా వాడండి:</b> ప్రకటన ఆస్వాదించండి, కానీ నటుడు లేకుండా ఉన్నట్టుగానే డీల్‌ను అంచనా వేయండి — అదే GST చెక్, అదే MRP-గణిత చెక్, అదే కాంబో లెక్క. ప్రసిద్ధ ముఖం మీ బిల్లును ఎప్పుడూ తగ్గించలేదు.",
 t1_n:"\"కిలో సేల్\" — తూకం ప్రకారం చీరలు",
 t1_w:"కలగలిపిన చీరల కుప్ప, ముక్కకు కాకుండా కిలోగ్రాముకు ధర — తరచుగా పాత లేదా మిశ్రమ నాణ్యత స్టాక్‌ను క్లియర్ చేయడం, జరీ/అలంకరణ ఉన్న ముక్కలు బరువు ఎక్కువగా ఉండి ఖరీదుగా అనిపిస్తాయి.",
 t1_l:"<b>అనుకూలంగా వాడండి:</b> కుప్ప ఏరకముందే ముందుగా వెళ్లండి. మీకు నచ్చిన ముక్కలను వేరు చేసి, వీలైతే విడిగా తూకం వేయించండి. సిబ్బంది మీ కుప్పను ఇతర ముక్కలతో కలిపి తూకం వేయకుండా చూసుకోండి.",
@@ -537,8 +660,12 @@ r2_b:"लीगल मेट्रोलॉजी एक्ट",r2_s:"दिख�
 r3_b:"उपभोक्ता संरक्षण अधिनियम, 2019",r3_s:"भ्रामक छूट दावे अनुचित व्यापार प्रथाएं हैं। शिकायत की जा सकती है।",
 r_help:'📞 राष्ट्रीय उपभोक्ता हेल्पलाइन: <a href="tel:1915" style="color:inherit">1915</a> · WhatsApp 8800001915',
 disc:"<b>यह कानूनी या टैक्स सलाह नहीं है।</b> GST दरें 22 सितंबर 2025 से लागू ढांचे को दर्शाती हैं, आगे संशोधित हो सकती हैं — मौजूदा दरें सत्यापित करें। LawSticker AI किसी रिटेलर का प्रतिनिधित्व नहीं करता।",
-tac_eyebrow:"शॉपिंग से पहले जानें",tac_title:"आम सेल ट्रिक्स — समझाई गईं",
-tac_sub:"यहां हर ट्रिक को जानकर आप अपने फ़ायदे में बदल सकते हैं। हर एक का उल्टा पहलू यहां है।",
+tac_eyebrow:"शॉपिंग से पहले जानें",tac_title:"गिमिक पकड़ें — जो दिखे उसे टैप करें",
+tac_sub:"विज्ञापन पढ़ रहे हैं या दुकान पर हैं? जो भी ट्रिक दिखे उसे अभी टैप करें — काउंटर बताएगा यह डील कितनी भारी है, और हर एक तुरंत काम आने वाली टिप बन जाती है।",
+spot_label:"पकड़ी गई ट्रिक्स",spot_share_btn:"📲 शेयर करें",spotted_badge:"👁️ पकड़ी गई",tap_hint:"यह दिखे तो टैप करें →",
+t7_n:"विज्ञापन में फ़िल्म स्टार",
+t7_w:"जाना-पहचाना चेहरा तुरंत भरोसा बनाता है — लेकिन यह कीमत, गुणवत्ता या ऑफ़र की निष्पक्षता के बारे में कुछ नहीं बताता। एंडोर्समेंट फ़ीस किसी न किसी रूप में आपकी कीमत में शामिल है।",
+t7_l:"<b>फ़ायदे में बदलें:</b> विज्ञापन का आनंद लें, लेकिन डील को बिल्कुल वैसे ही परखें जैसे स्टार न हो — वही GST जांच, वही MRP-गणित जांच, वही कॉम्बो गणित। किसी मशहूर चेहरे ने कभी आपका बिल कम नहीं किया।",
 t1_n:"\"किलो सेल\" — वज़न के हिसाब से साड़ियां",
 t1_w:"मिली-जुली साड़ियों का ढेर, पीस की जगह किलोग्राम में कीमत — अक्सर पुराना या मिश्रित गुणवत्ता वाला स्टॉक साफ़ करना, ज़री/सजावट वाले पीस वज़न में भारी होकर महंगे लगते हैं।",
 t1_l:"<b>फ़ायदे में बदलें:</b> ढेर छंटने से पहले जल्दी जाएं। पसंद के पीस अलग करें, हो सके तो अलग से तुलवाएं। स्टाफ़ को अपने ढेर में दूसरे पीस मिलाकर तौलने न दें।",
