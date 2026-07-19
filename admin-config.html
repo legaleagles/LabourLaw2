@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Site Config — LawSticker AI (Admin)</title>
+<style>
+:root{--navy:#0D1117;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;
+--border:#D1D5DB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--jade:#059669;--jade-bg:#ECFDF5;
+--rose:#DC2626;--rose-bg:#FEF2F2;--amber:#D97706;--amber-bg:#FFFBEB;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);padding:16px;max-width:640px;margin:0 auto;}
+h1{font-size:19px;font-weight:800;margin-bottom:4px;}
+.sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:14px;font-weight:800;margin-bottom:8px;}
+label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink2);display:block;margin-bottom:5px;}
+input[type=password],input[type=number],input[type=text]{width:100%;padding:11px;border:1.5px solid var(--border);
+border-radius:9px;font-size:14px;font-family:inherit;background:var(--light);margin-bottom:10px;}
+button{padding:11px 16px;border-radius:9px;border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-right:6px;margin-bottom:6px;}
+.btn-primary{background:var(--navy);color:var(--gold-l);}
+.btn-fetch{background:var(--amber-bg);color:var(--amber);border:1.5px solid var(--amber);}
+.btn-save{background:var(--jade);color:#fff;}
+.msg{font-size:12px;padding:8px 10px;border-radius:8px;margin-top:8px;display:none;}
+.msg.ok{background:var(--jade-bg);color:#065F46;display:block;}
+.msg.err{background:var(--rose-bg);color:#991B1B;display:block;}
+.msg.info{background:#F0F9FF;color:#0369A1;display:block;}
+.current{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.current b{color:var(--ink);}
+a.xlink{font-size:11px;color:var(--amber);}
+.warn-box{background:var(--rose-bg);border:1px solid #FCA5A5;border-radius:10px;padding:10px 12px;font-size:11px;color:#991B1B;line-height:1.6;margin-bottom:14px;}
+hr{border:none;border-top:1px dashed var(--border);margin:12px 0;}
+</style>
+</head>
+<body>
+
+<h1>🔧 Site Config</h1>
+<div class="sub">Hidden admin page — not linked anywhere on the site. Update daily rates or other config values here; changes save directly to the live site.</div>
+
+<div class="warn-box">
+  Your GitHub token is used only in this browser tab and is never saved anywhere — you'll need to paste it again each time you visit. Use a token scoped to <b>this one repo, Contents: Read & Write only</b>, and revoke/rotate it periodically.
+</div>
+
+<div class="card">
+  <label>GitHub Token</label>
+  <input type="password" id="pat" placeholder="github_pat_...">
+  <button class="btn-primary" onclick="loadConfig()">Load Current Config</button>
+  <div class="msg" id="load-msg"></div>
+</div>
+
+<div id="items"></div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG ITEM REGISTRY — add new rows here only.
+// Nothing else in this file needs to change to add a new configurable value.
+// ══════════════════════════════════════════
+const REPO = 'legaleagles/LabourLaw2';
+const CONFIG_PATH = 'site-config.json';
+
+const CONFIG_ITEMS = [
+  {
+    key: 'rates.gold_24k_per_gram_inr',
+    label: 'Gold Rate (₹/g, 24K)',
+    unit: '₹/g',
+    crossCheckUrl: 'https://www.goodreturns.in/gold-rates/',
+    crossCheckLabel: 'Check GoodReturns →',
+    autoFetch: async () => {
+      const [goldRes, fxRes] = await Promise.all([
+        fetch('https://api.gold-api.com/price/XAU'),
+        fetch('https://open.er-api.com/v6/latest/USD')
+      ]);
+      const gold = await goldRes.json();
+      const fx = await fxRes.json();
+      const usdPerOz = gold.price;
+      const usdToInr = fx.rates.INR;
+      const gramsPerOz = 31.1034768;
+      const inrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
+      return Math.round(inrPerGram);
+    },
+    fetchNote: 'This is the international spot price converted to INR — it will not exactly match local jeweller association rates (which include import duty and local premium). Always cross-check before saving.'
+  },
+  {
+    key: 'rates.silver_999_per_gram_inr',
+    label: 'Silver Rate (₹/g, 999 fine)',
+    unit: '₹/g',
+    crossCheckUrl: 'https://www.goodreturns.in/silver-rates/',
+    crossCheckLabel: 'Check GoodReturns →',
+    autoFetch: async () => {
+      const [silverRes, fxRes] = await Promise.all([
+        fetch('https://api.gold-api.com/price/XAG'),
+        fetch('https://open.er-api.com/v6/latest/USD')
+      ]);
+      const silver = await silverRes.json();
+      const fx = await fxRes.json();
+      const usdPerOz = silver.price;
+      const usdToInr = fx.rates.INR;
+      const gramsPerOz = 31.1034768;
+      const inrPerGram = (usdPerOz / gramsPerOz) * usdToInr;
+      return Math.round(inrPerGram);
+    },
+    fetchNote: 'International spot price converted to INR — cross-check against local retail rate before saving.'
+  }
+];
+
+let liveConfig = null;
+let liveSha = null;
+
+function getByPath(obj, path){
+  return path.split('.').reduce((o,k)=>(o||{})[k], obj);
+}
+function setByPath(obj, path, val){
+  const parts = path.split('.');
+  let cur = obj;
+  for(let i=0;i<parts.length-1;i++){
+    if(!cur[parts[i]]) cur[parts[i]] = {};
+    cur = cur[parts[i]];
+  }
+  cur[parts[parts.length-1]] = val;
+}
+
+function renderItems(){
+  const box = document.getElementById('items');
+  box.innerHTML = CONFIG_ITEMS.map((item, i) => {
+    const currentVal = liveConfig ? getByPath(liveConfig, item.key) : null;
+    return `
+    <div class="card">
+      <h2>${item.label}</h2>
+      <div class="current">Current live value: <b>${currentVal !== null && currentVal !== undefined ? currentVal + ' ' + item.unit : '(load config first)'}</b></div>
+      <label>New value</label>
+      <input type="number" id="val-${i}" placeholder="Enter or auto-fetch">
+      <button class="btn-fetch" onclick="doFetch(${i})">🔄 Auto-fetch</button>
+      <button class="btn-save" onclick="doSave(${i})">💾 Save to Site</button>
+      <div><a class="xlink" href="${item.crossCheckUrl}" target="_blank">${item.crossCheckLabel}</a></div>
+      <div class="msg" id="msg-${i}"></div>
+    </div>`;
+  }).join('');
+}
+renderItems();
+
+async function loadConfig(){
+  const m = document.getElementById('load-msg');
+  m.className = 'msg info'; m.textContent = 'Loading...';
+  try{
+    const pat = document.getElementById('pat').value.trim();
+    const headers = pat ? {'Authorization':'token '+pat, 'Accept':'application/vnd.github+json'} : {};
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONFIG_PATH}`, {headers});
+    if(!res.ok) throw new Error('Could not load config (status '+res.status+')');
+    const data = await res.json();
+    liveSha = data.sha;
+    liveConfig = JSON.parse(atob(data.content));
+    m.className = 'msg ok';
+    m.textContent = 'Loaded. Last updated: ' + (liveConfig.rates?.updated_at || 'unknown');
+    renderItems();
+  }catch(e){
+    m.className = 'msg err';
+    m.textContent = 'Error: ' + e.message;
+  }
+}
+
+async function doFetch(i){
+  const item = CONFIG_ITEMS[i];
+  const m = document.getElementById('msg-'+i);
+  m.className = 'msg info'; m.textContent = 'Fetching live price...';
+  try{
+    const val = await item.autoFetch();
+    document.getElementById('val-'+i).value = val;
+    m.className = 'msg info';
+    m.textContent = `Fetched: ${val} ${item.unit}. ${item.fetchNote}`;
+  }catch(e){
+    m.className = 'msg err';
+    m.textContent = 'Auto-fetch failed (' + e.message + ') — enter the value manually instead.';
+  }
+}
+
+async function doSave(i){
+  const item = CONFIG_ITEMS[i];
+  const m = document.getElementById('msg-'+i);
+  const pat = document.getElementById('pat').value.trim();
+  const newVal = parseFloat(document.getElementById('val-'+i).value);
+
+  if(!pat){ m.className='msg err'; m.textContent='Paste your GitHub token above first.'; return; }
+  if(!liveConfig){ m.className='msg err'; m.textContent='Click "Load Current Config" first.'; return; }
+  if(isNaN(newVal)){ m.className='msg err'; m.textContent='Enter a valid number.'; return; }
+
+  m.className = 'msg info'; m.textContent = 'Saving...';
+  try{
+    setByPath(liveConfig, item.key, newVal);
+    setByPath(liveConfig, 'rates.updated_at', new Date().toISOString());
+    setByPath(liveConfig, 'rates.updated_by', 'admin-manual-fetch');
+
+    const content = btoa(JSON.stringify(liveConfig, null, 2));
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONFIG_PATH}`, {
+      method: 'PUT',
+      headers: {'Authorization':'token '+pat, 'Accept':'application/vnd.github+json'},
+      body: JSON.stringify({
+        message: `Update ${item.key} via admin-config page`,
+        content: content,
+        sha: liveSha,
+        branch: 'main'
+      })
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || 'Save failed');
+    liveSha = result.content.sha;
+    m.className = 'msg ok';
+    m.textContent = `Saved! ${item.label} is now ${newVal} ${item.unit} on the live site.`;
+    renderItems();
+  }catch(e){
+    m.className = 'msg err';
+    m.textContent = 'Error: ' + e.message;
+  }
+}
+</script>
+</body>
+</html>
