@@ -362,6 +362,17 @@ gtag('config', 'G-TJXHVW6XCL');
         <div class="inline-in"><input type="number" class="mini" id="s-gst" value="3" step="0.1"><span class="unit">%</span></div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-title" id="s-c3">Bulk / Scheme Discount</div>
+      <div class="toggle-row">
+        <div class="tl" id="s-l-bulk">Flat scheme discount offered? <span class="sub" id="s-l-bulk-s">e.g. "₹10,000 off on 1kg" ads</span></div>
+        <input type="checkbox" id="s-bulk-toggle" onchange="document.getElementById('s-bulk-row').style.display=this.checked?'flex':'none'">
+      </div>
+      <div class="toggle-row" id="s-bulk-row" style="display:none">
+        <div class="tl" id="s-l-bulkamt">Flat discount amount (₹)</div>
+        <div class="inline-in"><input type="number" class="mini" id="s-bulk-amt" value="10000" step="500"><span class="unit">₹</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- ══ DIAMOND FORM ══ -->
@@ -552,6 +563,7 @@ const T = {
     sC2:'Making Charges',sLMtype:'Making Type',sLMtypeS:'Flat ₹/gram is common for silver',
     sLMval:'Making Rate',sMvalHint:'Typical ₹50–200/g for silver',sLGst:'GST on Silver',sLGstS:'3% on silver + making',
     sOptPgram:'₹ per gram',sOptPct:'% of silver value',sOptFixed:'Fixed ₹ per piece',sOptNone:'No Making',
+    sC3:'Bulk / Scheme Discount',sLBulk:'Flat scheme discount offered?',sLBulkS:'e.g. "₹10,000 off on 1kg" ads',sLBulkAmt:'Flat discount amount (₹)',
     sRateLink:'🔗 Check today\'s rate on GoodReturns →',
     dC1:'Diamond Details',dLCt:'Diamond Weight',dLShape:'Shape / Cut',dLColor:'Colour Grade',dLClarity:'Clarity',
     dLPpc:'Approx. Diamond Price',dLPpcH:'(₹ per carat — check cert)',
@@ -617,7 +629,9 @@ const T = {
       silverMaking:(ctx,l)=>({title:`Negotiate Silver Making from ₹${ctx.makingRate}/g → ₹90/g`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g is above the typical ₹50–150/g silver making range. Silver making is highly negotiable — shops expect you to ask. Even ₹30/g less on 100g saves ₹3,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹90/g? I'm buying ${ctx.weight}g today."`}),
       silverMakingFair:(ctx,l)=>({title:`₹${ctx.makingRate}/g Is Already Within Normal Range`,saving:0,desc:`Typical silver making runs ₹50–150/g, and ₹${ctx.makingRate}/g sits inside that. Instead of pushing the rate lower, ask for a small quantity discount or free polishing/cleaning service.`,script:`"This making rate looks fair. Since I'm buying ${ctx.weight}g, can you include free polishing or a small bulk discount?"`}),
       silverPurity:(ctx,l)=>({title:`Verify Purity With BIS Hallmark`,saving:0,desc:`German silver (800) is sometimes sold as sterling (925). Always check for BIS hallmark stamp (925 or 999) on the piece physically.`,script:`"Can you show me the BIS hallmark on this piece? I want to confirm the purity before buying."`}),
+      silverBulk:(ctx,l)=>({title:`Compare the Bulk Discount Rate Across Shops`,saving:0,desc:`This scheme gives you ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)}/kg effective discount. Bulk silver discounts vary shop to shop — always compare the ₹-per-kg rate, not just the headline "₹${ctx.bulkAmt} off" number, since a bigger-sounding discount on a higher base price can still be worse value.`,script:`"What's your discount per kilogram on silver right now? I want to compare it with two other shops before deciding."`}),
       diaGst:(ctx,l)=>({title:`Ask for Split GST Invoice`,saving:ctx.diaVal*0.015,desc:`Diamond GST (1.5%) and gold GST (3%) must be on separate line items by law. If the shop bundles them at 3%, you're overpaying. Demand a split invoice.`,script:`"Please show me the GST split — 3% on gold setting and 1.5% on diamond separately. I'd like a compliant invoice."`}),
+      diaBenchmark:(ctx,l)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct Is Well Above Entry-Level Pricing`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct Is Near Entry-Level Pricing`,saving:0,desc:ctx.ppc>60000?`Festival "starting from" ads often quote entry-level certified diamonds around ₹45,000–50,000/carat (typically EF color, VVS clarity). You're quoted ₹${ctx.ppc.toLocaleString('en-IN')}/ct — ask exactly which color/clarity grade justifies the gap, since a vague answer is a red flag.`:`This is close to typical festival entry-level pricing (₹45,000–50,000/ct for certified EF/VVS stones). At this price range, certification matters even more — a stone priced this low without a certificate is a bigger risk, not a better deal.`,script:ctx.ppc>60000?`"The ad mentions diamonds starting ₹49,900/carat. What color and clarity grade is this stone, and why is it priced above that starting point?"`:`"Since this is close to the advertised starting price, can I see the IGI/GIA certificate to confirm the exact color and clarity grade?"`}),
       diaCert:(ctx,l)=>({title:`Only Buy Certified Diamonds`,saving:0,desc:`Uncertified diamonds have no verifiable price — you could be paying 2x. IGI/GIA certified diamonds have published Rapaport prices. Check online before entering the shop.`,script:`"Does this diamond come with IGI or GIA certification? I'd like to see the cert before we proceed."`}),
       diaLoose:(ctx,l)=>({title:`Consider Loose Diamond + Separate Setting`,saving:ctx.total*0.12,desc:`Buying a loose certified diamond and separate setting (not pre-made jewellery) saves 10–15% on making and gives you more choice.`,script:`"Can you show me loose certified diamonds separately from the setting? I'd like to compare the total cost."`}),
     },
@@ -639,6 +653,7 @@ const T = {
     sC2:'మేకింగ్ ఛార్జీలు',sLMtype:'మేకింగ్ రకం',sLMtypeS:'వెండికి గ్రాముకు ₹ సాధారణం',
     sLMval:'మేకింగ్ రేటు',sMvalHint:'సాధారణంగా ₹50–200/g',sLGst:'వెండిపై GST',sLGstS:'వెండి + మేకింగ్‌పై 3%',
     sOptPgram:'₹ గ్రాముకు',sOptPct:'% వెండి విలువపై',sOptFixed:'వస్తువుకు నిర్ణీత ₹',sOptNone:'మేకింగ్ లేదు',
+    sC3:'బల్క్ / స్కీమ్ డిస్కౌంట్',sLBulk:'ఫ్లాట్ స్కీమ్ డిస్కౌంట్ ఉందా?',sLBulkS:'ఉదా: "1kgపై ₹10,000 తగ్గింపు" ప్రకటనలు',sLBulkAmt:'ఫ్లాట్ డిస్కౌంట్ మొత్తం (₹)',
     sRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
     dC1:'వజ్రం వివరాలు',dLCt:'వజ్రం బరువు',dLShape:'ఆకృతి / కట్',dLColor:'రంగు గ్రేడ్',dLClarity:'స్పష్టత',
     dLPpc:'అంచనా వజ్రం ధర',dLPpcH:'(₹ కేరట్‌కు — సర్టిఫికేట్ చూడండి)',
@@ -703,7 +718,9 @@ const T = {
       silverMaking:(ctx)=>({title:`వెండి మేకింగ్ ₹${ctx.makingRate}/g నుండి ₹90/gకి తగ్గించండి`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g సాధారణ ₹50–150/g పరిధి కంటే ఎక్కువ. వెండి మేకింగ్ అత్యంత చర్చించదగినది.`,script:`"మేకింగ్ ₹90/g ఇవ్వగలరా? నేను ${ctx.weight}g కొంటున్నాను."`}),
       silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g ఇప్పటికే సాధారణ పరిధిలోనే ఉంది`,saving:0,desc:`సాధారణ వెండి మేకింగ్ ₹50–150/g, మీది అందులోనే ఉంది. బదులుగా ఉచిత పాలిషింగ్ లేదా బల్క్ డిస్కౌంట్ అడగండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. ఉచిత పాలిషింగ్ ఇవ్వగలరా?"`}),
       silverPurity:(ctx)=>({title:`BIS హాల్‌మార్క్ తనిఖీ చేయండి`,saving:0,desc:`జర్మన్ సిల్వర్ (800) స్టెర్లింగ్ (925) గా అమ్మబడుతుంది. BIS హాల్‌మార్క్ తనిఖీ చేయండి.`,script:`"BIS హాల్‌మార్క్ చూపించగలరా?"`}),
+      silverBulk:(ctx)=>({title:`బల్క్ డిస్కౌంట్ రేటును దుకాణాల మధ్య పోల్చండి`,saving:0,desc:`ఈ స్కీమ్ కిలోకు ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)} ఎఫెక్టివ్ డిస్కౌంట్ ఇస్తోంది. కిలోకు రేటును పోల్చండి, "₹${ctx.bulkAmt} తగ్గింపు" అనే హెడ్‌లైన్ నంబర్‌ను మాత్రమే కాదు.`,script:`"మీ కిలోకు వెండి డిస్కౌంట్ ఎంత? నేను వేరే రెండు దుకాణాలతో పోల్చాలనుకుంటున్నాను."`}),
       diaGst:(ctx)=>({title:`వేర్వేరు GST ఇన్వాయిస్ అడగండి`,saving:ctx.diaVal*0.015,desc:`వజ్రం GST (1.5%) మరియు బంగారు GST (3%) చట్టప్రకారం వేర్వేరుగా ఉండాలి.`,script:`"బంగారు 3% మరియు వజ్రం 1.5% GST వేర్వేరుగా చూపించిన ఇన్వాయిస్ ఇవ్వగలరా?"`}),
+      diaBenchmark:(ctx)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct ప్రారంభ ధర కంటే చాలా ఎక్కువ`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct ప్రారంభ ధరకు దగ్గరగా ఉంది`,saving:0,desc:ctx.ppc>60000?`పండుగ ప్రకటనలు సాధారణంగా ₹45,000–50,000/కేరట్ ధరతో సర్టిఫైడ్ వజ్రాలు చూపుతాయి. మీది ₹${ctx.ppc.toLocaleString('en-IN')}/ct — ఏ కలర్/క్లారిటీ గ్రేడ్ దీన్ని సమర్థిస్తుందో అడగండి.`:`ఇది సాధారణ ప్రారంభ ధరకు దగ్గరగా ఉంది. ఈ ధరలో సర్టిఫికేట్ మరింత ముఖ్యం.`,script:ctx.ppc>60000?`"ప్రకటనలో ₹49,900/కేరట్ నుండి అని ఉంది. ఈ రాయి కలర్/క్లారిటీ ఏమిటి, ఎందుకు ఎక్కువ ధర?"`:`"ఇది ప్రారంభ ధరకు దగ్గరగా ఉంది కాబట్టి, IGI/GIA సర్టిఫికేట్ చూపించగలరా?"`}),
       diaCert:(ctx)=>({title:`సర్టిఫైడ్ వజ్రాలు మాత్రమే కొనండి`,saving:0,desc:`IGI/GIA సర్టిఫికేట్ లేకుండా ధర ధృవీకరించడం సాధ్యం కాదు.`,script:`"IGI లేదా GIA సర్టిఫికేట్ ఉందా?"`}),
       diaLoose:(ctx)=>({title:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ పరిశీలించండి`,saving:ctx.total*0.12,desc:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ 10–15% ఆదా చేస్తుంది.`,script:`"లూజ్ సర్టిఫైడ్ వజ్రాలు వేర్వేరుగా చూపించగలరా?"`}),
     },
@@ -725,6 +742,7 @@ const T = {
     sC2:'मेकिंग शुल्क',sLMtype:'मेकिंग का प्रकार',sLMtypeS:'चाँदी के लिए ₹/ग्राम सामान्य है',
     sLMval:'मेकिंग दर',sMvalHint:'सामान्यतः ₹50–200/g',sLGst:'चाँदी पर GST',sLGstS:'चाँदी + मेकिंग पर 3%',
     sOptPgram:'₹ प्रति ग्राम',sOptPct:'% चाँदी मूल्य पर',sOptFixed:'प्रति टुकड़ा निश्चित ₹',sOptNone:'मेकिंग नहीं',
+    sC3:'थोक / स्कीम छूट',sLBulk:'फ्लैट स्कीम छूट है?',sLBulkS:'जैसे "1kg पर ₹10,000 की छूट" वाले विज्ञापन',sLBulkAmt:'फ्लैट छूट राशि (₹)',
     sRateLink:'🔗 GoodReturns पर आज की दर देखें →',
     dC1:'हीरे की जानकारी',dLCt:'हीरे का वजन',dLShape:'आकृति / कट',dLColor:'रंग ग्रेड',dLClarity:'स्पष्टता',
     dLPpc:'अनुमानित हीरे की कीमत',dLPpcH:'(₹ प्रति कैरेट — सर्टिफिकेट देखें)',
@@ -789,7 +807,9 @@ const T = {
       silverMaking:(ctx)=>({title:`चाँदी की मेकिंग ₹${ctx.makingRate}/g से ₹90/g करवाएं`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g सामान्य ₹50–150/g दायरे से ज़्यादा है। चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है।`,script:`"मेकिंग ₹90/g हो सकती है? मैं ${ctx.weight}g खरीद रहा हूं।"`}),
       silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g पहले से सामान्य दायरे में है`,saving:0,desc:`सामान्य चाँदी मेकिंग ₹50–150/g है, आपकी उसी में है। इसके बजाय मुफ़्त पॉलिशिंग या बल्क छूट मांगें।`,script:`"यह दर ठीक लगती है। मुफ़्त पॉलिशिंग दे सकते हैं?"`}),
       silverPurity:(ctx)=>({title:`BIS हॉलमार्क से शुद्धता जांचें`,saving:0,desc:`जर्मन सिल्वर (800) को स्टर्लिंग (925) के रूप में बेचा जाता है।`,script:`"इस पीस पर BIS हॉलमार्क दिखा सकते हैं?"`}),
+      silverBulk:(ctx)=>({title:`थोक छूट दर की दुकानों में तुलना करें`,saving:0,desc:`यह स्कीम प्रति किलो ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)} प्रभावी छूट देती है। हमेशा प्रति-किलो दर की तुलना करें, सिर्फ़ "₹${ctx.bulkAmt} की छूट" वाले हेडलाइन नंबर से नहीं।`,script:`"आपकी प्रति किलो चाँदी की छूट कितनी है? मैं दो और दुकानों से तुलना करना चाहता हूं।"`}),
       diaGst:(ctx)=>({title:`अलग GST इनवॉइस मांगें`,saving:ctx.diaVal*0.015,desc:`हीरा GST (1.5%) और सोना GST (3%) कानूनन अलग होना चाहिए।`,script:`"सोने पर 3% और हीरे पर 1.5% GST अलग दिखाएं।"`}),
+      diaBenchmark:(ctx)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct शुरुआती दर से काफ़ी ज़्यादा है`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct शुरुआती दर के करीब है`,saving:0,desc:ctx.ppc>60000?`त्योहार विज्ञापन आमतौर पर ₹45,000–50,000/कैरेट सर्टिफाइड हीरे दिखाते हैं। आपका ₹${ctx.ppc.toLocaleString('en-IN')}/ct है — कौन सा कलर/क्लैरिटी ग्रेड इसे उचित ठहराता है, पूछें।`:`यह सामान्य शुरुआती दर के करीब है। इस दर पर सर्टिफिकेट और भी ज़रूरी है।`,script:ctx.ppc>60000?`"विज्ञापन में ₹49,900/कैरेट से शुरू लिखा है। इस पत्थर का कलर/क्लैरिटी क्या है, ज़्यादा दर क्यों?"`:`"यह शुरुआती दर के करीब है, तो क्या IGI/GIA सर्टिफिकेट दिखा सकते हैं?"`}),
       diaCert:(ctx)=>({title:`केवल प्रमाणित हीरा खरीदें`,saving:0,desc:`IGI/GIA सर्टिफिकेट के बिना कीमत सत्यापित नहीं हो सकती।`,script:`"IGI या GIA सर्टिफिकेट है?"`}),
       diaLoose:(ctx)=>({title:`लूज़ हीरा + अलग सेटिंग पर विचार करें`,saving:ctx.total*0.12,desc:`अलग लूज़ हीरा + सेटिंग खरीदने से 10–15% बचत।`,script:`"लूज़ सर्टिफाइड हीरे अलग दिखा सकते हैं?"`}),
     },
@@ -817,6 +837,7 @@ function applyLang() {
   s('s-c1',t.sC1);s('s-l-wt',t.sLWt);s('s-l-pur',t.sLPur);s('s-l-rate',t.sLRate);s('s-l-rate-h',t.sLRateH);
   s('s-c2',t.sC2);s('s-l-mtype',t.sLMtype);s('s-l-mtype-s',t.sLMtypeS);
   s('s-l-mval',t.sLMval);s('s-mval-hint',t.sMvalHint);s('s-l-gst',t.sLGst);s('s-l-gst-s',t.sLGstS);
+  s('s-c3',t.sC3);s('s-l-bulk',t.sLBulk);s('s-l-bulk-s',t.sLBulkS);s('s-l-bulkamt',t.sLBulkAmt);
   el('s-opt-pgram').textContent=t.sOptPgram;el('s-opt-pct').textContent=t.sOptPct;el('s-opt-fixed').textContent=t.sOptFixed;el('s-opt-none').textContent=t.sOptNone;
   s('s-rate-link',t.sRateLink);
   // diamond
@@ -962,6 +983,8 @@ function calcSilver(){
   const mtype=el('s-mtype').value;
   const mval=parseFloat(el('s-mval').value)||0;
   const gst=parseFloat(el('s-gst').value)||3;
+  const bulkOn=el('s-bulk-toggle').checked;
+  const bulkAmt=bulkOn?(parseFloat(el('s-bulk-amt').value)||0):0;
 
   const baseRate=rate*pf(pur);
   const silverVal=wt*baseRate;
@@ -971,7 +994,7 @@ function calcSilver(){
   else if(mtype==='fixed') making=mval;
   const preTax=silverVal+making;
   const gstAmt=preTax*gst/100;
-  const total=preTax+gstAmt;
+  const total=Math.max(preTax+gstAmt-bulkAmt,0);
   const surcharge=making>0?((making+gstAmt)/silverVal)*100:gst;
 
   el('r-amount').textContent=fmt(total);
@@ -983,16 +1006,18 @@ function calcSilver(){
 
   const pills=[];
   if(mtype==='none') pills.push(`<div class="pill g">${t.pillNoMaking}</div>`);
+  if(bulkAmt>0) pills.push(`<div class="pill g">✓ ₹${bulkAmt.toLocaleString('en-IN')} scheme discount applied</div>`);
   el('r-pills').innerHTML=pills.join('');
 
   let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl.replace('Gold','Silver').replace('బంగారం','వెండి').replace('सोने','चाँदी')} (${wt}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(silverVal)}</div></div>`;
   if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}</div><div class="ba">+ ${fmt(making)}</div></div>`;
   rows+=`<div class="brow neg"><div class="bl">${t.gstLbl} @ ${gst}%</div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
+  if(bulkAmt>0) rows+=`<div class="brow pos"><div class="bl">Scheme Discount</div><div class="ba">− ${fmt(bulkAmt)}</div></div>`;
   rows+=`<div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
   el('r-rows').innerHTML=rows;
 
   const ctx={mode:'silver',weight:wt,baseVal:silverVal,makingPct:mtype==='pct'?mval:0,
-    makingRate:mtype==='pgram'?mval:0,total};
+    makingRate:mtype==='pgram'?mval:0,total,bulkOn,bulkAmt};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1037,7 +1062,7 @@ function calcDiamond(){
     <div class="brow neg"><div class="bl">${t.goldSetGst}</div><div class="ba">+ ${fmt(goldGstAmt)}</div></div>
     <div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
 
-  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making};
+  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making,ppc,carat};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1070,10 +1095,12 @@ function buildNego(ctx){
     if(ctx.makingRate>150) applicable.push({priority:'high',...moves.silverMaking(ctx)});
     else applicable.push({priority:'low',...moves.silverMakingFair(ctx)});
     applicable.push({priority:'med',...moves.silverPurity(ctx)});
+    if(ctx.bulkOn && ctx.bulkAmt>0) applicable.push({priority:'med',...moves.silverBulk(ctx)});
     applicable.push({priority:'med',...moves.cash(ctx)});
   } else {
     applicable.push({priority:'high',...moves.diaGst(ctx)});
     applicable.push({priority:'high',...moves.diaCert(ctx)});
+    if(ctx.ppc>0) applicable.push({priority:'med',...moves.diaBenchmark(ctx)});
     applicable.push({priority:'med',...moves.diaLoose(ctx)});
     applicable.push({priority:'med',...moves.cash(ctx)});
   }
