@@ -292,6 +292,27 @@ gtag('config', 'G-TJXHVW6XCL');
       </div>
     </div>
     <div class="card">
+      <div class="card-title" id="g-c2b">Stones / Gemstones</div>
+      <div class="toggle-row">
+        <div class="tl" id="g-l-stone">Does this piece have stones set in it? <span class="sub" id="g-l-stone-s">Diamonds, ruby, emerald, kundan, etc.</span></div>
+        <label class="tog"><input type="checkbox" id="g-stone-tog" onchange="document.getElementById('g-stone-rows').style.display=this.checked?'block':'none'"><span class="tog-sl"></span></label>
+      </div>
+      <div id="g-stone-rows" style="display:none">
+        <div class="toggle-row">
+          <div class="tl" id="g-l-stonewt">Stone weight (grams) <span class="sub" id="g-l-stonewt-s">Weighed separately from gold</span></div>
+          <div class="inline-in"><input type="number" class="mini" id="g-stonewt" value="0.5" step="0.1"><span class="unit">g</span></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl" id="g-l-stoneval">Stone value billed (₹) <span class="sub" id="g-l-stoneval-s">What the shop is charging for the stone itself</span></div>
+          <div class="inline-in"><input type="number" class="mini" id="g-stoneval" value="0" step="500"><span class="unit">₹</span></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl" id="g-l-stoneinc">Weight above includes the stones? <span class="sub" id="g-l-stoneinc-s">Most bills weigh the whole piece together</span></div>
+          <label class="tog"><input type="checkbox" id="g-stoneinc-tog" checked><span class="tog-sl"></span></label>
+        </div>
+      </div>
+    </div>
+    <div class="card">
       <div class="card-title" id="g-c3">Taxes & Exchange</div>
       <div class="toggle-row">
         <div class="tl" id="g-l-gst">GST on Gold <span class="sub" id="g-l-gst-s">Standard 3%</span></div>
@@ -561,6 +582,10 @@ const T = {
     gLMval:'Making Rate',gMvalHint:'e.g. 6.95% from ad',gLWaste:'Wastage',gLWasteS:'Some shops add 2–5%',
     gLWastep:'Wastage %',gLWastepS:'On gold value',
     gC3:'Taxes & Exchange',gLGst:'GST on Gold',gLGstS:'Standard 3%',gLHall:'Hallmarking',gLHallS:'BIS charge if any',
+    gC2b:'Stones / Gemstones',gLStone:'Does this piece have stones set in it?',gLStoneS:'Diamonds, ruby, emerald, kundan, etc.',
+    gLStonewt:'Stone weight (grams)',gLStonewtS:'Weighed separately from gold',
+    gLStoneval:'Stone value billed (₹)',gLStonevalS:'What the shop is charging for the stone itself',
+    gLStoneinc:'Weight above includes the stones?',gLStoneincS:'Most bills weigh the whole piece together',
     gLExch:'Old Gold Exchange',gLExchS:'Toggle to add old gold credit',
     gLOwt:'Old Gold Weight (g)',gLOwtS:"What you're giving back",gLOpur:'Old Gold Purity',
     gLOded:'Deduction %',gLOdedS:'0% = Zero Deduction offer',
@@ -628,6 +653,8 @@ const T = {
       makingHigh:(ctx,l)=>({title:`Cut Making from ${ctx.makingPct}% → 10%`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`You're paying ${ctx.makingPct}% — above the normal 8–12% market range. Mentioning competitor rates almost always brings it down.`,script:`"I checked — making charge in this area is around 8–10%. Can you match that? I'm ready to buy today."`}),
       makingFair:(ctx,l)=>({title:`${ctx.makingPct}% Is Already Within Market Norm`,saving:0,desc:`Market norm for making/VA is 8–12%, and ${ctx.makingPct}% sits inside that — often a fixed festival/scheme rate. Pushing for 5% usually won't work. Better ask: free hallmarking, waived making on old-gold exchange, or a small gift instead.`,script:`"Your making charge is already fair. Since I'm buying today, can you throw in free hallmarking or waive making on my old-gold exchange instead?"`}),
       makingGood:(ctx,l)=>({title:`${ctx.makingPct}% Is Already a Strong Rate`,saving:0,desc:`${ctx.makingPct}% is at or below the typical 8–12% range — little room to push lower. Spend your energy verifying instead: BIS hallmark, purity stamp, itemised bill.`,script:`"This rate looks fair. Can you give me an itemised bill showing gold value, making, and GST separately, and confirm the BIS hallmark number?"`}),
+      stoneWeightFraud:(ctx,l)=>({title:`You're Being Charged Gold Rate on ${ctx.stoneWt}g of Stone`,saving:ctx.stoneOvercharge,desc:`The weight entered includes the stones, and the shop is billing the full piece weight at the gold rate — meaning you're paying gold prices for ${ctx.stoneWt}g of stone. Legally, stone weight should be deducted from gold weight, with the stone value billed separately and shown on the invoice.`,script:`"Please deduct the stone weight from the gold weight and bill it separately — I shouldn't be paying gold rate on the stone."`}),
+      stoneValue:(ctx,l)=>({title:`Verify and Negotiate the Stone Value Separately`,saving:0,desc:`Stone/gemstone pricing has no standard published rate like gold does, which makes it the easiest place for a shop to inflate margin. Ask for a certificate (for diamonds: IGI/GIA) and compare the quoted stone value against 2–3 other jewellers before agreeing — treat it as a completely separate negotiation from the gold price.`,script:`"Can I see a certificate for this stone, and can you itemise its value separately so I can compare it elsewhere before deciding?"`}),
       wastage:(ctx,l)=>({title:`Challenge the Wastage (${ctx.wastagePct}%)`,saving:ctx.wastageAmt,desc:`Wastage is often hidden profit. Good shops include it in making. Demand they remove wastage OR reduce making by same %.`,script:`"Most reputed jewellers include wastage inside making. Can you either remove it or reduce making by ${ctx.wastagePct}%?"`}),
       bulk:(ctx,l)=>({title:`Bulk Buyer — Ask for Flat ₹/gram Rate`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`Buying ${ctx.weight}g is significant. Switch from "% making" to "flat ₹/gram" — ₹500–600/g is often better than 8%+ on expensive gold.`,script:`"For ${ctx.weight}g today, I'd prefer ₹550/g flat making instead of percentage. Fair for both of us."`}),
       deduction:(ctx,l)=>({title:`Demand Zero Deduction on Old Gold`,saving:ctx.deductionAmt||0,desc:`If a shop offers zero deduction elsewhere, use it as leverage. Politely walk toward the door — deduction often disappears.`,script:`"Chennai Shopping Mall offers zero deduction right now. Can you match that? Otherwise I'll check there first."`}),
@@ -653,6 +680,10 @@ const T = {
     gLMval:'మేకింగ్ రేటు',gMvalHint:'ఉదా: ప్రకటనలో 6.95%',gLWaste:'వేస్టేజ్',gLWasteS:'కొన్ని దుకాణాలు 2–5% వేస్తాయి',
     gLWastep:'వేస్టేజ్ %',gLWastepS:'బంగారం విలువపై',
     gC3:'పన్నులు & మార్పిడి',gLGst:'బంగారంపై GST',gLGstS:'3% ప్రభుత్వ పన్ను',gLHall:'హాల్‌మార్కింగ్',gLHallS:'BIS ఛార్జ్ ఉంటే',
+    gC2b:'రాళ్లు / రత్నాలు',gLStone:'ఈ ఆభరణంలో రాళ్లు ఉన్నాయా?',gLStoneS:'వజ్రాలు, కెంపు, పచ్చ, కుందన్ మొదలైనవి',
+    gLStonewt:'రాయి బరువు (గ్రాములు)',gLStonewtS:'బంగారం నుండి వేర్వేరుగా తూకం వేయబడింది',
+    gLStoneval:'రాయి విలువ బిల్లు (₹)',gLStonevalS:'రాయికి దుకాణం వసూలు చేస్తున్న మొత్తం',
+    gLStoneinc:'పైన బరువులో రాళ్లు కలిపి ఉన్నాయా?',gLStoneincS:'చాలా బిల్లులు మొత్తం ముక్కను కలిపి తూకం వేస్తాయి',
     gLExch:'పాత బంగారం మార్పిడి',gLExchS:'పాత బంగారం క్రెడిట్ జోడించడానికి',
     gLOwt:'పాత బంగారం బరువు (g)',gLOwtS:'మీరు తిరిగి ఇస్తున్నది',gLOpur:'పాత బంగారం స్వచ్ఛత',
     gLOded:'తగ్గింపు %',gLOdedS:'0% = జీరో డిడక్షన్ ఆఫర్',
@@ -719,6 +750,8 @@ const T = {
       makingHigh:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 10%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`మీరు ${ctx.makingPct}% చెల్లిస్తున్నారు — సాధారణ 8–12% పరిధి కంటే ఎక్కువ. పోటీ దుకాణాల ధరలు చెప్పి అడిగితే తగ్గుతుంది.`,script:`"ఈ ప్రాంతంలో మేకింగ్ ఛార్జ్ 8–10% — మీరు ఇవ్వగలరా? నేను ఈరోజే కొనడానికి సిద్ధంగా ఉన్నాను."`}),
       makingFair:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మార్కెట్ పరిధిలోనే ఉంది`,saving:0,desc:`మార్కెట్ సాధారణ పరిధి 8–12%, మీ ${ctx.makingPct}% అందులోనే ఉంది — ఇది తరచుగా పండుగ రేటుగా స్థిరంగా ఉంటుంది. 5%కి అడగడం పని చేయకపోవచ్చు. బదులుగా ఉచిత హాల్‌మార్కింగ్ లేదా మేకింగ్ మాఫీ అడగండి.`,script:`"మీ మేకింగ్ ఛార్జ్ ఇప్పటికే న్యాయంగా ఉంది. ఉచిత హాల్‌మార్కింగ్ ఇవ్వగలరా?"`}),
       makingGood:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మంచి రేటు`,saving:0,desc:`${ctx.makingPct}% సాధారణ 8–12% పరిధి కంటే తక్కువ — ఇంకా తగ్గించడానికి అవకాశం తక్కువ. బదులుగా BIS హాల్‌మార్కింగ్, బిల్లు వివరాలు నిర్ధారించుకోండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. వేర్వేరుగా చూపే బిల్లు ఇవ్వగలరా?"`}),
+      stoneWeightFraud:(ctx)=>({title:`${ctx.stoneWt}g రాయిపై బంగారు రేటు వసూలు చేస్తున్నారు`,saving:ctx.stoneOvercharge,desc:`నమోదు చేసిన బరువులో రాళ్లు కూడా ఉన్నాయి, కానీ మొత్తం బరువుకు బంగారు రేటు వసూలు చేస్తున్నారు — అంటే ${ctx.stoneWt}g రాయికి బంగారు ధర చెల్లిస్తున్నారు. రాయి బరువును బంగారం బరువు నుండి తీసివేసి, రాయి విలువను వేర్వేరుగా బిల్లు చేయాలి.`,script:`"రాయి బరువును బంగారం బరువు నుండి తీసివేసి వేర్వేరుగా బిల్లు చేయగలరా? నేను రాయిపై బంగారు రేటు చెల్లించకూడదు కదా."`}),
+      stoneValue:(ctx)=>({title:`రాయి విలువను వేర్వేరుగా నిర్ధారించి చర్చించండి`,saving:0,desc:`రాయి ధరకు బంగారంలా ప్రామాణిక రేటు లేదు కాబట్టి ఇక్కడ ఎక్కువ మార్జిన్ కలపడం సులభం. సర్టిఫికేట్ అడగండి, 2-3 దుకాణాలతో పోల్చండి.`,script:`"ఈ రాయికి సర్టిఫికేట్ చూపించగలరా? విలువను వేర్వేరుగా చూపించగలరా?"`}),
       wastage:(ctx)=>({title:`వేస్టేజ్ (${ctx.wastagePct}%) తిరస్కరించండి`,saving:ctx.wastageAmt,desc:`వేస్టేజ్ తరచుగా దాచిన లాభం. వేస్టేజ్ తొలగించాలని లేదా అదే % మేకింగ్ తగ్గించాలని అడగండి.`,script:`"వేస్టేజ్ తొలగించగలరా లేదా మేకింగ్ ${ctx.wastagePct}% తగ్గించగలరా?"`}),
       bulk:(ctx)=>({title:`పెద్ద కొనుగోలు — గ్రాముకు నిర్ణీత రేటు అడగండి`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g పెద్ద కొనుగోలు. % మేకింగ్ బదులు గ్రాముకు ₹ నిర్ణీత రేటు అడగండి.`,script:`"${ctx.weight}g కోసం గ్రాముకు ₹550 నిర్ణీత మేకింగ్ ఇవ్వండి."`}),
       deduction:(ctx)=>({title:`పాత బంగారానికి జీరో తగ్గింపు అడగండి`,saving:ctx.deductionAmt||0,desc:`మరో దుకాణంలో జీరో తగ్గింపు ఆఫర్ ఉంటే దాన్ని లాభంగా వాడుకోండి.`,script:`"చెన్నై షాపింగ్ మాల్ జీరో తగ్గింపు ఇస్తోంది — మీరు ఇవ్వగలరా?"`}),
@@ -744,6 +777,10 @@ const T = {
     gLMval:'मेकिंग दर',gMvalHint:'जैसे विज्ञापन में 6.95%',gLWaste:'वेस्टेज',gLWasteS:'कुछ दुकानें 2–5% लेती हैं',
     gLWastep:'वेस्टेज %',gLWastepS:'सोने की कीमत पर',
     gC3:'टैक्स और एक्सचेंज',gLGst:'सोने पर GST',gLGstS:'मानक 3%',gLHall:'हॉलमार्किंग',gLHallS:'BIS शुल्क यदि हो',
+    gC2b:'पत्थर / रत्न',gLStone:'क्या इस गहने में पत्थर जड़े हैं?',gLStoneS:'हीरा, माणिक, पन्ना, कुंदन आदि',
+    gLStonewt:'पत्थर का वजन (ग्राम)',gLStonewtS:'सोने से अलग तौला गया',
+    gLStoneval:'पत्थर की बिल की गई कीमत (₹)',gLStonevalS:'दुकान पत्थर के लिए कितना वसूल रही है',
+    gLStoneinc:'ऊपर के वजन में पत्थर शामिल हैं?',gLStoneincS:'ज़्यादातर बिल पूरे गहने को साथ तौलते हैं',
     gLExch:'पुराना सोना एक्सचेंज',gLExchS:'पुराने सोने का क्रेडिट जोड़ने के लिए',
     gLOwt:'पुराने सोने का वजन (g)',gLOwtS:'जो आप वापस दे रहे हैं',gLOpur:'पुराने सोने की शुद्धता',
     gLOded:'कटौती %',gLOdedS:'0% = जीरो डिडक्शन ऑफर',
@@ -810,6 +847,8 @@ const T = {
       makingHigh:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 10% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`आप ${ctx.makingPct}% दे रहे हैं — सामान्य 8–12% दायरे से ज़्यादा। प्रतिस्पर्धी दुकानों का हवाला दें।`,script:`"इस इलाके में मेकिंग 8–10% है। क्या आप मैच कर सकते हैं? मैं आज ही खरीदने के लिए तैयार हूं।"`}),
       makingFair:(ctx)=>({title:`${ctx.makingPct}% पहले से ही बाज़ार के सामान्य दायरे में है`,saving:0,desc:`बाज़ार सामान्य दायरा 8–12% है, आपका ${ctx.makingPct}% उसी में है — यह अक्सर त्योहार रेट होता है। 5% की मांग करना अक्सर काम नहीं करेगा। इसके बजाय मुफ़्त हॉलमार्किंग या मेकिंग माफ़ी मांगें।`,script:`"आपका मेकिंग चार्ज पहले से उचित है। मुफ़्त हॉलमार्किंग दे सकते हैं?"`}),
       makingGood:(ctx)=>({title:`${ctx.makingPct}% पहले से ही अच्छी दर है`,saving:0,desc:`${ctx.makingPct}% सामान्य 8–12% दायरे से कम है — घटाने की ज़्यादा गुंजाइश नहीं। इसके बजाय BIS हॉलमार्किंग और बिल विवरण जांचें।`,script:`"यह दर ठीक लगती है। अलग-अलग दिखाने वाला बिल दे सकते हैं?"`}),
+      stoneWeightFraud:(ctx)=>({title:`${ctx.stoneWt}g पत्थर पर सोने की दर वसूली जा रही है`,saving:ctx.stoneOvercharge,desc:`दर्ज किए गए वजन में पत्थर भी शामिल हैं, लेकिन पूरे वजन पर सोने की दर वसूली जा रही है — यानी ${ctx.stoneWt}g पत्थर के लिए सोने की कीमत चुका रहे हैं। पत्थर का वजन सोने से घटाकर, उसकी कीमत अलग से बिल होनी चाहिए।`,script:`"पत्थर का वजन सोने के वजन से घटाकर अलग से बिल कर सकते हैं? मुझे पत्थर पर सोने की दर नहीं देनी चाहिए।"`}),
+      stoneValue:(ctx)=>({title:`पत्थर की कीमत अलग से जांचें और मोलभाव करें`,saving:0,desc:`पत्थर की कीमत का सोने जैसा कोई मानक रेट नहीं है, इसलिए यहां मार्जिन बढ़ाना आसान है। सर्टिफिकेट मांगें, 2-3 दुकानों से तुलना करें।`,script:`"इस पत्थर का सर्टिफिकेट दिखा सकते हैं? कीमत अलग से बता सकते हैं?"`}),
       wastage:(ctx)=>({title:`वेस्टेज (${ctx.wastagePct}%) को चुनौती दें`,saving:ctx.wastageAmt,desc:`वेस्टेज अक्सर छुपा मुनाफा है। इसे हटाने या मेकिंग कम करने की मांग करें।`,script:`"वेस्टेज हटाएं या मेकिंग ${ctx.wastagePct}% कम करें।"`}),
       bulk:(ctx)=>({title:`बड़ी खरीद — फ्लैट ₹/ग्राम दर मांगें`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g बड़ी खरीद है। % मेकिंग की बजाय ₹/ग्राम फ्लैट मांगें।`,script:`"${ctx.weight}g के लिए ₹550/g फ्लैट मेकिंग दें।"`}),
       deduction:(ctx)=>({title:`पुराने सोने पर जीरो कटौती मांगें`,saving:ctx.deductionAmt||0,desc:`दूसरी दुकान का जीरो डिडक्शन ऑफर लीवरेज के रूप में उपयोग करें।`,script:`"चेन्नई शॉपिंग मॉल जीरो डिडक्शन दे रहा है — आप भी दे सकते हैं?"`}),
@@ -841,6 +880,10 @@ function applyLang() {
   s('g-c2',t.gC2);s('g-l-mtype',t.gLMtype);s('g-l-mtype-s',t.gLMtypeS);
   s('g-l-mval',t.gLMval);s('g-mval-hint',t.gMvalHint);s('g-l-waste',t.gLWaste);s('g-l-waste-s',t.gLWasteS);
   s('g-l-wastep',t.gLWastep);s('g-l-wastep-s',t.gLWastepS);
+  s('g-c2b',t.gC2b);s('g-l-stone',t.gLStone);s('g-l-stone-s',t.gLStoneS);
+  s('g-l-stonewt',t.gLStonewt);s('g-l-stonewt-s',t.gLStonewtS);
+  s('g-l-stoneval',t.gLStoneval);s('g-l-stoneval-s',t.gLStonevalS);
+  s('g-l-stoneinc',t.gLStoneinc);s('g-l-stoneinc-s',t.gLStoneincS);
   s('g-c3',t.gC3);s('g-l-gst',t.gLGst);s('g-l-gst-s',t.gLGstS);s('g-l-hall',t.gLHall);s('g-l-hall-s',t.gLHallS);
   s('g-l-exch',t.gLExch);s('g-l-exch-s',t.gLExchS);
   s('g-l-owt',t.gLOwt);s('g-l-owt-s',t.gLOwtS);s('g-l-opur',t.gLOpur);s('g-l-oded',t.gLOded);s('g-l-oded-s',t.gLOdedS);
@@ -928,14 +971,22 @@ function calcGold(){
   const owt=exchOn?(parseFloat(el('g-owt').value)||0):0;
   const opur=parseInt(el('g-opur').value)||22;
   const odedPct=exchOn?(parseFloat(el('g-oded').value)||0):0;
+  const stoneOn=el('g-stone-tog').checked;
+  const stoneWt=stoneOn?(parseFloat(el('g-stonewt').value)||0):0;
+  const stoneVal=stoneOn?(parseFloat(el('g-stoneval').value)||0):0;
+  const stoneInc=el('g-stoneinc-tog').checked;
+
+  const netGoldWt=stoneOn&&stoneInc?Math.max(wt-stoneWt,0):wt;
+  const overchargedWt=stoneOn&&stoneInc?stoneWt:0;
 
   const baseRate=rate*pf(pur);
-  const goldVal=wt*baseRate;
+  const goldVal=netGoldWt*baseRate;
+  const stoneOvercharge=overchargedWt*baseRate;
   let making=0;
   if(mtype==='pct') making=goldVal*mval/100;
-  else if(mtype==='pgram') making=wt*mval;
+  else if(mtype==='pgram') making=netGoldWt*mval;
   const wastage=goldVal*wPct/100;
-  const preTax=goldVal+making+wastage;
+  const preTax=goldVal+making+wastage+stoneVal;
   const gstAmt=preTax*gst/100;
   const subtotal=preTax+gstAmt+hall;
 
@@ -963,9 +1014,11 @@ function calcGold(){
   if(surcharge>20) pills.push(`<div class="pill r">${t.pillHigh}</div>`);
   if(exchOn&&odedPct===0) pills.push(`<div class="pill g">${t.pillZeroDed}</div>`);
   if(exchOn&&odedPct>5) pills.push(`<div class="pill r">${t.pillHighDed}</div>`);
+  if(stoneOvercharge>0) pills.push(`<div class="pill r">⚠️ ₹${Math.round(stoneOvercharge).toLocaleString('en-IN')} charged extra on stone weight</div>`);
   el('r-pills').innerHTML=pills.join('');
 
-  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl} (${wt}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(goldVal)}</div></div>`;
+  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl} (${netGoldWt.toFixed(2)}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(goldVal)}</div></div>`;
+  if(stoneVal>0) rows+=`<div class="brow neg"><div class="bl">Stone Value (${stoneWt}g)</div><div class="ba">+ ${fmt(stoneVal)}</div></div>`;
   if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}<span class="bs">${mtype==='pct'?mval+'%':fmt(mval)+'/g'}</span></div><div class="ba">+ ${fmt(making)}</div></div>`;
   if(wastage>0) rows+=`<div class="brow neg"><div class="bl">${t.wastageLbl}<span class="bs">${wPct}%</span></div><div class="ba">+ ${fmt(wastage)}</div></div>`;
   rows+=`<div class="brow"><div class="bl">${t.subTotalLbl}</div><div class="ba">${fmt(preTax)}</div></div>`;
@@ -981,7 +1034,8 @@ function calcGold(){
 
   const ctx={mode:'gold',weight:wt,purity:pur,baseVal:goldVal,makingPct:mtype==='pct'?mval:0,
     makingRate:mtype==='pgram'?mval:0,wastageAmt:wastage,wastagePct:wPct,hallmark:hall,
-    total:finalTotal,deductionAmt:deduction,surcharge,noCardFee:el('g-nocard-toggle').checked};
+    total:finalTotal,deductionAmt:deduction,surcharge,noCardFee:el('g-nocard-toggle').checked,
+    stoneOn,stoneWt,stoneVal,stoneOvercharge};
   _lastCtx=ctx;
   buildNego(ctx);
   showResults();
@@ -1102,6 +1156,8 @@ function buildNego(ctx){
     if(ctx.wastageAmt>0) applicable.push({priority:'high',...moves.wastage(ctx)});
     if(ctx.weight>=20) applicable.push({priority:'high',...moves.bulk(ctx)});
     if(ctx.deductionAmt>0) applicable.push({priority:'high',...moves.deduction(ctx)});
+    if(ctx.stoneOvercharge>0) applicable.push({priority:'high',...moves.stoneWeightFraud(ctx)});
+    if(ctx.stoneOn && ctx.stoneVal>0) applicable.push({priority:'med',...moves.stoneValue(ctx)});
     if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
     else applicable.push({priority:'med',...moves.cash(ctx)});
     if(ctx.total>=50000) applicable.push({priority:'low',...moves.freegift(ctx)});
