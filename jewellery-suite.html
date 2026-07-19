@@ -266,6 +266,7 @@ gtag('config', 'G-TJXHVW6XCL');
         <label id="g-l-rate">Today's Gold Rate <span class="hint" id="g-l-rate-h">(₹/g for 24K)</span></label>
         <div class="pfx"><span class="p">₹</span><input type="number" id="g-rate" value="9500"></div>
         <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="g-rate-link">🔗 Check today's rate on GoodReturns →</a>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px" id="g-rate-updated"></div>
       </div>
     </div>
     <div class="card">
@@ -367,6 +368,7 @@ gtag('config', 'G-TJXHVW6XCL');
         <label id="s-l-rate">Today's Silver Rate <span class="hint" id="s-l-rate-h">(₹/g for 999)</span></label>
         <div class="pfx"><span class="p">₹</span><input type="number" id="s-rate" value="95"></div>
         <a class="rate-link" href="https://www.goodreturns.in/silver-rates/" target="_blank" id="s-rate-link">🔗 Check today's rate on GoodReturns →</a>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px" id="s-rate-updated"></div>
       </div>
     </div>
     <div class="card">
@@ -1293,10 +1295,19 @@ document.addEventListener('DOMContentLoaded',function(){
   fetch('site-config.json').then(function(r){return r.json();}).then(function(cfg){
     var g = cfg && cfg.rates && cfg.rates.gold_24k_per_gram_inr;
     var s = cfg && cfg.rates && cfg.rates.silver_999_per_gram_inr;
+    var updatedAt = cfg && cfg.rates && cfg.rates.updated_at;
     var gEl = document.getElementById('g-rate');
     var sEl = document.getElementById('s-rate');
     if(g && gEl) gEl.value = g;
     if(s && sEl) sEl.value = s;
+    if(updatedAt){
+      var d = new Date(updatedAt);
+      var stamp = 'Rate last refreshed: ' + d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+      var gU = document.getElementById('g-rate-updated');
+      var sU = document.getElementById('s-rate-updated');
+      if(gU) gU.textContent = stamp;
+      if(sU) sU.textContent = stamp;
+    }
     if((g && gEl) || (s && sEl)){
       try{ if(typeof calcGold==='function') calcGold(); }catch(e){}
     }
