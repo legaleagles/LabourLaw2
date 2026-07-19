@@ -174,41 +174,36 @@ gtag('config', 'G-TJXHVW6XCL');
         <div id="itemSumDisplay" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;">Items Total: ₹0.00</div>
 
         <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--light);">
-          <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Also Shows</div>
-          <div style="background:var(--teal-pale);border:1px solid var(--teal);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
-            <div style="font-size:11.5px;font-weight:800;color:var(--teal-deep);">ℹ️ How is GST shown on YOUR bill?</div>
-            <div style="font-size:10.5px;color:var(--ink-soft);line-height:1.5;margin-top:3px;">Different bills show this differently — some ADD GST on top of the item prices (Final Total = Items + GST), others show item prices that already INCLUDE GST (Final Total = Items, with GST just disclosed as a breakdown). Look at your bill's own printed total and pick which matches below — we won't guess.</div>
-          </div>
+          <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">GST on This Bill</div>
           <div style="margin-bottom:10px;">
-            <label style="font-size:10.5px;color:var(--muted);font-weight:700;display:block;margin-bottom:6px;">GST on this bill is:</label>
+            <label style="font-size:10.5px;color:var(--muted);font-weight:700;display:block;margin-bottom:6px;">Which GST slab applies here?</label>
             <div style="display:flex;gap:8px;">
-              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:11.5px;cursor:pointer;">
-                <input type="radio" name="gst-mode" value="additive" checked onchange="updateGstModeHint()"> Added on top
+              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;cursor:pointer;">
+                <input type="radio" name="gst-slab" value="5" checked onchange="onGstSlabChange()"> 5% GST
               </label>
-              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:11.5px;cursor:pointer;">
-                <input type="radio" name="gst-mode" value="inclusive" onchange="updateGstModeHint()"> Already included
+              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;cursor:pointer;">
+                <input type="radio" name="gst-slab" value="18" onchange="onGstSlabChange()"> 18% GST
               </label>
             </div>
-            <div id="gstModeHint" style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4;">Final Total will be calculated as Items + GST + Service Charge.</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;background:var(--teal-pale);border-radius:8px;padding:8px 10px;">
+              <b>5% applies</b> to standalone/non-AC restaurants with no liquor license (no input tax credit claimed by the restaurant).<br>
+              <b>18% applies</b> to restaurants inside hotels with room tariffs above ₹7,500/night, or those that serve alcohol. <span style="color:var(--teal-deep);font-weight:700;">(Coming later: we plan to auto-detect this from the restaurant's actual GST registration via an official lookup API — for now, check which applies using the criteria above, or your bill's own printed rate.)</span>
+            </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
             <div>
-              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">GST / Tax Charged</label>
-              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-gst" value="0" step="0.01" style="padding-left:24px;"></div>
+              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">CGST (auto-calculated)</label>
+              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-cgst" value="0" step="0.01" readonly style="padding-left:24px;background:var(--light);color:var(--muted);"></div>
             </div>
             <div>
-              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Service Charge</label>
-              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sc" value="0" step="0.01" style="padding-left:24px;"></div>
+              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">SGST (auto-calculated)</label>
+              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sgst" value="0" step="0.01" readonly style="padding-left:24px;background:var(--light);color:var(--muted);"></div>
             </div>
           </div>
-          <div style="margin-top:10px;">
-            <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Is this restaurant AC, or does it serve liquor?</label>
-            <select id="cart-restaurant-type" style="width:100%;margin-top:4px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12.5px;">
-              <option value="non-ac">No — Non-AC, no liquor (5% GST expected)</option>
-              <option value="ac">Yes — AC or serves liquor (18% GST expected)</option>
-              <option value="unsure">I'm not sure</option>
-            </select>
-            <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;">This tells us which GST rate is actually correct for this bill, before we judge it. <span style="color:var(--teal-deep);font-weight:700;">(Coming later: we plan to verify this automatically against the restaurant's real GST registration using an official GST lookup API — for now, please confirm it yourself.)</span></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4;">CGST + SGST together make up the total GST rate above (e.g. 5% = 2.5% CGST + 2.5% SGST). These update automatically from your Items Total and the slab you picked — no need to type them in.</div>
+          <div style="margin-top:12px;">
+            <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Service Charge (if any)</label>
+            <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sc" value="0" step="0.01" style="padding-left:24px;"></div>
           </div>
         </div>
 
@@ -218,7 +213,7 @@ gtag('config', 'G-TJXHVW6XCL');
       <div id="verdictSection" style="display:none;margin-top:14px;"></div>
     </div>
   </div>
-  </div>
+</div>
 
 <footer><span id="footer-txt">Restaurant Bill Checker · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
 <script>
@@ -449,7 +444,7 @@ async function performOcrPass(technique){
  noMatchBox.style.display = 'none';
  retryBtn.style.display = 'none';
  progressBox.style.display = 'block';
- progressText.textContent = 'Loading text-recognition engine…';
+ progressText.textContent = 'Loading text-recognition engine… (Attempt ' + technique + ' of 3)';
  progressBar.style.width = '10%';
 
  try{
@@ -457,7 +452,7 @@ async function performOcrPass(technique){
 
   let sourceForOcr = img.src;
   if(technique === 2){
-   progressText.textContent = 'Reading (enlarged pass)…';
+   progressText.textContent = 'Reading (enlarged pass)… (Attempt 2 of 3)';
    const canvas = document.createElement('canvas');
    const scale = 1.6;
    canvas.width = img.naturalWidth * scale;
@@ -467,7 +462,7 @@ async function performOcrPass(technique){
    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
    sourceForOcr = canvas.toDataURL('image/png');
   }else if(technique === 3){
-   progressText.textContent = 'Reading (high-contrast pass)…';
+   progressText.textContent = 'Reading (high-contrast pass)… (Attempt 3 of 3)';
    const canvas = document.createElement('canvas');
    canvas.width = img.naturalWidth;
    canvas.height = img.naturalHeight;
@@ -483,7 +478,7 @@ async function performOcrPass(technique){
    ctx.putImageData(imageData, 0, 0);
    sourceForOcr = canvas.toDataURL('image/png');
   }else{
-   progressText.textContent = 'Reading your bill…';
+   progressText.textContent = 'Reading your bill… (Attempt 1 of 3)';
   }
   progressBar.style.width = '30%';
 
@@ -496,13 +491,13 @@ async function performOcrPass(technique){
    }
   });
 
-  progressText.textContent = 'Finding the items…';
+  progressText.textContent = 'Finding the items… (Attempt ' + technique + ' of 3)';
   progressBar.style.width = '95%';
 
   billItems = extractLineItems(data.text);
   const extracted = parseBillAmounts(data.text);
-  if(extracted.gst !== null) document.getElementById('cart-gst').value = extracted.gst;
   if(extracted.serviceCharge !== null) document.getElementById('cart-sc').value = extracted.serviceCharge;
+  onGstSlabChange(); // recompute CGST/SGST from the default 5% slab against the newly-extracted items
 
   progressBar.style.width = '100%';
   setTimeout(() => { progressBox.style.display = 'none'; }, 300);
@@ -518,15 +513,16 @@ async function performOcrPass(technique){
    // be free to try again if what's shown doesn't look right, up to technique 3.
    if(technique < 3){
     document.getElementById('ocrRetryBtn').style.display = 'block';
-    document.getElementById('ocrRetryBtn').textContent = '🔁 Not Right? Try a Different Reading Technique';
+    document.getElementById('ocrRetryBtn').textContent = '🔁 Not Right? Try Reading Attempt ' + (technique + 1) + ' of 3';
    }
   }else{
    noMatchBox.style.display = 'block';
    lastOcrTechnique = technique;
    if(technique < 3){
     document.getElementById('ocrRetryBtn').style.display = 'block';
+    document.getElementById('ocrRetryBtn').textContent = '🔁 Try Reading Attempt ' + (technique + 1) + ' of 3';
    }else{
-    document.getElementById('ocrNoMatchText').textContent = 'We tried multiple reading techniques and still could not confidently find items on this photo. Please add your items manually below using the zoomed view — it only takes a moment.';
+    document.getElementById('ocrNoMatchText').textContent = 'We tried all 3 reading techniques (attempt 3 of 3 complete) and still could not confidently find items on this photo. Please add your items manually below using the zoomed view — it only takes a moment.';
     document.getElementById('itemCartSection').style.display = 'block';
    }
   }
@@ -802,12 +798,14 @@ function addItemRow(name, qty, unitPrice){
  billItems.push({ name: name || '', qty: parseFloat(qty) || 1, unitPrice: parseFloat(unitPrice) || 0 });
  renderItemRows();
  document.getElementById('itemCartSection').style.display = 'block';
+ onGstSlabChange();
 }
 
 function removeItemRow(i){
  billItems.splice(i, 1);
  renderItemRows(); // a row genuinely disappearing requires a full rebuild -- fine here,
                     // since removal isn't a per-keystroke action the way typing is
+ onGstSlabChange();
 }
 
 // Updates the in-memory item state AND the read-only line-total label in place, WITHOUT
@@ -827,6 +825,7 @@ function updateItemField(i, field, value){
  if(lineTotalEl) lineTotalEl.textContent = '₹' + lineTotal.toFixed(2);
 
  updateItemSumDisplay();
+ onGstSlabChange(); // CGST/SGST are derived from the items total, so a price/qty edit must recompute them
 }
 
 function updateItemSumDisplay(){
@@ -839,14 +838,19 @@ function updateItemSumDisplay(){
 // than firing automatically after OCR -- OCR/extraction can be wrong, and showing a
 // confident "Overcharged!" verdict built on unreviewed, possibly-garbage data is worse
 // than showing nothing. The user reviews and fixes the cart FIRST; only then do we judge.
-function updateGstModeHint(){
- const mode = document.querySelector('input[name="gst-mode"]:checked').value;
- const hintEl = document.getElementById('gstModeHint');
- if(mode === 'additive'){
-  hintEl.textContent = 'Final Total will be calculated as Items + GST + Service Charge.';
- }else{
-  hintEl.textContent = "Final Total will equal your Items Total (GST is shown as a breakdown of what's already inside that amount, not added again).";
- }
+// Auto-computes CGST and SGST the moment a GST slab (5% or 18%) is picked, using the
+// current Items Total -- the user never types a GST amount by hand, since that text box
+// was error-prone (OCR sometimes captured the wrong number into it, and manual entry is
+// easy to fat-finger). CGST and SGST are always exactly half the total slab rate.
+function onGstSlabChange(){
+ const slabInput = document.querySelector('input[name="gst-slab"]:checked');
+ const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
+ const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
+ const halfRate = slabRate / 2;
+ const cgst = itemSum * halfRate / 100;
+ const sgst = itemSum * halfRate / 100;
+ document.getElementById('cart-cgst').value = cgst.toFixed(2);
+ document.getElementById('cart-sgst').value = sgst.toFixed(2);
 }
 
 function completeCart(){
@@ -856,80 +860,52 @@ function completeCart(){
  }
 
  const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
- const gstCharged = parseFloat(document.getElementById('cart-gst').value) || 0;
+ const slabInput = document.querySelector('input[name="gst-slab"]:checked');
+ const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
+ const cgst = parseFloat(document.getElementById('cart-cgst').value) || 0;
+ const sgst = parseFloat(document.getElementById('cart-sgst').value) || 0;
+ const gstAmount = cgst + sgst;
  const scCharged = parseFloat(document.getElementById('cart-sc').value) || 0;
- const restaurantType = document.getElementById('cart-restaurant-type').value;
- const gstModeInput = document.querySelector('input[name="gst-mode"]:checked');
- const gstMode = gstModeInput ? gstModeInput.value : 'additive';
- // In "additive" mode, GST is charged on top: Total = Items + GST + Service Charge.
- // In "inclusive" mode, the item prices already contain GST, so GST is just a disclosed
- // breakdown of tax already inside the Items Total -- adding it again would double-count.
- const totalCharged = gstMode === 'inclusive' ? (itemSum + scCharged) : (itemSum + gstCharged + scCharged);
- // For the GST-rate math below, we always need the pre-tax base to check against --
- // in inclusive mode, the taxable base is (itemSum - gstCharged), not itemSum itself.
- const taxableBase = gstMode === 'inclusive' ? (itemSum - gstCharged) : itemSum;
+
+ // The tool doesn't ask the user to pre-decide whether GST is already inside the item
+ // prices or added on top -- that's exactly the ambiguity that confused people. Instead,
+ // BOTH possibilities are calculated and shown side by side, so the person can compare
+ // either one against their bill's own printed final total and see immediately which one
+ // matches -- no prior knowledge required.
+ const totalIfAdded = itemSum + gstAmount + scCharged;
+ const totalIfIncluded = itemSum + scCharged; // GST already inside itemSum in this case
 
  const verdictBox = document.getElementById('verdictSection');
  let html = '';
 
- const gstModeLabel = gstMode === 'inclusive' ? 'GST is shown as a breakdown already included in Items Total' : 'GST and Service Charge are ADDED on top of items';
  html += `<div style="background:#fff;border:1.5px solid var(--light);border-radius:14px;padding:14px;margin-bottom:10px;">
-   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Summary <span style="text-transform:none;font-weight:600;color:var(--muted);">(${gstModeLabel})</span></div>
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Items Total${gstMode === 'inclusive' ? ' (GST already inside)' : ''}</span><span style="font-weight:700;">₹${itemSum.toFixed(2)}</span></div>
-   ${gstMode === 'inclusive'
-     ? `<div style="display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;padding-left:12px;"><span style="color:var(--muted);">↳ of which GST</span><span style="font-weight:600;color:var(--muted);">₹${gstCharged.toFixed(2)}</span></div>`
-     : `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">+ &nbsp;GST Charged</span><span style="font-weight:700;">₹${gstCharged.toFixed(2)}</span></div>`}
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">+ &nbsp;Service Charge</span><span style="font-weight:700;">₹${scCharged.toFixed(2)}</span></div>
-   <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;margin-top:6px;border-top:1px solid var(--light);"><span style="font-weight:800;">= &nbsp;Final Total</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalCharged.toFixed(2)}</span></div>
+   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Summary</div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Items Total</span><span style="font-weight:700;">₹${itemSum.toFixed(2)}</span></div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">GST (${slabRate}% = CGST ₹${cgst.toFixed(2)} + SGST ₹${sgst.toFixed(2)})</span><span style="font-weight:700;">₹${gstAmount.toFixed(2)}</span></div>
+   ${scCharged > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Service Charge</span><span style="font-weight:700;">₹${scCharged.toFixed(2)}</span></div>` : ''}
  </div>`;
 
- // GST mathematical validation, aware of the restaurant-type answer
- const gstCheck = validateGstPattern(gstCharged, taxableBase);
- if(gstCheck){
-  if(restaurantType === 'unsure'){
-   html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
-     <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ GST Rate: ${gstCheck.actualRatePct.toFixed(1)}%</div>
-     <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">This works out closest to the ${gstCheck.closestStandardRate}% slab. Since you're not sure if this restaurant is AC/serves liquor, we can't confirm if that's the CORRECT slab for them — non-AC/no-liquor places should charge 5%, AC or liquor-serving places should charge 18%. Worth checking their menu or asking staff.</div>
-   </div>`;
-  }else{
-   const expectedRate = restaurantType === 'ac' ? 18 : 5;
-   const rateMatchesExpected = Math.abs(gstCheck.actualRatePct - expectedRate) <= 0.5;
-   if(rateMatchesExpected){
-    html += `<div style="background:var(--jade-bg);border:1px solid #A7F3D0;border-radius:12px;padding:12px;margin-bottom:10px;">
-      <div style="font-size:11px;font-weight:800;color:#065F46;">✅ GST Rate Correct: ${gstCheck.actualRatePct.toFixed(1)}%</div>
-      <div style="font-size:11px;color:#065F46;line-height:1.6;margin-top:3px;">This matches the expected ${expectedRate}% rate for a ${restaurantType === 'ac' ? 'AC/liquor-serving' : 'non-AC, no-liquor'} restaurant.</div>
-    </div>`;
-   }else{
-    html += `<div style="background:var(--rose-bg);border:1px solid var(--rose);border-radius:12px;padding:12px;margin-bottom:10px;">
-      <div style="font-size:11px;font-weight:800;color:var(--rose);">⚠️ GST Rate Mismatch: ${gstCheck.actualRatePct.toFixed(1)}%</div>
-      <div style="font-size:11px;color:#7F1D1D;line-height:1.6;margin-top:3px;">You told us this restaurant is ${restaurantType === 'ac' ? 'AC/serves liquor' : 'non-AC, no liquor'}, which should mean ${expectedRate}% GST — but the bill shows ${gstCheck.actualRatePct.toFixed(1)}%. This is worth questioning directly with the restaurant.</div>
-    </div>`;
-   }
-  }
-  html += `<div style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.4;">🔮 Coming later: we plan to verify a restaurant's actual registered GST slab automatically via an official GST lookup API, instead of relying on your answer above.</div>`;
- }
+ html += `<div style="background:var(--teal-pale);border:1.5px solid var(--teal);border-radius:14px;padding:14px;margin-bottom:10px;">
+   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Compare Against Your Bill's Printed Total</div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--light);"><span>If GST is <b>added on top</b> of items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfAdded.toFixed(2)}</span></div>
+   <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;"><span>If GST is <b>already included</b> in items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfIncluded.toFixed(2)}</span></div>
+   <div style="font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5;">Look at the FINAL total printed on your actual bill — whichever of the two numbers above it matches tells you which case applies. That's the correct total; the other one doesn't apply to this bill.</div>
+ </div>`;
+
+ // GST rate is now fixed by the slab the user picked (not compared against a possibly-
+ // wrong OCR-captured number), so this section explains the slab criteria rather than
+ // flagging a mismatch that can no longer occur by construction.
+ html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
+   <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ You selected the ${slabRate}% GST slab</div>
+   <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">${slabRate === 5 ? 'This applies to standalone/non-AC restaurants with no liquor license.' : 'This applies to restaurants in hotels with room tariffs above ₹7,500/night, or those serving alcohol.'} If this restaurant doesn't actually match that description, switch the slab above and the numbers will recalculate automatically.</div>
+ </div>`;
+ html += `<div style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.4;">🔮 Coming later: we plan to verify a restaurant's actual registered GST slab automatically via an official GST lookup API, instead of asking you to pick it above.</div>`;
 
  // Service charge is never mandatory -- always worth restating regardless of the numbers
  if(scCharged > 0){
   html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
     <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ Service Charge is Not Mandatory</div>
     <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">You were charged ₹${scCharged.toFixed(2)} in service charge. This is legally optional in India — you can ask for it to be removed if you're unhappy with the service.</div>
-  </div>`;
- }
-
- // Overall fairness verdict -- deliberately understated language (not "OVERCHARGED!" in
- // large red text) since this is now built on a cart the user has actually reviewed,
- // but a wrong verdict is still costly to get loudly wrong
- const gstIsWrong = gstCheck && restaurantType !== 'unsure' && Math.abs(gstCheck.actualRatePct - (restaurantType === 'ac' ? 18 : 5)) > 0.5;
- if(gstIsWrong){
-  html += `<div style="background:var(--rose-bg);border:2px solid var(--rose);border-radius:14px;padding:16px;text-align:center;">
-    <div style="font-size:15px;font-weight:900;color:var(--rose);">This bill may have an incorrect GST rate</div>
-    <div style="font-size:11.5px;color:#7F1D1D;margin-top:4px;">Worth raising with the restaurant, calmly and with this breakdown in hand.</div>
-  </div>`;
- }else{
-  html += `<div style="background:var(--jade-bg);border:2px solid #A7F3D0;border-radius:14px;padding:16px;text-align:center;">
-    <div style="font-size:15px;font-weight:900;color:#065F46;">This bill looks correctly charged</div>
-    <div style="font-size:11.5px;color:#065F46;margin-top:4px;">Based on the items and GST rate you confirmed above.</div>
   </div>`;
  }
 
@@ -954,9 +930,11 @@ function resetBillChecker(){
  document.getElementById('itemCartSection').style.display = 'none';
  document.getElementById('verdictSection').style.display = 'none';
  document.getElementById('verdictSection').innerHTML = '';
- document.getElementById('cart-gst').value = '0';
+ document.getElementById('cart-cgst').value = '0';
+ document.getElementById('cart-sgst').value = '0';
  document.getElementById('cart-sc').value = '0';
- document.getElementById('cart-restaurant-type').value = 'non-ac';
+ const slab5Radio = document.querySelector('input[name="gst-slab"][value="5"]');
+ if(slab5Radio) slab5Radio.checked = true;
  billItems = [];
  lastOcrTechnique = 1;
 }
