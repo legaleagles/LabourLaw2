@@ -421,7 +421,15 @@ async function runBillOcr(){
   alert('Auto-fill currently works on photo uploads only (not PDF) -- please upload a JPG or PNG of your bill.');
   return;
  }
- await performOcrPass(1);
+ // If the user already attempted a scan before (e.g. clicked this same button again
+ // rather than the smaller retry button), resume from the NEXT technique rather than
+ // silently restarting at technique 1 and discarding that progress -- this was the real
+ // bug behind "retry always shows attempt 1 and the same result," since this button
+ // stays visible and clickable throughout, and clicking it again used to always reset
+ // to technique 1 no matter how far the user had already gotten.
+ const nextTechnique = ocrHasRunOnce ? Math.min(lastOcrTechnique + 1, 3) : 1;
+ ocrHasRunOnce = true;
+ await performOcrPass(nextTechnique);
 }
 
 // Runs one OCR "technique" pass. technique 1 = normal read. technique 2 = upscaled
@@ -478,7 +486,7 @@ async function performOcrPass(technique){
    ctx.putImageData(imageData, 0, 0);
    sourceForOcr = canvas.toDataURL('image/png');
   }else{
-   progressText.textContent = 'Reading your bill… (Attempt 1 of 3)';
+   progressText.textContent = 'Reading your bill… (Attempt ' + technique + ' of 3)';
   }
   progressBar.style.width = '30%';
 
@@ -536,6 +544,7 @@ async function performOcrPass(technique){
 }
 
 let lastOcrTechnique = 1;
+let ocrHasRunOnce = false;
 function retryBillOcr(){
  performOcrPass(lastOcrTechnique + 1);
 }
@@ -937,6 +946,7 @@ function resetBillChecker(){
  if(slab5Radio) slab5Radio.checked = true;
  billItems = [];
  lastOcrTechnique = 1;
+ ocrHasRunOnce = false;
 }
 applyLang();
 </script>
