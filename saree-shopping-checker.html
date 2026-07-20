@@ -146,45 +146,6 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
 
 <div class="page">
 
-  <div class="checklist-card">
-    <div class="checklist-header">
-      <div class="checklist-title" data-i18n="cl_title">🛍️ Shopping Day Checklist</div>
-      <div class="checklist-progress"><span id="clProgress">0/17</span></div>
-    </div>
-    <div class="checklist-bar"><div class="checklist-bar-fill" id="clBarFill"></div></div>
-
-    <div class="cl-group">
-      <div class="cl-group-t" data-i18n="cl_g1">🧵 SAREE QUALITY</div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl1">Asked "silk zari or zari finish?" out loud — didn't just assume from the shine</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl2">Checked for a Silk Mark or Handloom Mark tag on any genuine silk/handloom claim</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl3">Looked at the fabric and colour in daylight near the entrance, not just under shop lighting</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl4">Checked the weave and thread for looseness or unevenness, especially in a combo/bundle piece</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl5">For a full-price piece, asked for an unopened stock item, not the display one</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl6">For bridal shopping, checked similar craftsmanship outside the "exclusive" section first</div></div>
-    </div>
-
-    <div class="cl-group">
-      <div class="cl-group-t" data-i18n="cl_g2">🧾 BILLING GIMMICKS</div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl7">Confirmed GST is 5% on the saree itself, not 18%</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl8">Asked stitching/fall/pico charges before the piece went to the tailor, not after</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl9">Checked the printed tag price matches what's actually billed</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl10">For any combo/BOGO offer, divided total by piece count for the real per-piece price</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl11">Asked "refund or exchange only?" out loud before paying, not after</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl12">If given store credit instead of refund, asked the expiry date on the spot</div></div>
-    </div>
-
-    <div class="cl-group">
-      <div class="cl-group-t" data-i18n="cl_g3">💰 DISCOUNT REALITY CHECK</div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl13">Compared the final rupee price to 1-2 other shops, ignored the "% off" headline</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl14">For a "Kg Sale," picked pieces I liked first, then weighed — watched for extras being slipped in</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl15">For "first 100 customers" or "today only" claims, asked for a token/queue number</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl16">For "no cost EMI," asked the upfront cash price to check if interest was hidden</div></div>
-      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl17">Decided my budget before walking in, before any display price could anchor it</div></div>
-    </div>
-
-    <button class="checklist-reset" onclick="resetChecklist()" data-i18n="cl_reset">↺ Reset for next shopping trip</button>
-  </div>
-
   <div class="section-label" data-i18n="qsec_label">🔍 How to Judge Saree Quality — Even If the Tag Was Changed</div>
 
   <div class="truth-box">
@@ -591,22 +552,6 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 
 <script>
-var TOTAL_CHECKLIST = 17;
-
-function toggleCl(el){
-  el.classList.toggle('done');
-  var done = document.querySelectorAll('.cl-item.done').length;
-  document.getElementById('clProgress').textContent = done + '/' + TOTAL_CHECKLIST;
-  document.getElementById('clBarFill').style.width = Math.round((done/TOTAL_CHECKLIST)*100) + '%';
-  try { gtag('event', 'checklist_item', {done: done}); } catch(e) {}
-}
-
-function resetChecklist(){
-  document.querySelectorAll('.cl-item.done').forEach(function(el){ el.classList.remove('done'); });
-  document.getElementById('clProgress').textContent = '0/' + TOTAL_CHECKLIST;
-  document.getElementById('clBarFill').style.width = '0%';
-}
-
 var TOTAL_TACTICS = 28;
 var spottedSet = new Set();
 
