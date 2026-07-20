@@ -73,13 +73,19 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .truth-box{background:linear-gradient(135deg,#1a2436,#2a1436);border-radius:16px;padding:16px;margin-bottom:14px;}
 .truth-t{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);margin-bottom:6px;}
 .truth-b{font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.7;}
-.qcard{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:15px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
-.qcard-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.qcard-icon{width:36px;height:36px;border-radius:10px;background:var(--sky-bg,#F0F9FF);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.qcard-name{font-size:13.5px;font-weight:800;color:var(--ink);}
+.qcard{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:14px 15px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.04);cursor:pointer;transition:all .2s;}
+.qcard.open{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,162,39,.15);}
+.qcard-head{display:flex;align-items:center;gap:12px;}
+.qcard-icon{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#F0F9FF,#E0F2FE);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(14,165,233,.2);}
+.qcard-name{font-size:13.5px;font-weight:800;color:var(--ink);flex:1;line-height:1.4;}
+.qcard-chevron{font-size:11px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+.qcard.open .qcard-chevron{transform:rotate(180deg);color:var(--gold-d);}
+.qcard-content{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.qcard.open .qcard-content{max-height:400px;margin-top:10px;}
 .qcard-body{font-size:11.5px;color:var(--ink2);line-height:1.65;margin-bottom:7px;}
 .qcard-how{background:var(--jade-bg);border-radius:9px;padding:8px 10px;font-size:11px;color:#065F46;line-height:1.6;font-weight:600;}
 .qcard-how b{color:#065F46;}
+.qsec-hint{text-align:center;font-size:10.5px;color:var(--muted);font-style:italic;margin-bottom:10px;}
 .rights{background:var(--navy);border-radius:18px;padding:20px 16px;margin:24px 0;}
 .rights-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);margin-bottom:10px;text-align:center;}
 .right-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);}
@@ -162,52 +168,70 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <div class="truth-b" data-i18n="qtruth_b">There is no hidden mark woven into a saree that reveals its "original" price — unlike a sealed packaged product, a saree isn't legally required to carry a printed MRP on the fabric itself. The tag is genuinely the only price carrier, which is exactly why tag-swapping works. What you CAN do instead is verify what the saree actually is using the marks below — then judge whether the price makes sense for that verified category, rather than trusting the tag blindly.</div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">🏷️</div><div class="qcard-name" data-i18n="q1_n">The Silk Mark Hologram</div></div>
-    <div class="qcard-body" data-i18n="q1_b">A genuine Silk Mark tag is a cream-coloured hologram with a serial number, issued by the Silk Mark Organisation of India (SMOI) under the Central Silk Board. It guarantees 100% pure natural silk — no synthetic blend. It's tamper-proof: if someone peels it off to reuse on another piece, it visibly damages.</div>
-    <div class="qcard-how" data-i18n-html="q1_h"><b>How to check:</b> Look for the hologram tag physically, note the serial number, and verify it at silkmarkindia.com. No tag on a "pure silk" claim is itself a red flag worth asking about.</div>
+  <div class="qsec-hint" data-i18n="qsec_hint">Tap any card to open it</div>
+
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">🏷️</div><div class="qcard-name" data-i18n="q1_n">The Silk Mark Hologram</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q1_b">A genuine Silk Mark tag is a cream-coloured hologram with a serial number, issued by the Silk Mark Organisation of India (SMOI) under the Central Silk Board. It guarantees 100% pure natural silk — no synthetic blend. It's tamper-proof: if someone peels it off to reuse on another piece, it visibly damages.</div>
+      <div class="qcard-how" data-i18n-html="q1_h"><b>How to check:</b> Look for the hologram tag physically, note the serial number, and verify it at silkmarkindia.com. No tag on a "pure silk" claim is itself a red flag worth asking about.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">🧾</div><div class="qcard-name" data-i18n="q2_n">HSN Code 5007 on the Bill</div></div>
-    <div class="qcard-body" data-i18n="q2_b">Pure silk fabric has its own tax classification code, HSN 5007. Some sellers avoid printing the correct code on the invoice to bypass tax scrutiny or quietly cover for a synthetic blend.</div>
-    <div class="qcard-how" data-i18n-html="q2_h"><b>How to check:</b> Ask for a proper bill and check it mentions HSN 5007 for a "pure silk" purchase. A vague or missing HSN code on an expensive silk claim is worth questioning.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">🧾</div><div class="qcard-name" data-i18n="q2_n">HSN Code 5007 on the Bill</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q2_b">Pure silk fabric has its own tax classification code, HSN 5007. Some sellers avoid printing the correct code on the invoice to bypass tax scrutiny or quietly cover for a synthetic blend.</div>
+      <div class="qcard-how" data-i18n-html="q2_h"><b>How to check:</b> Ask for a proper bill and check it mentions HSN 5007 for a "pure silk" purchase. A vague or missing HSN code on an expensive silk claim is worth questioning.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">📍</div><div class="qcard-name" data-i18n="q3_n">GI Tag for Named Regional Weaves</div></div>
-    <div class="qcard-body" data-i18n="q3_b">Pochampally Ikat, Gadwal, Uppada Jamdani, Venkatagiri, Kanchipuram, Banarasi and other named weaves have Geographical Indication (GI) status — only genuine products from that specific region/technique can legally use that name and tag. A "Pochampally-style" saree without the GI tag may be a copy made elsewhere using power looms.</div>
-    <div class="qcard-how" data-i18n-html="q3_h"><b>How to check:</b> For any named regional weave sold at a premium, ask specifically for the GI tag or certificate, not just the name being used verbally.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">📍</div><div class="qcard-name" data-i18n="q3_n">GI Tag for Named Regional Weaves</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q3_b">Pochampally Ikat, Gadwal, Uppada Jamdani, Venkatagiri, Kanchipuram, Banarasi and other named weaves have Geographical Indication (GI) status — only genuine products from that specific region/technique can legally use that name and tag. A "Pochampally-style" saree without the GI tag may be a copy made elsewhere using power looms.</div>
+      <div class="qcard-how" data-i18n-html="q3_h"><b>How to check:</b> For any named regional weave sold at a premium, ask specifically for the GI tag or certificate, not just the name being used verbally.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">🪢</div><div class="qcard-name" data-i18n="q4_n">Cooperative Loom Number or QR Code</div></div>
-    <div class="qcard-body" data-i18n="q4_b">Sarees sold through official state handloom cooperatives (like APCO in Andhra Pradesh or TSCO in Telangana) often carry a sewn-in loom number, cooperative stamp, or QR code that traces back to the specific weaver or society — a genuine traceability mechanism that mass-produced copies don't have.</div>
-    <div class="qcard-how" data-i18n-html="q4_h"><b>How to check:</b> If buying from a cooperative-linked outlet or exhibition, ask to see this number/QR and what it traces to — genuine sellers will know immediately.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">🪢</div><div class="qcard-name" data-i18n="q4_n">Cooperative Loom Number or QR Code</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q4_b">Sarees sold through official state handloom cooperatives (like APCO in Andhra Pradesh or TSCO in Telangana) often carry a sewn-in loom number, cooperative stamp, or QR code that traces back to the specific weaver or society — a genuine traceability mechanism that mass-produced copies don't have.</div>
+      <div class="qcard-how" data-i18n-html="q4_h"><b>How to check:</b> If buying from a cooperative-linked outlet or exhibition, ask to see this number/QR and what it traces to — genuine sellers will know immediately.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">✋</div><div class="qcard-name" data-i18n="q5_n">Small Irregularities = Handmade, Not Flawed</div></div>
-    <div class="qcard-body" data-i18n="q5_b">Genuine handloom weaving has tiny natural variations in the weave — slightly uneven spacing, small texture shifts. This is a sign of real hand-weaving, not a defect. Power-loom or machine-made copies are unnaturally perfect and uniform throughout.</div>
-    <div class="qcard-how" data-i18n-html="q5_h"><b>How to check:</b> Run your hand across the fabric and look closely at the weave. Perfect uniformity on a "handloom" claim is a sign it may not be hand-woven at all.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">✋</div><div class="qcard-name" data-i18n="q5_n">Small Irregularities = Handmade, Not Flawed</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q5_b">Genuine handloom weaving has tiny natural variations in the weave — slightly uneven spacing, small texture shifts. This is a sign of real hand-weaving, not a defect. Power-loom or machine-made copies are unnaturally perfect and uniform throughout.</div>
+      <div class="qcard-how" data-i18n-html="q5_h"><b>How to check:</b> Run your hand across the fabric and look closely at the weave. Perfect uniformity on a "handloom" claim is a sign it may not be hand-woven at all.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">👂</div><div class="qcard-name" data-i18n="q6_n">The Rustle Test</div></div>
-    <div class="qcard-body" data-i18n="q6_b">Genuine silk makes a distinctive soft rustling sound (called "scroop") when rubbed gently between your fingers, and has a particular dry, slightly rough feel. Synthetic "art silk" tends to feel slippery or plasticky and doesn't rustle the same way.</div>
-    <div class="qcard-how" data-i18n-html="q6_h"><b>How to check:</b> Gently rub a corner of the fabric between your fingers and listen. This is free, quick, and doesn't damage anything — do it before deciding on any expensive silk piece.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">👂</div><div class="qcard-name" data-i18n="q6_n">The Rustle Test</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q6_b">Genuine silk makes a distinctive soft rustling sound (called "scroop") when rubbed gently between your fingers, and has a particular dry, slightly rough feel. Synthetic "art silk" tends to feel slippery or plasticky and doesn't rustle the same way.</div>
+      <div class="qcard-how" data-i18n-html="q6_h"><b>How to check:</b> Gently rub a corner of the fabric between your fingers and listen. This is free, quick, and doesn't damage anything — do it before deciding on any expensive silk piece.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">✨</div><div class="qcard-name" data-i18n="q7_n">The Zari Rub Test</div></div>
-    <div class="qcard-body" data-i18n="q7_b">Genuine metal-coated zari (real silver or gold-coated thread) holds its colour under light friction. Cheap synthetic "zari finish" can show a different coloured thread underneath quickly when rubbed, since the metallic coating is just a thin surface layer.</div>
-    <div class="qcard-how" data-i18n-html="q7_h"><b>How to check:</b> Gently rub a small, inconspicuous part of the zari border with your thumbnail. Colour changing fast underneath is a sign it's a finish, not genuine zari.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">✨</div><div class="qcard-name" data-i18n="q7_n">The Zari Rub Test</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q7_b">Genuine metal-coated zari (real silver or gold-coated thread) holds its colour under light friction. Cheap synthetic "zari finish" can show a different coloured thread underneath quickly when rubbed, since the metallic coating is just a thin surface layer.</div>
+      <div class="qcard-how" data-i18n-html="q7_h"><b>How to check:</b> Gently rub a small, inconspicuous part of the zari border with your thumbnail. Colour changing fast underneath is a sign it's a finish, not genuine zari.</div>
+    </div>
   </div>
 
-  <div class="qcard">
-    <div class="qcard-head"><div class="qcard-icon">💰</div><div class="qcard-name" data-i18n="q8_n">Now Sanity-Check the Price</div></div>
-    <div class="qcard-body" data-i18n="q8_b">Once you've verified what the saree actually is — Silk Mark certified, GI-tagged, genuinely handloom — that specific, verified category has a typical market price range. A verified premium silk saree being sold far below that range is unusual; a plain power-loom piece priced like a certified handloom one is overpriced.</div>
-    <div class="qcard-how" data-i18n-html="q8_h"><b>How to check:</b> Search the specific weave name plus "price range" before a big purchase, or ask two other shops what a similarly certified piece costs. Verification tells you what it is; comparison tells you if the price is fair.</div>
+  <div class="qcard" onclick="this.classList.toggle('open')">
+    <div class="qcard-head"><div class="qcard-icon">💰</div><div class="qcard-name" data-i18n="q8_n">Now Sanity-Check the Price</div><div class="qcard-chevron">▾</div></div>
+    <div class="qcard-content">
+      <div class="qcard-body" data-i18n="q8_b">Once you've verified what the saree actually is — Silk Mark certified, GI-tagged, genuinely handloom — that specific, verified category has a typical market price range. A verified premium silk saree being sold far below that range is unusual; a plain power-loom piece priced like a certified handloom one is overpriced.</div>
+      <div class="qcard-how" data-i18n-html="q8_h"><b>How to check:</b> Search the specific weave name plus "price range" before a big purchase, or ask two other shops what a similarly certified piece costs. Verification tells you what it is; comparison tells you if the price is fair.</div>
+    </div>
   </div>
 
 
@@ -662,6 +686,7 @@ cl16:'"నో కాస్ట్ EMI"కు, వడ్డీ దాగి ఉం
 cl17:'లోపలికి వెళ్లే ముందే నా బడ్జెట్ నిర్ణయించుకున్నాను, ఏ డిస్‌ప్లే ధర దాన్ని ప్రభావితం చేయకముందే',
 cl_reset:'↺ తర్వాతి షాపింగ్ ట్రిప్ కోసం రీసెట్ చేయండి',
 qsec_label:'🔍 చీర నాణ్యతను ఎలా అంచనా వేయాలి — ట్యాగ్ మారినా సరే',
+qsec_hint:'ఏదైనా కార్డ్‌ను తెరవడానికి తాకండి',
 qtruth_t:'ధర ట్యాగ్‌ల గురించి నిజాయితీ నిజం',
 qtruth_b:'చీర "అసలు" ధరను వెల్లడించే దాచిన గుర్తు ఏదీ లేదు — సీల్ చేసిన ప్యాకేజ్డ్ ఉత్పత్తి కాకుండా, చీరపై ఫాబ్రిక్‌లోనే MRP ముద్రించాల్సిన చట్టపరమైన అవసరం లేదు. ట్యాగ్ మాత్రమే ధర వాహకం, అందుకే ట్యాగ్ మార్చడం పనిచేస్తుంది. మీరు చేయగలిగేది: కింద ఉన్న గుర్తులతో చీర నిజంగా ఏమిటో నిర్ధారించుకోవడం — తర్వాత ఆ నిర్ధారిత వర్గానికి ధర సరిపోతుందో అంచనా వేయడం, ట్యాగ్‌ను గుడ్డిగా నమ్మడం కాదు.',
 q1_n:'సిల్క్ మార్క్ హాలోగ్రామ్',
@@ -820,6 +845,7 @@ cl16:'"नो कॉस्ट EMI" के लिए, ब्याज छुप�
 cl17:'अंदर जाने से पहले ही अपना बजट तय किया, किसी डिस्प्ले कीमत से प्रभावित होने से पहले',
 cl_reset:'↺ अगली शॉपिंग ट्रिप के लिए रीसेट करें',
 qsec_label:'🔍 साड़ी की गुणवत्ता कैसे परखें — भले ही टैग बदल गया हो',
+qsec_hint:'किसी भी कार्ड को खोलने के लिए टैप करें',
 qtruth_t:'कीमत टैग के बारे में ईमानदार सच',
 qtruth_b:'साड़ी में कोई छुपा निशान नहीं होता जो "असली" कीमत बताए — सील पैक उत्पाद के विपरीत, साड़ी पर फ़ैब्रिक में ही MRP छापना कानूनी रूप से ज़रूरी नहीं है। टैग ही एकमात्र कीमत वाहक है, यही वजह है कि टैग बदलना काम करता है। आप जो कर सकते हैं: नीचे दिए निशानों से यह पुष्टि करें कि साड़ी असल में क्या है — फिर उस पुष्टि की गई श्रेणी के लिए कीमत सही है या नहीं यह आंकें, टैग पर आंख बंद करके भरोसा न करें।',
 q1_n:'सिल्क मार्क होलोग्राम',
