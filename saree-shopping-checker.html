@@ -54,6 +54,22 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .tac-tap-hint{font-size:9.5px;color:var(--muted);font-style:italic;margin-top:6px;text-align:right;}
 .tac-card.spotted .tac-tap-hint{display:none;}
 .section-label{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--navy);margin:22px 0 10px;padding-left:2px;}
+.checklist-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.checklist-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--navy);}
+.checklist-progress{font-size:11px;font-weight:800;color:var(--gold-d);background:var(--gold-pale);padding:5px 10px;border-radius:8px;}
+.checklist-bar{height:6px;background:var(--light);border-radius:3px;overflow:hidden;margin-bottom:14px;}
+.checklist-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:3px;transition:width .3s ease;width:0%;}
+.cl-group{margin-bottom:14px;}
+.cl-group:last-child{margin-bottom:0;}
+.cl-group-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:8px 4px;border-bottom:1px solid var(--light);cursor:pointer;}
+.cl-item:last-child{border-bottom:none;}
+.cl-check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all .15s;}
+.cl-item.done .cl-check{background:var(--jade);border-color:var(--jade);color:#fff;}
+.cl-text{font-size:12.5px;color:var(--ink2);line-height:1.5;}
+.cl-item.done .cl-text{color:var(--muted);text-decoration:line-through;}
+.checklist-reset{width:100%;padding:10px;margin-top:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--light);color:var(--ink2);font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;}
 .rights{background:var(--navy);border-radius:18px;padding:20px 16px;margin:24px 0;}
 .rights-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);margin-bottom:10px;text-align:center;}
 .right-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);}
@@ -89,6 +105,45 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
 </div>
 
 <div class="page">
+
+  <div class="checklist-card">
+    <div class="checklist-header">
+      <div class="checklist-title" data-i18n="cl_title">🛍️ Shopping Day Checklist</div>
+      <div class="checklist-progress"><span id="clProgress">0/17</span></div>
+    </div>
+    <div class="checklist-bar"><div class="checklist-bar-fill" id="clBarFill"></div></div>
+
+    <div class="cl-group">
+      <div class="cl-group-t" data-i18n="cl_g1">🧵 SAREE QUALITY</div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl1">Asked "silk zari or zari finish?" out loud — didn't just assume from the shine</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl2">Checked for a Silk Mark or Handloom Mark tag on any genuine silk/handloom claim</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl3">Looked at the fabric and colour in daylight near the entrance, not just under shop lighting</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl4">Checked the weave and thread for looseness or unevenness, especially in a combo/bundle piece</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl5">For a full-price piece, asked for an unopened stock item, not the display one</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl6">For bridal shopping, checked similar craftsmanship outside the "exclusive" section first</div></div>
+    </div>
+
+    <div class="cl-group">
+      <div class="cl-group-t" data-i18n="cl_g2">🧾 BILLING GIMMICKS</div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl7">Confirmed GST is 5% on the saree itself, not 18%</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl8">Asked stitching/fall/pico charges before the piece went to the tailor, not after</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl9">Checked the printed tag price matches what's actually billed</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl10">For any combo/BOGO offer, divided total by piece count for the real per-piece price</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl11">Asked "refund or exchange only?" out loud before paying, not after</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl12">If given store credit instead of refund, asked the expiry date on the spot</div></div>
+    </div>
+
+    <div class="cl-group">
+      <div class="cl-group-t" data-i18n="cl_g3">💰 DISCOUNT REALITY CHECK</div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl13">Compared the final rupee price to 1-2 other shops, ignored the "% off" headline</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl14">For a "Kg Sale," picked pieces I liked first, then weighed — watched for extras being slipped in</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl15">For "first 100 customers" or "today only" claims, asked for a token/queue number</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl16">For "no cost EMI," asked the upfront cash price to check if interest was hidden</div></div>
+      <div class="cl-item" onclick="toggleCl(this)"><div class="cl-check">✓</div><div class="cl-text" data-i18n="cl17">Decided my budget before walking in, before any display price could anchor it</div></div>
+    </div>
+
+    <button class="checklist-reset" onclick="resetChecklist()" data-i18n="cl_reset">↺ Reset for next shopping trip</button>
+  </div>
 
   <div class="spot-counter">
     <div><div class="spot-counter-l" data-i18n="spot_label">Tricks spotted</div><div class="spot-counter-n" id="spotCount">0 / 28</div></div>
@@ -349,6 +404,22 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 
 <script>
+var TOTAL_CHECKLIST = 17;
+
+function toggleCl(el){
+  el.classList.toggle('done');
+  var done = document.querySelectorAll('.cl-item.done').length;
+  document.getElementById('clProgress').textContent = done + '/' + TOTAL_CHECKLIST;
+  document.getElementById('clBarFill').style.width = Math.round((done/TOTAL_CHECKLIST)*100) + '%';
+  try { gtag('event', 'checklist_item', {done: done}); } catch(e) {}
+}
+
+function resetChecklist(){
+  document.querySelectorAll('.cl-item.done').forEach(function(el){ el.classList.remove('done'); });
+  document.getElementById('clProgress').textContent = '0/' + TOTAL_CHECKLIST;
+  document.getElementById('clBarFill').style.width = '0%';
+}
+
 var TOTAL_TACTICS = 28;
 var spottedSet = new Set();
 
@@ -500,6 +571,28 @@ t15_l:'<b>అనుకూలంగా వాడండి:</b> మీరు న�
 t16_n:'"నిమిషాల్లో అమ్ముడైంది" WhatsApp గ్రూప్',
 t16_c:'ఒప్పుకోలు: మేము అదే 3-4 చీరలను పదేపదే "నిమిషాల్లో అమ్ముడైంది!" అని పోస్ట్ చేసే "ప్రత్యేక" WhatsApp గ్రూప్‌లు నడుపుతాము, కొన్నిసార్లు ఎప్పుడూ అమ్ముడుకాని స్టాక్‌ను మళ్లీ పోస్ట్ చేస్తూ. మీరు పగటిపూట ముక్కను చూడకముందే రిప్లై ఇచ్చి రిజర్వ్ చేసేలా మిస్ అయిపోతానేమో అనే భయం చేస్తుంది.',
 t16_l:'<b>అనుకూలంగా వాడండి:</b> ఏదైనా రిజర్వ్ చేయడానికి ముందు వీడియో కాల్‌లో లేదా వ్యక్తిగతంగా ముక్కను చూపించమని అడగండి. ప్రతిరోజూ నిజంగా అంత వేగంగా అమ్ముడవుతుంటే, అది ఉత్సాహపడాల్సినది కాదు, అనుమానించాల్సినది.',
+cl_title:'🛍️ షాపింగ్ రోజు చెక్‌లిస్ట్',
+cl_g1:'🧵 చీర నాణ్యత',
+cl1:'"సిల్క్ జరీయా, జరీ ఫినిష్‌నా?" అని బిగ్గరగా అడిగాను — మెరుపును బట్టి ఊహించలేదు',
+cl2:'నిజమైన సిల్క్/హ్యాండ్‌లూమ్ క్లెయిమ్‌లకు సిల్క్ మార్క్ లేదా హ్యాండ్‌లూమ్ మార్క్ ట్యాగ్ చెక్ చేశాను',
+cl3:'ప్రవేశద్వారం దగ్గర పగటి వెలుతురులో ఫాబ్రిక్, రంగు చూశాను, దుకాణం లైటింగ్ కింద మాత్రమే కాదు',
+cl4:'కాంబో/బండిల్ ముక్కలో ముఖ్యంగా నేత, దారం వదులుగా లేదా అసమానంగా ఉందేమో చెక్ చేశాను',
+cl5:'పూర్తి ధర ముక్కకు, డిస్‌ప్లే కాకుండా తెరవని స్టాక్ ఐటమ్ అడిగాను',
+cl6:'వధువు షాపింగ్‌కు, "ప్రత్యేక" విభాగం బయట ముందుగా అదే నైపుణ్యం చెక్ చేశాను',
+cl_g2:'🧾 బిల్లింగ్ ట్రిక్‌లు',
+cl7:'చీరపై GST 5% అని నిర్ధారించాను, 18% కాదు',
+cl8:'ముక్క టైలర్ దగ్గరకు వెళ్లే ముందే కుట్టు/ఫాల్/పికో ఛార్జీలు అడిగాను, తర్వాత కాదు',
+cl9:'ముద్రించిన ట్యాగ్ ధర నిజంగా బిల్లు చేసినదానికి సరిపోతుందో చెక్ చేశాను',
+cl10:'ఏదైనా కాంబో/BOGO ఆఫర్‌కు, నిజమైన ఒక్కో-ముక్క ధర కోసం మొత్తాన్ని ముక్కల సంఖ్యతో భాగించాను',
+cl11:'చెల్లించే ముందు "రీఫండ్ లేదా మార్పిడి మాత్రమేనా?" అని బిగ్గరగా అడిగాను',
+cl12:'రీఫండ్‌కు బదులు స్టోర్ క్రెడిట్ ఇస్తే, వెంటనే గడువు తేదీ అడిగాను',
+cl_g3:'💰 తగ్గింపు వాస్తవ తనిఖీ',
+cl13:'చివరి రూపాయి ధరను 1-2 ఇతర దుకాణాలతో పోల్చాను, "% తగ్గింపు" హెడ్‌లైన్‌ను విస్మరించాను',
+cl14:'"కిలో సేల్"కు, మొదట నచ్చిన ముక్కలు ఎంచుకున్నాను, తర్వాత తూకం వేయించాను — అదనపు ముక్కలు కలపడం గమనించాను',
+cl15:'"మొదటి 100 మంది కస్టమర్లు" లేదా "ఈరోజు మాత్రమే" క్లెయిమ్‌లకు టోకెన్/క్యూ నంబర్ అడిగాను',
+cl16:'"నో కాస్ట్ EMI"కు, వడ్డీ దాగి ఉందేమో చెక్ చేయడానికి నగదు ధర అడిగాను',
+cl17:'లోపలికి వెళ్లే ముందే నా బడ్జెట్ నిర్ణయించుకున్నాను, ఏ డిస్‌ప్లే ధర దాన్ని ప్రభావితం చేయకముందే',
+cl_reset:'↺ తర్వాతి షాపింగ్ ట్రిప్ కోసం రీసెట్ చేయండి',
 batch2_label:'మరిన్ని రహస్యాలు — రెండో బ్యాచ్',
 t17_n:'ప్రవేశద్వారం వద్ద ₹50,000 చీర',
 t17_c:'ఒప్పుకోలు: మేము ఒక అత్యంత ఖరీదైన ముక్కను మీరు లోపలికి వచ్చే చోటే పెడతాము — అది సులభంగా అమ్ముడవుతుందని కాదు, ఆ ధర చూసిన తర్వాత ₹8,000 చీర పూర్తిగా సహేతుకంగా అనిపిస్తుంది కాబట్టి. మీ "సాధారణం" అనే భావననే మేము మొదటి పది సెకన్లలో మార్చేస్తాము.',
@@ -609,6 +702,28 @@ t15_l:'<b>जवाब दें:</b> अगर आपके फ़ैसले 
 t16_n:'"मिनटों में बिक गया" WhatsApp ग्रुप',
 t16_c:'कबूलनामा: हम "एक्सक्लूसिव" WhatsApp ग्रुप चलाते हैं जो वही 3-4 साड़ियां बार-बार "मिनटों में बिक गईं!" पोस्ट करते हैं, कभी-कभी कभी न बिके स्टॉक को दोबारा पोस्ट करते हुए। छूट जाने का डर आपको पीस को दिन की रोशनी में देखे बिना ही रिप्लाई और रिज़र्व करा देता है।',
 t16_l:'<b>जवाब दें:</b> कुछ भी रिज़र्व करने से पहले वीडियो कॉल या व्यक्तिगत रूप से पीस दिखाने को कहें। अगर यह सच में हर दिन इतनी तेज़ी से बिकता है, तो यह उत्साहित होने की नहीं, शक करने की बात है।',
+cl_title:'🛍️ शॉपिंग दिन चेकलिस्ट',
+cl_g1:'🧵 साड़ी की गुणवत्ता',
+cl1:'"सिल्क ज़री या ज़री फ़िनिश?" ज़ोर से पूछा — सिर्फ़ चमक देखकर अंदाज़ा नहीं लगाया',
+cl2:'असली सिल्क/हैंडलूम दावे पर सिल्क मार्क या हैंडलूम मार्क टैग जांचा',
+cl3:'दरवाज़े के पास दिन की रोशनी में फ़ैब्रिक और रंग देखा, सिर्फ़ दुकान की लाइटिंग में नहीं',
+cl4:'कॉम्बो/बंडल पीस में खासकर बुनाई और धागे में ढीलापन या असमानता जांची',
+cl5:'पूरी कीमत वाले पीस के लिए डिस्प्ले की बजाय बिना खुला स्टॉक आइटम मांगा',
+cl6:'दुल्हन शॉपिंग के लिए, "एक्सक्लूसिव" सेक्शन के बाहर पहले वैसी ही कारीगरी जांची',
+cl_g2:'🧾 बिलिंग ट्रिक्स',
+cl7:'साड़ी पर GST 5% है, 18% नहीं, यह पुष्टि की',
+cl8:'पीस दर्ज़ी के पास जाने से पहले ही सिलाई/फॉल/पिको चार्ज पूछे, बाद में नहीं',
+cl9:'छपी हुई टैग कीमत असल में बिल की गई कीमत से मेल खाती है, यह जांचा',
+cl10:'किसी भी कॉम्बो/BOGO ऑफ़र के लिए, असली प्रति-पीस कीमत के लिए कुल को पीस संख्या से भाग दिया',
+cl11:'भुगतान से पहले ज़ोर से पूछा "रिफ़ंड या सिर्फ़ एक्सचेंज?"',
+cl12:'रिफ़ंड की जगह स्टोर क्रेडिट मिलने पर तुरंत समय सीमा पूछी',
+cl_g3:'💰 छूट की असलियत जांच',
+cl13:'अंतिम रुपये की कीमत की 1-2 अन्य दुकानों से तुलना की, "% छूट" हेडलाइन को नज़रअंदाज़ किया',
+cl14:'"किलो सेल" के लिए, पहले पसंदीदा पीस चुने, फिर तुलवाया — अतिरिक्त पीस मिलाए जाने पर नज़र रखी',
+cl15:'"पहले 100 ग्राहक" या "आज ही" दावों के लिए टोकन/कतार नंबर मांगा',
+cl16:'"नो कॉस्ट EMI" के लिए, ब्याज छुपा है या नहीं जांचने के लिए नकद कीमत पूछी',
+cl17:'अंदर जाने से पहले ही अपना बजट तय किया, किसी डिस्प्ले कीमत से प्रभावित होने से पहले',
+cl_reset:'↺ अगली शॉपिंग ट्रिप के लिए रीसेट करें',
 batch2_label:'और भी राज़ — दूसरा बैच',
 t17_n:'दरवाज़े पर खड़ी ₹50,000 की साड़ी',
 t17_c:'कबूलनामा: हम एक बेहद महंगा पीस ठीक वहां रखते हैं जहां आप अंदर आते हैं — क्योंकि आसानी से बिकने की उम्मीद नहीं, बल्कि वह कीमत देखने के बाद ₹8,000 की साड़ी पूरी तरह वाजिब लगने लगती है। आपकी "सामान्य" की समझ हमने पहले दस सेकंड में ही बदल दी।',
