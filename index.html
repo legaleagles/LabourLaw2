@@ -1297,7 +1297,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 <script>
-var SEARCH_INDEX = [
+var CURATED_INDEX = [
   {icon:'⚖️', title:'Rights Hub', desc:'64 rights across 13 areas of life', url:'rights-hub.html', kw:'rights hub know your rights all rights'},
   {icon:'🛠️', title:'Remedies Hub', desc:'10 ways to enforce your rights — consumer court, RTI, FIR', url:'remedies-hub.html', kw:'remedies enforce complaint file rti fir consumer court ombudsman'},
   {icon:'🧮', title:'Calculators', desc:'Court fees, GST, subsidies, deadlines & more', url:'calculators.html', kw:'calculators fees gst court fee limitation subsidy'},
@@ -1332,6 +1332,49 @@ var SEARCH_INDEX = [
   {icon:'👨‍👩‍👧', title:'Family Matter Rights', desc:'Family disputes and legal rights', url:'rights-family.html', kw:'family matter rights dispute'}
 ];
 
+var ABBR_MAP = {gst:'GST', rti:'RTI', fir:'FIR', lawcet:'LAWCET', aibe:'AIBE', pm:'PM', rwa:'RWA',
+  pdf:'PDF', qr:'QR', ipc:'IPC', cpc:'CPC', crpc:'CrPC', ipr:'IPR', pil:'PIL', adr:'ADR', tg:'TG',
+  llb:'LLB', calc:'Calculator', calculator:'Calculator', ios:'iOS', cl:'Company Law'};
+
+function humanizeSlug(slug){
+  var parts = slug.split('-');
+  var words = parts.map(function(w){
+    var lower = w.toLowerCase();
+    if (ABBR_MAP[lower]) return ABBR_MAP[lower];
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  });
+  return words.join(' ');
+}
+
+var SEARCH_INDEX = CURATED_INDEX.slice();
+var curatedUrls = {};
+CURATED_INDEX.forEach(function(item){ curatedUrls[item.url] = true; });
+
+fetch('/sitemap.xml').then(function(r){ return r.text(); }).then(function(xmlText){
+  var parser = new DOMParser();
+  var xml = parser.parseFromString(xmlText, 'text/xml');
+  var locs = xml.getElementsByTagName('loc');
+  var autoItems = [];
+  for (var i = 0; i < locs.length; i++) {
+    var url = locs[i].textContent.replace('https://lawsticker-ai.com/', '');
+    if (!url || url === '/' || url.indexOf('.html') === -1) continue;
+    if (curatedUrls[url]) continue;
+    var slug = url.replace('.html', '');
+    autoItems.push({
+      icon: '📄',
+      title: humanizeSlug(slug),
+      desc: 'Explore this page on LawSticker AI',
+      url: url,
+      kw: slug.replace(/-/g, ' ')
+    });
+  }
+  SEARCH_INDEX = CURATED_INDEX.concat(autoItems);
+  var currentQuery = document.getElementById('siteSearchInput').value;
+  if (currentQuery.trim()) runSiteSearch(currentQuery);
+}).catch(function(e){
+  console.log('Sitemap search index unavailable, using curated list only.');
+});
+
 function runSiteSearch(query){
   var resultsEl = document.getElementById('searchResults');
   var clearBtn = document.getElementById('searchClearBtn');
@@ -1345,10 +1388,21 @@ function runSiteSearch(query){
     return;
   }
 
-  var matches = SEARCH_INDEX.filter(function(item){
-    var haystack = (item.title + ' ' + item.desc + ' ' + item.kw).toLowerCase();
-    return haystack.indexOf(q) !== -1;
-  }).slice(0, 7);
+  var qWords = q.split(/\s+/).filter(Boolean);
+  var scored = [];
+  SEARCH_INDEX.forEach(function(item){
+    var haystack = (item.title + ' ' + item.desc + ' ' + item.kw + ' ' + item.url).toLowerCase();
+    var allWordsMatch = qWords.every(function(w){ return haystack.indexOf(w) !== -1; });
+    if (!allWordsMatch) return;
+    var score = 0;
+    var titleLower = item.title.toLowerCase();
+    if (titleLower.indexOf(q) !== -1) score += 10;
+    if (titleLower.indexOf(qWords[0]) === 0) score += 5;
+    if (item.icon !== '📄') score += 3;
+    scored.push({item: item, score: score});
+  });
+  scored.sort(function(a, b){ return b.score - a.score; });
+  var matches = scored.map(function(s){ return s.item; }).slice(0, 7);
 
   if (!matches.length) {
     resultsEl.innerHTML = '<div class="search-empty">No results for "' + query.replace(/</g,'&lt;') + '" — try Rights Hub or Marketing Gimmicks.</div>';
