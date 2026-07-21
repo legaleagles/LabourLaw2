@@ -15,7 +15,12 @@
 <style>
 :root{--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;
 --border:#D1D5DB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-d:#8B6914;
---jade:#059669;--jade-bg:#ECFDF5;--rose:#DC2626;--rose-bg:#FEF2F2;--amber:#D97706;--sky:#0EA5E9;--sky-bg:#F0F9FF;--violet:#7C3AED;--violet-bg:#F5F3FF;}
+--jade:#059669;--jade-bg:#ECFDF5;--rose:#DC2626;--rose-bg:#FEF2F2;--amber:#D97706;--sky:#0EA5E9;--sky-bg:#F0F9FF;--violet:#7C3AED;--violet-bg:#F5F3FF;--fscale:1;}
+.fsize-widget{position:fixed;right:14px;bottom:20px;z-index:250;background:var(--navy);border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+.fsize-btn{width:38px;height:38px;border-radius:10px;border:none;background:rgba(255,255,255,.1);color:var(--gold-l);font-family:'Playfair Display',serif;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fsize-btn:active{background:var(--gold);color:var(--navy);}
+.fsize-btn.big{font-size:17px;}
+.fsize-btn.small{font-size:11px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
@@ -54,6 +59,7 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .name-input:focus{outline:none;box-shadow:0 0 0 3px rgba(201,162,39,.25);}
 .name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
 .cert-btn{display:none;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
+.story-dl-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--violet);background:var(--violet-bg);color:var(--violet);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
 .cert-btn.show{display:block;}
 .badge-counter{position:sticky;top:56px;z-index:150;background:var(--navy);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(0,0,0,.15);}
 .badge-counter-l{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;}
@@ -67,15 +73,15 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .story-card.badged .story-badge-tag{display:block;}
 .story-head{display:flex;align-items:center;gap:12px;}
 .story-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,var(--violet-bg),#EDE9FE);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(124,58,237,.2);}
-.story-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--ink);line-height:1.35;}
-.story-sub{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.story-title{font-family:'Playfair Display',serif;font-size:calc(16.5px * var(--fscale));font-weight:900;color:var(--ink);line-height:1.35;}
+.story-sub{font-size:calc(11.5px * var(--fscale));color:var(--muted);margin-top:2px;}
 .story-chevron{font-size:11px;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:auto;}
 .story-card.open .story-chevron{transform:rotate(180deg);color:var(--violet);}
 .story-content{max-height:0;overflow:hidden;transition:max-height .35s ease;}
 .story-card.open .story-content{max-height:5000px;margin-top:14px;}
-.story-p{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:11px;}
-.story-clue{background:var(--sky-bg);border-left:3px solid var(--sky);border-radius:0 10px 10px 0;padding:10px 12px;font-size:11.5px;color:var(--ink2);line-height:1.65;margin:12px 0;font-weight:600;}
-.story-health{background:var(--rose-bg);border-left:3px solid var(--rose);border-radius:0 10px 10px 0;padding:10px 12px;font-size:11.5px;color:#991B1B;line-height:1.65;margin:12px 0;font-weight:600;}
+.story-p{font-size:calc(15px * var(--fscale));color:var(--ink2);line-height:1.85;margin-bottom:12px;}
+.story-clue{background:var(--sky-bg);border-left:3px solid var(--sky);border-radius:0 10px 10px 0;padding:11px 13px;font-size:calc(14px * var(--fscale));color:var(--ink2);line-height:1.7;margin:13px 0;font-weight:600;}
+.story-health{background:var(--rose-bg);border-left:3px solid var(--rose);border-radius:0 10px 10px 0;padding:11px 13px;font-size:calc(14px * var(--fscale));color:#991B1B;line-height:1.7;margin:13px 0;font-weight:600;}
 .story-badge-btn{width:100%;padding:12px;margin-top:14px;border-radius:12px;border:none;background:var(--navy);color:var(--gold-l);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;}
 .story-badge-btn.done{background:var(--jade);color:#fff;}
 .qcard{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:14px 15px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.04);cursor:pointer;transition:all .2s;}
@@ -87,10 +93,10 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .qcard.open .qcard-chevron{transform:rotate(180deg);color:var(--amber);}
 .qcard-content{max-height:0;overflow:hidden;transition:max-height .25s ease;}
 .qcard.open .qcard-content{max-height:500px;margin-top:10px;}
-.qcard-body{font-size:11.5px;color:var(--ink2);line-height:1.65;margin-bottom:7px;}
-.qcard-how{background:var(--jade-bg);border-radius:9px;padding:8px 10px;font-size:11px;color:#065F46;line-height:1.6;font-weight:600;margin-bottom:6px;}
+.qcard-body{font-size:calc(13.5px * var(--fscale));color:var(--ink2);line-height:1.7;margin-bottom:8px;}
+.qcard-how{background:var(--jade-bg);border-radius:9px;padding:9px 11px;font-size:calc(13px * var(--fscale));color:#065F46;line-height:1.65;font-weight:600;margin-bottom:7px;}
 .qcard-how b{color:#065F46;}
-.qcard-health{background:var(--rose-bg);border-radius:9px;padding:8px 10px;font-size:11px;color:#991B1B;line-height:1.6;font-weight:600;}
+.qcard-health{background:var(--rose-bg);border-radius:9px;padding:9px 11px;font-size:calc(13px * var(--fscale));color:#991B1B;line-height:1.65;font-weight:600;}
 .qcard-health b{color:#991B1B;}
 .rights{background:var(--navy);border-radius:18px;padding:20px 16px;margin:24px 0;}
 .rights-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);margin-bottom:10px;text-align:center;}
@@ -107,6 +113,13 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
 </style>
 </head>
 <body>
+
+<div class="fsize-widget">
+  <button class="fsize-btn big" onclick="changeFontSize(0.1)" title="Bigger text">A+</button>
+  <button class="fsize-btn" onclick="changeFontSize(-999)" title="Reset text size">↺</button>
+  <button class="fsize-btn small" onclick="changeFontSize(-0.1)" title="Smaller text">A-</button>
+</div>
+
 
 <nav>
   <div class="nav-r1">
@@ -173,6 +186,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(1, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn1" onclick="event.stopPropagation(); downloadCertificate(1, '🧀', 'The Starch Test for Paneer, Khoya &amp; Milk')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(1, '🧀')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story2" onclick="toggleStory(2)">
@@ -195,6 +209,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(2, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn2" onclick="event.stopPropagation(); downloadCertificate(2, '🍯', 'Honey Authenticity Investigation')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(2, '🍯')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story3" onclick="toggleStory(3)">
@@ -217,6 +232,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(3, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn3" onclick="event.stopPropagation(); downloadCertificate(3, '🥭', 'The Fruit Ripening Inspection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(3, '🥭')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story4" onclick="toggleStory(4)">
@@ -239,6 +255,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(4, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn4" onclick="event.stopPropagation(); downloadCertificate(4, '✨', 'The Silver vs Aluminium Test')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(4, '✨')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story5" onclick="toggleStory(5)">
@@ -261,6 +278,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(5, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn5" onclick="event.stopPropagation(); downloadCertificate(5, '🫒', 'Mustard Oil Safety Awareness')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(5, '🫒')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story6" onclick="toggleStory(6)">
@@ -283,6 +301,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(6, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn6" onclick="event.stopPropagation(); downloadCertificate(6, '🍜', 'Reading the Bold Nutrition Label')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(6, '🍜')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story7" onclick="toggleStory(7)">
@@ -305,6 +324,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(7, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn7" onclick="event.stopPropagation(); downloadCertificate(7, '🥤', 'Hidden Sugar Detection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(7, '🥤')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story8" onclick="toggleStory(8)">
@@ -327,6 +347,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(8, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn8" onclick="event.stopPropagation(); downloadCertificate(8, '🍦', 'Ice Cream vs Frozen Dessert Labelling')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(8, '🍦')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="story-card" id="story9" onclick="toggleStory(9)">
@@ -349,6 +370,7 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(9, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn9" onclick="event.stopPropagation(); downloadCertificate(9, '📺', 'Decoding Advertising Tricks')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
+    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
   <div class="section-label" data-i18n="ref_label">📋 For Parents — The Real Detection Guide</div>
@@ -499,6 +521,18 @@ function toggleStory(i){
   card.classList.toggle('open');
 }
 
+var currentFontScale = 1;
+function changeFontSize(delta){
+  if (delta === -999) {
+    currentFontScale = 1;
+  } else {
+    currentFontScale = Math.min(1.6, Math.max(0.85, currentFontScale + delta));
+  }
+  document.documentElement.style.setProperty('--fscale', currentFontScale);
+  try { localStorage.setItem('lsFontScale', currentFontScale); } catch(e) {}
+  try { gtag('event','font_size_change',{scale: currentFontScale}); } catch(e) {}
+}
+
 function getHeroName(){
   var v = document.getElementById('heroNameInput') ? document.getElementById('heroNameInput').value.trim() : '';
   return v || 'our young detective';
@@ -532,6 +566,139 @@ function confirmHeroName(){
   msg.classList.add('show');
   try { gtag('event', 'hero_name_set', {has_name: !!raw}); } catch(e) {}
   document.querySelector('.section-label').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function wrapTextLines(ctx, text, maxWidth){
+  var words = text.split(' ');
+  var line = '';
+  var lines = [];
+  for (var n = 0; n < words.length; n++) {
+    var testLine = line + words[n] + ' ';
+    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+      lines.push(line.trim());
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line.trim());
+  return lines;
+}
+
+function downloadStoryImage(storyId, icon){
+  var card = document.getElementById('story' + storyId);
+  var titleEl = card.querySelector('.story-title');
+  var title = titleEl ? titleEl.textContent : 'My Detective Story';
+
+  var blocks = [];
+  card.querySelectorAll('.story-content > *').forEach(function(el){
+    var text = el.textContent.trim();
+    if (!text) return;
+    var type = 'p';
+    if (el.classList.contains('story-clue')) type = 'clue';
+    if (el.classList.contains('story-health')) type = 'health';
+    blocks.push({type: type, text: text});
+  });
+
+  var W = 1080;
+  var margin = 70;
+  var contentWidth = W - margin * 2;
+
+  var measureCanvas = document.createElement('canvas');
+  var mctx = measureCanvas.getContext('2d');
+
+  var totalHeight = 260;
+  var blockLineData = [];
+  blocks.forEach(function(b){
+    var fontSize = 30;
+    mctx.font = '500 ' + fontSize + 'px DM Sans, sans-serif';
+    var pad = (b.type === 'p') ? 0 : 40;
+    var lines = wrapTextLines(mctx, b.text, contentWidth - pad);
+    var lineHeight = fontSize * 1.55;
+    var blockHeight = lines.length * lineHeight + (b.type === 'p' ? 30 : 60);
+    blockLineData.push({lines: lines, lineHeight: lineHeight, type: b.type, blockHeight: blockHeight, fontSize: fontSize});
+    totalHeight += blockHeight;
+  });
+  totalHeight += 220;
+
+  var c = document.createElement('canvas');
+  c.width = W; c.height = totalHeight;
+  var ctx = c.getContext('2d');
+
+  ctx.fillStyle = '#FEFCF5';
+  ctx.fillRect(0, 0, W, totalHeight);
+
+  var headerH = 220;
+  var hg = ctx.createLinearGradient(0,0,W,headerH);
+  hg.addColorStop(0,'#0D1117'); hg.addColorStop(.5,'#1a3d2e'); hg.addColorStop(1,'#0D1117');
+  ctx.fillStyle = hg;
+  ctx.fillRect(0,0,W,headerH);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#F5D76E';
+  ctx.font = '800 26px DM Sans, sans-serif';
+  ctx.fillText('⚖️ LAWSTICKER AI — FOOD DETECTIVE', W/2, 55);
+
+  ctx.font = '60px serif';
+  ctx.fillText(icon, W/2, 130);
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '900 32px Playfair Display, serif';
+  var titleLines = wrapTextLines(ctx, title, contentWidth);
+  var ty = 175;
+  titleLines.forEach(function(l){ ctx.fillText(l, W/2, ty); ty += 38; });
+
+  var y = headerH + 60;
+  ctx.textAlign = 'left';
+  blockLineData.forEach(function(bd){
+    if (bd.type === 'clue') {
+      ctx.fillStyle = '#F0F9FF';
+      ctx.fillRect(margin - 15, y - 35, contentWidth + 30, bd.blockHeight);
+      ctx.fillStyle = '#0EA5E9';
+      ctx.fillRect(margin - 15, y - 35, 8, bd.blockHeight);
+    } else if (bd.type === 'health') {
+      ctx.fillStyle = '#FEF2F2';
+      ctx.fillRect(margin - 15, y - 35, contentWidth + 30, bd.blockHeight);
+      ctx.fillStyle = '#DC2626';
+      ctx.fillRect(margin - 15, y - 35, 8, bd.blockHeight);
+    }
+    ctx.fillStyle = (bd.type === 'health') ? '#991B1B' : (bd.type === 'clue' ? '#0C4A6E' : '#111827');
+    ctx.font = (bd.type === 'p' ? '500 ' : '700 ') + bd.fontSize + 'px DM Sans, sans-serif';
+    var lx = (bd.type === 'p') ? margin : margin + 15;
+    bd.lines.forEach(function(l){
+      ctx.fillText(l, lx, y);
+      y += bd.lineHeight;
+    });
+    y += (bd.type === 'p' ? 30 : 45);
+  });
+
+  y += 30;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#8B6914';
+  ctx.font = '600 24px DM Sans, sans-serif';
+  ctx.fillText('Read more free detective stories at', W/2, y);
+  ctx.fillStyle = '#C9A227';
+  ctx.font = '800 30px DM Sans, sans-serif';
+  ctx.fillText('lawsticker-ai.com/food-adulteration-checker.html', W/2, y + 42);
+
+  c.toBlob(function(blob){
+    var file = new File([blob], 'my-detective-story.png', {type:'image/png'});
+    (async function(){
+      try {
+        if (navigator.canShare && navigator.canShare({files:[file]})) {
+          await navigator.share({files:[file], title: title});
+          try { gtag('event','story_shared', {story: storyId}); } catch(e){}
+        } else {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a'); a.href = url; a.download = 'my-detective-story.png'; a.click();
+        }
+      } catch(e){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a'); a.href = url; a.download = 'my-detective-story.png'; a.click();
+      }
+    })();
+  }, 'image/png');
+  try { gtag('event','story_downloaded', {story: storyId}); } catch(e){}
 }
 
 function downloadCertificate(storyId, icon, skillLabel){
@@ -733,6 +900,7 @@ badge_label:'సంపాదించిన డిటెక్టివ్ బ�
 name_card_t:'🌟 మీ స్వంత కథకు హీరో అవ్వండి',
 name_card_s:'మీ పేరు కింద టైప్ చేయండి — మీరు చదువుతున్నప్పుడు కథలలో కనిపిస్తుంది, చివర్లో మీ సర్టిఫికేట్‌పై కూడా.',
 get_cert_btn:'🎓 నా సర్టిఫికేట్ పొందండి',
+dl_story_btn:'📥 నా కథను డౌన్‌లోడ్ చేయండి',
 set_name_btn:'✓ నా పేరు సెట్ చేయండి',
 stories_label:'🕵️ డిటెక్టివ్ కథలు',
 stories_hint:'కథను తెరవడానికి తాకండి — మీ బ్యాడ్జ్ సంపాదించడానికి చదవడం పూర్తి చేయండి',
@@ -832,6 +1000,7 @@ badge_label:'अर्जित डिटेक्टिव बैज',badge_sha
 name_card_t:'🌟 अपनी कहानी के हीरो बनें',
 name_card_s:'नीचे अपना नाम लिखें — पढ़ते समय कहानियों में दिखेगा, अंत में सर्टिफिकेट पर भी।',
 get_cert_btn:'🎓 मेरा सर्टिफिकेट पाएं',
+dl_story_btn:'📥 मेरी कहानी डाउनलोड करें',
 set_name_btn:'✓ मेरा नाम सेट करें',
 stories_label:'🕵️ डिटेक्टिव कहानियां',
 stories_hint:'कहानी खोलने के लिए टैप करें — अपना बैज पाने के लिए पढ़ना पूरा करें',
@@ -886,6 +1055,13 @@ function setLang(l){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+  try {
+    var savedScale = localStorage.getItem('lsFontScale');
+    if (savedScale) {
+      currentFontScale = parseFloat(savedScale);
+      document.documentElement.style.setProperty('--fscale', currentFontScale);
+    }
+  } catch(e) {}
   document.querySelectorAll('[data-i18n]').forEach(function(el){
     var k = el.dataset.i18n;
     if (!(k in I18N.en)) I18N.en[k] = el.textContent;
