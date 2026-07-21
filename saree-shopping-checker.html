@@ -1156,6 +1156,14 @@ function setLang(l){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k = el.dataset.i18n;
+    if (!(k in I18N.en)) I18N.en[k] = el.textContent;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    var k = el.dataset.i18nHtml;
+    if (!(k in I18N.en)) I18N.en[k] = el.innerHTML;
+  });
   try {
     var s = localStorage.getItem('lsLang');
     if (s && typeof setLang === 'function') { setLang(s); }
