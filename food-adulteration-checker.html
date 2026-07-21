@@ -47,6 +47,9 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .name-card{background:linear-gradient(135deg,#FDF6DC,#FEF9EC);border:2px dashed var(--gold);border-radius:18px;padding:18px;margin-bottom:16px;text-align:center;}
 .name-card-t{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--navy);margin-bottom:4px;}
 .name-card-s{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.name-submit-btn{width:100%;max-width:320px;padding:13px;margin-top:10px;border-radius:12px;border:none;background:var(--navy);color:var(--gold-l);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
+.name-confirm{display:none;margin-top:10px;font-size:12px;font-weight:700;color:#065F46;background:var(--jade-bg);padding:9px 14px;border-radius:10px;}
+.name-confirm.show{display:inline-block;}
 .name-input{width:100%;max-width:320px;padding:13px 16px;border:2px solid var(--gold);border-radius:12px;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);text-align:center;background:#fff;}
 .name-input:focus{outline:none;box-shadow:0 0 0 3px rgba(201,162,39,.25);}
 .name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
@@ -137,6 +140,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <div class="name-card-t" data-i18n="name_card_t">🌟 Become the Hero of Your Own Story</div>
     <div class="name-card-s" data-i18n="name_card_s">Type your name below — it'll appear in the stories as you read, and on your certificate at the end.</div>
     <input type="text" id="heroNameInput" class="name-input" placeholder="Enter your name..." oninput="applyHeroName()" maxlength="20">
+    <br>
+    <button class="name-submit-btn" onclick="confirmHeroName()" data-i18n="set_name_btn">✓ Set My Name</button>
+    <div class="name-confirm" id="nameConfirmMsg"></div>
   </div>
 
   <div class="badge-counter">
@@ -389,6 +395,20 @@ function applyHeroName(){
   });
 }
 
+function confirmHeroName(){
+  applyHeroName();
+  var raw = document.getElementById('heroNameInput').value.trim();
+  var msg = document.getElementById('nameConfirmMsg');
+  if (raw) {
+    msg.textContent = '✓ Great, ' + raw + '! Your name is now in the stories below.';
+  } else {
+    msg.textContent = '✓ No worries — the stories will call you "our young detective" instead.';
+  }
+  msg.classList.add('show');
+  try { gtag('event', 'hero_name_set', {has_name: !!raw}); } catch(e) {}
+  document.querySelector('.section-label').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function downloadCertificate(storyId, icon, skillLabel){
   var name = getHeroName();
   if (name === 'our young detective') name = 'A Young Detective';
@@ -588,6 +608,7 @@ badge_label:'సంపాదించిన డిటెక్టివ్ బ�
 name_card_t:'🌟 మీ స్వంత కథకు హీరో అవ్వండి',
 name_card_s:'మీ పేరు కింద టైప్ చేయండి — మీరు చదువుతున్నప్పుడు కథలలో కనిపిస్తుంది, చివర్లో మీ సర్టిఫికేట్‌పై కూడా.',
 get_cert_btn:'🎓 నా సర్టిఫికేట్ పొందండి',
+set_name_btn:'✓ నా పేరు సెట్ చేయండి',
 stories_label:'🕵️ డిటెక్టివ్ కథలు',
 stories_hint:'కథను తెరవడానికి తాకండి — మీ బ్యాడ్జ్ సంపాదించడానికి చదవడం పూర్తి చేయండి',
 badge_tag:'🏅 బ్యాడ్జ్ సంపాదించారు',earn_badge_btn:'🏅 నేను దీన్ని చదివాను — నా బ్యాడ్జ్ సంపాదించండి!',
@@ -686,6 +707,7 @@ badge_label:'अर्जित डिटेक्टिव बैज',badge_sha
 name_card_t:'🌟 अपनी कहानी के हीरो बनें',
 name_card_s:'नीचे अपना नाम लिखें — पढ़ते समय कहानियों में दिखेगा, अंत में सर्टिफिकेट पर भी।',
 get_cert_btn:'🎓 मेरा सर्टिफिकेट पाएं',
+set_name_btn:'✓ मेरा नाम सेट करें',
 stories_label:'🕵️ डिटेक्टिव कहानियां',
 stories_hint:'कहानी खोलने के लिए टैप करें — अपना बैज पाने के लिए पढ़ना पूरा करें',
 badge_tag:'🏅 बैज मिला',earn_badge_btn:'🏅 मैंने यह पढ़ा — मेरा बैज दें!',
