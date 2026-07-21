@@ -61,6 +61,28 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .spot-counter-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-l);}
 .spot-share{background:var(--gold);color:var(--navy);border:none;border-radius:10px;padding:8px 14px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
 .filter-row{display:flex;gap:8px;margin-bottom:14px;}
+.calc-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.calc-field{margin-bottom:11px;}
+.calc-field label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:5px;}
+.calc-field input,.calc-field select{width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);background:var(--light);}
+.calc-field input:focus,.calc-field select:focus{outline:2px solid var(--sky);border-color:var(--sky);background:#fff;}
+.calc-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.calc-yn{display:flex;gap:8px;margin-bottom:4px;}
+.calc-yn button{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);background:var(--light);font-family:inherit;font-size:12px;font-weight:800;color:var(--ink2);cursor:pointer;}
+.calc-yn button.sel{background:var(--navy);border-color:var(--navy);color:var(--gold-l);}
+.calc-hint{font-size:10.5px;color:var(--muted);line-height:1.6;margin-top:4px;}
+.calc-optional{border-top:1.5px dashed var(--border);margin-top:14px;padding-top:12px;}
+.calc-opt-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:10px;}
+.calc-result{background:linear-gradient(135deg,var(--navy),#1e2b47);border-radius:16px;padding:18px;margin-top:8px;}
+.calc-row{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.6);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.calc-row b{color:#fff;font-weight:700;}
+.calc-row.tds{color:rgba(96,165,250,.85);}
+.calc-row.tds b{color:#93C5FD;}
+.calc-final{text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);}
+.calc-final-l{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.calc-final-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold-l);margin-top:2px;}
+.calc-final-s{font-size:11px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.6;}
+.calc-tip{background:#F0F9FF;border-left:3px solid var(--sky);border-radius:0 9px 9px 0;padding:9px 11px;font-size:11px;color:var(--ink2);line-height:1.6;margin-top:10px;}
 .filter-btn{flex:1;padding:9px;border-radius:10px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:11.5px;font-weight:800;color:var(--ink2);cursor:pointer;}
 .filter-btn.active{background:var(--navy);border-color:var(--navy);color:var(--gold-l);}
 .tac-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:15px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.04);cursor:pointer;transition:all .2s;position:relative;}
@@ -191,6 +213,77 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="qcard-how" data-i18n-html="q8_h"><b>How to check:</b> A property lawyer can run a title search covering court records, not just registration records. For any significant purchase, this legal due diligence step is worth the cost relative to what's at stake.</div>
     </div>
   </div>
+
+  <div class="section-label" data-i18n="calc_label">🧮 Total Cost Calculator</div>
+  <div class="calc-hint" style="text-align:center;margin-bottom:10px" data-i18n="calc_hint_top">Stamp duty, registration, transfer duty, GST and TDS — worked out together, so nothing surprises you at registration.</div>
+
+  <div class="calc-card">
+    <div class="calc-field">
+      <label data-i18n="c_ptype_l">Property Type</label>
+      <select id="c-ptype" onchange="onPtypeChange()">
+        <option value="plot" data-i18n="c_ptype_plot">Plot / Land</option>
+        <option value="ready" data-i18n="c_ptype_ready">Apartment — Ready to Move (has OC)</option>
+        <option value="uc" data-i18n="c_ptype_uc">Apartment — Under Construction</option>
+      </select>
+    </div>
+
+    <div class="calc-field">
+      <label data-i18n="c_area_l">Location</label>
+      <div class="calc-yn">
+        <button id="c-urban" class="sel" onclick="setAreaType(true)" data-i18n="c_urban">Urban (GHMC/Municipality)</button>
+        <button id="c-rural" onclick="setAreaType(false)" data-i18n="c_rural">Rural (Gram Panchayat)</button>
+      </div>
+    </div>
+
+    <div class="calc-field">
+      <label data-i18n="c_val_l">Property Value — higher of agreement or guidance value (₹)</label>
+      <input type="number" id="c-value" placeholder="6000000" oninput="calcRE()">
+      <div class="calc-hint" data-i18n="c_val_hint">Stamp duty and registration are charged on whichever is higher — your agreed price or the government's guidance value for that area. Check the guidance value on igrs.telangana.gov.in before assuming your agreed price is what gets used.</div>
+    </div>
+
+    <div class="calc-field" id="c-afford-row" style="display:none">
+      <label data-i18n="c_afford_l">Qualifies as affordable housing?</label>
+      <div class="calc-yn">
+        <button id="c-affYes" onclick="setAfford(true)" data-i18n="yes">Yes</button>
+        <button id="c-affNo" class="sel" onclick="setAfford(false)" data-i18n="no">No</button>
+      </div>
+      <div class="calc-hint" data-i18n="c_afford_hint">Affordable = price up to ₹45 lakh AND carpet area up to 60 sqm (metro) / 90 sqm (non-metro). Both conditions must be true.</div>
+    </div>
+
+    <div class="calc-optional">
+      <div class="calc-opt-label" data-i18n="c_opt_label">OPTIONAL — INCLUDE IF APPLICABLE</div>
+      <div class="calc-row2">
+        <div class="calc-field"><label data-i18n="c_broker_l">Brokerage (%)</label><input type="number" id="c-broker" placeholder="1" step="0.1" oninput="calcRE()"></div>
+        <div class="calc-field"><label data-i18n="c_legal_l">Legal/Doc fees (₹)</label><input type="number" id="c-legal" placeholder="15000" oninput="calcRE()"></div>
+      </div>
+      <div class="calc-row2">
+        <div class="calc-field"><label data-i18n="c_loan_l">Loan processing (%)</label><input type="number" id="c-loan" placeholder="0.5" step="0.1" oninput="calcRE()"></div>
+        <div class="calc-field"><label data-i18n="c_mutation_l">Mutation fee (₹)</label><input type="number" id="c-mutation" placeholder="2000" oninput="calcRE()"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="calc-result">
+    <div class="calc-row"><span data-i18n="cr_value">Property value</span><b id="crValue">₹0</b></div>
+    <div class="calc-row"><span data-i18n="cr_stamp">Stamp duty</span><b id="crStamp">₹0</b></div>
+    <div class="calc-row" id="crTransferRow"><span data-i18n="cr_transfer">Transfer duty</span><b id="crTransfer">₹0</b></div>
+    <div class="calc-row"><span data-i18n="cr_reg">Registration fee</span><b id="crReg">₹0</b></div>
+    <div class="calc-row" id="crGstRow" style="display:none"><span data-i18n="cr_gst">GST</span><b id="crGst">₹0</b></div>
+    <div class="calc-row" id="crBrokerRow" style="display:none"><span data-i18n="cr_broker">Brokerage</span><b id="crBroker">₹0</b></div>
+    <div class="calc-row" id="crLegalRow" style="display:none"><span data-i18n="cr_legal">Legal/doc fees</span><b id="crLegal">₹0</b></div>
+    <div class="calc-row" id="crLoanRow" style="display:none"><span data-i18n="cr_loan">Loan processing</span><b id="crLoan">₹0</b></div>
+    <div class="calc-row" id="crMutationRow" style="display:none"><span data-i18n="cr_mutation">Mutation fee</span><b id="crMutation">₹0</b></div>
+    <div class="calc-row tds" id="crTdsRow" style="display:none"><span data-i18n="cr_tds">TDS to deduct (not extra cost)</span><b id="crTds">₹0</b></div>
+    <div class="calc-final">
+      <div class="calc-final-l" data-i18n="cr_total_l">Total you need ready</div>
+      <div class="calc-final-n" id="crTotal">₹0</div>
+      <div class="calc-final-s" id="crTdsNote" style="display:none" data-i18n="cr_tds_note">TDS isn't an extra cost — you withhold it from the seller's payment and deposit it to the government via Form 26QB within 30 days, then give the seller Form 16B as proof.</div>
+    </div>
+  </div>
+
+  <div class="calc-tip" data-i18n="calc_tip1">💡 Tip: Under-declaring the sale value to save stamp duty is illegal and risky — it caps your resale documentation, invites tax scrutiny, and can be used against you in a dispute. Charges are on the higher of your value or guidance value regardless, so there's no real saving in trying.</div>
+  <div class="calc-tip" data-i18n="calc_tip2">💡 Tip: Stamp duty and registration are almost never covered by your home loan — banks finance the property price, not these government charges. Budget 6-8% extra in cash, separate from your loan amount and down payment.</div>
+  <div class="calc-tip" data-i18n="calc_tip3">💡 Tip: For gifts between family members (spouse, children, parents, siblings), stamp duty drops to just 2% with a capped registration fee — worth knowing if a property is being transferred within family rather than sold at market price.</div>
 
   <div class="spot-counter">
     <div><div class="spot-counter-l" data-i18n="spot_label">Tricks spotted</div><div class="spot-counter-n" id="spotCount">0 / 22</div></div>
@@ -406,6 +499,88 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 
 <script>
+var isUrban = true;
+var isAfford = false;
+var ptype = 'plot';
+
+function setAreaType(urban){
+  isUrban = urban;
+  document.getElementById('c-urban').classList.toggle('sel', urban);
+  document.getElementById('c-rural').classList.toggle('sel', !urban);
+  calcRE();
+}
+
+function setAfford(v){
+  isAfford = v;
+  document.getElementById('c-affYes').classList.toggle('sel', v);
+  document.getElementById('c-affNo').classList.toggle('sel', !v);
+  calcRE();
+}
+
+function onPtypeChange(){
+  ptype = document.getElementById('c-ptype').value;
+  document.getElementById('c-afford-row').style.display = (ptype === 'uc') ? 'block' : 'none';
+  calcRE();
+}
+
+function fmtRE(n){ return '₹' + Math.round(Math.max(n,0)).toLocaleString('en-IN'); }
+
+function calcRE(){
+  var value = parseFloat(document.getElementById('c-value').value) || 0;
+
+  var stampPct = isUrban ? 4 : 5.5;
+  var transferPct = isUrban ? 1.5 : 0;
+  var regPct = isUrban ? 0.5 : 2;
+
+  var stampAmt = value * stampPct / 100;
+  var transferAmt = value * transferPct / 100;
+  var regAmtRaw = value * regPct / 100;
+  var regAmt = isUrban ? Math.min(Math.max(regAmtRaw, 1000), 50000) : regAmtRaw;
+
+  var gstAmt = 0;
+  if (ptype === 'uc') {
+    var gstPct = isAfford ? 1 : 5;
+    gstAmt = value * gstPct / 100;
+  }
+
+  var brokerPct = parseFloat(document.getElementById('c-broker').value) || 0;
+  var brokerAmt = value * brokerPct / 100;
+  var legalAmt = parseFloat(document.getElementById('c-legal').value) || 0;
+  var loanPct = parseFloat(document.getElementById('c-loan').value) || 0;
+  var loanAmt = value * loanPct / 100;
+  var mutationAmt = parseFloat(document.getElementById('c-mutation').value) || 0;
+
+  var tdsAmt = value >= 5000000 ? value * 1 / 100 : 0;
+
+  var total = value + stampAmt + transferAmt + regAmt + gstAmt + brokerAmt + legalAmt + loanAmt + mutationAmt;
+
+  document.getElementById('crValue').textContent = fmtRE(value);
+  document.getElementById('crStamp').textContent = fmtRE(stampAmt) + ' (' + stampPct + '%)';
+  document.getElementById('crTransfer').textContent = fmtRE(transferAmt) + (transferPct > 0 ? ' (' + transferPct + '%)' : '');
+  document.getElementById('crTransferRow').style.display = isUrban ? 'flex' : 'none';
+  document.getElementById('crReg').textContent = fmtRE(regAmt);
+
+  document.getElementById('crGstRow').style.display = ptype === 'uc' ? 'flex' : 'none';
+  if (ptype === 'uc') document.getElementById('crGst').textContent = fmtRE(gstAmt) + ' (' + (isAfford ? 1 : 5) + '%)';
+
+  document.getElementById('crBrokerRow').style.display = brokerAmt > 0 ? 'flex' : 'none';
+  document.getElementById('crBroker').textContent = fmtRE(brokerAmt);
+  document.getElementById('crLegalRow').style.display = legalAmt > 0 ? 'flex' : 'none';
+  document.getElementById('crLegal').textContent = fmtRE(legalAmt);
+  document.getElementById('crLoanRow').style.display = loanAmt > 0 ? 'flex' : 'none';
+  document.getElementById('crLoan').textContent = fmtRE(loanAmt);
+  document.getElementById('crMutationRow').style.display = mutationAmt > 0 ? 'flex' : 'none';
+  document.getElementById('crMutation').textContent = fmtRE(mutationAmt);
+
+  document.getElementById('crTdsRow').style.display = tdsAmt > 0 ? 'flex' : 'none';
+  document.getElementById('crTdsNote').style.display = tdsAmt > 0 ? 'block' : 'none';
+  if (tdsAmt > 0) document.getElementById('crTds').textContent = fmtRE(tdsAmt);
+
+  document.getElementById('crTotal').textContent = fmtRE(total);
+
+  try { gtag('event', 'real_estate_calc', {value: value}); } catch(e) {}
+}
+
 var TOTAL_TACTICS = 22;
 var spottedSet = new Set();
 var currentFilter = 'all';
@@ -614,6 +789,24 @@ t21_l:'<b>అనుకూలంగా వాడండి:</b> నమూనా �
 t22_n:'హోమ్ లోన్ "సహాయం" మళ్లింపు',
 t22_c:'బిల్డర్ మీ హోమ్ లోన్ కోసం ఒక నిర్దిష్ట బ్యాంక్ వైపు మిమ్మల్ని నెట్టివేస్తాడు, కొన్నిసార్లు వారి మధ్య రిఫరల్ ఏర్పాటు కారణంగా.',
 t22_l:'<b>అనుకూలంగా వాడండి:</b> బిల్డర్ సిఫార్సు చేసిన బ్యాంక్‌ను అంగీకరించే ముందు కనీసం రెండు లేదా మూడు రుణదాతల నుండి స్వతంత్రంగా లోన్ ఆఫర్‌లను పోల్చండి.',
+yes:'అవును',no:'కాదు',
+calc_label:'🧮 మొత్తం ఖర్చు కాలిక్యులేటర్',
+calc_hint_top:'స్టాంప్ డ్యూటీ, రిజిస్ట్రేషన్, ట్రాన్స్‌ఫర్ డ్యూటీ, GST మరియు TDS — నమోదు వద్ద ఏదీ ఆశ్చర్యపరచకుండా కలిపి లెక్కించబడ్డాయి.',
+c_ptype_l:'ఆస్తి రకం',c_ptype_plot:'ప్లాట్ / భూమి',c_ptype_ready:'అపార్ట్‌మెంట్ — రెడీ టు మూవ్ (OC ఉంది)',c_ptype_uc:'అపార్ట్‌మెంట్ — నిర్మాణంలో',
+c_area_l:'ప్రాంతం',c_urban:'పట్టణ (GHMC/మునిసిపాలిటీ)',c_rural:'గ్రామీణ (గ్రామ పంచాయతీ)',
+c_val_l:'ఆస్తి విలువ — ఒప్పంద లేదా మార్గదర్శక విలువలో ఎక్కువది (₹)',
+c_val_hint:'స్టాంప్ డ్యూటీ, రిజిస్ట్రేషన్ మీ ఒప్పంద ధర లేదా ప్రభుత్వ మార్గదర్శక విలువలో ఏది ఎక్కువైతే దానిపై వసూలు చేయబడతాయి. igrs.telangana.gov.inలో మార్గదర్శక విలువ చెక్ చేయండి.',
+c_afford_l:'అందుబాటు గృహంగా అర్హత ఉందా?',
+c_afford_hint:'అందుబాటు = ధర ₹45 లక్షల వరకు మరియు కార్పెట్ ఏరియా 60 చ.మీ (మెట్రో) / 90 చ.మీ (నాన్-మెట్రో) వరకు. రెండు షరతులు నిజం కావాలి.',
+c_opt_label:'ఐచ్ఛికం — వర్తిస్తే చేర్చండి',
+c_broker_l:'బ్రోకరేజ్ (%)',c_legal_l:'లీగల్/డాక్ ఫీజులు (₹)',c_loan_l:'లోన్ ప్రాసెసింగ్ (%)',c_mutation_l:'మ్యుటేషన్ ఫీజు (₹)',
+cr_value:'ఆస్తి విలువ',cr_stamp:'స్టాంప్ డ్యూటీ',cr_transfer:'ట్రాన్స్‌ఫర్ డ్యూటీ',cr_reg:'రిజిస్ట్రేషన్ ఫీజు',cr_gst:'GST',
+cr_broker:'బ్రోకరేజ్',cr_legal:'లీగల్/డాక్ ఫీజులు',cr_loan:'లోన్ ప్రాసెసింగ్',cr_mutation:'మ్యుటేషన్ ఫీజు',
+cr_tds:'తీసివేయాల్సిన TDS (అదనపు ఖర్చు కాదు)',cr_total_l:'మీకు సిద్ధంగా ఉండాల్సిన మొత్తం',
+cr_tds_note:'TDS అదనపు ఖర్చు కాదు — మీరు విక్రేత చెల్లింపు నుండి దీన్ని నిలిపి, ఫారం 26QB ద్వారా 30 రోజుల్లో ప్రభుత్వానికి డిపాజిట్ చేసి, విక్రేతకు ఫారం 16B ఇవ్వాలి.',
+calc_tip1:'💡 చిట్కా: స్టాంప్ డ్యూటీ ఆదా చేయడానికి అమ్మకపు విలువను తక్కువగా చూపడం చట్టవిరుద్ధం, ప్రమాదకరం — ఇది మీ రీసేల్ డాక్యుమెంటేషన్‌ను పరిమితం చేస్తుంది, పన్ను పరిశీలనను ఆహ్వానిస్తుంది.',
+calc_tip2:'💡 చిట్కా: స్టాంప్ డ్యూటీ, రిజిస్ట్రేషన్ దాదాపు ఎప్పుడూ మీ హోమ్ లోన్ కవర్ చేయవు — బ్యాంకులు ఆస్తి ధరను ఫైనాన్స్ చేస్తాయి, ఈ ప్రభుత్వ ఛార్జీలను కాదు. నగదులో 6-8% అదనంగా బడ్జెట్ చేయండి.',
+calc_tip3:'💡 చిట్కా: కుటుంబ సభ్యుల మధ్య బహుమతులకు (జీవిత భాగస్వామి, పిల్లలు, తల్లిదండ్రులు, తోబుట్టువులు), స్టాంప్ డ్యూటీ కేవలం 2%కి పరిమిత రిజిస్ట్రేషన్ ఫీజుతో తగ్గుతుంది.',
 r_title:'మీకు చట్టపరమైన మద్దతు',
 r1_b:'RERA చట్టం, 2016',
 r1_s:'500 చ.మీ లేదా 8+ యూనిట్లు దాటిన ప్రాజెక్టులకు తప్పనిసరి నమోదు (సెక్షన్ 3). ఎస్క్రోలో 70% బయ్యర్ నిధులు (సెక్షన్ 4). సేల్ అగ్రిమెంట్‌కు ముందు అడ్వాన్స్ 10%కి పరిమితం (సెక్షన్ 13).',
@@ -730,6 +923,24 @@ t21_l:'<b>जवाब दें:</b> सैंपल फ़्लैट को 
 t22_n:'होम लोन "सहायता" का झुकाव',
 t22_c:'बिल्डर आपको अपने होम लोन के लिए एक विशिष्ट बैंक की ओर धकेलता है, कभी-कभी उनके बीच रेफ़रल व्यवस्था के कारण।',
 t22_l:'<b>जवाब दें:</b> बिल्डर के सुझाए बैंक को स्वीकार करने से पहले कम से कम दो या तीन उधारदाताओं से स्वतंत्र रूप से लोन ऑफ़र की तुलना करें।',
+yes:'हां',no:'नहीं',
+calc_label:'🧮 कुल लागत कैलकुलेटर',
+calc_hint_top:'स्टांप ड्यूटी, रजिस्ट्रेशन, ट्रांसफर ड्यूटी, GST और TDS — पंजीकरण पर कुछ भी हैरान न करे, इसलिए साथ में निकाला गया।',
+c_ptype_l:'संपत्ति प्रकार',c_ptype_plot:'प्लॉट / ज़मीन',c_ptype_ready:'अपार्टमेंट — रेडी टू मूव (OC है)',c_ptype_uc:'अपार्टमेंट — निर्माणाधीन',
+c_area_l:'स्थान',c_urban:'शहरी (GHMC/नगरपालिका)',c_rural:'ग्रामीण (ग्राम पंचायत)',
+c_val_l:'संपत्ति मूल्य — समझौता या गाइडेंस वैल्यू में जो ज़्यादा हो (₹)',
+c_val_hint:'स्टांप ड्यूटी, रजिस्ट्रेशन आपकी सहमत कीमत या सरकारी गाइडेंस वैल्यू में जो ज़्यादा हो, उस पर लगते हैं। igrs.telangana.gov.in पर गाइडेंस वैल्यू जांचें।',
+c_afford_l:'किफ़ायती आवास के योग्य है?',
+c_afford_hint:'किफ़ायती = कीमत ₹45 लाख तक और कारपेट एरिया 60 वर्ग मीटर (मेट्रो) / 90 वर्ग मीटर (गैर-मेट्रो) तक। दोनों शर्तें सच होनी चाहिए।',
+c_opt_label:'वैकल्पिक — लागू हो तो शामिल करें',
+c_broker_l:'ब्रोकरेज (%)',c_legal_l:'कानूनी/दस्तावेज़ फ़ीस (₹)',c_loan_l:'लोन प्रोसेसिंग (%)',c_mutation_l:'म्यूटेशन फ़ीस (₹)',
+cr_value:'संपत्ति मूल्य',cr_stamp:'स्टांप ड्यूटी',cr_transfer:'ट्रांसफर ड्यूटी',cr_reg:'रजिस्ट्रेशन फ़ीस',cr_gst:'GST',
+cr_broker:'ब्रोकरेज',cr_legal:'कानूनी/दस्तावेज़ फ़ीस',cr_loan:'लोन प्रोसेसिंग',cr_mutation:'म्यूटेशन फ़ीस',
+cr_tds:'काटने योग्य TDS (अतिरिक्त लागत नहीं)',cr_total_l:'आपको तैयार रखनी होगी यह कुल राशि',
+cr_tds_note:'TDS अतिरिक्त लागत नहीं है — आप इसे विक्रेता के भुगतान से रोककर, Form 26QB के ज़रिए 30 दिनों में सरकार को जमा करते हैं, फिर विक्रेता को Form 16B देते हैं।',
+calc_tip1:'💡 टिप: स्टांप ड्यूटी बचाने के लिए बिक्री मूल्य कम दिखाना गैरकानूनी और जोखिम भरा है — यह आपकी पुनर्विक्रय दस्तावेज़ी को सीमित करता है, टैक्स जांच को आमंत्रित करता है।',
+calc_tip2:'💡 टिप: स्टांप ड्यूटी और रजिस्ट्रेशन लगभग कभी आपके होम लोन में शामिल नहीं होते — बैंक संपत्ति की कीमत फ़ाइनेंस करते हैं, ये सरकारी शुल्क नहीं। नकद में 6-8% अतिरिक्त का बजट रखें।',
+calc_tip3:'💡 टिप: परिवार के सदस्यों के बीच उपहार के लिए (पति/पत्नी, बच्चे, माता-पिता, भाई-बहन), स्टांप ड्यूटी सीमित रजिस्ट्रेशन फ़ीस के साथ सिर्फ़ 2% तक गिर जाती है।',
 r_title:'आपका कानूनी आधार',
 r1_b:'RERA एक्ट, 2016',
 r1_s:'500 वर्ग मीटर या 8+ यूनिट से बड़े प्रोजेक्ट के लिए अनिवार्य पंजीकरण (धारा 3)। एस्क्रो में 70% खरीदार निधि (धारा 4)। बिक्री समझौते से पहले एडवांस 10% तक सीमित (धारा 13)।',
