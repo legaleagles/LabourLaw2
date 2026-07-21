@@ -44,6 +44,14 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .truth-t{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold-l);margin-bottom:6px;}
 .truth-b{font-size:11.5px;color:rgba(255,255,255,.78);line-height:1.75;}
 .truth-b b{color:var(--gold-l);}
+.name-card{background:linear-gradient(135deg,#FDF6DC,#FEF9EC);border:2px dashed var(--gold);border-radius:18px;padding:18px;margin-bottom:16px;text-align:center;}
+.name-card-t{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.name-card-s{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.name-input{width:100%;max-width:320px;padding:13px 16px;border:2px solid var(--gold);border-radius:12px;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);text-align:center;background:#fff;}
+.name-input:focus{outline:none;box-shadow:0 0 0 3px rgba(201,162,39,.25);}
+.name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
+.cert-btn{display:none;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
+.cert-btn.show{display:block;}
 .badge-counter{position:sticky;top:56px;z-index:150;background:var(--navy);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(0,0,0,.15);}
 .badge-counter-l{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;}
 .badge-counter-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold-l);}
@@ -125,6 +133,12 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <div class="truth-b" data-i18n="truth_b">Most food you buy is safe. But sometimes, to save money or sell faster, a few sellers mix in things that shouldn't be there — starch in paneer, sugar syrup in honey, even a banned chemical to ripen mangoes overnight. <b>Knowing what to look for isn't about being scared of food — it's a superpower.</b> Once you know a trick, sellers can't use it on you anymore. Every test below comes from the Food Safety and Standards Authority of India's own household-testing guide.</div>
   </div>
 
+  <div class="name-card">
+    <div class="name-card-t" data-i18n="name_card_t">🌟 Become the Hero of Your Own Story</div>
+    <div class="name-card-s" data-i18n="name_card_s">Type your name below — it'll appear in the stories as you read, and on your certificate at the end.</div>
+    <input type="text" id="heroNameInput" class="name-input" placeholder="Enter your name..." oninput="applyHeroName()" maxlength="20">
+  </div>
+
   <div class="badge-counter">
     <div><div class="badge-counter-l" data-i18n="badge_label">Detective badges earned</div><div class="badge-counter-n" id="badgeCount">0 / 5</div></div>
     <button class="badge-share" onclick="shareBadges()" data-i18n="badge_share_btn">📲 Share</button>
@@ -144,14 +158,15 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-chevron">▾</div>
     </div>
     <div class="story-content">
-      <div class="story-p" data-i18n="s1_p1">Meera loved paneer butter masala more than anything — but one Sunday, the paneer at home felt strange. It didn't have that soft, slightly squeaky bite paneer usually has. It felt... rubbery. Meera's grandmother, who'd been making paneer at home for forty years, picked up a small piece and rubbed it between her fingers.</div>
+      <div class="story-p" data-i18n="s1_p1">{{NAME}} loved paneer butter masala more than anything — but one Sunday, the paneer at home felt strange. It didn't have that soft, slightly squeaky bite paneer usually has. It felt... rubbery. {{NAME}}'s grandmother, who'd been making paneer at home for forty years, picked up a small piece and rubbed it between her fingers.</div>
       <div class="story-p" data-i18n="s1_p2">"Some shops," she said, "mix starch into paneer to make it weigh more and cost them less to make. Let's find out." She boiled a tiny piece in water, let it cool, and added two drops of iodine tincture from the first-aid box.</div>
       <div class="story-clue" data-i18n="s1_clue"><b>🔍 The Clue:</b> If the paneer turns blue where the iodine touches it, there's starch hiding inside — real paneer, made only from milk, won't turn blue at all.</div>
       <div class="story-p" data-i18n="s1_p3">The spot turned a deep, unmistakable blue. Grandmother nodded — the paneer had been mixed with starch to bulk it up. It wasn't dangerous in a big way, but it also wasn't the paneer they'd paid full price for.</div>
       <div class="story-health" data-i18n="s1_health"><b>⚠️ Why it matters:</b> Starch-mixed paneer has far less real protein than pure paneer — you're paying paneer prices for mostly starch, and for growing kids especially, that protein gap matters more than it seems.</div>
-      <div class="story-p" data-i18n="s1_p4">The next week, Meera's family found a trusted local dairy that made paneer fresh every morning. Meera did the iodine test herself just to check — no blue at all. Case closed.</div>
+      <div class="story-p" data-i18n="s1_p4">The next week, {{NAME}}'s family found a trusted local dairy that made paneer fresh every morning. {{NAME}} did the iodine test herself just to check — no blue at all. Case closed.</div>
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(1, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="cert-btn" id="certBtn1" onclick="event.stopPropagation(); downloadCertificate(1, '🧀', 'The Starch Test for Paneer, Khoya &amp; Milk')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
   </div>
 
   <div class="story-card" id="story2" onclick="toggleStory(2)">
@@ -165,14 +180,15 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-chevron">▾</div>
     </div>
     <div class="story-content">
-      <div class="story-p" data-i18n="s2_p1">Arjun's science teacher once told the class an old trick: dip a matchstick in honey and try to light it. Real honey, she said, catches fire; fake honey has too much water and won't burn properly. Arjun tried it on the honey at home — and it burned just fine.</div>
+      <div class="story-p" data-i18n="s2_p1">{{NAME}}'s science teacher once told the class an old trick: dip a matchstick in honey and try to light it. Real honey, she said, catches fire; fake honey has too much water and won't burn properly. {{NAME}} tried it on the honey at home — and it burned just fine.</div>
       <div class="story-p" data-i18n="s2_p2">Case closed, he thought — until he read something surprising. A big study by scientists testing honey brands across India found that some sellers had learned to make sugar syrup that behaves almost exactly like real honey — it passes the burn test, it passes the water-drop test, it even passes some of the official lab tests.</div>
       <div class="story-clue" data-i18n="s2_clue"><b>🔍 The Twist:</b> The old kitchen tests for honey aren't reliable anymore. Modern fake honey is made specifically to fool them. This is one mystery a home detective genuinely can't crack alone.</div>
-      <div class="story-p" data-i18n="s2_p3">Arjun's teacher explained that this happens sometimes — adulteration gets clever, and detection has to get smarter too. The real answer isn't a kitchen trick this time. It's about who you trust.</div>
+      <div class="story-p" data-i18n="s2_p3">{{NAME}}'s teacher explained that this happens sometimes — adulteration gets clever, and detection has to get smarter too. The real answer isn't a kitchen trick this time. It's about who you trust.</div>
       <div class="story-health" data-i18n="s2_health"><b>⚠️ Why it matters:</b> Honey diluted with sugar syrup isn't usually dangerous to health directly, but you're paying honey prices for sugar water — and it's simply not honey, no matter what the label claims.</div>
-      <div class="story-p" data-i18n="s2_p4">The real detective move, Arjun learned, is buying from a local beekeeper you can actually talk to, or a brand that publishes its lab test results — not trusting a kitchen trick that clever sellers have already learned to beat.</div>
+      <div class="story-p" data-i18n="s2_p4">The real detective move, {{NAME}} learned, is buying from a local beekeeper you can actually talk to, or a brand that publishes its lab test results — not trusting a kitchen trick that clever sellers have already learned to beat.</div>
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(2, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="cert-btn" id="certBtn2" onclick="event.stopPropagation(); downloadCertificate(2, '🍯', 'Honey Authenticity Investigation')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
   </div>
 
   <div class="story-card" id="story3" onclick="toggleStory(3)">
@@ -186,14 +202,15 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-chevron">▾</div>
     </div>
     <div class="story-content">
-      <div class="story-p" data-i18n="s3_p1">Priya couldn't wait for mango season. But the mangoes her father brought home looked odd — bright yellow on the outside, but with strange green patches near the stem, and almost no sweet mango smell at all, even up close.</div>
+      <div class="story-p" data-i18n="s3_p1">{{NAME}} couldn't wait for mango season. But the mangoes her father brought home looked odd — bright yellow on the outside, but with strange green patches near the stem, and almost no sweet mango smell at all, even up close.</div>
       <div class="story-p" data-i18n="s3_p2">"These were probably ripened too fast," her father said. Some sellers use a chemical called calcium carbide to force fruit to ripen in a day or two instead of naturally over a week — it's cheaper and quicker for them, but it's actually banned by law in India.</div>
       <div class="story-clue" data-i18n="s3_clue"><b>🔍 The Clues:</b> Naturally ripened mangoes have an even color all over, a strong sweet smell before you even cut them, and the color inside matches the outside. Carbide-ripened fruit often has patchy color, weak or no smell, and sometimes a faint chemical odor.</div>
-      <div class="story-p" data-i18n="s3_p3">Priya's father explained that the chemical releases a gas that can leave behind tiny traces of harmful substances on the fruit's skin — which is exactly why the government banned it.</div>
+      <div class="story-p" data-i18n="s3_p3">{{NAME}}'s father explained that the chemical releases a gas that can leave behind tiny traces of harmful substances on the fruit's skin — which is exactly why the government banned it.</div>
       <div class="story-health" data-i18n="s3_health"><b>⚠️ Why it matters:</b> These traces have been linked to dizziness, throat irritation, mouth ulcers, and stomach upset — serious enough that FSSAI has run country-wide campaigns specifically to stop this practice, especially during mango season.</div>
-      <div class="story-p" data-i18n="s3_p4">They decided to always give mangoes a good wash before eating, and to buy from a seller they trusted who let fruit ripen the slow, natural way. Priya still checked every mango for patchy color after that — just to be sure.</div>
+      <div class="story-p" data-i18n="s3_p4">They decided to always give mangoes a good wash before eating, and to buy from a seller they trusted who let fruit ripen the slow, natural way. {{NAME}} still checked every mango for patchy color after that — just to be sure.</div>
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(3, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="cert-btn" id="certBtn3" onclick="event.stopPropagation(); downloadCertificate(3, '🥭', 'The Fruit Ripening Inspection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
   </div>
 
   <div class="story-card" id="story4" onclick="toggleStory(4)">
@@ -207,14 +224,15 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-chevron">▾</div>
     </div>
     <div class="story-content">
-      <div class="story-p" data-i18n="s4_p1">During Diwali, Kavya's family bought a box of sweets covered in a shiny silver layer called "vark" — a real Indian tradition. But her uncle, who ran a small sweet shop years ago, picked up one flake and rubbed it between his fingers.</div>
+      <div class="story-p" data-i18n="s4_p1">During Diwali, {{NAME}}'s family bought a box of sweets covered in a shiny silver layer called "vark" — a real Indian tradition. But her uncle, who ran a small sweet shop years ago, picked up one flake and rubbed it between his fingers.</div>
       <div class="story-p" data-i18n="s4_p2">"Real silver vark," he said, "crumbles into a soft powder when you rub it. If it just tears into little shreds like foil, it's probably aluminium pretending to be silver." He rubbed the flake — and it tore into shreds.</div>
       <div class="story-clue" data-i18n="s4_clue"><b>🔍 The Clue:</b> Real silver vark crumbles to powder between your fingers. Fake vark, usually thin aluminium foil, tears into small shreds instead. A grown-up can also confirm with fire: real silver burns into a tiny shiny ball; aluminium turns to grey ash.</div>
       <div class="story-p" data-i18n="s4_p3">Aluminium foil isn't meant to be eaten — it's not approved as a food-safe material the way real silver vark is, which is one reason genuine vark matters, not just tradition.</div>
       <div class="story-health" data-i18n="s4_health"><b>⚠️ Why it matters:</b> Eating aluminium foil regularly, dressed up as vark, isn't something your body is designed to process as food — it's simply not meant to go inside you the way real silver is.</div>
-      <div class="story-p" data-i18n="s4_p4">Kavya's family switched to a sweet shop that could show them where their vark came from. Kavya still does the crumble test every Diwali now — it's become a little family tradition of its own.</div>
+      <div class="story-p" data-i18n="s4_p4">{{NAME}}'s family switched to a sweet shop that could show them where their vark came from. {{NAME}} still does the crumble test every Diwali now — it's become a little family tradition of its own.</div>
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(4, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="cert-btn" id="certBtn4" onclick="event.stopPropagation(); downloadCertificate(4, '✨', 'The Silver vs Aluminium Test')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
   </div>
 
   <div class="story-card" id="story5" onclick="toggleStory(5)">
@@ -228,14 +246,15 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-chevron">▾</div>
     </div>
     <div class="story-content">
-      <div class="story-p" data-i18n="s5_p1">This isn't a made-up mystery — it really happened. In 1998, in Delhi and nearby areas, thousands of people suddenly fell ill with swollen legs, breathing trouble, and serious heart problems. Doctors were confused at first — until they traced it back to something everyone had been cooking with: mustard oil.</div>
+      <div class="story-p" data-i18n="s5_p1">This isn't a made-up mystery, {{NAME}} — it really happened. In 1998, in Delhi and nearby areas, thousands of people suddenly fell ill with swollen legs, breathing trouble, and serious heart problems. Doctors were confused at first — until they traced it back to something everyone had been cooking with: mustard oil.</div>
       <div class="story-p" data-i18n="s5_p2">The mustard oil had been secretly mixed with oil from a weed called argemone, which looks a little like mustard when you're not looking closely. Argemone oil is toxic — it doesn't belong anywhere near food.</div>
       <div class="story-clue" data-i18n="s5_clue"><b>🔍 The Real Lesson:</b> Unlike paneer or honey, there's no simple kitchen test for argemone oil in mustard oil — this is exactly why it's so dangerous, and exactly why buying from a sealed, branded, FSSAI-marked bottle matters so much more than loose oil from an unknown source.</div>
       <div class="story-p" data-i18n="s5_p3">Thousands of people were hospitalised, and dozens died before doctors figured out the cause and the government banned the sale of the contaminated oil.</div>
       <div class="story-health" data-i18n="s5_health"><b>⚠️ Why it matters:</b> Argemone oil causes a condition called "epidemic dropsy" — severe swelling, breathing difficulty, and heart failure in serious cases. It's one of the clearest examples in Indian history of why food safety rules exist at all.</div>
-      <div class="story-p" data-i18n="s5_p4">Today, mustard oil sold in India must be pure, with strict testing to prevent this happening again. It's a serious story, but an important one — some food safety rules exist because of real people who got hurt, and knowing why helps us take the rules seriously.</div>
+      <div class="story-p" data-i18n="s5_p4">Today, mustard oil sold in India must be pure, with strict testing to prevent this happening again. It's a serious story, but an important one, {{NAME}} — some food safety rules exist because of real people who got hurt, and knowing why helps us take the rules seriously.</div>
     </div>
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(5, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="cert-btn" id="certBtn5" onclick="event.stopPropagation(); downloadCertificate(5, '🫒', 'Mustard Oil Safety Awareness')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
   </div>
 
   <div class="section-label" data-i18n="ref_label">📋 For Parents — The Real Detection Guide</div>
@@ -349,6 +368,125 @@ function toggleStory(i){
   card.classList.toggle('open');
 }
 
+function getHeroName(){
+  var v = document.getElementById('heroNameInput') ? document.getElementById('heroNameInput').value.trim() : '';
+  return v || 'our young detective';
+}
+
+function applyHeroName(){
+  var name = getHeroName();
+  document.querySelectorAll('.story-p').forEach(function(el){
+    if (typeof el.dataset.nameTemplate === 'undefined') {
+      if (el.innerHTML.indexOf('{{NAME}}') !== -1) {
+        el.dataset.nameTemplate = el.innerHTML;
+      } else {
+        el.dataset.nameTemplate = '';
+      }
+    }
+    if (el.dataset.nameTemplate) {
+      el.innerHTML = el.dataset.nameTemplate.split('{{NAME}}').join(name);
+    }
+  });
+}
+
+function downloadCertificate(storyId, icon, skillLabel){
+  var name = getHeroName();
+  if (name === 'our young detective') name = 'A Young Detective';
+  var cleanSkill = skillLabel.replace(/&amp;/g,'&');
+
+  var c = document.createElement('canvas');
+  c.width = 1400; c.height = 1000;
+  var ctx = c.getContext('2d');
+
+  var g = ctx.createLinearGradient(0,0,1400,1000);
+  g.addColorStop(0,'#FDF6DC'); g.addColorStop(1,'#FEFCF5');
+  ctx.fillStyle = g; ctx.fillRect(0,0,1400,1000);
+
+  ctx.strokeStyle = '#C9A227'; ctx.lineWidth = 10;
+  ctx.strokeRect(30,30,1340,940);
+  ctx.strokeStyle = '#0D1117'; ctx.lineWidth = 2;
+  ctx.strokeRect(50,50,1300,900);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0D1117';
+  ctx.font = '800 26px DM Sans, sans-serif';
+  ctx.fillText('⚖️ LAWSTICKER AI — FOOD DETECTIVE PROGRAM', 700, 130);
+
+  ctx.font = '90px serif';
+  ctx.fillText(icon, 700, 260);
+
+  ctx.fillStyle = '#8B6914';
+  ctx.font = '900 44px Playfair Display, serif';
+  ctx.fillText('CERTIFICATE OF COMPLETION', 700, 345);
+
+  ctx.fillStyle = '#0D1117';
+  ctx.font = '900 58px Playfair Display, serif';
+  ctx.fillText(name, 700, 450);
+
+  ctx.strokeStyle='#C9A227'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(480,478); ctx.lineTo(920,478); ctx.stroke();
+
+  ctx.fillStyle = '#374151';
+  ctx.font = '500 25px DM Sans, sans-serif';
+  ctx.fillText('has successfully completed training in', 700, 545);
+
+  ctx.fillStyle = '#059669';
+  ctx.font = '800 30px DM Sans, sans-serif';
+  wrapCertText(ctx, cleanSkill, 700, 595, 1000, 40);
+
+  var today = new Date();
+  var dateStr = today.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle = '#6B7280';
+  ctx.font = '500 21px DM Sans, sans-serif';
+  ctx.fillText('Awarded on ' + dateStr, 700, 780);
+
+  ctx.font = '44px serif';
+  ctx.fillText('🥇', 700, 700);
+
+  ctx.fillStyle = '#8B6914';
+  ctx.font = '600 19px DM Sans, sans-serif';
+  ctx.fillText('lawsticker-ai.com/food-adulteration-checker.html', 700, 900);
+
+  c.toBlob(function(blob){
+    var file = new File([blob], 'food-detective-certificate.png', {type:'image/png'});
+    (async function(){
+      try {
+        if (navigator.canShare && navigator.canShare({files:[file]})) {
+          await navigator.share({files:[file], title:'My Food Detective Certificate'});
+          try { gtag('event','certificate_shared'); } catch(e){}
+        } else {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a'); a.href=url; a.download='food-detective-certificate.png'; a.click();
+        }
+      } catch(e){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a'); a.href=url; a.download='food-detective-certificate.png'; a.click();
+      }
+    })();
+  }, 'image/png');
+  try { gtag('event','certificate_generated', {story: storyId}); } catch(e){}
+}
+
+function wrapCertText(ctx, text, x, y, maxWidth, lineHeight){
+  var words = text.split(' ');
+  var line = '';
+  var lines = [];
+  for (var n = 0; n < words.length; n++) {
+    var testLine = line + words[n] + ' ';
+    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+  var startY = y - ((lines.length - 1) * lineHeight / 2);
+  for (var i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i].trim(), x, startY + i * lineHeight);
+  }
+}
+
 function earnBadge(i, btn){
   var card = document.getElementById('story' + i);
   if (!badgeSet.has(i)) {
@@ -356,6 +494,8 @@ function earnBadge(i, btn){
     card.classList.add('badged');
     btn.classList.add('done');
     document.getElementById('badgeCount').textContent = badgeSet.size + ' / ' + TOTAL_BADGES;
+    var certBtn = document.getElementById('certBtn' + i);
+    if (certBtn) certBtn.classList.add('show');
     try { gtag('event', 'badge_earned', {count: badgeSet.size}); } catch(e) {}
   }
 }
@@ -445,6 +585,9 @@ hero_sub:'పనీర్, తేనె, మామిడి, నూనె, స�
 truth_t:'ఫుడ్ డిటెక్టివ్‌లు ఎందుకు ముఖ్యం',
 truth_b:'మీరు కొనే చాలా ఆహారం సురక్షితమైనది. కానీ కొన్నిసార్లు, డబ్బు ఆదా చేయడానికి లేదా వేగంగా అమ్మడానికి, కొందరు విక్రేతలు అక్కడ ఉండకూడని వాటిని కలుపుతారు. <b>ఏమి వెతకాలో తెలుసుకోవడం ఆహారం గురించి భయపడటం కాదు — ఇది ఒక సూపర్‌పవర్.</b> కింద ఉన్న ప్రతి పరీక్ష భారత ఆహార భద్రత ప్రమాణాల అథారిటీ స్వంత గృహ-పరీక్ష మార్గదర్శిక నుండి వచ్చింది.',
 badge_label:'సంపాదించిన డిటెక్టివ్ బ్యాడ్జీలు',badge_share_btn:'📲 షేర్ చేయండి',
+name_card_t:'🌟 మీ స్వంత కథకు హీరో అవ్వండి',
+name_card_s:'మీ పేరు కింద టైప్ చేయండి — మీరు చదువుతున్నప్పుడు కథలలో కనిపిస్తుంది, చివర్లో మీ సర్టిఫికేట్‌పై కూడా.',
+get_cert_btn:'🎓 నా సర్టిఫికేట్ పొందండి',
 stories_label:'🕵️ డిటెక్టివ్ కథలు',
 stories_hint:'కథను తెరవడానికి తాకండి — మీ బ్యాడ్జ్ సంపాదించడానికి చదవడం పూర్తి చేయండి',
 badge_tag:'🏅 బ్యాడ్జ్ సంపాదించారు',earn_badge_btn:'🏅 నేను దీన్ని చదివాను — నా బ్యాడ్జ్ సంపాదించండి!',
@@ -540,6 +683,9 @@ hero_sub:'पनीर, शहद, आम, तेल, मिठाई के ब
 truth_t:'फूड डिटेक्टिव क्यों मायने रखते हैं',
 truth_b:'आप जो अधिकतर खाना खरीदते हैं वह सुरक्षित होता है। लेकिन कभी-कभी, पैसा बचाने या तेज़ी से बेचने के लिए, कुछ विक्रेता ऐसी चीज़ें मिला देते हैं जो वहां नहीं होनी चाहिए। <b>क्या देखना है यह जानना खाने से डरना नहीं है — यह एक सुपरपावर है।</b> नीचे हर टेस्ट भारत के खाद्य सुरक्षा और मानक प्राधिकरण की अपनी घरेलू-जांच गाइड से है।',
 badge_label:'अर्जित डिटेक्टिव बैज',badge_share_btn:'📲 शेयर करें',
+name_card_t:'🌟 अपनी कहानी के हीरो बनें',
+name_card_s:'नीचे अपना नाम लिखें — पढ़ते समय कहानियों में दिखेगा, अंत में सर्टिफिकेट पर भी।',
+get_cert_btn:'🎓 मेरा सर्टिफिकेट पाएं',
 stories_label:'🕵️ डिटेक्टिव कहानियां',
 stories_hint:'कहानी खोलने के लिए टैप करें — अपना बैज पाने के लिए पढ़ना पूरा करें',
 badge_tag:'🏅 बैज मिला',earn_badge_btn:'🏅 मैंने यह पढ़ा — मेरा बैज दें!',
@@ -585,6 +731,10 @@ function setLang(l){
     if (d[k]) el.innerHTML = d[k];
   });
   document.documentElement.lang = l;
+  if (l === 'en') {
+    document.querySelectorAll('.story-p').forEach(function(el){ delete el.dataset.nameTemplate; });
+    try { applyHeroName(); } catch(e) {}
+  }
   try { gtag('event','lang_switch',{page:'food-adulteration-checker', lang:l}); } catch(e) {}
 }
 
@@ -597,6 +747,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var k = el.dataset.i18nHtml;
     if (!(k in I18N.en)) I18N.en[k] = el.innerHTML;
   });
+  try { applyHeroName(); } catch(e) {}
   try {
     var s = localStorage.getItem('lsLang');
     if (s && typeof setLang === 'function') { setLang(s); }
