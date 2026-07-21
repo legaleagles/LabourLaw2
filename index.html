@@ -70,12 +70,19 @@ padding:6px 16px;border-radius:20px;margin-bottom:16px;backdrop-filter:blur(4px)
 .hero-tag{font-size:15px;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:6px;min-height:24px;}
 .hero-sub{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.75;max-width:440px;margin:0 auto 20px;}
 .hero-cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.scroll-cue{margin:22px auto 0;width:26px;height:26px;opacity:.55;animation:cueBounce 1.8s ease-in-out infinite;cursor:pointer;}
+@keyframes cueBounce{0%,100%{transform:translateY(0);opacity:.55;}50%{transform:translateY(7px);opacity:.9;}}
+@media (prefers-reduced-motion:reduce){.scroll-cue{animation:none;}}
 .hero-cta{padding:13px 24px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;
-text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;}
 .hero-cta.primary{background:var(--gold);color:var(--navy);box-shadow:0 8px 22px rgba(201,162,39,.35);}
 .hero-cta.primary:active{box-shadow:0 4px 12px rgba(201,162,39,.3);}
 .hero-cta.ghost{background:rgba(255,255,255,.06);color:white;border:1px solid rgba(255,255,255,.15);}
 .hero-cta:active{transform:scale(.97);}
+.ripple-span{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);
+animation:rippleGrow .55s ease-out;pointer-events:none;}
+.hero-cta.primary .ripple-span{background:rgba(13,17,23,.28);}
+@keyframes rippleGrow{to{transform:scale(2.6);opacity:0;}}
 
 /* STATS STRIP */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--navy2);
@@ -260,11 +267,14 @@ width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.7);box-sh
 .feat-name{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
 .feat-desc{font-size:11px;color:var(--muted);line-height:1.55;}
 .feat-new{position:absolute;top:10px;right:10px;background:var(--rose);color:white;font-size:8px;
-font-weight:900;letter-spacing:1px;padding:3px 8px;border-radius:8px;}
+font-weight:900;letter-spacing:1px;padding:3px 8px;border-radius:8px;animation:newPulse 2.2s ease-in-out infinite;}
+@keyframes newPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.5);}50%{box-shadow:0 0 0 5px rgba(220,38,38,0);}}
+@media (prefers-reduced-motion:reduce){.feat-new{animation:none;}}
 .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
-.hub-card{border-radius:16px;padding:16px 12px;text-decoration:none;text-align:center;
+.hub-card{border-radius:16px;padding:16px 12px;text-decoration:none;text-align:center;position:relative;overflow:hidden;
 border:1.5px solid var(--border);background:#fff;transition:all .25s cubic-bezier(.2,.8,.2,1);box-shadow:var(--shadow-soft);}
 .hub-card:active{transform:scale(.96);}
+.hub-card .ripple-span{background:rgba(201,162,39,.3);}
 @media (hover:hover){.hub-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,17,23,.1);border-color:rgba(201,162,39,.4);}}
 .hub-card-icon{font-size:26px;margin-bottom:8px;}
 .hub-card-name{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px;}
@@ -375,6 +385,9 @@ gtag('config', 'G-TJXHVW6XCL');
     <a class="hero-cta ghost" href="https://lawsticker-ai.com/remedies-hub.html" id="ctaRemedies"></a>
   </div>
   <a href="#quiz" id="quizChip" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;border-radius:20px;background:rgba(245,215,110,.12);border:1px solid rgba(245,215,110,.4);color:#F5D76E;font-size:12px;font-weight:800;text-decoration:none;"></a>
+  <svg class="scroll-cue" id="scrollCue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="#F5D76E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
 </div>
 
 <div class="stats">
@@ -1219,6 +1232,37 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   }, {passive: true});
   updateBar();
+})();
+</script>
+<script>
+(function(){
+  var cue = document.getElementById('scrollCue');
+  if (cue) {
+    cue.addEventListener('click', function(){
+      var statsEl = document.querySelector('.stats');
+      var target = statsEl || document.querySelector('.hero').nextElementSibling;
+      if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
+  function addRipple(e){
+    var el = e.currentTarget;
+    var rect = el.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    var span = document.createElement('span');
+    span.className = 'ripple-span';
+    span.style.width = span.style.height = size + 'px';
+    var x = (e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX) || rect.left + rect.width/2) - rect.left - size/2;
+    var y = (e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || rect.top + rect.height/2) - rect.top - size/2;
+    span.style.left = x + 'px';
+    span.style.top = y + 'px';
+    el.appendChild(span);
+    setTimeout(function(){ span.remove(); }, 600);
+  }
+
+  document.querySelectorAll('.hero-cta, .hub-card').forEach(function(el){
+    el.addEventListener('click', addRipple);
+  });
 })();
 </script>
 </body>
