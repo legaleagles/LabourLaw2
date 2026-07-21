@@ -27,6 +27,7 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .reveal.in{opacity:1;transform:translateY(0);}
 
 /* NAV */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));z-index:300;width:0%;transition:width .1s ease-out;box-shadow:0 0 8px rgba(245,215,110,.6);}
 nav{background:rgba(13,17,23,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,162,39,.15);}
 .nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);}
@@ -260,6 +261,14 @@ width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.7);box-sh
 .feat-desc{font-size:11px;color:var(--muted);line-height:1.55;}
 .feat-new{position:absolute;top:10px;right:10px;background:var(--rose);color:white;font-size:8px;
 font-weight:900;letter-spacing:1px;padding:3px 8px;border-radius:8px;}
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+.hub-card{border-radius:16px;padding:16px 12px;text-decoration:none;text-align:center;
+border:1.5px solid var(--border);background:#fff;transition:all .25s cubic-bezier(.2,.8,.2,1);box-shadow:var(--shadow-soft);}
+.hub-card:active{transform:scale(.96);}
+@media (hover:hover){.hub-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,17,23,.1);border-color:rgba(201,162,39,.4);}}
+.hub-card-icon{font-size:26px;margin-bottom:8px;}
+.hub-card-name{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px;}
+.hub-card-desc{font-size:10px;color:var(--muted);line-height:1.5;}
 .f-gold{border-color:rgba(201,162,39,.4);background:linear-gradient(135deg,#FDF6DC,#fff);}
 .f-jade{border-color:rgba(5,150,105,.35);background:linear-gradient(135deg,#ECFDF5,#fff);}
 .f-sky{border-color:rgba(14,165,233,.35);background:linear-gradient(135deg,#F0F9FF,#fff);}
@@ -313,6 +322,7 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 <div class="yt-band">
   <div class="yt-inner">
     <span class="yt-pulse"></span>
@@ -552,6 +562,43 @@ gtag('config', 'G-TJXHVW6XCL');
     <span class="study-arr">→</span>
   </a>
 
+  <!-- EXPLORE EVERYTHING -->
+  <div class="sec-eyebrow" id="hubEyebrow"></div>
+  <div class="sec-title" id="hubTitle"></div>
+  <div class="sec-sub" id="hubSub"></div>
+  <div class="hub-grid reveal">
+    <a class="hub-card" href="https://lawsticker-ai.com/rights-hub.html">
+      <div class="hub-card-icon">⚖️</div>
+      <div class="hub-card-name" id="hub1n"></div>
+      <div class="hub-card-desc" id="hub1d"></div>
+    </a>
+    <a class="hub-card" href="https://lawsticker-ai.com/remedies-hub.html">
+      <div class="hub-card-icon">🛠️</div>
+      <div class="hub-card-name" id="hub2n"></div>
+      <div class="hub-card-desc" id="hub2d"></div>
+    </a>
+    <a class="hub-card" href="https://lawsticker-ai.com/calculators.html">
+      <div class="hub-card-icon">🧮</div>
+      <div class="hub-card-name" id="hub3n"></div>
+      <div class="hub-card-desc" id="hub3d"></div>
+    </a>
+    <a class="hub-card" href="https://lawsticker-ai.com/gimmicks-hub.html">
+      <div class="hub-card-icon">🎯</div>
+      <div class="hub-card-name" id="hub4n"></div>
+      <div class="hub-card-desc" id="hub4d"></div>
+    </a>
+    <a class="hub-card" href="https://lawsticker-ai.com/rights-shorts.html">
+      <div class="hub-card-icon">📇</div>
+      <div class="hub-card-name" id="hub5n"></div>
+      <div class="hub-card-desc" id="hub5d"></div>
+    </a>
+    <a class="hub-card" href="https://lawsticker-ai.com/lawcet.html">
+      <div class="hub-card-icon">🎓</div>
+      <div class="hub-card-name" id="hub6n"></div>
+      <div class="hub-card-desc" id="hub6d"></div>
+    </a>
+  </div>
+
   <!-- HELPLINES -->
   <div class="help-strip">
     <div class="help-hd" id="hHd"></div>
@@ -602,6 +649,8 @@ const UI={
   tBadge:'💡 TODAY\'S RIGHT',tCta:'📇 Get today\'s shareable card →',
   fEye:'BUILT FOR REAL LIFE',fTitle:'Tools You Won\'t Find Anywhere Else',fSub:'',
   f9n:'Marketing Gimmicks Hub',f9d:'Real sale tricks decoded, field by field — starting with saree & women\'s wear. Tap to spot, no math needed.',
+  hubEyebrow:'EXPLORE EVERYTHING',hubTitle:'One Site, Every Tool',hubSub:'Rights, remedies, calculators, and gimmick-decoders — all free, all in your language.',
+  hub1n:'Rights Hub',hub1d:'64 rights, 13 life areas',hub2n:'Remedies Hub',hub2d:'10 ways to enforce them',hub3n:'Calculators',hub3d:'Fees, GST, subsidies & more',hub4n:'Marketing Gimmicks',hub4d:'34+ tricks decoded, 6 categories',hub5n:'Daily Rights Cards',hub5d:'One shareable card a day',hub6n:'LAWCET Tools',hub6d:'Predictors, rank guide & mocks',
   f1n:'Daily Rights Cards',f1d:'One shareable card a day — download & post on WhatsApp Status. Rights spread when they\'re shared.',
   f2n:'GST Fraud Checker',f2d:'Check any shop, restaurant or hotel bill — wrong rates, fake GSTIN, GST-on-MRP. Updated for Sept 2025 reform.',
   f3n:'Apartment & RWA Rights',f3d:'Water cut for dues? Illegal. Unregistered association fines? Unenforceable.',
@@ -629,6 +678,8 @@ const UI={
   tBadge:'💡 నేటి హక్కు',tCta:'📇 నేటి షేర్ కార్డు పొందండి →',
   fEye:'నిజ జీవితం కోసం నిర్మించబడింది',fTitle:'మరెక్కడా దొరకని సాధనాలు',fSub:'',
   f9n:'మార్కెటింగ్ గిమ్మిక్ హబ్',f9d:'నిజమైన సేల్ ట్రిక్‌లు వివరించబడ్డాయి — చీర & మహిళల దుస్తులతో మొదలు.',
+  hubEyebrow:'అన్నీ అన్వేషించండి',hubTitle:'ఒకే సైట్, ప్రతి సాధనం',hubSub:'హక్కులు, పరిష్కారాలు, కాలిక్యులేటర్లు, గిమ్మిక్-డీకోడర్లు — అన్నీ ఉచితం, మీ భాషలో.',
+  hub1n:'హక్కుల హబ్',hub1d:'64 హక్కులు, 13 జీవిత రంగాలు',hub2n:'పరిష్కారాల హబ్',hub2d:'వాటిని అమలు చేయడానికి 10 మార్గాలు',hub3n:'కాలిక్యులేటర్లు',hub3d:'ఫీజులు, GST, సబ్సిడీలు మరియు మరిన్ని',hub4n:'మార్కెటింగ్ గిమ్మిక్‌లు',hub4d:'34+ ట్రిక్‌లు వివరించబడ్డాయి, 6 వర్గాలు',hub5n:'రోజువారీ హక్కుల కార్డులు',hub5d:'రోజుకో షేర్ కార్డు',hub6n:'LAWCET సాధనాలు',hub6d:'ప్రిడిక్టర్లు, ర్యాంక్ గైడ్ & మాక్‌లు',
   f1n:'రోజువారీ హక్కుల కార్డులు',f1d:'రోజుకో షేర్ కార్డు — డౌన్‌లోడ్ చేసి WhatsApp స్టేటస్‌లో పోస్ట్ చేయండి.',
   f2n:'GST మోసం తనిఖీ',f2d:'ఏ దుకాణం, రెస్టారెంట్, హోటల్ బిల్లునైనా తనిఖీ చేయండి — తప్పు రేట్లు, నకిలీ GSTIN, MRPపై GST.',
   f3n:'అపార్ట్‌మెంట్ & RWA హక్కులు',f3d:'బకాయిలకు నీరు కట్? చట్టవిరుద్ధం. నమోదుకాని సంఘం జరిమానాలు? చెల్లవు.',
@@ -656,6 +707,8 @@ const UI={
   tBadge:'💡 आज का अधिकार',tCta:'📇 आज का शेयर कार्ड पाएं →',
   fEye:'वास्तविक जीवन के लिए',fTitle:'ऐसे टूल जो कहीं और नहीं मिलेंगे',fSub:'',
   f9n:'मार्केटिंग गिमिक हब',f9d:'असली सेल ट्रिक्स समझाई गईं, भाग दर भाग — साड़ी और महिलाओं के कपड़े से शुरू।',
+  hubEyebrow:'सब कुछ खोजें',hubTitle:'एक साइट, हर टूल',hubSub:'अधिकार, उपाय, कैलकुलेटर, और गिमिक-डिकोडर — सब मुफ़्त, आपकी भाषा में।',
+  hub1n:'अधिकार हब',hub1d:'64 अधिकार, 13 जीवन क्षेत्र',hub2n:'उपाय हब',hub2d:'लागू करने के 10 तरीके',hub3n:'कैलकुलेटर',hub3d:'फीस, GST, सब्सिडी और अधिक',hub4n:'मार्केटिंग गिमिक',hub4d:'34+ ट्रिक्स समझाई गईं, 6 श्रेणियां',hub5n:'दैनिक अधिकार कार्ड',hub5d:'रोज़ एक शेयर कार्ड',hub6n:'LAWCET टूल्स',hub6d:'प्रेडिक्टर, रैंक गाइड और मॉक',
   f1n:'दैनिक अधिकार कार्ड',f1d:'रोज़ एक शेयर कार्ड — डाउनलोड कर WhatsApp स्टेटस पर पोस्ट करें।',
   f2n:'GST धोखाधड़ी जांच',f2d:'किसी भी दुकान, रेस्तरां, होटल का बिल जांचें — गलत दरें, नकली GSTIN, MRP पर GST।',
   f3n:'अपार्टमेंट और RWA अधिकार',f3d:'बकाया के लिए पानी कटौती? गैरकानूनी। अपंजीकृत संघ के जुर्माने? लागू नहीं।',
@@ -874,6 +927,7 @@ function render(){
  ['st1','st2','st3','st4','jEye','jTitle','jSub','j1k','j1t','j1d','j2k','j2t','j2d',
   'j3k','j3t','j3d','sEye','sTitle','sSub','tBadge','tCta','fEye','fTitle',
   'f1n','f1d','f2n','f2d','f3n','f3d','f4n','f4d','f5n','f5d','f6n','f6d','f7n','f7d','f8n','f8d','f9n','f9d',
+  'hubEyebrow','hubTitle','hubSub','hub1n','hub1d','hub2n','hub2d','hub3n','hub3d','hub4n','hub4d','hub5n','hub5d','hub6n','hub6d',
   'hHd','h1','h2','h3','h4','ftTag','ftDisc','stuN','stuD','chalN','chalD','quizChip','ytMilestone','ytSub'].forEach(id=>{
    const el=document.getElementById(id);if(el&&U[id]!==undefined)el.textContent=U[id];});
  document.getElementById('ytBtnLabel').textContent = U.ytBtn;
@@ -1144,6 +1198,27 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   }, {threshold: .3});
   statEls.forEach(function(el){ statIo.observe(el); });
+})();
+</script>
+<script>
+(function(){
+  var bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  var ticking = false;
+  function updateBar(){
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+    bar.style.width = pct + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      requestAnimationFrame(updateBar);
+      ticking = true;
+    }
+  }, {passive: true});
+  updateBar();
 })();
 </script>
 </body>
