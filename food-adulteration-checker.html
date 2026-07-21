@@ -60,6 +60,24 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
 .cert-btn{display:none;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
 .story-dl-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--violet);background:var(--violet-bg);color:var(--violet);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.quest-banner{background:linear-gradient(135deg,#4C1D95,#1E3A8A);padding:14px 20px;text-align:center;position:relative;overflow:hidden;}
+.quest-banner::before{content:'🎮🔍🏅';position:absolute;left:-10px;top:-8px;font-size:60px;opacity:.12;letter-spacing:8px;}
+.quest-banner-t{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:#FDE68A;position:relative;}
+.quest-banner-s{font-size:11px;color:rgba(255,255,255,.75);margin-top:3px;position:relative;line-height:1.6;}
+.locked-card{background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border:2px dashed var(--violet);border-radius:20px;padding:32px 20px;text-align:center;margin-bottom:16px;}
+.locked-icon{font-size:52px;margin-bottom:10px;}
+.locked-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--navy);margin-bottom:8px;}
+.locked-s{font-size:12px;color:var(--ink2);line-height:1.7;max-width:340px;margin:0 auto;}
+.locked-arrow{font-size:24px;margin-top:14px;animation:bounceUp 1.4s ease-in-out infinite;}
+@keyframes bounceUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+#questContent{display:none;}
+#questContent.unlocking{display:block;animation:portalIn .7s ease-out;}
+@keyframes portalIn{0%{opacity:0;transform:scale(.85) translateY(30px);filter:blur(6px);}60%{opacity:1;filter:blur(0);}100%{opacity:1;transform:scale(1) translateY(0);}}
+.portal-overlay{position:fixed;inset:0;z-index:500;background:radial-gradient(circle at center,#4C1D95,#0D1117);display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s;}
+.portal-overlay.show{opacity:1;pointer-events:all;}
+.portal-emoji{font-size:70px;animation:portalSpin 1s ease-in-out infinite;}
+@keyframes portalSpin{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.2) rotate(15deg);}}
+.portal-text{color:#FDE68A;font-family:'Playfair Display',serif;font-size:18px;font-weight:900;margin-top:16px;text-align:center;padding:0 30px;}
 .cert-btn.show{display:block;}
 .badge-counter{position:sticky;top:56px;z-index:150;background:var(--navy);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(0,0,0,.15);}
 .badge-counter-l{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;}
@@ -142,6 +160,11 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
   <p class="hero-sub" data-i18n="hero_sub">Real mysteries about paneer, honey, mango, oil, and sweets — solved with science you can try at home. Fun for kids, real facts for parents.</p>
 </div>
 
+<div class="quest-banner">
+  <div class="quest-banner-t" data-i18n="quest_banner_t">🎯 THE FOOD DETECTIVE QUEST</div>
+  <div class="quest-banner-s" data-i18n="quest_banner_s">A fun learning adventure made for kids — for entertainment and real awareness, not a test or a grade. Enter your name below to begin!</div>
+</div>
+
 <div class="page">
 
   <div class="truth-box">
@@ -154,9 +177,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <div class="name-card-s" data-i18n="name_card_s">Type your name below — it'll appear in the stories as you read, and on your certificate at the end.</div>
     <input type="text" id="heroNameInput" class="name-input" placeholder="Enter your name..." oninput="applyHeroName()" maxlength="20">
     <br>
-    <button class="name-submit-btn" onclick="confirmHeroName()" data-i18n="set_name_btn">✓ Set My Name</button>
+    <button class="name-submit-btn" onclick="confirmHeroName()" data-i18n="set_name_btn">✓ Set My Name — Start the Quest!</button>
     <div class="name-confirm" id="nameConfirmMsg"></div>
   </div>
+
+  <div class="locked-card" id="lockedCard">
+    <div class="locked-icon">🔒🕵️</div>
+    <div class="locked-t" data-i18n="locked_t">Your Detective Adventure Awaits!</div>
+    <div class="locked-s" data-i18n="locked_s">Type your name above and tap "Start the Quest" to unlock 9 mystery stories, earn detective badges, and get your own certificate at the end.</div>
+    <div class="locked-arrow">👆</div>
+  </div>
+
+  <div class="portal-overlay" id="portalOverlay">
+    <div class="portal-emoji">🌀🔍</div>
+    <div class="portal-text" id="portalText" data-i18n="portal_text">Entering the Detective World...</div>
+  </div>
+
+  <div id="questContent">
 
   <div class="badge-counter">
     <div><div class="badge-counter-l" data-i18n="badge_label">Detective badges earned</div><div class="badge-counter-n" id="badgeCount">0 / 9</div></div>
@@ -373,6 +410,8 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
   </div>
 
+  </div>
+
   <div class="section-label" data-i18n="ref_label">📋 For Parents — The Real Detection Guide</div>
   <div class="qsec-hint" data-i18n="ref_hint">Tap any card to open it — every test here is from FSSAI's own household-testing manual</div>
 
@@ -555,17 +594,32 @@ function applyHeroName(){
 }
 
 function confirmHeroName(){
-  applyHeroName();
   var raw = document.getElementById('heroNameInput').value.trim();
   var msg = document.getElementById('nameConfirmMsg');
-  if (raw) {
-    msg.textContent = '✓ Great, ' + raw + '! Your name is now in the stories below.';
-  } else {
-    msg.textContent = '✓ No worries — the stories will call you "our young detective" instead.';
+
+  if (!raw) {
+    msg.textContent = '👋 Please type your name first, detective — then tap the button again!';
+    msg.classList.add('show');
+    document.getElementById('heroNameInput').focus();
+    return;
   }
+
+  applyHeroName();
+  msg.textContent = '✓ Great, ' + raw + '! Unlocking your quest...';
   msg.classList.add('show');
-  try { gtag('event', 'hero_name_set', {has_name: !!raw}); } catch(e) {}
-  document.querySelector('.section-label').scrollIntoView({behavior:'smooth', block:'start'});
+  try { gtag('event', 'hero_name_set', {has_name: true}); } catch(e) {}
+
+  var overlay = document.getElementById('portalOverlay');
+  overlay.classList.add('show');
+
+  setTimeout(function(){
+    document.getElementById('lockedCard').style.display = 'none';
+    var content = document.getElementById('questContent');
+    content.style.display = 'block';
+    content.classList.add('unlocking');
+    overlay.classList.remove('show');
+    content.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 1100);
 }
 
 function wrapTextLines(ctx, text, maxWidth){
@@ -901,7 +955,12 @@ name_card_t:'🌟 మీ స్వంత కథకు హీరో అవ్వ�
 name_card_s:'మీ పేరు కింద టైప్ చేయండి — మీరు చదువుతున్నప్పుడు కథలలో కనిపిస్తుంది, చివర్లో మీ సర్టిఫికేట్‌పై కూడా.',
 get_cert_btn:'🎓 నా సర్టిఫికేట్ పొందండి',
 dl_story_btn:'📥 నా కథను డౌన్‌లోడ్ చేయండి',
-set_name_btn:'✓ నా పేరు సెట్ చేయండి',
+set_name_btn:'✓ నా పేరు సెట్ చేయండి — క్వెస్ట్ ప్రారంభించండి!',
+quest_banner_t:'🎯 ఫుడ్ డిటెక్టివ్ క్వెస్ట్',
+quest_banner_s:'పిల్లల కోసం రూపొందించిన సరదా లెర్నింగ్ అడ్వెంచర్ — వినోదం, నిజమైన అవగాహన కోసం, పరీక్ష లేదా గ్రేడ్ కోసం కాదు. ప్రారంభించడానికి కింద మీ పేరు నమోదు చేయండి!',
+locked_t:'మీ డిటెక్టివ్ అడ్వెంచర్ వేచి ఉంది!',
+locked_s:'9 రహస్య కథలను అన్‌లాక్ చేయడానికి, డిటెక్టివ్ బ్యాడ్జీలు సంపాదించడానికి, చివర్లో మీ స్వంత సర్టిఫికేట్ పొందడానికి పైన మీ పేరు టైప్ చేసి "క్వెస్ట్ ప్రారంభించండి" తాకండి.',
+portal_text:'డిటెక్టివ్ ప్రపంచంలోకి ప్రవేశిస్తున్నారు...',
 stories_label:'🕵️ డిటెక్టివ్ కథలు',
 stories_hint:'కథను తెరవడానికి తాకండి — మీ బ్యాడ్జ్ సంపాదించడానికి చదవడం పూర్తి చేయండి',
 badge_tag:'🏅 బ్యాడ్జ్ సంపాదించారు',earn_badge_btn:'🏅 నేను దీన్ని చదివాను — నా బ్యాడ్జ్ సంపాదించండి!',
@@ -1001,7 +1060,12 @@ name_card_t:'🌟 अपनी कहानी के हीरो बनें'
 name_card_s:'नीचे अपना नाम लिखें — पढ़ते समय कहानियों में दिखेगा, अंत में सर्टिफिकेट पर भी।',
 get_cert_btn:'🎓 मेरा सर्टिफिकेट पाएं',
 dl_story_btn:'📥 मेरी कहानी डाउनलोड करें',
-set_name_btn:'✓ मेरा नाम सेट करें',
+set_name_btn:'✓ मेरा नाम सेट करें — क्वेस्ट शुरू करें!',
+quest_banner_t:'🎯 फूड डिटेक्टिव क्वेस्ट',
+quest_banner_s:'बच्चों के लिए बनाया गया मज़ेदार लर्निंग एडवेंचर — मनोरंजन और असली जागरूकता के लिए, टेस्ट या ग्रेड के लिए नहीं। शुरू करने के लिए नीचे अपना नाम डालें!',
+locked_t:'आपका डिटेक्टिव एडवेंचर इंतज़ार कर रहा है!',
+locked_s:'9 रहस्य कहानियां अनलॉक करने, डिटेक्टिव बैज कमाने, और अंत में अपना सर्टिफिकेट पाने के लिए ऊपर अपना नाम लिखें और "क्वेस्ट शुरू करें" दबाएं।',
+portal_text:'डिटेक्टिव दुनिया में प्रवेश कर रहे हैं...',
 stories_label:'🕵️ डिटेक्टिव कहानियां',
 stories_hint:'कहानी खोलने के लिए टैप करें — अपना बैज पाने के लिए पढ़ना पूरा करें',
 badge_tag:'🏅 बैज मिला',earn_badge_btn:'🏅 मैंने यह पढ़ा — मेरा बैज दें!',
