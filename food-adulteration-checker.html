@@ -87,6 +87,24 @@ color:var(--navy);font-family:inherit;font-size:11.5px;font-weight:800;text-deco
 .wof-next-btn{flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--border);
 background:#fff;color:var(--ink2);font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
 .confetti-piece{position:fixed;top:-20px;z-index:600;pointer-events:none;border-radius:2px;}
+.quiz-panel{display:none;background:#fff;border:1.5px solid var(--violet);border-radius:14px;padding:16px;margin-top:10px;text-align:left;}
+.quiz-panel.show{display:block;animation:wofSlide .3s ease-out;}
+.quiz-intro{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;line-height:1.6;}
+.quiz-q{margin-bottom:16px;}
+.quiz-q:last-child{margin-bottom:8px;}
+.quiz-q-text{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.quiz-opt{padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--light);
+font-family:inherit;font-size:11.5px;color:var(--ink2);text-align:left;cursor:pointer;font-weight:600;}
+.quiz-opt.correct{background:var(--jade-bg);border-color:var(--jade);color:#065F46;font-weight:800;}
+.quiz-opt.wrong{background:var(--rose-bg);border-color:var(--rose);color:#991B1B;}
+.quiz-opt.disabled-other{opacity:.5;pointer-events:none;}
+.quiz-progress{text-align:center;font-size:11px;font-weight:800;color:var(--violet);margin-bottom:10px;}
+.quiz-claim-btn{display:none;width:100%;padding:13px;margin-top:6px;border-radius:12px;border:none;
+background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;
+font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
+.quiz-claim-btn.show{display:block;animation:wofSlide .3s ease-out;}
+.quiz-retry-hint{text-align:center;font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
 .quest-banner{background:linear-gradient(135deg,#4C1D95,#1E3A8A);padding:14px 20px;text-align:center;position:relative;overflow:hidden;}
 .quest-banner::before{content:'🎮🔍🏅';position:absolute;left:-10px;top:-8px;font-size:60px;opacity:.12;letter-spacing:8px;}
@@ -249,7 +267,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s1_health"><b>⚠️ Why it matters:</b> Starch-mixed paneer has far less real protein than pure paneer — you're paying paneer prices for mostly starch, and for growing kids especially, that protein gap matters more than it seems.</div>
       <div class="story-p" data-i18n="s1_p4">The next week, {{NAME}}'s family found a trusted local dairy that made paneer fresh every morning. {{NAME}} did the iodine test herself just to check — no blue at all. Case closed.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(1, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn1" onclick="event.stopPropagation(); openQuiz(1)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel1" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress1">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What do you add to a piece of paneer to test for hidden starch?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 0, 0, 0)">Iodine tincture</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 0, 1, 0)">Salt water</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 0, 2, 0)">Sugar</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 0, 3, 0)">Vinegar</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. If starch is present, what color does the paneer turn?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 1, 0, 1)">Red</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 1, 1, 1)">Blue</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 1, 2, 1)">Green</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 1, 3, 1)">Yellow</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. Why do some sellers secretly add starch to paneer?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 2, 0, 1)">To make it taste better</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 2, 1, 1)">To make it weigh more cheaply</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 2, 2, 1)">To make it last longer</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(1, 2, 3, 1)">To make it whiter</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn1" onclick="event.stopPropagation(); claimBadgeFromQuiz(1)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn1" onclick="event.stopPropagation(); downloadCertificate(1, '🧀', 'The Starch Test for Paneer, Khoya &amp; Milk')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(1, '🧀')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn1" onclick="event.stopPropagation(); toggleWofPanel(1)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -293,7 +344,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s2_health"><b>⚠️ Why it matters:</b> Honey diluted with sugar syrup isn't usually dangerous to health directly, but you're paying honey prices for sugar water — and it's simply not honey, no matter what the label claims.</div>
       <div class="story-p" data-i18n="s2_p4">The real detective move, {{NAME}} learned, is buying from a local beekeeper you can actually talk to, or a brand that publishes its lab test results — not trusting a kitchen trick that clever sellers have already learned to beat.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(2, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn2" onclick="event.stopPropagation(); openQuiz(2)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel2" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress2">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What did scientists discover about the old honey "burn test"?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 0, 0, 1)">It always works perfectly</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 0, 1, 1)">Modern fake honey can fool it</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 0, 2, 1)">It's dangerous to try</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 0, 3, 1)">It only works on cold honey</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What is fake honey often secretly made from?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 1, 0, 1)">Salt water</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 1, 1, 1)">Sugar syrup</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 1, 2, 1)">Food coloring</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 1, 3, 1)">Vinegar</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. What's the smartest way to find real honey?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 2, 0, 1)">Always trust the burn test</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 2, 1, 1)">Buy from a trusted local beekeeper</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 2, 2, 1)">Buy the cheapest one</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(2, 2, 3, 1)">Check only the color</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn2" onclick="event.stopPropagation(); claimBadgeFromQuiz(2)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn2" onclick="event.stopPropagation(); downloadCertificate(2, '🍯', 'Honey Authenticity Investigation')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(2, '🍯')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn2" onclick="event.stopPropagation(); toggleWofPanel(2)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -337,7 +421,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s3_health"><b>⚠️ Why it matters:</b> These traces have been linked to dizziness, throat irritation, mouth ulcers, and stomach upset — serious enough that FSSAI has run country-wide campaigns specifically to stop this practice, especially during mango season.</div>
       <div class="story-p" data-i18n="s3_p4">They decided to always give mangoes a good wash before eating, and to buy from a seller they trusted who let fruit ripen the slow, natural way. {{NAME}} still checked every mango for patchy color after that — just to be sure.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(3, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn3" onclick="event.stopPropagation(); openQuiz(3)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel3" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress3">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What banned chemical is sometimes used to ripen fruit too fast?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 0, 0, 0)">Calcium carbide</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 0, 1, 0)">Baking soda</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 0, 2, 0)">Table salt</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 0, 3, 0)">Sugar</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What's one clue a mango was ripened too quickly?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 1, 0, 1)">It's unusually heavy</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 1, 1, 1)">Patchy color and little smell</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 1, 2, 1)">It has a sticker on it</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 1, 3, 1)">It's very cheap</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. Is this fast-ripening chemical legal to use in India?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 2, 0, 1)">Yes, always</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 2, 1, 1)">No, it's banned</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 2, 2, 1)">Only for mangoes</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(3, 2, 3, 1)">Only in summer</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn3" onclick="event.stopPropagation(); claimBadgeFromQuiz(3)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn3" onclick="event.stopPropagation(); downloadCertificate(3, '🥭', 'The Fruit Ripening Inspection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(3, '🥭')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn3" onclick="event.stopPropagation(); toggleWofPanel(3)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -381,7 +498,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s4_health"><b>⚠️ Why it matters:</b> Eating aluminium foil regularly, dressed up as vark, isn't something your body is designed to process as food — it's simply not meant to go inside you the way real silver is.</div>
       <div class="story-p" data-i18n="s4_p4">{{NAME}}'s family switched to a sweet shop that could show them where their vark came from. {{NAME}} still does the crumble test every Diwali now — it's become a little family tradition of its own.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(4, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn4" onclick="event.stopPropagation(); openQuiz(4)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel4" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress4">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What happens when you rub REAL silver vark between your fingers?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 0, 0, 0)">It crumbles into powder</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 0, 1, 0)">It tears into shreds</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 0, 2, 0)">It melts instantly</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 0, 3, 0)">It changes color</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What happens when you rub FAKE (aluminium) vark instead?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 1, 0, 1)">It crumbles into powder</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 1, 1, 1)">It tears into shreds</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 1, 2, 1)">It disappears completely</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 1, 3, 1)">It turns black</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. Why shouldn't we eat aluminium foil dressed up as vark?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 2, 0, 1)">It tastes bad</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 2, 1, 1)">It isn't meant to be food</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 2, 2, 1)">It's too shiny</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(4, 2, 3, 1)">It's too expensive</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn4" onclick="event.stopPropagation(); claimBadgeFromQuiz(4)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn4" onclick="event.stopPropagation(); downloadCertificate(4, '✨', 'The Silver vs Aluminium Test')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(4, '✨')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn4" onclick="event.stopPropagation(); toggleWofPanel(4)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -425,7 +575,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s5_health"><b>⚠️ Why it matters:</b> Argemone oil causes a condition called "epidemic dropsy" — severe swelling, breathing difficulty, and heart failure in serious cases. It's one of the clearest examples in Indian history of why food safety rules exist at all.</div>
       <div class="story-p" data-i18n="s5_p4">Today, mustard oil sold in India must be pure, with strict testing to prevent this happening again. It's a serious story, but an important one, {{NAME}} — some food safety rules exist because of real people who got hurt, and knowing why helps us take the rules seriously.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(5, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn5" onclick="event.stopPropagation(); openQuiz(5)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel5" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress5">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What poisonous oil was mixed into mustard oil in a real 1998 case?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 0, 0, 1)">Castor oil</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 0, 1, 1)">Argemone oil</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 0, 2, 1)">Coconut oil</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 0, 3, 1)">Neem oil</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What serious illness did this cause in thousands of people?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 1, 0, 1)">A common cold</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 1, 1, 1)">Epidemic dropsy (swelling & breathing trouble)</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 1, 2, 1)">A mild headache</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 1, 3, 1)">Hair loss</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. What's the safest way to buy mustard oil?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 2, 0, 1)">Loose, from any shop</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 2, 1, 1)">Sealed, branded, with an FSSAI mark</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 2, 2, 1)">Only in summer</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(5, 2, 3, 1)">From the cheapest seller</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn5" onclick="event.stopPropagation(); claimBadgeFromQuiz(5)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn5" onclick="event.stopPropagation(); downloadCertificate(5, '🫒', 'Mustard Oil Safety Awareness')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(5, '🫒')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn5" onclick="event.stopPropagation(); toggleWofPanel(5)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -469,7 +652,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s6_health"><b>⚠️ Why it matters:</b> Regularly eating high-salt, low-fibre food like this instead of fresher meals is linked to high blood pressure risk building up over years, and it fills you up without giving your body much real nutrition.</div>
       <div class="story-p" data-i18n="s6_p4">{{NAME}} didn't stop enjoying instant noodles completely — but started checking the bold numbers on the back first, and treating it as an occasional treat, not an every-day meal. A quick boiled-egg or vegetable add-in became {{NAME}}'s new trick to make it a bit more balanced.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(6, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn6" onclick="event.stopPropagation(); openQuiz(6)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel6" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress6">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. Since 2024, what must appear in BOLD letters on Indian food labels?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 0, 0, 1)">The brand's logo</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 0, 1, 1)">Sugar, salt, and fat numbers</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 0, 2, 1)">The manufacturing date only</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 0, 3, 1)">The price</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. Instant noodles are usually made mainly from what?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 1, 0, 1)">Whole wheat</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 1, 1, 1)">Refined maida</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 1, 2, 1)">Rice flour</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 1, 3, 1)">Oats</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. One packet of instant noodles can contain a lot of what?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 2, 0, 1)">Vitamin C</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 2, 1, 1)">Salt</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 2, 2, 1)">Fibre</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(6, 2, 3, 1)">Protein</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn6" onclick="event.stopPropagation(); claimBadgeFromQuiz(6)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn6" onclick="event.stopPropagation(); downloadCertificate(6, '🍜', 'Reading the Bold Nutrition Label')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(6, '🍜')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn6" onclick="event.stopPropagation(); toggleWofPanel(6)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -513,7 +729,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s7_health"><b>⚠️ Why it matters:</b> Regularly drinking a lot of sugary fizzy drinks is linked to tooth decay, weight gain, and a higher risk of type 2 diabetes later in life — serious enough that India's food regulator is now working on stronger front-of-pack warning labels specifically for high-sugar drinks and foods.</div>
       <div class="story-p" data-i18n="s7_p4">{{NAME}} still enjoyed a fizzy drink sometimes — but started checking the bold sugar number first, and switched to water or fresh nimbu paani most days instead. Counting the "invisible sugar cubes" became {{NAME}}'s party trick to show friends too.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(7, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn7" onclick="event.stopPropagation(); openQuiz(7)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel7" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress7">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. About how many "hidden" sugar cubes can be in one bottle of a sugary drink?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 0, 0, 1)">1-2</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 0, 1, 1)">Around 10</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 0, 2, 1)">20 or more</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 0, 3, 1)">None at all</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What can drinking too many sugary drinks lead to over time?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 1, 0, 1)">Better eyesight</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 1, 1, 1)">Tooth decay and weight gain</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 1, 2, 1)">Stronger bones</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 1, 3, 1)">Better sleep</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. What's a good alternative to a sugary fizzy drink?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 2, 0, 1)">Another fizzy drink</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 2, 1, 1)">Water or nimbu paani</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 2, 2, 1)">Only tea</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(7, 2, 3, 1)">Skipping drinks entirely</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn7" onclick="event.stopPropagation(); claimBadgeFromQuiz(7)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn7" onclick="event.stopPropagation(); downloadCertificate(7, '🥤', 'Hidden Sugar Detection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(7, '🥤')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn7" onclick="event.stopPropagation(); toggleWofPanel(7)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -557,7 +806,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s8_health"><b>⚠️ Why it matters:</b> This is mostly about honesty in labelling rather than a big health risk — but frozen desserts are usually higher in added sugar and lower in real dairy protein than genuine ice cream, so it's worth knowing which one you're actually eating.</div>
       <div class="story-p" data-i18n="s8_p4">{{NAME}} started reading the actual product name on every tub from then on — and still enjoyed both kinds, just knowing exactly which one was in hand each time.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(8, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn8" onclick="event.stopPropagation(); openQuiz(8)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel8" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress8">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. What can legally be called "Ice Cream" in India?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 0, 0, 1)">Anything cold</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 0, 1, 1)">Only products made mainly with real milk fat</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 0, 2, 1)">Anything with sugar in it</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 0, 3, 1)">Anything sold in a tub</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What must a product using vegetable oil instead of milk fat be called?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 1, 0, 1)">Ice Cream Deluxe</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 1, 1, 1)">Frozen Dessert</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 1, 2, 1)">Super Ice Cream</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 1, 3, 1)">Milk Treat</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. How can you tell the two apart?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 2, 0, 1)">By the color</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 2, 1, 1)">By reading the actual name printed on the pack</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 2, 2, 1)">By the price only</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(8, 2, 3, 1)">You genuinely can't tell</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn8" onclick="event.stopPropagation(); claimBadgeFromQuiz(8)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn8" onclick="event.stopPropagation(); downloadCertificate(8, '🍦', 'Ice Cream vs Frozen Dessert Labelling')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(8, '🍦')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn8" onclick="event.stopPropagation(); toggleWofPanel(8)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -601,7 +883,40 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="story-health" data-i18n="s9_health"><b>⚠️ Why it matters:</b> Advertising specifically aimed at children is a serious enough concern that India's food regulator and courts have been actively working on rules for clearer warning labels on high-sugar, high-salt foods — because young minds are especially good at remembering jingles and mascots, but not yet as practised at questioning them.</div>
       <div class="story-p" data-i18n="s9_p4">{{NAME}} started playing a little game after that: every time a food ad came on, {{NAME}} tried to spot the trick being used — the jingle, the mascot, the "free toy inside," or the health-sounding claim — before checking what the ingredients list actually said. It turned into {{NAME}}'s favourite way to watch TV.</div>
     </div>
-    <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(9, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
+    <button class="story-badge-btn" id="storyBadgeBtn9" onclick="event.stopPropagation(); openQuiz(9)" data-i18n="take_quiz_btn">📝 Take the Quick Quiz!</button>
+    <div class="quiz-panel" id="quizPanel9" onclick="event.stopPropagation()">
+      <div class="quiz-intro" data-i18n="quiz_intro">Just 3 easy questions — get them all right to earn your badge! You can try again as many times as you like.</div>
+      <div class="quiz-progress" id="quizProgress9">0 / 3 correct</div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">1. Why do advertisers repeat the same ad many, many times?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 0, 0, 1)">To fill up airtime</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 0, 1, 1)">Repetition makes things feel familiar and likeable</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 0, 2, 1)">It's required by law</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 0, 3, 1)">It happens by accident</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">2. What is "health-washing" in advertising?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 1, 0, 1)">Washing food before eating it</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 1, 1, 1)">Making unhealthy food sound healthy, like "real fruit" claims</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 1, 2, 1)">A type of exercise</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 1, 3, 1)">A cleaning product</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-text">3. What's a smart habit when you see a food ad?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 2, 0, 1)">Buy it immediately</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 2, 1, 1)">Spot the tricks (mascot, jingle, claims) before deciding</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 2, 2, 1)">Ignore every ad forever</button>
+          <button class="quiz-opt" onclick="event.stopPropagation(); answerQuiz(9, 2, 3, 1)">Copy what the ad says</button>
+        </div>
+      </div>
+      <button class="quiz-claim-btn" id="quizClaimBtn9" onclick="event.stopPropagation(); claimBadgeFromQuiz(9)" data-i18n="quiz_claim_btn">🎉 All Correct — Claim My Badge!</button>
+      <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
+    </div>
     <button class="cert-btn" id="certBtn9" onclick="event.stopPropagation(); downloadCertificate(9, '📺', 'Decoding Advertising Tricks')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn9" onclick="event.stopPropagation(); toggleWofPanel(9)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
@@ -1070,6 +1385,54 @@ function wrapCertText(ctx, text, x, y, maxWidth, lineHeight){
   }
 }
 
+var QUIZ_DATA = {"1": [["What do you add to a piece of paneer to test for hidden starch?", ["Iodine tincture", "Salt water", "Sugar", "Vinegar"], 0], ["If starch is present, what color does the paneer turn?", ["Red", "Blue", "Green", "Yellow"], 1], ["Why do some sellers secretly add starch to paneer?", ["To make it taste better", "To make it weigh more cheaply", "To make it last longer", "To make it whiter"], 1]], "2": [["What did scientists discover about the old honey \"burn test\"?", ["It always works perfectly", "Modern fake honey can fool it", "It's dangerous to try", "It only works on cold honey"], 1], ["What is fake honey often secretly made from?", ["Salt water", "Sugar syrup", "Food coloring", "Vinegar"], 1], ["What's the smartest way to find real honey?", ["Always trust the burn test", "Buy from a trusted local beekeeper", "Buy the cheapest one", "Check only the color"], 1]], "3": [["What banned chemical is sometimes used to ripen fruit too fast?", ["Calcium carbide", "Baking soda", "Table salt", "Sugar"], 0], ["What's one clue a mango was ripened too quickly?", ["It's unusually heavy", "Patchy color and little smell", "It has a sticker on it", "It's very cheap"], 1], ["Is this fast-ripening chemical legal to use in India?", ["Yes, always", "No, it's banned", "Only for mangoes", "Only in summer"], 1]], "4": [["What happens when you rub REAL silver vark between your fingers?", ["It crumbles into powder", "It tears into shreds", "It melts instantly", "It changes color"], 0], ["What happens when you rub FAKE (aluminium) vark instead?", ["It crumbles into powder", "It tears into shreds", "It disappears completely", "It turns black"], 1], ["Why shouldn't we eat aluminium foil dressed up as vark?", ["It tastes bad", "It isn't meant to be food", "It's too shiny", "It's too expensive"], 1]], "5": [["What poisonous oil was mixed into mustard oil in a real 1998 case?", ["Castor oil", "Argemone oil", "Coconut oil", "Neem oil"], 1], ["What serious illness did this cause in thousands of people?", ["A common cold", "Epidemic dropsy (swelling & breathing trouble)", "A mild headache", "Hair loss"], 1], ["What's the safest way to buy mustard oil?", ["Loose, from any shop", "Sealed, branded, with an FSSAI mark", "Only in summer", "From the cheapest seller"], 1]], "6": [["Since 2024, what must appear in BOLD letters on Indian food labels?", ["The brand's logo", "Sugar, salt, and fat numbers", "The manufacturing date only", "The price"], 1], ["Instant noodles are usually made mainly from what?", ["Whole wheat", "Refined maida", "Rice flour", "Oats"], 1], ["One packet of instant noodles can contain a lot of what?", ["Vitamin C", "Salt", "Fibre", "Protein"], 1]], "7": [["About how many \"hidden\" sugar cubes can be in one bottle of a sugary drink?", ["1-2", "Around 10", "20 or more", "None at all"], 1], ["What can drinking too many sugary drinks lead to over time?", ["Better eyesight", "Tooth decay and weight gain", "Stronger bones", "Better sleep"], 1], ["What's a good alternative to a sugary fizzy drink?", ["Another fizzy drink", "Water or nimbu paani", "Only tea", "Skipping drinks entirely"], 1]], "8": [["What can legally be called \"Ice Cream\" in India?", ["Anything cold", "Only products made mainly with real milk fat", "Anything with sugar in it", "Anything sold in a tub"], 1], ["What must a product using vegetable oil instead of milk fat be called?", ["Ice Cream Deluxe", "Frozen Dessert", "Super Ice Cream", "Milk Treat"], 1], ["How can you tell the two apart?", ["By the color", "By reading the actual name printed on the pack", "By the price only", "You genuinely can't tell"], 1]], "9": [["Why do advertisers repeat the same ad many, many times?", ["To fill up airtime", "Repetition makes things feel familiar and likeable", "It's required by law", "It happens by accident"], 1], ["What is \"health-washing\" in advertising?", ["Washing food before eating it", "Making unhealthy food sound healthy, like \"real fruit\" claims", "A type of exercise", "A cleaning product"], 1], ["What's a smart habit when you see a food ad?", ["Buy it immediately", "Spot the tricks (mascot, jingle, claims) before deciding", "Ignore every ad forever", "Copy what the ad says"], 1]]};
+
+function openQuiz(i){
+  var panel = document.getElementById('quizPanel' + i);
+  panel.classList.toggle('show');
+}
+
+var quizState = {};
+
+function answerQuiz(storyId, qIdx, selectedIdx, correctIdx){
+  if (!quizState[storyId]) quizState[storyId] = {};
+  var panel = document.getElementById('quizPanel' + storyId);
+  var qBlocks = panel.querySelectorAll('.quiz-q');
+  var qBlock = qBlocks[qIdx];
+  var opts = qBlock.querySelectorAll('.quiz-opt');
+
+  opts.forEach(function(opt, idx){
+    opt.classList.remove('correct', 'wrong', 'disabled-other');
+    if (idx === selectedIdx && idx === correctIdx) {
+      opt.classList.add('correct');
+    } else if (idx === selectedIdx && idx !== correctIdx) {
+      opt.classList.add('wrong');
+    } else if (idx === correctIdx) {
+      // leave correct one neutral until they get it, avoids giving away answer
+    }
+  });
+
+  quizState[storyId][qIdx] = (selectedIdx === correctIdx);
+
+  var totalQ = QUIZ_DATA[storyId].length;
+  var correctCount = 0;
+  for (var k in quizState[storyId]) {
+    if (quizState[storyId][k]) correctCount++;
+  }
+  document.getElementById('quizProgress' + storyId).textContent = correctCount + ' / ' + totalQ + ' correct';
+
+  if (correctCount === totalQ) {
+    document.getElementById('quizClaimBtn' + storyId).classList.add('show');
+  }
+}
+
+function claimBadgeFromQuiz(i){
+  var btn = document.getElementById('storyBadgeBtn' + i);
+  earnBadge(i, btn);
+  document.getElementById('quizPanel' + i).classList.remove('show');
+  try { gtag('event', 'quiz_completed', {story: i}); } catch(e) {}
+}
+
 function earnBadge(i, btn){
   var card = document.getElementById('story' + i);
   if (!badgeSet.has(i)) {
@@ -1300,6 +1663,10 @@ portal_text:'డిటెక్టివ్ ప్రపంచంలోకి �
 stories_label:'🕵️ డిటెక్టివ్ కథలు',
 stories_hint:'కథను తెరవడానికి తాకండి — మీ బ్యాడ్జ్ సంపాదించడానికి చదవడం పూర్తి చేయండి',
 badge_tag:'🏅 బ్యాడ్జ్ సంపాదించారు',earn_badge_btn:'🏅 నేను దీన్ని చదివాను — నా బ్యాడ్జ్ సంపాదించండి!',
+take_quiz_btn:'📝 త్వరిత క్విజ్ తీసుకోండి!',
+quiz_intro:'కేవలం 3 సులభమైన ప్రశ్నలు — మీ బ్యాడ్జ్ సంపాదించడానికి అన్నీ సరిగ్గా చేయండి! మీరు ఎన్నిసార్లయినా మళ్లీ ప్రయత్నించవచ్చు.',
+quiz_claim_btn:'🎉 అన్నీ సరైనవి — నా బ్యాడ్జ్ క్లెయిమ్ చేయండి!',
+quiz_retry_hint:'ఏదైనా తప్పు అయిందా? పర్వాలేదు — వేరే సమాధానం తాకి మళ్లీ ప్రయత్నించండి.',
 s1_title:'స్క్వీకీ పనీర్ రహస్యం',s1_sub:'స్టార్చ్ రహస్యం — 4 నిమిషాల చదువు',
 s1_p1:'మీరా పనీర్ బటర్ మసాలాను దేని కంటే ఎక్కువ ఇష్టపడేది — కానీ ఒక ఆదివారం, ఇంట్లో పనీర్ వింతగా అనిపించింది. ఇది సాధారణ పనీర్‌లా మృదువుగా, కొద్దిగా స్క్వీకీగా లేదు. ఇది రబ్బర్‌లా అనిపించింది. నలభై సంవత్సరాలుగా ఇంట్లో పనీర్ తయారు చేస్తున్న మీరా అమ్మమ్మ ఒక చిన్న ముక్క తీసుకుని వేళ్ల మధ్య రుద్దింది.',
 s1_p2:'"కొన్ని దుకాణాలు," ఆమె చెప్పింది, "పనీర్‌లో స్టార్చ్ కలుపుతాయి, తద్వారా అది ఎక్కువ బరువు తూగుతుంది, తయారీకి తక్కువ ఖర్చవుతుంది. చూద్దాం." ఆమె చిన్న ముక్కను నీటిలో మరిగించి, చల్లబరిచి, ఫస్ట్-ఎయిడ్ బాక్స్ నుండి అయోడిన్ టింక్చర్ రెండు చుక్కలు జోడించింది.',
@@ -1412,6 +1779,10 @@ portal_text:'डिटेक्टिव दुनिया में प्र�
 stories_label:'🕵️ डिटेक्टिव कहानियां',
 stories_hint:'कहानी खोलने के लिए टैप करें — अपना बैज पाने के लिए पढ़ना पूरा करें',
 badge_tag:'🏅 बैज मिला',earn_badge_btn:'🏅 मैंने यह पढ़ा — मेरा बैज दें!',
+take_quiz_btn:'📝 झटपट क्विज़ लें!',
+quiz_intro:'सिर्फ़ 3 आसान सवाल — अपना बैज पाने के लिए सभी सही करें! आप जितनी बार चाहें दोबारा कोशिश कर सकते हैं.',
+quiz_claim_btn:'🎉 सभी सही — मेरा बैज पाएं!',
+quiz_retry_hint:'कोई गलत हो गया? कोई बात नहीं — बस दूसरा जवाब चुनें और फिर कोशिश करें.',
 s1_title:'चरमराते पनीर का रहस्य',s1_sub:'एक स्टार्च रहस्य — 4 मिनट पढ़ें',
 s1_p1:'मीरा को पनीर बटर मसाला सबसे अच्छा लगता था — लेकिन एक रविवार, घर का पनीर अजीब लगा। इसमें वह मुलायम चरमराहट नहीं थी। यह रबर जैसा लगा। चालीस साल से घर पर पनीर बना रही मीरा की दादी ने एक छोटा टुकड़ा लेकर उंगलियों के बीच रगड़ा।',
 s1_p2:'"कुछ दुकानें," उसने कहा, "पनीर में स्टार्च मिलाती हैं ताकि वह ज़्यादा वज़न करे, कम लागत में बने। चलो जांचते हैं।" उसने छोटा टुकड़ा पानी में उबालकर ठंडा किया, फर्स्ट-एड बॉक्स से आयोडीन टिंक्चर की दो बूंदें डालीं।',
