@@ -51,6 +51,11 @@ cursor:pointer;border:none;display:flex;align-items:center;justify-content:cente
 .act-btn:active{transform:scale(.97);}
 .btn-dl{background:var(--navy);color:var(--gold-l);}
 .btn-wa{background:#25D366;color:white;}
+.btn-ig{background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5);
+color:white;width:100%;margin-top:10px;padding:15px;border-radius:12px;font-family:inherit;
+font-size:13.5px;font-weight:800;cursor:pointer;border:none;display:flex;align-items:center;
+justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(214,41,118,.3);}
+.btn-ig:active{transform:scale(.97);}
 .hint{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:12px;text-align:center;}
 .hint strong{color:var(--ink);}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);
@@ -106,8 +111,10 @@ gtag('config', 'G-TJXHVW6XCL');
     <button class="act-btn btn-dl" onclick="downloadCard()" id="dlBtn">⬇️ Download Image</button>
     <button class="act-btn btn-wa" onclick="shareText()" id="waBtn">📲 Share Text</button>
   </div>
+  <button class="btn-ig" onclick="shareStoryCard()" id="igBtn">📸 Share as Instagram Story</button>
 
   <div class="hint" id="hint"><strong>How to post on WhatsApp Status:</strong> Tap Download Image → open WhatsApp → Status → 📷 → pick the downloaded card → Post. A new card appears here every day!</div>
+  <div class="hint" id="igHint"><strong>Instagram Story:</strong> Tap the button above — on phones this opens your share menu directly to Instagram. Once posted, add the Link sticker and type lawsticker-ai.com so people can tap through.</div>
 </div>
 
 <div class="bottom-nav">
@@ -126,18 +133,24 @@ const UI = {
     prevLbl:'Previous',nextLbl:'Next',dlBtn:'⬇️ Download Image',waBtn:'📲 Share Text',
     ttRights:'⚖️ Rights',ttCalcs:'🧮 Calculators',downloaded:'✓ Image downloaded — post it on your Status!',
     hint:'<strong>How to post on WhatsApp Status:</strong> Tap Download Image → open WhatsApp → Status → 📷 → pick the downloaded card → Post. A new card appears here every day!',
+    igBtn:'📸 Share as Instagram Story',
+    igHint:'<strong>Instagram Story:</strong> Tap the button above — on phones this opens your share menu directly to Instagram. Once posted, add the Link sticker and type lawsticker-ai.com so people can tap through.',
     know:'DID YOU KNOW?',law:'LEGAL BASIS',free:'FREE TOOL',tagline:'Your rights. Your language. Free.',
     tryIt:'Try it free at'},
   te:{navBrand:'📇 రోజువారీ హక్కుల కార్డులు',dayBadge:d=>`కార్డు ${d.n} / ${d.total} · ${d.date}`,
     prevLbl:'మునుపటి',nextLbl:'తదుపరి',dlBtn:'⬇️ చిత్రం డౌన్‌లోడ్',waBtn:'📲 టెక్స్ట్ షేర్',
     ttRights:'⚖️ హక్కులు',ttCalcs:'🧮 కాలిక్యులేటర్లు',downloaded:'✓ డౌన్‌లోడ్ అయింది — స్టేటస్‌లో పోస్ట్ చేయండి!',
     hint:'<strong>WhatsApp స్టేటస్‌లో పోస్ట్ చేయడం:</strong> చిత్రం డౌన్‌లోడ్ నొక్కండి → WhatsApp తెరవండి → స్టేటస్ → 📷 → కార్డు ఎంచుకోండి → పోస్ట్. ప్రతిరోజూ కొత్త కార్డు!',
+    igBtn:'📸 ఇన్‌స్టాగ్రామ్ స్టోరీగా షేర్ చేయండి',
+    igHint:'<strong>ఇన్‌స్టాగ్రామ్ స్టోరీ:</strong> పైన బటన్ నొక్కండి — ఫోన్‌లలో ఇది నేరుగా ఇన్‌స్టాగ్రామ్‌కు మీ షేర్ మెనూను తెరుస్తుంది. పోస్ట్ చేసిన తర్వాత, లింక్ స్టిక్కర్ జోడించి lawsticker-ai.com టైప్ చేయండి.',
     know:'మీకు తెలుసా?',law:'చట్టపరమైన ఆధారం',free:'ఉచిత సాధనం',tagline:'మీ హక్కులు. మీ భాష. ఉచితం.',
     tryIt:'ఉచితంగా ప్రయత్నించండి'},
   hi:{navBrand:'📇 दैनिक अधिकार कार्ड',dayBadge:d=>`कार्ड ${d.n} / ${d.total} · ${d.date}`,
     prevLbl:'पिछला',nextLbl:'अगला',dlBtn:'⬇️ इमेज डाउनलोड',waBtn:'📲 टेक्स्ट शेयर',
     ttRights:'⚖️ अधिकार',ttCalcs:'🧮 कैलकुलेटर',downloaded:'✓ डाउनलोड हो गया — स्टेटस पर पोस्ट करें!',
     hint:'<strong>WhatsApp स्टेटस पर पोस्ट करना:</strong> इमेज डाउनलोड दबाएं → WhatsApp खोलें → स्टेटस → 📷 → कार्ड चुनें → पोस्ट। हर दिन नया कार्ड!',
+    igBtn:'📸 इंस्टाग्राम स्टोरी के रूप में शेयर करें',
+    igHint:'<strong>इंस्टाग्राम स्टोरी:</strong> ऊपर बटन दबाएं — फ़ोन पर यह सीधे इंस्टाग्राम पर आपका शेयर मेनू खोलता है। पोस्ट करने के बाद, लिंक स्टिकर जोड़ें और lawsticker-ai.com टाइप करें।',
     know:'क्या आप जानते हैं?',law:'कानूनी आधार',free:'मुफ्त टूल',tagline:'आपके अधिकार। आपकी भाषा। मुफ्त।',
     tryIt:'मुफ्त आज़माएं'},
 };
@@ -385,9 +398,10 @@ function prevCard(){idx=(idx-1+pool().length)%pool().length;renderCard();}
 
 function applyUI(){
   const L=UI[currentLang];
-  ['navBrand','prevLbl','nextLbl','dlBtn','waBtn','ttRights','ttCalcs'].forEach(id=>{
+  ['navBrand','prevLbl','nextLbl','dlBtn','waBtn','ttRights','ttCalcs','igBtn'].forEach(id=>{
     const el=document.getElementById(id);if(el&&typeof L[id]==='string')el.textContent=L[id];});
   document.getElementById('hint').innerHTML=L.hint;
+  document.getElementById('igHint').innerHTML=L.igHint;
 }
 
 function downloadCard(){
@@ -397,6 +411,106 @@ function downloadCard(){
   a.href=c.toDataURL('image/png');
   a.click();
   showToast(UI[currentLang].downloaded);
+}
+
+function renderStoryCanvas(){
+  const c=document.createElement('canvas');
+  c.width=1080; c.height=1920;
+  const ctx=c.getContext('2d');
+  const card=pool()[idx],L=UI[currentLang];
+  const W=1080,H=1920;
+
+  // Background — navy gradient, same family as the feed card
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0D1117');bg.addColorStop(.5,'#131B29');bg.addColorStop(1,'#0D1117');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Accent bar top
+  ctx.fillStyle=card.accent;ctx.fillRect(0,0,W,16);
+
+  // Faint huge watermark icon, lower-mid, away from safe zones
+  ctx.globalAlpha=.05;ctx.font='560px sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='#FFFFFF';ctx.fillText(card.icon,W/2,1500);
+  ctx.globalAlpha=1;ctx.textAlign='left';
+
+  // Instagram top safe-zone is roughly the first 250px — badge starts below it
+  const badge=L.know;
+  ctx.font=fontStack(800,36);
+  const bw=ctx.measureText(badge).width+76;
+  roundRect(ctx,(W-bw)/2,300,bw,78,39);ctx.fillStyle=card.accent;ctx.fill();
+  ctx.fillStyle='#FFFFFF';ctx.textAlign='center';
+  ctx.fillText(badge,W/2,350);
+
+  // Icon, centered
+  ctx.font='150px sans-serif';
+  ctx.fillText(card.icon,W/2,570);
+
+  // Fact — main body, centered, generous size for Story viewing distance
+  ctx.fillStyle='#FFFFFF';ctx.font=fontStack(700,58);
+  ctx.textAlign='center';
+  const factEnd=wrapTextCenter(ctx,card.fact[currentLang],W/2,700,W-160,80);
+
+  // Divider
+  ctx.strokeStyle='rgba(201,162,39,.4)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(140,factEnd+60);ctx.lineTo(W-140,factEnd+60);ctx.stroke();
+
+  // Legal basis / tool name
+  ctx.fillStyle='#C9A227';ctx.font=fontStack(800,32);
+  const lbl = currentType==='rights' ? L.law : L.free;
+  ctx.fillText(lbl,W/2,factEnd+125);
+  ctx.fillStyle='rgba(255,255,255,.8)';ctx.font=fontStack(600,38);
+  const detail = currentType==='rights' ? card.law[currentLang] : card.name[currentLang];
+  wrapTextCenter(ctx,detail,W/2,factEnd+185,W-200,52);
+
+  // Footer band — kept clear of Instagram's bottom reply-bar safe zone
+  ctx.textAlign='left';
+  ctx.fillStyle='rgba(201,162,39,.14)';ctx.fillRect(0,H-300,W,300);
+  ctx.textAlign='center';
+  ctx.fillStyle='#F5D76E';ctx.font=fontStack(900,50);
+  ctx.fillText('⚖️ LawSticker AI',W/2,H-210);
+  ctx.fillStyle='rgba(255,255,255,.6)';ctx.font=fontStack(600,32);
+  ctx.fillText(L.tagline,W/2,H-155);
+  ctx.fillStyle='#F5D76E';ctx.font=fontStack(800,38);
+  ctx.fillText('🔗 lawsticker-ai.com',W/2,H-90);
+  ctx.textAlign='left';
+
+  return c;
+}
+
+function wrapTextCenter(ctx,text,cx,y,maxW,lineH){
+  const words=text.split(' ');let lines=[],line='';
+  for(const w of words){
+    const test=line?line+' '+w:w;
+    if(ctx.measureText(test).width>maxW&&line){lines.push(line);line=w;}
+    else line=test;
+  }
+  if(line)lines.push(line);
+  let yy=y;
+  for(const l of lines){ctx.fillText(l,cx,yy);yy+=lineH;}
+  return yy;
+}
+
+function shareStoryCard(){
+  const storyCanvas=renderStoryCanvas();
+  storyCanvas.toBlob(function(blob){
+    const file=new File([blob],'lawsticker-story.png',{type:'image/png'});
+    (async function(){
+      try{
+        if(navigator.canShare&&navigator.canShare({files:[file]})){
+          await navigator.share({files:[file],title:'LawSticker AI'});
+          try{gtag('event','ig_story_shared');}catch(e){}
+        }else{
+          const url=URL.createObjectURL(blob);
+          const a=document.createElement('a');a.href=url;a.download='lawsticker-story.png';a.click();
+          showToast(UI[currentLang].downloaded);
+        }
+      }catch(e){
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');a.href=url;a.download='lawsticker-story.png';a.click();
+      }
+    })();
+  },'image/png');
+  try{gtag('event','ig_story_generated',{type:currentType});}catch(e){}
 }
 
 function shareText(){
