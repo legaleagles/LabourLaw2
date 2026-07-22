@@ -1464,7 +1464,18 @@ function earnBadge(i, btn){
     if (hint) hint.classList.add('hidden');
     celebrateConfetti();
     try { gtag('event', 'badge_earned', {count: badgeSet.size}); } catch(e) {}
+    pingPulse('badge');
   }
+}
+
+function pingPulse(type){
+  try {
+    fetch('https://lawsticker-backend-e5e1.vercel.app/api/pulse', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({type: type})
+    }).catch(function(){});
+  } catch(e) {}
 }
 
 function celebrateConfetti(){
