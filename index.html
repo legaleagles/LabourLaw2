@@ -326,8 +326,17 @@ color:#fff;cursor:pointer;transition:transform .15s;}
 .share-copied-msg{display:none;font-size:11px;color:var(--gold-l);font-weight:700;margin-top:10px;}
 .share-copied-msg.show{display:block;}
 .ig-teaser{position:relative;border-radius:20px;padding:2px;margin-bottom:20px;
-background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5);overflow:hidden;}
-.ig-teaser-inner{background:var(--navy);border-radius:18px;padding:22px 20px;text-align:center;}
+background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);
+background-size:300% 300%;animation:igShimmer 6s ease infinite;overflow:hidden;}
+@keyframes igShimmer{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@media (prefers-reduced-motion:reduce){.ig-teaser{animation:none;}}
+.ig-teaser-inner{position:relative;background:var(--navy);border-radius:18px;padding:22px 20px;text-align:center;overflow:hidden;}
+.ig-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ig-sparkle{position:absolute;font-size:16px;opacity:0;animation:sparkleFloat 4.5s ease-in-out infinite;}
+@keyframes sparkleFloat{0%{opacity:0;transform:translateY(8px) scale(.7) rotate(-10deg);}
+20%{opacity:.55;}50%{opacity:.8;transform:translateY(-6px) scale(1) rotate(8deg);}
+80%{opacity:.4;}100%{opacity:0;transform:translateY(-16px) scale(.7) rotate(-6deg);}}
+@media (prefers-reduced-motion:reduce){.ig-sparkle{animation:none;opacity:.3;}}
 .ig-teaser-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);
 border-radius:16px;padding:5px 14px;font-size:10px;font-weight:800;letter-spacing:1px;
 color:#fff;margin-bottom:12px;text-transform:uppercase;}
@@ -335,8 +344,12 @@ color:#fff;margin-bottom:12px;text-transform:uppercase;}
 .ig-teaser-s{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.65;max-width:340px;margin:0 auto 18px;}
 .ig-teaser-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:14px;
 text-decoration:none;background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5);
-color:#fff;font-family:inherit;font-size:13.5px;font-weight:800;box-shadow:0 6px 18px rgba(214,41,118,.35);}
+color:#fff;font-family:inherit;font-size:13.5px;font-weight:800;box-shadow:0 6px 18px rgba(214,41,118,.35);
+position:relative;overflow:hidden;animation:igGlowPulse 2.6s ease-in-out infinite;}
+@keyframes igGlowPulse{0%,100%{box-shadow:0 6px 18px rgba(214,41,118,.35);}50%{box-shadow:0 6px 26px rgba(214,41,118,.6);}}
+@media (prefers-reduced-motion:reduce){.ig-teaser-btn{animation:none;}}
 .ig-teaser-btn:active{transform:scale(.96);}
+.ig-teaser-btn .ripple-span{background:rgba(255,255,255,.5);}
 .f-gold{border-color:rgba(201,162,39,.4);background:linear-gradient(135deg,#FDF6DC,#fff);}
 .f-jade{border-color:rgba(5,150,105,.35);background:linear-gradient(135deg,#ECFDF5,#fff);}
 .f-sky{border-color:rgba(14,165,233,.35);background:linear-gradient(135deg,#F0F9FF,#fff);}
@@ -705,6 +718,12 @@ gtag('config', 'G-TJXHVW6XCL');
   <!-- DAILY RIGHTS → INSTAGRAM STORY -->
   <div class="ig-teaser">
     <div class="ig-teaser-inner">
+      <div class="ig-sparkles">
+        <span class="ig-sparkle" style="left:10%;top:15%;animation-delay:0s;">✨</span>
+        <span class="ig-sparkle" style="left:85%;top:20%;animation-delay:1.1s;">💫</span>
+        <span class="ig-sparkle" style="left:20%;top:75%;animation-delay:2.2s;">✨</span>
+        <span class="ig-sparkle" style="left:78%;top:70%;animation-delay:3.3s;">⭐</span>
+      </div>
       <div class="ig-teaser-badge">📸 <span id="igTeaserBadge"></span></div>
       <div class="ig-teaser-t" id="igTeaserT"></div>
       <div class="ig-teaser-s" id="igTeaserS"></div>
@@ -1373,7 +1392,7 @@ document.addEventListener('DOMContentLoaded',function(){
     setTimeout(function(){ span.remove(); }, 600);
   }
 
-  document.querySelectorAll('.hero-cta, .hub-card').forEach(function(el){
+  document.querySelectorAll('.hero-cta, .hub-card, .ig-teaser-btn').forEach(function(el){
     el.addEventListener('click', addRipple);
   });
 })();
