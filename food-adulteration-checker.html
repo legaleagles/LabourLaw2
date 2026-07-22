@@ -58,9 +58,14 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .name-input{width:100%;max-width:320px;padding:13px 16px;border:2px solid var(--gold);border-radius:12px;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);text-align:center;background:#fff;}
 .name-input:focus{outline:none;box-shadow:0 0 0 3px rgba(201,162,39,.25);}
 .name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
-.cert-btn{display:none;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
-.story-dl-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--violet);background:var(--violet-bg);color:var(--violet);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
-.wof-open-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--gold);background:var(--gold-pale);color:var(--gold-d);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:none;}
+.cert-btn{display:block;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);opacity:.35;pointer-events:none;filter:grayscale(.6);transition:all .3s;}
+.cert-btn.unlocked{opacity:1;pointer-events:all;filter:none;}
+.story-dl-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--violet);background:var(--violet-bg);color:var(--violet);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;opacity:.35;pointer-events:none;filter:grayscale(.6);transition:all .3s;}
+.story-dl-btn.unlocked{opacity:1;pointer-events:all;filter:none;}
+.wof-open-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--gold);background:var(--gold-pale);color:var(--gold-d);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;opacity:.35;pointer-events:none;filter:grayscale(.6);transition:all .3s;}
+.wof-open-btn.unlocked{opacity:1;pointer-events:all;filter:none;}
+.unlock-hint{text-align:center;font-size:10.5px;color:var(--gold-d);font-weight:700;margin-top:10px;padding:9px 10px;background:var(--gold-pale);border:1px dashed var(--gold);border-radius:8px;}
+.unlock-hint.hidden{display:none;}
 .wof-open-btn.show{display:block;}
 .wof-panel{display:none;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:16px;margin-top:10px;text-align:left;}
 .wof-panel.show{display:block;animation:wofSlide .3s ease-out;}
@@ -302,8 +307,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn1" onclick="event.stopPropagation(); downloadCertificate(1, '🧀', 'The Starch Test for Paneer, Khoya &amp; Milk')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(1, '🧀')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn1" onclick="event.stopPropagation(); downloadStoryImage(1, '🧀')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn1" onclick="event.stopPropagation(); toggleWofPanel(1)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint1" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel1" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -379,8 +385,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn2" onclick="event.stopPropagation(); downloadCertificate(2, '🍯', 'Honey Authenticity Investigation')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(2, '🍯')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn2" onclick="event.stopPropagation(); downloadStoryImage(2, '🍯')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn2" onclick="event.stopPropagation(); toggleWofPanel(2)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint2" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel2" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -456,8 +463,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn3" onclick="event.stopPropagation(); downloadCertificate(3, '🥭', 'The Fruit Ripening Inspection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(3, '🥭')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn3" onclick="event.stopPropagation(); downloadStoryImage(3, '🥭')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn3" onclick="event.stopPropagation(); toggleWofPanel(3)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint3" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel3" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -533,8 +541,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn4" onclick="event.stopPropagation(); downloadCertificate(4, '✨', 'The Silver vs Aluminium Test')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(4, '✨')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn4" onclick="event.stopPropagation(); downloadStoryImage(4, '✨')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn4" onclick="event.stopPropagation(); toggleWofPanel(4)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint4" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel4" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -610,8 +619,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn5" onclick="event.stopPropagation(); downloadCertificate(5, '🫒', 'Mustard Oil Safety Awareness')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(5, '🫒')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn5" onclick="event.stopPropagation(); downloadStoryImage(5, '🫒')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn5" onclick="event.stopPropagation(); toggleWofPanel(5)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint5" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel5" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -687,8 +697,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn6" onclick="event.stopPropagation(); downloadCertificate(6, '🍜', 'Reading the Bold Nutrition Label')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(6, '🍜')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn6" onclick="event.stopPropagation(); downloadStoryImage(6, '🍜')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn6" onclick="event.stopPropagation(); toggleWofPanel(6)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint6" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel6" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -764,8 +775,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn7" onclick="event.stopPropagation(); downloadCertificate(7, '🥤', 'Hidden Sugar Detection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(7, '🥤')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn7" onclick="event.stopPropagation(); downloadStoryImage(7, '🥤')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn7" onclick="event.stopPropagation(); toggleWofPanel(7)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint7" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel7" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -841,8 +853,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn8" onclick="event.stopPropagation(); downloadCertificate(8, '🍦', 'Ice Cream vs Frozen Dessert Labelling')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(8, '🍦')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn8" onclick="event.stopPropagation(); downloadStoryImage(8, '🍦')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn8" onclick="event.stopPropagation(); toggleWofPanel(8)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint8" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel8" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -918,8 +931,9 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
       <div class="quiz-retry-hint" data-i18n="quiz_retry_hint">Got one wrong? No worries — just tap another answer and try again.</div>
     </div>
     <button class="cert-btn" id="certBtn9" onclick="event.stopPropagation(); downloadCertificate(9, '📺', 'Decoding Advertising Tricks')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
-    <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="story-dl-btn" id="dlStoryBtn9" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
     <button class="wof-open-btn" id="wofOpenBtn9" onclick="event.stopPropagation(); toggleWofPanel(9)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="unlock-hint" id="unlockHint9" data-i18n="unlock_hint">🔒 Pass the quiz above to unlock your certificate, story download & Wall of Fame entry</div>
     <div class="wof-panel" id="wofPanel9" onclick="event.stopPropagation()">
       <div class="wof-preview">
         <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
@@ -1441,9 +1455,13 @@ function earnBadge(i, btn){
     btn.classList.add('done');
     document.getElementById('badgeCount').textContent = badgeSet.size + ' / ' + TOTAL_BADGES;
     var certBtn = document.getElementById('certBtn' + i);
-    if (certBtn) certBtn.classList.add('show');
+    if (certBtn) certBtn.classList.add('unlocked');
+    var dlBtn = document.getElementById('dlStoryBtn' + i);
+    if (dlBtn) dlBtn.classList.add('unlocked');
     var wofBtn = document.getElementById('wofOpenBtn' + i);
-    if (wofBtn) wofBtn.classList.add('show');
+    if (wofBtn) wofBtn.classList.add('unlocked');
+    var hint = document.getElementById('unlockHint' + i);
+    if (hint) hint.classList.add('hidden');
     celebrateConfetti();
     try { gtag('event', 'badge_earned', {count: badgeSet.size}); } catch(e) {}
   }
@@ -1667,6 +1685,7 @@ take_quiz_btn:'📝 త్వరిత క్విజ్ తీసుకోం�
 quiz_intro:'కేవలం 3 సులభమైన ప్రశ్నలు — మీ బ్యాడ్జ్ సంపాదించడానికి అన్నీ సరిగ్గా చేయండి! మీరు ఎన్నిసార్లయినా మళ్లీ ప్రయత్నించవచ్చు.',
 quiz_claim_btn:'🎉 అన్నీ సరైనవి — నా బ్యాడ్జ్ క్లెయిమ్ చేయండి!',
 quiz_retry_hint:'ఏదైనా తప్పు అయిందా? పర్వాలేదు — వేరే సమాధానం తాకి మళ్లీ ప్రయత్నించండి.',
+unlock_hint:'🔒 మీ సర్టిఫికేట్, కథ డౌన్‌లోడ్ & వాల్ ఆఫ్ ఫేమ్ ఎంట్రీని అన్‌లాక్ చేయడానికి పైన ఉన్న క్విజ్ పాస్ చేయండి',
 s1_title:'స్క్వీకీ పనీర్ రహస్యం',s1_sub:'స్టార్చ్ రహస్యం — 4 నిమిషాల చదువు',
 s1_p1:'మీరా పనీర్ బటర్ మసాలాను దేని కంటే ఎక్కువ ఇష్టపడేది — కానీ ఒక ఆదివారం, ఇంట్లో పనీర్ వింతగా అనిపించింది. ఇది సాధారణ పనీర్‌లా మృదువుగా, కొద్దిగా స్క్వీకీగా లేదు. ఇది రబ్బర్‌లా అనిపించింది. నలభై సంవత్సరాలుగా ఇంట్లో పనీర్ తయారు చేస్తున్న మీరా అమ్మమ్మ ఒక చిన్న ముక్క తీసుకుని వేళ్ల మధ్య రుద్దింది.',
 s1_p2:'"కొన్ని దుకాణాలు," ఆమె చెప్పింది, "పనీర్‌లో స్టార్చ్ కలుపుతాయి, తద్వారా అది ఎక్కువ బరువు తూగుతుంది, తయారీకి తక్కువ ఖర్చవుతుంది. చూద్దాం." ఆమె చిన్న ముక్కను నీటిలో మరిగించి, చల్లబరిచి, ఫస్ట్-ఎయిడ్ బాక్స్ నుండి అయోడిన్ టింక్చర్ రెండు చుక్కలు జోడించింది.',
@@ -1783,6 +1802,7 @@ take_quiz_btn:'📝 झटपट क्विज़ लें!',
 quiz_intro:'सिर्फ़ 3 आसान सवाल — अपना बैज पाने के लिए सभी सही करें! आप जितनी बार चाहें दोबारा कोशिश कर सकते हैं.',
 quiz_claim_btn:'🎉 सभी सही — मेरा बैज पाएं!',
 quiz_retry_hint:'कोई गलत हो गया? कोई बात नहीं — बस दूसरा जवाब चुनें और फिर कोशिश करें.',
+unlock_hint:'🔒 अपना सर्टिफिकेट, कहानी डाउनलोड और वॉल ऑफ फ़ेम एंट्री अनलॉक करने के लिए ऊपर दिया क्विज़ पास करें',
 s1_title:'चरमराते पनीर का रहस्य',s1_sub:'एक स्टार्च रहस्य — 4 मिनट पढ़ें',
 s1_p1:'मीरा को पनीर बटर मसाला सबसे अच्छा लगता था — लेकिन एक रविवार, घर का पनीर अजीब लगा। इसमें वह मुलायम चरमराहट नहीं थी। यह रबर जैसा लगा। चालीस साल से घर पर पनीर बना रही मीरा की दादी ने एक छोटा टुकड़ा लेकर उंगलियों के बीच रगड़ा।',
 s1_p2:'"कुछ दुकानें," उसने कहा, "पनीर में स्टार्च मिलाती हैं ताकि वह ज़्यादा वज़न करे, कम लागत में बने। चलो जांचते हैं।" उसने छोटा टुकड़ा पानी में उबालकर ठंडा किया, फर्स्ट-एड बॉक्स से आयोडीन टिंक्चर की दो बूंदें डालीं।',
