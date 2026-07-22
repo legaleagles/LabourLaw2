@@ -344,6 +344,16 @@ margin:0 auto 14px;position:relative;}
 text-decoration:none;background:linear-gradient(135deg,#059669,#10B981);color:#fff;font-family:inherit;
 font-size:13.5px;font-weight:800;box-shadow:0 6px 18px rgba(5,150,105,.4);position:relative;overflow:hidden;}
 .fd-teaser-btn:active{transform:scale(.96);}
+.pulse-strip{display:none;background:var(--navy2);border-radius:14px;padding:14px 18px;margin-bottom:20px;
+align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;}
+.pulse-strip.show{display:flex;}
+.pulse-item{text-align:center;}
+.pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#34D399;margin-right:5px;
+animation:pulseDot 1.8s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+@media (prefers-reduced-motion:reduce){.pulse-dot{animation:none;}}
+.pulse-n{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--gold-l);}
+.pulse-l{font-size:9.5px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
 .ig-teaser{position:relative;border-radius:20px;padding:2px;margin-bottom:20px;
 background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);
 background-size:300% 300%;animation:igShimmer 6s ease infinite;overflow:hidden;}
@@ -734,6 +744,11 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="share-copied-msg" id="shareCopiedMsg">✓ Link copied!</div>
   </div>
 
+  <div class="pulse-strip" id="pulseStrip">
+    <div class="pulse-item"><div class="pulse-n"><span class="pulse-dot"></span><span id="pulseBadges">—</span></div><div class="pulse-l" id="pulseBadgesLabel"></div></div>
+    <div class="pulse-item"><div class="pulse-n"><span id="pulseTricks">—</span></div><div class="pulse-l" id="pulseTricksLabel"></div></div>
+  </div>
+
   <!-- FOOD DETECTIVE QUEST -->
   <div class="fd-teaser">
     <div class="fd-teaser-badge">🕵️ <span id="fdTeaserBadge"></span></div>
@@ -822,6 +837,7 @@ const UI={
   shareT:'Found This Useful?',shareS:'Share LawSticker AI with someone who needs it — WhatsApp, Instagram, X, Facebook, wherever.',shareBtnLabel:'Share LawSticker AI',
   searchDividerText:'OR SEARCH DIRECTLY',
   fdTeaserBadge:'For Kids & Families',fdTeaserT:'Become a <span class="gold">Food Detective</span>',fdTeaserS:'9 real mysteries about paneer, honey, mango & more — pass a quick quiz, earn a badge, get a certificate with your name on it.',fdStat1:'Detective Stories',fdStat2:'Easy Quiz Questions',fdStat3:'Wall of Fame',fdTeaserBtn:'Start the Quest',
+  pulseBadgesLabel:'Badges Earned So Far',pulseTricksLabel:'Tricks Spotted So Far',
   igTeaserBadge:'New',igTeaserT:'Turn Your Daily Right into an Instagram Story',igTeaserS:'A fresh, statute-backed rights or calculator card every single day — download it or share it straight to your Story in one tap.',igTeaserBtn:'Get the Daily Card',
   f1n:'Daily Rights Cards',f1d:'One shareable card a day — download & post on WhatsApp Status. Rights spread when they\'re shared.',
   f2n:'GST Fraud Checker',f2d:'Check any shop, restaurant or hotel bill — wrong rates, fake GSTIN, GST-on-MRP. Updated for Sept 2025 reform.',
@@ -855,6 +871,7 @@ const UI={
   shareT:'ఇది ఉపయోగకరంగా అనిపించిందా?',shareS:'దీన్ని అవసరమైన వారితో షేర్ చేయండి — WhatsApp, Instagram, X, Facebook, ఎక్కడైనా.',shareBtnLabel:'LawSticker AI షేర్ చేయండి',
   searchDividerText:'లేదా నేరుగా వెతకండి',
   fdTeaserBadge:'పిల్లలు & కుటుంబాల కోసం',fdTeaserT:'ఒక <span class="gold">ఫుడ్ డిటెక్టివ్</span> అవ్వండి',fdTeaserS:'పనీర్, తేనె, మామిడి గురించి 9 నిజమైన రహస్యాలు — త్వరిత క్విజ్ పాస్ చేయండి, బ్యాడ్జ్ సంపాదించండి, మీ పేరుతో సర్టిఫికేట్ పొందండి.',fdStat1:'డిటెక్టివ్ కథలు',fdStat2:'సులభమైన క్విజ్ ప్రశ్నలు',fdStat3:'వాల్ ఆఫ్ ఫేమ్',fdTeaserBtn:'క్వెస్ట్ ప్రారంభించండి',
+  pulseBadgesLabel:'ఇప్పటివరకు సంపాదించిన బ్యాడ్జీలు',pulseTricksLabel:'ఇప్పటివరకు గుర్తించిన ట్రిక్‌లు',
   igTeaserBadge:'కొత్తది',igTeaserT:'ఈరోజు హక్కును ఇన్‌స్టాగ్రామ్ స్టోరీగా మార్చండి',igTeaserS:'ప్రతిరోజూ కొత్త, చట్టబద్ధమైన హక్కు లేదా కాలిక్యులేటర్ కార్డు — డౌన్‌లోడ్ చేయండి లేదా ఒకే tap లో మీ స్టోరీకి షేర్ చేయండి.',igTeaserBtn:'ఈరోజు కార్డు పొందండి',
   f1n:'రోజువారీ హక్కుల కార్డులు',f1d:'రోజుకో షేర్ కార్డు — డౌన్‌లోడ్ చేసి WhatsApp స్టేటస్‌లో పోస్ట్ చేయండి.',
   f2n:'GST మోసం తనిఖీ',f2d:'ఏ దుకాణం, రెస్టారెంట్, హోటల్ బిల్లునైనా తనిఖీ చేయండి — తప్పు రేట్లు, నకిలీ GSTIN, MRPపై GST.',
@@ -888,6 +905,7 @@ const UI={
   shareT:'यह उपयोगी लगा?',shareS:'इसे किसी ऐसे व्यक्ति के साथ शेयर करें जिसे इसकी ज़रूरत है — WhatsApp, Instagram, X, Facebook, कहीं भी।',shareBtnLabel:'LawSticker AI शेयर करें',
   searchDividerText:'या सीधे खोजें',
   fdTeaserBadge:'बच्चों और परिवारों के लिए',fdTeaserT:'एक <span class="gold">फूड डिटेक्टिव</span> बनें',fdTeaserS:'पनीर, शहद, आम के बारे में 9 असली रहस्य — झटपट क्विज़ पास करें, बैज पाएं, अपने नाम का सर्टिफिकेट पाएं।',fdStat1:'डिटेक्टिव कहानियां',fdStat2:'आसान क्विज़ सवाल',fdStat3:'वॉल ऑफ फ़ेम',fdTeaserBtn:'क्वेस्ट शुरू करें',
+  pulseBadgesLabel:'अब तक अर्जित बैज',pulseTricksLabel:'अब तक पहचाने गए ट्रिक्स',
   igTeaserBadge:'नया',igTeaserT:'आज के अधिकार को इंस्टाग्राम स्टोरी बनाएं',igTeaserS:'हर दिन एक नया, कानून-आधारित अधिकार या कैलकुलेटर कार्ड — डाउनलोड करें या एक टैप में सीधे अपनी स्टोरी पर शेयर करें।',igTeaserBtn:'आज का कार्ड पाएं',
   f1n:'दैनिक अधिकार कार्ड',f1d:'रोज़ एक शेयर कार्ड — डाउनलोड कर WhatsApp स्टेटस पर पोस्ट करें।',
   f2n:'GST धोखाधड़ी जांच',f2d:'किसी भी दुकान, रेस्तरां, होटल का बिल जांचें — गलत दरें, नकली GSTIN, MRP पर GST।',
@@ -1111,6 +1129,7 @@ function render(){
   'hubEyebrow','hubTitle','hubSub','hub1n','hub1d','hub2n','hub2d','hub3n','hub3d','hub4n','hub4d','hub5n','hub5d','hub6n','hub6d',
   'shareT','shareS','shareBtnLabel','searchDividerText',
   'fdTeaserBadge','fdTeaserS','fdStat1','fdStat2','fdStat3','fdTeaserBtn',
+  'pulseBadgesLabel','pulseTricksLabel',
   'igTeaserBadge','igTeaserT','igTeaserS','igTeaserBtn',
   'hHd','h1','h2','h3','h4','ftTag','ftDisc','stuN','stuD','chalN','chalD','quizChip','ytMilestone','ytSub'].forEach(id=>{
    const el=document.getElementById(id);if(el&&U[id]!==undefined)el.textContent=U[id];});
@@ -1657,6 +1676,21 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }, {passive: true});
 })();
+</script>
+<script>
+fetch('https://lawsticker-backend-e5e1.vercel.app/api/pulse')
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data && data.ok) {
+      document.getElementById('pulseBadges').textContent = data.badges_total.toLocaleString('en-IN');
+      document.getElementById('pulseTricks').textContent = data.tricks_total.toLocaleString('en-IN');
+      document.getElementById('pulseStrip').classList.add('show');
+    }
+  })
+  .catch(function(){
+    // Silently do nothing — the strip stays hidden rather than show a
+    // broken or misleading zero/dash state.
+  });
 </script>
 </body>
 </html>
