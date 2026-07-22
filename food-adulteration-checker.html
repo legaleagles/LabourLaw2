@@ -60,6 +60,28 @@ nav{background:rgba(13,17,23,.94);backdrop-filter:blur(10px);position:sticky;top
 .name-input::placeholder{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--muted);font-size:13px;}
 .cert-btn{display:none;width:100%;padding:13px;margin-top:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(201,162,39,.3);}
 .story-dl-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--violet);background:var(--violet-bg);color:var(--violet);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.wof-open-btn{width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1.5px solid var(--gold);background:var(--gold-pale);color:var(--gold-d);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:none;}
+.wof-open-btn.show{display:block;}
+.wof-panel{display:none;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:16px;margin-top:10px;text-align:left;}
+.wof-panel.show{display:block;animation:wofSlide .3s ease-out;}
+@keyframes wofSlide{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.wof-preview{text-align:center;background:var(--gold-pale);border-radius:10px;padding:12px;margin-bottom:12px;}
+.wof-preview-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.wof-preview-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--navy);}
+.wof-field{margin-bottom:12px;}
+.wof-field label{font-size:11px;font-weight:800;color:var(--ink2);display:block;margin-bottom:5px;}
+.wof-field input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:15px;text-align:center;text-transform:uppercase;}
+.wof-consent{display:flex;align-items:flex-start;gap:8px;background:var(--light);border-radius:10px;padding:11px;margin-bottom:12px;}
+.wof-consent input{margin-top:3px;flex-shrink:0;width:16px;height:16px;}
+.wof-consent label{font-size:10.5px;color:var(--ink2);line-height:1.6;}
+.wof-submit-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--navy);color:var(--gold-l);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;opacity:.5;pointer-events:none;}
+.wof-submit-btn.ready{opacity:1;pointer-events:all;}
+.wof-msg{font-size:11px;text-align:center;margin-top:10px;font-weight:700;display:none;}
+.wof-msg.show{display:block;}
+.wof-msg.success{color:#065F46;}
+.wof-msg.error{color:#991B1B;}
+.confetti-piece{position:fixed;top:-20px;z-index:600;pointer-events:none;border-radius:2px;}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
 .quest-banner{background:linear-gradient(135deg,#4C1D95,#1E3A8A);padding:14px 20px;text-align:center;position:relative;overflow:hidden;}
 .quest-banner::before{content:'🎮🔍🏅';position:absolute;left:-10px;top:-8px;font-size:60px;opacity:.12;letter-spacing:8px;}
 .quest-banner-t{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:#FDE68A;position:relative;}
@@ -224,6 +246,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(1, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn1" onclick="event.stopPropagation(); downloadCertificate(1, '🧀', 'The Starch Test for Paneer, Khoya &amp; Milk')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(1, '🧀')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn1" onclick="event.stopPropagation(); toggleWofPanel(1)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel1" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview1">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial1" maxlength="1" placeholder="R" oninput="updateWofPreview(1)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent1" onchange="updateWofPreview(1)">
+        <label for="wofConsent1" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn1" onclick="submitWof(1, 'The Starch Test for Paneer, Khoya & Milk')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg1"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story2" onclick="toggleStory(2)">
@@ -247,6 +286,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(2, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn2" onclick="event.stopPropagation(); downloadCertificate(2, '🍯', 'Honey Authenticity Investigation')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(2, '🍯')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn2" onclick="event.stopPropagation(); toggleWofPanel(2)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel2" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview2">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial2" maxlength="1" placeholder="R" oninput="updateWofPreview(2)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent2" onchange="updateWofPreview(2)">
+        <label for="wofConsent2" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn2" onclick="submitWof(2, 'Honey Authenticity Investigation')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg2"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story3" onclick="toggleStory(3)">
@@ -270,6 +326,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(3, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn3" onclick="event.stopPropagation(); downloadCertificate(3, '🥭', 'The Fruit Ripening Inspection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(3, '🥭')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn3" onclick="event.stopPropagation(); toggleWofPanel(3)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel3" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview3">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial3" maxlength="1" placeholder="R" oninput="updateWofPreview(3)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent3" onchange="updateWofPreview(3)">
+        <label for="wofConsent3" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn3" onclick="submitWof(3, 'The Fruit Ripening Inspection')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg3"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story4" onclick="toggleStory(4)">
@@ -293,6 +366,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(4, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn4" onclick="event.stopPropagation(); downloadCertificate(4, '✨', 'The Silver vs Aluminium Test')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(4, '✨')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn4" onclick="event.stopPropagation(); toggleWofPanel(4)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel4" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview4">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial4" maxlength="1" placeholder="R" oninput="updateWofPreview(4)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent4" onchange="updateWofPreview(4)">
+        <label for="wofConsent4" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn4" onclick="submitWof(4, 'The Silver vs Aluminium Test')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg4"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story5" onclick="toggleStory(5)">
@@ -316,6 +406,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(5, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn5" onclick="event.stopPropagation(); downloadCertificate(5, '🫒', 'Mustard Oil Safety Awareness')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(5, '🫒')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn5" onclick="event.stopPropagation(); toggleWofPanel(5)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel5" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview5">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial5" maxlength="1" placeholder="R" oninput="updateWofPreview(5)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent5" onchange="updateWofPreview(5)">
+        <label for="wofConsent5" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn5" onclick="submitWof(5, 'Mustard Oil Safety Awareness')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg5"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story6" onclick="toggleStory(6)">
@@ -339,6 +446,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(6, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn6" onclick="event.stopPropagation(); downloadCertificate(6, '🍜', 'Reading the Bold Nutrition Label')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(6, '🍜')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn6" onclick="event.stopPropagation(); toggleWofPanel(6)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel6" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview6">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial6" maxlength="1" placeholder="R" oninput="updateWofPreview(6)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent6" onchange="updateWofPreview(6)">
+        <label for="wofConsent6" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn6" onclick="submitWof(6, 'Reading the Bold Nutrition Label')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg6"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story7" onclick="toggleStory(7)">
@@ -362,6 +486,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(7, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn7" onclick="event.stopPropagation(); downloadCertificate(7, '🥤', 'Hidden Sugar Detection')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(7, '🥤')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn7" onclick="event.stopPropagation(); toggleWofPanel(7)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel7" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview7">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial7" maxlength="1" placeholder="R" oninput="updateWofPreview(7)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent7" onchange="updateWofPreview(7)">
+        <label for="wofConsent7" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn7" onclick="submitWof(7, 'Hidden Sugar Detection')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg7"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story8" onclick="toggleStory(8)">
@@ -385,6 +526,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(8, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn8" onclick="event.stopPropagation(); downloadCertificate(8, '🍦', 'Ice Cream vs Frozen Dessert Labelling')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(8, '🍦')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn8" onclick="event.stopPropagation(); toggleWofPanel(8)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel8" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview8">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial8" maxlength="1" placeholder="R" oninput="updateWofPreview(8)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent8" onchange="updateWofPreview(8)">
+        <label for="wofConsent8" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn8" onclick="submitWof(8, 'Ice Cream vs Frozen Dessert Labelling')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg8"></div>
+    </div>
   </div>
 
   <div class="story-card" id="story9" onclick="toggleStory(9)">
@@ -408,6 +566,23 @@ footer{background:var(--navy);padding:24px 18px;text-align:center;}
     <button class="story-badge-btn" onclick="event.stopPropagation(); earnBadge(9, this)" data-i18n="earn_badge_btn">🏅 I read this — earn my badge!</button>
     <button class="cert-btn" id="certBtn9" onclick="event.stopPropagation(); downloadCertificate(9, '📺', 'Decoding Advertising Tricks')" data-i18n="get_cert_btn">🎓 Get My Certificate</button>
     <button class="story-dl-btn" onclick="event.stopPropagation(); downloadStoryImage(9, '📺')" data-i18n="dl_story_btn">📥 Download My Story</button>
+    <button class="wof-open-btn" id="wofOpenBtn9" onclick="event.stopPropagation(); toggleWofPanel(9)" data-i18n="wof_open_btn">🏆 Submit to Wall of Fame</button>
+    <div class="wof-panel" id="wofPanel9" onclick="event.stopPropagation()">
+      <div class="wof-preview">
+        <div class="wof-preview-label" data-i18n="wof_preview_label">Will appear as</div>
+        <div class="wof-preview-name" id="wofPreview9">— —</div>
+      </div>
+      <div class="wof-field">
+        <label data-i18n="wof_initial_label">Last Initial (one letter)</label>
+        <input type="text" id="wofInitial9" maxlength="1" placeholder="R" oninput="updateWofPreview(9)">
+      </div>
+      <div class="wof-consent">
+        <input type="checkbox" id="wofConsent9" onchange="updateWofPreview(9)">
+        <label for="wofConsent9" data-i18n="wof_consent_label">I am this child's parent/guardian and agree to their first name and last initial being shown publicly on the LawSticker AI Wall of Fame.</label>
+      </div>
+      <button class="wof-submit-btn" id="wofSubmitBtn9" onclick="submitWof(9, 'Decoding Advertising Tricks')" data-i18n="wof_submit_btn">Submit for the Wall of Fame</button>
+      <div class="wof-msg" id="wofMsg9"></div>
+    </div>
   </div>
 
   </div>
@@ -862,8 +1037,104 @@ function earnBadge(i, btn){
     document.getElementById('badgeCount').textContent = badgeSet.size + ' / ' + TOTAL_BADGES;
     var certBtn = document.getElementById('certBtn' + i);
     if (certBtn) certBtn.classList.add('show');
+    var wofBtn = document.getElementById('wofOpenBtn' + i);
+    if (wofBtn) wofBtn.classList.add('show');
+    celebrateConfetti();
     try { gtag('event', 'badge_earned', {count: badgeSet.size}); } catch(e) {}
   }
+}
+
+function celebrateConfetti(){
+  var colors = ['#C9A227','#F5D76E','#059669','#0EA5E9','#7C3AED','#DC2626'];
+  var count = 50;
+  for (var n = 0; n < count; n++) {
+    (function(){
+      var piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      var size = 6 + Math.random() * 6;
+      piece.style.width = size + 'px';
+      piece.style.height = (size * 0.4) + 'px';
+      piece.style.left = (Math.random() * 100) + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      var duration = 2.2 + Math.random() * 1.3;
+      var delay = Math.random() * 0.4;
+      piece.style.animation = 'confettiFall ' + duration + 's ease-in ' + delay + 's forwards';
+      document.body.appendChild(piece);
+      setTimeout(function(){ piece.remove(); }, (duration + delay) * 1000 + 200);
+    })();
+  }
+}
+
+function toggleWofPanel(i){
+  var panel = document.getElementById('wofPanel' + i);
+  panel.classList.toggle('show');
+  if (panel.classList.contains('show')) updateWofPreview(i);
+}
+
+function updateWofPreview(i){
+  var firstName = getHeroName();
+  if (firstName === 'our young detective') firstName = '';
+  var initial = document.getElementById('wofInitial' + i).value.trim().replace(/[^A-Za-z]/g, '').toUpperCase();
+  var consent = document.getElementById('wofConsent' + i).checked;
+  var preview = document.getElementById('wofPreview' + i);
+  var submitBtn = document.getElementById('wofSubmitBtn' + i);
+
+  if (firstName && initial) {
+    preview.textContent = firstName.charAt(0).toUpperCase() + firstName.slice(1) + ' ' + initial + '.';
+  } else {
+    preview.textContent = '— —';
+  }
+
+  var ready = !!(firstName && initial.length === 1 && consent);
+  submitBtn.classList.toggle('ready', ready);
+}
+
+function submitWof(i, story){
+  var firstName = getHeroName();
+  if (firstName === 'our young detective') firstName = '';
+  var initial = document.getElementById('wofInitial' + i).value.trim().replace(/[^A-Za-z]/g, '');
+  var consent = document.getElementById('wofConsent' + i).checked;
+  var msg = document.getElementById('wofMsg' + i);
+  var submitBtn = document.getElementById('wofSubmitBtn' + i);
+
+  if (!firstName || !initial || !consent) return;
+
+  submitBtn.textContent = 'Sending...';
+  submitBtn.classList.remove('ready');
+
+  fetch('https://lawsticker-backend-e5e1.vercel.app/api/wall-of-fame', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      first_name: firstName,
+      last_initial: initial,
+      story: story,
+      consent: true
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    msg.classList.add('show');
+    if (data.ok) {
+      msg.className = 'wof-msg show success';
+      msg.textContent = '✓ Submitted! Check the Wall of Fame soon.';
+      submitBtn.textContent = '✓ Submitted';
+      celebrateConfetti();
+      try { gtag('event', 'wof_submitted'); } catch(e) {}
+    } else {
+      msg.className = 'wof-msg show error';
+      msg.textContent = data.error || 'Something went wrong — please try again.';
+      submitBtn.textContent = 'Submit for the Wall of Fame';
+      submitBtn.classList.add('ready');
+    }
+  })
+  .catch(function(){
+    msg.classList.add('show');
+    msg.className = 'wof-msg show error';
+    msg.textContent = 'Could not connect — please check your internet and try again.';
+    submitBtn.textContent = 'Submit for the Wall of Fame';
+    submitBtn.classList.add('ready');
+  });
 }
 
 function shareBadges() {
@@ -955,6 +1226,11 @@ name_card_t:'🌟 మీ స్వంత కథకు హీరో అవ్వ�
 name_card_s:'మీ పేరు కింద టైప్ చేయండి — మీరు చదువుతున్నప్పుడు కథలలో కనిపిస్తుంది, చివర్లో మీ సర్టిఫికేట్‌పై కూడా.',
 get_cert_btn:'🎓 నా సర్టిఫికేట్ పొందండి',
 dl_story_btn:'📥 నా కథను డౌన్‌లోడ్ చేయండి',
+wof_open_btn:'🏆 వాల్ ఆఫ్ ఫేమ్‌కు సమర్పించండి',
+wof_preview_label:'ఇలా కనిపిస్తుంది',
+wof_initial_label:'చివరి అక్షరం (ఒక్క అక్షరం)',
+wof_consent_label:'నేను ఈ పిల్లల తల్లిదండ్రి/సంరక్షకుడిని, వారి మొదటి పేరు, చివరి అక్షరం LawSticker AI వాల్ ఆఫ్ ఫేమ్‌లో బహిరంగంగా చూపించడానికి అంగీకరిస్తున్నాను.',
+wof_submit_btn:'వాల్ ఆఫ్ ఫేమ్ కోసం సమర్పించండి',
 set_name_btn:'✓ నా పేరు సెట్ చేయండి — క్వెస్ట్ ప్రారంభించండి!',
 quest_banner_t:'🎯 ఫుడ్ డిటెక్టివ్ క్వెస్ట్',
 quest_banner_s:'పిల్లల కోసం రూపొందించిన సరదా లెర్నింగ్ అడ్వెంచర్ — వినోదం, నిజమైన అవగాహన కోసం, పరీక్ష లేదా గ్రేడ్ కోసం కాదు. ప్రారంభించడానికి కింద మీ పేరు నమోదు చేయండి!',
@@ -1060,6 +1336,11 @@ name_card_t:'🌟 अपनी कहानी के हीरो बनें'
 name_card_s:'नीचे अपना नाम लिखें — पढ़ते समय कहानियों में दिखेगा, अंत में सर्टिफिकेट पर भी।',
 get_cert_btn:'🎓 मेरा सर्टिफिकेट पाएं',
 dl_story_btn:'📥 मेरी कहानी डाउनलोड करें',
+wof_open_btn:'🏆 वॉल ऑफ फ़ेम पर सबमिट करें',
+wof_preview_label:'ऐसे दिखेगा',
+wof_initial_label:'अंतिम अक्षर (एक अक्षर)',
+wof_consent_label:'मैं इस बच्चे का माता-पिता/अभिभावक हूं और उनके पहले नाम व अंतिम अक्षर को LawSticker AI वॉल ऑफ फ़ेम पर सार्वजनिक रूप से दिखाने के लिए सहमत हूं।',
+wof_submit_btn:'वॉल ऑफ फ़ेम के लिए सबमिट करें',
 set_name_btn:'✓ मेरा नाम सेट करें — क्वेस्ट शुरू करें!',
 quest_banner_t:'🎯 फूड डिटेक्टिव क्वेस्ट',
 quest_banner_s:'बच्चों के लिए बनाया गया मज़ेदार लर्निंग एडवेंचर — मनोरंजन और असली जागरूकता के लिए, टेस्ट या ग्रेड के लिए नहीं। शुरू करने के लिए नीचे अपना नाम डालें!',
