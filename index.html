@@ -1692,5 +1692,19 @@ fetch('https://lawsticker-backend-e5e1.vercel.app/api/pulse')
     // broken or misleading zero/dash state.
   });
 </script>
+<script>
+(function(){
+  try {
+    if (!sessionStorage.getItem('fd_visit_pinged')) {
+      sessionStorage.setItem('fd_visit_pinged', '1');
+      fetch('https://lawsticker-backend-e5e1.vercel.app/api/pulse', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({type: 'visit'})
+      }).catch(function(){});
+    }
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>
