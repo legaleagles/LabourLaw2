@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>News — Regional, National & International | LawSticker AI</title>
+<meta name="description" content="Hyderabad regional news, national India news, and international headlines — auto-updated, in one clean place.">
+<link rel="canonical" href="https://lawsticker-ai.com/news.html">
+<meta property="og:title" content="News — LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<meta property="og:site_name" content="LawSticker AI">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;--muted:#6B7280;
+--border:#E5E7EB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;
+--jade:#059669;--sky:#0EA5E9;--rose:#DC2626;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
+nav{background:rgba(13,17,23,.96);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,162,39,.15);}
+.nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.hero{background:linear-gradient(135deg,#0D1117 0%,#1a2436 100%);padding:26px 20px 20px;text-align:center;}
+.hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#fff;margin-bottom:6px;}
+.hero-title .gold{color:var(--gold-l);}
+.hero-sub{font-size:11.5px;color:rgba(255,255,255,.55);}
+.updated-strip{background:var(--gold-pale);text-align:center;padding:9px;font-size:11px;font-weight:700;color:#8B6914;}
+.tabs{display:flex;position:sticky;top:47px;z-index:190;background:var(--cream);border-bottom:1.5px solid var(--border);}
+.tab{flex:1;padding:13px 8px;text-align:center;font-size:12px;font-weight:800;color:var(--muted);
+cursor:pointer;border-bottom:3px solid transparent;}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+.page{max-width:640px;margin:0 auto;padding:16px 14px;}
+.news-section{display:none;}
+.news-section.active{display:block;}
+.news-card{display:flex;gap:12px;background:#fff;border:1px solid var(--border);border-radius:14px;
+padding:12px;margin-bottom:12px;text-decoration:none;color:inherit;}
+.news-card:active{background:var(--light);}
+.news-card-img{width:88px;height:88px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--light);}
+.news-card-img.placeholder{display:flex;align-items:center;justify-content:center;font-size:28px;}
+.news-card-body{flex:1;min-width:0;}
+.news-card-title{font-size:13.5px;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:5px;
+display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.news-card-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-weight:700;}
+.news-card-source{color:var(--gold);text-transform:capitalize;}
+.empty-state,.loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px;}
+.empty-state-icon{font-size:44px;margin-bottom:12px;}
+footer{background:var(--navy);padding:22px 18px;text-align:center;margin-top:20px;}
+.f-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);margin-bottom:4px;}
+.f-tag{font-size:11px;color:rgba(255,255,255,.4);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,17,30,.98);
+display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:200;}
+.bn-item{flex:1;text-align:center;text-decoration:none;color:rgba(255,255,255,.5);font-size:9.5px;font-weight:700;}
+.bn-item span{display:block;font-size:17px;margin-bottom:2px;}
+.bn-item.active{color:var(--gold-l);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-title">📰 <span class="gold">News</span> Digest</div>
+  <div class="hero-sub">Regional, National & International — auto-updated</div>
+</div>
+
+<div class="updated-strip" id="updatedStrip">Loading latest updates...</div>
+
+<div class="tabs">
+  <div class="tab active" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
+  <div class="tab" data-cat="national" onclick="switchTab('national')">🇮🇳 National</div>
+  <div class="tab" data-cat="international" onclick="switchTab('international')">🌍 World</div>
+</div>
+
+<div class="page">
+  <div class="news-section active" id="section-regional">
+    <div class="loading">Loading regional news...</div>
+  </div>
+  <div class="news-section" id="section-national">
+    <div class="loading">Loading national news...</div>
+  </div>
+  <div class="news-section" id="section-international">
+    <div class="loading">Loading international news...</div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-brand">⚖️ LawSticker AI</div>
+  <div class="f-tag">Your rights. Your language. Free.</div>
+</footer>
+
+<div class="bottom-nav">
+  <a class="bn-item" href="index.html"><span>🏠</span>Home</a>
+  <a class="bn-item" href="rights-hub.html"><span>⚖️</span>Rights</a>
+  <a class="bn-item" href="remedies-hub.html"><span>🛠️</span>Remedies</a>
+  <a class="bn-item active" href="news.html"><span>📰</span>News</a>
+  <a class="bn-item" href="calculators.html"><span>🧮</span>Calc</a>
+</div>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+
+<script>
+var CATEGORY_ICONS = {regional: '📍', national: '🇮🇳', international: '🌍'};
+
+function switchTab(cat){
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.cat === cat); });
+  document.querySelectorAll('.news-section').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('section-' + cat).classList.add('active');
+  try { gtag('event', 'news_tab_switch', {category: cat}); } catch(e) {}
+}
+
+function timeAgo(pubDate){
+  if (!pubDate) return '';
+  var then = new Date(pubDate.replace(' ', 'T') + 'Z');
+  var diffMin = Math.floor((Date.now() - then.getTime()) / 60000);
+  if (diffMin < 1) return 'just now';
+  if (diffMin < 60) return diffMin + 'm ago';
+  var diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return diffHr + 'h ago';
+  return Math.floor(diffHr / 24) + 'd ago';
+}
+
+function escapeHtml(str){
+  var div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function renderCategory(cat, articles){
+  var section = document.getElementById('section-' + cat);
+  if (!articles || !articles.length) {
+    section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
+    return;
+  }
+  var html = '';
+  articles.forEach(function(a){
+    var imgHtml = a.image_url
+      ? '<img class="news-card-img" src="' + escapeHtml(a.image_url) + '" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;news-card-img placeholder&quot;>' + CATEGORY_ICONS[cat] + '</div>\'">'
+      : '<div class="news-card-img placeholder">' + CATEGORY_ICONS[cat] + '</div>';
+    html += '<a class="news-card" href="' + escapeHtml(a.link) + '" target="_blank" rel="noopener">' +
+      imgHtml +
+      '<div class="news-card-body">' +
+        '<div class="news-card-title">' + escapeHtml(a.title) + '</div>' +
+        '<div class="news-card-meta"><span class="news-card-source">' + escapeHtml(a.source) + '</span><span>·</span><span>' + timeAgo(a.pubDate) + '</span></div>' +
+      '</div>' +
+    '</a>';
+  });
+  section.innerHTML = html;
+}
+
+fetch('news-feed.json?t=' + Date.now())
+  .then(function(r){
+    if (!r.ok) throw new Error('not found');
+    return r.json();
+  })
+  .then(function(data){
+    var categories = data.categories || {};
+    renderCategory('regional', categories.regional);
+    renderCategory('national', categories.national);
+    renderCategory('international', categories.international);
+
+    var strip = document.getElementById('updatedStrip');
+    if (data.updated_at) {
+      strip.textContent = '🔄 Last updated ' + timeAgo(data.updated_at.replace('T', ' ').replace('+00:00', '').replace('Z',''));
+    } else {
+      strip.textContent = '';
+    }
+  })
+  .catch(function(){
+    document.getElementById('updatedStrip').textContent = '';
+    ['regional','national','international'].forEach(function(cat){
+      document.getElementById('section-' + cat).innerHTML =
+        '<div class="empty-state"><div class="empty-state-icon">📭</div>News feed is warming up — check back in a bit.</div>';
+    });
+  });
+</script>
+</body>
+</html>
