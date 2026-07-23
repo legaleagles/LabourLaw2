@@ -1120,6 +1120,9 @@ function changeFontSize(delta){
 
 function getHeroName(){
   var v = document.getElementById('heroNameInput') ? document.getElementById('heroNameInput').value.trim() : '';
+  if (!v) {
+    try { v = localStorage.getItem('fd_hero_name') || ''; } catch(e) {}
+  }
   return v || 'our young detective';
 }
 
@@ -1149,6 +1152,8 @@ function confirmHeroName(){
     document.getElementById('heroNameInput').focus();
     return;
   }
+
+  try { localStorage.setItem('fd_hero_name', raw); } catch(e) {}
 
   applyHeroName();
   msg.textContent = '✓ Great, ' + raw + '! Unlocking your quest...';
@@ -1546,7 +1551,18 @@ function submitWof(i, story){
   var msg = document.getElementById('wofMsg' + i);
   var submitBtn = document.getElementById('wofSubmitBtn' + i);
 
-  if (!firstName || !initial || !consent) return;
+  if (!firstName || !initial || !consent) {
+    msg.classList.add('show');
+    msg.className = 'wof-msg show error';
+    if (!firstName) {
+      msg.textContent = "We couldn't find your name — please scroll up and re-enter it at the top, then try again.";
+    } else if (!initial) {
+      msg.textContent = 'Please enter a last initial before submitting.';
+    } else {
+      msg.textContent = 'Please check the consent box before submitting.';
+    }
+    return;
+  }
 
   submitBtn.textContent = 'Sending...';
   submitBtn.classList.remove('ready');
@@ -1869,6 +1885,13 @@ document.addEventListener('DOMContentLoaded', function(){
     if (savedScale) {
       currentFontScale = parseFloat(savedScale);
       document.documentElement.style.setProperty('--fscale', currentFontScale);
+    }
+  } catch(e) {}
+  try {
+    var savedName = localStorage.getItem('fd_hero_name');
+    var nameInput = document.getElementById('heroNameInput');
+    if (savedName && nameInput && !nameInput.value) {
+      nameInput.value = savedName;
     }
   } catch(e) {}
   document.querySelectorAll('[data-i18n]').forEach(function(el){
