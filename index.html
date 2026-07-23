@@ -354,6 +354,21 @@ animation:pulseDot 1.8s ease-in-out infinite;}
 @media (prefers-reduced-motion:reduce){.pulse-dot{animation:none;}}
 .pulse-n{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--gold-l);}
 .pulse-l{font-size:9.5px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.news-ticker-card{background:linear-gradient(135deg,#0c2436,#0D1117);border:1px solid rgba(14,165,233,.35);
+border-radius:18px;padding:16px 18px;margin-bottom:20px;}
+.news-ticker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.news-ticker-live{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;
+letter-spacing:1px;color:#F87171;text-transform:uppercase;}
+.news-ticker-live .pulse-dot{background:#F87171;}
+.news-ticker-cat{font-size:10px;font-weight:800;color:#38BDF8;background:rgba(14,165,233,.14);
+padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;}
+.news-ticker-headline{min-height:52px;display:flex;align-items:center;}
+.news-ticker-headline a{color:#fff;font-size:14px;font-weight:700;line-height:1.5;text-decoration:none;
+display:block;transition:opacity .4s;}
+.news-ticker-headline a.fade{opacity:0;}
+.news-ticker-bottom{display:flex;justify-content:flex-end;margin-top:10px;}
+.news-ticker-link{font-size:11px;font-weight:800;color:#38BDF8;text-decoration:none;}
+.news-ticker-empty{color:rgba(255,255,255,.4);font-size:12px;}
 .ig-teaser{position:relative;border-radius:20px;padding:2px;margin-bottom:20px;
 background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);
 background-size:300% 300%;animation:igShimmer 6s ease infinite;overflow:hidden;}
@@ -691,6 +706,20 @@ gtag('config', 'G-TJXHVW6XCL');
     <span class="study-arr">→</span>
   </a>
 
+  <!-- NEWS TICKER -->
+  <div class="news-ticker-card" id="newsTickerCard" style="display:none;">
+    <div class="news-ticker-top">
+      <div class="news-ticker-live"><span class="pulse-dot"></span><span id="newsTickerLiveLabel"></span></div>
+      <div class="news-ticker-cat" id="newsTickerCat">Regional</div>
+    </div>
+    <div class="news-ticker-headline">
+      <a href="#" id="newsTickerLink" target="_blank" rel="noopener"></a>
+    </div>
+    <div class="news-ticker-bottom">
+      <a class="news-ticker-link" href="https://lawsticker-ai.com/news.html" id="newsTickerSeeAll"></a>
+    </div>
+  </div>
+
   <!-- EXPLORE EVERYTHING -->
   <div class="sec-eyebrow" id="hubEyebrow"></div>
   <div class="sec-title" id="hubTitle"></div>
@@ -838,6 +867,7 @@ const UI={
   searchDividerText:'OR SEARCH DIRECTLY',
   fdTeaserBadge:'For Kids & Families',fdTeaserT:'Become a <span class="gold">Food Detective</span>',fdTeaserS:'9 real mysteries about paneer, honey, mango & more — pass a quick quiz, earn a badge, get a certificate with your name on it.',fdStat1:'Detective Stories',fdStat2:'Easy Quiz Questions',fdStat3:'Wall of Fame',fdTeaserBtn:'Start the Quest',
   pulseBadgesLabel:'Badges Earned So Far',pulseTricksLabel:'Tricks Spotted So Far',
+  newsTickerLiveLabel:'LIVE NEWS',newsTickerSeeAll:'See All News →',
   igTeaserBadge:'New',igTeaserT:'Turn Your Daily Right into an Instagram Story',igTeaserS:'A fresh, statute-backed rights or calculator card every single day — download it or share it straight to your Story in one tap.',igTeaserBtn:'Get the Daily Card',
   f1n:'Daily Rights Cards',f1d:'One shareable card a day — download & post on WhatsApp Status. Rights spread when they\'re shared.',
   f2n:'GST Fraud Checker',f2d:'Check any shop, restaurant or hotel bill — wrong rates, fake GSTIN, GST-on-MRP. Updated for Sept 2025 reform.',
@@ -872,6 +902,7 @@ const UI={
   searchDividerText:'లేదా నేరుగా వెతకండి',
   fdTeaserBadge:'పిల్లలు & కుటుంబాల కోసం',fdTeaserT:'ఒక <span class="gold">ఫుడ్ డిటెక్టివ్</span> అవ్వండి',fdTeaserS:'పనీర్, తేనె, మామిడి గురించి 9 నిజమైన రహస్యాలు — త్వరిత క్విజ్ పాస్ చేయండి, బ్యాడ్జ్ సంపాదించండి, మీ పేరుతో సర్టిఫికేట్ పొందండి.',fdStat1:'డిటెక్టివ్ కథలు',fdStat2:'సులభమైన క్విజ్ ప్రశ్నలు',fdStat3:'వాల్ ఆఫ్ ఫేమ్',fdTeaserBtn:'క్వెస్ట్ ప్రారంభించండి',
   pulseBadgesLabel:'ఇప్పటివరకు సంపాదించిన బ్యాడ్జీలు',pulseTricksLabel:'ఇప్పటివరకు గుర్తించిన ట్రిక్‌లు',
+  newsTickerLiveLabel:'ప్రత్యక్ష వార్తలు',newsTickerSeeAll:'అన్ని వార్తలు చూడండి →',
   igTeaserBadge:'కొత్తది',igTeaserT:'ఈరోజు హక్కును ఇన్‌స్టాగ్రామ్ స్టోరీగా మార్చండి',igTeaserS:'ప్రతిరోజూ కొత్త, చట్టబద్ధమైన హక్కు లేదా కాలిక్యులేటర్ కార్డు — డౌన్‌లోడ్ చేయండి లేదా ఒకే tap లో మీ స్టోరీకి షేర్ చేయండి.',igTeaserBtn:'ఈరోజు కార్డు పొందండి',
   f1n:'రోజువారీ హక్కుల కార్డులు',f1d:'రోజుకో షేర్ కార్డు — డౌన్‌లోడ్ చేసి WhatsApp స్టేటస్‌లో పోస్ట్ చేయండి.',
   f2n:'GST మోసం తనిఖీ',f2d:'ఏ దుకాణం, రెస్టారెంట్, హోటల్ బిల్లునైనా తనిఖీ చేయండి — తప్పు రేట్లు, నకిలీ GSTIN, MRPపై GST.',
@@ -906,6 +937,7 @@ const UI={
   searchDividerText:'या सीधे खोजें',
   fdTeaserBadge:'बच्चों और परिवारों के लिए',fdTeaserT:'एक <span class="gold">फूड डिटेक्टिव</span> बनें',fdTeaserS:'पनीर, शहद, आम के बारे में 9 असली रहस्य — झटपट क्विज़ पास करें, बैज पाएं, अपने नाम का सर्टिफिकेट पाएं।',fdStat1:'डिटेक्टिव कहानियां',fdStat2:'आसान क्विज़ सवाल',fdStat3:'वॉल ऑफ फ़ेम',fdTeaserBtn:'क्वेस्ट शुरू करें',
   pulseBadgesLabel:'अब तक अर्जित बैज',pulseTricksLabel:'अब तक पहचाने गए ट्रिक्स',
+  newsTickerLiveLabel:'लाइव न्यूज़',newsTickerSeeAll:'सभी समाचार देखें →',
   igTeaserBadge:'नया',igTeaserT:'आज के अधिकार को इंस्टाग्राम स्टोरी बनाएं',igTeaserS:'हर दिन एक नया, कानून-आधारित अधिकार या कैलकुलेटर कार्ड — डाउनलोड करें या एक टैप में सीधे अपनी स्टोरी पर शेयर करें।',igTeaserBtn:'आज का कार्ड पाएं',
   f1n:'दैनिक अधिकार कार्ड',f1d:'रोज़ एक शेयर कार्ड — डाउनलोड कर WhatsApp स्टेटस पर पोस्ट करें।',
   f2n:'GST धोखाधड़ी जांच',f2d:'किसी भी दुकान, रेस्तरां, होटल का बिल जांचें — गलत दरें, नकली GSTIN, MRP पर GST।',
@@ -1130,6 +1162,7 @@ function render(){
   'shareT','shareS','shareBtnLabel','searchDividerText',
   'fdTeaserBadge','fdTeaserS','fdStat1','fdStat2','fdStat3','fdTeaserBtn',
   'pulseBadgesLabel','pulseTricksLabel',
+  'newsTickerLiveLabel','newsTickerSeeAll',
   'igTeaserBadge','igTeaserT','igTeaserS','igTeaserBtn',
   'hHd','h1','h2','h3','h4','ftTag','ftDisc','stuN','stuD','chalN','chalD','quizChip','ytMilestone','ytSub'].forEach(id=>{
    const el=document.getElementById(id);if(el&&U[id]!==undefined)el.textContent=U[id];});
@@ -1704,6 +1737,56 @@ fetch('https://lawsticker-backend-e5e1.vercel.app/api/pulse')
       }).catch(function(){});
     }
   } catch(e) {}
+})();
+</script>
+<script>
+(function(){
+  var CAT_LABELS = {regional: 'Regional', national: 'National', international: 'World'};
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  fetch('news-feed.json?t=' + Date.now())
+    .then(function(r){ if (!r.ok) throw new Error('no feed'); return r.json(); })
+    .then(function(data){
+      var categories = data.categories || {};
+      var items = [];
+      ['regional', 'national', 'international'].forEach(function(cat){
+        (categories[cat] || []).forEach(function(a){
+          items.push({title: a.title, link: a.link, cat: cat});
+        });
+      });
+      if (!items.length) return;
+
+      var card = document.getElementById('newsTickerCard');
+      var linkEl = document.getElementById('newsTickerLink');
+      var catEl = document.getElementById('newsTickerCat');
+      card.style.display = 'block';
+
+      var idx = 0;
+      function show(i){
+        var item = items[i % items.length];
+        linkEl.textContent = item.title;
+        linkEl.href = item.link;
+        catEl.textContent = CAT_LABELS[item.cat] || item.cat;
+      }
+      show(idx);
+
+      if (!reduceMotion && items.length > 1) {
+        setInterval(function(){
+          linkEl.classList.add('fade');
+          setTimeout(function(){
+            idx = (idx + 1) % items.length;
+            show(idx);
+            linkEl.classList.remove('fade');
+          }, 400);
+        }, 5000);
+      }
+
+      try { gtag('event', 'news_ticker_shown', {count: items.length}); } catch(e) {}
+    })
+    .catch(function(){
+      // News feed not ready yet or unavailable — card stays hidden,
+      // no broken/empty state shown.
+    });
 })();
 </script>
 </body>
