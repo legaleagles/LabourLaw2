@@ -43,6 +43,11 @@ padding:12px;margin-bottom:12px;text-decoration:none;color:inherit;}
 display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .news-card-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-weight:700;}
 .news-card-source{color:var(--gold);text-transform:capitalize;}
+.chip-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;margin-bottom:4px;-webkit-overflow-scrolling:touch;}
+.chip-row::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;padding:7px 14px;border-radius:16px;background:var(--light);border:1px solid var(--border);
+font-size:11px;font-weight:700;color:var(--ink2);cursor:pointer;text-transform:capitalize;white-space:nowrap;}
+.chip.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 .empty-state,.loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px;}
 .empty-state-icon{font-size:44px;margin-bottom:12px;}
 footer{background:var(--navy);padding:22px 18px;text-align:center;margin-top:20px;}
@@ -71,20 +76,26 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
 <div class="updated-strip" id="updatedStrip">Loading latest updates...</div>
 
 <div class="tabs">
-  <div class="tab active" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
+  <div class="tab active" data-cat="legal" onclick="switchTab('legal')">⚖️ Legal</div>
+  <div class="tab" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
   <div class="tab" data-cat="national" onclick="switchTab('national')">🇮🇳 National</div>
   <div class="tab" data-cat="international" onclick="switchTab('international')">🌍 World</div>
 </div>
 
 <div class="page">
-  <div class="news-section active" id="section-regional">
+  <div class="news-section active" id="section-legal">
+    <div class="loading">Loading legal news...</div>
+  </div>
+  <div class="news-section" id="section-regional">
     <div class="loading">Loading regional news...</div>
   </div>
   <div class="news-section" id="section-national">
-    <div class="loading">Loading national news...</div>
+    <div class="chip-row" id="chips-national"></div>
+    <div class="news-list" id="list-national"><div class="loading">Loading national news...</div></div>
   </div>
   <div class="news-section" id="section-international">
-    <div class="loading">Loading international news...</div>
+    <div class="chip-row" id="chips-international"></div>
+    <div class="news-list" id="list-international"><div class="loading">Loading international news...</div></div>
   </div>
 </div>
 
@@ -110,7 +121,7 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 
 <script>
-var CATEGORY_ICONS = {regional: '📍', national: '🇮🇳', international: '🌍'};
+var CATEGORY_ICONS = {legal: '⚖️', regional: '📍', national: '🇮🇳', international: '🌍'};
 
 function switchTab(cat){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.cat === cat); });
@@ -136,12 +147,7 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
-function renderCategory(cat, articles){
-  var section = document.getElementById('section-' + cat);
-  if (!articles || !articles.length) {
-    section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
-    return;
-  }
+function renderArticleCards(cat, articles){
   var html = '';
   articles.forEach(function(a){
     var imgHtml = a.image_url
@@ -155,7 +161,48 @@ function renderCategory(cat, articles){
       '</div>' +
     '</a>';
   });
-  section.innerHTML = html;
+  return html;
+}
+
+function renderCategory(cat, articles){
+  var section = document.getElementById('section-' + cat);
+  if (!articles || !articles.length) {
+    section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
+    return;
+  }
+  section.innerHTML = renderArticleCards(cat, articles);
+}
+
+function renderWithChips(cat, articles){
+  var chipRow = document.getElementById('chips-' + cat);
+  var list = document.getElementById('list-' + cat);
+  if (!articles || !articles.length) {
+    chipRow.innerHTML = '';
+    list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
+    return;
+  }
+
+  var subCats = ['All'];
+  articles.forEach(function(a){
+    (a.category || []).forEach(function(c){
+      if (subCats.indexOf(c) === -1) subCats.push(c);
+    });
+  });
+
+  function draw(selected){
+    chipRow.innerHTML = subCats.map(function(sc){
+      return '<div class="chip' + (sc === selected ? ' active' : '') + '" data-sc="' + escapeHtml(sc) + '">' + escapeHtml(sc) + '</div>';
+    }).join('');
+    var filtered = selected === 'All' ? articles : articles.filter(function(a){ return (a.category || []).indexOf(selected) !== -1; });
+    list.innerHTML = renderArticleCards(cat, filtered);
+    chipRow.querySelectorAll('.chip').forEach(function(chip){
+      chip.addEventListener('click', function(){
+        draw(chip.dataset.sc);
+        try { gtag('event', 'news_subcategory_filter', {category: cat, sub: chip.dataset.sc}); } catch(e) {}
+      });
+    });
+  }
+  draw('All');
 }
 
 fetch('news-feed.json?t=' + Date.now())
@@ -165,9 +212,10 @@ fetch('news-feed.json?t=' + Date.now())
   })
   .then(function(data){
     var categories = data.categories || {};
+    renderCategory('legal', categories.legal);
     renderCategory('regional', categories.regional);
-    renderCategory('national', categories.national);
-    renderCategory('international', categories.international);
+    renderWithChips('national', categories.national);
+    renderWithChips('international', categories.international);
 
     var strip = document.getElementById('updatedStrip');
     if (data.updated_at) {
@@ -178,14 +226,18 @@ fetch('news-feed.json?t=' + Date.now())
 
     var params = new URLSearchParams(window.location.search);
     var linkedCat = params.get('cat');
-    if (linkedCat && ['regional','national','international'].indexOf(linkedCat) !== -1) {
+    if (linkedCat && ['legal','regional','national','international'].indexOf(linkedCat) !== -1) {
       switchTab(linkedCat);
     }
   })
   .catch(function(){
     document.getElementById('updatedStrip').textContent = '';
-    ['regional','national','international'].forEach(function(cat){
+    ['legal','regional'].forEach(function(cat){
       document.getElementById('section-' + cat).innerHTML =
+        '<div class="empty-state"><div class="empty-state-icon">📭</div>News feed is warming up — check back in a bit.</div>';
+    });
+    ['national','international'].forEach(function(cat){
+      document.getElementById('list-' + cat).innerHTML =
         '<div class="empty-state"><div class="empty-state-icon">📭</div>News feed is warming up — check back in a bit.</div>';
     });
   });
