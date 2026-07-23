@@ -175,6 +175,12 @@ fetch('news-feed.json?t=' + Date.now())
     } else {
       strip.textContent = '';
     }
+
+    var params = new URLSearchParams(window.location.search);
+    var linkedCat = params.get('cat');
+    if (linkedCat && ['regional','national','international'].indexOf(linkedCat) !== -1) {
+      switchTab(linkedCat);
+    }
   })
   .catch(function(){
     document.getElementById('updatedStrip').textContent = '';
