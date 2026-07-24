@@ -43,6 +43,12 @@ width:20px;height:3px;border-radius:2px;background:#0D1117;opacity:.7;}
 .msg-user .msg-bubble{background:var(--navy);color:#fff;border-bottom-right-radius:4px;}
 .msg-ai .msg-bubble{background:#fff;border:1px solid var(--border);border-bottom-left-radius:4px;}
 .msg-error{background:#FDF6DC!important;border:1px solid rgba(201,162,39,.35)!important;color:#7A5C00;}
+.msg-bubble p{margin:0 0 8px;}
+.msg-bubble p:last-child{margin-bottom:0;}
+.msg-bubble strong{color:var(--navy);font-weight:800;}
+.msg-bubble ul.ai-list{margin:4px 0 10px;padding-left:20px;}
+.msg-bubble ul.ai-list li{margin-bottom:6px;line-height:1.5;}
+.msg-bubble ul.ai-list li:last-child{margin-bottom:0;}
 .msg-ai .msg-disclaimer{font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;}
 .msg-loading{display:flex;gap:4px;padding:6px 0;}
 .msg-loading span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
@@ -140,6 +146,34 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
+function formatAiText(raw){
+  // Escape first so nothing in the AI's own text can inject markup,
+  // then apply a small, safe set of markdown-style transforms on top.
+  var escaped = escapeHtml(raw);
+
+  // Bold: **text**
+  escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  var lines = escaped.split(/\n+/);
+  var html = '';
+  var inList = false;
+  lines.forEach(function(line){
+    line = line.trim();
+    if (!line) return;
+    var numbered = line.match(/^(\d+)\.\s+(.*)/);
+    var bulleted = line.match(/^[-•]\s+(.*)/);
+    if (numbered || bulleted) {
+      if (!inList) { html += '<ul class="ai-list">'; inList = true; }
+      html += '<li>' + (numbered ? numbered[2] : bulleted[1]) + '</li>';
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<p>' + line + '</p>';
+    }
+  });
+  if (inList) html += '</ul>';
+  return html;
+}
+
 function addMessage(text, isUser){
   var chatArea = document.getElementById('chatArea');
   var hint = chatArea.querySelector('.empty-hint');
@@ -149,7 +183,11 @@ function addMessage(text, isUser){
   msg.className = 'msg ' + (isUser ? 'msg-user' : 'msg-ai');
   var bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
-  bubble.textContent = text;
+  if (isUser) {
+    bubble.textContent = text;
+  } else {
+    bubble.innerHTML = formatAiText(text);
+  }
   msg.appendChild(bubble);
   if (!isUser) {
     var speakBtn = document.createElement('button');
