@@ -32,10 +32,14 @@ padding:7px 10px;border-radius:8px;margin-bottom:10px;}
 .hero-title .gold{color:var(--gold-l);}
 .hero-sub{font-size:11.5px;color:rgba(255,255,255,.55);}
 .updated-strip{background:var(--gold-pale);text-align:center;padding:9px;font-size:11px;font-weight:700;color:#8B6914;}
-.tabs{display:flex;position:sticky;top:47px;z-index:190;background:var(--cream);border-bottom:1.5px solid var(--border);}
-.tab{flex:1;padding:13px 8px;text-align:center;font-size:12px;font-weight:800;color:var(--muted);
+.tabs-wrap{position:sticky;top:47px;z-index:190;background:var(--cream);border-bottom:1.5px solid var(--border);position:relative;}
+.tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:13px 16px;white-space:nowrap;text-align:center;font-size:12.5px;font-weight:800;color:var(--muted);
 cursor:pointer;border-bottom:3px solid transparent;}
 .tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+.tabs-fade{position:absolute;right:0;top:0;bottom:0;width:26px;
+background:linear-gradient(to right,transparent,var(--cream));pointer-events:none;transition:opacity .2s;}
 .page{max-width:640px;margin:0 auto;padding:16px 14px;}
 .news-section{display:none;}
 .news-section.active{display:block;}
@@ -81,13 +85,16 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
 
 <div class="updated-strip" id="updatedStrip">Loading latest updates...</div>
 
-<div class="tabs">
-  <div class="tab active" data-cat="legal" onclick="switchTab('legal')">⚖️ Legal</div>
-  <div class="tab" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
-  <div class="tab" data-cat="national" onclick="switchTab('national')">🇮🇳 National</div>
-  <div class="tab" data-cat="international" onclick="switchTab('international')">🌍 World</div>
-  <div class="tab" data-cat="telugu" onclick="switchTab('telugu')">తె Telugu</div>
-  <div class="tab" data-cat="hindi" onclick="switchTab('hindi')">हि Hindi</div>
+<div class="tabs-wrap">
+  <div class="tabs" id="tabsScroll">
+    <div class="tab active" data-cat="legal" onclick="switchTab('legal')">⚖️ Legal</div>
+    <div class="tab" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
+    <div class="tab" data-cat="national" onclick="switchTab('national')">🇮🇳 National</div>
+    <div class="tab" data-cat="international" onclick="switchTab('international')">🌍 World</div>
+    <div class="tab" data-cat="telugu" onclick="switchTab('telugu')">తె Telugu</div>
+    <div class="tab" data-cat="hindi" onclick="switchTab('hindi')">हि Hindi</div>
+  </div>
+  <div class="tabs-fade" id="tabsFade"></div>
 </div>
 
 <div class="page">
@@ -141,8 +148,22 @@ function switchTab(cat){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.cat === cat); });
   document.querySelectorAll('.news-section').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById('section-' + cat).classList.add('active');
+  var activeTab = document.querySelector('.tab.active');
+  if (activeTab) activeTab.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
   try { gtag('event', 'news_tab_switch', {category: cat}); } catch(e) {}
 }
+
+(function(){
+  var scroller = document.getElementById('tabsScroll');
+  var fade = document.getElementById('tabsFade');
+  if (!scroller || !fade) return;
+  function updateFade(){
+    var atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
+    fade.style.opacity = atEnd ? '0' : '1';
+  }
+  scroller.addEventListener('scroll', updateFade);
+  updateFade();
+})();
 
 function timeAgo(pubDate){
   if (!pubDate) return '';
