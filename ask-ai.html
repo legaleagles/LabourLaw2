@@ -93,6 +93,14 @@ width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;dis
 font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
 .lang-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 .empty-hint{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px;}
+.akka-intro{background:linear-gradient(135deg,#FDF6DC,#FBF0D4);border:1px solid rgba(201,162,39,.3);
+border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.akka-intro-greeting{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;color:var(--navy);margin-bottom:4px;}
+.akka-intro-text{font-size:12px;color:#5a4a1f;line-height:1.5;}
+.active-topic-bar{display:flex;align-items:center;justify-content:space-between;background:var(--navy);
+color:var(--gold-l);padding:8px 16px;font-size:12px;font-weight:700;}
+.active-topic-bar button{background:rgba(255,255,255,.12);border:none;color:var(--gold-l);
+font-size:11px;font-weight:700;padding:4px 10px;border-radius:10px;cursor:pointer;}
 .topic-picker{padding:10px 4px 4px;}
 .topic-picker-title{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;}
 .topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
@@ -115,7 +123,7 @@ font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;text-align:center
       <div class="ai-avatar-badge">⚖️</div>
     </div>
   </div>
-  <div class="hero-title">💬 Ask AI — Legal Rights Q&A</div>
+  <div class="hero-title">💬 Meet Akka — Your Legal Rights Guide</div>
   <div class="hero-sub">Answered only from LawSticker AI's own reviewed content</div>
   <div class="hero-scope">⚖️ Legal topics only — not a general-purpose AI assistant</div>
 </div>
@@ -128,9 +136,18 @@ font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;text-align:center
   <button class="lang-btn" id="qlangHi" onclick="setQLang('hi')">हि</button>
 </div>
 
+<div class="active-topic-bar" id="activeTopicBar" style="display:none;">
+  <span id="activeTopicLabel"></span>
+  <button onclick="clearTopic()">Change ✕</button>
+</div>
+
 <div class="chat-area" id="chatArea">
   <div class="topic-picker" id="topicPicker">
-    <div class="topic-picker-title">Quick topics — or just type your own question below</div>
+    <div class="akka-intro">
+      <div class="akka-intro-greeting">Hi, I'm Akka 👋</div>
+      <div class="akka-intro-text">I'm here to help with your legal rights questions — grounded in LawSticker AI's own reviewed content. Pick what you'd like to talk about, or just type your question below.</div>
+    </div>
+    <div class="topic-picker-title">Choose a topic to get started</div>
     <div class="topic-grid">
       <button class="topic-btn" data-topic="consumer" onclick="pickTopic('consumer', 'Consumer Rights')">🛒 Consumer</button>
       <button class="topic-btn" data-topic="property" onclick="pickTopic('property', 'Property Rights')">🏠 Property</button>
@@ -174,20 +191,35 @@ gtag('config', 'G-TJXHVW6XCL');
 var qlang = 'en';
 var selectedTopic = null;
 
+var selectedTopicLabel = null;
+
 function pickTopic(topicKey, topicLabel){
-  selectedTopic = selectedTopic === topicKey ? null : topicKey;
+  selectedTopic = topicKey;
+  selectedTopicLabel = topicLabel;
 
   document.querySelectorAll('.topic-btn').forEach(function(btn){
     btn.classList.toggle('active', btn.dataset.topic === selectedTopic);
   });
 
   var input = document.getElementById('questionInput');
-  input.placeholder = selectedTopic ? 'Ask about ' + topicLabel + '...' : 'Type your question...';
+  input.placeholder = 'Ask about ' + topicLabel + '...';
   input.focus();
+
+  var bar = document.getElementById('activeTopicBar');
+  document.getElementById('activeTopicLabel').textContent = '💬 Discussing: ' + topicLabel;
+  bar.style.display = 'flex';
 
   // Client-side only — fires instantly, zero backend calls, zero effect
   // on response time. GA4's own dashboard is where these get reviewed.
   try { gtag('event', 'ask_ai_topic_selected', {topic: topicKey}); } catch(e) {}
+}
+
+function clearTopic(){
+  selectedTopic = null;
+  selectedTopicLabel = null;
+  document.querySelectorAll('.topic-btn').forEach(function(btn){ btn.classList.remove('active'); });
+  document.getElementById('questionInput').placeholder = 'Type your question...';
+  document.getElementById('activeTopicBar').style.display = 'none';
 }
 
 function setQLang(lang){
