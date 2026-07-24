@@ -463,6 +463,28 @@ function removeBillPhoto(){
 
 var lastExchange = null; // {question, answer} - only the most recent, keeps prompt size bounded
 
+function trackAnsweredCategory(answerText, clickedTopic){
+  // Captures context even when no topic button was clicked — this reads
+  // which knowledge-base page the AI actually cited (or "general
+  // knowledge" / "not covered" if none), so every question contributes to
+  // the analytics, not just the ones where someone picked a button first.
+  var sourceMatch = answerText.match(/\[Source:\s*([a-zA-Z0-9\-,\s]+)\]/);
+  var inferredCategory;
+  if (answerText.indexOf('[General Knowledge]') !== -1) {
+    inferredCategory = 'general_knowledge';
+  } else if (sourceMatch) {
+    inferredCategory = sourceMatch[1].split(',')[0].trim();
+  } else {
+    inferredCategory = 'not_covered';
+  }
+  try {
+    gtag('event', 'ask_ai_answer_category', {
+      category: inferredCategory,
+      button_used: !!clickedTopic
+    });
+  } catch(e) {}
+}
+
 function sendQuestion(){
   var input = document.getElementById('questionInput');
   var question = input.value.trim();
@@ -503,6 +525,7 @@ function sendQuestion(){
       if (data.ok) {
         addMessage(data.answer, false);
         lastExchange = {question: question, answer: data.answer};
+        trackAnsweredCategory(data.answer, selectedTopic);
       } else {
         addErrorMessage(data.error || 'unknown error');
       }
