@@ -146,14 +146,15 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
+function inlineFormat(text){
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+  return text;
+}
+
 function formatAiText(raw){
-  // Escape first so nothing in the AI's own text can inject markup,
-  // then apply a small, safe set of markdown-style transforms on top.
+  // Escape first so nothing in the AI's own text can inject markup.
   var escaped = escapeHtml(raw);
-
-  // Bold: **text**
-  escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
   var lines = escaped.split(/\n+/);
   var html = '';
   var inList = false;
@@ -161,16 +162,24 @@ function formatAiText(raw){
     line = line.trim();
     if (!line) return;
     var numbered = line.match(/^(\d+)\.\s+(.*)/);
-    var bulleted = line.match(/^[-•]\s+(.*)/);
+    // Strip a leading bullet marker (-, •, or *) BEFORE any bold/italic
+    // conversion runs, so a bullet's own "*" never gets mistaken for the
+    // start of an italic span later in the same line.
+    var bulleted = line.match(/^[-•*]\s+(.*)/);
     if (numbered || bulleted) {
       if (!inList) { html += '<ul class="ai-list">'; inList = true; }
-      html += '<li>' + (numbered ? numbered[2] : bulleted[1]) + '</li>';
+      html += '<li>' + inlineFormat(numbered ? numbered[2] : bulleted[1]) + '</li>';
     } else {
       if (inList) { html += '</ul>'; inList = false; }
-      html += '<p>' + line + '</p>';
+      html += '<p>' + inlineFormat(line) + '</p>';
     }
   });
   if (inList) html += '</ul>';
+
+  // Final safety net: strip any leftover stray asterisks that weren't
+  // part of a valid pair (malformed markdown from the model shouldn't
+  // ever show up as a literal "*" in the rendered answer).
+  html = html.replace(/\*/g, '');
   return html;
 }
 
