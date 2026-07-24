@@ -71,11 +71,6 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
 <nav>
   <div class="nav-r1">
     <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
-    <div class="nav-langs">
-      <button class="nav-lang" id="langBtnEn" onclick="setLang('en')">EN</button>
-      <button class="nav-lang" id="langBtnTe" onclick="setLang('te')">తె</button>
-      <button class="nav-lang" id="langBtnHi" onclick="setLang('hi')">हि</button>
-    </div>
   </div>
 </nav>
 
@@ -91,6 +86,8 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
   <div class="tab" data-cat="regional" onclick="switchTab('regional')">📍 Regional</div>
   <div class="tab" data-cat="national" onclick="switchTab('national')">🇮🇳 National</div>
   <div class="tab" data-cat="international" onclick="switchTab('international')">🌍 World</div>
+  <div class="tab" data-cat="telugu" onclick="switchTab('telugu')">తె Telugu</div>
+  <div class="tab" data-cat="hindi" onclick="switchTab('hindi')">हि Hindi</div>
 </div>
 
 <div class="page">
@@ -107,6 +104,12 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
   <div class="news-section" id="section-international">
     <div class="chip-row" id="chips-international"></div>
     <div class="news-list" id="list-international"><div class="loading">Loading international news...</div></div>
+  </div>
+  <div class="news-section" id="section-telugu">
+    <div class="loading">తెలుగు వార్తలు లోడ్ అవుతున్నాయి...</div>
+  </div>
+  <div class="news-section" id="section-hindi">
+    <div class="loading">हिंदी समाचार लोड हो रहे हैं...</div>
   </div>
 </div>
 
@@ -132,9 +135,7 @@ gtag('config', 'G-TJXHVW6XCL');
 </script>
 
 <script>
-var CATEGORY_ICONS = {legal: '⚖️', regional: '📍', national: '🇮🇳', international: '🌍'};
-var currentLang = 'en';
-var fetchedData = null;
+var CATEGORY_ICONS = {legal: '⚖️', regional: '📍', national: '🇮🇳', international: '🌍', telugu: '📰', hindi: '📰'};
 
 function switchTab(cat){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.cat === cat); });
@@ -160,26 +161,6 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
-// Legal & International only ever exist in English — genuine native-language
-// coverage for court/legislation and world-news topics is too thin in
-// Telugu/Hindi sources to reliably show. Regional & National prefer the
-// selected language when available, falling back to English with a small
-// visible notice rather than silently mixing languages.
-function getArticlesForCategory(data, cat, lang){
-  var english = (data.categories || {})[cat] || [];
-  if (cat === 'legal' || cat === 'international' || lang === 'en') {
-    return {articles: english, isFallback: false};
-  }
-  var localized = (data['categories_' + lang] || {})[cat] || [];
-  if (localized.length) return {articles: localized, isFallback: false};
-  return {articles: english, isFallback: true};
-}
-
-var FALLBACK_TEXT = {
-  te: 'తెలుగు వార్తలు త్వరలో — ప్రస్తుతం ఆంగ్లంలో చూపిస్తున్నాము',
-  hi: 'हिंदी समाचार जल्द ही — फ़िलहाल अंग्रेज़ी में दिखा रहे हैं',
-};
-
 function renderArticleCards(cat, articles){
   var html = '';
   articles.forEach(function(a){
@@ -197,32 +178,24 @@ function renderArticleCards(cat, articles){
   return html;
 }
 
-function fallbackNoticeHtml(lang){
-  return '<div class="lang-fallback-notice">ℹ️ ' + (FALLBACK_TEXT[lang] || '') + '</div>';
-}
-
-function renderCategory(cat, result, lang){
+function renderCategory(cat, articles){
   var section = document.getElementById('section-' + cat);
-  var articles = result.articles;
   if (!articles || !articles.length) {
     section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
     return;
   }
-  var notice = (result.isFallback && lang !== 'en') ? fallbackNoticeHtml(lang) : '';
-  section.innerHTML = notice + renderArticleCards(cat, articles);
+  section.innerHTML = renderArticleCards(cat, articles);
 }
 
-function renderWithChips(cat, result, lang){
+function renderWithChips(cat, articles){
   var chipRow = document.getElementById('chips-' + cat);
   var list = document.getElementById('list-' + cat);
-  var articles = result.articles;
   if (!articles || !articles.length) {
     chipRow.innerHTML = '';
     list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
     return;
   }
 
-  var notice = (result.isFallback && lang !== 'en') ? fallbackNoticeHtml(lang) : '';
   var subCats = ['All'];
   articles.forEach(function(a){
     (a.category || []).forEach(function(c){
@@ -235,7 +208,7 @@ function renderWithChips(cat, result, lang){
       return '<div class="chip' + (sc === selected ? ' active' : '') + '" data-sc="' + escapeHtml(sc) + '">' + escapeHtml(sc) + '</div>';
     }).join('');
     var filtered = selected === 'All' ? articles : articles.filter(function(a){ return (a.category || []).indexOf(selected) !== -1; });
-    list.innerHTML = notice + renderArticleCards(cat, filtered);
+    list.innerHTML = renderArticleCards(cat, filtered);
     chipRow.querySelectorAll('.chip').forEach(function(chip){
       chip.addEventListener('click', function(){
         draw(chip.dataset.sc);
@@ -246,34 +219,23 @@ function renderWithChips(cat, result, lang){
   draw('All');
 }
 
-function renderAll(lang){
-  if (!fetchedData) return;
-  renderCategory('legal', getArticlesForCategory(fetchedData, 'legal', lang), lang);
-  renderCategory('regional', getArticlesForCategory(fetchedData, 'regional', lang), lang);
-  renderWithChips('national', getArticlesForCategory(fetchedData, 'national', lang), lang);
-  renderWithChips('international', getArticlesForCategory(fetchedData, 'international', lang), lang);
+// Telugu/Hindi tabs combine Regional + National native-language articles
+// into one feed, interleaved by publish time so it doesn't just look like
+// two lists stuck together.
+function renderCombinedLang(tabCat, dataKey){
+  var section = document.getElementById('section-' + tabCat);
+  return function(langData){
+    var combined = [].concat(langData.regional || [], langData.national || []);
+    combined.sort(function(a, b){
+      return new Date(b.pubDate || 0) - new Date(a.pubDate || 0);
+    });
+    if (!combined.length) {
+      section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No news available right now — check back soon.</div>';
+      return;
+    }
+    section.innerHTML = renderArticleCards(tabCat, combined);
+  };
 }
-
-function setLang(lang){
-  currentLang = lang;
-  try { localStorage.setItem('lsLang', lang); } catch(e) {}
-  document.querySelectorAll('.nav-lang').forEach(function(b){ b.classList.remove('active'); });
-  var btnId = {en: 'langBtnEn', te: 'langBtnTe', hi: 'langBtnHi'}[lang];
-  var btn = document.getElementById(btnId);
-  if (btn) btn.classList.add('active');
-  renderAll(lang);
-  try { gtag('event', 'news_lang_switch', {lang: lang}); } catch(e) {}
-}
-
-(function(){
-  try {
-    var saved = localStorage.getItem('lsLang');
-    if (saved && ['en','te','hi'].indexOf(saved) !== -1) currentLang = saved;
-  } catch(e) {}
-  var btnId = {en: 'langBtnEn', te: 'langBtnTe', hi: 'langBtnHi'}[currentLang];
-  var btn = document.getElementById(btnId);
-  if (btn) btn.classList.add('active');
-})();
 
 fetch('news-feed.json?t=' + Date.now())
   .then(function(r){
@@ -281,8 +243,13 @@ fetch('news-feed.json?t=' + Date.now())
     return r.json();
   })
   .then(function(data){
-    fetchedData = data;
-    renderAll(currentLang);
+    var categories = data.categories || {};
+    renderCategory('legal', categories.legal);
+    renderCategory('regional', categories.regional);
+    renderWithChips('national', categories.national);
+    renderWithChips('international', categories.international);
+    renderCombinedLang('telugu')(data.categories_te || {});
+    renderCombinedLang('hindi')(data.categories_hi || {});
 
     var strip = document.getElementById('updatedStrip');
     if (data.updated_at) {
@@ -293,13 +260,13 @@ fetch('news-feed.json?t=' + Date.now())
 
     var params = new URLSearchParams(window.location.search);
     var linkedCat = params.get('cat');
-    if (linkedCat && ['legal','regional','national','international'].indexOf(linkedCat) !== -1) {
+    if (linkedCat && ['legal','regional','national','international','telugu','hindi'].indexOf(linkedCat) !== -1) {
       switchTab(linkedCat);
     }
   })
   .catch(function(){
     document.getElementById('updatedStrip').textContent = '';
-    ['legal','regional'].forEach(function(cat){
+    ['legal','regional','telugu','hindi'].forEach(function(cat){
       document.getElementById('section-' + cat).innerHTML =
         '<div class="empty-state"><div class="empty-state-icon">📭</div>News feed is warming up — check back in a bit.</div>';
     });
