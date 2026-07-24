@@ -93,6 +93,12 @@ width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;dis
 font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
 .lang-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 .empty-hint{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px;}
+.topic-picker{padding:10px 4px 4px;}
+.topic-picker-title{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;}
+.topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.topic-btn{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:10px 4px;
+font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;text-align:center;}
+.topic-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 </style>
 </head>
 <body>
@@ -123,6 +129,19 @@ font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
 </div>
 
 <div class="chat-area" id="chatArea">
+  <div class="topic-picker" id="topicPicker">
+    <div class="topic-picker-title">Quick topics — or just type your own question below</div>
+    <div class="topic-grid">
+      <button class="topic-btn" data-topic="consumer" onclick="pickTopic('consumer', 'Consumer Rights')">🛒 Consumer</button>
+      <button class="topic-btn" data-topic="property" onclick="pickTopic('property', 'Property Rights')">🏠 Property</button>
+      <button class="topic-btn" data-topic="family" onclick="pickTopic('family', 'Family Rights')">👨‍👩‍👧 Family</button>
+      <button class="topic-btn" data-topic="health" onclick="pickTopic('health', 'Health Rights')">🏥 Health</button>
+      <button class="topic-btn" data-topic="digital" onclick="pickTopic('digital', 'Digital Rights')">💻 Digital</button>
+      <button class="topic-btn" data-topic="farmer" onclick="pickTopic('farmer', 'Farmer Rights')">🌾 Farmer</button>
+      <button class="topic-btn" data-topic="personal" onclick="pickTopic('personal', 'Personal Rights')">🪪 Personal</button>
+      <button class="topic-btn" data-topic="student" onclick="pickTopic('student', 'Student Rights')">🎓 Student</button>
+    </div>
+  </div>
   <div class="empty-hint">Ask a question below — e.g. "Can my landlord evict me without notice?" or "What can I do if a shop overcharges above MRP?"</div>
 </div>
 
@@ -151,6 +170,24 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 var qlang = 'en';
+var selectedTopic = null;
+
+function pickTopic(topicKey, topicLabel){
+  selectedTopic = selectedTopic === topicKey ? null : topicKey;
+
+  document.querySelectorAll('.topic-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.topic === selectedTopic);
+  });
+
+  var input = document.getElementById('questionInput');
+  input.placeholder = selectedTopic ? 'Ask about ' + topicLabel + '...' : 'Type your question...';
+  input.focus();
+
+  // Client-side only — fires instantly, zero backend calls, zero effect
+  // on response time. GA4's own dashboard is where these get reviewed.
+  try { gtag('event', 'ask_ai_topic_selected', {topic: topicKey}); } catch(e) {}
+}
+
 function setQLang(lang){
   qlang = lang;
   document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -242,6 +279,8 @@ function addMessage(text, isUser){
   var chatArea = document.getElementById('chatArea');
   var hint = chatArea.querySelector('.empty-hint');
   if (hint) hint.remove();
+  var picker = chatArea.querySelector('#topicPicker');
+  if (picker) picker.remove();
 
   var msg = document.createElement('div');
   msg.className = 'msg ' + (isUser ? 'msg-user' : 'msg-ai');
@@ -329,6 +368,8 @@ function addErrorMessage(technicalDetail){
   var chatArea = document.getElementById('chatArea');
   var hint = chatArea.querySelector('.empty-hint');
   if (hint) hint.remove();
+  var picker = chatArea.querySelector('#topicPicker');
+  if (picker) picker.remove();
   var msg = document.createElement('div');
   msg.className = 'msg msg-ai';
   var isBusy = technicalDetail && String(technicalDetail).indexOf('BUSY_RIGHT_NOW') !== -1;
@@ -401,7 +442,7 @@ function sendQuestion(){
 
   try { gtag('event', 'ask_ai_question', {lang: qlang, has_image: !!pendingImage}); } catch(e) {}
 
-  var requestBody = {question: question, lang: qlang};
+  var requestBody = {question: question, lang: qlang, topic: selectedTopic};
   if (pendingImage) {
     requestBody.image_base64 = pendingImage.base64;
     requestBody.image_mime_type = pendingImage.mimeType;
