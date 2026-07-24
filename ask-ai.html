@@ -37,6 +37,13 @@ nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .input-bar input:focus{border-color:var(--gold);}
 .input-bar button{background:var(--navy);color:var(--gold-l);border:none;border-radius:20px;padding:0 18px;font-weight:800;font-size:13px;cursor:pointer;}
 .input-bar button:disabled{opacity:.5;}
+#photoBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
+width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;}
+.image-preview{position:fixed;bottom:66px;left:0;right:0;max-width:640px;margin:0 auto;
+background:#fff;border-top:1px solid var(--border);padding:8px 16px;display:flex;
+align-items:center;gap:10px;z-index:99;}
+.image-preview img{width:44px;height:44px;object-fit:cover;border-radius:8px;}
+.image-preview .ip-remove{margin-left:auto;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;}
 #micBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
 width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;}
 #micBtn.listening{background:#DC2626;color:#fff;border-color:#DC2626;animation:pulse-mic 1.2s infinite;}
@@ -71,7 +78,10 @@ font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
   <div class="empty-hint">Ask a question below — e.g. "Can my landlord evict me without notice?" or "What can I do if a shop overcharges above MRP?"</div>
 </div>
 
+<div class="image-preview" id="imagePreview" style="display:none;"></div>
 <div class="input-bar">
+  <input type="file" id="billPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleBillPhoto(event)">
+  <button id="photoBtn" onclick="document.getElementById('billPhotoInput').click()" title="Upload a bill photo">📷</button>
   <button id="micBtn" onclick="togglelistening()" title="Speak your question">🎤</button>
   <input type="text" id="questionInput" placeholder="Type your question..." maxlength="500" onkeydown="if(event.key==='Enter')sendQuestion();">
   <button id="sendBtn" onclick="sendQuestion()">Ask</button>
@@ -196,23 +206,54 @@ function removeLoading(){
   if (el) el.remove();
 }
 
+var pendingImage = null; // {base64, mimeType}
+
+function handleBillPhoto(event){
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    var base64 = reader.result.split(',')[1];
+    pendingImage = {base64: base64, mimeType: file.type};
+    var preview = document.getElementById('imagePreview');
+    preview.style.display = 'flex';
+    preview.innerHTML = '<img src="' + reader.result + '"><span style="font-size:12px;color:var(--muted);">Bill photo ready — tap Ask to check it</span><button class="ip-remove" onclick="removeBillPhoto()">✕</button>';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeBillPhoto(){
+  pendingImage = null;
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('billPhotoInput').value = '';
+}
+
 function sendQuestion(){
   var input = document.getElementById('questionInput');
   var question = input.value.trim();
-  if (!question) return;
+  if (!question && !pendingImage) return;
 
   var sendBtn = document.getElementById('sendBtn');
   sendBtn.disabled = true;
   input.value = '';
-  addMessage(question, true);
+
+  var userMsgText = question || '📷 Check this bill';
+  addMessage(userMsgText, true);
   addLoading();
 
-  try { gtag('event', 'ask_ai_question', {lang: qlang}); } catch(e) {}
+  try { gtag('event', 'ask_ai_question', {lang: qlang, has_image: !!pendingImage}); } catch(e) {}
+
+  var requestBody = {question: question, lang: qlang};
+  if (pendingImage) {
+    requestBody.image_base64 = pendingImage.base64;
+    requestBody.image_mime_type = pendingImage.mimeType;
+  }
+  removeBillPhoto();
 
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/ask-ai', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({question: question, lang: qlang})
+    body: JSON.stringify(requestBody)
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
