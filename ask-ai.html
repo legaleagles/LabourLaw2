@@ -37,6 +37,12 @@ nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .input-bar input:focus{border-color:var(--gold);}
 .input-bar button{background:var(--navy);color:var(--gold-l);border:none;border-radius:20px;padding:0 18px;font-weight:800;font-size:13px;cursor:pointer;}
 .input-bar button:disabled{opacity:.5;}
+#micBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
+width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;}
+#micBtn.listening{background:#DC2626;color:#fff;border-color:#DC2626;animation:pulse-mic 1.2s infinite;}
+@keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4);}50%{box-shadow:0 0 0 8px rgba(220,38,38,0);}}
+.speak-toggle{position:absolute;top:8px;right:8px;background:none;border:none;font-size:16px;cursor:pointer;opacity:.6;}
+.msg-ai{position:relative;padding-right:4px;}
 .lang-row{display:flex;gap:6px;padding:8px 16px 0;max-width:640px;margin:0 auto;width:100%;}
 .lang-btn{flex:1;padding:6px;border-radius:10px;border:1.5px solid var(--border);background:#fff;
 font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
@@ -66,6 +72,7 @@ font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;}
 </div>
 
 <div class="input-bar">
+  <button id="micBtn" onclick="togglelistening()" title="Speak your question">🎤</button>
   <input type="text" id="questionInput" placeholder="Type your question..." maxlength="500" onkeydown="if(event.key==='Enter')sendQuestion();">
   <button id="sendBtn" onclick="sendQuestion()">Ask</button>
 </div>
@@ -104,6 +111,13 @@ function addMessage(text, isUser){
   bubble.textContent = text;
   msg.appendChild(bubble);
   if (!isUser) {
+    var speakBtn = document.createElement('button');
+    speakBtn.className = 'speak-toggle';
+    speakBtn.textContent = '🔊';
+    speakBtn.title = 'Read aloud';
+    speakBtn.onclick = function(){ speakText(text); };
+    msg.appendChild(speakBtn);
+
     var disc = document.createElement('div');
     disc.className = 'msg-disclaimer';
     disc.textContent = 'AI-generated — verify with a professional for your specific situation.';
@@ -112,6 +126,59 @@ function addMessage(text, isUser){
   chatArea.appendChild(msg);
   window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
   return msg;
+}
+
+// --- Voice input (Speech-to-Text) ---
+var recognition = null;
+var isListening = false;
+var SPEECH_LANG_MAP = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
+
+function togglelistening(){
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('Voice input is not supported on this browser. Try Chrome on Android.');
+    return;
+  }
+  var micBtn = document.getElementById('micBtn');
+
+  if (isListening) {
+    if (recognition) recognition.stop();
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = SPEECH_LANG_MAP[qlang] || 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = function(){
+    isListening = true;
+    micBtn.classList.add('listening');
+  };
+  recognition.onresult = function(event){
+    var transcript = event.results[0][0].transcript;
+    document.getElementById('questionInput').value = transcript;
+  };
+  recognition.onerror = function(){
+    isListening = false;
+    micBtn.classList.remove('listening');
+  };
+  recognition.onend = function(){
+    isListening = false;
+    micBtn.classList.remove('listening');
+  };
+  recognition.start();
+}
+
+// --- Voice output (Text-to-Speech) ---
+var SPEECH_SYNTH_LANG_MAP = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
+
+function speakText(text){
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = SPEECH_SYNTH_LANG_MAP[qlang] || 'en-IN';
+  window.speechSynthesis.speak(utterance);
 }
 
 function addLoading(){
