@@ -21,6 +21,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-
 nav{background:rgba(13,17,23,.96);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,162,39,.15);}
 .nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.nav-langs{display:flex;gap:5px;}
+.nav-lang{padding:5px 11px;border-radius:14px;border:1px solid rgba(201,162,39,.3);background:transparent;
+color:rgba(255,255,255,.6);font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;}
+.nav-lang.active{border-color:var(--gold);color:var(--navy);background:var(--gold);}
+.lang-fallback-notice{font-size:10px;color:var(--muted);font-style:italic;background:var(--light);
+padding:7px 10px;border-radius:8px;margin-bottom:10px;}
 .hero{background:linear-gradient(135deg,#0D1117 0%,#1a2436 100%);padding:26px 20px 20px;text-align:center;}
 .hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#fff;margin-bottom:6px;}
 .hero-title .gold{color:var(--gold-l);}
@@ -65,6 +71,11 @@ display:flex;padding:8px 4px;border-top:1px solid rgba(201,162,39,.15);z-index:2
 <nav>
   <div class="nav-r1">
     <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
+    <div class="nav-langs">
+      <button class="nav-lang" id="langBtnEn" onclick="setLang('en')">EN</button>
+      <button class="nav-lang" id="langBtnTe" onclick="setLang('te')">తె</button>
+      <button class="nav-lang" id="langBtnHi" onclick="setLang('hi')">हि</button>
+    </div>
   </div>
 </nav>
 
@@ -122,6 +133,8 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 var CATEGORY_ICONS = {legal: '⚖️', regional: '📍', national: '🇮🇳', international: '🌍'};
+var currentLang = 'en';
+var fetchedData = null;
 
 function switchTab(cat){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.cat === cat); });
@@ -147,6 +160,26 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
+// Legal & International only ever exist in English — genuine native-language
+// coverage for court/legislation and world-news topics is too thin in
+// Telugu/Hindi sources to reliably show. Regional & National prefer the
+// selected language when available, falling back to English with a small
+// visible notice rather than silently mixing languages.
+function getArticlesForCategory(data, cat, lang){
+  var english = (data.categories || {})[cat] || [];
+  if (cat === 'legal' || cat === 'international' || lang === 'en') {
+    return {articles: english, isFallback: false};
+  }
+  var localized = (data['categories_' + lang] || {})[cat] || [];
+  if (localized.length) return {articles: localized, isFallback: false};
+  return {articles: english, isFallback: true};
+}
+
+var FALLBACK_TEXT = {
+  te: 'తెలుగు వార్తలు త్వరలో — ప్రస్తుతం ఆంగ్లంలో చూపిస్తున్నాము',
+  hi: 'हिंदी समाचार जल्द ही — फ़िलहाल अंग्रेज़ी में दिखा रहे हैं',
+};
+
 function renderArticleCards(cat, articles){
   var html = '';
   articles.forEach(function(a){
@@ -164,24 +197,32 @@ function renderArticleCards(cat, articles){
   return html;
 }
 
-function renderCategory(cat, articles){
+function fallbackNoticeHtml(lang){
+  return '<div class="lang-fallback-notice">ℹ️ ' + (FALLBACK_TEXT[lang] || '') + '</div>';
+}
+
+function renderCategory(cat, result, lang){
   var section = document.getElementById('section-' + cat);
+  var articles = result.articles;
   if (!articles || !articles.length) {
     section.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
     return;
   }
-  section.innerHTML = renderArticleCards(cat, articles);
+  var notice = (result.isFallback && lang !== 'en') ? fallbackNoticeHtml(lang) : '';
+  section.innerHTML = notice + renderArticleCards(cat, articles);
 }
 
-function renderWithChips(cat, articles){
+function renderWithChips(cat, result, lang){
   var chipRow = document.getElementById('chips-' + cat);
   var list = document.getElementById('list-' + cat);
+  var articles = result.articles;
   if (!articles || !articles.length) {
     chipRow.innerHTML = '';
     list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No ' + cat + ' news available right now — check back soon.</div>';
     return;
   }
 
+  var notice = (result.isFallback && lang !== 'en') ? fallbackNoticeHtml(lang) : '';
   var subCats = ['All'];
   articles.forEach(function(a){
     (a.category || []).forEach(function(c){
@@ -194,7 +235,7 @@ function renderWithChips(cat, articles){
       return '<div class="chip' + (sc === selected ? ' active' : '') + '" data-sc="' + escapeHtml(sc) + '">' + escapeHtml(sc) + '</div>';
     }).join('');
     var filtered = selected === 'All' ? articles : articles.filter(function(a){ return (a.category || []).indexOf(selected) !== -1; });
-    list.innerHTML = renderArticleCards(cat, filtered);
+    list.innerHTML = notice + renderArticleCards(cat, filtered);
     chipRow.querySelectorAll('.chip').forEach(function(chip){
       chip.addEventListener('click', function(){
         draw(chip.dataset.sc);
@@ -205,17 +246,43 @@ function renderWithChips(cat, articles){
   draw('All');
 }
 
+function renderAll(lang){
+  if (!fetchedData) return;
+  renderCategory('legal', getArticlesForCategory(fetchedData, 'legal', lang), lang);
+  renderCategory('regional', getArticlesForCategory(fetchedData, 'regional', lang), lang);
+  renderWithChips('national', getArticlesForCategory(fetchedData, 'national', lang), lang);
+  renderWithChips('international', getArticlesForCategory(fetchedData, 'international', lang), lang);
+}
+
+function setLang(lang){
+  currentLang = lang;
+  try { localStorage.setItem('lsLang', lang); } catch(e) {}
+  document.querySelectorAll('.nav-lang').forEach(function(b){ b.classList.remove('active'); });
+  var btnId = {en: 'langBtnEn', te: 'langBtnTe', hi: 'langBtnHi'}[lang];
+  var btn = document.getElementById(btnId);
+  if (btn) btn.classList.add('active');
+  renderAll(lang);
+  try { gtag('event', 'news_lang_switch', {lang: lang}); } catch(e) {}
+}
+
+(function(){
+  try {
+    var saved = localStorage.getItem('lsLang');
+    if (saved && ['en','te','hi'].indexOf(saved) !== -1) currentLang = saved;
+  } catch(e) {}
+  var btnId = {en: 'langBtnEn', te: 'langBtnTe', hi: 'langBtnHi'}[currentLang];
+  var btn = document.getElementById(btnId);
+  if (btn) btn.classList.add('active');
+})();
+
 fetch('news-feed.json?t=' + Date.now())
   .then(function(r){
     if (!r.ok) throw new Error('not found');
     return r.json();
   })
   .then(function(data){
-    var categories = data.categories || {};
-    renderCategory('legal', categories.legal);
-    renderCategory('regional', categories.regional);
-    renderWithChips('national', categories.national);
-    renderWithChips('international', categories.international);
+    fetchedData = data;
+    renderAll(currentLang);
 
     var strip = document.getElementById('updatedStrip');
     if (data.updated_at) {
