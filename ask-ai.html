@@ -429,6 +429,8 @@ function removeBillPhoto(){
   document.getElementById('billPhotoInput').value = '';
 }
 
+var lastExchange = null; // {question, answer} - only the most recent, keeps prompt size bounded
+
 function sendQuestion(){
   var input = document.getElementById('questionInput');
   var question = input.value.trim();
@@ -445,6 +447,13 @@ function sendQuestion(){
   try { gtag('event', 'ask_ai_question', {lang: qlang, has_image: !!pendingImage}); } catch(e) {}
 
   var requestBody = {question: question, lang: qlang, topic: selectedTopic};
+  if (lastExchange && !pendingImage) {
+    // Only the single most recent exchange — enough to resolve "explain
+    // more", "what about X" style follow-ups, without growing the prompt
+    // (and the risk of slow responses) as a conversation gets longer.
+    requestBody.previous_question = lastExchange.question;
+    requestBody.previous_answer = lastExchange.answer;
+  }
   if (pendingImage) {
     requestBody.image_base64 = pendingImage.base64;
     requestBody.image_mime_type = pendingImage.mimeType;
@@ -461,6 +470,7 @@ function sendQuestion(){
       removeLoading();
       if (data.ok) {
         addMessage(data.answer, false);
+        lastExchange = {question: question, answer: data.answer};
       } else {
         addErrorMessage(data.error || 'unknown error');
       }
