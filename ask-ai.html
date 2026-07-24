@@ -310,7 +310,8 @@ function addErrorMessage(technicalDetail){
   if (hint) hint.remove();
   var msg = document.createElement('div');
   msg.className = 'msg msg-ai';
-  msg.innerHTML = '<div class="msg-bubble msg-error">🤖💭 I hit a little snag processing that — nothing to worry about, please try asking again in a moment. If it keeps happening, our team has been notified.</div>';
+  var debugLine = technicalDetail ? '<div style="margin-top:8px;font-size:10px;color:#999;font-family:monospace;word-break:break-all;">[debug] ' + escapeHtml(String(technicalDetail)) + '</div>' : '';
+  msg.innerHTML = '<div class="msg-bubble msg-error">🤖💭 I hit a little snag processing that — nothing to worry about, please try asking again in a moment. If it keeps happening, our team has been notified.' + debugLine + '</div>';
   chatArea.appendChild(msg);
   window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
 }
