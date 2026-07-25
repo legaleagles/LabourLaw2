@@ -32,26 +32,35 @@ nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
 .hero{background:linear-gradient(135deg,#0D1117,#1a2436);padding:18px 20px;text-align:center;}
 .ai-avatar{display:flex;justify-content:center;margin-bottom:10px;}
-.ai-avatar-head{width:56px;height:52px;background:linear-gradient(160deg,var(--gold-l),var(--gold));
-border-radius:16px;position:relative;animation:ai-breathe 3s ease-in-out infinite;box-shadow:0 4px 14px rgba(201,162,39,.35);}
-.ai-avatar-antenna{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:3px;height:9px;background:var(--gold-l);}
-.ai-avatar-antenna::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
-width:6px;height:6px;border-radius:50%;background:var(--gold-l);}
-.ai-avatar-eye{position:absolute;top:19px;width:8px;height:8px;border-radius:50%;background:#0D1117;
+.ai-avatar-figure{position:relative;width:76px;height:88px;animation:ai-breathe 3s ease-in-out infinite;}
+.ai-avatar-shoulders{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:76px;height:40px;
+background:linear-gradient(160deg,#2b4a7a,#1a2f52);border-radius:26px 26px 10px 10px;box-shadow:0 4px 14px rgba(0,0,0,.25);}
+.ai-avatar-collar{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);width:26px;height:16px;
+background:#fff;clip-path:polygon(20% 0%,80% 0%,100% 100%,0% 100%);}
+.ai-avatar-head{width:46px;height:50px;background:linear-gradient(160deg,#c9906a,#b97e56);
+border-radius:46% 46% 42% 42%/50% 50% 40% 40%;position:relative;margin:0 auto;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.ai-avatar-hair{position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:44px;height:26px;
+background:linear-gradient(160deg,#2a2320,#1a1512);border-radius:50% 50% 0 0/60% 60% 0 0;
+clip-path:polygon(8% 100%,0% 40%,15% 5%,50% 0%,85% 5%,100% 40%,92% 100%,78% 55%,22% 55%);}
+.ai-avatar-eye{position:absolute;top:22px;width:5px;height:5px;border-radius:50%;background:#2a1c14;
 animation:ai-blink 4s infinite;}
-.ai-eye-l{left:14px;}
-.ai-eye-r{right:14px;}
-.ai-avatar-mouth{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
-width:20px;height:3px;border-radius:2px;background:#0D1117;opacity:.7;}
+.ai-eye-l{left:12px;}
+.ai-eye-r{right:12px;}
+.ai-avatar-mustache{position:absolute;top:31px;left:50%;transform:translateX(-50%);width:16px;height:4px;
+background:#1a1512;border-radius:0 0 40% 40%/0 0 100% 100%;}
+.ai-avatar-mouth{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);
+width:14px;height:2.5px;border-radius:2px;background:#7a3d2e;opacity:.6;}
+.ai-avatar-bindi{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:3px;height:3px;
+border-radius:50%;background:#B22222;}
 @keyframes ai-breathe{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3px) scale(1.03);}}
 @keyframes ai-blink{0%,90%,100%{transform:scaleY(1);}95%{transform:scaleY(.15);}}
-.ai-avatar-head.ai-thinking{animation:ai-think 0.8s ease-in-out infinite;box-shadow:0 4px 22px rgba(201,162,39,.6);}
+.ai-avatar-figure.ai-thinking{animation:ai-think 0.8s ease-in-out infinite;}
 @keyframes ai-think{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-4px) rotate(2deg);}}
 .hero-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;}
 .hero-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;}
-.ai-avatar-badge{position:absolute;bottom:-4px;right:-6px;width:22px;height:22px;border-radius:50%;
+.ai-avatar-badge{position:absolute;bottom:2px;right:-4px;width:20px;height:20px;border-radius:50%;
 background:var(--navy);border:2px solid var(--gold-l);display:flex;align-items:center;justify-content:center;
-font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.3);}
+font-size:10px;box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:2;}
 .hero-scope{font-size:10.5px;color:var(--gold-l);margin-top:8px;font-weight:700;
 background:rgba(201,162,39,.15);display:inline-block;padding:4px 10px;border-radius:10px;}
 .disclaimer{background:linear-gradient(135deg,#FDF6DC,#FBEFC9);border-bottom:1.5px solid var(--gold);padding:10px 16px;font-size:11px;color:#7A5C00;text-align:center;}
@@ -138,11 +147,17 @@ box-shadow:0 1px 3px rgba(0,0,0,.04);transition:transform .15s, box-shadow .15s;
 
 <div class="hero">
   <div class="ai-avatar" id="aiAvatar">
-    <div class="ai-avatar-head">
-      <div class="ai-avatar-antenna"></div>
-      <div class="ai-avatar-eye ai-eye-l"></div>
-      <div class="ai-avatar-eye ai-eye-r"></div>
-      <div class="ai-avatar-mouth"></div>
+    <div class="ai-avatar-figure">
+      <div class="ai-avatar-shoulders"></div>
+      <div class="ai-avatar-collar"></div>
+      <div class="ai-avatar-head">
+        <div class="ai-avatar-hair"></div>
+        <div class="ai-avatar-bindi"></div>
+        <div class="ai-avatar-eye ai-eye-l"></div>
+        <div class="ai-avatar-eye ai-eye-r"></div>
+        <div class="ai-avatar-mustache"></div>
+        <div class="ai-avatar-mouth"></div>
+      </div>
       <div class="ai-avatar-badge">⚖️</div>
     </div>
   </div>
@@ -447,14 +462,14 @@ function addLoading(){
   msg.innerHTML = '<div class="msg-bubble msg-loading"><span></span><span></span><span></span></div>';
   chatArea.appendChild(msg);
   window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
-  var head = document.querySelector('.ai-avatar-head');
+  var head = document.querySelector('.ai-avatar-figure');
   if (head) head.classList.add('ai-thinking');
 }
 
 function removeLoading(){
   var el = document.getElementById('loadingMsg');
   if (el) el.remove();
-  var head = document.querySelector('.ai-avatar-head');
+  var head = document.querySelector('.ai-avatar-figure');
   if (head) head.classList.remove('ai-thinking');
 }
 
