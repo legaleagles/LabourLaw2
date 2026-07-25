@@ -28,6 +28,8 @@
 --muted:#6B7280;--border:#E5E7EB;--light:#F3F4F6;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+.intro-screen{min-height:100vh;display:flex;flex-direction:column;}
+.chat-screen{display:flex;flex-direction:column;height:100vh;}
 nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
 .hero{background:linear-gradient(135deg,#0D1117,#1a2436);padding:18px 20px;text-align:center;}
@@ -98,22 +100,22 @@ border-radius:10px;font-size:11.5px;color:#7A5C00;line-height:1.5;}
 .msg-loading span:nth-child(2){animation-delay:.2s;}
 .msg-loading span:nth-child(3){animation-delay:.4s;}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-5px);opacity:1;}}
-.input-bar{position:fixed;bottom:0;left:0;right:0;border-top:1.5px solid var(--border);background:#fff;padding:12px 16px;display:flex;gap:8px;max-width:640px;margin:0 auto;width:100%;z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.04);}
-.input-bar input{flex:1;border:1.5px solid var(--border);border-radius:20px;padding:11px 16px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s, box-shadow .2s;}
+.input-bar{position:fixed;bottom:0;left:0;right:0;border-top:1.5px solid var(--border);background:#fff;padding:10px 12px;display:flex;gap:6px;max-width:640px;margin:0 auto;width:100%;z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.04);}
+.input-bar input{flex:1;min-width:0;border:1.5px solid var(--border);border-radius:20px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s, box-shadow .2s;}
 .input-bar input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.12);}
-.input-bar button{background:linear-gradient(135deg,#1a2436,var(--navy));color:var(--gold-l);border:none;border-radius:20px;padding:0 18px;font-weight:800;font-size:13px;cursor:pointer;transition:transform .15s;}
+.input-bar button{background:linear-gradient(135deg,#1a2436,var(--navy));color:var(--gold-l);border:none;border-radius:20px;padding:0 14px;font-weight:800;font-size:13px;cursor:pointer;transition:transform .15s;flex-shrink:0;}
 .input-bar button:active{transform:scale(.94);}
 .input-bar button:disabled{opacity:.5;}
 #photoBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
-width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;transition:transform .15s;}
+width:36px;height:36px;flex-shrink:0;font-size:15px;padding:0;cursor:pointer;transition:transform .15s;}
 #photoBtn:active{transform:scale(.92);}
-.image-preview{position:fixed;bottom:66px;left:0;right:0;max-width:640px;margin:0 auto;
+.image-preview{position:fixed;bottom:62px;left:0;right:0;max-width:640px;margin:0 auto;
 background:#fff;border-top:1px solid var(--border);padding:8px 16px;display:flex;
 align-items:center;gap:10px;z-index:99;}
 .image-preview img{width:44px;height:44px;object-fit:cover;border-radius:8px;}
 .image-preview .ip-remove{margin-left:auto;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;}
 #micBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
-width:42px;height:42px;flex-shrink:0;font-size:18px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+width:36px;height:36px;flex-shrink:0;font-size:15px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
 #micBtn:active{transform:scale(.92);}
 #micBtn.listening{background:#DC2626;color:#fff;border-color:#DC2626;animation:pulse-mic 1.2s infinite;}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4);}50%{box-shadow:0 0 0 8px rgba(220,38,38,0);}}
@@ -133,21 +135,32 @@ color:var(--gold-l);padding:9px 16px;font-size:12px;font-weight:700;box-shadow:0
 .active-topic-bar button{background:rgba(255,255,255,.14);border:none;color:var(--gold-l);
 font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;cursor:pointer;transition:background .15s;}
 .active-topic-bar button:active{background:rgba(255,255,255,.25);}
-.topic-picker{padding:6px 0 4px;}
-.topic-picker-title{font-size:11px;color:var(--muted);text-align:center;margin-bottom:9px;}
-.topic-grid{display:flex;overflow-x:auto;gap:8px;padding:2px 2px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.topic-grid::-webkit-scrollbar{display:none;}
-.topic-btn{flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:9px 15px;
-font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap;
-box-shadow:0 1px 3px rgba(0,0,0,.04);transition:transform .15s, box-shadow .15s;}
-.topic-btn:active{transform:scale(.96);}
-.topic-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);box-shadow:0 3px 10px rgba(13,17,23,.25);}
+.intro-topics-title{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 10px;font-weight:600;}
+.topic-shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:0 16px;max-width:640px;margin:0 auto;width:100%;}
+.topic-card{background:#fff;border:1.5px solid var(--border);border-radius:12px 12px 5px 5px;padding:12px 4px 9px;
+font-size:10.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:center;line-height:1.3;
+box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .15s, box-shadow .15s;border-top:3px solid var(--gold);}
+.topic-card:active{transform:scale(.94);}
+.topic-card .tc-icon{display:block;font-size:19px;margin-bottom:4px;}
+.skip-to-chat-btn{display:block;margin:18px auto 6px;background:none;border:none;color:var(--muted);
+font-size:12px;font-weight:700;text-decoration:underline;cursor:pointer;padding:8px;}
+.chat-header{display:flex;align-items:center;gap:10px;background:var(--navy);padding:10px 16px;flex-shrink:0;
+box-shadow:0 2px 8px rgba(13,17,23,.2);z-index:50;}
+.chat-header-avatar{width:34px;height:34px;flex-shrink:0;position:relative;}
+.chat-header-info{flex:1;min-width:0;}
+.chat-header-name{font-family:'Playfair Display',serif;font-weight:900;font-size:13px;color:var(--gold-l);}
+.chat-header-topic{font-size:10.5px;color:rgba(255,255,255,.6);}
+.chat-header button{background:rgba(255,255,255,.12);border:none;color:var(--gold-l);
+font-size:11px;font-weight:700;padding:6px 12px;border-radius:12px;cursor:pointer;flex-shrink:0;}
+.ai-avatar-reacting .ai-avatar-figure{animation:ai-react .5s ease-out;}
+@keyframes ai-react{0%{transform:scale(1) rotate(0);}30%{transform:scale(1.12) rotate(-4deg);}60%{transform:scale(1.06) rotate(3deg);}100%{transform:scale(1) rotate(0);}}
 </style>
 </head>
 <body>
 
 <nav><a class="nav-brand" href="index.html">⚖️ LawSticker AI</a></nav>
 
+<div id="introScreen" class="intro-screen">
 <div class="hero">
   <div class="ai-avatar" id="aiAvatar">
     <div class="ai-avatar-figure">
@@ -172,56 +185,76 @@ box-shadow:0 1px 3px rgba(0,0,0,.04);transition:transform .15s, box-shadow .15s;
   <div class="hero-scope">⚖️ Legal topics only — not a general-purpose AI assistant</div>
 </div>
 
-<div class="disclaimer">⚠️ Answers use this site's verified content when available, or general legal knowledge when not — always clearly labeled. Not a substitute for professional legal advice.</div>
-
 <div class="lang-row">
   <button class="lang-btn active" id="qlangEn" onclick="setQLang('en')">EN</button>
   <button class="lang-btn" id="qlangTe" onclick="setQLang('te')">తె</button>
   <button class="lang-btn" id="qlangHi" onclick="setQLang('hi')">हि</button>
 </div>
 
-<div class="active-topic-bar" id="activeTopicBar" style="display:none;">
-  <span id="activeTopicLabel"></span>
-  <button onclick="clearTopic()">Change ✕</button>
+<div class="intro-topics-title">📚 Choose a topic — Durga Bro will read from that shelf</div>
+<div class="topic-shelf">
+  <button class="topic-card" data-topic="consumer" onclick="pickTopic('consumer', 'Consumer Rights')"><span class="tc-icon">🛒</span>Consumer</button>
+  <button class="topic-card" data-topic="property" onclick="pickTopic('property', 'Property Rights')"><span class="tc-icon">🏠</span>Property</button>
+  <button class="topic-card" data-topic="family" onclick="pickTopic('family', 'Family Rights')"><span class="tc-icon">👨‍👩‍👧</span>Family</button>
+  <button class="topic-card" data-topic="health" onclick="pickTopic('health', 'Health Rights')"><span class="tc-icon">🏥</span>Health</button>
+  <button class="topic-card" data-topic="digital" onclick="pickTopic('digital', 'Digital Rights')"><span class="tc-icon">💻</span>Digital</button>
+  <button class="topic-card" data-topic="farmer" onclick="pickTopic('farmer', 'Farmer Rights')"><span class="tc-icon">🌾</span>Farmer</button>
+  <button class="topic-card" data-topic="personal" onclick="pickTopic('personal', 'Personal Rights')"><span class="tc-icon">🪪</span>Personal</button>
+  <button class="topic-card" data-topic="student" onclick="pickTopic('student', 'Student Rights')"><span class="tc-icon">🎓</span>Student</button>
+  <button class="topic-card" data-topic="lawcet" onclick="pickTopic('lawcet', 'LAWCET Counselling')"><span class="tc-icon">🎓</span>LAWCET</button>
+  <button class="topic-card" data-topic="llbsubjects" onclick="pickTopic('llbsubjects', 'LLB Subjects')"><span class="tc-icon">📚</span>LLB Subjects</button>
+  <button class="topic-card" data-topic="calculators" onclick="pickTopic('calculators', 'Site Calculators')"><span class="tc-icon">🧮</span>Calculators</button>
 </div>
 
-<div class="chat-area" id="chatArea">
-  <div class="topic-picker" id="topicPicker">
-    <div class="akka-intro">
-      <div class="akka-intro-greeting">🙏 I am your Durga Bro</div>
-      <div class="akka-intro-text">Think of me the way my LLB friends do — always around for a legal question. Just to be upfront: I'm an AI agent, not the real Durga. Choose a topic to get started, or type your question below.</div>
+<button class="skip-to-chat-btn" onclick="skipToChat()">Just let me ask anything →</button>
+
+<div class="disclaimer">⚠️ Answers use this site's verified content when available, or general legal knowledge when not — always clearly labeled. Not a substitute for professional legal advice.</div>
+</div>
+
+<div id="chatScreen" class="chat-screen" style="display:none;">
+  <div class="chat-header">
+    <div class="chat-header-avatar">
+      <div class="ai-avatar-figure" style="transform:scale(.55);transform-origin:top center;">
+        <div class="ai-avatar-shoulders"></div>
+        <div class="ai-avatar-lapel ai-avatar-lapel-l"></div>
+        <div class="ai-avatar-lapel ai-avatar-lapel-r"></div>
+        <div class="ai-avatar-pin">⚖️</div>
+        <div class="ai-avatar-collar"></div>
+        <div class="ai-avatar-head">
+          <div class="ai-avatar-hair"></div>
+          <div class="ai-avatar-bindi"></div>
+          <div class="ai-avatar-eye ai-eye-l"></div>
+          <div class="ai-avatar-eye ai-eye-r"></div>
+          <div class="ai-avatar-mustache"></div>
+          <div class="ai-avatar-mouth"></div>
+        </div>
+      </div>
     </div>
-    <div class="topic-picker-title">Choose a topic to get started</div>
-    <div class="topic-grid">
-      <button class="topic-btn" data-topic="consumer" onclick="pickTopic('consumer', 'Consumer Rights')">🛒 Consumer</button>
-      <button class="topic-btn" data-topic="property" onclick="pickTopic('property', 'Property Rights')">🏠 Property</button>
-      <button class="topic-btn" data-topic="family" onclick="pickTopic('family', 'Family Rights')">👨‍👩‍👧 Family</button>
-      <button class="topic-btn" data-topic="health" onclick="pickTopic('health', 'Health Rights')">🏥 Health</button>
-      <button class="topic-btn" data-topic="digital" onclick="pickTopic('digital', 'Digital Rights')">💻 Digital</button>
-      <button class="topic-btn" data-topic="farmer" onclick="pickTopic('farmer', 'Farmer Rights')">🌾 Farmer</button>
-      <button class="topic-btn" data-topic="personal" onclick="pickTopic('personal', 'Personal Rights')">🪪 Personal</button>
-      <button class="topic-btn" data-topic="student" onclick="pickTopic('student', 'Student Rights')">🎓 Student</button>
-      <button class="topic-btn" data-topic="lawcet" onclick="pickTopic('lawcet', 'LAWCET Counselling')">🎓 LAWCET</button>
-      <button class="topic-btn" data-topic="llbsubjects" onclick="pickTopic('llbsubjects', 'LLB Subjects')">📚 LLB Subjects</button>
-      <button class="topic-btn" data-topic="calculators" onclick="pickTopic('calculators', 'Site Calculators')">🧮 Calculators</button>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Durga Bro</div>
+      <div class="chat-header-topic" id="activeTopicLabel">General legal questions</div>
     </div>
+    <button onclick="backToIntro()">Change ✕</button>
   </div>
-  <div class="empty-hint">Ask a question below — e.g. "Can my landlord evict me without notice?" or "What can I do if a shop overcharges above MRP?"</div>
-</div>
 
-<div class="image-preview" id="imagePreview" style="display:none;"></div>
-<div class="input-bar">
-  <input type="file" id="billPhotoInput" accept="image/*,application/pdf" style="display:none;" onchange="handleBillPhoto(event)">
-  <button id="photoBtn" onclick="document.getElementById('billPhotoInput').click()" title="Upload a bill photo or PDF">📎</button>
-  <button id="micBtn" onclick="togglelistening()" title="Speak your question">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M19 10V12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M12 19V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
+  <div class="chat-area" id="chatArea">
+    <div class="empty-hint">Ask a question below — e.g. "Can my landlord evict me without notice?" or "What can I do if a shop overcharges above MRP?"</div>
+  </div>
+
+  <div class="image-preview" id="imagePreview" style="display:none;"></div>
+  <div class="input-bar">
+    <input type="file" id="billPhotoInput" accept="image/*,application/pdf" style="display:none;" onchange="handleBillPhoto(event)">
+    <button id="photoBtn" onclick="document.getElementById('billPhotoInput').click()" title="Upload a bill photo or PDF">📎</button>
+    <button id="micBtn" onclick="togglelistening()" title="Speak your question">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 10V12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 19V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   <input type="text" id="questionInput" placeholder="Type your question..." maxlength="500" onkeydown="if(event.key==='Enter')sendQuestion();">
   <button id="sendBtn" onclick="sendQuestion()">Ask</button>
+  </div>
 </div>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
@@ -242,29 +275,40 @@ function pickTopic(topicKey, topicLabel){
   selectedTopic = topicKey;
   selectedTopicLabel = topicLabel;
 
-  document.querySelectorAll('.topic-btn').forEach(function(btn){
-    btn.classList.toggle('active', btn.dataset.topic === selectedTopic);
-  });
-
-  var input = document.getElementById('questionInput');
-  input.placeholder = 'Ask about ' + topicLabel + '...';
-  input.focus();
-
-  var bar = document.getElementById('activeTopicBar');
-  document.getElementById('activeTopicLabel').textContent = '💬 Discussing: ' + topicLabel;
-  bar.style.display = 'flex';
-
   // Client-side only — fires instantly, zero backend calls, zero effect
   // on response time. GA4's own dashboard is where these get reviewed.
   try { gtag('event', 'ask_ai_topic_selected', {topic: topicKey}); } catch(e) {}
+
+  // A brief, visible reaction on the intro avatar before the screen
+  // transitions — Durga Bro "noticing" the topic you picked.
+  var avatar = document.getElementById('aiAvatar');
+  avatar.classList.add('ai-avatar-reacting');
+  setTimeout(function(){
+    avatar.classList.remove('ai-avatar-reacting');
+    showChatScreen(topicLabel);
+  }, 420);
 }
 
-function clearTopic(){
+function skipToChat(){
   selectedTopic = null;
   selectedTopicLabel = null;
-  document.querySelectorAll('.topic-btn').forEach(function(btn){ btn.classList.remove('active'); });
-  document.getElementById('questionInput').placeholder = 'Type your question...';
-  document.getElementById('activeTopicBar').style.display = 'none';
+  showChatScreen(null);
+}
+
+function showChatScreen(topicLabel){
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('chatScreen').style.display = 'flex';
+  document.getElementById('activeTopicLabel').textContent = topicLabel ? topicLabel : 'General legal questions';
+  var input = document.getElementById('questionInput');
+  input.placeholder = topicLabel ? 'Ask about ' + topicLabel + '...' : 'Type your question...';
+  input.focus();
+}
+
+function backToIntro(){
+  selectedTopic = null;
+  selectedTopicLabel = null;
+  document.getElementById('chatScreen').style.display = 'none';
+  document.getElementById('introScreen').style.display = 'flex';
 }
 
 function setQLang(lang){
@@ -358,8 +402,6 @@ function addMessage(text, isUser){
   var chatArea = document.getElementById('chatArea');
   var hint = chatArea.querySelector('.empty-hint');
   if (hint) hint.remove();
-  var picker = chatArea.querySelector('#topicPicker');
-  if (picker) picker.remove();
 
   var msg = document.createElement('div');
   msg.className = 'msg ' + (isUser ? 'msg-user' : 'msg-ai');
@@ -447,8 +489,6 @@ function addErrorMessage(technicalDetail){
   var chatArea = document.getElementById('chatArea');
   var hint = chatArea.querySelector('.empty-hint');
   if (hint) hint.remove();
-  var picker = chatArea.querySelector('#topicPicker');
-  if (picker) picker.remove();
   var msg = document.createElement('div');
   msg.className = 'msg msg-ai';
   var isBusy = technicalDetail && String(technicalDetail).indexOf('BUSY_RIGHT_NOW') !== -1;
