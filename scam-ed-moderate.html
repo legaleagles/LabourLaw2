@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scam-Ed Moderation | LawSticker AI</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--cream:#FEFCF5;--ink:#111827;--border:#E5E7EB;--muted:#6B7280;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);padding:16px;}
+h1{font-size:18px;margin-bottom:14px;}
+#loginBox{max-width:340px;margin:60px auto;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;}
+#loginBox input{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;font-size:14px;}
+#loginBox button{width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;}
+.card-cat{display:inline-block;background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:8px;}
+.card-title{font-weight:800;margin-bottom:6px;}
+.card-story{font-size:13px;color:#374151;line-height:1.5;margin-bottom:10px;}
+.card-actions{display:flex;gap:8px;}
+.card-actions button{flex:1;padding:9px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;}
+.btn-approve{background:#059669;color:#fff;}
+.btn-reject{background:#DC2626;color:#fff;}
+#status{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.empty{text-align:center;color:var(--muted);padding:40px 20px;}
+</style>
+</head>
+<body>
+
+<div id="loginBox">
+  <h1>🛡️ Scam-Ed Moderation</h1>
+  <input type="password" id="pwInput" placeholder="Moderator password" onkeydown="if(event.key==='Enter')login();">
+  <button onclick="login()">Enter</button>
+  <div id="loginError" style="color:#DC2626;font-size:12px;margin-top:8px;"></div>
+</div>
+
+<div id="modPanel" style="display:none;max-width:640px;margin:0 auto;">
+  <h1>🛡️ Pending Scam Reports</h1>
+  <div id="status">Loading...</div>
+  <div id="list"></div>
+</div>
+
+<script>
+var savedPassword = '';
+
+function login(){
+  var pw = document.getElementById('pwInput').value;
+  savedPassword = pw;
+  fetchList();
+}
+
+function fetchList(){
+  fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: savedPassword, action: 'list'})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) {
+        document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
+        return;
+      }
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('modPanel').style.display = 'block';
+      renderList(data.items);
+    })
+    .catch(function(){
+      document.getElementById('loginError').textContent = 'Could not reach the server.';
+    });
+}
+
+function renderList(items){
+  var status = document.getElementById('status');
+  var list = document.getElementById('list');
+  status.textContent = items.length + ' pending report(s)';
+  if (!items.length) {
+    list.innerHTML = '<div class="empty">Nothing pending right now.</div>';
+    return;
+  }
+  list.innerHTML = items.map(function(item){
+    return '<div class="card">' +
+      '<div class="card-cat">' + escapeHtml(item.category || 'Uncategorized') + '</div>' +
+      '<div class="card-title">' + escapeHtml(item.title || '(no title)') + '</div>' +
+      '<div class="card-story">' + escapeHtml(item.anonymized_story || '') + '</div>' +
+      '<div class="card-actions">' +
+        '<button class="btn-approve" onclick="moderate(\'' + item.id + '\',\'approve\')">✓ Approve</button>' +
+        '<button class="btn-reject" onclick="moderate(\'' + item.id + '\',\'reject\')">✕ Reject</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function moderate(id, action){
+  fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: savedPassword, action: action, id: id})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) fetchList();
+      else alert(data.error || 'Action failed.');
+    });
+}
+
+function escapeHtml(str){
+  var div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>
