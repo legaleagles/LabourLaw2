@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scam Stories & Remedies | LawSticker AI</title>
+<meta name="description" content="Real, anonymized scam patterns reported by our community, with legal remedies you can likely avail.">
+<link rel="canonical" href="https://lawsticker-ai.com/scam-stories.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#F5D76E;--cream:#FEFCF5;--ink:#111827;--muted:#6B7280;--border:#E5E7EB;--light:#F3F4F6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:rgba(13,17,23,.96);padding:10px 16px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.hero{background:linear-gradient(135deg,#0D1117,#1a2436);padding:22px 20px;text-align:center;}
+.hero-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;}
+.cta-row{max-width:640px;margin:14px auto;padding:0 16px;}
+.cta-btn{display:block;text-align:center;background:var(--navy);color:var(--gold-l);font-weight:800;
+padding:12px;border-radius:12px;text-decoration:none;font-size:14px;}
+.filter-row{display:flex;overflow-x:auto;gap:8px;padding:0 16px 12px;max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-chip{flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:7px 14px;
+font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.filter-chip.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.stories{max-width:640px;margin:0 auto;padding:0 16px 40px;}
+.story-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.story-cat{display:inline-block;background:#FDF6DC;color:#7A5C00;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:8px;}
+.story-title{font-weight:800;font-size:14px;margin-bottom:6px;}
+.story-body{font-size:13px;color:#374151;line-height:1.5;}
+.empty-state{text-align:center;color:var(--muted);padding:50px 20px;font-size:13px;}
+</style>
+</head>
+<body>
+
+<nav><a class="nav-brand" href="index.html">⚖️ LawSticker AI</a></nav>
+
+<div class="hero">
+  <div class="hero-title">🛡️ Scam Stories & Remedies</div>
+  <div class="hero-sub">Real, anonymized scam patterns reported by our community — learn to recognize them.</div>
+</div>
+
+<div class="cta-row">
+  <a href="scam-ed.html" class="cta-btn">🛡️ Report a Scam You've Experienced →</a>
+</div>
+
+<div class="filter-row" id="filterRow"></div>
+
+<div class="stories" id="stories">
+  <div class="empty-state">Loading...</div>
+</div>
+
+<script>
+var ALL_STORIES = [];
+var activeFilter = 'all';
+
+fetch('scam-reports.json')
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    ALL_STORIES = (data.entries || []).filter(function(e){ return e.status === 'approved'; }).reverse();
+    renderFilters();
+    renderStories();
+  })
+  .catch(function(){
+    document.getElementById('stories').innerHTML = '<div class="empty-state">Could not load stories right now.</div>';
+  });
+
+function renderFilters(){
+  var cats = ['all'];
+  ALL_STORIES.forEach(function(s){
+    if (s.category && cats.indexOf(s.category) === -1) cats.push(s.category);
+  });
+  var row = document.getElementById('filterRow');
+  row.innerHTML = cats.map(function(c){
+    return '<button class="filter-chip' + (c === activeFilter ? ' active' : '') + '" onclick="setFilter(\'' + c + '\')">' +
+      (c === 'all' ? 'All' : c) + '</button>';
+  }).join('');
+}
+
+function setFilter(cat){
+  activeFilter = cat;
+  renderFilters();
+  renderStories();
+}
+
+function escapeHtml(str){
+  var div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function renderStories(){
+  var filtered = activeFilter === 'all' ? ALL_STORIES : ALL_STORIES.filter(function(s){ return s.category === activeFilter; });
+  var container = document.getElementById('stories');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state">No approved reports in this category yet. Be the first to <a href="scam-ed.html">report one</a>.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(function(s){
+    return '<div class="story-card">' +
+      '<div class="story-cat">' + escapeHtml(s.category || 'Other') + '</div>' +
+      '<div class="story-title">' + escapeHtml(s.title || '') + '</div>' +
+      '<div class="story-body">' + escapeHtml(s.anonymized_story || '') + '</div>' +
+    '</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>
