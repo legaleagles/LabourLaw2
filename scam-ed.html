@@ -55,7 +55,7 @@ border-radius:50%;background:#B22222;}
 .hero-scope{font-size:10.5px;color:var(--gold-l);margin-top:8px;font-weight:700;
 background:rgba(201,162,39,.15);display:inline-block;padding:4px 10px;border-radius:10px;}
 .disclaimer{background:linear-gradient(135deg,#FDF6DC,#FBEFC9);border-bottom:1.5px solid var(--gold);padding:10px 16px;font-size:11px;color:#7A5C00;text-align:center;}
-.chat-area{padding:16px;padding-bottom:90px;max-width:640px;margin:0 auto;width:100%;min-height:200px;}
+.chat-area{padding:16px;padding-bottom:40px;max-width:640px;margin:0 auto;width:100%;min-height:80px;}
 .empty-hint{text-align:center;color:var(--muted);font-size:12px;padding:20px 20px;}
 .msg{margin-bottom:14px;max-width:88%;animation:msg-in .25s ease-out;}
 @keyframes msg-in{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
@@ -86,21 +86,34 @@ border-radius:10px;font-size:11.5px;color:#7A5C00;line-height:1.5;}
 .msg-loading span:nth-child(2){animation-delay:.2s;}
 .msg-loading span:nth-child(3){animation-delay:.4s;}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-5px);opacity:1;}}
-.input-bar{position:fixed;bottom:0;left:0;right:0;border-top:1.5px solid var(--border);background:#fff;padding:10px 12px;display:flex;gap:6px;max-width:640px;margin:0 auto;width:100%;z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.04);}
-.input-bar input{flex:1;min-width:0;border:1.5px solid var(--border);border-radius:20px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s, box-shadow .2s;}
-.input-bar input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.12);}
-.input-bar button{background:linear-gradient(135deg,#1a2436,var(--navy));color:var(--gold-l);border:none;border-radius:20px;padding:0 14px;font-weight:800;font-size:13px;cursor:pointer;transition:transform .15s;flex-shrink:0;}
-.input-bar button:active{transform:scale(.94);}
-.input-bar button:disabled{opacity:.5;}
-#micBtn{background:var(--light);color:var(--ink);border:1.5px solid var(--border);border-radius:50%;
-width:36px;height:36px;flex-shrink:0;font-size:15px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
-#micBtn:active{transform:scale(.92);}
-#micBtn.listening{background:#DC2626;color:#fff;border-color:#DC2626;animation:pulse-mic 1.2s infinite;}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4);}50%{box-shadow:0 0 0 8px rgba(220,38,38,0);}}
 .lang-row{display:flex;justify-content:center;gap:8px;padding:10px 16px;}
 .lang-btn{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:6px 16px;font-weight:800;font-size:12px;cursor:pointer;color:var(--ink);}
 .lang-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
 .privacy-note{max-width:640px;margin:0 auto;padding:10px 16px 0;font-size:11px;color:var(--muted);text-align:center;line-height:1.5;}
+.privacy-banner{max-width:640px;margin:14px auto 0;padding:12px 16px;background:#F0F9F4;border:1px solid rgba(5,150,105,.3);
+border-radius:12px;font-size:12px;color:#065F46;line-height:1.5;text-align:center;}
+.scamed-form{max-width:640px;margin:16px auto 60px;padding:0 16px;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.label-hint{font-weight:400;color:var(--muted);font-size:11.5px;}
+.form-group select, .form-group input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:10px;
+padding:11px 13px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink);}
+.form-group select:focus, .form-group input:focus, .form-group textarea:focus{border-color:var(--gold);outline:none;}
+.checkbox-grid{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);background:#fff;
+border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;}
+.check-item input{width:16px;height:16px;flex-shrink:0;}
+.textarea-wrap{position:relative;}
+.textarea-wrap textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 40px 11px 13px;
+font-size:14px;font-family:inherit;resize:vertical;color:var(--ink);}
+.textarea-wrap #micBtn{position:absolute;right:8px;bottom:8px;background:var(--light);color:var(--ink);
+border:1.5px solid var(--border);border-radius:50%;width:30px;height:30px;padding:0;cursor:pointer;
+display:flex;align-items:center;justify-content:center;}
+.textarea-wrap #micBtn.listening{background:#DC2626;color:#fff;border-color:#DC2626;animation:pulse-mic 1.2s infinite;}
+#sendBtn{width:100%;background:linear-gradient(135deg,#1a2436,var(--navy));color:var(--gold-l);border:none;
+border-radius:14px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:4px;}
+#sendBtn:disabled{opacity:.5;}
 </style>
 </head>
 <body>
@@ -127,10 +140,10 @@ width:36px;height:36px;flex-shrink:0;font-size:15px;padding:0;cursor:pointer;dis
     </div>
   </div>
   <div class="hero-title">🛡️ Scam-Ed — Report a Scam</div>
-  <div class="hero-sub">Tell Durga Bro what happened. Don't share any names, phone numbers, or identifying details — just describe how it worked. You'll get legal remedy advice right away.</div>
+  <div class="hero-sub">Answer what you can below — Durga Bro will use it to give you real legal remedy advice right away.</div>
 </div>
 
-<div class="disclaimer">⚠️ AI-generated advice — not a substitute for professional legal advice. Your submission is anonymized and reviewed before it may appear in our public scam archive.</div>
+<div class="disclaimer">⚠️ AI-generated advice — not a substitute for professional legal advice.</div>
 
 <div class="lang-row">
   <button class="lang-btn active" id="qlangEn" onclick="setQLang('en')">EN</button>
@@ -138,23 +151,85 @@ width:36px;height:36px;flex-shrink:0;font-size:15px;padding:0;cursor:pointer;dis
   <button class="lang-btn" id="qlangHi" onclick="setQLang('hi')">हि</button>
 </div>
 
-<div class="privacy-note">🔒 Please don't include names, phone numbers, or addresses — describe the technique, not the person.</div>
+<div class="privacy-banner">🔒 This stays anonymous. We don't collect your name, contact details, or anything that could identify you — and we're not going to act on this or contact anyone about it. Your story is kept only to help educate others and improve scam detection. Nothing more.</div>
 
-<div class="chat-area" id="chatArea">
-  <div class="empty-hint">Describe what happened below — e.g. "Someone called claiming to be from my bank and asked for my OTP" or "I paid for a product online that never arrived."</div>
+<div class="scamed-form" id="scamedForm">
+  <div class="form-group">
+    <label>How were you first contacted?</label>
+    <select id="fContact">
+      <option value="">Select one</option>
+      <option>Phone Call</option>
+      <option>WhatsApp or SMS</option>
+      <option>Social Media</option>
+      <option>Email</option>
+      <option>Website or Online Ad</option>
+      <option>In-Person</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>What were they offering or claiming?</label>
+    <input type="text" id="fOffer" placeholder="e.g. weight loss supplements, investment returns" maxlength="200">
+  </div>
+
+  <div class="form-group">
+    <label>What did they ask you to do or pay?</label>
+    <select id="fAsk">
+      <option value="">Select one</option>
+      <option>Pay money upfront</option>
+      <option>Share OTP or bank details</option>
+      <option>Buy a product</option>
+      <option>Recruit other people</option>
+      <option>Share personal documents</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>What first made you suspect something was wrong?</label>
+    <input type="text" id="fSuspect" placeholder="e.g. they kept asking for more and more money" maxlength="300">
+  </div>
+
+  <div class="form-group">
+    <label>What did this cost you? <span class="label-hint">(select any that apply)</span></label>
+    <div class="checkbox-grid">
+      <label class="check-item"><input type="checkbox" class="fCost" value="Money" onchange="toggleMoneyRange()"> Money</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Time"> Time</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Trust or relationships"> Trust or relationships</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Emotional or mental wellbeing"> Emotional or mental wellbeing</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Personal safety or privacy"> Personal safety or privacy</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Hard to put into words"> Hard to put into words</label>
+      <label class="check-item"><input type="checkbox" class="fCost" value="Prefer not to say"> Prefer not to say</label>
+    </div>
+    <select id="fMoneyRange" style="display:none;margin-top:8px;">
+      <option value="">Roughly how much? (optional)</option>
+      <option>Under ₹5,000</option>
+      <option>₹5,000 – ₹50,000</option>
+      <option>₹50,000 – ₹5,00,000</option>
+      <option>Above ₹5,00,000</option>
+      <option>Prefer not to say</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Anything else you'd like to share? <span class="label-hint">(optional)</span></label>
+    <div class="textarea-wrap">
+      <textarea id="fExtra" placeholder="Any other detail that might help, or tap the mic to speak..." maxlength="800" rows="3"></textarea>
+      <button id="micBtn" onclick="togglelistening()" title="Speak">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 10V12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 19V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <button id="sendBtn" onclick="sendStory()">Submit Report</button>
 </div>
 
-<div class="input-bar">
-  <button id="micBtn" onclick="togglelistening()" title="Speak your story">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M19 10V12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M12 19V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <input type="text" id="storyInput" placeholder="Describe what happened..." maxlength="2000" onkeydown="if(event.key==='Enter')sendStory();">
-  <button id="sendBtn" onclick="sendStory()">Report</button>
-</div>
+<div class="chat-area" id="chatArea" style="display:none;"></div>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
 <script>
@@ -305,17 +380,35 @@ function removeLoading(){
 
 var reportSent = false;
 
+function toggleMoneyRange(){
+  var moneyChecked = document.querySelector('.fCost[value="Money"]').checked;
+  document.getElementById('fMoneyRange').style.display = moneyChecked ? 'block' : 'none';
+}
+
 function sendStory(){
   if (reportSent) return; // one report per page load, keeps the flow simple and matches "acknowledge, then done"
-  var input = document.getElementById('storyInput');
-  var story = input.value.trim();
-  if (!story) return;
+
+  var contact = document.getElementById('fContact').value;
+  var offer = document.getElementById('fOffer').value.trim();
+  var ask = document.getElementById('fAsk').value;
+  var suspect = document.getElementById('fSuspect').value.trim();
+  var costItems = Array.prototype.slice.call(document.querySelectorAll('.fCost:checked')).map(function(c){ return c.value; });
+  var moneyRange = document.getElementById('fMoneyRange').value;
+  var extra = document.getElementById('fExtra').value.trim();
+
+  // At minimum, need enough to actually understand the pattern — the rest
+  // is optional so nobody's blocked by a field they can't or don't want to answer.
+  if (!offer && !suspect && !extra) {
+    alert('Please fill in at least what they were offering, or what made you suspicious, or the "anything else" field.');
+    return;
+  }
 
   var sendBtn = document.getElementById('sendBtn');
   sendBtn.disabled = true;
-  input.disabled = true;
-  input.value = '';
-  addMessage(story, true);
+  document.getElementById('scamedForm').querySelectorAll('input,select,textarea,button').forEach(function(el){ el.disabled = true; });
+
+  var chatArea = document.getElementById('chatArea');
+  chatArea.style.display = 'block';
   addLoading();
 
   try { gtag('event', 'scam_ed_report_submitted', {lang: qlang}); } catch(e) {}
@@ -323,7 +416,16 @@ function sendStory(){
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-ed', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({story: story, lang: qlang})
+    body: JSON.stringify({
+      contact_method: contact,
+      offer_claim: offer,
+      ask_action: ask,
+      suspicion_trigger: suspect,
+      cost_items: costItems,
+      money_range: moneyRange,
+      extra_details: extra,
+      lang: qlang
+    })
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -332,17 +434,16 @@ function sendStory(){
         addMessage(data.answer, false);
         reportSent = true;
         sendBtn.textContent = 'Reported ✓';
+        document.getElementById('scamedForm').style.display = 'none';
       } else {
         addErrorMessage(data.error || 'unknown error');
-        sendBtn.disabled = false;
-        input.disabled = false;
+        document.getElementById('scamedForm').querySelectorAll('input,select,textarea,button').forEach(function(el){ el.disabled = false; });
       }
     })
     .catch(function(err){
       removeLoading();
       addErrorMessage(err);
-      sendBtn.disabled = false;
-      input.disabled = false;
+      document.getElementById('scamedForm').querySelectorAll('input,select,textarea,button').forEach(function(el){ el.disabled = false; });
     });
 }
 
@@ -375,7 +476,7 @@ function togglelistening(){
   };
   recognition.onresult = function(event){
     var transcript = event.results[0][0].transcript;
-    document.getElementById('storyInput').value = transcript;
+    document.getElementById('fExtra').value = transcript;
   };
   recognition.onerror = function(){
     isListening = false;
