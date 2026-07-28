@@ -37,13 +37,18 @@ h1{font-size:18px;margin-bottom:14px;}
 </div>
 
 <div id="modPanel" style="display:none;max-width:640px;margin:0 auto;">
-  <h1>🛡️ Pending Scam Reports</h1>
+  <h1>🛡️ Pending Scam Reports <a href="#" onclick="logout();return false;" style="font-size:11px;font-weight:400;float:right;color:var(--muted);">Log out</a></h1>
   <div id="status">Loading...</div>
   <div id="list"></div>
 </div>
 
 <script>
-var savedPassword = sessionStorage.getItem('scamedModPw') || '';
+var savedPassword = localStorage.getItem('scamedModPw') || '';
+
+function logout(){
+  localStorage.removeItem('scamedModPw');
+  location.reload();
+}
 
 function login(){
   var pw = document.getElementById('pwInput').value;
@@ -68,10 +73,10 @@ function fetchList(){
     .then(function(data){
       if (!data.ok) {
         document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
-        sessionStorage.removeItem('scamedModPw');
+        localStorage.removeItem('scamedModPw');
         return;
       }
-      sessionStorage.setItem('scamedModPw', savedPassword);
+      localStorage.setItem('scamedModPw', savedPassword);
       document.getElementById('loginBox').style.display = 'none';
       document.getElementById('modPanel').style.display = 'block';
       renderList(data.items);
