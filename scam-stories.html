@@ -18,6 +18,8 @@ nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .hero-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;}
 .cta-row{max-width:640px;margin:14px auto;padding:0 16px;}
+.privacy-explain{max-width:640px;margin:14px auto 0;padding:12px 16px;background:#FDF6DC;border:1px solid rgba(201,162,39,.35);
+border-radius:12px;font-size:12px;color:#7A5C00;line-height:1.55;}
 .cta-btn{display:block;text-align:center;background:var(--navy);color:var(--gold-l);font-weight:800;
 padding:12px;border-radius:12px;text-decoration:none;font-size:14px;}
 .filter-row{display:flex;overflow-x:auto;gap:8px;padding:0 16px 12px;max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -38,7 +40,11 @@ box-shadow:0 2px 10px rgba(0,0,0,.05);}
 .story-flags li{font-size:13px;color:#7A1F1F;background:#FEF2F2;padding:8px 10px;border-radius:8px;
 border-left:3px solid #DC2626;}
 .story-laws{display:flex;flex-wrap:wrap;gap:6px;}
-.law-chip{background:#EFF6FF;color:#1E40AF;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:12px;}
+.law-chip{background:#EFF6FF;color:#1E40AF;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:12px;
+text-decoration:none;cursor:pointer;}
+.law-chip:active{background:#DBEAFE;}
+.story-meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.story-ref{font-size:10.5px;color:var(--muted);}
 .story-prevalence{font-size:12.5px;color:#6B7280;font-style:italic;}
 .story-support{margin-top:14px;background:#F0F9F4;border:1px solid rgba(5,150,105,.3);border-radius:10px;
 padding:12px;font-size:13px;color:#065F46;line-height:1.5;}
@@ -53,6 +59,8 @@ padding:12px;font-size:13px;color:#065F46;line-height:1.5;}
   <div class="hero-title">🛡️ Scam Stories & Remedies</div>
   <div class="hero-sub">Real, anonymized scam patterns reported by our community — learn to recognize them.</div>
 </div>
+
+<div class="privacy-explain">🔒 <strong>Why no names are shown:</strong> every business, person, and identifying detail is deliberately removed before a story is published — both to protect the reporter's right to remain anonymous, and because we can't independently verify individual claims against a specific business or person. These stories describe patterns to help you recognize them, not accusations against anyone named.</div>
 
 <div class="cta-row">
   <a href="scam-ed.html" class="cta-btn">🛡️ Report a Scam You've Experienced →</a>
@@ -103,10 +111,24 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
+function formatStoryDate(iso){
+  if (!iso) return '';
+  try {
+    var d = new Date(iso);
+    return d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
+  } catch(e) { return ''; }
+}
+
 function renderStoryCard(s){
   var e = s.enrichment;
   var html = '<div class="story-card">';
+  html += '<div class="story-meta-row">';
   html += '<div class="story-cat">' + escapeHtml(s.category || 'Other') + '</div>';
+  var dateStr = formatStoryDate(s.approved_at || s.submitted_at);
+  if (dateStr || s.ref_number) {
+    html += '<div class="story-ref">' + (dateStr ? escapeHtml(dateStr) : '') + (s.ref_number ? ' · ' + escapeHtml(s.ref_number) : '') + '</div>';
+  }
+  html += '</div>';
   if (e && e.scam_type_label) {
     html += '<div class="story-type">🏷️ ' + escapeHtml(e.scam_type_label) + '</div>';
   }
@@ -123,7 +145,10 @@ function renderStoryCard(s){
   }
   if (e && e.relevant_laws && e.relevant_laws.length) {
     html += '<div class="story-section"><div class="story-section-title">⚖️ Relevant Laws</div>' +
-      '<div class="story-laws">' + e.relevant_laws.map(function(l){ return '<span class="law-chip">' + escapeHtml(l) + '</span>'; }).join('') + '</div></div>';
+      '<div class="story-laws">' + e.relevant_laws.map(function(l){
+        var url = 'https://www.indiacode.nic.in/search?search_text=' + encodeURIComponent(l);
+        return '<a href="' + url + '" target="_blank" rel="noopener" class="law-chip">' + escapeHtml(l) + ' ↗</a>';
+      }).join('') + '</div></div>';
   }
   if (e && e.prevalence_note) {
     html += '<div class="story-section"><div class="story-prevalence">📊 ' + escapeHtml(e.prevalence_note) + '</div></div>';
