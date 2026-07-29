@@ -41,11 +41,9 @@ font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);}
 
 <div id="loginBox">
   <h1>🛡️ Scam-Ed Moderation</h1>
-  <div style="font-size:10px;color:#9CA3AF;margin-bottom:8px;">Build: v4-diag</div>
   <input type="password" id="pwInput" placeholder="Moderator password" onkeydown="if(event.key==='Enter')login();">
   <button onclick="login()">Enter</button>
   <div id="loginError" style="color:#DC2626;font-size:12px;margin-top:8px;"></div>
-  <div id="debugLog" style="color:#9CA3AF;font-size:10px;margin-top:8px;white-space:pre-wrap;"></div>
 </div>
 
 <div id="modPanel" style="display:none;max-width:640px;margin:0 auto;">
@@ -74,6 +72,8 @@ function login(){
   fetchTab();
 }
 
+var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list_archived'};
+
 // Auto-login on page load if this browser session already has a working
 // password saved — avoids re-typing it on every refresh, which is the
 // whole point of a moderation workflow you'll come back to repeatedly.
@@ -88,13 +88,10 @@ function switchTab(tab){
   fetchTab();
 }
 
-var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list_archived'};
-
 var requestInFlight = false; // prevents two overlapping calls from stepping on each other's results
 
 function dlog(msg){
-  var el = document.getElementById('debugLog');
-  if (el) el.textContent += (new Date()).toLocaleTimeString() + ' — ' + msg + '\n';
+  try { console.log('[Scam-Ed Mod]', msg); } catch(e) {}
 }
 
 function fetchTab(){
