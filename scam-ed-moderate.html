@@ -41,9 +41,11 @@ font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);}
 
 <div id="loginBox">
   <h1>🛡️ Scam-Ed Moderation</h1>
+  <div style="font-size:10px;color:#9CA3AF;margin-bottom:8px;">Build: v4-diag</div>
   <input type="password" id="pwInput" placeholder="Moderator password" onkeydown="if(event.key==='Enter')login();">
   <button onclick="login()">Enter</button>
   <div id="loginError" style="color:#DC2626;font-size:12px;margin-top:8px;"></div>
+  <div id="debugLog" style="color:#9CA3AF;font-size:10px;margin-top:8px;white-space:pre-wrap;"></div>
 </div>
 
 <div id="modPanel" style="display:none;max-width:640px;margin:0 auto;">
@@ -90,59 +92,72 @@ var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list
 
 var requestInFlight = false; // prevents two overlapping calls from stepping on each other's results
 
+function dlog(msg){
+  var el = document.getElementById('debugLog');
+  if (el) el.textContent += (new Date()).toLocaleTimeString() + ' — ' + msg + '\n';
+}
+
 function fetchTab(){
-  if (requestInFlight) return;
-  requestInFlight = true;
-  document.getElementById('loginError').textContent = 'Connecting...';
+  try {
+    if (requestInFlight) { dlog('already in flight, skipped'); return; }
+    requestInFlight = true;
+    document.getElementById('loginError').textContent = 'Connecting...';
+    dlog('starting request, action=' + TAB_ACTIONS[currentTab]);
 
-  // A plain fetch() has NO default timeout — if it hangs for any reason
-  // (a network black hole, a stalled connection), it can sit unresolved
-  // forever, which is exactly what "Connecting..." staying forever means.
-  // This forces it to give up and show a real error after 8 seconds.
-  var controller = new AbortController();
-  var timeoutId = setTimeout(function(){ controller.abort(); }, 8000);
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function(){ dlog('8s timeout fired, aborting'); controller.abort(); }, 8000);
 
-  fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    signal: controller.signal,
-    body: JSON.stringify({password: savedPassword, action: TAB_ACTIONS[currentTab]})
-  })
-    .then(function(r){ clearTimeout(timeoutId); return r.json().then(function(data){ return {status: r.status, data: data}; }); })
-    .then(function(result){
-      requestInFlight = false;
-      var data = result.data;
-      if (!data.ok) {
-        // Only a genuine wrong-password response (401) means "log out" and
-        // clear the saved password. Anything else (a cold-start delay, a
-        // transient blip) just shows a clear, tappable retry — no
-        // automatic retry loop, since that risked overlapping with a
-        // manual login attempt and showing confusing, inconsistent state.
-        if (result.status === 401) {
-          localStorage.removeItem('scamedModPw');
-          document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
-        } else {
-          document.getElementById('loginError').innerHTML = (data.error || 'Could not load') +
-            ' — <a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
-        }
-        document.getElementById('loginBox').style.display = 'block';
-        document.getElementById('modPanel').style.display = 'none';
-        return;
-      }
-      localStorage.setItem('scamedModPw', savedPassword);
-      document.getElementById('loginError').textContent = '';
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('modPanel').style.display = 'block';
-      renderList(data.items);
+    dlog('calling fetch() now');
+    fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      signal: controller.signal,
+      body: JSON.stringify({password: savedPassword, action: TAB_ACTIONS[currentTab]})
     })
-    .catch(function(err){
-      clearTimeout(timeoutId);
-      requestInFlight = false;
-      var msg = (err && err.name === 'AbortError') ? 'Timed out — the server took too long to respond' : 'Could not reach the server';
-      document.getElementById('loginError').innerHTML = msg + ' — ' +
-        '<a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
-      document.getElementById('loginBox').style.display = 'block';
-    });
+      .then(function(r){
+        dlog('got HTTP response, status=' + r.status);
+        clearTimeout(timeoutId);
+        return r.json().then(function(data){ return {status: r.status, data: data}; });
+      })
+      .then(function(result){
+        dlog('parsed response body ok=' + result.data.ok);
+        requestInFlight = false;
+        var data = result.data;
+        if (!data.ok) {
+          if (result.status === 401) {
+            localStorage.removeItem('scamedModPw');
+            document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
+          } else {
+            document.getElementById('loginError').innerHTML = (data.error || 'Could not load') +
+              ' — <a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
+          }
+          document.getElementById('loginBox').style.display = 'block';
+          document.getElementById('modPanel').style.display = 'none';
+          return;
+        }
+        localStorage.setItem('scamedModPw', savedPassword);
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('modPanel').style.display = 'block';
+        renderList(data.items);
+      })
+      .catch(function(err){
+        dlog('fetch failed/aborted: ' + (err && err.name) + ' — ' + (err && err.message));
+        clearTimeout(timeoutId);
+        requestInFlight = false;
+        var msg = (err && err.name === 'AbortError') ? 'Timed out — the server took too long to respond' : 'Could not reach the server';
+        document.getElementById('loginError').innerHTML = msg + ' — ' +
+          '<a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
+        document.getElementById('loginBox').style.display = 'block';
+      });
+  } catch (syncErr) {
+    // Catches any synchronous error that would otherwise silently stop
+    // execution before the fetch even starts, which "Connecting..." never
+    // updating could also mean.
+    dlog('SYNC ERROR before fetch even started: ' + syncErr.message);
+    requestInFlight = false;
+    document.getElementById('loginError').textContent = 'Script error: ' + syncErr.message;
+  }
 }
 
 function renderList(items){
