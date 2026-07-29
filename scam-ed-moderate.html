@@ -95,12 +95,20 @@ function fetchTab(){
   requestInFlight = true;
   document.getElementById('loginError').textContent = 'Connecting...';
 
+  // A plain fetch() has NO default timeout — if it hangs for any reason
+  // (a network black hole, a stalled connection), it can sit unresolved
+  // forever, which is exactly what "Connecting..." staying forever means.
+  // This forces it to give up and show a real error after 8 seconds.
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function(){ controller.abort(); }, 8000);
+
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
+    signal: controller.signal,
     body: JSON.stringify({password: savedPassword, action: TAB_ACTIONS[currentTab]})
   })
-    .then(function(r){ return r.json().then(function(data){ return {status: r.status, data: data}; }); })
+    .then(function(r){ clearTimeout(timeoutId); return r.json().then(function(data){ return {status: r.status, data: data}; }); })
     .then(function(result){
       requestInFlight = false;
       var data = result.data;
@@ -127,9 +135,11 @@ function fetchTab(){
       document.getElementById('modPanel').style.display = 'block';
       renderList(data.items);
     })
-    .catch(function(){
+    .catch(function(err){
+      clearTimeout(timeoutId);
       requestInFlight = false;
-      document.getElementById('loginError').innerHTML = 'Could not reach the server — ' +
+      var msg = (err && err.name === 'AbortError') ? 'Timed out — the server took too long to respond' : 'Could not reach the server';
+      document.getElementById('loginError').innerHTML = msg + ' — ' +
         '<a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
       document.getElementById('loginBox').style.display = 'block';
     });
