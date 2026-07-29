@@ -76,7 +76,7 @@ function login(){
 // password saved — avoids re-typing it on every refresh, which is the
 // whole point of a moderation workflow you'll come back to repeatedly.
 if (savedPassword) {
-  fetchTab();
+  fetchTab(true, 0);
 }
 
 function switchTab(tab){
@@ -88,7 +88,8 @@ function switchTab(tab){
 
 var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list_archived'};
 
-function fetchTab(){
+function fetchTab(isAutoLoginAttempt, retryCount){
+  retryCount = retryCount || 0;
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -98,27 +99,40 @@ function fetchTab(){
     .then(function(result){
       var data = result.data;
       if (!data.ok) {
-        document.getElementById('loginError').textContent = data.error || 'Could not load — please try again.';
-        // Only a genuine wrong-password response (401) should clear the
-        // saved login. Any other failure — a cold-start delay, a transient
-        // network blip, a temporary server error — must NOT log the user
-        // out. Treating every failure as "wrong password" was exactly why
-        // a refresh during a slow moment kicked people back to login.
+        // Only a genuine wrong-password response (401) means "log out."
+        // Anything else — most likely a cold-start delay right after a
+        // backend deploy, or a transient blip — should retry automatically
+        // during the initial auto-login, rather than leave the login box
+        // sitting there looking like the saved session is gone.
         if (result.status === 401) {
           localStorage.removeItem('scamedModPw');
+          document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
           document.getElementById('loginBox').style.display = 'block';
           document.getElementById('modPanel').style.display = 'none';
+          return;
         }
+        if (isAutoLoginAttempt && retryCount < 4) {
+          document.getElementById('loginError').textContent = 'Reconnecting... (' + (retryCount + 1) + '/4)';
+          setTimeout(function(){ fetchTab(true, retryCount + 1); }, 1500);
+          return;
+        }
+        document.getElementById('loginError').textContent = data.error || 'Could not load — please try again.';
         return;
       }
       localStorage.setItem('scamedModPw', savedPassword);
+      document.getElementById('loginError').textContent = '';
       document.getElementById('loginBox').style.display = 'none';
       document.getElementById('modPanel').style.display = 'block';
       renderList(data.items);
     })
     .catch(function(){
-      // A network-level failure (couldn't even reach the server) is even
-      // less reason to log someone out — definitely keep the saved password.
+      // Couldn't even reach the server — same retry logic, since this is
+      // just as likely to be a transient blip as a real problem.
+      if (isAutoLoginAttempt && retryCount < 4) {
+        document.getElementById('loginError').textContent = 'Reconnecting... (' + (retryCount + 1) + '/4)';
+        setTimeout(function(){ fetchTab(true, retryCount + 1); }, 1500);
+        return;
+      }
       document.getElementById('loginError').textContent = 'Could not reach the server — please try again.';
     });
 }
