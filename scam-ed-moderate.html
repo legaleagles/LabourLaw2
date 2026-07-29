@@ -6,7 +6,7 @@
 <title>Scam-Ed Moderation | LawSticker AI</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
-:root{--navy:#0D1117;--gold:#C9A227;--cream:#FEFCF5;--ink:#111827;--border:#E5E7EB;--muted:#6B7280;}
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#F5D76E;--cream:#FEFCF5;--ink:#111827;--border:#E5E7EB;--muted:#6B7280;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);padding:16px;}
 h1{font-size:18px;margin-bottom:14px;}
@@ -23,8 +23,15 @@ h1{font-size:18px;margin-bottom:14px;}
 .card-actions button{flex:1;padding:9px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;}
 .btn-approve{background:#059669;color:#fff;}
 .btn-reject{background:#DC2626;color:#fff;}
+.btn-takedown{background:#B45309;color:#fff;}
+.btn-restore{background:#1D4ED8;color:#fff;}
 #status{font-size:12px;color:var(--muted);margin-bottom:14px;}
 .empty{text-align:center;color:var(--muted);padding:40px 20px;}
+.tab-row{display:flex;gap:8px;margin-bottom:14px;}
+.tab-btn{flex:1;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:9px;
+font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);}
+.tab-btn.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+.card-archived-note{font-size:11px;color:#B45309;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -37,13 +44,19 @@ h1{font-size:18px;margin-bottom:14px;}
 </div>
 
 <div id="modPanel" style="display:none;max-width:640px;margin:0 auto;">
-  <h1>🛡️ Pending Scam Reports <a href="#" onclick="logout();return false;" style="font-size:11px;font-weight:400;float:right;color:var(--muted);">Log out</a></h1>
+  <h1>🛡️ Scam-Ed Moderation <a href="#" onclick="logout();return false;" style="font-size:11px;font-weight:400;float:right;color:var(--muted);">Log out</a></h1>
+  <div class="tab-row">
+    <button class="tab-btn active" id="tabPending" onclick="switchTab('pending')">Pending</button>
+    <button class="tab-btn" id="tabPublished" onclick="switchTab('published')">Published</button>
+    <button class="tab-btn" id="tabArchived" onclick="switchTab('archived')">Archived</button>
+  </div>
   <div id="status">Loading...</div>
   <div id="list"></div>
 </div>
 
 <script>
 var savedPassword = localStorage.getItem('scamedModPw') || '';
+var currentTab = 'pending';
 
 function logout(){
   localStorage.removeItem('scamedModPw');
@@ -53,21 +66,30 @@ function logout(){
 function login(){
   var pw = document.getElementById('pwInput').value;
   savedPassword = pw;
-  fetchList();
+  fetchTab();
 }
 
 // Auto-login on page load if this browser session already has a working
 // password saved — avoids re-typing it on every refresh, which is the
 // whole point of a moderation workflow you'll come back to repeatedly.
 if (savedPassword) {
-  fetchList();
+  fetchTab();
 }
 
-function fetchList(){
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  fetchTab();
+}
+
+var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list_archived'};
+
+function fetchTab(){
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({password: savedPassword, action: 'list'})
+    body: JSON.stringify({password: savedPassword, action: TAB_ACTIONS[currentTab]})
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -89,12 +111,18 @@ function fetchList(){
 function renderList(items){
   var status = document.getElementById('status');
   var list = document.getElementById('list');
-  status.textContent = items.length + ' pending report(s)';
+  var labels = {pending: 'pending report(s)', published: 'published stor(y/ies)', archived: 'archived (taken-down) stor(y/ies)'};
+  status.textContent = items.length + ' ' + labels[currentTab];
   if (!items.length) {
-    list.innerHTML = '<div class="empty">Nothing pending right now.</div>';
+    var emptyMsgs = {pending: 'Nothing pending right now.', published: 'Nothing published yet.', archived: 'Nothing archived — anything taken down will appear here.'};
+    list.innerHTML = '<div class="empty">' + emptyMsgs[currentTab] + '</div>';
     return;
   }
-  list.innerHTML = items.map(function(item){
+  list.innerHTML = items.map(renderCard).join('');
+}
+
+function renderCard(item){
+  if (currentTab === 'pending') {
     return '<div class="card">' +
       '<div class="card-cat">' + escapeHtml(item.category || 'Uncategorized') + '</div>' +
       '<div class="card-title">' + escapeHtml(item.title || '(no title)') + '</div>' +
@@ -107,7 +135,28 @@ function renderList(items){
         '<button class="btn-reject" onclick="moderate(\'' + item.id + '\',\'reject\')">✕ Reject</button>' +
       '</div>' +
     '</div>';
-  }).join('');
+  }
+  if (currentTab === 'published') {
+    return '<div class="card">' +
+      '<div class="card-cat">' + escapeHtml(item.category || 'Uncategorized') + '</div>' +
+      (item.ref_number ? '<div class="card-label">' + escapeHtml(item.ref_number) + '</div>' : '') +
+      '<div class="card-title">' + escapeHtml(item.title || '') + '</div>' +
+      '<div class="card-story">' + escapeHtml(item.anonymized_story || '') + '</div>' +
+      '<div class="card-actions">' +
+        '<button class="btn-takedown" onclick="moderate(\'' + item.id + '\',\'takedown\')">🗄️ Take Down</button>' +
+      '</div>' +
+    '</div>';
+  }
+  // archived
+  return '<div class="card">' +
+    '<div class="card-cat">' + escapeHtml(item.category || 'Uncategorized') + '</div>' +
+    '<div class="card-archived-note">🗄️ Taken down ' + (item.taken_down_at ? escapeHtml(new Date(item.taken_down_at).toLocaleDateString()) : '') + ' — not visible on the public site</div>' +
+    '<div class="card-title">' + escapeHtml(item.title || '') + '</div>' +
+    '<div class="card-story">' + escapeHtml(item.anonymized_story || '') + '</div>' +
+    '<div class="card-actions">' +
+      '<button class="btn-restore" onclick="moderate(\'' + item.id + '\',\'restore\')">↩️ Restore to Public</button>' +
+    '</div>' +
+  '</div>';
 }
 
 function moderate(id, action){
@@ -118,7 +167,7 @@ function moderate(id, action){
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
-      if (data.ok) fetchList();
+      if (data.ok) fetchTab();
       else alert(data.error || 'Action failed.');
     });
 }
