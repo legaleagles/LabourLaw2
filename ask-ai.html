@@ -282,6 +282,20 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 var qlang = 'en';
+
+// Supports ?topic=scam_verify style links (used by homepage/stories page
+// links that used to point to a separate page) — jumps straight into the
+// chat with that topic pre-selected, matching what a dedicated page would
+// have felt like, without needing a separate page to maintain.
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var urlTopic = params.get('topic');
+  if (urlTopic === 'scam_verify') {
+    window.addEventListener('DOMContentLoaded', function(){
+      pickTopic('scam_verify', 'Check a Scam');
+    });
+  }
+})();
 var selectedTopic = null;
 
 var selectedTopicLabel = null;
