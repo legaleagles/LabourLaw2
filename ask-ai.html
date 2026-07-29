@@ -95,6 +95,18 @@ border-radius:10px;font-size:11.5px;color:#7A5C00;line-height:1.5;}
 .helpline-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11.5px;color:#065F46;}
 .helpline-row a{font-weight:800;color:#059669;text-decoration:none;}
 .msg-ai .msg-disclaimer{font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;}
+.scam-result-card{font-size:13.5px;line-height:1.55;}
+.risk-badge{display:inline-block;padding:7px 14px;border-radius:12px;font-weight:800;font-size:13px;margin-bottom:10px;}
+.risk-high{background:#FEF2F2;color:#B91C1C;border:1.5px solid #FECACA;}
+.risk-some{background:#FFFBEB;color:#B45309;border:1.5px solid #FDE68A;}
+.risk-low{background:#F0FDF4;color:#15803D;border:1.5px solid #BBF7D0;}
+.risk-unknown{background:#F3F4F6;color:#4B5563;border:1.5px solid var(--border);}
+.scam-result-section{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);}
+.scam-result-title{font-size:11px;font-weight:800;color:#6B7280;text-transform:uppercase;margin-bottom:6px;}
+.scam-result-flags{list-style:none;display:flex;flex-direction:column;gap:6px;padding:0;}
+.scam-result-flags li{font-size:12.5px;color:#7A1F1F;background:#FEF2F2;padding:7px 9px;border-radius:8px;border-left:3px solid #DC2626;}
+.scam-pattern-match{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:9px 11px;font-size:12px;color:#1E40AF;margin-top:12px;}
+.scam-pattern-match a{color:#1E40AF;font-weight:800;}
 .msg-loading{display:flex;gap:4px;padding:6px 0;}
 .msg-loading span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
 .msg-loading span:nth-child(2){animation-delay:.2s;}
@@ -206,7 +218,7 @@ font-size:11px;font-weight:700;padding:6px 12px;border-radius:12px;cursor:pointe
   <button class="topic-card" data-topic="llbsubjects" onclick="pickTopic('llbsubjects', 'LLB Subjects')"><span class="tc-icon">📚</span><span class="tc-label">LLB Subjects</span></button>
   <button class="topic-card" data-topic="calculators" onclick="pickTopic('calculators', 'Site Calculators')"><span class="tc-icon">🧮</span><span class="tc-label">Calculators</span></button>
   <a class="topic-card topic-card-external" href="scam-ed.html"><span class="tc-icon">🛡️</span><span class="tc-label">Report a Scam</span></a>
-  <a class="topic-card topic-card-external" href="scam-verify.html"><span class="tc-icon">🔍</span><span class="tc-label">Check a Scam</span></a>
+  <button class="topic-card topic-card-external" data-topic="scam_verify" onclick="pickTopic('scam_verify', 'Check a Scam')"><span class="tc-icon">🔍</span><span class="tc-label">Check a Scam</span></button>
 </div>
 
 <button class="skip-to-chat-btn" id="txtSkipBtn" onclick="skipToChat()">Just let me ask anything →</button>
@@ -304,7 +316,11 @@ function showChatScreen(topicLabel){
   var t = UI_TEXT[qlang] || UI_TEXT.en;
   document.getElementById('activeTopicLabel').textContent = topicLabel ? topicLabel : t.generalTopic;
   var input = document.getElementById('questionInput');
-  input.placeholder = topicLabel ? 'Ask about ' + topicLabel + '...' : 'Type your question...';
+  if (selectedTopic === 'scam_verify') {
+    input.placeholder = 'Describe the situation you\'re facing...';
+  } else {
+    input.placeholder = topicLabel ? 'Ask about ' + topicLabel + '...' : 'Type your question...';
+  }
   input.focus();
 }
 
@@ -669,9 +685,14 @@ function sendQuestion(){
     .then(function(data){
       removeLoading();
       if (data.ok) {
-        addMessage(data.answer, false);
-        lastExchange = {question: question, answer: data.answer};
-        trackAnsweredCategory(data.answer, selectedTopic);
+        if (data.result_type === 'scam_verify') {
+          addScamVerifyResult(data.result);
+          lastExchange = null; // risk-assessment results don't chain as normal follow-up context
+        } else {
+          addMessage(data.answer, false);
+          lastExchange = {question: question, answer: data.answer};
+          trackAnsweredCategory(data.answer, selectedTopic);
+        }
       } else {
         addErrorMessage(data.error || 'unknown error');
       }
@@ -682,6 +703,39 @@ function sendQuestion(){
       addErrorMessage(err);
       sendBtn.disabled = false;
     });
+}
+
+var SCAM_RISK_DISPLAY = {
+  'High Concern': {cls: 'risk-high', icon: '🚨'},
+  'Some Concern': {cls: 'risk-some', icon: '⚠️'},
+  'Low Concern': {cls: 'risk-low', icon: '✅'},
+  'Not Enough Information': {cls: 'risk-unknown', icon: '❓'}
+};
+
+function addScamVerifyResult(r){
+  var chatArea = document.getElementById('chatArea');
+  var hint = chatArea.querySelector('.empty-hint');
+  if (hint) hint.remove();
+
+  var disp = SCAM_RISK_DISPLAY[r.risk_level] || SCAM_RISK_DISPLAY['Not Enough Information'];
+  var html = '<div class="msg-bubble scam-result-card">';
+  html += '<div class="risk-badge ' + disp.cls + '">' + disp.icon + ' ' + escapeHtml(r.risk_level) + '</div>';
+  html += '<div>' + escapeHtml(r.reasoning || '') + '</div>';
+  if (r.red_flags_found && r.red_flags_found.length) {
+    html += '<div class="scam-result-section"><div class="scam-result-title">🚩 What Stood Out</div>' +
+      '<ul class="scam-result-flags">' + r.red_flags_found.map(function(f){ return '<li>' + escapeHtml(f) + '</li>'; }).join('') + '</ul></div>';
+  }
+  html += '<div class="scam-result-section"><div class="scam-result-title">💡 What To Do</div><div>' + escapeHtml(r.advice || '') + '</div></div>';
+  if (r.matches_known_pattern && r.matched_category) {
+    html += '<div class="scam-pattern-match">📋 This resembles previously reported cases — see <a href="scam-stories.html">Scam Stories</a> under "' + escapeHtml(r.matched_category) + '".</div>';
+  }
+  html += '</div>';
+
+  var msg = document.createElement('div');
+  msg.className = 'msg msg-ai';
+  msg.innerHTML = html;
+  chatArea.appendChild(msg);
+  window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
 }
 </script>
 </body>
