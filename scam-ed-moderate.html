@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scam-Ed Moderation | LawSticker AI</title>
 <meta name="robots" content="noindex, nofollow">
@@ -91,11 +94,21 @@ function fetchTab(){
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({password: savedPassword, action: TAB_ACTIONS[currentTab]})
   })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
+    .then(function(r){ return r.json().then(function(data){ return {status: r.status, data: data}; }); })
+    .then(function(result){
+      var data = result.data;
       if (!data.ok) {
-        document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
-        localStorage.removeItem('scamedModPw');
+        document.getElementById('loginError').textContent = data.error || 'Could not load — please try again.';
+        // Only a genuine wrong-password response (401) should clear the
+        // saved login. Any other failure — a cold-start delay, a transient
+        // network blip, a temporary server error — must NOT log the user
+        // out. Treating every failure as "wrong password" was exactly why
+        // a refresh during a slow moment kicked people back to login.
+        if (result.status === 401) {
+          localStorage.removeItem('scamedModPw');
+          document.getElementById('loginBox').style.display = 'block';
+          document.getElementById('modPanel').style.display = 'none';
+        }
         return;
       }
       localStorage.setItem('scamedModPw', savedPassword);
@@ -104,7 +117,9 @@ function fetchTab(){
       renderList(data.items);
     })
     .catch(function(){
-      document.getElementById('loginError').textContent = 'Could not reach the server.';
+      // A network-level failure (couldn't even reach the server) is even
+      // less reason to log someone out — definitely keep the saved password.
+      document.getElementById('loginError').textContent = 'Could not reach the server — please try again.';
     });
 }
 
