@@ -76,7 +76,7 @@ function login(){
 // password saved — avoids re-typing it on every refresh, which is the
 // whole point of a moderation workflow you'll come back to repeatedly.
 if (savedPassword) {
-  fetchTab(true, 0);
+  fetchTab();
 }
 
 function switchTab(tab){
@@ -88,8 +88,13 @@ function switchTab(tab){
 
 var TAB_ACTIONS = {pending: 'list', published: 'list_published', archived: 'list_archived'};
 
-function fetchTab(isAutoLoginAttempt, retryCount){
-  retryCount = retryCount || 0;
+var requestInFlight = false; // prevents two overlapping calls from stepping on each other's results
+
+function fetchTab(){
+  if (requestInFlight) return;
+  requestInFlight = true;
+  document.getElementById('loginError').textContent = 'Connecting...';
+
   fetch('https://lawsticker-backend-e5e1.vercel.app/api/scam-moderate', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -97,26 +102,23 @@ function fetchTab(isAutoLoginAttempt, retryCount){
   })
     .then(function(r){ return r.json().then(function(data){ return {status: r.status, data: data}; }); })
     .then(function(result){
+      requestInFlight = false;
       var data = result.data;
       if (!data.ok) {
-        // Only a genuine wrong-password response (401) means "log out."
-        // Anything else — most likely a cold-start delay right after a
-        // backend deploy, or a transient blip — should retry automatically
-        // during the initial auto-login, rather than leave the login box
-        // sitting there looking like the saved session is gone.
+        // Only a genuine wrong-password response (401) means "log out" and
+        // clear the saved password. Anything else (a cold-start delay, a
+        // transient blip) just shows a clear, tappable retry — no
+        // automatic retry loop, since that risked overlapping with a
+        // manual login attempt and showing confusing, inconsistent state.
         if (result.status === 401) {
           localStorage.removeItem('scamedModPw');
           document.getElementById('loginError').textContent = data.error || 'Incorrect password.';
-          document.getElementById('loginBox').style.display = 'block';
-          document.getElementById('modPanel').style.display = 'none';
-          return;
+        } else {
+          document.getElementById('loginError').innerHTML = (data.error || 'Could not load') +
+            ' — <a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
         }
-        if (isAutoLoginAttempt && retryCount < 4) {
-          document.getElementById('loginError').textContent = 'Reconnecting... (' + (retryCount + 1) + '/4)';
-          setTimeout(function(){ fetchTab(true, retryCount + 1); }, 1500);
-          return;
-        }
-        document.getElementById('loginError').textContent = data.error || 'Could not load — please try again.';
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('modPanel').style.display = 'none';
         return;
       }
       localStorage.setItem('scamedModPw', savedPassword);
@@ -126,14 +128,10 @@ function fetchTab(isAutoLoginAttempt, retryCount){
       renderList(data.items);
     })
     .catch(function(){
-      // Couldn't even reach the server — same retry logic, since this is
-      // just as likely to be a transient blip as a real problem.
-      if (isAutoLoginAttempt && retryCount < 4) {
-        document.getElementById('loginError').textContent = 'Reconnecting... (' + (retryCount + 1) + '/4)';
-        setTimeout(function(){ fetchTab(true, retryCount + 1); }, 1500);
-        return;
-      }
-      document.getElementById('loginError').textContent = 'Could not reach the server — please try again.';
+      requestInFlight = false;
+      document.getElementById('loginError').innerHTML = 'Could not reach the server — ' +
+        '<a href="#" onclick="fetchTab();return false;" style="color:var(--navy);font-weight:800;">Tap to retry</a>';
+      document.getElementById('loginBox').style.display = 'block';
     });
 }
 
