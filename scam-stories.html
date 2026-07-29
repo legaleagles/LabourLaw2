@@ -17,11 +17,20 @@ nav{background:rgba(13,17,23,.96);padding:10px 16px;}
 .hero{background:linear-gradient(135deg,#0D1117,#1a2436);padding:22px 20px;text-align:center;}
 .hero-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;}
-.cta-row{max-width:640px;margin:14px auto;padding:0 16px;}
+.cta-row{max-width:640px;margin:14px auto;padding:0 16px;display:flex;flex-direction:column;gap:8px;}
 .privacy-explain{max-width:640px;margin:14px auto 0;padding:12px 16px;background:#FDF6DC;border:1px solid rgba(201,162,39,.35);
 border-radius:12px;font-size:12px;color:#7A5C00;line-height:1.55;}
 .cta-btn{display:block;text-align:center;background:var(--navy);color:var(--gold-l);font-weight:800;
 padding:12px;border-radius:12px;text-decoration:none;font-size:14px;}
+.cta-btn-verify{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+.ranking-box{max-width:640px;margin:14px auto 0;padding:16px;background:linear-gradient(135deg,#1a1030,#2d1b4e);
+border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.15);}
+.rank-title{font-family:'Playfair Display',serif;font-weight:900;color:#F5D76E;font-size:15px;margin-bottom:10px;text-align:center;}
+.rank-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.rank-row:last-child{border-bottom:none;}
+.rank-num{font-family:'Playfair Display',serif;font-weight:900;color:#F5D76E;font-size:15px;width:24px;flex-shrink:0;}
+.rank-label{flex:1;color:#fff;font-size:12.5px;font-weight:600;}
+.rank-count{color:rgba(255,255,255,.55);font-size:11px;font-weight:700;flex-shrink:0;}
 .filter-row{display:flex;overflow-x:auto;gap:8px;padding:0 16px 12px;max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .filter-row::-webkit-scrollbar{display:none;}
 .filter-chip{flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:7px 14px;
@@ -62,8 +71,11 @@ padding:12px;font-size:13px;color:#065F46;line-height:1.5;}
 
 <div class="privacy-explain">🔒 <strong>Why no names are shown:</strong> every business, person, and identifying detail is deliberately removed before a story is published — both to protect the reporter's right to remain anonymous, and because we can't independently verify individual claims against a specific business or person. These stories describe patterns to help you recognize them, not accusations against anyone named.</div>
 
+<div class="ranking-box" id="rankingBox" style="display:none;"></div>
+
 <div class="cta-row">
   <a href="scam-ed.html" class="cta-btn">🛡️ Report a Scam You've Experienced →</a>
+  <a href="scam-verify.html" class="cta-btn cta-btn-verify">🔍 Check If Something Looks Like a Scam →</a>
 </div>
 
 <div class="filter-row" id="filterRow"></div>
@@ -80,12 +92,42 @@ fetch('scam-reports.json')
   .then(function(r){ return r.json(); })
   .then(function(data){
     ALL_STORIES = (data.entries || []).filter(function(e){ return e.status === 'approved'; }).reverse();
+    renderRanking();
     renderFilters();
     renderStories();
   })
   .catch(function(){
     document.getElementById('stories').innerHTML = '<div class="empty-state">Could not load stories right now.</div>';
   });
+
+function renderRanking(){
+  var rankBox = document.getElementById('rankingBox');
+  if (ALL_STORIES.length < 2) { rankBox.style.display = 'none'; return; }
+
+  // Group by the most specific pattern label available (enrichment's
+  // scam_type_label if the story has been enriched, falling back to the
+  // plain category) — this is how "repeated" scams actually get combined,
+  // computed live from the same data every visitor already fetches.
+  var counts = {};
+  ALL_STORIES.forEach(function(s){
+    var key = (s.enrichment && s.enrichment.scam_type_label) || s.category || 'Other';
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  var ranked = Object.keys(counts).map(function(k){ return {label: k, count: counts[k]}; })
+    .filter(function(r){ return r.count > 1; })
+    .sort(function(a, b){ return b.count - a.count; })
+    .slice(0, 5);
+
+  if (!ranked.length) { rankBox.style.display = 'none'; return; }
+
+  rankBox.style.display = 'block';
+  rankBox.innerHTML = '<div class="rank-title">🔥 Most Commonly Reported Patterns</div>' +
+    ranked.map(function(r, i){
+      return '<div class="rank-row"><span class="rank-num">#' + (i+1) + '</span>' +
+        '<span class="rank-label">' + escapeHtml(r.label) + '</span>' +
+        '<span class="rank-count">' + r.count + ' reports</span></div>';
+    }).join('');
+}
 
 function renderFilters(){
   var cats = ['all'];
