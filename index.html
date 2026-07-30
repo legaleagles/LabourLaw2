@@ -79,9 +79,6 @@ padding:5px 14px;border-radius:20px;margin-bottom:10px;backdrop-filter:blur(4px)
 .hero-tag{font-size:14px;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:4px;min-height:20px;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;max-width:440px;margin:0 auto 12px;}
 .hero-cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
-.search-divider{display:flex;align-items:center;gap:12px;max-width:420px;margin:0 auto 10px;padding:0 16px;}
-.search-divider-line{flex:1;height:1px;background:rgba(255,255,255,.14);}
-.search-divider-text{font-size:10px;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,.4);text-transform:uppercase;}
 .scroll-cue{margin:8px auto 0;width:22px;height:22px;opacity:.55;animation:cueBounce 1.8s ease-in-out infinite;cursor:pointer;}
 @keyframes cueBounce{0%,100%{transform:translateY(0);opacity:.55;}50%{transform:translateY(7px);opacity:.9;}}
 @media (prefers-reduced-motion:reduce){.scroll-cue{animation:none;}}
@@ -97,27 +94,6 @@ animation:rippleGrow .55s ease-out;pointer-events:none;}
 @keyframes rippleGrow{to{transform:scale(2.6);opacity:0;}}
 
 /* STATS STRIP */
-.search-wrap{position:relative;max-width:520px;margin:0 auto;padding:0 16px 6px;}
-.search-box{position:relative;display:flex;align-items:center;background:rgba(255,255,255,.08);
-border:1.5px solid rgba(245,215,110,.3);border-radius:14px;padding:0 14px;backdrop-filter:blur(6px);}
-.search-icon{font-size:15px;opacity:.7;flex-shrink:0;}
-.search-input{flex:1;background:transparent;border:none;outline:none;padding:13px 10px;
-font-family:inherit;font-size:13.5px;color:#fff;}
-.search-input::placeholder{color:rgba(255,255,255,.45);}
-.search-clear{background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;padding:4px 6px;display:none;}
-.search-clear.show{display:block;}
-.search-results{position:absolute;top:calc(100% + 6px);left:16px;right:16px;background:#fff;
-border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.22);overflow:hidden;z-index:250;display:none;max-height:400px;overflow-y:auto;}
-.search-results.show{display:block;}
-.search-result{display:flex;align-items:center;gap:11px;padding:12px 14px;text-decoration:none;
-border-bottom:1px solid var(--light);transition:background .15s;}
-.search-result:last-child{border-bottom:none;}
-.search-result:active{background:var(--gold-pale);}
-@media (hover:hover){.search-result:hover{background:var(--light);}}
-.search-result-icon{font-size:19px;width:32px;text-align:center;flex-shrink:0;}
-.search-result-name{font-size:12.5px;font-weight:800;color:var(--ink);}
-.search-result-desc{font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:1px;}
-.search-empty{padding:18px 14px;text-align:center;font-size:12px;color:var(--muted);}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--navy2);
 border-top:1px solid rgba(201,162,39,.2);padding:10px 10px;gap:4px;}
 .stat{text-align:center;border-right:1px solid rgba(255,255,255,.06);padding:2px 2px;}
@@ -555,21 +531,6 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="hero-cta-row">
     <a class="hero-cta primary" href="https://lawsticker-ai.com/rights-hub.html" id="ctaRights"></a>
     <a class="hero-cta ghost" href="https://lawsticker-ai.com/remedies-hub.html" id="ctaRemedies"></a>
-  </div>
-
-  <div class="search-divider">
-    <div class="search-divider-line"></div>
-    <div class="search-divider-text" id="searchDividerText">OR SEARCH DIRECTLY</div>
-    <div class="search-divider-line"></div>
-  </div>
-
-  <div class="search-wrap">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" class="search-input" id="siteSearchInput" placeholder="Search rights, tools, gimmicks..." autocomplete="off" oninput="runSiteSearch(this.value)">
-      <button class="search-clear" id="searchClearBtn" onclick="clearSiteSearch()">✕</button>
-    </div>
-    <div class="search-results" id="searchResults"></div>
   </div>
 
   <a href="#quiz" id="quizChip" style="display:none;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;border-radius:20px;background:rgba(245,215,110,.12);border:1px solid rgba(245,215,110,.4);color:#F5D76E;font-size:12px;font-weight:800;text-decoration:none;"></a>
@@ -1655,145 +1616,6 @@ document.addEventListener('DOMContentLoaded',function(){
     el.addEventListener('click', addRipple);
   });
 })();
-</script>
-<script>
-var CURATED_INDEX = [
-  {icon:'⚖️', title:'Rights Hub', desc:'64 rights across 13 areas of life', url:'rights-hub.html', kw:'rights hub know your rights all rights'},
-  {icon:'🛠️', title:'Remedies Hub', desc:'10 ways to enforce your rights — consumer court, RTI, FIR', url:'remedies-hub.html', kw:'remedies enforce complaint file rti fir consumer court ombudsman'},
-  {icon:'🧮', title:'Calculators', desc:'Court fees, GST, subsidies, deadlines & more', url:'calculators.html', kw:'calculators fees gst court fee limitation subsidy'},
-  {icon:'🎯', title:'Marketing Gimmicks Hub', desc:'Real sale tricks decoded, field by field', url:'gimmicks-hub.html', kw:'marketing gimmicks tricks scams shopping fraud'},
-  {icon:'🥻', title:'Saree & Ladies Wear Gimmicks', desc:'34 tricks, quality tests, shopping stories', url:'saree-shopping-checker.html', kw:'saree women wear clothing shopping tricks fabric silk zari kg sale'},
-  {icon:'🛒', title:'Groceries & Daily Essentials', desc:'22 tricks, FSSAI quality tests for milk, spices', url:'grocery-shopping-checker.html', kw:'grocery groceries milk shrinkflation weighment fssai adulteration daily essentials'},
-  {icon:'🏗️', title:'Real Estate Gimmicks', desc:'22 tricks on plots & apartments, RERA checks, cost calculator', url:'real-estate-checker.html', kw:'real estate plot apartment rera bhu bharati stamp duty registration property'},
-  {icon:'💳', title:'Loans & Credit Cards Gimmicks', desc:'22 tricks, flat-vs-real interest rate calculator', url:'loans-credit-checker.html', kw:'loan credit card interest rate flat reducing emi minimum due'},
-  {icon:'📱', title:'Social Media Scams', desc:'20 scams decoded, confidential reporting steps', url:'social-media-checker.html', kw:'social media scam instagram whatsapp fraud otp qr code phishing'},
-  {icon:'🔍', title:'Food Detective', desc:'9 kid stories on paneer, honey, oil, ice cream adulteration', url:'food-adulteration-checker.html', kw:'food adulteration paneer honey maggi noodles cool drinks ice cream kids stories fssai'},
-  {icon:'📇', title:'Daily Rights Cards', desc:'One shareable rights card a day', url:'rights-shorts.html', kw:'daily rights cards whatsapp status share'},
-  {icon:'🎓', title:'LAWCET Hub', desc:'Everything for LAWCET exam preparation', url:'lawcet.html', kw:'lawcet exam law entrance osmania'},
-  {icon:'🎯', title:'LAWCET Seat Predictor', desc:'Predict your college seat by rank', url:'seat_predictor.html', kw:'lawcet seat predictor rank college'},
-  {icon:'📊', title:'5-Year Seat Prediction', desc:'Historical LAWCET cutoff trends', url:'seat_predict_5y.html', kw:'lawcet seat prediction 5 year history cutoff'},
-  {icon:'🔮', title:'LAWCET Rank Predictor', desc:'Estimate your rank from marks', url:'lawcet_predict.html', kw:'lawcet rank predictor marks'},
-  {icon:'📘', title:'TG LAWCET Rank Guide', desc:'Complete rank & counselling guide', url:'tglawcetrank-guide.html', kw:'tg lawcet rank guide counselling telangana'},
-  {icon:'📝', title:'Mock Exams Hub', desc:'Timed practice tests for LLB subjects', url:'mock-hub.html', kw:'mock exam llb practice test'},
-  {icon:'⚖️', title:'AIBE Bar Exam Practice', desc:'Subject-wise mocks for All India Bar Exam', url:'aibe.html', kw:'aibe bar exam practice advocate'},
-  {icon:'🤝', title:'Free Legal Aid', desc:'NALSA & official legal help channels', url:'legal-help.html', kw:'free legal aid lawyer nalsa help'},
-  {icon:'✉️', title:'Letter Generator', desc:'RTI application & deposit demand letters', url:'letters.html', kw:'letter generator rti application deposit demand'},
-  {icon:'☀️', title:'Solar Subsidy Guide', desc:'PM Surya Ghar — your exact entitlement', url:'solar-legal.html', kw:'solar subsidy pm surya ghar net metering'},
-  {icon:'✈️', title:'Travel Rights', desc:'Flight, train & bus compensation rules', url:'travel-rights.html', kw:'travel rights flight train bus cancelled delayed compensation'},
-  {icon:'💼', title:'Employer Rights', desc:'Salary, termination, workplace issues', url:'rights-employment.html', kw:'employer employment salary job workplace termination rights'},
-  {icon:'🏠', title:'Landlord & Property Rights', desc:'Rent, deposit, builder disputes', url:'rights-property.html', kw:'landlord property rent deposit builder rights'},
-  {icon:'🏢', title:'Association & RWA Rights', desc:'Society fines, maintenance disputes', url:'rights-residents.html', kw:'association rwa society maintenance fine rights apartment'},
-  {icon:'🏥', title:'Hospital Rights', desc:'Medical negligence, billing disputes', url:'rights-health.html', kw:'hospital medical health negligence billing rights'},
-  {icon:'🚔', title:'Police & Personal Rights', desc:'Arrest, FIR, personal rights', url:'rights-personal.html', kw:'police arrest fir personal rights'},
-  {icon:'🏦', title:'Bank & Digital Rights', desc:'Banking disputes, digital fraud', url:'rights-digital.html', kw:'bank digital rights fraud online'},
-  {icon:'🛍️', title:'Shop & Consumer Rights', desc:'Seller disputes, defective goods', url:'rights-consumer.html', kw:'shop seller consumer rights defective goods refund'},
-  {icon:'🎓', title:'College & Student Rights', desc:'Fees, ragging, academic disputes', url:'rights-student.html', kw:'college student rights fees ragging academic'},
-  {icon:'⚡', title:'Electricity Board Rights', desc:'Billing disputes, connection issues', url:'rights-energy.html', kw:'electricity board rights billing connection power'},
-  {icon:'👨‍👩‍👧', title:'Family Matter Rights', desc:'Family disputes and legal rights', url:'rights-family.html', kw:'family matter rights dispute'}
-];
-
-var ABBR_MAP = {gst:'GST', rti:'RTI', fir:'FIR', lawcet:'LAWCET', aibe:'AIBE', pm:'PM', rwa:'RWA',
-  pdf:'PDF', qr:'QR', ipc:'IPC', cpc:'CPC', crpc:'CrPC', ipr:'IPR', pil:'PIL', adr:'ADR', tg:'TG',
-  llb:'LLB', calc:'Calculator', calculator:'Calculator', ios:'iOS', cl:'Company Law'};
-
-function humanizeSlug(slug){
-  var parts = slug.split('-');
-  var words = parts.map(function(w){
-    var lower = w.toLowerCase();
-    if (ABBR_MAP[lower]) return ABBR_MAP[lower];
-    return w.charAt(0).toUpperCase() + w.slice(1);
-  });
-  return words.join(' ');
-}
-
-var SEARCH_INDEX = CURATED_INDEX.slice();
-var curatedUrls = {};
-CURATED_INDEX.forEach(function(item){ curatedUrls[item.url] = true; });
-
-fetch('/sitemap.xml').then(function(r){ return r.text(); }).then(function(xmlText){
-  var parser = new DOMParser();
-  var xml = parser.parseFromString(xmlText, 'text/xml');
-  var locs = xml.getElementsByTagName('loc');
-  var autoItems = [];
-  for (var i = 0; i < locs.length; i++) {
-    var url = locs[i].textContent.replace('https://lawsticker-ai.com/', '');
-    if (!url || url === '/' || url.indexOf('.html') === -1) continue;
-    if (curatedUrls[url]) continue;
-    var slug = url.replace('.html', '');
-    autoItems.push({
-      icon: '📄',
-      title: humanizeSlug(slug),
-      desc: 'Explore this page on LawSticker AI',
-      url: url,
-      kw: slug.replace(/-/g, ' ')
-    });
-  }
-  SEARCH_INDEX = CURATED_INDEX.concat(autoItems);
-  var currentQuery = document.getElementById('siteSearchInput').value;
-  if (currentQuery.trim()) runSiteSearch(currentQuery);
-}).catch(function(e){
-  console.log('Sitemap search index unavailable, using curated list only.');
-});
-
-function runSiteSearch(query){
-  var resultsEl = document.getElementById('searchResults');
-  var clearBtn = document.getElementById('searchClearBtn');
-  var q = query.trim().toLowerCase();
-
-  clearBtn.classList.toggle('show', q.length > 0);
-
-  if (!q) {
-    resultsEl.classList.remove('show');
-    resultsEl.innerHTML = '';
-    return;
-  }
-
-  var qWords = q.split(/\s+/).filter(Boolean);
-  var scored = [];
-  SEARCH_INDEX.forEach(function(item){
-    var haystack = (item.title + ' ' + item.desc + ' ' + item.kw + ' ' + item.url).toLowerCase();
-    var allWordsMatch = qWords.every(function(w){ return haystack.indexOf(w) !== -1; });
-    if (!allWordsMatch) return;
-    var score = 0;
-    var titleLower = item.title.toLowerCase();
-    if (titleLower.indexOf(q) !== -1) score += 10;
-    if (titleLower.indexOf(qWords[0]) === 0) score += 5;
-    if (item.icon !== '📄') score += 3;
-    scored.push({item: item, score: score});
-  });
-  scored.sort(function(a, b){ return b.score - a.score; });
-  var matches = scored.map(function(s){ return s.item; }).slice(0, 7);
-
-  if (!matches.length) {
-    resultsEl.innerHTML = '<div class="search-empty">No results for "' + query.replace(/</g,'&lt;') + '" — try Rights Hub or Marketing Gimmicks.</div>';
-    resultsEl.classList.add('show');
-    return;
-  }
-
-  resultsEl.innerHTML = matches.map(function(item){
-    return '<a class="search-result" href="https://lawsticker-ai.com/' + item.url + '">' +
-      '<span class="search-result-icon">' + item.icon + '</span>' +
-      '<span><span class="search-result-name">' + item.title + '</span>' +
-      '<div class="search-result-desc">' + item.desc + '</div></span></a>';
-  }).join('');
-  resultsEl.classList.add('show');
-
-  try { gtag('event', 'site_search', {query: q}); } catch(e) {}
-}
-
-function clearSiteSearch(){
-  var input = document.getElementById('siteSearchInput');
-  input.value = '';
-  runSiteSearch('');
-  input.focus();
-}
-
-document.addEventListener('click', function(e){
-  var wrap = document.querySelector('.search-wrap');
-  if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('searchResults').classList.remove('show');
-  }
-});
 </script>
 <script>
 var SHARE_URL = 'https://lawsticker-ai.com/';
