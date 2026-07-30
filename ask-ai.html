@@ -107,6 +107,10 @@ border-radius:10px;font-size:11.5px;color:#7A5C00;line-height:1.5;}
 .scam-result-flags li{font-size:12.5px;color:#7A1F1F;background:#FEF2F2;padding:7px 9px;border-radius:8px;border-left:3px solid #DC2626;}
 .scam-pattern-match{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:9px 11px;font-size:12px;color:#1E40AF;margin-top:12px;}
 .scam-pattern-match a{color:#1E40AF;font-weight:800;}
+.scam-type-label{font-size:11.5px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.scam-verify-list li{color:#1E3A5F;background:#EFF6FF;border-left-color:#3B82F6;}
+.scam-law-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.scam-law-chip{background:#EFF6FF;color:#1E40AF;font-size:11px;font-weight:700;padding:5px 10px;border-radius:12px;text-decoration:none;}
 .msg-loading{display:flex;gap:4px;padding:6px 0;}
 .msg-loading span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
 .msg-loading span:nth-child(2){animation-delay:.2s;}
@@ -735,12 +739,39 @@ function addScamVerifyResult(r){
   var disp = SCAM_RISK_DISPLAY[r.risk_level] || SCAM_RISK_DISPLAY['Not Enough Information'];
   var html = '<div class="msg-bubble scam-result-card">';
   html += '<div class="risk-badge ' + disp.cls + '">' + disp.icon + ' ' + escapeHtml(r.risk_level) + '</div>';
+  if (r.scam_type_label) {
+    html += '<div class="scam-type-label">🏷️ ' + escapeHtml(r.scam_type_label) + '</div>';
+  }
   html += '<div>' + escapeHtml(r.reasoning || '') + '</div>';
+
   if (r.red_flags_found && r.red_flags_found.length) {
-    html += '<div class="scam-result-section"><div class="scam-result-title">🚩 What Stood Out</div>' +
+    html += '<div class="scam-result-section"><div class="scam-result-title">🚩 What Stood Out In Your Situation</div>' +
       '<ul class="scam-result-flags">' + r.red_flags_found.map(function(f){ return '<li>' + escapeHtml(f) + '</li>'; }).join('') + '</ul></div>';
   }
-  html += '<div class="scam-result-section"><div class="scam-result-title">💡 What To Do</div><div>' + escapeHtml(r.advice || '') + '</div></div>';
+
+  if (r.how_this_typically_works) {
+    html += '<div class="scam-result-section"><div class="scam-result-title">🎭 How This Pattern Typically Works</div>' +
+      '<div>' + escapeHtml(r.how_this_typically_works) + '</div></div>';
+  }
+
+  if (r.verification_steps && r.verification_steps.length) {
+    html += '<div class="scam-result-section"><div class="scam-result-title">🔍 What To Verify</div>' +
+      '<ul class="scam-result-flags scam-verify-list">' + r.verification_steps.map(function(v){ return '<li>' + escapeHtml(v) + '</li>'; }).join('') + '</ul></div>';
+  }
+
+  if (r.relevant_laws && r.relevant_laws.length) {
+    html += '<div class="scam-result-section"><div class="scam-result-title">⚖️ Relevant Laws</div>' +
+      '<div class="scam-law-chips">' + r.relevant_laws.map(function(l){
+        var url = 'https://www.google.com/search?q=' + encodeURIComponent(l + ' India Act text official');
+        return '<a href="' + url + '" target="_blank" rel="noopener" class="scam-law-chip">' + escapeHtml(l) + ' ↗</a>';
+      }).join('') + '</div></div>';
+  }
+
+  if (r.who_to_contact && r.who_to_contact.length) {
+    html += '<div class="scam-result-section"><div class="scam-result-title">📞 Who To Contact</div>' +
+      '<div>' + r.who_to_contact.map(escapeHtml).join(' · ') + '</div></div>';
+  }
+
   if (r.matches_known_pattern && r.matched_category) {
     html += '<div class="scam-pattern-match">📋 This resembles previously reported cases — see <a href="scam-stories.html">Scam Stories</a> under "' + escapeHtml(r.matched_category) + '".</div>';
   }
