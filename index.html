@@ -417,10 +417,12 @@ background:#1a1512;border-radius:0 0 40% 40%/0 0 100% 100%;}
 .ask-ai-promo-title{font-family:'Playfair Display',serif;font-weight:900;color:#F5D76E;font-size:15px;}
 .ask-ai-promo-sub{color:rgba(255,255,255,.65);font-size:11.5px;margin-top:2px;line-height:1.4;}
 .ask-ai-promo-arrow{color:#F5D76E;font-size:18px;flex-shrink:0;}
-.scamed-promo{background:linear-gradient(135deg,#7C1D1D,#450A0A);border-color:rgba(220,38,38,.4);margin-top:10px;}
-.scamed-promo-icon{width:38px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;}
-.scamverify-mini-link{display:block;text-align:center;margin-top:8px;padding:9px;font-size:12px;font-weight:700;
-color:var(--navy);background:#fff;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;}
+.scam-subrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;margin-bottom:20px;}
+.scam-subrow-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 10px;
+border-radius:14px;text-decoration:none;font-size:12.5px;font-weight:800;text-align:center;}
+.scam-subrow-icon{font-size:17px;}
+.scam-subrow-report{background:linear-gradient(135deg,#7C1D1D,#450A0A);color:#fff;border:1px solid rgba(220,38,38,.4);}
+.scam-subrow-check{background:linear-gradient(135deg,#0c2436,#0D1117);color:#7DD3FC;border:1px solid rgba(14,165,233,.35);}
 .news-ticker-card{background:linear-gradient(135deg,#0c2436,#0D1117);border:1px solid rgba(14,165,233,.35);
 border-radius:18px;padding:16px 18px;margin-bottom:20px;}
 .news-ticker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -603,7 +605,9 @@ gtag('config', 'G-TJXHVW6XCL');
 </div>
 
 <div class="page" style="padding-bottom:0;margin-bottom:10px;">
-  <!-- ASK AI PROMO -->
+  <!-- ASK AI PROMO — consolidated: Durga Bro as the clear main feature,
+       with Scam-Ed's two actions grouped visibly underneath it as part of
+       the same family, instead of three separate disconnected pieces -->
   <a href="ask-ai.html" class="ask-ai-promo">
     <div class="ask-ai-promo-avatar">
       <div class="ask-ai-promo-shoulders"></div>
@@ -621,15 +625,16 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="ask-ai-promo-arrow">→</div>
   </a>
 
-  <a href="scam-ed.html" class="ask-ai-promo scamed-promo">
-    <div class="scamed-promo-icon">🛡️</div>
-    <div class="ask-ai-promo-text">
-      <div class="ask-ai-promo-title" style="color:#fff;">Report a Scam</div>
-      <div class="ask-ai-promo-sub">Anonymous, no names collected — get real legal advice instantly</div>
-    </div>
-    <div class="ask-ai-promo-arrow">→</div>
-  </a>
-  <a href="ask-ai.html?topic=scam_verify" class="scamverify-mini-link">🔍 Not sure if something's a scam? Check it here →</a>
+  <div class="scam-subrow">
+    <a href="scam-ed.html" class="scam-subrow-btn scam-subrow-report">
+      <span class="scam-subrow-icon">🛡️</span>
+      <span class="scam-subrow-label">Report a Scam</span>
+    </a>
+    <a href="ask-ai.html?topic=scam_verify" class="scam-subrow-btn scam-subrow-check">
+      <span class="scam-subrow-icon">🔍</span>
+      <span class="scam-subrow-label">Check a Scam</span>
+    </a>
+  </div>
 
   <!-- NEWS — EXPANDED -->
   <div class="news-ticker-card" id="newsTickerCard" style="display:none;">
@@ -843,35 +848,18 @@ gtag('config', 'G-TJXHVW6XCL');
     <span class="study-arr">→</span>
   </a>
 
-  <!-- EXPLORE EVERYTHING -->
+  <!-- EXPLORE EVERYTHING — trimmed from 6 cards to 2. Rights, Remedies,
+       Rights Shorts, and Calculators are already one tap away on every
+       page via the persistent bottom nav, so keeping full-size duplicate
+       cards for them here was pure redundancy, not real discoverability. -->
   <div class="sec-eyebrow" id="hubEyebrow"></div>
   <div class="sec-title" id="hubTitle"></div>
   <div class="sec-sub" id="hubSub"></div>
   <div class="hub-grid reveal">
-    <a class="hub-card" href="https://lawsticker-ai.com/rights-hub.html">
-      <div class="hub-card-icon">⚖️</div>
-      <div class="hub-card-name" id="hub1n"></div>
-      <div class="hub-card-desc" id="hub1d"></div>
-    </a>
-    <a class="hub-card" href="https://lawsticker-ai.com/remedies-hub.html">
-      <div class="hub-card-icon">🛠️</div>
-      <div class="hub-card-name" id="hub2n"></div>
-      <div class="hub-card-desc" id="hub2d"></div>
-    </a>
-    <a class="hub-card" href="https://lawsticker-ai.com/calculators.html">
-      <div class="hub-card-icon">🧮</div>
-      <div class="hub-card-name" id="hub3n"></div>
-      <div class="hub-card-desc" id="hub3d"></div>
-    </a>
     <a class="hub-card" href="https://lawsticker-ai.com/gimmicks-hub.html">
       <div class="hub-card-icon">🎯</div>
       <div class="hub-card-name" id="hub4n"></div>
       <div class="hub-card-desc" id="hub4d"></div>
-    </a>
-    <a class="hub-card" href="https://lawsticker-ai.com/rights-shorts.html">
-      <div class="hub-card-icon">📇</div>
-      <div class="hub-card-name" id="hub5n"></div>
-      <div class="hub-card-desc" id="hub5d"></div>
     </a>
     <a class="hub-card" href="https://lawsticker-ai.com/lawcet.html">
       <div class="hub-card-icon">🎓</div>
@@ -977,7 +965,7 @@ const UI={
   tBadge:'💡 TODAY\'S RIGHT',tCta:'📇 Get today\'s shareable card →',
   fEye:'BUILT FOR REAL LIFE',fTitle:'Tools You Won\'t Find Anywhere Else',fSub:'',
   f9n:'Marketing Gimmicks Hub',f9d:'Real sale tricks decoded, field by field — starting with saree & women\'s wear. Tap to spot, no math needed.',
-  hubEyebrow:'EXPLORE EVERYTHING',hubTitle:'One Site, Every Tool',hubSub:'Rights, remedies, calculators, and gimmick-decoders — all free, all in your language.',
+  hubEyebrow:'ALSO ON THE SITE',hubTitle:'Marketing Tricks & LAWCET',hubSub:'Rights, remedies, and calculators are always one tap away in the bottom menu below.',
   hub1n:'Rights Hub',hub1d:'64 rights, 13 life areas',hub2n:'Remedies Hub',hub2d:'10 ways to enforce them',hub3n:'Calculators',hub3d:'Fees, GST, subsidies & more',hub4n:'Marketing Gimmicks',hub4d:'34+ tricks decoded, 6 categories',hub5n:'Daily Rights Cards',hub5d:'One shareable card a day',hub6n:'LAWCET Tools',hub6d:'Predictors, rank guide & mocks',
   shareT:'Found This Useful?',shareS:'Share LawSticker AI with someone who needs it — WhatsApp, Instagram, X, Facebook, wherever.',shareBtnLabel:'Share LawSticker AI',
   searchDividerText:'OR SEARCH DIRECTLY',
@@ -1012,7 +1000,7 @@ const UI={
   tBadge:'💡 నేటి హక్కు',tCta:'📇 నేటి షేర్ కార్డు పొందండి →',
   fEye:'నిజ జీవితం కోసం నిర్మించబడింది',fTitle:'మరెక్కడా దొరకని సాధనాలు',fSub:'',
   f9n:'మార్కెటింగ్ గిమ్మిక్ హబ్',f9d:'నిజమైన సేల్ ట్రిక్‌లు వివరించబడ్డాయి — చీర & మహిళల దుస్తులతో మొదలు.',
-  hubEyebrow:'అన్నీ అన్వేషించండి',hubTitle:'ఒకే సైట్, ప్రతి సాధనం',hubSub:'హక్కులు, పరిష్కారాలు, కాలిక్యులేటర్లు, గిమ్మిక్-డీకోడర్లు — అన్నీ ఉచితం, మీ భాషలో.',
+  hubEyebrow:'సైట్‌లో మరిన్ని',hubTitle:'మార్కెటింగ్ ట్రిక్స్ & LAWCET',hubSub:'హక్కులు, పరిష్కారాలు, కాలిక్యులేటర్లు ఎల్లప్పుడూ దిగువ మెనూలో ఒక ట్యాప్ దూరంలో ఉన్నాయి.',
   hub1n:'హక్కుల హబ్',hub1d:'64 హక్కులు, 13 జీవిత రంగాలు',hub2n:'పరిష్కారాల హబ్',hub2d:'వాటిని అమలు చేయడానికి 10 మార్గాలు',hub3n:'కాలిక్యులేటర్లు',hub3d:'ఫీజులు, GST, సబ్సిడీలు మరియు మరిన్ని',hub4n:'మార్కెటింగ్ గిమ్మిక్‌లు',hub4d:'34+ ట్రిక్‌లు వివరించబడ్డాయి, 6 వర్గాలు',hub5n:'రోజువారీ హక్కుల కార్డులు',hub5d:'రోజుకో షేర్ కార్డు',hub6n:'LAWCET సాధనాలు',hub6d:'ప్రిడిక్టర్లు, ర్యాంక్ గైడ్ & మాక్‌లు',
   shareT:'ఇది ఉపయోగకరంగా అనిపించిందా?',shareS:'దీన్ని అవసరమైన వారితో షేర్ చేయండి — WhatsApp, Instagram, X, Facebook, ఎక్కడైనా.',shareBtnLabel:'LawSticker AI షేర్ చేయండి',
   searchDividerText:'లేదా నేరుగా వెతకండి',
@@ -1047,7 +1035,7 @@ const UI={
   tBadge:'💡 आज का अधिकार',tCta:'📇 आज का शेयर कार्ड पाएं →',
   fEye:'वास्तविक जीवन के लिए',fTitle:'ऐसे टूल जो कहीं और नहीं मिलेंगे',fSub:'',
   f9n:'मार्केटिंग गिमिक हब',f9d:'असली सेल ट्रिक्स समझाई गईं, भाग दर भाग — साड़ी और महिलाओं के कपड़े से शुरू।',
-  hubEyebrow:'सब कुछ खोजें',hubTitle:'एक साइट, हर टूल',hubSub:'अधिकार, उपाय, कैलकुलेटर, और गिमिक-डिकोडर — सब मुफ़्त, आपकी भाषा में।',
+  hubEyebrow:'साइट पर और भी',hubTitle:'मार्केटिंग ट्रिक्स और LAWCET',hubSub:'अधिकार, उपाय, और कैलकुलेटर हमेशा नीचे मेनू में एक टैप दूर हैं।',
   hub1n:'अधिकार हब',hub1d:'64 अधिकार, 13 जीवन क्षेत्र',hub2n:'उपाय हब',hub2d:'लागू करने के 10 तरीके',hub3n:'कैलकुलेटर',hub3d:'फीस, GST, सब्सिडी और अधिक',hub4n:'मार्केटिंग गिमिक',hub4d:'34+ ट्रिक्स समझाई गईं, 6 श्रेणियां',hub5n:'दैनिक अधिकार कार्ड',hub5d:'रोज़ एक शेयर कार्ड',hub6n:'LAWCET टूल्स',hub6d:'प्रेडिक्टर, रैंक गाइड और मॉक',
   shareT:'यह उपयोगी लगा?',shareS:'इसे किसी ऐसे व्यक्ति के साथ शेयर करें जिसे इसकी ज़रूरत है — WhatsApp, Instagram, X, Facebook, कहीं भी।',shareBtnLabel:'LawSticker AI शेयर करें',
   searchDividerText:'या सीधे खोजें',
