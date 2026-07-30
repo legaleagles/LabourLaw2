@@ -689,6 +689,28 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="page">
 
+  <!-- DID YOU KNOW — rotating facts, zero backend cost, pure client-side -->
+  <div class="dyk reveal" id="dyk">
+    <div class="dyk-badge" id="dykBadge"></div>
+    <div class="dyk-fact" id="dykFact"></div>
+    <a class="dyk-cta" id="dykCta" href="#"></a>
+    <div class="dyk-dots" id="dykDots"></div>
+  </div>
+
+  <!-- DAILY QUIZ (NEW) — reads a pre-generated cached file, same pattern as
+       the news ticker. Gemini runs once a day via cron, never on page load. -->
+  <div class="nquiz reveal" id="nquiz" style="display:none;">
+    <div class="nquiz-top">
+      <span class="nquiz-badge" id="nqBadge"></span>
+    </div>
+    <div class="nquiz-q" id="nqQ"></div>
+    <div class="nquiz-opts" id="nqOpts"></div>
+    <div class="nquiz-reveal" id="nqReveal">
+      <div class="nquiz-verdict" id="nqVerdict"></div>
+      <div class="nquiz-expl" id="nqExpl"></div>
+    </div>
+  </div>
+
   <!-- DAILY QUIZ -->
   <div class="quiz reveal" id="quiz">
     <div class="quiz-top">
@@ -729,28 +751,6 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="today-actions">
       <button class="today-share" onclick="shareToday()" id="tShare"></button>
       <a class="today-cta" href="https://lawsticker-ai.com/rights-shorts.html" id="tCta" style="justify-content:center;"></a>
-    </div>
-  </div>
-
-  <!-- DID YOU KNOW — rotating facts, zero backend cost, pure client-side -->
-  <div class="dyk reveal" id="dyk">
-    <div class="dyk-badge" id="dykBadge"></div>
-    <div class="dyk-fact" id="dykFact"></div>
-    <a class="dyk-cta" id="dykCta" href="#"></a>
-    <div class="dyk-dots" id="dykDots"></div>
-  </div>
-
-  <!-- DAILY QUIZ (NEW) — reads a pre-generated cached file, same pattern as
-       the news ticker. Gemini runs once a day via cron, never on page load. -->
-  <div class="nquiz reveal" id="nquiz" style="display:none;">
-    <div class="nquiz-top">
-      <span class="nquiz-badge" id="nqBadge"></span>
-    </div>
-    <div class="nquiz-q" id="nqQ"></div>
-    <div class="nquiz-opts" id="nqOpts"></div>
-    <div class="nquiz-reveal" id="nqReveal">
-      <div class="nquiz-verdict" id="nqVerdict"></div>
-      <div class="nquiz-expl" id="nqExpl"></div>
     </div>
   </div>
 
@@ -898,23 +898,16 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <div class="pulse-strip" id="pulseStrip">
     <div class="pulse-item"><div class="pulse-n"><span class="pulse-dot"></span><span id="pulseBadges">—</span></div><div class="pulse-l" id="pulseBadgesLabel"></div></div>
-    <div class="pulse-item"><div class="pulse-n"><span id="pulseTricks">—</span></div><div class="pulse-l" id="pulseTricksLabel"></div></div>
   </div>
 
-  <!-- FOOD DETECTIVE QUEST -->
-  <div class="fd-teaser">
-    <div class="fd-teaser-badge">🕵️ <span id="fdTeaserBadge"></span></div>
-    <div class="fd-teaser-t" id="fdTeaserT"></div>
-    <div class="fd-teaser-s" id="fdTeaserS"></div>
-    <div class="fd-teaser-stats">
-      <div class="fd-teaser-stat"><b>9</b><span id="fdStat1"></span></div>
-      <div class="fd-teaser-stat"><b>3</b><span id="fdStat2"></span></div>
-      <div class="fd-teaser-stat"><b>🏆</b><span id="fdStat3"></span></div>
-    </div>
-    <a class="fd-teaser-btn" href="https://lawsticker-ai.com/food-adulteration-checker.html">
-      <span id="fdTeaserBtn"></span><span>→</span>
-    </a>
-  </div>
+  <!-- FOOD DETECTIVE QUEST — shrunk from a full banner to a compact strip;
+       real usage data showed only 4 completions ever despite a dedicated
+       banner, so this no longer gets prime homepage real estate -->
+  <a class="study-strip" href="https://lawsticker-ai.com/food-adulteration-checker.html">
+    <span class="study-icon">🕵️</span>
+    <span><span class="study-name" id="fdTeaserT"></span><br><span class="study-desc" id="fdTeaserS"></span></span>
+    <span class="study-arr">→</span>
+  </a>
 
   <!-- DAILY RIGHTS → INSTAGRAM STORY -->
   <div class="ig-teaser">
@@ -1924,7 +1917,6 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
   .then(function(data){
     if (data && data.ok) {
       document.getElementById('pulseBadges').textContent = data.badges_total.toLocaleString('en-IN');
-      document.getElementById('pulseTricks').textContent = data.tricks_total.toLocaleString('en-IN');
       document.getElementById('pulseStrip').classList.add('show');
     }
   })
