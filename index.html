@@ -163,7 +163,8 @@ text-align:center;text-decoration:none;transition:all .2s;}
 .sit-name{font-size:10.5px;font-weight:800;color:var(--ink);line-height:1.3;}
 
 /* TODAY'S RIGHT */
-.today{background:linear-gradient(135deg,var(--navy),#1a2436);border-radius:20px;padding:22px 20px;
+.today{display:none;}
+.today-old-unused{background:linear-gradient(135deg,var(--navy),#1a2436);border-radius:20px;padding:22px 20px;
 margin-bottom:30px;position:relative;overflow:hidden;border:1px solid rgba(201,162,39,.3);}
 .today::before{pointer-events:none;content:'💡';position:absolute;right:-15px;bottom:-20px;font-size:120px;opacity:.07;}
 .today-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:9px;font-weight:900;
@@ -251,7 +252,42 @@ padding:0 26px;position:relative;}
 
 
 /* DAILY QUIZ */
-.quiz{background:#fff;border:2px solid var(--gold);border-radius:20px;padding:20px 18px;
+.quiz{display:none;}
+/* DID YOU KNOW — NEW */
+.dyk{background:linear-gradient(135deg,#1a1030,#2d1b4e);border-radius:20px;padding:22px 20px;
+margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(45,27,78,.25);}
+.dyk::before{pointer-events:none;content:'💡';position:absolute;right:-10px;top:-15px;font-size:100px;opacity:.08;}
+.dyk-badge{display:inline-block;background:var(--gold-l);color:#1a1030;font-size:9px;font-weight:900;
+letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px;}
+.dyk-fact{font-size:15px;font-weight:700;color:#fff;line-height:1.6;margin-bottom:14px;
+transition:opacity .3s;min-height:72px;}
+.dyk-cta{display:inline-flex;align-items:center;gap:6px;background:rgba(245,215,110,.15);
+border:1px solid rgba(245,215,110,.4);color:var(--gold-l);font-size:12px;font-weight:800;
+padding:9px 16px;border-radius:10px;text-decoration:none;}
+.dyk-dots{display:flex;gap:5px;margin-top:14px;}
+.dyk-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:background .3s;}
+.dyk-dot.active{background:var(--gold-l);}
+
+/* DAILY QUIZ — NEW, cached */
+.nquiz{background:#fff;border:2px solid var(--gold);border-radius:20px;padding:20px 18px;
+margin-bottom:30px;box-shadow:0 4px 16px rgba(201,162,39,.1);}
+.nquiz-top{display:flex;align-items:center;margin-bottom:12px;}
+.nquiz-badge{background:var(--navy);color:var(--gold-l);font-size:9px;font-weight:900;
+letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:10px;}
+.nquiz-q{font-size:15.5px;font-weight:800;color:var(--ink);line-height:1.5;margin-bottom:14px;}
+.nquiz-opts{display:flex;flex-direction:column;gap:8px;}
+.nquiz-opt{background:var(--light);border:2px solid var(--border);border-radius:12px;
+padding:12px 14px;font-size:13px;font-weight:700;text-align:left;cursor:pointer;color:var(--ink);}
+.nquiz-opt:active{transform:scale(.98);}
+.nquiz-opt.correct{background:var(--jade-bg);border-color:var(--jade);}
+.nquiz-opt.wrong{background:#FEF2F2;border-color:var(--rose);}
+.nquiz-opt:disabled{cursor:default;opacity:.85;}
+.nquiz-reveal{display:none;margin-top:14px;}
+.nquiz-reveal.show{display:block;}
+.nquiz-verdict{font-size:14px;font-weight:900;margin-bottom:6px;}
+.nquiz-expl{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+
+.quiz-old-unused{background:#fff;border:2px solid var(--gold);border-radius:20px;padding:20px 18px;
 margin-bottom:30px;box-shadow:0 6px 24px rgba(201,162,39,.15);}
 .quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .quiz-badge{background:var(--navy);color:var(--gold-l);font-size:9px;font-weight:900;
@@ -400,6 +436,12 @@ display:block;transition:opacity .4s;}
 .news-ticker-bottom{display:flex;justify-content:flex-end;margin-top:10px;}
 .news-ticker-link{font-size:11px;font-weight:800;color:#38BDF8;text-decoration:none;}
 .news-ticker-empty{color:rgba(255,255,255,.4);font-size:12px;}
+.news-list{display:flex;flex-direction:column;gap:11px;}
+.news-item{display:block;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:11px;}
+.news-item:last-child{border-bottom:none;padding-bottom:0;}
+.news-item-cat{font-size:9px;font-weight:800;color:#38BDF8;background:rgba(14,165,233,.14);
+padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px;display:inline-block;margin-bottom:5px;}
+.news-item-title{color:#fff;font-size:13px;font-weight:700;line-height:1.5;display:block;}
 .ig-teaser{position:relative;border-radius:20px;padding:2px;margin-bottom:20px;
 background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);
 background-size:300% 300%;animation:igShimmer 6s ease infinite;overflow:hidden;}
@@ -547,7 +589,7 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="search-results" id="searchResults"></div>
   </div>
 
-  <a href="#quiz" id="quizChip" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;border-radius:20px;background:rgba(245,215,110,.12);border:1px solid rgba(245,215,110,.4);color:#F5D76E;font-size:12px;font-weight:800;text-decoration:none;"></a>
+  <a href="#quiz" id="quizChip" style="display:none;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;border-radius:20px;background:rgba(245,215,110,.12);border:1px solid rgba(245,215,110,.4);color:#F5D76E;font-size:12px;font-weight:800;text-decoration:none;"></a>
   <svg class="scroll-cue" id="scrollCue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="#F5D76E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
@@ -589,15 +631,12 @@ gtag('config', 'G-TJXHVW6XCL');
   </a>
   <a href="ask-ai.html?topic=scam_verify" class="scamverify-mini-link">🔍 Not sure if something's a scam? Check it here →</a>
 
-  <!-- NEWS TICKER -->
+  <!-- NEWS — EXPANDED -->
   <div class="news-ticker-card" id="newsTickerCard" style="display:none;">
     <div class="news-ticker-top">
       <div class="news-ticker-live"><span class="pulse-dot"></span><span id="newsTickerLiveLabel"></span></div>
-      <div class="news-ticker-cat" id="newsTickerCat">Regional</div>
     </div>
-    <div class="news-ticker-headline">
-      <a href="news.html" id="newsTickerLink"></a>
-    </div>
+    <div class="news-list" id="newsList"></div>
     <div class="news-ticker-bottom">
       <a class="news-ticker-link" href="https://lawsticker-ai.com/news.html" id="newsTickerSeeAll"></a>
     </div>
@@ -690,6 +729,28 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="today-actions">
       <button class="today-share" onclick="shareToday()" id="tShare"></button>
       <a class="today-cta" href="https://lawsticker-ai.com/rights-shorts.html" id="tCta" style="justify-content:center;"></a>
+    </div>
+  </div>
+
+  <!-- DID YOU KNOW — rotating facts, zero backend cost, pure client-side -->
+  <div class="dyk reveal" id="dyk">
+    <div class="dyk-badge" id="dykBadge"></div>
+    <div class="dyk-fact" id="dykFact"></div>
+    <a class="dyk-cta" id="dykCta" href="#"></a>
+    <div class="dyk-dots" id="dykDots"></div>
+  </div>
+
+  <!-- DAILY QUIZ (NEW) — reads a pre-generated cached file, same pattern as
+       the news ticker. Gemini runs once a day via cron, never on page load. -->
+  <div class="nquiz reveal" id="nquiz" style="display:none;">
+    <div class="nquiz-top">
+      <span class="nquiz-badge" id="nqBadge"></span>
+    </div>
+    <div class="nquiz-q" id="nqQ"></div>
+    <div class="nquiz-opts" id="nqOpts"></div>
+    <div class="nquiz-reveal" id="nqReveal">
+      <div class="nquiz-verdict" id="nqVerdict"></div>
+      <div class="nquiz-expl" id="nqExpl"></div>
     </div>
   </div>
 
@@ -1206,7 +1267,13 @@ let L='en', tagIdx=0, tagTimer=null;
 function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000);}
 
 function setLang(l,b){L=l;document.querySelectorAll('.nav-lang').forEach(x=>x.classList.remove('active'));
- if(b)b.classList.add('active');render();}
+ if(b)b.classList.add('active');render();renderDyk();if(nqData)renderNqLabelsOnly();}
+
+function renderNqLabelsOnly(){
+ const badges={en:"⚡ TODAY'S QUIZ",te:'⚡ నేటి క్విజ్',hi:'⚡ आज की क्विज़'};
+ const el=document.getElementById('nqBadge');
+ if(el)el.textContent=badges[L]||badges.en;
+}
 
 function render(){
  const U=UI[L];
@@ -1424,6 +1491,85 @@ function shareToday(){
 }
 
 document.addEventListener('DOMContentLoaded',render);
+
+// ============================================================
+// DID YOU KNOW — rotating facts, pure client-side, zero backend cost
+// ============================================================
+const DYK_FACTS=[
+ {f:{en:"NO hospital — government or private — can refuse emergency treatment for money. It violates the right to life itself.",te:"ఏ ఆసుపత్రి — ప్రభుత్వ లేదా ప్రైవేట్ — డబ్బు కోసం అత్యవసర చికిత్స నిరాకరించలేదు. ఇది జీవించే హక్కును ఉల్లంఘిస్తుంది.",hi:"कोई अस्पताल — सरकारी या निजी — पैसे के लिए आपातकालीन इलाज से मना नहीं कर सकता। यह जीवन के अधिकार का उल्लंघन है।"},u:"rights-health.html"},
+ {f:{en:"Daughters are coparceners in ancestral property BY BIRTH — equal to sons, and this applies retroactively regardless of when the father died.",te:"కూతుళ్ళు పూర్వీకుల ఆస్తిలో పుట్టుకతోనే సహభాగస్వాములు — కొడుకులతో సమానం, తండ్రి ఎప్పుడు చనిపోయినా వర్తిస్తుంది.",hi:"बेटियां पैतृक संपत्ति में जन्म से सहदायिक हैं — बेटों के बराबर, पिता कब गुज़रे इससे फर्क नहीं पड़ता।"},u:"rights-family.html"},
+ {f:{en:"If your crop is destroyed by hailstorm or flood, you have just 72 hours to report it under PMFBY — miss the window and the claim can be rejected outright.",te:"వడగళ్ళు లేదా వరదలతో మీ పంట నాశనమైతే, PMFBY కింద నివేదించడానికి మీకు కేవలం 72 గంటలు ఉన్నాయి.",hi:"ओलावृष्टि या बाढ़ से फसल नष्ट हो तो PMFBY के तहत रिपोर्ट करने के लिए आपके पास केवल 72 घंटे हैं।"},u:"rights-farmer.html"},
+ {f:{en:"If police arrest someone, they legally must be produced before a Magistrate within 24 hours — no exceptions for weekends. Beyond that is illegal detention.",te:"పోలీసులు ఎవరినైనా అరెస్టు చేస్తే, 24 గంటల్లో మేజిస్ట్రేట్ ముందు హాజరుపరచాలి — వారాంతాలకు మినహాయింపు లేదు.",hi:"पुलिस किसी को गिरफ्तार करे तो 24 घंटे में मजिस्ट्रेट के सामने पेश करना कानूनी रूप से ज़रूरी है — वीकेंड की छूट नहीं।"},u:"rights-personal.html"},
+ {f:{en:"MRP includes all taxes and applies everywhere — cinemas, airports, festivals included. Charging above the printed MRP is a punishable offence, no exceptions.",te:"MRP అన్ని పన్నులతో సహా — సినిమాలు, విమానాశ్రయాలతో సహా అన్నిచోట్లా వర్తిస్తుంది. మించి వసూలు చేయడం శిక్షార్హం.",hi:"MRP सभी करों सहित है — सिनेमा, हवाई अड्डे सहित हर जगह लागू। छपी MRP से ज़्यादा वसूलना दंडनीय अपराध है।"},u:"rights-consumer.html"},
+ {f:{en:"A recovery agent cannot legally call your family, friends, or employer about your loan — and cannot call before 8am or after 7pm either way.",te:"రికవరీ ఏజెంట్ మీ రుణం గురించి కుటుంబం, స్నేహితులు, లేదా యజమానికి చట్టబద్ధంగా కాల్ చేయలేరు.",hi:"रिकवरी एजेंट कानूनी रूप से आपके लोन के बारे में परिवार, दोस्तों या नियोक्ता को कॉल नहीं कर सकता।"},u:"rights-digital.html"},
+ {f:{en:"A university cannot legally refuse to show you your own evaluated exam answer sheet — the Supreme Court ruled it counts as \"information\" under RTI.",te:"విశ్వవిద్యాలయం మీ మూల్యాంకన జవాబు పత్రాన్ని చూపించడానికి చట్టబద్ధంగా నిరాకరించలేదు — ఇది RTI కింద 'సమాచారం'.",hi:"विश्वविद्यालय आपकी मूल्यांकित उत्तर पुस्तिका दिखाने से कानूनी रूप से मना नहीं कर सकता — यह RTI के तहत 'सूचना' है।"},u:"rights-student.html"},
+ {f:{en:"If a builder misses the promised possession date, RERA gives you a real choice: exit with a full refund plus interest, or stay and claim monthly delay interest.",te:"బిల్డర్ వాగ్దానం చేసిన స్వాధీన తేదీని మిస్ అయితే, RERA మీకు నిజమైన ఎంపిక ఇస్తుంది.",hi:"बिल्डर वादा किए गए कब्जे की तारीख चूके तो RERA आपको असली विकल्प देता है।"},u:"rights-property.html"},
+];
+let dykIdx=0,dykTimer=null;
+function renderDyk(){
+ const item=DYK_FACTS[dykIdx];
+ const badges={en:'💡 DID YOU KNOW?',te:'💡 మీకు తెలుసా?',hi:'💡 क्या आप जानते हैं?'};
+ const ctas={en:'Learn more →',te:'మరింత తెలుసుకోండి →',hi:'और जानें →'};
+ document.getElementById('dykBadge').textContent=badges[L]||badges.en;
+ const factEl=document.getElementById('dykFact');
+ factEl.style.opacity=0;
+ setTimeout(()=>{
+  factEl.textContent=item.f[L]||item.f.en;
+  document.getElementById('dykCta').textContent=ctas[L]||ctas.en;
+  document.getElementById('dykCta').href='https://lawsticker-ai.com/'+item.u;
+  factEl.style.opacity=1;
+ },200);
+ document.getElementById('dykDots').innerHTML=DYK_FACTS.map((_,i)=>
+  `<div class="dyk-dot${i===dykIdx?' active':''}"></div>`).join('');
+}
+function startDyk(){
+ renderDyk();
+ if(dykTimer)clearInterval(dykTimer);
+ dykTimer=setInterval(()=>{dykIdx=(dykIdx+1)%DYK_FACTS.length;renderDyk();},7000);
+}
+
+// ============================================================
+// DAILY QUIZ (NEW) — reads a pre-generated cached file only.
+// Gemini is called once a day by a scheduled job, never here.
+// ============================================================
+let nqAnswered=false,nqData=null;
+function loadNewQuiz(){
+ fetch('daily-quiz.json?t='+Date.now())
+  .then(r=>r.json())
+  .then(data=>{
+   if(!data||!data.quiz)return;
+   nqData=data.quiz;
+   const badges={en:"⚡ TODAY'S QUIZ",te:'⚡ నేటి క్విజ్',hi:'⚡ आज की क्विज़'};
+   document.getElementById('nqBadge').textContent=badges[L]||badges.en;
+   document.getElementById('nqQ').textContent=nqData.question;
+   const opts=document.getElementById('nqOpts');
+   opts.innerHTML=nqData.options.map((o,i)=>
+    `<button class="nquiz-opt" id="nqopt${i}" onclick="answerNewQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+   document.getElementById('nquiz').style.display='block';
+  })
+  .catch(()=>{}); // quiz is a nice-to-have — never let a failure affect the rest of the page
+}
+function answerNewQuiz(i){
+ if(nqAnswered||!nqData)return;
+ nqAnswered=true;
+ nqData.options.forEach((_,j)=>{
+  const b=document.getElementById('nqopt'+j);
+  if(!b)return;
+  b.disabled=true;
+  if(j===nqData.correct_index)b.classList.add('correct');
+  else if(j===i)b.classList.add('wrong');
+ });
+ const win=(i===nqData.correct_index);
+ const wins={en:'✅ Correct!',te:'✅ సరైనది!',hi:'✅ सही!'};
+ const loses={en:'❌ Not quite',te:'❌ కాదు',hi:'❌ नहीं'};
+ const v=document.getElementById('nqVerdict');
+ v.textContent=win?(wins[L]||wins.en):(loses[L]||loses.en);
+ v.style.color=win?'#059669':'#DC2626';
+ document.getElementById('nqExpl').textContent=nqData.explanation;
+ document.getElementById('nqReveal').classList.add('show');
+}
+
+document.addEventListener('DOMContentLoaded',()=>{startDyk();loadNewQuiz();});
 // Fix frozen ticker/tagline when returning via back button (bfcache restore)
 window.addEventListener('pageshow',e=>{
  if(e.persisted){
@@ -1803,47 +1949,31 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
 </script>
 <script>
 (function(){
-  var CAT_LABELS = {regional: 'Regional', national: 'National', international: 'World'};
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var CAT_LABELS = {legal: 'Legal', regional: 'Regional', national: 'National', international: 'World'};
 
   fetch('news-feed.json?t=' + Date.now())
     .then(function(r){ if (!r.ok) throw new Error('no feed'); return r.json(); })
     .then(function(data){
       var categories = data.categories || {};
       var items = [];
-      ['regional', 'national', 'international'].forEach(function(cat){
-        (categories[cat] || []).forEach(function(a){
-          items.push({title: a.title, link: a.link, cat: cat});
-        });
+      // One headline from each category, in a fixed useful order — legal
+      // first since it's the most site-relevant, then regional/national/world.
+      ['legal', 'regional', 'national', 'international'].forEach(function(cat){
+        var arts = categories[cat] || [];
+        if (arts.length) items.push({title: arts[0].title, link: arts[0].link, cat: cat});
       });
       if (!items.length) return;
 
       var card = document.getElementById('newsTickerCard');
-      var linkEl = document.getElementById('newsTickerLink');
-      var catEl = document.getElementById('newsTickerCat');
+      var list = document.getElementById('newsList');
       card.style.display = 'block';
+      list.innerHTML = items.map(function(item){
+        return '<a class="news-item" href="news.html?cat=' + item.cat + '">' +
+          '<span class="news-item-cat">' + (CAT_LABELS[item.cat] || item.cat) + '</span>' +
+          '<span class="news-item-title">' + item.title.replace(/</g, '&lt;') + '</span></a>';
+      }).join('');
 
-      var idx = 0;
-      function show(i){
-        var item = items[i % items.length];
-        linkEl.textContent = item.title;
-        linkEl.href = 'news.html?cat=' + item.cat;
-        catEl.textContent = CAT_LABELS[item.cat] || item.cat;
-      }
-      show(idx);
-
-      if (!reduceMotion && items.length > 1) {
-        setInterval(function(){
-          linkEl.classList.add('fade');
-          setTimeout(function(){
-            idx = (idx + 1) % items.length;
-            show(idx);
-            linkEl.classList.remove('fade');
-          }, 400);
-        }, 5000);
-      }
-
-      try { gtag('event', 'news_ticker_shown', {count: items.length}); } catch(e) {}
+      try { gtag('event', 'news_list_shown', {count: items.length}); } catch(e) {}
     })
     .catch(function(){
       // News feed not ready yet or unavailable — card stays hidden,
