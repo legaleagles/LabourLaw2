@@ -208,7 +208,13 @@ function renderCard(item){
   '</div>';
 }
 
+var moderateInFlight = false;
+
 function moderate(id, action){
+  if (moderateInFlight) return; // prevents exactly the double-click duplication bug
+  moderateInFlight = true;
+  document.querySelectorAll('.card-actions button').forEach(function(b){ b.disabled = true; b.style.opacity = '0.5'; });
+
   fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/scam-moderate', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -216,8 +222,17 @@ function moderate(id, action){
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
+      moderateInFlight = false;
       if (data.ok) fetchTab();
-      else alert(data.error || 'Action failed.');
+      else {
+        alert(data.error || 'Action failed.');
+        document.querySelectorAll('.card-actions button').forEach(function(b){ b.disabled = false; b.style.opacity = '1'; });
+      }
+    })
+    .catch(function(){
+      moderateInFlight = false;
+      alert('Could not reach the server — please try again.');
+      document.querySelectorAll('.card-actions button').forEach(function(b){ b.disabled = false; b.style.opacity = '1'; });
     });
 }
 
