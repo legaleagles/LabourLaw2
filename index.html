@@ -202,19 +202,6 @@ padding:11px;text-decoration:none;transition:all .2s;}
 .lawcet-card-desc{font-size:10px;color:rgba(255,247,237,.65);margin-top:2px;line-height:1.4;}
 .lawcet-countdown{font-size:10px;color:#FDE047;font-weight:700;text-align:center;margin-top:10px;}
 
-/* TICKER */
-.ticker-wrap{background:var(--navy);border-top:1px solid rgba(201,162,39,.15);
-border-bottom:2px solid var(--gold);overflow:hidden;position:relative;}
-.ticker-label{position:absolute;left:0;top:0;bottom:0;background:var(--gold);color:var(--navy);
-font-size:9px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;
-padding:0 10px;z-index:2;text-transform:uppercase;}
-.ticker{display:flex;white-space:nowrap;animation:tick 40s linear infinite;padding:9px 0;will-change:transform;}
-@media(hover:hover){.ticker:hover{animation-play-state:paused;}}
-.ticker a{color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;
-padding:0 26px;position:relative;}
-.ticker a::after{content:'•';position:absolute;right:-4px;color:var(--gold);}
-.ticker a b{color:var(--gold-l);}
-@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
 
 /* DAILY QUIZ */
@@ -590,11 +577,6 @@ gtag('config', 'G-TJXHVW6XCL');
       <a class="news-ticker-link" href="https://lawsticker-ai.com/news.html" id="newsTickerSeeAll"></a>
     </div>
   </div>
-</div>
-
-<div class="ticker-wrap">
-  <span class="ticker-label" id="tickLabel">⚡ Rights</span>
-  <div class="ticker" id="ticker"></div>
 </div>
 
 <div class="page">
@@ -1237,18 +1219,6 @@ function render(){
  document.getElementById('tbHelpK').textContent=KB[3];
  document.getElementById('tbHelpV').textContent=B.hn[L]+' · '+B.hp;
  document.getElementById('tShare').textContent=UI[L].tShare;
- // Ticker: rotate start position daily so it feels fresh every day
- const start=dayOfYear()%BUNDLES.length;
- const items=[...BUNDLES.slice(start),...BUNDLES.slice(0,start)];
- const tickerHTML=items.map(b=>`<a href="https://lawsticker-ai.com/${b.ru}"><b>${UI[L].tickPrefix}</b> ${b.f[L]}</a>`).join('');
- const tEl=document.getElementById('ticker');
- tEl.innerHTML=tickerHTML+tickerHTML; // duplicate for seamless loop
- document.getElementById('tickLabel').textContent=UI[L].tickLabel;
- // Constant speed regardless of content length: 130 px/sec
- requestAnimationFrame(()=>{
-   const half=tEl.scrollWidth/2;
-   if(half>0)tEl.style.animationDuration=Math.max(20,Math.round(half/130))+'s';
- });
  renderQuiz();
  // Rotating tagline
  rotateTag(true);
@@ -1491,14 +1461,7 @@ function answerNewQuiz(i){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{startDyk();loadNewQuiz();});
-// Fix frozen ticker/tagline when returning via back button (bfcache restore)
-window.addEventListener('pageshow',e=>{
- if(e.persisted){
-  const t=document.getElementById('ticker');
-  if(t){t.style.animation='none';void t.offsetWidth;t.style.animation='';}
-  render();
- }
-});
+window.addEventListener('pageshow',e=>{if(e.persisted){render();}});
 </script>
 <script>
 /* Language persistence — remembers choice across all pages */
