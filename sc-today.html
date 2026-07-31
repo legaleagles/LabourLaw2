@@ -66,15 +66,30 @@ text-transform:uppercase;margin-bottom:5px;}
 .case-ref{font-size:11px;color:#6B7280!important;font-weight:700;padding:8px 16px 6px;
 text-align:center;border-top:1px solid #E5E7EB;}
 .source-tag{font-size:10px;color:#6B7280!important;text-align:center;padding-bottom:6px;}
-.judgment-link{text-align:center;padding:0 16px 14px;}
+.judgment-link{text-align:center;padding:0 16px 10px;}
 .judgment-link a{font-size:12px;font-weight:700;color:#C9A227;text-decoration:none;
 border:1.5px solid rgba(201,162,39,.4);border-radius:20px;padding:6px 14px;display:inline-block;}
 .judgment-link a:active{background:#FDF6DC;}
-.share-row{padding:0 16px 16px;display:flex;gap:8px;}
-.sc-share-btn{flex:1;padding:11px;border-radius:12px;background:#0D1117;
-border:none;color:#F5D76E;font-family:inherit;font-size:12px;
-font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
-.sc-share-btn:active{opacity:.85;}
+
+/* AI transparency */
+.ai-notice{text-align:center;padding:4px 16px 10px;}
+.ai-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(139,105,20,.08);
+border:1px solid rgba(139,105,20,.22);border-radius:10px;padding:3px 10px;
+font-size:9px;font-weight:900;color:#7A5C10;letter-spacing:.6px;}
+.src-toggle{font-size:11.5px;font-weight:700;color:#6B7280;cursor:pointer;
+display:flex;align-items:center;gap:6px;padding:10px 16px 8px;
+border-top:1px solid #F0F0F0;}
+.src-toggle:active{opacity:.7;}
+.src-body{display:none;background:#F9FAFB;border-left:3px solid #E5E7EB;
+border-radius:0 8px 8px 0;padding:12px;margin:0 16px 12px;
+font-size:11.5px;color:#4B5563!important;line-height:1.7;
+white-space:pre-wrap;word-break:break-word;max-height:280px;overflow-y:auto;}
+.src-body.open{display:block;}
+.kb-note{font-size:10px;color:#9CA3AF!important;text-align:center;
+padding:8px 16px 12px;border-top:1px solid #F0F0F0;}
+.share-text{text-align:center;padding:2px 16px 14px;}
+.share-text button{background:none;border:none;color:#9CA3AF;font-size:11px;
+font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.2px;}
 
 /* EMPTY / LOADING */
 .state-msg{text-align:center;padding:32px 20px;background:#ffffff!important;border:1px solid #E5E7EB;
@@ -139,6 +154,9 @@ padding:10px 4px 8px;text-decoration:none;gap:3px;}
   .today-category,.sc-section-label,.arc-row-label,.arc-toggle{color:#8B6914!important;}
   .case-ref,.source-tag,.arc-case,.arc-date,.archive-title{color:#6B7280!important;}
   .state-msg p{color:#374151!important;}
+  .src-body{background:#F9FAFB!important;color:#4B5563!important;}
+  .kb-note,.share-text button{color:#9CA3AF!important;}
+  .src-toggle{color:#6B7280!important;}
 }
 </style>
 </head>
@@ -198,12 +216,16 @@ const UI = {
     loading: 'Loading today\'s ruling...',
     noData: "Today's digest will appear here after the daily update.",
     error: 'Could not load. Please try again later.',
-    shareBtn: '📤 Share',
     footerDisc: 'LawSticker AI summarises publicly reported Supreme Court news for education only — not legal advice. Always verify with official sources. Free legal aid: NALSA 15100.',
     readMore: 'Read more ▾',
     readLess: 'Read less ▴',
     notRecent: '⚠️ Most recent available — courts may not be in session today.',
     readJudgment: '📖 Read full judgment →',
+    aiSummary: 'AI Summarised',
+    viewSource: 'View source text ▾',
+    hideSource: 'Hide source text ▴',
+    fromKnowledgeBase: 'Sourced from Gemini knowledge base — no live source text available.',
+    shareLabel: '↗ Share',
   },
   te: {
     heroBadge: 'SC నేడు',
@@ -218,12 +240,16 @@ const UI = {
     loading: 'నేటి తీర్పు లోడ్ అవుతోంది...',
     noData: 'రోజువారీ నవీకరణ తర్వాత నేటి డైజెస్ట్ ఇక్కడ కనిపిస్తుంది.',
     error: 'లోడ్ కాలేదు. దయచేసి తర్వాత ప్రయత్నించండి.',
-    shareBtn: '📤 షేర్',
     footerDisc: 'LawSticker AI విద్యా ప్రయోజనాల కోసం మాత్రమే SC వార్తలను సంక్షిభించ్చున్ది — చట్టపరమైన సలహా కాదు. అధికారిక వనరులతో ధృవీకరించండి. ఉచిత న్యాయ సహాయం: NALSA 15100.',
     readMore: 'మరింత చదవండి ▾',
     readLess: 'తక్కువ చదవండి ▴',
-    notRecent: '⚠️ అందుబాటులో ఉన్న తాజా తీర్పు — నేడు కోర్టులు సెషన్‌లో లేకప౏వచ్చు.',
+    notRecent: '⚠️ అందుబాటులో ఉన్న తాజా తీర్పు — నేడు కోర్టులు సెషన్‌లో లేకపోవచ్చు.',
     readJudgment: '📖 పూర్తి తీర్పు చదవండి →',
+    aiSummary: 'AI సారాంశం',
+    viewSource: 'మూల వచనం చూడండి ▾',
+    hideSource: 'మూల వచనం దాచు ▴',
+    fromKnowledgeBase: 'Gemini నాలెడ్జ్ బేస్ నుండి సేకరించబడింది — నేరుగా మూలం అందుబాటులో లేదు.',
+    shareLabel: '↗ షేర్',
   },
   hi: {
     heroBadge: 'SC आज',
@@ -238,12 +264,16 @@ const UI = {
     loading: 'आज का फ़ैसला लोड हो रहा है...',
     noData: 'दैनिक अपडेट के बाद यहाँ डाइजेस्ट दिखाई देगा।',
     error: 'लोड नहीं हो सका। बाद में पुनः प्रयास करें।',
-    shareBtn: '📤 शेयर',
     footerDisc: 'LawSticker AI केवल शिक्षा के लिए SC समाचार सारांशित करता है — कानूनी सलाह नहीं। हमेशा आधिकारिक स्रोतों से सत्यापित करें। निःशुल्क कानूनी सहायता: NALSA 15100।',
     readMore: 'और पढ़ें ▾',
     readLess: 'कम पढ़ें ▴',
     notRecent: '⚠️ उपलब्ध सबसे हालिया फैसला — आज कोर्ट सत्र में नहीं हो सकती।',
     readJudgment: '📖 पूरा फ़ैसला पढ़ें →',
+    aiSummary: 'AI सारांश',
+    viewSource: 'स्रोत पाठ देखें ▾',
+    hideSource: 'स्रोत पाठ छिपाएं ▴',
+    fromKnowledgeBase: 'Gemini ज्ञानकोश से प्राप्त — सीधा स्रोत उपलब्ध नहीं।',
+    shareLabel: '↗ शेयर',
   },
 };
 
@@ -254,6 +284,16 @@ function judgmentUrl(entry) {
   if (entry.source_url) return entry.source_url;
   if (entry.case_ref) return 'https://indiankanoon.org/search/?formInput=' + encodeURIComponent(entry.case_ref);
   return null;
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleSource(uid, btn) {
+  const body = document.getElementById('src-body-'+uid);
+  const open = body.classList.toggle('open');
+  btn.textContent = open ? UI[L].hideSource : UI[L].viewSource;
 }
 
 function setLang(lang) {
@@ -285,8 +325,12 @@ function renderTodayCard(entry) {
   const means    = entry.means[L]    || entry.means.en;
   const action   = entry.action[L]   || entry.action.en;
   const notRecentNote = entry.is_recent === false
-    ? `<p style="font-size:10px;color:#8B6914;background:#FDF6DC;border-radius:8px;text-align:center;padding:6px 12px;margin:0 16px 6px;">${u.notRecent}</p>`
+    ? `<p style="font-size:10px;color:#8B6914;background:#FDF6DC;border-radius:8px;text-align:center;padding:6px 12px;margin:0 16px 8px;">${u.notRecent}</p>`
     : '';
+  const srcPanel = entry.source_text
+    ? `<div class="src-toggle" id="src-btn-today" onclick="toggleSource('today',this)">📄 ${u.viewSource}</div>
+       <div class="src-body" id="src-body-today">${escHtml(entry.source_text)}</div>`
+    : `<div class="kb-note">ℹ️ ${u.fromKnowledgeBase}</div>`;
   return `
 <div class="today-card">
   <div class="today-card-head">
@@ -296,6 +340,7 @@ function renderTodayCard(entry) {
   <div class="today-icon">${entry.icon || '⚖️'}</div>
   <div class="today-headline">${headline}</div>
   ${notRecentNote}
+  <div class="ai-notice"><span class="ai-badge">✨ ${u.aiSummary}</span></div>
   <div class="today-sections">
     <div class="sc-section">
       <div class="sc-section-label">${u.whatMeans}</div>
@@ -309,9 +354,8 @@ function renderTodayCard(entry) {
   ${entry.case_ref ? `<div class="case-ref">${u.caseRef}: ${entry.case_ref}</div>` : ''}
   ${entry.source_info ? `<div class="source-tag">${u.source}: ${entry.source_info}</div>` : ''}
   ${judgmentUrl(entry) ? `<div class="judgment-link"><a href="${judgmentUrl(entry)}" target="_blank" rel="noopener">${u.readJudgment}</a></div>` : ''}
-  <div class="share-row">
-    <button class="sc-share-btn" onclick="shareEntry(DATA.entries[0])">${u.shareBtn}</button>
-  </div>
+  ${srcPanel}
+  <div class="share-text"><button onclick="shareEntry(DATA.entries[0])">${u.shareLabel}</button></div>
 </div>`;
 }
 
@@ -320,6 +364,10 @@ function renderArchiveCard(entry, idx) {
   const means    = entry.means[L]    || entry.means.en;
   const action   = entry.action[L]   || entry.action.en;
   const u = UI[L];
+  const srcPanel = entry.source_text
+    ? `<div class="src-toggle" id="src-btn-arc${idx}" onclick="event.stopPropagation();toggleSource('arc${idx}',this)">📄 ${u.viewSource}</div>
+       <div class="src-body" id="src-body-arc${idx}">${escHtml(entry.source_text)}</div>`
+    : '';
   return `
 <div class="arc-card" id="arc-${idx}" onclick="toggleArc(${idx})">
   <div class="arc-card-top">
@@ -328,6 +376,7 @@ function renderArchiveCard(entry, idx) {
       <div class="arc-date">${fmtDate(entry.date)}</div>
       <div class="arc-headline">${headline}</div>
       <span class="arc-cat">${entry.category || 'SC'}</span>
+      <span class="ai-badge" style="margin-top:4px;">✨ ${u.aiSummary}</span>
     </div>
   </div>
   <div class="arc-body">
@@ -340,7 +389,8 @@ function renderArchiveCard(entry, idx) {
       <div class="arc-row-text">${action}</div>
     </div>
     ${entry.case_ref ? `<div class="arc-case">${u.caseRef}: ${entry.case_ref}</div>` : ''}
-    ${judgmentUrl(entry) ? `<div class="judgment-link" style="text-align:left;padding:8px 0 0;"><a href="${judgmentUrl(entry)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${u.readJudgment}</a></div>` : ''}
+    ${judgmentUrl(entry) ? `<div class="judgment-link" style="text-align:left;padding:8px 0 4px;"><a href="${judgmentUrl(entry)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${u.readJudgment}</a></div>` : ''}
+    ${srcPanel}
   </div>
   <div class="arc-toggle" id="arc-toggle-${idx}">${u.readMore}</div>
 </div>`;
