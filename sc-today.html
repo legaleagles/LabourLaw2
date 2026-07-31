@@ -157,8 +157,6 @@ padding:10px 4px 8px;text-decoration:none;gap:3px;}
 </nav>
 
 <script>
-const BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
-
 const UI = {
   en: {
     heroBadge: 'SC TODAY',
@@ -356,7 +354,11 @@ function render() {
 async function load() {
   document.getElementById('loadingMsg').textContent = UI[L].loading;
   try {
-    const resp = await fetch(`${BACKEND}/api/sc-digest-data`, {cache:'no-store'});
+    const resp = await fetch(
+      'https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/sc-digest.json',
+      {cache: 'no-store'}
+    );
+    if (!resp.ok) throw new Error(resp.status);
     DATA = await resp.json();
     render();
   } catch(e) {
