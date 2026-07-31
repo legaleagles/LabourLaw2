@@ -22,8 +22,8 @@ html{background:#FEFCF5!important;}
 body{font-family:'DM Sans',sans-serif;background:#FEFCF5!important;color:#111827!important;
 -webkit-font-smoothing:antialiased;padding-bottom:72px;}
 
-/* NAV — fully light */
-nav{background:#ffffff!important;position:sticky;top:0;z-index:200;
+/* NAV — fully light (only top nav, not bottom-nav) */
+nav:not(.bottom-nav){background:#ffffff!important;position:sticky;top:0;z-index:200;
 border-bottom:2px solid rgba(201,162,39,.4);}
 .nav-r1{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
 .nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;
@@ -34,8 +34,8 @@ background:#fff!important;color:#6B7280!important;font-family:inherit;font-size:
 .nav-lang.active{border-color:var(--gold);color:#fff!important;background:var(--gold)!important;}
 
 /* HERO — cream/gold */
-.hero{background:linear-gradient(135deg,#FDF6DC 0%,#FEFCF5 60%,#FDF6DC 100%)!important;
-padding:26px 20px 22px;text-align:center;border-bottom:2px solid rgba(201,162,39,.35);}
+.hero{background:#FDF6DC!important;
+padding:26px 20px 22px;text-align:center;border-bottom:2px solid rgba(201,162,39,.5);}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:#FDF6DC;
 border:1px solid rgba(201,162,39,.5);border-radius:20px;padding:5px 14px;
 font-size:10px;font-weight:900;color:#7A5C10;letter-spacing:1.2px;margin-bottom:12px;}
@@ -109,7 +109,7 @@ color:#F5D76E;margin-bottom:4px;}
 .f-disc{font-size:10px;color:rgba(255,255,255,.35);line-height:1.6;margin-top:6px;}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,17,23,.97);
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,17,23,.97)!important;
 border-top:1px solid rgba(201,162,39,.15);display:flex;z-index:300;}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
 padding:10px 4px 8px;text-decoration:none;gap:3px;}
@@ -120,10 +120,10 @@ padding:10px 4px 8px;text-decoration:none;gap:3px;}
 /* Dark mode forced override */
 @media(prefers-color-scheme:dark){
   html,body{background:#FEFCF5!important;color:#111827!important;}
-  nav{background:#ffffff!important;}
+  nav:not(.bottom-nav){background:#ffffff!important;}
   .nav-brand{color:#0D1117!important;}
   .nav-lang{background:#fff!important;color:#6B7280!important;}
-  .hero{background:linear-gradient(135deg,#FDF6DC 0%,#FEFCF5 60%,#FDF6DC 100%)!important;}
+  .hero{background:#FDF6DC!important;}
   .hero-title{color:#0D1117!important;}
   .hero-sub{color:#6B7280!important;}
   .today-wrap,.archive-wrap{background:#FEFCF5!important;}
