@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>SC Today — Supreme Court in Plain Language | LawSticker AI</title>
 <meta name="description" content="Today's Supreme Court of India judgment explained in plain Telugu, Hindi, and English — what happened, what it means for you, and what to do next.">
 <link rel="canonical" href="https://lawsticker-ai.com/sc-today.html">
@@ -14,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
-:root{--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
+:root{color-scheme:light;--navy:#0D1117;--navy2:#131B29;--ink:#111827;--ink2:#374151;--cream:#FEFCF5;
 --muted:#6B7280;--border:#E5E7EB;--light:#F3F4F6;--gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);
@@ -71,9 +72,10 @@ font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:c
 .sc-share-btn:active{background:rgba(201,162,39,.25);}
 
 /* EMPTY / LOADING */
-.state-msg{text-align:center;padding:40px 20px;color:var(--muted);}
-.state-msg .icon{font-size:40px;margin-bottom:10px;}
-.state-msg p{font-size:13px;line-height:1.6;}
+.state-msg{text-align:center;padding:32px 20px;background:#fff;border:1px solid var(--border);
+border-radius:16px;color:var(--ink2);}
+.state-msg .icon{font-size:36px;margin-bottom:10px;}
+.state-msg p{font-size:13px;line-height:1.6;color:var(--ink2);}
 
 /* ARCHIVE */
 .archive-wrap{max-width:640px;margin:0 auto;padding:0 14px 12px;}
@@ -354,10 +356,7 @@ function render() {
 async function load() {
   document.getElementById('loadingMsg').textContent = UI[L].loading;
   try {
-    const resp = await fetch(
-      'https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/sc-digest.json',
-      {cache: 'no-store'}
-    );
+    const resp = await fetch('sc-digest.json?t=' + Date.now());
     if (!resp.ok) throw new Error(resp.status);
     DATA = await resp.json();
     render();
