@@ -422,10 +422,11 @@ function renderCard(s, idx){
   out += '<div class="card-title">'+h(title)+'</div>';
   out += '<div class="card-body">'+h(body)+'</div>';
 
-  // Modus operandi (enrichment)
-  if(e && e.modus_operandi){
+  // Modus operandi (enrichment) — multilingual
+  var modus = e && (e['modus_operandi_'+lang] || e.modus_operandi_en || e.modus_operandi);
+  if(modus){
     out += '<div class="story-section"><div class="sec-head">🎭 How This Typically Works</div>';
-    out += '<div class="prose">'+h(e.modus_operandi)+'</div></div>';
+    out += '<div class="prose">'+h(modus)+'</div></div>';
   }
 
   // Remedies — new structured trilingual
@@ -458,10 +459,11 @@ function renderCard(s, idx){
     out += '<div class="prose">'+h(s.remedy_advice)+'</div></div>';
   }
 
-  // Red flags (enrichment)
-  if(e && e.red_flags && e.red_flags.length){
+  // Red flags (enrichment) — multilingual
+  var flags = e && (e['red_flags_'+lang] || e.red_flags_en || e.red_flags);
+  if(flags && flags.length){
     out += '<div class="story-section"><div class="sec-head">🚩 Red Flags to Watch For</div><ul class="flag-list">';
-    e.red_flags.forEach(function(f){ out += '<li class="flag-item">'+h(f)+'</li>'; });
+    flags.forEach(function(f){ out += '<li class="flag-item">'+h(f)+'</li>'; });
     out += '</ul></div>';
   }
 
