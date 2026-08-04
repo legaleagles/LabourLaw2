@@ -352,27 +352,49 @@ animation:pulseDot 1.8s ease-in-out infinite;}
 @media (prefers-reduced-motion:reduce){.pulse-dot{animation:none;}}
 .pulse-n{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--gold-l);}
 .pulse-l{font-size:9.5px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-.ask-ai-promo{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#1a1030,#2d1b4e);
-border:1px solid rgba(201,162,39,.4);border-radius:18px;padding:20px 18px;margin-bottom:10px;
-text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.2);}
-.ask-ai-promo-avatar{width:38px;height:44px;flex-shrink:0;position:relative;}
-.ask-ai-promo-badge{position:absolute;bottom:-4px;right:-8px;background:linear-gradient(135deg,#38BDF8,#0EA5E9);
-color:#fff;font-size:8px;font-weight:900;letter-spacing:.5px;padding:2px 5px;border-radius:6px;
-border:1.5px solid #0D1117;box-shadow:0 1px 4px rgba(0,0,0,.3);}
-.ask-ai-promo-shoulders{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:38px;height:18px;
-background:linear-gradient(160deg,#2b4a7a,#1a2f52);border-radius:12px 12px 4px 4px;}
-.ask-ai-promo-head{width:24px;height:26px;background:linear-gradient(160deg,#c9906a,#b97e56);
-border-radius:46% 46% 42% 42%/50% 50% 40% 40%;position:relative;margin:0 auto;}
-.ask-ai-promo-hair{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:23px;height:13px;
+.ask-ai-promo{display:block;background:linear-gradient(135deg,#150c28 0%,#1a1030 45%,#2d1b4e 100%);
+border:1.5px solid rgba(201,162,39,.45);border-radius:20px;padding:20px 18px 16px;margin-bottom:10px;
+text-decoration:none;box-shadow:0 8px 28px rgba(93,52,173,.28);position:relative;overflow:hidden;}
+.ask-ai-promo::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;
+background:radial-gradient(circle,rgba(56,189,248,.16),transparent 70%);pointer-events:none;}
+.ask-ai-promo::after{content:'';position:absolute;bottom:-50px;right:-30px;width:150px;height:150px;
+background:radial-gradient(circle,rgba(245,215,110,.14),transparent 70%);pointer-events:none;}
+.ask-ai-promo-top{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.ask-ai-promo-avatar{width:52px;height:58px;flex-shrink:0;position:relative;}
+.ask-ai-promo-ring{position:absolute;top:50%;left:50%;width:64px;height:64px;transform:translate(-50%,-52%);
+border-radius:50%;border:1.5px solid rgba(56,189,248,.45);animation:promoRingPulse 2.4s ease-out infinite;}
+.ask-ai-promo-ring.r2{animation-delay:.8s;border-color:rgba(245,215,110,.35);}
+@keyframes promoRingPulse{0%{transform:translate(-50%,-52%) scale(.75);opacity:.9;}100%{transform:translate(-50%,-52%) scale(1.35);opacity:0;}}
+.ask-ai-promo-badge{position:absolute;bottom:-2px;right:-9px;background:linear-gradient(135deg,#38BDF8,#0EA5E9);
+color:#fff;font-size:8.5px;font-weight:900;letter-spacing:.5px;padding:2.5px 6px;border-radius:7px;
+border:1.5px solid #0D1117;box-shadow:0 1px 4px rgba(0,0,0,.3);z-index:2;}
+.ask-ai-promo-shoulders{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:50px;height:23px;
+background:linear-gradient(160deg,#2b4a7a,#1a2f52);border-radius:15px 15px 5px 5px;z-index:1;}
+.ask-ai-promo-head{width:32px;height:34px;background:linear-gradient(160deg,#c9906a,#b97e56);
+border-radius:46% 46% 42% 42%/50% 50% 40% 40%;position:relative;margin:0 auto;z-index:1;}
+.ask-ai-promo-hair{position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:30px;height:17px;
 background:linear-gradient(160deg,#2a2320,#1a1512);border-radius:50% 50% 0 0/60% 60% 0 0;
 clip-path:polygon(8% 100%,0% 40%,15% 5%,50% 0%,85% 5%,100% 40%,92% 100%,78% 55%,22% 55%);}
-.ask-ai-promo-eye{position:absolute;top:11px;width:2.5px;height:2.5px;border-radius:50%;background:#2a1c14;}
-.ask-ai-promo-mustache{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:8px;height:2px;
+.ask-ai-promo-eye{position:absolute;top:14px;width:3.2px;height:3.2px;border-radius:50%;background:#2a1c14;}
+.ask-ai-promo-mustache{position:absolute;top:19px;left:50%;transform:translateX(-50%);width:10px;height:2.5px;
 background:#1a1512;border-radius:0 0 40% 40%/0 0 100% 100%;}
 .ask-ai-promo-text{flex:1;min-width:0;}
-.ask-ai-promo-title{font-family:'Playfair Display',serif;font-weight:900;color:#F5D76E;font-size:15px;}
-.ask-ai-promo-sub{color:rgba(255,255,255,.65);font-size:11.5px;margin-top:4px;line-height:1.55;}
-.ask-ai-promo-arrow{color:#F5D76E;font-size:18px;flex-shrink:0;}
+.ask-ai-promo-title{font-family:'Playfair Display',serif;font-weight:900;color:#F5D76E;font-size:16.5px;line-height:1.25;}
+.ask-ai-promo-title small{display:block;font-family:'DM Sans',sans-serif;font-size:9.5px;font-weight:800;
+color:#7DD3FC;letter-spacing:.8px;text-transform:uppercase;margin-top:2px;}
+.ask-ai-promo-sub{color:rgba(255,255,255,.65);font-size:11.5px;margin-top:5px;line-height:1.55;}
+.ask-ai-promo-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;position:relative;z-index:1;}
+.ask-ai-promo-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+color:rgba(255,255,255,.8);font-size:10px;font-weight:700;padding:4px 10px;border-radius:12px;white-space:nowrap;}
+.ask-ai-promo-stats{display:flex;gap:14px;margin-top:13px;padding-top:12px;
+border-top:1px solid rgba(255,255,255,.1);position:relative;z-index:1;}
+.ask-ai-promo-stat{flex:1;text-align:center;}
+.ask-ai-promo-stat-num{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:#F5D76E;}
+.ask-ai-promo-stat-lbl{font-size:8.5px;color:rgba(255,255,255,.42);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:1px;}
+.ask-ai-promo-cta{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:13px;
+background:linear-gradient(135deg,#0EA5E9,#0284C7);color:#fff;font-weight:800;font-size:12.5px;
+padding:11px;border-radius:12px;position:relative;z-index:1;box-shadow:0 4px 14px rgba(14,165,233,.35);}
+.ask-ai-promo:active{transform:scale(.99);}
 .scam-subrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;margin-bottom:20px;}
 .scam-subrow-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 10px;
 border-radius:14px;text-decoration:none;font-size:12.5px;font-weight:800;text-align:center;}
@@ -579,21 +601,40 @@ gtag('config', 'G-TJXHVW6XCL');
        and the copy leads with what it is and what it covers, not how to
        type into it -->
   <a href="ask-ai.html" class="ask-ai-promo">
-    <div class="ask-ai-promo-avatar">
-      <div class="ask-ai-promo-shoulders"></div>
-      <div class="ask-ai-promo-head">
-        <div class="ask-ai-promo-hair"></div>
-        <div class="ask-ai-promo-eye" style="left:6px;"></div>
-        <div class="ask-ai-promo-eye" style="right:6px;"></div>
-        <div class="ask-ai-promo-mustache"></div>
+    <div class="ask-ai-promo-top">
+      <div class="ask-ai-promo-avatar">
+        <div class="ask-ai-promo-ring"></div>
+        <div class="ask-ai-promo-ring r2"></div>
+        <div class="ask-ai-promo-shoulders"></div>
+        <div class="ask-ai-promo-head">
+          <div class="ask-ai-promo-hair"></div>
+          <div class="ask-ai-promo-eye" style="left:8px;"></div>
+          <div class="ask-ai-promo-eye" style="right:8px;"></div>
+          <div class="ask-ai-promo-mustache"></div>
+        </div>
+        <div class="ask-ai-promo-badge">AI</div>
       </div>
-      <div class="ask-ai-promo-badge">AI</div>
+      <div class="ask-ai-promo-text">
+        <div class="ask-ai-promo-title">Durga Bro
+          <small>Your AI Legal Assistant</small>
+        </div>
+        <div class="ask-ai-promo-sub">Trained on Indian consumer, property, family, labour &amp; tax law — answers instantly, in your language.</div>
+      </div>
     </div>
-    <div class="ask-ai-promo-text">
-      <div class="ask-ai-promo-title">🤖 Durga Bro — AI Legal Assistant</div>
-      <div class="ask-ai-promo-sub">Ask anything about consumer rights, property, family, scams, income tax & more — instant answers in English, Telugu or Hindi</div>
+    <div class="ask-ai-promo-chips">
+      <span class="ask-ai-promo-chip">🛒 Consumer Rights</span>
+      <span class="ask-ai-promo-chip">🏠 Property</span>
+      <span class="ask-ai-promo-chip">👨‍👩‍👧 Family Law</span>
+      <span class="ask-ai-promo-chip">🛡️ Scams</span>
+      <span class="ask-ai-promo-chip">💼 Labour</span>
+      <span class="ask-ai-promo-chip">💰 Income Tax</span>
     </div>
-    <div class="ask-ai-promo-arrow">→</div>
+    <div class="ask-ai-promo-stats">
+      <div class="ask-ai-promo-stat"><div class="ask-ai-promo-stat-num">3</div><div class="ask-ai-promo-stat-lbl">Languages</div></div>
+      <div class="ask-ai-promo-stat"><div class="ask-ai-promo-stat-num">24/7</div><div class="ask-ai-promo-stat-lbl">Available</div></div>
+      <div class="ask-ai-promo-stat"><div class="ask-ai-promo-stat-num">⚡</div><div class="ask-ai-promo-stat-lbl">Instant</div></div>
+    </div>
+    <div class="ask-ai-promo-cta">💬 Ask Durga Bro Anything →</div>
   </a>
 
   <div class="scam-bulletin">
