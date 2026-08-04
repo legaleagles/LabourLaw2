@@ -1824,7 +1824,7 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
         var title = s['title_' + lang] || s.title_en || s.title || '';
         var body  = s['story_' + lang] || s.story_en || s.anonymized_story || '';
         var isLead = (i === 0 && todays.length > 0);
-        return '<a class="sb-story' + (isLead ? ' sb-lead' : '') + '" href="scam-stories.html">' +
+        return '<a class="sb-story' + (isLead ? ' sb-lead' : '') + '" href="scam-stories.html?story=' + encodeURIComponent(s.id) + '">' +
           (isLead ? '<div class="sb-just-in">Just In</div>' : '') +
           '<div class="sb-story-num">' + (i + 1) + '</div>' +
           '<div class="sb-story-body">' +
