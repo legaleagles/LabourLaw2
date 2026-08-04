@@ -409,7 +409,7 @@ function renderCard(s, idx){
   // Origin
   var oCls = isAI?'origin-ai':'origin-user';
   var oLabel = isAI
-    ? '🤖 AI-researched · '+h(s.origin_date||'')
+    ? '🤖 Sourced by AI · '+h(s.origin_date||'')
     : '✍️ Reader-submitted';
   out += '<div class="card-origin"><span class="'+oCls+'">'+oLabel+'</span></div>';
 
@@ -493,6 +493,10 @@ function renderCard(s, idx){
   // Source note (new AI field)
   if(s.source_note){
     out += '<div class="story-section"><div class="source-note">📎 '+h(s.source_note)+'</div></div>';
+  }
+  // Real source URL (grounded AI pipeline) — the actual citation, not a description
+  if(s.source_url){
+    out += '<div class="story-section"><a href="'+h(s.source_url)+'" target="_blank" rel="noopener" class="source-note" style="display:inline-block;text-decoration:none;">🔗 Read the original source'+(s.source_title?(': '+h(s.source_title)):'')+' ↗</a></div>';
   }
 
   // Supportive note (enrichment)
