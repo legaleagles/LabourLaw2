@@ -93,6 +93,24 @@ nav { background: var(--spot-bg); padding: 10px 16px; display: flex; align-items
 .rank-label { flex: 1; color: #fff; font-size: 12px; font-weight: 600; }
 .rank-count { color: rgba(255,255,255,.45); font-size: 10.5px; font-weight: 700; }
 
+/* INSIGHTS (interactive analytics) */
+.insights-box { margin: 14px 0 0; padding: 15px 14px; background: linear-gradient(135deg,#0D1117,#1a1830); border-radius: 14px; border: 1px solid rgba(201,162,39,.3); }
+.insights-title { font-family: 'Playfair Display', serif; font-weight: 900; color: #F5D76E; font-size: 14px; margin-bottom: 3px; text-align: center; }
+.insights-sub { font-size: 10.5px; color: rgba(255,255,255,.4); text-align: center; margin-bottom: 12px; }
+.insights-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.insights-tab { flex: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.55); font-size: 11px; font-weight: 800; padding: 7px; border-radius: 9px; cursor: pointer; }
+.insights-tab.active { background: rgba(245,215,110,.16); border-color: rgba(245,215,110,.5); color: #F5D76E; }
+.insight-bar-row { margin-bottom: 9px; cursor: pointer; }
+.insight-bar-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.insight-bar-label { font-size: 11.5px; font-weight: 700; color: #fff; }
+.insight-bar-count { font-size: 10px; color: rgba(255,255,255,.45); font-weight: 700; }
+.insight-bar-track { height: 7px; border-radius: 5px; background: rgba(255,255,255,.08); overflow: hidden; }
+.insight-bar-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg,#C9A227,#F5D76E); transition: width .5s ease; }
+.insight-bar-row.severity-high .insight-bar-fill { background: linear-gradient(90deg,#7C1D1D,#DC2626); }
+.insight-bar-row.severity-mid .insight-bar-fill { background: linear-gradient(90deg,#B45309,#F59E0B); }
+.insight-bar-row.severity-low .insight-bar-fill { background: linear-gradient(90deg,#166534,#22C55E); }
+.insights-hint { font-size: 9.5px; color: rgba(255,255,255,.3); text-align: center; margin-top: 4px; }
+
 /* CTA */
 .cta-row { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 0; }
 .cta-btn { display: block; text-align: center; background: var(--spot-bg); color: var(--spot-gold); font-weight: 800; padding: 11px; border-radius: 10px; text-decoration: none; font-size: 13.5px; }
@@ -246,16 +264,25 @@ nav { background: var(--spot-bg); padding: 10px 16px; display: flex; align-items
   </div>
   <div class="bull-eyebrow">Daily Edition · Free &amp; Public</div>
   <h1 class="bull-headline">Scam Stories &amp; Remedies</h1>
-  <div class="bull-sub">Real patterns · AI-researched &amp; reader-reported · New entry every morning</div>
+  <div class="bull-sub">Sourced &amp; verified by AI, every morning · Real cases, real links</div>
 </div>
 
 <div class="wrap">
   <div class="privacy-explain">
-    🔒 <strong>Why no names are shown:</strong> every business, person, and identifying detail is removed before publication — to protect reporters' privacy and because we cannot independently verify individual claims. These stories describe patterns to help you recognise them, not accusations against anyone named.
+    🤖 <strong>How this works:</strong> every story here is researched by AI using live web search, grounded in a real, linked public source — never invented, never a private accusation. Where the source names a company or scheme, we keep that; nothing here is a claim we're independently making.
   </div>
-  <div class="ranking-box" id="rankingBox" style="display:none;"></div>
+  <div class="insights-box" id="insightsBox" style="display:none;">
+    <div class="insights-title">📊 Scam Insights</div>
+    <div class="insights-sub">Tap a bar to jump to those stories</div>
+    <div class="insights-tabs">
+      <button class="insights-tab active" id="insTabType" onclick="setInsightsView('type')">By Scam Type</button>
+      <button class="insights-tab" id="insTabCost" onclick="setInsightsView('cost')">By Cost Impact</button>
+    </div>
+    <div id="insightsBody"></div>
+    <div class="insights-hint">Based on all published stories to date</div>
+  </div>
   <div class="cta-row">
-    <a href="scam-ed.html" class="cta-btn">🛡️ Report a Scam You've Experienced →</a>
+    <a href="ask-ai.html" class="cta-btn">🤖 Ask Durga Bro About a Scam →</a>
     <a href="ask-ai.html?topic=scam_verify" class="cta-btn cta-btn-verify">🔍 Check If Something Looks Like a Scam →</a>
   </div>
 </div>
@@ -292,7 +319,7 @@ fetch('scam-reports.json')
   .then(function(r){ return r.json(); })
   .then(function(data){
     ALL = (data.entries || []).filter(function(e){ return e.status === 'approved'; }).reverse();
-    renderRanking();
+    renderInsights();
     renderFilters();
     renderStories();
   })
@@ -300,27 +327,62 @@ fetch('scam-reports.json')
     document.getElementById('storiesSection').innerHTML = '<div class="empty-state">Could not load stories right now.</div>';
   });
 
-/* ── RANKING ── */
-function renderRanking(){
-  var box = document.getElementById('rankingBox');
+/* ── INSIGHTS (interactive) ── */
+var insightsView = 'type';
+
+function setInsightsView(view){
+  insightsView = view;
+  document.getElementById('insTabType').classList.toggle('active', view==='type');
+  document.getElementById('insTabCost').classList.toggle('active', view==='cost');
+  renderInsights();
+}
+
+function severityBucket(s){
+  var range = (s.signals && s.signals.money_range) || '';
+  if (/above|5,00,000|lakh|crore/i.test(range)) return {label:'Above ₹5,00,000', cls:'severity-high', order:3};
+  if (/50,000/i.test(range)) return {label:'₹50,000 – ₹5,00,000', cls:'severity-mid', order:2};
+  if (/5,000/i.test(range) && !/50,000/i.test(range)) return {label:'Under ₹5,000', cls:'severity-low', order:1};
+  return {label:'Not specified / non-monetary', cls:'', order:0};
+}
+
+function renderInsights(){
+  var box = document.getElementById('insightsBox');
+  var body = document.getElementById('insightsBody');
   if (ALL.length < 2){ box.style.display='none'; return; }
-  var counts = {};
-  ALL.forEach(function(s){
-    var k = (s.enrichment && s.enrichment.scam_type_label) || s.category || 'Other';
-    counts[k] = (counts[k]||0)+1;
-  });
-  var ranked = Object.keys(counts).map(function(k){ return {label:k,count:counts[k]}; })
-    .filter(function(r){ return r.count > 1; })
-    .sort(function(a,b){ return b.count - a.count; })
-    .slice(0,5);
-  if (!ranked.length){ box.style.display='none'; return; }
   box.style.display = 'block';
-  box.innerHTML = '<div class="rank-title">🔥 Most Commonly Reported Patterns</div>' +
-    ranked.map(function(r,i){
-      return '<div class="rank-row"><span class="rank-num">#'+(i+1)+'</span>' +
-        '<span class="rank-label">'+h(r.label)+'</span>' +
-        '<span class="rank-count">'+r.count+' reports</span></div>';
-    }).join('');
+
+  var rows = [];
+  if (insightsView === 'type'){
+    var counts = {};
+    ALL.forEach(function(s){
+      var k = (s.enrichment && s.enrichment.scam_type_label) || s.category || 'Other';
+      counts[k] = (counts[k]||0)+1;
+    });
+    rows = Object.keys(counts).map(function(k){ return {label:k, count:counts[k], filterVal:k, cls:''}; })
+      .sort(function(a,b){ return b.count - a.count; }).slice(0,6);
+  } else {
+    var buckets = {};
+    ALL.forEach(function(s){
+      var b = severityBucket(s);
+      if (!buckets[b.label]) buckets[b.label] = {count:0, cls:b.cls, order:b.order};
+      buckets[b.label].count++;
+    });
+    rows = Object.keys(buckets).map(function(k){
+      return {label:k, count:buckets[k].count, cls:buckets[k].cls, order:buckets[k].order, filterVal:null};
+    }).sort(function(a,b){ return b.order - a.order; });
+  }
+
+  if (!rows.length){ box.style.display='none'; return; }
+  var max = Math.max.apply(null, rows.map(function(r){ return r.count; }));
+
+  body.innerHTML = rows.map(function(r){
+    var pct = Math.max(8, Math.round((r.count/max)*100));
+    var clickAttr = r.filterVal ? ' onclick="setFilter(\''+r.filterVal.replace(/'/g,"\\'")+'\');document.getElementById(\'filterRow\').scrollIntoView({behavior:\'smooth\'});"' : '';
+    return '<div class="insight-bar-row '+r.cls+'"'+clickAttr+'>' +
+      '<div class="insight-bar-top"><span class="insight-bar-label">'+h(r.label)+'</span><span class="insight-bar-count">'+r.count+'</span></div>' +
+      '<div class="insight-bar-track"><div class="insight-bar-fill" style="width:'+pct+'%"></div></div>' +
+    '</div>';
+  }).join('');
 }
 
 /* ── FILTERS ── */
@@ -531,7 +593,7 @@ function renderStories(){
   var filtered = activeFilter==='all' ? ALL : ALL.filter(function(s){ return s.category===activeFilter; });
   var cont = document.getElementById('storiesSection');
   if(!filtered.length){
-    cont.innerHTML = '<div class="empty-state">No approved reports in this category yet.<br>Be the first to <a href="scam-ed.html">report one</a>.</div>';
+    cont.innerHTML = '<div class="empty-state">No stories in this category yet — check back tomorrow.</div>';
     return;
   }
   var lbl = activeFilter==='all' ? 'All Stories' : activeFilter;
