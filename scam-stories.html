@@ -134,6 +134,15 @@ nav { background: var(--spot-bg); padding: 10px 16px; display: flex; align-items
 @media (prefers-color-scheme: dark) { .story-card { background: var(--paper-2); } }
 .story-card.ai-card   { border-left-color: var(--gold-bdr); }
 .story-card.user-card { border-left-color: var(--slate-bdr); }
+.story-card.deep-linked {
+  animation: deepLinkGlow 2.2s ease-out 1;
+  scroll-margin-top: 70px;
+}
+@keyframes deepLinkGlow {
+  0%   { box-shadow: 0 0 0 3px rgba(245,215,110,.9), 0 4px 20px rgba(245,215,110,.4); }
+  70%  { box-shadow: 0 0 0 3px rgba(245,215,110,.9), 0 4px 20px rgba(245,215,110,.4); }
+  100% { box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+}
 .story-card.spotlight {
   background: var(--spot-bg) !important;
   border-color: rgba(201,162,39,.45);
@@ -456,7 +465,7 @@ function renderCard(s, idx){
   var cls = 'story-card'+(isAI?' ai-card':' user-card')+(spotlight?' spotlight':'');
   var cid = safeId(s.id);
 
-  var out = '<div class="'+cls+'">';
+  var out = '<div class="'+cls+'" id="story-'+cid+'">';
   out += '<div class="card-inner">';
 
   // Top row
@@ -600,6 +609,24 @@ function renderStories(){
   var out = '<div class="divider-rule"><span class="divider-label">'+h(lbl)+'</span></div>';
   out += filtered.map(function(s,i){ return renderCard(s,i); }).join('');
   cont.innerHTML = out;
+  jumpToDeepLinkedStory();
+}
+
+/* ── DEEP LINK — scroll to & highlight a story opened from the homepage ── */
+var deepLinkHandled = false;
+function jumpToDeepLinkedStory(){
+  if (deepLinkHandled) return;
+  var params = new URLSearchParams(location.search);
+  var targetId = params.get('story');
+  if (!targetId) return;
+  var el = document.getElementById('story-' + safeId(targetId));
+  if (!el) return; // story exists but filtered out under current tab — leave silently
+  deepLinkHandled = true;
+  setTimeout(function(){
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    el.classList.add('deep-linked');
+    setTimeout(function(){ el.classList.remove('deep-linked'); }, 2300);
+  }, 150);
 }
 </script>
 </body>
