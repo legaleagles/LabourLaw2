@@ -1488,7 +1488,24 @@ function answerNewQuiz(i){
  document.getElementById('nqReveal').classList.add('show');
 }
 
-document.addEventListener('DOMContentLoaded',()=>{startDyk();loadNewQuiz();});
+document.addEventListener('DOMContentLoaded',()=>{startDyk();loadNewQuiz();loadYtStats();});
+
+function loadYtStats(){
+  fetch('youtube-stats.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      if (!data || !data.subscriber_count) return;
+      var display = data.subscriber_count.toLocaleString('en-IN');
+      var el = document.getElementById('ytMilestone');
+      if (el) el.textContent = (L === 'te' ? display + ' YouTubeలో' : L === 'hi' ? display + ' YouTube पर' : display + ' on YouTube');
+      var subEl = document.getElementById('ytSub');
+      if (subEl && data.video_count) {
+        var videoLabels = {en: ' free videos in Telugu', te: ' ఉచిత తెలుగు వీడియోలు', hi: ' मुफ्त तेलुगु वीडियो'};
+        subEl.textContent = data.video_count + (videoLabels[L] || videoLabels.en);
+      }
+    })
+    .catch(() => {}); // stats are a nice-to-have, never break the page if unavailable
+}
 window.addEventListener('pageshow',e=>{if(e.persisted){render();}});
 </script>
 <script>
