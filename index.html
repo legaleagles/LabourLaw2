@@ -207,27 +207,39 @@ padding:11px;text-decoration:none;transition:all .2s;}
 /* SMART SHOPPER — daily AI trick card */
 .trick-card{background:linear-gradient(150deg,#241505 0%,#3d2308 55%,#241100 100%);
 border:1.5px solid rgba(245,158,11,.5);border-left:5px solid #F59E0B;border-radius:18px;
-padding:18px 16px 16px;margin-top:10px;margin-bottom:20px;position:relative;overflow:hidden;
+padding:20px 17px 18px;margin-top:10px;margin-bottom:20px;position:relative;overflow:hidden;
 box-shadow:0 8px 28px rgba(245,158,11,.16);}
 .trick-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
 background:radial-gradient(circle,rgba(245,158,11,.18),transparent 70%);pointer-events:none;}
-.trick-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;position:relative;z-index:1;}
+.trick-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;position:relative;z-index:1;}
 .trick-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.2);
 border:1px solid rgba(245,158,11,.5);color:#FCD34D;font-size:9.5px;font-weight:900;
 letter-spacing:1.2px;text-transform:uppercase;padding:4px 11px;border-radius:10px;}
 .trick-badge-dot{width:5px;height:5px;border-radius:50%;background:#FCD34D;animation:pulseDot 1.6s ease-in-out infinite;}
 .trick-cat{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;}
-.trick-title{font-family:'Playfair Display',serif;font-size:17.5px;font-weight:900;color:#FCD34D;
-line-height:1.3;margin-bottom:8px;position:relative;z-index:1;}
-.trick-explain{font-size:12px;color:rgba(255,255,255,.7);line-height:1.65;margin-bottom:12px;position:relative;z-index:1;}
+.trick-ai-line{font-size:9.5px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:11px;position:relative;z-index:1;
+display:flex;align-items:center;gap:5px;}
+.trick-ai-line .ai-chip{background:linear-gradient(135deg,#38BDF8,#0EA5E9);color:#0D1117;font-size:8.5px;
+font-weight:900;padding:1.5px 6px;border-radius:5px;letter-spacing:.3px;}
+.trick-where{font-size:10px;color:#7DD3FC;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
+.trick-title{font-family:'Playfair Display',serif;font-size:18.5px;font-weight:900;color:#FCD34D;
+line-height:1.3;margin-bottom:9px;position:relative;z-index:1;}
+.trick-explain{font-size:12.5px;color:rgba(255,255,255,.72);line-height:1.7;margin-bottom:13px;position:relative;z-index:1;
+white-space:pre-line;}
+.trick-watch{background:rgba(220,38,38,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;
+padding:11px 12px;margin-bottom:12px;position:relative;z-index:1;}
+.trick-watch-label{font-size:9.5px;font-weight:900;color:#FCA5A5;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.trick-watch-item{font-size:11.5px;color:rgba(255,255,255,.78);line-height:1.6;padding-left:14px;position:relative;margin-bottom:4px;}
+.trick-watch-item::before{content:'⚠';position:absolute;left:0;top:0;font-size:10px;}
 .trick-response-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
-border-left:3px solid #FCD34D;border-radius:10px;padding:11px 12px;margin-bottom:10px;position:relative;z-index:1;}
-.trick-response-label{font-size:9.5px;font-weight:900;color:#FCD34D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.trick-response{font-size:12.5px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
-.trick-legal{font-size:10px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:12px;position:relative;z-index:1;}
+border-left:3px solid #FCD34D;border-radius:10px;padding:12px 13px;margin-bottom:11px;position:relative;z-index:1;}
+.trick-response-label{font-size:9.5px;font-weight:900;color:#FCD34D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.trick-response{font-size:13px;color:#fff;font-weight:600;line-height:1.6;font-style:italic;}
+.trick-legal{font-size:10.5px;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:13px;position:relative;z-index:1;
+padding-top:11px;border-top:1px solid rgba(255,255,255,.08);}
 .trick-share-row{display:flex;gap:8px;position:relative;z-index:1;}
 .trick-share-btn{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
-color:#fff;font-size:11.5px;font-weight:800;padding:10px;border-radius:10px;cursor:pointer;}
+color:#fff;font-size:11.5px;font-weight:800;padding:11px;border-radius:10px;cursor:pointer;}
 .trick-share-btn.wa{background:#25D366;border-color:#25D366;color:#0D1117;}
 .trick-share-btn:active{transform:scale(.97);}
 /* TODAY BUNDLE */
@@ -630,8 +642,14 @@ gtag('config', 'G-TJXHVW6XCL');
       <div class="trick-badge"><span class="trick-badge-dot"></span> Smart Shopper</div>
       <div class="trick-cat" id="trickCat"></div>
     </div>
+    <div class="trick-ai-line"><span class="ai-chip">AI</span> Powered by Gemini · sourced &amp; written fresh, daily</div>
+    <div class="trick-where" id="trickWhere"></div>
     <div class="trick-title" id="trickTitle"></div>
     <div class="trick-explain" id="trickExplain"></div>
+    <div class="trick-watch" id="trickWatchBox" style="display:none;">
+      <div class="trick-watch-label">🚩 Watch For</div>
+      <div id="trickWatchList"></div>
+    </div>
     <div class="trick-response-box">
       <div class="trick-response-label">💬 Say This</div>
       <div class="trick-response" id="trickResponse"></div>
@@ -1434,10 +1452,23 @@ function renderTrickCard(){
   if (!trickData) return;
   var lang = (L === 'te' || L === 'hi') ? L : 'en';
   document.getElementById('trickCat').textContent = trickData.category || '';
+  document.getElementById('trickWhere').textContent = trickData.where ? ('📍 ' + trickData.where) : '';
   document.getElementById('trickTitle').textContent = trickData['title_' + lang] || trickData.title_en || '';
   document.getElementById('trickExplain').textContent = trickData['explain_' + lang] || trickData.explain_en || '';
   document.getElementById('trickResponse').textContent = trickData['response_' + lang] || trickData.response_en || '';
   document.getElementById('trickLegal').textContent = '⚖️ ' + (trickData.legal_note || '');
+
+  var watchList = trickData['watch_for_' + lang] || trickData.watch_for_en || [];
+  var watchBox = document.getElementById('trickWatchBox');
+  if (watchList.length) {
+    document.getElementById('trickWatchList').innerHTML = watchList.map(function(w){
+      var d = document.createElement('div'); d.textContent = w;
+      return '<div class="trick-watch-item">' + d.innerHTML + '</div>';
+    }).join('');
+    watchBox.style.display = 'block';
+  } else {
+    watchBox.style.display = 'none';
+  }
 
   var shareText = (trickData.share_line || trickData.title_en || '') +
     '\n\n' + (trickData['title_' + lang] || trickData.title_en || '') +
