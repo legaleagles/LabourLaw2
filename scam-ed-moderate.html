@@ -186,11 +186,17 @@ function renderCard(item){
     '</div>';
   }
   if (currentTab === 'published') {
+    var vidInputId = 'vid-' + item.id;
     return '<div class="card">' +
       '<div class="card-cat">' + escapeHtml(item.category || 'Uncategorized') + '</div>' +
       (item.ref_number ? '<div class="card-label">' + escapeHtml(item.ref_number) + '</div>' : '') +
       '<div class="card-title">' + escapeHtml(item.title || '') + '</div>' +
       '<div class="card-story">' + escapeHtml(item.anonymized_story || '') + '</div>' +
+      '<div class="card-label" style="margin-top:10px;">🎬 YouTube video URL (optional):</div>' +
+      '<div style="display:flex;gap:6px;margin-top:4px;">' +
+        '<input type="text" id="' + vidInputId + '" value="' + escapeHtml(item.video_url || '') + '" placeholder="https://youtu.be/..." style="flex:1;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:13px;">' +
+        '<button class="btn-approve" onclick="setVideoUrl(\'' + item.id + '\',\'' + vidInputId + '\')">💾 Save</button>' +
+      '</div>' +
       '<div class="card-actions">' +
         '<button class="btn-takedown" onclick="moderate(\'' + item.id + '\',\'takedown\')">🗄️ Take Down</button>' +
       '</div>' +
@@ -233,6 +239,35 @@ function moderate(id, action){
       moderateInFlight = false;
       alert('Could not reach the server — please try again.');
       document.querySelectorAll('.card-actions button').forEach(function(b){ b.disabled = false; b.style.opacity = '1'; });
+    });
+}
+
+function setVideoUrl(id, inputId){
+  var val = document.getElementById(inputId).value.trim();
+  var btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/scam-moderate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: savedPassword, action: 'set_video_url', id: id, video_url: val})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) {
+        btn.textContent = '✅ Saved';
+        setTimeout(function(){ btn.textContent = '💾 Save'; btn.disabled = false; }, 1200);
+      } else {
+        alert(data.error || 'Could not save video URL.');
+        btn.textContent = '💾 Save';
+        btn.disabled = false;
+      }
+    })
+    .catch(function(){
+      alert('Could not reach the server — please try again.');
+      btn.textContent = '💾 Save';
+      btn.disabled = false;
     });
 }
 
