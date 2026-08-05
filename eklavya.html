@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eklavya — LLB 5th Semester Daily Study Plan | LawSticker AI</title>
+<meta name="description" content="A 45-day daily study calendar for each LLB 5th semester paper (Osmania University 3-YDC syllabus) — AI-generated lectures, one topic unlocked per day.">
+<meta name="author" content="Durga Sankar Pedagopu">
+<link rel="canonical" href="https://lawsticker-ai.com/eklavya.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#F5D76E;--cream:#FEFCF5;--ink:#111827;--muted:#6B7280;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:rgba(13,17,23,.97);padding:12px 16px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.hero{background:linear-gradient(150deg,#0D1117 0%,#1a1030 55%,#241505 100%);padding:34px 20px 28px;text-align:center;}
+.hero-icon{font-size:42px;margin-bottom:8px;}
+.hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#7DD3FC;margin-bottom:6px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#F5D76E;}
+.hero-sub{font-size:12.5px;color:rgba(255,255,255,.65);margin-top:10px;line-height:1.6;max-width:460px;margin-left:auto;margin-right:auto;}
+.disclaimer{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:10px;
+padding:11px 13px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.75);line-height:1.6;text-align:left;max-width:460px;margin-left:auto;margin-right:auto;}
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 40px;}
+.subject-card{display:block;background:#fff;border:1px solid #EEE7D6;border-left:5px solid var(--gold);
+border-radius:16px;padding:18px 17px;margin-bottom:14px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.subject-card:active{transform:scale(.99);}
+.subject-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+.subject-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.subject-progress-track{flex:1;height:8px;background:#F1EEE0;border-radius:5px;overflow:hidden;}
+.subject-progress-fill{height:100%;background:linear-gradient(90deg,#C9A227,#F5D76E);border-radius:5px;}
+.subject-progress-label{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap;}
+.subject-status{font-size:11.5px;color:var(--muted);}
+.subject-status.today{color:#B45309;font-weight:700;}
+</style>
+</head>
+<body>
+
+<nav><a class="nav-brand" href="index.html">⚖️ LawSticker AI</a></nav>
+
+<div class="hero">
+  <div class="hero-icon">🏹</div>
+  <div class="hero-eyebrow">Self-Study, One Topic a Day</div>
+  <div class="hero-title">Eklavya</div>
+  <div class="hero-sub">A 45-day daily calendar for each LLB 5th semester paper (Osmania University 3-YDC). One topic unlocks each day — read it, then move on. Miss a day? Come back anytime, nothing disappears.</div>
+  <div class="disclaimer">
+    🤖 <strong>AI-generated study material.</strong> Many students already use AI notes — this is no different, just organized daily. Built to cover roughly 60% of your prep; cross-check Section numbers and case citations against the bare Act before your exam. No guarantee of completeness or accuracy — this supplements your study, it doesn't replace it.
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="subjectsContainer">
+    <div style="text-align:center;color:var(--muted);padding:30px;">Loading subjects…</div>
+  </div>
+</div>
+
+<script>
+var SUBJECTS = [
+  {slug:'cpc',     name:'Civil Procedure Code & Law of Limitation'},
+  {slug:'bnss',    name:'BNSS, Juvenile Justice & Probation of Offenders'},
+  {slug:'banking', name:'Law of Banking & Negotiable Instruments'},
+  {slug:'adr',     name:'Alternate Dispute Resolution'},
+  {slug:'ethics',  name:'Professional Ethics & Accounting'}
+];
+var START = new Date('2026-08-06T00:00:00');
+var TOTAL_DAYS = 45;
+
+function todayIndex(){
+  var now = new Date();
+  var diff = Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate()) - new Date(START.getFullYear(),START.getMonth(),START.getDate())) / 86400000) + 1;
+  return diff;
+}
+
+function render(){
+  var idx = todayIndex();
+  var container = document.getElementById('subjectsContainer');
+  container.innerHTML = SUBJECTS.map(function(s){
+    var day = Math.max(0, Math.min(idx, TOTAL_DAYS));
+    var pct = Math.round((day / TOTAL_DAYS) * 100);
+    var status;
+    if (idx < 1) status = '<span>Starts ' + START.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + '</span>';
+    else if (idx > TOTAL_DAYS) status = '<span>✅ Plan complete</span>';
+    else status = '<span class="today">📖 Day ' + idx + ' available today</span>';
+    return '<a class="subject-card" href="eklavya-subject.html?subject=' + s.slug + '">' +
+      '<div class="subject-name">' + s.name + '</div>' +
+      '<div class="subject-progress-row">' +
+        '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
+        '<div class="subject-progress-label">' + day + '/' + TOTAL_DAYS + '</div>' +
+      '</div>' +
+      '<div class="subject-status">' + status + '</div>' +
+    '</a>';
+  }).join('');
+}
+render();
+</script>
+
+</body>
+</html>
