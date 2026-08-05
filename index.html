@@ -1236,7 +1236,7 @@ let L='en', tagIdx=0, tagTimer=null;
 function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000);}
 
 function setLang(l,b){L=l;document.querySelectorAll('.nav-lang').forEach(x=>x.classList.remove('active'));
- if(b)b.classList.add('active');render();if(trickData)renderTrickCard();}
+ if(b)b.classList.add('active');render();if(trickData)renderTrickCard();if(window.__renderScamBulletin)window.__renderScamBulletin();}
 
 function render(){
  const U=UI[L];
@@ -1834,6 +1834,39 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
   }
   window.__shareScamStory = shareStory;
 
+  var HOOK = { en: 'See how it unfolded & what to do →', te: 'ఇది ఎలా జరిగిందో & ఏం చేయాలో చూడండి →', hi: 'यह कैसे हुआ और क्या करें, देखें →' };
+  var JUST_IN = { en: 'Just In', te: 'తాజా వార్త', hi: 'ताज़ा खबर' };
+
+  var scamPicks = null; // cached once fetched, re-rendered on language change
+
+  function renderScamBulletin(){
+    if (!scamPicks) return;
+    var lang = (window.L === 'te' || window.L === 'hi') ? window.L : 'en';
+    var container = document.getElementById('scamBulletinStories');
+    if (!container) return;
+    container.innerHTML = scamPicks.picks.map(function(s, i){
+      var title = s['title_' + lang] || s.title_en || s.title || '';
+      var body  = s['story_' + lang] || s.story_en || s.anonymized_story || '';
+      var isLead = (i === 0 && scamPicks.hasToday);
+      var safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return '<div class="sb-story' + (isLead ? ' sb-lead' : '') + '">' +
+        (isLead ? '<div class="sb-just-in">' + esc(JUST_IN[lang]) + '</div>' : '') +
+        '<div class="sb-story-num">' + (i + 1) + '</div>' +
+        '<a class="sb-story-link" href="scam-stories.html?story=' + encodeURIComponent(s.id) + '">' +
+          '<div class="sb-story-cat">' + esc(s.category || 'Scam Alert') + '</div>' +
+          '<div class="sb-story-title">' + esc(title) + '</div>' +
+          '<div class="sb-story-teaser">' + esc(teaser(body)) + '</div>' +
+          '<div class="sb-story-hook">' + esc(HOOK[lang]) + '</div>' +
+        '</a>' +
+        '<div class="sb-story-side">' +
+          '<button class="sb-story-share" onclick="__shareScamStory(\'' + s.id + '\', \'' + safeTitle + '\')">📤</button>' +
+          '<div class="sb-story-arrow">→</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+  window.__renderScamBulletin = renderScamBulletin;
+
   fetch('scam-reports.json?t=' + Date.now())
     .then(function(r){ if (!r.ok) throw new Error('no data'); return r.json(); })
     .then(function(data){
@@ -1845,30 +1878,8 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
       var todayStr = new Date().toISOString().slice(0, 10);
       var todays = entries.filter(function(e){ return e.origin_date === todayStr; });
       var pool = todays.length ? todays : entries.slice(-3);
-      var picks = pool.slice(-3).reverse();
-
-      var lang = (window.L === 'te' || window.L === 'hi') ? window.L : 'en';
-      var container = document.getElementById('scamBulletinStories');
-      container.innerHTML = picks.map(function(s, i){
-        var title = s['title_' + lang] || s.title_en || s.title || '';
-        var body  = s['story_' + lang] || s.story_en || s.anonymized_story || '';
-        var isLead = (i === 0 && todays.length > 0);
-        var safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        return '<div class="sb-story' + (isLead ? ' sb-lead' : '') + '">' +
-          (isLead ? '<div class="sb-just-in">Just In</div>' : '') +
-          '<div class="sb-story-num">' + (i + 1) + '</div>' +
-          '<a class="sb-story-link" href="scam-stories.html?story=' + encodeURIComponent(s.id) + '">' +
-            '<div class="sb-story-cat">' + esc(s.category || 'Scam Alert') + '</div>' +
-            '<div class="sb-story-title">' + esc(title) + '</div>' +
-            '<div class="sb-story-teaser">' + esc(teaser(body)) + '</div>' +
-            '<div class="sb-story-hook">See how it unfolded &amp; what to do →</div>' +
-          '</a>' +
-          '<div class="sb-story-side">' +
-            '<button class="sb-story-share" onclick="__shareScamStory(\'' + s.id + '\', \'' + safeTitle + '\')">📤</button>' +
-            '<div class="sb-story-arrow">→</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
+      scamPicks = { picks: pool.slice(-3).reverse(), hasToday: todays.length > 0 };
+      renderScamBulletin();
     })
     .catch(function(){
       var container = document.getElementById('scamBulletinStories');
