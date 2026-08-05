@@ -390,7 +390,7 @@ animation:pulseDot 1.6s ease-in-out infinite;}
 display:flex;align-items:center;gap:7px;margin-bottom:2px;}
 .sb-sub{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:12px;font-weight:600;}
 .sb-stories{display:flex;flex-direction:column;gap:9px;}
-.sb-story{display:flex;align-items:flex-start;gap:10px;text-decoration:none;
+.sb-story{display:flex;align-items:flex-start;gap:9px;
 background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);
 border-radius:12px;padding:11px 12px;transition:transform .15s,background .15s;position:relative;}
 .sb-story:active{transform:scale(.98);background:rgba(255,255,255,.08);}
@@ -402,13 +402,18 @@ box-shadow:0 2px 6px rgba(220,38,38,.4);}
 .sb-story-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(201,162,39,.22);
 border:1px solid rgba(201,162,39,.5);color:#F5D76E;font-size:11px;font-weight:900;
 display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.sb-story-body{flex:1;min-width:0;}
+.sb-story-link{flex:1;min-width:0;text-decoration:none;display:block;}
 .sb-story-cat{font-size:9px;font-weight:800;color:#7DD3FC;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
 .sb-story-title{font-size:12.5px;font-weight:800;color:#fff;line-height:1.4;margin-bottom:3px;}
-.sb-story-teaser{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;
-display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.sb-story-hook{font-size:10.5px;color:#F5D76E;font-weight:800;margin-top:4px;}
-.sb-story-arrow{color:var(--gold-l);font-size:16px;flex-shrink:0;margin-top:2px;}
+.sb-story-teaser{font-size:11px;color:rgba(255,255,255,.5);line-height:1.55;
+display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.sb-story-hook{font-size:10.5px;color:#F5D76E;font-weight:800;margin-top:5px;}
+.sb-story-side{display:flex;flex-direction:column;align-items:center;gap:7px;flex-shrink:0;margin-top:2px;}
+.sb-story-share{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);
+color:#F5D76E;font-size:13px;width:26px;height:26px;border-radius:8px;cursor:pointer;
+display:flex;align-items:center;justify-content:center;}
+.sb-story-share:active{transform:scale(.9);background:rgba(255,255,255,.16);}
+.sb-story-arrow{color:var(--gold-l);font-size:14px;}
 .sb-viewall{display:block;text-align:center;font-size:11.5px;font-weight:800;color:#F5D76E;
 margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.08);text-decoration:none;}
 .sb-loading{font-size:11.5px;color:rgba(255,255,255,.4);padding:8px 2px;}
@@ -656,9 +661,10 @@ gtag('config', 'G-TJXHVW6XCL');
     </div>
     <div class="trick-legal" id="trickLegal"></div>
     <div class="trick-share-row">
-      <button class="trick-share-btn wa" id="trickShareWa">📱 WhatsApp</button>
-      <button class="trick-share-btn native" id="trickShareNative">📤 Share</button>
+      <button class="trick-share-btn wa" id="trickShareWa">📱 Share Card</button>
+      <button class="trick-share-btn native" id="trickShareNative">📤 More Options</button>
     </div>
+    <a href="smart-shopper.html" class="sb-viewall" style="margin-top:12px;">See all past tricks →</a>
   </div>
 
   <!-- SITUATION PICKER -->
@@ -1472,19 +1478,41 @@ function renderTrickCard(){
 
   var shareText = (trickData.share_line || trickData.title_en || '') +
     '\n\n' + (trickData['title_' + lang] || trickData.title_en || '') +
-    '\n\nMore daily tricks & smart comebacks at https://lawsticker-ai.com';
+    '\n\nMore daily tricks & smart comebacks at https://lawsticker-ai.com/smart-shopper.html';
+
+  var cardImageUrl = 'https://lawsticker-backend-494996217030.europe-west1.run.app/api/trick-card-image?id=' + encodeURIComponent(trickData.id || '');
+
+  function shareCardImage(forceNative){
+    fetch(cardImageUrl)
+      .then(function(r){ if (!r.ok) throw new Error('no image'); return r.blob(); })
+      .then(function(blob){
+        var file = new File([blob], 'smart-shopper-tip.png', { type: 'image/png' });
+        if (forceNative && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({ files: [file], text: shareText }).catch(function(){});
+        } else if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({ files: [file], text: shareText }).catch(function(){
+            window.open(cardImageUrl, '_blank');
+          });
+        } else {
+          // No file-share support (older browsers) — open the image so the
+          // person can long-press / save it and share manually.
+          window.open(cardImageUrl, '_blank');
+        }
+      })
+      .catch(function(){
+        window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
+      });
+  }
 
   var waBtn = document.getElementById('trickShareWa');
-  if (waBtn) waBtn.onclick = function(){
-    window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
-  };
+  if (waBtn) waBtn.onclick = function(){ shareCardImage(false); };
 
   var nativeBtn = document.getElementById('trickShareNative');
   if (nativeBtn) nativeBtn.onclick = function(){
     if (navigator.share) {
-      navigator.share({ text: shareText, url: 'https://lawsticker-ai.com' }).catch(function(){});
+      shareCardImage(true);
     } else {
-      window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
+      window.open(cardImageUrl, '_blank');
     }
   };
 }
@@ -1776,9 +1804,19 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
   function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
   function teaser(s){
     s = s || '';
-    if (s.length <= 100) return s;
-    return s.slice(0, 100).replace(/\s+\S*$/, '') + '…';
+    if (s.length <= 160) return s;
+    return s.slice(0, 160).replace(/\s+\S*$/, '') + '…';
   }
+  function shareStory(id, title){
+    var url = 'https://lawsticker-ai.com/scam-stories.html?story=' + encodeURIComponent(id);
+    var text = '🛡️ ' + title + '\n\nRead the full story & how to protect yourself:\n' + url;
+    if (navigator.share) {
+      navigator.share({ text: text, url: url }).catch(function(){});
+    } else {
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+  }
+  window.__shareScamStory = shareStory;
 
   fetch('scam-reports.json?t=' + Date.now())
     .then(function(r){ if (!r.ok) throw new Error('no data'); return r.json(); })
@@ -1799,17 +1837,21 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
         var title = s['title_' + lang] || s.title_en || s.title || '';
         var body  = s['story_' + lang] || s.story_en || s.anonymized_story || '';
         var isLead = (i === 0 && todays.length > 0);
-        return '<a class="sb-story' + (isLead ? ' sb-lead' : '') + '" href="scam-stories.html?story=' + encodeURIComponent(s.id) + '">' +
+        var safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        return '<div class="sb-story' + (isLead ? ' sb-lead' : '') + '">' +
           (isLead ? '<div class="sb-just-in">Just In</div>' : '') +
           '<div class="sb-story-num">' + (i + 1) + '</div>' +
-          '<div class="sb-story-body">' +
+          '<a class="sb-story-link" href="scam-stories.html?story=' + encodeURIComponent(s.id) + '">' +
             '<div class="sb-story-cat">' + esc(s.category || 'Scam Alert') + '</div>' +
             '<div class="sb-story-title">' + esc(title) + '</div>' +
             '<div class="sb-story-teaser">' + esc(teaser(body)) + '</div>' +
             '<div class="sb-story-hook">See how it unfolded &amp; what to do →</div>' +
+          '</a>' +
+          '<div class="sb-story-side">' +
+            '<button class="sb-story-share" onclick="__shareScamStory(\'' + s.id + '\', \'' + safeTitle + '\')">📤</button>' +
+            '<div class="sb-story-arrow">→</div>' +
           '</div>' +
-          '<div class="sb-story-arrow">→</div>' +
-        '</a>';
+        '</div>';
       }).join('');
     })
     .catch(function(){
