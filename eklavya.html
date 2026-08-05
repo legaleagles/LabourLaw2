@@ -27,6 +27,9 @@ background:linear-gradient(135deg,#38BDF8,#F5D76E);padding:3px 10px;border-radiu
 .disclaimer{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:10px;
 padding:11px 13px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.75);line-height:1.6;text-align:left;max-width:460px;margin-left:auto;margin-right:auto;}
 .wrap{max-width:600px;margin:0 auto;padding:20px 16px 40px;}
+.sem-header{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;color:var(--navy);
+margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
+.sem-header:first-child{margin-top:0;}
 .subject-card{display:block;background:#fff;border:1px solid #EEE7D6;border-left:5px solid var(--gold);
 border-radius:16px;padding:18px 17px;margin-bottom:14px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.05);}
 .subject-card:active{transform:scale(.99);}
@@ -72,12 +75,44 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 var SUBJECTS = [
-  {slug:'cpc',     name:'Civil Procedure Code & Law of Limitation'},
-  {slug:'bnss',    name:'BNSS, Juvenile Justice & Probation of Offenders'},
-  {slug:'banking', name:'Law of Banking & Negotiable Instruments'},
-  {slug:'adr',     name:'Alternate Dispute Resolution'},
-  {slug:'ethics',  name:'Professional Ethics & Accounting'}
+  {slug:'s1-contract1',    name:'Law of Contract – I', sem:1},
+  {slug:'s1-familylaw1',   name:'Family Law – I (Hindu Law)', sem:1},
+  {slug:'s1-constlaw1',    name:'Constitutional Law – I', sem:1},
+  {slug:'s1-torts1',       name:'Law of Torts, MV Accidents & Consumer Protection', sem:1},
+  {slug:'s1-envlaw1',      name:'Environmental Law', sem:1},
+
+  {slug:'s2-contract2',    name:'Law of Contract – II', sem:2},
+  {slug:'s2-familylaw2',   name:'Family Law – II (Muslim Law)', sem:2},
+  {slug:'s2-constlaw2',    name:'Constitutional Law – II', sem:2},
+  {slug:'s2-crimes1',      name:'Law of Crimes', sem:2},
+  {slug:'s2-evidence1',    name:'Law of Evidence', sem:2},
+
+  {slug:'s3-jurisprudence',name:'Jurisprudence', sem:3},
+  {slug:'s3-property1',    name:'Law of Property', sem:3},
+  {slug:'s3-adminlaw',     name:'Administrative Law', sem:3},
+  {slug:'s3-companylaw',   name:'Company Law', sem:3},
+  {slug:'s3-labourlaw1',   name:'Labour Law – I', sem:3},
+
+  {slug:'s4-labourlaw2',   name:'Labour Law – II', sem:4},
+  {slug:'s4-pil',          name:'Public International Law', sem:4},
+  {slug:'s4-interpretation',name:'Interpretation of Statutes', sem:4},
+  {slug:'s4-landlaws',     name:'Land Laws', sem:4},
+  {slug:'s4-ipr',          name:'Intellectual Property Law', sem:4},
+
+  {slug:'cpc',     name:'Civil Procedure Code & Law of Limitation', sem:5},
+  {slug:'bnss',    name:'BNSS, Juvenile Justice & Probation of Offenders', sem:5},
+  {slug:'banking', name:'Law of Banking & Negotiable Instruments', sem:5},
+  {slug:'adr',     name:'Alternate Dispute Resolution', sem:5},
+  {slug:'ethics',  name:'Professional Ethics & Accounting', sem:5},
+
+  {slug:'s6-taxlaw',       name:'Law of Taxation', sem:6},
+  {slug:'s6-itlaw',        name:'Information Technology Law', sem:6},
+  {slug:'s6-optional-women',        name:'Optional: Law Relating to Women', sem:6},
+  {slug:'s6-optional-humanrights',  name:'Optional: Human Rights Law', sem:6},
+  {slug:'s6-optional-investments',  name:'Optional: Law of Investments & Securities', sem:6},
+  {slug:'s6-drafting',     name:'Drafting, Pleadings & Conveyancing', sem:6}
 ];
+var SEM_LABELS = {1:'Semester I',2:'Semester II',3:'Semester III',4:'Semester IV',5:'Semester V',6:'Semester VI'};
 var START = new Date('2026-08-05T00:00:00');
 var TOTAL_DAYS = 45;
 
@@ -90,22 +125,29 @@ function todayIndex(){
 function render(){
   var idx = todayIndex();
   var container = document.getElementById('subjectsContainer');
-  container.innerHTML = SUBJECTS.map(function(s){
-    var day = Math.max(0, Math.min(idx, TOTAL_DAYS));
-    var pct = Math.round((day / TOTAL_DAYS) * 100);
-    var status;
-    if (idx < 1) status = '<span>Starts ' + START.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + '</span>';
-    else if (idx > TOTAL_DAYS) status = '<span>✅ Plan complete</span>';
-    else status = '<span class="today">📖 Day ' + idx + ' available today</span>';
-    return '<a class="subject-card" href="eklavya-subject.html?subject=' + s.slug + '">' +
-      '<div class="subject-name">' + s.name + '</div>' +
-      '<div class="subject-progress-row">' +
-        '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="subject-progress-label">' + day + '/' + TOTAL_DAYS + '</div>' +
-      '</div>' +
+  var html = '';
+  [1,2,3,4,5,6].forEach(function(sem){
+    var subs = SUBJECTS.filter(function(s){ return s.sem === sem; });
+    if (!subs.length) return;
+    html += '<div class="sem-header">' + SEM_LABELS[sem] + '</div>';
+    html += subs.map(function(s){
+      var day = Math.max(0, Math.min(idx, TOTAL_DAYS));
+      var pct = Math.round((day / TOTAL_DAYS) * 100);
+      var status;
+      if (idx < 1) status = '<span>Starts ' + START.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + '</span>';
+      else if (idx > TOTAL_DAYS) status = '<span>✅ Plan complete</span>';
+      else status = '<span class="today">📖 Day ' + idx + ' available today</span>';
+      return '<a class="subject-card" href="eklavya-subject.html?subject=' + s.slug + '">' +
+        '<div class="subject-name">' + s.name + '</div>' +
+        '<div class="subject-progress-row">' +
+          '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="subject-progress-label">' + day + '/' + TOTAL_DAYS + '</div>' +
+        '</div>' +
       '<div class="subject-status">' + status + '</div>' +
     '</a>';
-  }).join('');
+    }).join('');
+  });
+  container.innerHTML = html;
 }
 render();
 </script>
