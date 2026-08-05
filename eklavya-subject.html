@@ -23,6 +23,7 @@ nav{background:rgba(13,17,23,.97);padding:12px 16px;position:sticky;top:0;z-inde
 .hero-progress-track{flex:1;height:7px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
 .hero-progress-fill{height:100%;background:linear-gradient(90deg,#C9A227,#F5D76E);border-radius:5px;}
 .hero-progress-label{font-size:10.5px;font-weight:800;color:rgba(255,255,255,.6);white-space:nowrap;}
+.hero-daterange{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:9px;}
 
 .wrap{max-width:640px;margin:0 auto;padding:16px;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -48,20 +49,36 @@ font-size:10px;cursor:default;border:1.5px solid transparent;position:relative;}
 
 .lecture-panel{background:#fff;border:1px solid #EEE7D6;border-radius:16px;padding:18px 16px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
 .lec-unit{font-size:9.5px;font-weight:800;color:#0369A1;text-transform:uppercase;letter-spacing:.5px;}
-.lec-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 10px;line-height:1.3;}
+.lec-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 12px;line-height:1.3;}
+.lec-hook{background:linear-gradient(135deg,#1a1030,#2d1b4e);border-radius:13px;padding:13px 14px;margin-bottom:16px;
+display:flex;align-items:flex-start;gap:10px;box-shadow:0 4px 14px rgba(45,27,78,.25);}
+.lec-hook-icon{font-size:20px;flex-shrink:0;}
+.lec-hook-text{font-size:13px;color:#F5D76E;font-weight:700;line-height:1.55;font-style:italic;}
 .lec-stars{display:flex;align-items:center;gap:6px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:9px;padding:9px 11px;margin-bottom:14px;}
 .lec-stars-icons{font-size:14px;letter-spacing:1px;}
 .lec-stars-reason{font-size:11px;color:#7C5A0A;flex:1;}
+.depth-tabs{display:flex;gap:6px;margin-bottom:14px;background:#F3F4F6;padding:4px;border-radius:11px;}
+.depth-tab{flex:1;background:transparent;border:none;font-size:11px;font-weight:800;color:var(--muted);
+padding:8px 4px;border-radius:8px;cursor:pointer;}
+.depth-tab.active{background:#fff;color:#1D4ED8;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.depth-panel{display:none;font-size:13px;color:#374151;line-height:1.75;white-space:pre-line;margin-bottom:18px;
+background:#F9FAFB;border-radius:11px;padding:13px 14px;}
+.depth-panel.active{display:block;}
 .lec-section{margin-bottom:16px;}
 .lec-head{font-size:12.5px;font-weight:900;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
 .lec-body{font-size:13px;color:#374151;line-height:1.75;white-space:pre-line;}
 .lec-listen{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;font-size:11px;font-weight:800;
 padding:6px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
+.real-world-box{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border:1px solid #6EE7B7;border-radius:11px;padding:12px 13px;}
 .provision-item{background:#F9FAFB;border-left:3px solid var(--gold);border-radius:6px;padding:8px 10px;font-size:12.5px;color:#374151;margin-bottom:6px;}
-.case-item{border:1px solid #E5E7EB;border-radius:9px;padding:10px 11px;margin-bottom:8px;}
-.case-name{font-weight:800;font-size:12.5px;color:var(--ink);}
-.case-citation{font-size:10.5px;color:var(--muted);font-family:'Courier New',monospace;margin:2px 0;}
-.case-principle{font-size:12px;color:#4B5563;line-height:1.55;}
+.case-item{border:1px solid #E5E7EB;border-radius:11px;padding:12px 13px;margin-bottom:10px;background:#FEFEFE;}
+.case-name{font-weight:900;font-size:13px;color:var(--ink);}
+.case-citation{font-size:10.5px;color:var(--muted);font-family:'Courier New',monospace;margin:2px 0 8px;}
+.case-row{margin-bottom:6px;}
+.case-row-label{font-size:9.5px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.case-row-text{font-size:12px;color:#4B5563;line-height:1.55;}
+.case-why{background:#FFFBEB;border-radius:7px;padding:7px 9px;margin-top:6px;}
+.case-why .case-row-text{color:#7C5A0A;font-weight:600;}
 .recap-list{list-style:none;}
 .recap-list li{font-size:12.5px;color:#374151;padding:6px 0 6px 20px;position:relative;border-bottom:1px dashed #EEE;}
 .recap-list li:last-child{border-bottom:none;}
@@ -83,6 +100,7 @@ padding:6px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
     <div class="hero-progress-track"><div class="hero-progress-fill" id="progressFill" style="width:0%"></div></div>
     <div class="hero-progress-label" id="progressLabel">–</div>
   </div>
+  <div class="hero-daterange" id="heroDateRange"></div>
 </div>
 
 <div class="wrap">
@@ -189,6 +207,11 @@ function speakText(text){
   window.speechSynthesis.speak(u);
 }
 
+function switchDepth(tab){
+  document.querySelectorAll('.depth-tab').forEach(function(b){ b.classList.toggle('active', b.dataset.depth === tab); });
+  document.querySelectorAll('.depth-panel').forEach(function(p){ p.classList.toggle('active', p.dataset.depth === tab); });
+}
+
 function renderLecture(day){
   var panel = document.getElementById('lecturePanel');
   var lec = lecturesData && lecturesData.lectures && lecturesData.lectures[String(day)];
@@ -206,12 +229,34 @@ function renderLecture(day){
   var starsHtml = '⭐'.repeat(lec.importance_stars || 0) + '☆'.repeat(5 - (lec.importance_stars || 0));
 
   var out = '';
-  out += '<div class="lec-unit">' + esc(lec.unit) + ' · Day ' + lec.day + '</div>';
+  out += '<div class="lec-unit">' + esc(lec.unit) + ' · Day ' + lec.day + ' · ' + esc(new Date(lec.date + 'T00:00:00').toLocaleDateString('en-IN',{weekday:'long', day:'numeric', month:'long', year:'numeric'})) + '</div>';
   out += '<div class="lec-title">' + esc(lec.lecture_title) + '</div>';
+
+  if (lec.memory_hook){
+    out += '<div class="lec-hook"><span class="lec-hook-icon">🧠</span><span class="lec-hook-text">' + esc(lec.memory_hook) + '</span></div>';
+  }
+
   out += '<div class="lec-stars"><span class="lec-stars-icons">' + starsHtml + '</span><span class="lec-stars-reason">' + esc(lec.importance_reason) + '</span></div>';
 
-  out += '<div class="lec-section"><div class="lec-head">📘 The Concept <button class="lec-listen" onclick=\'speakText(' + JSON.stringify(lec.concept_explanation) + ')\'>🔊 Listen</button></div>';
-  out += '<div class="lec-body">' + esc(lec.concept_explanation) + '</div></div>';
+  // Depth tabs — same content, three exam-ready depths
+  out += '<div class="depth-tabs">' +
+    '<button class="depth-tab active" data-depth="quick" onclick="switchDepth(\'quick\')">⚡ Quick Answer</button>' +
+    '<button class="depth-tab" data-depth="essay" onclick="switchDepth(\'essay\')">📝 Essay Answer</button>' +
+    '<button class="depth-tab" data-depth="full" onclick="switchDepth(\'full\')">📘 Full Lecture</button>' +
+  '</div>';
+  out += '<div class="depth-panel active" data-depth="quick">' + esc(lec.quick_answer) + '</div>';
+  out += '<div class="depth-panel" data-depth="essay">' + esc(lec.essay_answer) + '</div>';
+  out += '<div class="depth-panel" data-depth="full">' + esc(lec.concept_explanation) +
+    '<button class="lec-listen" style="display:block;margin-top:10px;" onclick=\'speakText(' + JSON.stringify(lec.concept_explanation) + ')\'>🔊 Listen</button></div>';
+
+  if (lec.real_world_example){
+    out += '<div class="lec-section"><div class="lec-head">🌍 Why This Actually Matters</div>';
+    out += '<div class="real-world-box lec-body">' + esc(lec.real_world_example) + '</div></div>';
+  }
+
+  if (lec.illustration){
+    out += '<div class="lec-section"><div class="lec-head">💡 Worked Illustration</div><div class="lec-body">' + esc(lec.illustration) + '</div></div>';
+  }
 
   if (lec.key_provisions && lec.key_provisions.length){
     out += '<div class="lec-section"><div class="lec-head">📋 Key Provisions</div>';
@@ -224,13 +269,12 @@ function renderLecture(day){
     lec.case_laws.forEach(function(c){
       out += '<div class="case-item"><div class="case-name">' + esc(c.case_name) + '</div>' +
         (c.citation ? '<div class="case-citation">' + esc(c.citation) + '</div>' : '') +
-        '<div class="case-principle">' + esc(c.principle) + '</div></div>';
+        '<div class="case-row"><div class="case-row-label">Facts</div><div class="case-row-text">' + esc(c.facts) + '</div></div>' +
+        '<div class="case-row"><div class="case-row-label">Holding</div><div class="case-row-text">' + esc(c.holding) + '</div></div>' +
+        '<div class="case-why"><div class="case-row-label">Why It Matters</div><div class="case-row-text">' + esc(c.why_it_matters) + '</div></div>' +
+      '</div>';
     });
     out += '</div>';
-  }
-
-  if (lec.illustration){
-    out += '<div class="lec-section"><div class="lec-head">💡 Illustration</div><div class="lec-body">' + esc(lec.illustration) + '</div></div>';
   }
 
   if (lec.exam_angle){
@@ -247,19 +291,24 @@ function renderLecture(day){
 }
 
 Promise.all([
-  fetch('llb5-' + subject + '-topics.json?t=' + Date.now()).then(function(r){ if(!r.ok) throw new Error('no topics'); return r.json(); }),
+  fetch('llb5-' + subject + '-topics.json?t=' + Date.now()).then(function(r){ if(!r.ok) throw new Error('topics.json: HTTP ' + r.status); return r.json(); }),
   fetch('llb5-' + subject + '-lectures.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : {lectures:{}}; }).catch(function(){ return {lectures:{}}; })
 ]).then(function(results){
   topicsData = results[0];
   lecturesData = results[1];
   START = new Date(topicsData.start_date + 'T00:00:00');
   document.getElementById('subjectTitle').textContent = topicsData.subject_name;
+  document.title = topicsData.subject_name + ' — Eklavya | LawSticker AI';
 
   var idx = todayIndex();
   var total = topicsData.topics.length;
   var doneCount = Math.max(0, Math.min(idx, total));
   document.getElementById('progressFill').style.width = Math.round((doneCount/total)*100) + '%';
   document.getElementById('progressLabel').textContent = doneCount + '/' + total + ' days';
+  var endDate = dateForDay(total);
+  document.getElementById('heroDateRange').textContent =
+    START.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) + ' → ' +
+    endDate.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 
   var anchorDate = dateForDay(Math.max(1, Math.min(idx, total)));
   viewYear = anchorDate.getFullYear();
@@ -269,9 +318,9 @@ Promise.all([
   var target = Math.max(1, Math.min(idx, total));
   selectDay(target);
 })
-.catch(function(){
+.catch(function(err){
   document.getElementById('subjectTitle').textContent = 'Not available yet';
-  document.getElementById('lecturePanel').innerHTML = '<div class="empty-panel">This subject\'s study plan hasn\'t been set up yet — check back soon.</div>';
+  document.getElementById('lecturePanel').innerHTML = '<div class="empty-panel">This subject\'s study plan isn\'t loading.<br><br><strong>Error detail:</strong> ' + esc(err.message) + '<br><br>Please share this with support.</div>';
 });
 </script>
 
