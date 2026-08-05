@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eklavya — LLB 5th Semester | LawSticker AI</title>
+<meta name="description" content="Daily AI-generated lecture calendar for your LLB 5th semester paper — one topic unlocks each day.">
+<meta name="author" content="Durga Sankar Pedagopu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#F5D76E;--cream:#FEFCF5;--ink:#111827;--muted:#6B7280;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:rgba(13,17,23,.97);padding:12px 16px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.nav-back{color:rgba(255,255,255,.55);font-size:12px;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(150deg,#0D1117 0%,#1a1030 60%,#241505 100%);padding:22px 18px 20px;}
+.hero-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#7DD3FC;}
+.hero-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:#F5D76E;margin-top:4px;line-height:1.3;}
+.hero-progress-row{display:flex;align-items:center;gap:10px;margin-top:12px;}
+.hero-progress-track{flex:1;height:7px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
+.hero-progress-fill{height:100%;background:linear-gradient(90deg,#C9A227,#F5D76E);border-radius:5px;}
+.hero-progress-label{font-size:10.5px;font-weight:800;color:rgba(255,255,255,.6);white-space:nowrap;}
+
+.wrap{max-width:640px;margin:0 auto;padding:16px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+font-size:10px;cursor:pointer;border:1.5px solid transparent;background:#F1EEE0;color:#9CA3AF;position:relative;}
+.cal-day .dn{font-weight:900;font-size:13px;}
+.cal-day .dd{font-size:8px;margin-top:1px;}
+.cal-day.locked{background:#F5F3EA;color:#C4C0B0;cursor:not-allowed;}
+.cal-day.locked .dn::after{content:'🔒';font-size:8px;display:block;}
+.cal-day.available{background:#fff;border-color:var(--gold);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.cal-day.available.done{background:linear-gradient(135deg,#FEF9E7,#FDF3D0);}
+.cal-day.today{background:linear-gradient(135deg,#C9A227,#F5D76E);color:#1a1030;border-color:#8a6d1a;}
+.cal-day.selected{outline:2.5px solid #0EA5E9;outline-offset:1px;}
+.cal-day .star{position:absolute;bottom:2px;font-size:7px;}
+
+.lecture-panel{background:#fff;border:1px solid #EEE7D6;border-radius:16px;padding:18px 16px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.lec-unit{font-size:9.5px;font-weight:800;color:#0369A1;text-transform:uppercase;letter-spacing:.5px;}
+.lec-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 10px;line-height:1.3;}
+.lec-stars{display:flex;align-items:center;gap:6px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:9px;padding:9px 11px;margin-bottom:14px;}
+.lec-stars-icons{font-size:14px;letter-spacing:1px;}
+.lec-stars-reason{font-size:11px;color:#7C5A0A;flex:1;}
+.lec-section{margin-bottom:16px;}
+.lec-head{font-size:12.5px;font-weight:900;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.lec-body{font-size:13px;color:#374151;line-height:1.75;white-space:pre-line;}
+.lec-listen{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;font-size:11px;font-weight:800;
+padding:6px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
+.provision-item{background:#F9FAFB;border-left:3px solid var(--gold);border-radius:6px;padding:8px 10px;font-size:12.5px;color:#374151;margin-bottom:6px;}
+.case-item{border:1px solid #E5E7EB;border-radius:9px;padding:10px 11px;margin-bottom:8px;}
+.case-name{font-weight:800;font-size:12.5px;color:var(--ink);}
+.case-citation{font-size:10.5px;color:var(--muted);font-family:'Courier New',monospace;margin:2px 0;}
+.case-principle{font-size:12px;color:#4B5563;line-height:1.55;}
+.recap-list{list-style:none;}
+.recap-list li{font-size:12.5px;color:#374151;padding:6px 0 6px 20px;position:relative;border-bottom:1px dashed #EEE;}
+.recap-list li:last-child{border-bottom:none;}
+.recap-list li::before{content:'✓';position:absolute;left:0;color:#059669;font-weight:900;}
+.empty-panel{text-align:center;color:var(--muted);font-size:13px;padding:40px 20px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
+  <a class="nav-back" href="eklavya.html">← All Subjects</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">🏹 Eklavya · Daily Study Plan</div>
+  <div class="hero-title" id="subjectTitle">Loading…</div>
+  <div class="hero-progress-row">
+    <div class="hero-progress-track"><div class="hero-progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="hero-progress-label" id="progressLabel">–</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="cal-grid" id="calGrid"></div>
+  <div class="lecture-panel" id="lecturePanel">
+    <div class="empty-panel">Loading today's topic…</div>
+  </div>
+</div>
+
+<script>
+var params = new URLSearchParams(location.search);
+var subject = params.get('subject') || 'cpc';
+var START, TOTAL_DAYS = 45;
+var topicsData = null, lecturesData = null, selectedDay = null;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function todayIndex(){
+  var now = new Date();
+  var diff = Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate()) - new Date(START.getFullYear(),START.getMonth(),START.getDate())) / 86400000) + 1;
+  return diff;
+}
+
+function dateForDay(n){
+  var d = new Date(START);
+  d.setDate(d.getDate() + (n - 1));
+  return d;
+}
+
+function renderCalendar(){
+  var idx = todayIndex();
+  var grid = document.getElementById('calGrid');
+  var html = '';
+  for (var day = 1; day <= (topicsData.topics.length || TOTAL_DAYS); day++){
+    var d = dateForDay(day);
+    var unlocked = day <= idx;
+    var isToday = day === idx;
+    var hasLecture = lecturesData && lecturesData.lectures && lecturesData.lectures[String(day)];
+    var cls = 'cal-day';
+    if (!unlocked) cls += ' locked';
+    else if (isToday) cls += ' today';
+    else cls += ' available' + (hasLecture ? ' done' : '');
+    if (day === selectedDay) cls += ' selected';
+    var star = (hasLecture && unlocked && hasLecture.importance_stars >= 4) ? '<span class="star">⭐</span>' : '';
+    html += '<div class="' + cls + '" ' + (unlocked ? 'onclick="selectDay(' + day + ')"' : '') + '>' +
+      '<div class="dn">' + day + '</div>' +
+      '<div class="dd">' + d.getDate() + '/' + (d.getMonth()+1) + '</div>' +
+      star +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function selectDay(day){
+  selectedDay = day;
+  renderCalendar();
+  renderLecture(day);
+  document.getElementById('lecturePanel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function speakText(text){
+  if (!window.speechSynthesis) { alert('Read-aloud is not supported on this browser.'); return; }
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-IN';
+  window.speechSynthesis.speak(u);
+}
+
+function renderLecture(day){
+  var panel = document.getElementById('lecturePanel');
+  var lec = lecturesData && lecturesData.lectures && lecturesData.lectures[String(day)];
+  var meta = topicsData.topics.find(function(t){ return t.day === day; });
+
+  if (!lec){
+    var idx = todayIndex();
+    var msg = (day === idx)
+      ? "Today's lecture hasn't generated yet — it runs automatically once a day. Check back in a bit."
+      : "This day hasn't been generated yet.";
+    panel.innerHTML = '<div class="empty-panel">📖 <strong>' + esc(meta ? meta.topic : '') + '</strong><br><br>' + msg + '</div>';
+    return;
+  }
+
+  var starsHtml = '⭐'.repeat(lec.importance_stars || 0) + '☆'.repeat(5 - (lec.importance_stars || 0));
+
+  var out = '';
+  out += '<div class="lec-unit">' + esc(lec.unit) + ' · Day ' + lec.day + '</div>';
+  out += '<div class="lec-title">' + esc(lec.lecture_title) + '</div>';
+  out += '<div class="lec-stars"><span class="lec-stars-icons">' + starsHtml + '</span><span class="lec-stars-reason">' + esc(lec.importance_reason) + '</span></div>';
+
+  out += '<div class="lec-section"><div class="lec-head">📘 The Concept <button class="lec-listen" onclick=\'speakText(' + JSON.stringify(lec.concept_explanation) + ')\'>🔊 Listen</button></div>';
+  out += '<div class="lec-body">' + esc(lec.concept_explanation) + '</div></div>';
+
+  if (lec.key_provisions && lec.key_provisions.length){
+    out += '<div class="lec-section"><div class="lec-head">📋 Key Provisions</div>';
+    lec.key_provisions.forEach(function(p){ out += '<div class="provision-item">' + esc(p) + '</div>'; });
+    out += '</div>';
+  }
+
+  if (lec.case_laws && lec.case_laws.length){
+    out += '<div class="lec-section"><div class="lec-head">⚖️ Case Laws</div>';
+    lec.case_laws.forEach(function(c){
+      out += '<div class="case-item"><div class="case-name">' + esc(c.case_name) + '</div>' +
+        (c.citation ? '<div class="case-citation">' + esc(c.citation) + '</div>' : '') +
+        '<div class="case-principle">' + esc(c.principle) + '</div></div>';
+    });
+    out += '</div>';
+  }
+
+  if (lec.illustration){
+    out += '<div class="lec-section"><div class="lec-head">💡 Illustration</div><div class="lec-body">' + esc(lec.illustration) + '</div></div>';
+  }
+
+  if (lec.exam_angle){
+    out += '<div class="lec-section"><div class="lec-head">✍️ Exam Angle</div><div class="lec-body">' + esc(lec.exam_angle) + '</div></div>';
+  }
+
+  if (lec.quick_recap && lec.quick_recap.length){
+    out += '<div class="lec-section"><div class="lec-head">⚡ Quick Recap</div><ul class="recap-list">';
+    lec.quick_recap.forEach(function(r){ out += '<li>' + esc(r) + '</li>'; });
+    out += '</ul></div>';
+  }
+
+  panel.innerHTML = out;
+}
+
+Promise.all([
+  fetch('llb5-' + subject + '-topics.json?t=' + Date.now()).then(function(r){ if(!r.ok) throw new Error('no topics'); return r.json(); }),
+  fetch('llb5-' + subject + '-lectures.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : {lectures:{}}; }).catch(function(){ return {lectures:{}}; })
+]).then(function(results){
+  topicsData = results[0];
+  lecturesData = results[1];
+  START = new Date(topicsData.start_date + 'T00:00:00');
+  document.getElementById('subjectTitle').textContent = topicsData.subject_name;
+
+  var idx = todayIndex();
+  var total = topicsData.topics.length;
+  var doneCount = Math.max(0, Math.min(idx, total));
+  document.getElementById('progressFill').style.width = Math.round((doneCount/total)*100) + '%';
+  document.getElementById('progressLabel').textContent = doneCount + '/' + total + ' days';
+
+  renderCalendar();
+
+  var target = Math.max(1, Math.min(idx, total));
+  selectDay(target);
+})
+.catch(function(){
+  document.getElementById('subjectTitle').textContent = 'Not available yet';
+  document.getElementById('lecturePanel').innerHTML = '<div class="empty-panel">This subject\'s study plan hasn\'t been set up yet — check back soon.</div>';
+});
+</script>
+
+</body>
+</html>
