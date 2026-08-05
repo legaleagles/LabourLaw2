@@ -84,6 +84,48 @@ padding:6px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
 .recap-list li:last-child{border-bottom:none;}
 .recap-list li::before{content:'✓';position:absolute;left:0;color:#059669;font-weight:900;}
 .empty-panel{text-align:center;color:var(--muted);font-size:13px;padding:40px 20px;}
+
+/* Quick-nav chip row */
+.quicknav{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
+.quicknav a{flex-shrink:0;display:flex;align-items:center;gap:5px;background:#F3F4F6;border:1px solid #E5E7EB;
+border-radius:20px;padding:6px 12px;font-size:11px;font-weight:800;color:var(--ink);text-decoration:none;white-space:nowrap;}
+
+/* Colorful collapsible section cards */
+.sec-card{border-radius:13px;margin-bottom:12px;overflow:hidden;border:1.5px solid;}
+.sec-card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 13px;font-weight:900;font-size:13px;}
+.sec-card summary::-webkit-details-marker{display:none;}
+.sec-card summary::after{content:'▾';margin-left:auto;font-size:13px;opacity:.6;transition:transform .2s;}
+.sec-card[open] summary::after{transform:rotate(180deg);}
+.sec-icon-badge{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sec-card-body{padding:0 14px 14px 49px;font-size:12.5px;line-height:1.7;color:#374151;white-space:pre-line;}
+
+.sec-realworld{background:#ECFDF5;border-color:#6EE7B7;}
+.sec-realworld summary{color:#065F46;} .sec-realworld .sec-icon-badge{background:#6EE7B7;}
+.sec-illustration{background:#FFF7ED;border-color:#FDBA74;}
+.sec-illustration summary{color:#9A3412;} .sec-illustration .sec-icon-badge{background:#FDBA74;}
+.sec-provisions{background:#FFFBEB;border-color:#FDE68A;}
+.sec-provisions summary{color:#92400E;} .sec-provisions .sec-icon-badge{background:#FDE68A;}
+.sec-cases{background:#EFF6FF;border-color:#93C5FD;}
+.sec-cases summary{color:#1E40AF;} .sec-cases .sec-icon-badge{background:#93C5FD;}
+.sec-examangle{background:#F5F3FF;border-color:#C4B5FD;}
+.sec-examangle summary{color:#5B21B6;} .sec-examangle .sec-icon-badge{background:#C4B5FD;}
+.sec-recap{background:#F0FDFA;border-color:#5EEAD4;}
+.sec-recap summary{color:#115E59;} .sec-recap .sec-icon-badge{background:#5EEAD4;}
+
+.provision-item{background:rgba(255,255,255,.6);border-left:3px solid var(--gold);border-radius:6px;padding:8px 10px;font-size:12.5px;color:#374151;margin-bottom:6px;}
+.case-item{border:1px solid rgba(147,197,253,.5);border-radius:11px;padding:12px 13px;margin-bottom:10px;background:rgba(255,255,255,.7);}
+.case-name{font-weight:900;font-size:13px;color:var(--ink);}
+.case-citation{font-size:10.5px;color:var(--muted);font-family:'Courier New',monospace;margin:2px 0 8px;}
+.case-row{margin-bottom:6px;}
+.case-row-label{font-size:9.5px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.case-row-text{font-size:12px;color:#4B5563;line-height:1.55;}
+.case-why{background:#FFFBEB;border-radius:7px;padding:7px 9px;margin-top:6px;}
+.case-why .case-row-text{color:#7C5A0A;font-weight:600;}
+.recap-list{list-style:none;}
+.recap-list li{font-size:12.5px;color:#374151;padding:6px 0 6px 20px;position:relative;border-bottom:1px dashed rgba(0,0,0,.08);}
+.recap-list li:last-child{border-bottom:none;}
+.recap-list li::before{content:'✓';position:absolute;left:0;color:#059669;font-weight:900;}
+.empty-panel{text-align:center;color:var(--muted);font-size:13px;padding:40px 20px;}
 </style>
 </head>
 <body>
@@ -260,42 +302,60 @@ function renderLecture(day){
   out += '<div class="depth-panel" data-depth="full">' + esc(lec.concept_explanation) +
     '<button class="lec-listen" style="display:block;margin-top:10px;" id="listenBtn">🔊 Listen</button></div>';
 
+  // Quick-nav chips — jump straight to a section instead of scrolling past everything
+  out += '<div class="quicknav">' +
+    '<a href="#sec-real">🌍 Real World</a>' +
+    '<a href="#sec-illus">💡 Illustration</a>' +
+    '<a href="#sec-prov">📋 Provisions</a>' +
+    '<a href="#sec-cases">⚖️ Cases</a>' +
+    '<a href="#sec-exam">✍️ Exam</a>' +
+    '<a href="#sec-recap">⚡ Recap</a>' +
+  '</div>';
+
   if (lec.real_world_example){
-    out += '<div class="lec-section"><div class="lec-head">🌍 Why This Actually Matters</div>';
-    out += '<div class="real-world-box lec-body">' + esc(lec.real_world_example) + '</div></div>';
+    out += '<details class="sec-card sec-realworld" id="sec-real" open>' +
+      '<summary><span class="sec-icon-badge">🌍</span>Why This Actually Matters</summary>' +
+      '<div class="sec-card-body">' + esc(lec.real_world_example) + '</div></details>';
   }
 
   if (lec.illustration){
-    out += '<div class="lec-section"><div class="lec-head">💡 Worked Illustration</div><div class="lec-body">' + esc(lec.illustration) + '</div></div>';
+    out += '<details class="sec-card sec-illustration" id="sec-illus">' +
+      '<summary><span class="sec-icon-badge">💡</span>Worked Illustration</summary>' +
+      '<div class="sec-card-body">' + esc(lec.illustration) + '</div></details>';
   }
 
   if (lec.key_provisions && lec.key_provisions.length){
-    out += '<div class="lec-section"><div class="lec-head">📋 Key Provisions</div>';
-    lec.key_provisions.forEach(function(p){ out += '<div class="provision-item">' + esc(p) + '</div>'; });
-    out += '</div>';
+    var provBody = lec.key_provisions.map(function(p){ return '<div class="provision-item">' + esc(p) + '</div>'; }).join('');
+    out += '<details class="sec-card sec-provisions" id="sec-prov">' +
+      '<summary><span class="sec-icon-badge">📋</span>Key Provisions</summary>' +
+      '<div class="sec-card-body">' + provBody + '</div></details>';
   }
 
   if (lec.case_laws && lec.case_laws.length){
-    out += '<div class="lec-section"><div class="lec-head">⚖️ Case Laws</div>';
-    lec.case_laws.forEach(function(c){
-      out += '<div class="case-item"><div class="case-name">' + esc(c.case_name) + '</div>' +
+    var caseBody = lec.case_laws.map(function(c){
+      return '<div class="case-item"><div class="case-name">' + esc(c.case_name) + '</div>' +
         (c.citation ? '<div class="case-citation">' + esc(c.citation) + '</div>' : '') +
-        '<div class="case-row"><div class="case-row-label">Facts</div><div class="case-row-text">' + esc(c.facts) + '</div></div>' +
-        '<div class="case-row"><div class="case-row-label">Holding</div><div class="case-row-text">' + esc(c.holding) + '</div></div>' +
-        '<div class="case-why"><div class="case-row-label">Why It Matters</div><div class="case-row-text">' + esc(c.why_it_matters) + '</div></div>' +
+        '<div class="case-row"><div class="case-row-label">📌 Facts</div><div class="case-row-text">' + esc(c.facts) + '</div></div>' +
+        '<div class="case-row"><div class="case-row-label">⚖️ Holding</div><div class="case-row-text">' + esc(c.holding) + '</div></div>' +
+        '<div class="case-why"><div class="case-row-label">💡 Why It Matters</div><div class="case-row-text">' + esc(c.why_it_matters) + '</div></div>' +
       '</div>';
-    });
-    out += '</div>';
+    }).join('');
+    out += '<details class="sec-card sec-cases" id="sec-cases" open>' +
+      '<summary><span class="sec-icon-badge">⚖️</span>Case Laws (' + lec.case_laws.length + ')</summary>' +
+      '<div class="sec-card-body">' + caseBody + '</div></details>';
   }
 
   if (lec.exam_angle){
-    out += '<div class="lec-section"><div class="lec-head">✍️ Exam Angle</div><div class="lec-body">' + esc(lec.exam_angle) + '</div></div>';
+    out += '<details class="sec-card sec-examangle" id="sec-exam">' +
+      '<summary><span class="sec-icon-badge">✍️</span>Exam Angle</summary>' +
+      '<div class="sec-card-body">' + esc(lec.exam_angle) + '</div></details>';
   }
 
   if (lec.quick_recap && lec.quick_recap.length){
-    out += '<div class="lec-section"><div class="lec-head">⚡ Quick Recap</div><ul class="recap-list">';
-    lec.quick_recap.forEach(function(r){ out += '<li>' + esc(r) + '</li>'; });
-    out += '</ul></div>';
+    var recapBody = '<ul class="recap-list">' + lec.quick_recap.map(function(r){ return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>';
+    out += '<details class="sec-card sec-recap" id="sec-recap" open>' +
+      '<summary><span class="sec-icon-badge">⚡</span>Quick Recap</summary>' +
+      '<div class="sec-card-body">' + recapBody + '</div></details>';
   }
 
   panel.innerHTML = out;
