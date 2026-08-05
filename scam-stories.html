@@ -267,50 +267,131 @@ nav { background: var(--spot-bg); padding: 10px 16px; display: flex; align-items
 
 <div class="bulletin-header">
   <div class="date-strip">
-    <span class="ds-label">Scam Alert Bulletin</span>
+    <span class="ds-label" id="dsLabel1">Scam Alert Bulletin</span>
     <span class="ds-date" id="bulletinDate"></span>
     <span class="ds-label">lawsticker-ai.com</span>
   </div>
-  <div class="bull-eyebrow">Daily Edition · Free &amp; Public</div>
-  <h1 class="bull-headline">Scam Stories &amp; Remedies</h1>
-  <div class="bull-sub">Sourced &amp; verified by AI, every morning · Real cases, real links</div>
+  <div class="bull-eyebrow" id="bullEyebrow">Daily Edition · Free &amp; Public</div>
+  <h1 class="bull-headline" id="bullHeadline">Scam Stories &amp; Remedies</h1>
+  <div class="bull-sub" id="bullSub">Sourced &amp; verified by AI, every morning · Real cases, real links</div>
 </div>
 
 <div class="wrap">
-  <div class="privacy-explain">
+  <div class="privacy-explain" id="privacyExplain">
     🤖 <strong>How this works:</strong> every story here is researched by AI using live web search, grounded in a real, linked public source — never invented, never a private accusation. Where the source names a company or scheme, we keep that; nothing here is a claim we're independently making.
   </div>
   <div class="insights-box" id="insightsBox" style="display:none;">
-    <div class="insights-title">📊 Scam Insights</div>
-    <div class="insights-sub">Tap a bar to jump to those stories</div>
+    <div class="insights-title" id="insightsTitle">📊 Scam Insights</div>
+    <div class="insights-sub" id="insightsSub">Tap a bar to jump to those stories</div>
     <div class="insights-tabs">
       <button class="insights-tab active" id="insTabType" onclick="setInsightsView('type')">By Scam Type</button>
       <button class="insights-tab" id="insTabCost" onclick="setInsightsView('cost')">By Cost Impact</button>
     </div>
     <div id="insightsBody"></div>
-    <div class="insights-hint">Based on all published stories to date</div>
+    <div class="insights-hint" id="insightsHint">Based on all published stories to date</div>
   </div>
   <div class="cta-row">
-    <a href="ask-ai.html" class="cta-btn">🤖 Ask Durga Bro About a Scam →</a>
-    <a href="ask-ai.html?topic=scam_verify" class="cta-btn cta-btn-verify">🔍 Check If Something Looks Like a Scam →</a>
+    <a href="ask-ai.html" class="cta-btn" id="ctaAsk">🤖 Ask Durga Bro About a Scam →</a>
+    <a href="ask-ai.html?topic=scam_verify" class="cta-btn cta-btn-verify" id="ctaVerify">🔍 Check If Something Looks Like a Scam →</a>
   </div>
 </div>
 
 <div class="filter-row" id="filterRow"></div>
-<div class="stories-section" id="storiesSection"><div class="empty-state">Loading…</div></div>
+<div class="stories-section" id="storiesSection"><div class="empty-state" id="loadingState">Loading…</div></div>
 
 <script>
 var ALL = [];
 var activeFilter = 'all';
-var lang = localStorage.getItem('ll_lang') || 'en';
+var lang = localStorage.getItem('lsLang') || localStorage.getItem('ll_lang') || 'en';
+
+var T = {
+  en: {
+    dsLabel1: 'Scam Alert Bulletin', bullEyebrow: 'Daily Edition · Free & Public',
+    bullHeadline: 'Scam Stories & Remedies', bullSub: 'Sourced & verified by AI, every morning · Real cases, real links',
+    privacyExplain: '🤖 <strong>How this works:</strong> every story here is researched by AI using live web search, grounded in a real, linked public source — never invented, never a private accusation. Where the source names a company or scheme, we keep that; nothing here is a claim we\'re independently making.',
+    insightsTitle: '📊 Scam Insights', insightsSub: 'Tap a bar to jump to those stories',
+    insTabType: 'By Scam Type', insTabCost: 'By Cost Impact', insightsHint: 'Based on all published stories to date',
+    ctaAsk: '🤖 Ask Durga Bro About a Scam →', ctaVerify: '🔍 Check If Something Looks Like a Scam →',
+    allStories: 'All Stories', todaysEntry: '★ Today\'s Entry',
+    sourcedByAi: '🤖 Sourced by AI · ', readerSubmitted: '✍️ Reader-submitted',
+    howItWorks: '🎭 How This Typically Works', remedies: '📋 Remedies',
+    before: '✅ Before', during: '⚠️ During', after: '🆘 After', noSteps: 'No steps listed for this phase.',
+    whatYouCanDo: '📋 What You Can Do', redFlags: '🚩 Red Flags to Watch For', relevantLaws: '⚖️ Relevant Laws',
+    readSource: '🔗 Read the original source', liked: 'Liked', like: 'Like', share: '📤 Share',
+    linkCopied: 'Link copied!', copyPrompt: 'Copy this link:', loading: 'Loading…',
+    couldNotLoad: 'Could not load stories right now.', noStoriesCategory: 'No stories in this category yet — check back tomorrow.',
+    videoOverview: '🎬 Video Overview'
+  },
+  te: {
+    dsLabel1: 'స్కామ్ అలర్ట్ బులెటిన్', bullEyebrow: 'రోజువారీ ఎడిషన్ · ఉచితం & పబ్లిక్',
+    bullHeadline: 'మోసం కథలు & పరిష్కారాలు', bullSub: 'ప్రతి ఉదయం AI ద్వారా సేకరించి, ధృవీకరించబడింది · నిజమైన కేసులు, నిజమైన లింకులు',
+    privacyExplain: '🤖 <strong>ఇది ఎలా పనిచేస్తుంది:</strong> ఇక్కడి ప్రతి కథ లైవ్ వెబ్ సెర్చ్ ఉపయోగించి AI ద్వారా పరిశోధించబడింది, నిజమైన, లింక్ చేయబడిన పబ్లిక్ సోర్స్ ఆధారంగా — ఎప్పుడూ కల్పితం కాదు, వ్యక్తిగత ఆరోపణ కాదు. సోర్స్ ఒక కంపెనీ లేదా పథకం పేరు పేర్కొంటే, మేము దానిని ఉంచుతాము; ఇది మేము స్వతంత్రంగా చేస్తున్న క్లెయిమ్ కాదు.',
+    insightsTitle: '📊 స్కామ్ ఇన్‌సైట్స్', insightsSub: 'ఆ కథలకు వెళ్ళడానికి బార్‌ను నొక్కండి',
+    insTabType: 'మోసం రకం వారీగా', insTabCost: 'ఖర్చు ప్రభావం వారీగా', insightsHint: 'ఇప్పటివరకు ప్రచురించిన అన్ని కథల ఆధారంగా',
+    ctaAsk: '🤖 స్కామ్ గురించి దుర్గా బ్రోని అడగండి →', ctaVerify: '🔍 ఇది మోసంలా అనిపిస్తుందా అని తనిఖీ చేయండి →',
+    allStories: 'అన్ని కథలు', todaysEntry: '★ నేటి ఎంట్రీ',
+    sourcedByAi: '🤖 AI ద్వారా సేకరించబడింది · ', readerSubmitted: '✍️ పాఠకుడు సమర్పించారు',
+    howItWorks: '🎭 ఇది సాధారణంగా ఎలా పనిచేస్తుంది', remedies: '📋 పరిష్కారాలు',
+    before: '✅ ముందు', during: '⚠️ మధ్యలో', after: '🆘 తర్వాత', noSteps: 'ఈ దశకు దశలు జాబితా చేయబడలేదు.',
+    whatYouCanDo: '📋 మీరు ఏమి చేయవచ్చు', redFlags: '🚩 గమనించవలసిన హెచ్చరిక సంకేతాలు', relevantLaws: '⚖️ సంబంధిత చట్టాలు',
+    readSource: '🔗 అసలు మూలాన్ని చదవండి', liked: 'ఇష్టపడ్డారు', like: 'ఇష్టం', share: '📤 షేర్',
+    linkCopied: 'లింక్ కాపీ చేయబడింది!', copyPrompt: 'ఈ లింక్‌ను కాపీ చేయండి:', loading: 'లోడ్ అవుతోంది…',
+    couldNotLoad: 'ప్రస్తుతం కథలను లోడ్ చేయలేకపోయాము.', noStoriesCategory: 'ఈ కేటగిరీలో ఇంకా కథలు లేవు — రేపు మళ్ళీ చూడండి.',
+    videoOverview: '🎬 వీడియో అవలోకనం'
+  },
+  hi: {
+    dsLabel1: 'स्कैम अलर्ट बुलेटिन', bullEyebrow: 'दैनिक संस्करण · मुफ़्त और सार्वजनिक',
+    bullHeadline: 'स्कैम कहानियाँ और उपाय', bullSub: 'हर सुबह AI द्वारा खोजा और सत्यापित · असली मामले, असली लिंक',
+    privacyExplain: '🤖 <strong>यह कैसे काम करता है:</strong> यहाँ की हर कहानी लाइव वेब सर्च का उपयोग करके AI द्वारा शोधित है, एक वास्तविक, लिंक किए गए सार्वजनिक स्रोत पर आधारित — कभी गढ़ी नहीं जाती, कभी निजी आरोप नहीं। जहाँ स्रोत किसी कंपनी या योजना का नाम लेता है, हम उसे रखते हैं; यह हमारा स्वतंत्र दावा नहीं है।',
+    insightsTitle: '📊 स्कैम इनसाइट्स', insightsSub: 'उन कहानियों पर जाने के लिए बार पर टैप करें',
+    insTabType: 'स्कैम प्रकार अनुसार', insTabCost: 'लागत प्रभाव अनुसार', insightsHint: 'अब तक प्रकाशित सभी कहानियों पर आधारित',
+    ctaAsk: '🤖 स्कैम के बारे में दुर्गा ब्रो से पूछें →', ctaVerify: '🔍 जांचें कि क्या यह स्कैम जैसा लगता है →',
+    allStories: 'सभी कहानियाँ', todaysEntry: '★ आज की एंट्री',
+    sourcedByAi: '🤖 AI द्वारा प्राप्त · ', readerSubmitted: '✍️ पाठक द्वारा सबमिट किया गया',
+    howItWorks: '🎭 यह आमतौर पर कैसे काम करता है', remedies: '📋 उपाय',
+    before: '✅ पहले', during: '⚠️ दौरान', after: '🆘 बाद में', noSteps: 'इस चरण के लिए कोई कदम सूचीबद्ध नहीं है।',
+    whatYouCanDo: '📋 आप क्या कर सकते हैं', redFlags: '🚩 ध्यान देने योग्य चेतावनी संकेत', relevantLaws: '⚖️ प्रासंगिक कानून',
+    readSource: '🔗 मूल स्रोत पढ़ें', liked: 'पसंद किया', like: 'पसंद', share: '📤 शेयर',
+    linkCopied: 'लिंक कॉपी हो गया!', copyPrompt: 'यह लिंक कॉपी करें:', loading: 'लोड हो रहा है…',
+    couldNotLoad: 'अभी कहानियाँ लोड नहीं हो सकीं।', noStoriesCategory: 'इस श्रेणी में अभी तक कोई कहानी नहीं है — कल फिर देखें।',
+    videoOverview: '🎬 वीडियो अवलोकन'
+  }
+};
+function tr(key){ return (T[lang] && T[lang][key]!==undefined) ? T[lang][key] : T.en[key]; }
+
+function applyChrome(){
+  document.getElementById('dsLabel1').textContent = tr('dsLabel1');
+  document.getElementById('bullEyebrow').textContent = tr('bullEyebrow');
+  document.getElementById('bullHeadline').textContent = tr('bullHeadline');
+  document.getElementById('bullSub').textContent = tr('bullSub');
+  document.getElementById('privacyExplain').innerHTML = tr('privacyExplain');
+  document.getElementById('insightsTitle').textContent = tr('insightsTitle');
+  document.getElementById('insightsSub').textContent = tr('insightsSub');
+  document.getElementById('insTabType').textContent = tr('insTabType');
+  document.getElementById('insTabCost').textContent = tr('insTabCost');
+  document.getElementById('insightsHint').textContent = tr('insightsHint');
+  document.getElementById('ctaAsk').textContent = tr('ctaAsk');
+  document.getElementById('ctaVerify').textContent = tr('ctaVerify');
+  var ls = document.getElementById('loadingState'); if(ls) ls.textContent = tr('loading');
+}
 
 // Bulletin date
 (function(){
-  var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var daysT = {en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    te:['ఆదివారం','సోమవారం','మంగళవారం','బుధవారం','గురువారం','శుక్రవారం','శనివారం'],
+    hi:['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार']};
+  var monthsT = {en:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    te:['జనవరి','ఫిబ్రవరి','మార్చి','ఏప్రిల్','మే','జూన్','జూలై','ఆగస్టు','సెప్టెంబర్','అక్టోబర్','నవంబర్','డిసెంబర్'],
+    hi:['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर']};
   var d = new Date();
-  document.getElementById('bulletinDate').textContent =
-    days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  function renderDate(){
+    var days = daysT[lang]||daysT.en, months = monthsT[lang]||monthsT.en;
+    document.getElementById('bulletinDate').textContent =
+      days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  window.__renderBulletinDate = renderDate;
+  renderDate();
+  applyChrome();
   syncLangBtns();
 })();
 
@@ -320,7 +401,12 @@ function syncLangBtns(){
 function setLang(l){
   lang = l;
   localStorage.setItem('ll_lang', l);
+  localStorage.setItem('lsLang', l);
   syncLangBtns();
+  applyChrome();
+  window.__renderBulletinDate();
+  renderFilters();
+  renderInsights();
   renderStories();
 }
 
@@ -333,7 +419,7 @@ fetch('scam-reports.json')
     renderStories();
   })
   .catch(function(){
-    document.getElementById('storiesSection').innerHTML = '<div class="empty-state">Could not load stories right now.</div>';
+    document.getElementById('storiesSection').innerHTML = '<div class="empty-state">'+tr('couldNotLoad')+'</div>';
   });
 
 /* ── INSIGHTS (interactive) ── */
@@ -400,7 +486,7 @@ function renderFilters(){
   ALL.forEach(function(s){ if(s.category && cats.indexOf(s.category)===-1) cats.push(s.category); });
   document.getElementById('filterRow').innerHTML = cats.map(function(c){
     return '<button class="filter-chip'+(c===activeFilter?' active':'')+'" onclick="setFilter(\''+c+'\')">'+
-      (c==='all'?'All Stories':c)+'</button>';
+      (c==='all'?tr('allStories'):c)+'</button>';
   }).join('');
 }
 function setFilter(cat){ activeFilter=cat; renderFilters(); renderStories(); }
@@ -425,7 +511,7 @@ function toggleLike(id){
   var btn=document.getElementById('llbtn-'+id);
   if(btn){
     btn.classList.toggle('liked',isNow);
-    btn.innerHTML=(isNow?'❤️':'👍')+' <span>'+(isNow?'Liked':'Like')+'</span>';
+    btn.innerHTML=(isNow?'❤️':'👍')+' <span>'+(isNow?tr('liked'):tr('like'))+'</span>';
   }
 }
 function getRating(id){ return parseInt(localStorage.getItem('ll_rating_'+id)||'0'); }
@@ -442,8 +528,8 @@ function shareStory(id){
   var url=location.origin+location.pathname+'?story='+encodeURIComponent(id);
   if(navigator.share){ navigator.share({title:title,url:url}).catch(function(){}); }
   else {
-    navigator.clipboard.writeText(url).then(function(){ alert('Link copied!'); })
-      .catch(function(){ prompt('Copy this link:',url); });
+    navigator.clipboard.writeText(url).then(function(){ alert(tr('linkCopied')); })
+      .catch(function(){ prompt(tr('copyPrompt'),url); });
   }
 }
 
@@ -471,7 +557,7 @@ function renderCard(s, idx){
   // Top row
   out += '<div class="card-top"><div class="card-badges">';
   out += '<span class="badge-cat">'+h(s.category||'Other')+'</span>';
-  if(spotlight) out += '<span class="badge-today">★ Today\'s Entry</span>';
+  if(spotlight) out += '<span class="badge-today">'+tr('todaysEntry')+'</span>';
   out += '</div>';
   var dateStr = fmtDate(s.approved_at||s.submitted_at);
   out += '<div class="card-meta">'+h(dateStr)+(s.ref_number?'<br>'+h(s.ref_number):'')+'</div>';
@@ -480,8 +566,8 @@ function renderCard(s, idx){
   // Origin
   var oCls = isAI?'origin-ai':'origin-user';
   var oLabel = isAI
-    ? '🤖 Sourced by AI · '+h(s.origin_date||'')
-    : '✍️ Reader-submitted';
+    ? tr('sourcedByAi')+h(s.origin_date||'')
+    : tr('readerSubmitted');
   out += '<div class="card-origin"><span class="'+oCls+'">'+oLabel+'</span></div>';
 
   // Scam type (enrichment)
@@ -495,7 +581,7 @@ function renderCard(s, idx){
 
   // Video overview (optional, added by moderator after publish)
   if(s.video_id){
-    out += '<div class="story-section"><div class="sec-head">🎬 Video Overview</div>';
+    out += '<div class="story-section"><div class="sec-head">'+tr('videoOverview')+'</div>';
     out += '<div style="position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;">';
     out += '<iframe src="https://www.youtube.com/embed/'+h(s.video_id)+'" title="Video overview" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>';
     out += '</div></div>';
@@ -504,18 +590,18 @@ function renderCard(s, idx){
   // Modus operandi (enrichment) — multilingual
   var modus = e && (e['modus_operandi_'+lang] || e.modus_operandi_en || e.modus_operandi);
   if(modus){
-    out += '<div class="story-section"><div class="sec-head">🎭 How This Typically Works</div>';
+    out += '<div class="story-section"><div class="sec-head">'+tr('howItWorks')+'</div>';
     out += '<div class="prose">'+h(modus)+'</div></div>';
   }
 
   // Remedies — new structured trilingual
   var rem = s.remedies && s.remedies[lang];
   if(rem && (rem.before||rem.during||rem.after)){
-    out += '<div class="story-section"><div class="sec-head">📋 Remedies</div>';
+    out += '<div class="story-section"><div class="sec-head">'+tr('remedies')+'</div>';
     out += '<div class="remedy-tabs">';
-    out += '<button class="rtab g active" id="rt-'+cid+'-before" onclick="switchTab(\''+cid+'\',\'before\')">✅ Before</button>';
-    out += '<button class="rtab a"        id="rt-'+cid+'-during" onclick="switchTab(\''+cid+'\',\'during\')">⚠️ During</button>';
-    out += '<button class="rtab b"        id="rt-'+cid+'-after"  onclick="switchTab(\''+cid+'\',\'after\')" >🆘 After</button>';
+    out += '<button class="rtab g active" id="rt-'+cid+'-before" onclick="switchTab(\''+cid+'\',\'before\')">'+tr('before')+'</button>';
+    out += '<button class="rtab a"        id="rt-'+cid+'-during" onclick="switchTab(\''+cid+'\',\'during\')">'+tr('during')+'</button>';
+    out += '<button class="rtab b"        id="rt-'+cid+'-after"  onclick="switchTab(\''+cid+'\',\'after\')" >'+tr('after')+'</button>';
     out += '</div>';
     [['before','g'],['during','a'],['after','b']].forEach(function(pair){
       var phase=pair[0], cls2=pair[1];
@@ -528,27 +614,27 @@ function renderCard(s, idx){
         });
         out += '</ul>';
       } else {
-        out += '<div style="font-size:12.5px;color:var(--ink-soft);padding:6px 0;">No steps listed for this phase.</div>';
+        out += '<div style="font-size:12.5px;color:var(--ink-soft);padding:6px 0;">'+tr('noSteps')+'</div>';
       }
       out += '</div>';
     });
     out += '</div>';
   } else if(s.remedy_advice){
-    out += '<div class="story-section"><div class="sec-head">📋 What You Can Do</div>';
+    out += '<div class="story-section"><div class="sec-head">'+tr('whatYouCanDo')+'</div>';
     out += '<div class="prose">'+h(s.remedy_advice)+'</div></div>';
   }
 
   // Red flags (enrichment) — multilingual
   var flags = e && (e['red_flags_'+lang] || e.red_flags_en || e.red_flags);
   if(flags && flags.length){
-    out += '<div class="story-section"><div class="sec-head">🚩 Red Flags to Watch For</div><ul class="flag-list">';
+    out += '<div class="story-section"><div class="sec-head">'+tr('redFlags')+'</div><ul class="flag-list">';
     flags.forEach(function(f){ out += '<li class="flag-item">'+h(f)+'</li>'; });
     out += '</ul></div>';
   }
 
   // Relevant laws (enrichment)
   if(e && e.relevant_laws && e.relevant_laws.length){
-    out += '<div class="story-section"><div class="sec-head">⚖️ Relevant Laws</div><div class="law-chips">';
+    out += '<div class="story-section"><div class="sec-head">'+tr('relevantLaws')+'</div><div class="law-chips">';
     e.relevant_laws.forEach(function(l){
       var url='https://www.google.com/search?q='+encodeURIComponent(l+' India Act text official');
       out += '<a href="'+url+'" target="_blank" rel="noopener" class="law-chip">'+h(l)+' ↗</a>';
@@ -567,7 +653,7 @@ function renderCard(s, idx){
   }
   // Real source URL (grounded AI pipeline) — the actual citation, not a description
   if(s.source_url){
-    out += '<div class="story-section"><a href="'+h(s.source_url)+'" target="_blank" rel="noopener" class="source-note" style="display:inline-block;text-decoration:none;">🔗 Read the original source'+(s.source_title?(': '+h(s.source_title)):'')+' ↗</a></div>';
+    out += '<div class="story-section"><a href="'+h(s.source_url)+'" target="_blank" rel="noopener" class="source-note" style="display:inline-block;text-decoration:none;">'+tr('readSource')+(s.source_title?(': '+h(s.source_title)):'')+' ↗</a></div>';
   }
 
   // Supportive note (enrichment)
@@ -581,7 +667,7 @@ function renderCard(s, idx){
   var liked  = getLike(s.id);
   var rating = getRating(s.id);
   out += '<div class="reaction-bar">';
-  out += '<button class="react-btn'+(liked?' liked':'')+'" id="llbtn-'+s.id+'" onclick="toggleLike(\''+s.id+'\')">'+(liked?'❤️':'👍')+' <span>'+(liked?'Liked':'Like')+'</span></button>';
+  out += '<button class="react-btn'+(liked?' liked':'')+'" id="llbtn-'+s.id+'" onclick="toggleLike(\''+s.id+'\')">'+(liked?'❤️':'👍')+' <span>'+(liked?tr('liked'):tr('like'))+'</span></button>';
 
   // Stars
   out += '<div class="star-row" id="stars-'+s.id+'">';
@@ -590,7 +676,7 @@ function renderCard(s, idx){
   }
   out += '</div>';
   out += '<div class="react-gap"></div>';
-  out += '<button class="share-btn" onclick="shareStory(\''+s.id+'\')">📤 Share</button>';
+  out += '<button class="share-btn" onclick="shareStory(\''+s.id+'\')">'+tr('share')+'</button>';
   out += '</div>';
 
   out += '</div>'; // story-card
@@ -602,7 +688,7 @@ function renderStories(){
   var filtered = activeFilter==='all' ? ALL : ALL.filter(function(s){ return s.category===activeFilter; });
   var cont = document.getElementById('storiesSection');
   if(!filtered.length){
-    cont.innerHTML = '<div class="empty-state">No stories in this category yet — check back tomorrow.</div>';
+    cont.innerHTML = '<div class="empty-state">'+tr('noStoriesCategory')+'</div>';
     return;
   }
   var lbl = activeFilter==='all' ? 'All Stories' : activeFilter;
