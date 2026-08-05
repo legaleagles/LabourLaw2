@@ -1264,26 +1264,32 @@ function render(){
  document.getElementById('sitGrid').innerHTML=U.sits.map(([icon,name,url])=>
   `<a class="sit" href="https://lawsticker-ai.com/${url}"><span class="sit-icon">${icon}</span><span class="sit-name">${name}</span></a>`).join('');
  // Today's bundle: fact + right + remedy + calc + helpline
- const B=BUNDLES[dayOfYear()%BUNDLES.length];
- document.getElementById('tFact').textContent=B.f[L];
- document.getElementById('tLaw').textContent='📋 '+B.l;
- const KB=UI[L].bundleK;
- document.getElementById('tbRight').href='https://lawsticker-ai.com/'+B.ru;
- document.getElementById('tbRightK').textContent=KB[0];
- document.getElementById('tbRightV').textContent=B.rn[L];
- document.getElementById('tbRemedyK').textContent=KB[1];
- document.getElementById('tbRemedyV').textContent=B.mn[L];
- document.getElementById('tbCalc').href='https://lawsticker-ai.com/'+B.cu;
- document.getElementById('tbCalcK').textContent=KB[2];
- document.getElementById('tbCalcV').textContent=B.cn[L];
- document.getElementById('tbHelp').href='tel:'+B.hp.replace(/-/g,'');
- document.getElementById('tbHelpK').textContent=KB[3];
- document.getElementById('tbHelpV').textContent=B.hn[L]+' · '+B.hp;
- document.getElementById('tShare').textContent=UI[L].tShare;
- renderQuiz();
+ // Wrapped defensively — a bad daily entry or missing element here must
+ // never be able to block the quiz/tagline/LAWCET sections that follow.
+ try{
+  const B=BUNDLES[dayOfYear()%BUNDLES.length];
+  const setTxt=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+  const setHref=(id,val)=>{const el=document.getElementById(id);if(el)el.href=val;};
+  setTxt('tFact',B.f[L]||B.f.en||'');
+  setTxt('tLaw','📋 '+(B.l||''));
+  const KB=UI[L].bundleK||UI.en.bundleK;
+  setHref('tbRight','https://lawsticker-ai.com/'+B.ru);
+  setTxt('tbRightK',KB[0]);
+  setTxt('tbRightV',B.rn[L]||B.rn.en||'');
+  setTxt('tbRemedyK',KB[1]);
+  setTxt('tbRemedyV',B.mn[L]||B.mn.en||'');
+  setHref('tbCalc','https://lawsticker-ai.com/'+B.cu);
+  setTxt('tbCalcK',KB[2]);
+  setTxt('tbCalcV',B.cn[L]||B.cn.en||'');
+  setHref('tbHelp','tel:'+(B.hp||'').replace(/-/g,''));
+  setTxt('tbHelpK',KB[3]);
+  setTxt('tbHelpV',(B.hn[L]||B.hn.en||'')+' · '+(B.hp||''));
+  setTxt('tShare',UI[L].tShare);
+ }catch(e){console.error('Today bundle render failed:',e);}
+ try{ renderQuiz(); }catch(e){console.error('renderQuiz failed:',e);}
  // Rotating tagline
- rotateTag(true);
- renderLawcet();
+ try{ rotateTag(true); }catch(e){console.error('rotateTag failed:',e);}
+ try{ renderLawcet(); }catch(e){console.error('renderLawcet failed:',e);}
 }
 
 function rotateTag(reset){
