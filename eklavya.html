@@ -27,19 +27,38 @@ background:linear-gradient(135deg,#38BDF8,#F5D76E);padding:3px 10px;border-radiu
 .disclaimer{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:10px;
 padding:11px 13px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.75);line-height:1.6;text-align:left;max-width:460px;margin-left:auto;margin-right:auto;}
 .wrap{max-width:600px;margin:0 auto;padding:20px 16px 40px;}
-.sem-header{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;color:var(--navy);
-margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
-.sem-header:first-child{margin-top:0;}
-.subject-card{display:block;background:#fff;border:1px solid #EEE7D6;border-left:5px solid var(--gold);
-border-radius:16px;padding:18px 17px;margin-bottom:14px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+
+.sem-card{background:#fff;border:1px solid #EEE7D6;border-radius:16px;margin-bottom:14px;
+overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.sem-card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;
+padding:16px 17px;}
+.sem-card summary::-webkit-details-marker{display:none;}
+.sem-card[open] summary{border-bottom:1px solid #F1EEE0;}
+.sem-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--gold),#8a6d1a);
+color:#fff;font-family:'Playfair Display',serif;font-weight:900;font-size:16px;
+display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sem-title-block{flex:1;min-width:0;}
+.sem-title{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;color:var(--ink);}
+.sem-count{font-size:11px;color:var(--muted);margin-top:2px;}
+.sem-chevron{font-size:13px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+.sem-card[open] .sem-chevron{transform:rotate(180deg);}
+.sem-current-tag{background:#FFFBEB;color:#92400E;font-size:9px;font-weight:900;letter-spacing:.4px;
+padding:3px 8px;border-radius:7px;text-transform:uppercase;flex-shrink:0;}
+
+.sem-body{padding:6px 12px 12px;}
+.subject-card{display:flex;align-items:center;gap:12px;background:#FCFBF6;border:1px solid #F1EEE0;
+border-radius:12px;padding:12px 13px;margin-bottom:8px;text-decoration:none;}
+.subject-card:last-child{margin-bottom:0;}
 .subject-card:active{transform:scale(.99);}
-.subject-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--ink);margin-bottom:8px;}
-.subject-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-.subject-progress-track{flex:1;height:8px;background:#F1EEE0;border-radius:5px;overflow:hidden;}
+.subject-name{font-family:'Playfair Display',serif;font-size:13.5px;font-weight:800;color:var(--ink);
+line-height:1.3;margin-bottom:5px;}
+.subject-progress-row{display:flex;align-items:center;gap:8px;}
+.subject-progress-track{flex:1;height:6px;background:#F1EEE0;border-radius:5px;overflow:hidden;}
 .subject-progress-fill{height:100%;background:linear-gradient(90deg,#C9A227,#F5D76E);border-radius:5px;}
-.subject-progress-label{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap;}
-.subject-status{font-size:11.5px;color:var(--muted);}
+.subject-progress-label{font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap;}
+.subject-status{font-size:10px;color:var(--muted);margin-top:4px;}
 .subject-status.today{color:#B45309;font-weight:700;}
+.subject-arrow{font-size:16px;color:var(--gold);flex-shrink:0;}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
@@ -113,6 +132,8 @@ var SUBJECTS = [
   {slug:'s6-drafting',     name:'Drafting, Pleadings & Conveyancing', sem:6}
 ];
 var SEM_LABELS = {1:'Semester I',2:'Semester II',3:'Semester III',4:'Semester IV',5:'Semester V',6:'Semester VI'};
+var SEM_ROMAN = {1:'I',2:'II',3:'III',4:'IV',5:'V',6:'VI'};
+var CURRENT_SEMESTER = 5; // opens expanded by default — your active semester
 var START = new Date('2026-08-05T00:00:00');
 var TOTAL_DAYS = 45;
 
@@ -129,23 +150,40 @@ function render(){
   [1,2,3,4,5,6].forEach(function(sem){
     var subs = SUBJECTS.filter(function(s){ return s.sem === sem; });
     if (!subs.length) return;
-    html += '<div class="sem-header">' + SEM_LABELS[sem] + '</div>';
-    html += subs.map(function(s){
+    var isCurrent = sem === CURRENT_SEMESTER;
+
+    var body = subs.map(function(s){
       var day = Math.max(0, Math.min(idx, TOTAL_DAYS));
       var pct = Math.round((day / TOTAL_DAYS) * 100);
       var status;
-      if (idx < 1) status = '<span>Starts ' + START.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + '</span>';
-      else if (idx > TOTAL_DAYS) status = '<span>✅ Plan complete</span>';
+      if (idx < 1) status = 'Starts ' + START.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+      else if (idx > TOTAL_DAYS) status = '✅ Plan complete';
       else status = '<span class="today">📖 Day ' + idx + ' available today</span>';
       return '<a class="subject-card" href="eklavya-subject.html?subject=' + s.slug + '">' +
-        '<div class="subject-name">' + s.name + '</div>' +
-        '<div class="subject-progress-row">' +
-          '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
-          '<div class="subject-progress-label">' + day + '/' + TOTAL_DAYS + '</div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div class="subject-name">' + s.name + '</div>' +
+          '<div class="subject-progress-row">' +
+            '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<div class="subject-progress-label">' + day + '/' + TOTAL_DAYS + '</div>' +
+          '</div>' +
+          '<div class="subject-status">' + status + '</div>' +
         '</div>' +
-      '<div class="subject-status">' + status + '</div>' +
-    '</a>';
+        '<div class="subject-arrow">→</div>' +
+      '</a>';
     }).join('');
+
+    html += '<details class="sem-card"' + (isCurrent ? ' open' : '') + '>' +
+      '<summary>' +
+        '<div class="sem-icon">' + SEM_ROMAN[sem] + '</div>' +
+        '<div class="sem-title-block">' +
+          '<div class="sem-title">' + SEM_LABELS[sem] + '</div>' +
+          '<div class="sem-count">' + subs.length + ' paper' + (subs.length===1?'':'s') + '</div>' +
+        '</div>' +
+        (isCurrent ? '<div class="sem-current-tag">Current</div>' : '') +
+        '<div class="sem-chevron">▾</div>' +
+      '</summary>' +
+      '<div class="sem-body">' + body + '</div>' +
+    '</details>';
   });
   container.innerHTML = html;
 }
