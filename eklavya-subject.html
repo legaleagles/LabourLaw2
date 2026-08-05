@@ -26,6 +26,8 @@ nav{background:rgba(13,17,23,.97);padding:12px 16px;position:sticky;top:0;z-inde
 .hero-daterange{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:9px;}
 .notes-download-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:linear-gradient(135deg,#0EA5E9,#0284C7);
 color:#fff;font-size:11.5px;font-weight:800;padding:9px 15px;border-radius:10px;text-decoration:none;box-shadow:0 3px 10px rgba(14,165,233,.3);}
+.exam-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;margin-left:8px;background:linear-gradient(135deg,#DC2626,#B91C1C);
+color:#fff;font-size:11.5px;font-weight:800;padding:9px 15px;border-radius:10px;text-decoration:none;box-shadow:0 3px 10px rgba(220,38,38,.3);}
 
 .wrap{max-width:640px;margin:0 auto;padding:16px;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -154,6 +156,7 @@ gtag('config', 'G-TJXHVW6XCL');
   </div>
   <div class="hero-daterange" id="heroDateRange"></div>
   <a class="notes-download-btn" id="notesLink" href="#">📥 Download Notes So Far</a>
+  <a class="exam-btn" id="examLink" href="#" style="display:none;">⏱️ Take the Mock Exam</a>
 </div>
 
 <div class="wrap">
@@ -175,6 +178,22 @@ gtag('config', 'G-TJXHVW6XCL');
 <script>
 var params = new URLSearchParams(location.search);
 var subject = params.get('subject') || 'cpc';
+
+// Maps Eklavya's subject slugs to the existing mock-exam tool's subject
+// params (built earlier for LLB Study Corner, exam.html?subject=X).
+// Reused as-is rather than duplicated — only listed where a mock exam
+// already exists; anything not in this map simply won't show the button.
+var EXAM_SUBJECT_MAP = {
+  's1-contract1':'contract1', 's1-familylaw1':'familylaw1', 's1-constlaw1':'constlaw1',
+  's1-torts1':'torts1', 's1-envlaw1':'envlaw1',
+  's2-contract2':'contract2', 's2-familylaw2':'familylaw2', 's2-constlaw2':'constlaw2',
+  's2-crimes1':'crimes1', 's2-evidence1':'evidence1',
+  's3-jurisprudence':'jurisprudence', 's3-property1':'property1', 's3-adminlaw':'adminlaw',
+  's3-companylaw':'companylaw', 's3-labourlaw1':'labourlaw1',
+  's4-labourlaw2':'labour2', 's4-pil':'pil', 's4-interpretation':'ios',
+  's4-landlaws':'land', 's4-ipr':'ipr',
+  'cpc':'cpc', 'bnss':'bnss', 'banking':'banking', 'adr':'adr', 'ethics':'ethics'
+};
 var START, TOTAL_DAYS = 45, PLAN_END;
 var topicsData = null, lecturesData = null, selectedDay = null;
 var viewYear, viewMonth; // 0-indexed month currently shown
@@ -387,6 +406,11 @@ Promise.all([
   document.getElementById('subjectTitle').textContent = topicsData.subject_name;
   document.title = topicsData.subject_name + ' — Eklavya | LawSticker AI';
   document.getElementById('notesLink').href = 'eklavya-notes.html?subject=' + encodeURIComponent(subject);
+  if (EXAM_SUBJECT_MAP[subject]) {
+    var examLink = document.getElementById('examLink');
+    examLink.href = 'https://lawsticker-ai.com/exam.html?subject=' + encodeURIComponent(EXAM_SUBJECT_MAP[subject]);
+    examLink.style.display = 'inline-flex';
+  }
 
   var idx = todayIndex();
   var total = topicsData.topics.length;
