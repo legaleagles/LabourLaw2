@@ -201,10 +201,21 @@ function selectDay(day){
 
 function speakText(text){
   if (!window.speechSynthesis) { alert('Read-aloud is not supported on this browser.'); return; }
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    return; // tap again to stop
+  }
   window.speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-IN';
-  window.speechSynthesis.speak(u);
+  // Some mobile browsers (notably Chrome/Android) drop the very next
+  // speak() call if it's fired in the same tick as cancel() — a small
+  // delay makes this reliable.
+  setTimeout(function(){
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-IN';
+    u.rate = 0.95;
+    u.onerror = function(){ alert('Could not play audio — try again.'); };
+    window.speechSynthesis.speak(u);
+  }, 80);
 }
 
 function switchDepth(tab){
@@ -247,7 +258,7 @@ function renderLecture(day){
   out += '<div class="depth-panel active" data-depth="quick">' + esc(lec.quick_answer) + '</div>';
   out += '<div class="depth-panel" data-depth="essay">' + esc(lec.essay_answer) + '</div>';
   out += '<div class="depth-panel" data-depth="full">' + esc(lec.concept_explanation) +
-    '<button class="lec-listen" style="display:block;margin-top:10px;" onclick=\'speakText(' + JSON.stringify(lec.concept_explanation) + ')\'>🔊 Listen</button></div>';
+    '<button class="lec-listen" style="display:block;margin-top:10px;" id="listenBtn">🔊 Listen</button></div>';
 
   if (lec.real_world_example){
     out += '<div class="lec-section"><div class="lec-head">🌍 Why This Actually Matters</div>';
@@ -288,6 +299,11 @@ function renderLecture(day){
   }
 
   panel.innerHTML = out;
+
+  var listenBtn = document.getElementById('listenBtn');
+  if (listenBtn) {
+    listenBtn.onclick = function(){ speakText(lec.concept_explanation); };
+  }
 }
 
 Promise.all([
