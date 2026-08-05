@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download Notes — Eklavya | LawSticker AI</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--ink:#111827;--muted:#6B7280;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#F3F4F6;color:var(--ink);}
+
+/* Controls bar — hidden when printing */
+.controls{position:sticky;top:0;background:#fff;border-bottom:1px solid #E5E7EB;padding:12px 16px;
+display:flex;gap:8px;flex-wrap:wrap;align-items:center;z-index:10;}
+.controls-title{font-family:'Playfair Display',serif;font-weight:900;font-size:14px;flex:1;min-width:140px;}
+.mode-btn{background:#F3F4F6;border:1px solid #E5E7EB;color:var(--ink);font-size:11.5px;font-weight:800;
+padding:8px 13px;border-radius:9px;cursor:pointer;}
+.mode-btn.active{background:var(--navy);color:#F5D76E;border-color:var(--navy);}
+.mode-btn.disabled{opacity:.45;cursor:not-allowed;position:relative;}
+.print-btn{background:linear-gradient(135deg,#0EA5E9,#0284C7);color:#fff;font-size:12px;font-weight:800;
+border:none;padding:9px 16px;border-radius:9px;cursor:pointer;}
+
+.doc{max-width:720px;margin:0 auto;background:#fff;padding:36px 30px;}
+.doc-header{text-align:center;border-bottom:3px double var(--navy);padding-bottom:18px;margin-bottom:24px;}
+.doc-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);}
+.doc-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--navy);margin:8px 0 6px;}
+.doc-meta{font-size:11.5px;color:var(--muted);}
+.doc-disclaimer{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 13px;
+font-size:10.5px;color:#7C5A0A;margin-top:14px;line-height:1.6;text-align:left;}
+
+.topic-block{margin-bottom:30px;page-break-inside:avoid;}
+.topic-num-badge{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#F5D76E;
+font-size:10px;font-weight:900;padding:4px 11px;border-radius:8px;margin-bottom:8px;}
+.topic-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.topic-meta{font-size:10.5px;color:var(--muted);margin-bottom:10px;}
+.topic-hook{font-style:italic;color:#7C5A0A;background:#FFFBEB;border-left:3px solid var(--gold);
+padding:8px 11px;border-radius:6px;font-size:12px;margin-bottom:12px;}
+.topic-section{margin-bottom:12px;}
+.topic-section-head{font-size:11.5px;font-weight:900;color:var(--navy);text-transform:uppercase;
+letter-spacing:.4px;margin-bottom:5px;border-bottom:1px solid #E5E7EB;padding-bottom:3px;}
+.topic-body{font-size:12.5px;line-height:1.7;color:#374151;white-space:pre-line;}
+.provision-line{font-size:12px;color:#374151;padding:3px 0 3px 14px;position:relative;}
+.provision-line::before{content:'§';position:absolute;left:0;color:var(--gold);font-weight:900;}
+.case-block{margin-bottom:8px;padding-left:14px;border-left:2px solid #E5E7EB;}
+.case-block b{font-size:12.5px;}
+.case-block .citation{font-family:'Courier New',monospace;font-size:10px;color:var(--muted);}
+.recap-line{font-size:12px;padding:3px 0 3px 16px;position:relative;}
+.recap-line::before{content:'✓';position:absolute;left:0;color:#059669;font-weight:900;}
+.stars-line{font-size:11px;color:#7C5A0A;margin-bottom:10px;}
+.empty-msg{text-align:center;color:var(--muted);padding:60px 20px;font-size:13px;}
+
+@media print{
+  .controls{display:none;}
+  body{background:#fff;}
+  .doc{padding:0;max-width:100%;}
+  .topic-block{page-break-after:auto;}
+}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body>
+
+<div class="controls">
+  <div class="controls-title" id="ctrlTitle">Loading…</div>
+  <button class="mode-btn active" id="modeFull" onclick="setMode('full')">📚 Full Notes</button>
+  <button class="mode-btn" id="modeImportant" onclick="setMode('important')">⭐ Important Topics</button>
+  <button class="mode-btn disabled" title="Enable once previous-year question papers are added" disabled>🔒 Exam-Pattern Clusters</button>
+  <button class="print-btn" onclick="window.print()">🖨️ Save as PDF</button>
+</div>
+
+<div class="doc" id="doc">
+  <div class="empty-msg">Loading…</div>
+</div>
+
+<script>
+var params = new URLSearchParams(location.search);
+var subject = params.get('subject') || 'cpc';
+var mode = params.get('mode') === 'important' ? 'important' : 'full';
+var topicsData = null, lecturesData = null;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function setMode(m){
+  mode = m;
+  document.getElementById('modeFull').classList.toggle('active', m === 'full');
+  document.getElementById('modeImportant').classList.toggle('active', m === 'important');
+  render();
+}
+
+function render(){
+  var lectures = (lecturesData && lecturesData.lectures) || {};
+  var days = Object.keys(lectures).map(Number).sort(function(a,b){ return a-b; });
+
+  if (mode === 'important'){
+    days = days.filter(function(d){ return (lectures[String(d)].importance_stars || 0) >= 4; });
+  }
+
+  var doc = document.getElementById('doc');
+  if (!days.length){
+    doc.innerHTML = '<div class="empty-msg">' +
+      (mode === 'important'
+        ? 'No high-importance topics generated yet. Check back as more days unlock.'
+        : 'No lectures generated yet for this subject.') +
+      '</div>';
+    return;
+  }
+
+  var modeLabel = mode === 'important' ? 'Important Topics Only (AI-assessed)' : 'Full Notes';
+  var out = '<div class="doc-header">' +
+    '<div class="doc-eyebrow">🏹 Eklavya · LawSticker AI</div>' +
+    '<div class="doc-title">' + esc(topicsData.subject_name) + '</div>' +
+    '<div class="doc-meta">' + modeLabel + ' · Days ' + days[0] + '–' + days[days.length-1] + ' · Generated ' + new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) + '</div>' +
+    '<div class="doc-disclaimer">🤖 AI-generated study material. Cross-check Section numbers and case citations against the bare Act before your exam. Built to cover roughly 60% of your prep — the rest is on you.' +
+    (mode === 'important' ? ' "Important" here means AI-assessed likelihood of being tested, not based on actual previous-year question papers yet — that clustering will be added once question paper data is available.' : '') +
+    '</div></div>';
+
+  days.forEach(function(d){
+    var lec = lectures[String(d)];
+    var starsHtml = '⭐'.repeat(lec.importance_stars || 0) + '☆'.repeat(5 - (lec.importance_stars || 0));
+
+    out += '<div class="topic-block">';
+    out += '<div class="topic-num-badge">Day ' + lec.day + ' · ' + esc(lec.unit) + '</div>';
+    out += '<div class="topic-title">' + esc(lec.lecture_title) + '</div>';
+    out += '<div class="topic-meta">' + esc(lec.topic) + '</div>';
+    out += '<div class="stars-line">' + starsHtml + ' — ' + esc(lec.importance_reason) + '</div>';
+    if (lec.memory_hook) out += '<div class="topic-hook">🧠 ' + esc(lec.memory_hook) + '</div>';
+
+    out += '<div class="topic-section"><div class="topic-section-head">The Concept</div><div class="topic-body">' + esc(lec.concept_explanation) + '</div></div>';
+
+    if (lec.key_provisions && lec.key_provisions.length){
+      out += '<div class="topic-section"><div class="topic-section-head">Key Provisions</div>';
+      lec.key_provisions.forEach(function(p){ out += '<div class="provision-line">' + esc(p) + '</div>'; });
+      out += '</div>';
+    }
+
+    if (lec.case_laws && lec.case_laws.length){
+      out += '<div class="topic-section"><div class="topic-section-head">Case Laws</div>';
+      lec.case_laws.forEach(function(c){
+        out += '<div class="case-block"><b>' + esc(c.case_name) + '</b>' +
+          (c.citation ? ' <span class="citation">' + esc(c.citation) + '</span>' : '') +
+          '<div class="topic-body">' + esc(c.holding) + ' — ' + esc(c.why_it_matters) + '</div></div>';
+      });
+      out += '</div>';
+    }
+
+    if (mode === 'full'){
+      if (lec.illustration){
+        out += '<div class="topic-section"><div class="topic-section-head">Worked Illustration</div><div class="topic-body">' + esc(lec.illustration) + '</div></div>';
+      }
+      if (lec.real_world_example){
+        out += '<div class="topic-section"><div class="topic-section-head">Real-World Example</div><div class="topic-body">' + esc(lec.real_world_example) + '</div></div>';
+      }
+      if (lec.essay_answer){
+        out += '<div class="topic-section"><div class="topic-section-head">Essay Answer</div><div class="topic-body">' + esc(lec.essay_answer) + '</div></div>';
+      }
+    } else {
+      if (lec.quick_answer){
+        out += '<div class="topic-section"><div class="topic-section-head">Quick Answer</div><div class="topic-body">' + esc(lec.quick_answer) + '</div></div>';
+      }
+    }
+
+    if (lec.exam_angle){
+      out += '<div class="topic-section"><div class="topic-section-head">Exam Angle</div><div class="topic-body">' + esc(lec.exam_angle) + '</div></div>';
+    }
+
+    if (lec.quick_recap && lec.quick_recap.length){
+      out += '<div class="topic-section"><div class="topic-section-head">Quick Recap</div>';
+      lec.quick_recap.forEach(function(r){ out += '<div class="recap-line">' + esc(r) + '</div>'; });
+      out += '</div>';
+    }
+
+    out += '</div>'; // topic-block
+  });
+
+  doc.innerHTML = out;
+}
+
+Promise.all([
+  fetch('llb5-' + subject + '-topics.json?t=' + Date.now()).then(function(r){ if(!r.ok) throw new Error('topics.json: HTTP ' + r.status); return r.json(); }),
+  fetch('llb5-' + subject + '-lectures.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : {lectures:{}}; }).catch(function(){ return {lectures:{}}; })
+]).then(function(results){
+  topicsData = results[0];
+  lecturesData = results[1];
+  document.getElementById('ctrlTitle').textContent = topicsData.subject_name;
+  document.title = topicsData.subject_name + ' — Notes | Eklavya';
+  setMode(mode);
+})
+.catch(function(err){
+  document.getElementById('ctrlTitle').textContent = 'Not available';
+  document.getElementById('doc').innerHTML = '<div class="empty-msg">Could not load notes.<br>' + esc(err.message) + '</div>';
+});
+</script>
+
+</body>
+</html>
