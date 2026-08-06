@@ -134,6 +134,7 @@ gtag('config', 'G-TJXHVW6XCL');
       </label>
       <button class="upload-btn" id="uploadBtn" onclick="doExtract(false)">Extract & Preview</button>
       <button class="retry-btn" id="retryBtn" onclick="doExtract(true)" style="display:none;">🔄 Retry Extraction (same file)</button>
+      <button class="retry-btn" id="resetBtn" onclick="resetUpload()" style="display:none;">🆕 Upload a Different File</button>
       <div class="upload-status" id="uploadStatus"></div>
     </div>
 
@@ -267,6 +268,7 @@ function doExtractInner(isRetry, status, btn, retryBtn){
           (data.extraction_mode === 'text' ? '📄 Read as text.' : '👁️ Read using AI vision.') +
           ' Review below and confirm each one.';
         retryBtn.style.display = 'block';
+        document.getElementById('resetBtn').style.display = 'block';
         renderPreview(data.papers);
       })
       .catch(function(){
@@ -285,6 +287,17 @@ function doExtractInner(isRetry, status, btn, retryBtn){
   var reader = new FileReader();
   reader.onload = function(){ runWithBase64(reader.result.split(',')[1]); };
   reader.readAsDataURL(window.__selectedFile);
+}
+
+function resetUpload(){
+  window.__selectedFile = null;
+  lastFileBase64 = null;
+  document.getElementById('fileNameSpan').textContent = '📄 Choose PDF';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uploadStatus').textContent = '';
+  document.getElementById('previewSection').innerHTML = '';
+  document.getElementById('retryBtn').style.display = 'none';
+  document.getElementById('resetBtn').style.display = 'none';
 }
 
 function renderPreview(papers){
