@@ -171,7 +171,8 @@ function doUpload(){
         btn.disabled = false;
         if (!data.ok) { status.textContent = '❌ ' + (data.error || 'Something went wrong.'); return; }
 
-        var lines = ['✅ Found ' + data.papers_found + ' paper(s) in this PDF.'];
+        var lines = ['✅ Found ' + data.papers_found + ' paper(s) in this PDF.',
+                     (data.extraction_mode === 'text' ? '📄 Read as text (fast, no scanning needed)' : '👁️ Read using AI vision (scanned/photographed pages)')];
         (data.auto_sorted || []).forEach(function(r){
           if (r.skipped) lines.push('ℹ️ ' + (r.detected_title || '') + ' — ' + r.reason);
           else lines.push('✅ Auto-sorted: ' + subjectName(r.subject) + ' ' + r.year + ' (' + r.question_count + ' questions)');
