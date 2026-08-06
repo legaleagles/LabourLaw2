@@ -18,21 +18,31 @@ nav{background:var(--navy);padding:12px 16px;}
 .hero-sub{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;}
 
 .wrap{max-width:640px;margin:0 auto;padding:18px 16px 60px;}
-.subject-select{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:11px;font-size:13px;
-font-family:'DM Sans',sans-serif;background:#fff;margin-bottom:16px;}
 
-.upload-card{background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:16px;margin-bottom:20px;}
-.upload-card-title{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;margin-bottom:12px;}
-.upload-row{display:flex;gap:8px;margin-bottom:10px;}
-.upload-row input[type="number"]{width:100px;padding:11px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;}
-.file-label{flex:1;display:flex;align-items:center;justify-content:center;padding:11px;border:1.5px dashed #C9A227;
-border-radius:9px;font-size:12.5px;font-weight:700;color:#8a6d1a;cursor:pointer;background:#FFFBEB;}
+.upload-card{background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:18px;margin-bottom:20px;text-align:center;}
+.upload-card-title{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;margin-bottom:6px;}
+.upload-card-hint{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.file-label{display:flex;align-items:center;justify-content:center;padding:16px;border:1.5px dashed #C9A227;
+border-radius:12px;font-size:13px;font-weight:800;color:#8a6d1a;cursor:pointer;background:#FFFBEB;margin-bottom:12px;}
 .file-label input{display:none;}
 .upload-btn{width:100%;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-weight:800;
-font-size:13px;padding:13px;border:none;border-radius:11px;cursor:pointer;}
+font-size:13.5px;padding:13px;border:none;border-radius:11px;cursor:pointer;}
 .upload-btn:disabled{opacity:.5;}
-.upload-status{font-size:11.5px;margin-top:10px;text-align:center;color:var(--muted);}
+.upload-status{font-size:11.5px;margin-top:12px;text-align:center;color:var(--muted);line-height:1.6;}
+.upload-result-line{padding:4px 0;}
 
+.review-card{background:#FFF7ED;border:1.5px solid #FDBA74;border-radius:14px;padding:14px;margin-bottom:12px;}
+.review-title{font-family:'Playfair Display',serif;font-weight:900;font-size:14px;color:#9A3412;margin-bottom:4px;}
+.review-meta{font-size:10.5px;color:#B45309;margin-bottom:10px;}
+.review-row{display:flex;gap:8px;margin-bottom:8px;}
+.review-row select,.review-row input{flex:1;padding:9px;border:1.5px solid #FDBA74;border-radius:8px;font-size:12.5px;background:#fff;}
+.review-confirm-btn{width:100%;background:linear-gradient(135deg,#EA580C,#C2410C);color:#fff;font-weight:800;
+font-size:12.5px;padding:10px;border:none;border-radius:9px;cursor:pointer;}
+.section-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin:24px 0 12px;
+padding-bottom:6px;border-bottom:2px solid var(--gold);}
+
+.subject-select{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:11px;font-size:13px;
+font-family:'DM Sans',sans-serif;background:#fff;margin-bottom:16px;}
 .year-block{margin-bottom:22px;}
 .year-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;color:var(--navy);
 display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
@@ -63,28 +73,26 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="hero">
   <div class="hero-title">📚 Previous Year Questions Archive</div>
-  <div class="hero-sub">Upload past exam papers (scanned or typed PDF) — questions get extracted and stored permanently, year by year. No prediction, no guessing — just a clean, searchable record.</div>
+  <div class="hero-sub">Upload any PDF — one subject, one year, a whole bulk scan of several subjects mixed together, whatever you've got. Gemini finds every distinct paper inside and sorts it automatically.</div>
 </div>
 
 <div class="wrap">
-  <select class="subject-select" id="subjectSelect"></select>
-
   <div class="upload-card">
-    <div class="upload-card-title">Upload a Paper</div>
-    <div class="upload-row">
-      <input type="number" id="yearInput" placeholder="Year, e.g. 2023" min="2000" max="2030">
-      <label class="file-label" id="fileLabel">
-        📄 Choose PDF
-        <input type="file" id="fileInput" accept="application/pdf">
-      </label>
-    </div>
-    <button class="upload-btn" id="uploadBtn" onclick="doUpload()">Extract & Save</button>
+    <div class="upload-card-title">Upload a PDF</div>
+    <div class="upload-card-hint">Scanned or typed, single paper or bulk mix — doesn't matter. Extraction can take a minute or two for a big file.</div>
+    <label class="file-label" id="fileLabel">
+      📄 Choose PDF
+      <input type="file" id="fileInput" accept="application/pdf">
+    </label>
+    <button class="upload-btn" id="uploadBtn" onclick="doUpload()">Extract & Sort</button>
     <div class="upload-status" id="uploadStatus"></div>
   </div>
 
-  <div id="questionsContainer">
-    <div class="empty-msg">Select a subject to see uploaded papers.</div>
-  </div>
+  <div id="reviewSection"></div>
+
+  <div class="section-hd">Browse Archive</div>
+  <select class="subject-select" id="subjectSelect"></select>
+  <div id="questionsContainer"></div>
 </div>
 
 <script>
@@ -110,6 +118,7 @@ var SUBJECTS = [
 
 var params = new URLSearchParams(location.search);
 var currentSubject = params.get('subject') || 'cpc';
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
 
 var select = document.getElementById('subjectSelect');
 select.innerHTML = SUBJECTS.map(function(s){
@@ -122,49 +131,58 @@ select.onchange = function(){
 };
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function subjectName(slug){ var m = SUBJECTS.find(function(s){return s.slug===slug;}); return m ? m.name : slug; }
 
 document.getElementById('fileInput').onchange = function(){
   var label = document.getElementById('fileLabel');
   if (this.files && this.files[0]) {
-    label.innerHTML = '✅ ' + esc(this.files[0].name) + '<input type="file" id="fileInput" accept="application/pdf">';
-    document.getElementById('fileInput').onchange = arguments.callee;
+    label.innerHTML = '✅ ' + esc(this.files[0].name);
+    var newInput = document.createElement('input');
+    newInput.type = 'file'; newInput.id = 'fileInput'; newInput.accept = 'application/pdf'; newInput.style.display='none';
+    label.appendChild(newInput);
+    newInput.onchange = arguments.callee;
+    window.__selectedFile = this.files[0];
   }
 };
 
 function doUpload(){
-  var year = document.getElementById('yearInput').value;
   var fileInput = document.getElementById('fileInput');
+  var file = window.__selectedFile || (fileInput.files && fileInput.files[0]);
   var status = document.getElementById('uploadStatus');
   var btn = document.getElementById('uploadBtn');
 
-  if (!year) { status.textContent = 'Enter a year first.'; return; }
-  if (!fileInput.files || !fileInput.files[0]) { status.textContent = 'Choose a PDF first.'; return; }
+  if (!file) { status.textContent = 'Choose a PDF first.'; return; }
 
-  var file = fileInput.files[0];
   btn.disabled = true;
   status.textContent = 'Reading file…';
 
   var reader = new FileReader();
   reader.onload = function(){
     var base64 = reader.result.split(',')[1];
-    status.textContent = 'Extracting questions — this can take up to a minute for a long paper…';
+    status.textContent = 'Finding papers & extracting questions — this can take a couple of minutes for a big file, please wait…';
 
-    fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pyq-extract', {
+    fetch(BACKEND + '/api/pyq-extract', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({subject: currentSubject, year: year, pdf_base64: base64})
+      body: JSON.stringify({pdf_base64: base64})
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
         btn.disabled = false;
-        if (data.ok && !data.skipped) {
-          status.textContent = '✅ Extracted ' + data.question_count + ' questions for ' + data.year + '.';
-          loadQuestions();
-        } else if (data.skipped) {
-          status.textContent = 'ℹ️ ' + data.reason;
-        } else {
-          status.textContent = '❌ ' + (data.error || 'Something went wrong.');
+        if (!data.ok) { status.textContent = '❌ ' + (data.error || 'Something went wrong.'); return; }
+
+        var lines = ['✅ Found ' + data.papers_found + ' paper(s) in this PDF.'];
+        (data.auto_sorted || []).forEach(function(r){
+          if (r.skipped) lines.push('ℹ️ ' + (r.detected_title || '') + ' — ' + r.reason);
+          else lines.push('✅ Auto-sorted: ' + subjectName(r.subject) + ' ' + r.year + ' (' + r.question_count + ' questions)');
+        });
+        if (data.needs_review_count) {
+          lines.push('⚠️ ' + data.needs_review_count + ' paper(s) need your review below.');
         }
+        status.innerHTML = lines.map(function(l){ return '<div class="upload-result-line">' + esc(l) + '</div>'; }).join('');
+
+        loadReviewQueue();
+        loadQuestions();
       })
       .catch(function(){
         btn.disabled = false;
@@ -172,6 +190,53 @@ function doUpload(){
       });
   };
   reader.readAsDataURL(file);
+}
+
+function subjectOptionsHtml(selected){
+  return SUBJECTS.map(function(s){
+    return '<option value="' + s.slug + '"' + (s.slug === selected ? ' selected' : '') + '>' + s.name + '</option>';
+  }).join('');
+}
+
+function loadReviewQueue(){
+  var section = document.getElementById('reviewSection');
+  fetch('llb-pyq-unassigned.json?t=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('none'); return r.json(); })
+    .then(function(data){
+      var items = data.items || [];
+      if (!items.length) { section.innerHTML = ''; return; }
+      section.innerHTML = '<div class="section-hd">⚠️ Needs Your Review (' + items.length + ')</div>' +
+        items.map(function(it){
+          return '<div class="review-card">' +
+            '<div class="review-title">' + esc(it.detected_title || 'Untitled paper') + '</div>' +
+            '<div class="review-meta">' + it.question_count + ' questions extracted · confidence: ' + esc(it.confidence) + '</div>' +
+            '<div class="review-row">' +
+              '<select id="rsub-' + it.id + '">' + subjectOptionsHtml(it.guessed_subject_slug) + '</select>' +
+              '<input type="number" id="ryear-' + it.id + '" placeholder="Year" value="' + esc(it.guessed_year) + '">' +
+            '</div>' +
+            '<button class="review-confirm-btn" onclick="confirmReview(\'' + it.id + '\')">Confirm & Save</button>' +
+          '</div>';
+        }).join('');
+    })
+    .catch(function(){ section.innerHTML = ''; });
+}
+
+function confirmReview(id){
+  var subject = document.getElementById('rsub-' + id).value;
+  var year = document.getElementById('ryear-' + id).value;
+  if (!year) { alert('Enter a year first.'); return; }
+
+  fetch(BACKEND + '/api/pyq-assign', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({id: id, subject: subject, year: year})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) { loadReviewQueue(); loadQuestions(); }
+      else alert(data.error || 'Could not save.');
+    })
+    .catch(function(){ alert('Could not reach the server — try again.'); });
 }
 
 function loadQuestions(){
@@ -208,6 +273,7 @@ function loadQuestions(){
     });
 }
 
+loadReviewQueue();
 loadQuestions();
 </script>
 
