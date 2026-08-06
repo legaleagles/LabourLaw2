@@ -129,7 +129,7 @@ gtag('config', 'G-TJXHVW6XCL');
       <div class="upload-card-title">Upload a PDF</div>
       <div class="upload-card-hint">Scanned or typed, single paper or bulk mix — doesn't matter.</div>
       <label class="file-label" id="fileLabel">
-        📄 Choose PDF
+        <span id="fileNameSpan">📄 Choose PDF</span>
         <input type="file" id="fileInput" accept="application/pdf" style="display:none;">
       </label>
       <button class="upload-btn" id="uploadBtn" onclick="doExtract(false)">Extract & Preview</button>
@@ -219,8 +219,10 @@ function initApp(){
   };
 
   document.getElementById('fileInput').onchange = function(){
-    var label = document.getElementById('fileLabel');
-    if (this.files && this.files[0]) label.innerHTML = '✅ ' + esc(this.files[0].name);
+    if (this.files && this.files[0]) {
+      window.__selectedFile = this.files[0];
+      document.getElementById('fileNameSpan').textContent = '✅ ' + this.files[0].name;
+    }
   };
 
   loadAnalysis();
@@ -235,10 +237,18 @@ function setBrowseTab(t){
 }
 
 function doExtract(isRetry){
-  var fileInput = document.getElementById('fileInput');
   var status = document.getElementById('uploadStatus');
   var btn = document.getElementById('uploadBtn');
   var retryBtn = document.getElementById('retryBtn');
+
+  try {
+    doExtractInner(isRetry, status, btn, retryBtn);
+  } catch (e) {
+    status.textContent = '❌ Unexpected error: ' + e.message;
+  }
+}
+
+function doExtractInner(isRetry, status, btn, retryBtn){
 
   function runWithBase64(base64){
     lastFileBase64 = base64;
@@ -270,11 +280,11 @@ function doExtract(isRetry){
     return;
   }
 
-  if (!fileInput.files || !fileInput.files[0]) { status.textContent = 'Choose a PDF first.'; return; }
+  if (!window.__selectedFile) { status.textContent = 'Choose a PDF first.'; return; }
   status.textContent = 'Reading file…';
   var reader = new FileReader();
   reader.onload = function(){ runWithBase64(reader.result.split(',')[1]); };
-  reader.readAsDataURL(fileInput.files[0]);
+  reader.readAsDataURL(window.__selectedFile);
 }
 
 function renderPreview(papers){
