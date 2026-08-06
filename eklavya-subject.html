@@ -397,8 +397,8 @@ function renderLecture(day){
 }
 
 Promise.all([
-  fetch('llb5-' + subject + '-topics.json?t=' + Date.now()).then(function(r){ if(!r.ok) throw new Error('topics.json: HTTP ' + r.status); return r.json(); }),
-  fetch('llb5-' + subject + '-lectures.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : {lectures:{}}; }).catch(function(){ return {lectures:{}}; })
+  fetch('llb5-' + subject + '-topics.json?t=' + Date.now(), {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('topics.json: HTTP ' + r.status); return r.json(); }),
+  fetch('llb5-' + subject + '-lectures.json?t=' + Date.now(), {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : {lectures:{}}; }).catch(function(){ return {lectures:{}}; })
 ]).then(function(results){
   topicsData = results[0];
   lecturesData = results[1];
