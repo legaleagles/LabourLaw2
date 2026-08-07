@@ -98,6 +98,8 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <div id="collegeList"></div>
 
+  <a href="https://lawsticker-ai.com/lawcet-phase2-predictor.html" style="display:block;text-align:center;color:#6ba8f0;font-size:12px;font-weight:700;margin-top:16px;text-decoration:none;">🎯 Enter your rank to see YOUR personal chances →</a>
+
 </div>
 
 <script>
@@ -131,8 +133,9 @@ function render(){
   var rows = DATA.filter(function(r){ return currentFilter === 'all' || r.course === currentFilter; });
   var container = document.getElementById('collegeList');
   container.innerHTML = rows.map(function(r){
-    var cls = statusClass(r.vacancy);
-    var vacText = r.vacancy === null ? 'N/A' : (r.vacancy >= 0 ? '+' + r.vacancy : r.vacancy);
+    var cls = statusClass(displayVac);
+    var displayVac = r.vacancy === null ? null : Math.max(0, r.vacancy);
+  var vacText = displayVac === null ? 'N/A' : (displayVac > 0 ? '+' + displayVac : '0');
     var courseLabel = r.course === '3LH' ? 'LLB (Hons)' : 'LLB Regular';
     var phase1Text = r.phase1_allotted === null ? 'N/A' : r.phase1_allotted;
     return '<div class="college-card ' + cls + '">' +
