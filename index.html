@@ -378,6 +378,14 @@ border-radius:14px;text-decoration:none;font-size:12.5px;font-weight:800;text-al
 .scam-subrow-icon{font-size:17px;}
 .scam-subrow-report{background:linear-gradient(135deg,#7C1D1D,#450A0A);color:#fff;border:1px solid rgba(220,38,38,.4);}
 .scam-subrow-check{background:linear-gradient(135deg,#0c2436,#0D1117);color:#7DD3FC;border:1px solid rgba(14,165,233,.35);}
+.ai-flaunt-box{border:1.5px solid rgba(201,162,39,.35);border-radius:20px;padding:14px 12px 4px;margin-bottom:20px;
+background:linear-gradient(180deg,rgba(201,162,39,.05),transparent 40%);}
+.ai-flaunt-badge{display:block;text-align:center;font-size:10px;font-weight:900;letter-spacing:.5px;
+color:#8a6d1a;background:#FFFBEB;border:1px solid rgba(201,162,39,.4);border-radius:20px;
+padding:5px 14px;margin:0 auto 14px;width:fit-content;}
+.ai-flaunt-box .scam-bulletin,.ai-flaunt-box .trick-card{margin-bottom:16px;}
+.ai-flaunt-box .study-strip{margin-bottom:12px;}
+.ai-refresh-line{font-size:9.5px;color:rgba(255,255,255,.4);text-align:center;margin:8px 0;font-weight:600;}
 .scam-bulletin{display:block;background:linear-gradient(150deg,#0D1117 0%,#1a1830 55%,#231338 100%);
 border:1.5px solid rgba(201,162,39,.5);border-left:5px solid var(--gold);
 border-radius:18px;padding:18px 16px 14px;text-decoration:none;
@@ -620,16 +628,49 @@ gtag('config', 'G-TJXHVW6XCL');
     <div class="ask-ai-promo-cta">💬 Ask Durga Bro Anything →</div>
   </a>
 
-  <div class="scam-bulletin">
-    <div class="sb-top">
-      <div class="sb-badge"><span class="sb-badge-dot"></span> Live Today</div>
+  <div class="ai-flaunt-box">
+    <div class="ai-flaunt-badge">🤖 100% AI-Generated · Refreshes Automatically Every Day</div>
+
+    <div class="scam-bulletin">
+      <div class="sb-top">
+        <div class="sb-badge"><span class="sb-badge-dot"></span> Live Today</div>
+      </div>
+      <div class="sb-heading">🛡️ Today's Scam Bulletin</div>
+      <div class="sb-sub">3 real scams uncovered today — see exactly how they worked</div>
+      <div class="sb-stories" id="scamBulletinStories">
+        <div class="sb-loading">Loading today's stories…</div>
+      </div>
+      <div class="ai-refresh-line" id="scamRefreshLine"></div>
+      <a href="scam-stories.html#insightsBox" class="sb-viewall" id="sbViewAll">See all stories, sources &amp; the numbers →</a>
     </div>
-    <div class="sb-heading">🛡️ Today's Scam Bulletin</div>
-    <div class="sb-sub">3 real scams uncovered today — see exactly how they worked</div>
-    <div class="sb-stories" id="scamBulletinStories">
-      <div class="sb-loading">Loading today's stories…</div>
+
+    <!-- SMART SHOPPER — daily AI-generated consumer trick + comeback,
+         replaces the old Did You Know / Daily Quiz widgets -->
+    <div class="trick-card reveal" id="trickCard" style="display:none;">
+      <div class="trick-top">
+        <div class="trick-badge"><span class="trick-badge-dot"></span> Smart Shopper</div>
+        <div class="trick-cat" id="trickCat"></div>
+      </div>
+      <div class="trick-ai-line"><span class="ai-chip">AI</span> Powered by Gemini · sourced &amp; written fresh, daily</div>
+      <div class="trick-where" id="trickWhere"></div>
+      <div class="trick-title" id="trickTitle"></div>
+      <div class="trick-explain" id="trickExplain"></div>
+      <div class="trick-watch" id="trickWatchBox" style="display:none;">
+        <div class="trick-watch-label">🚩 Watch For</div>
+        <div id="trickWatchList"></div>
+      </div>
+      <div class="trick-response-box">
+        <div class="trick-response-label">💬 Say This</div>
+        <div class="trick-response" id="trickResponse"></div>
+      </div>
+      <div class="trick-legal" id="trickLegal"></div>
+      <div class="ai-refresh-line" id="trickRefreshLine"></div>
+      <div class="trick-share-row">
+        <button class="trick-share-btn wa" id="trickShareWa">📱 Share Card</button>
+        <button class="trick-share-btn native" id="trickShareNative">📤 More Options</button>
+      </div>
+      <a href="smart-shopper.html" class="sb-viewall" style="margin-top:12px;">See all past tricks →</a>
     </div>
-    <a href="scam-stories.html#insightsBox" class="sb-viewall" id="sbViewAll">See all stories, sources &amp; the numbers →</a>
   </div>
 
   <!-- NEWS — EXPANDED -->
@@ -646,46 +687,23 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="page">
 
-  <!-- SMART SHOPPER — daily AI-generated consumer trick + comeback,
-       replaces the old Did You Know / Daily Quiz widgets -->
-  <div class="trick-card reveal" id="trickCard" style="display:none;">
-    <div class="trick-top">
-      <div class="trick-badge"><span class="trick-badge-dot"></span> Smart Shopper</div>
-      <div class="trick-cat" id="trickCat"></div>
-    </div>
-    <div class="trick-ai-line"><span class="ai-chip">AI</span> Powered by Gemini · sourced &amp; written fresh, daily</div>
-    <div class="trick-where" id="trickWhere"></div>
-    <div class="trick-title" id="trickTitle"></div>
-    <div class="trick-explain" id="trickExplain"></div>
-    <div class="trick-watch" id="trickWatchBox" style="display:none;">
-      <div class="trick-watch-label">🚩 Watch For</div>
-      <div id="trickWatchList"></div>
-    </div>
-    <div class="trick-response-box">
-      <div class="trick-response-label">💬 Say This</div>
-      <div class="trick-response" id="trickResponse"></div>
-    </div>
-    <div class="trick-legal" id="trickLegal"></div>
-    <div class="trick-share-row">
-      <button class="trick-share-btn wa" id="trickShareWa">📱 Share Card</button>
-      <button class="trick-share-btn native" id="trickShareNative">📤 More Options</button>
-    </div>
-    <a href="smart-shopper.html" class="sb-viewall" style="margin-top:12px;">See all past tricks →</a>
+  <div class="ai-flaunt-box">
+    <div class="ai-flaunt-badge">🤖 AI-Powered Study Tools</div>
+
+    <!-- LLB STUDY CORNER -->
+    <a class="study-strip" href="https://lawsticker-ai.com/subjects.html">
+      <span class="study-icon">🎓</span>
+      <span><span class="study-name" id="stuN"></span><br><span class="study-desc" id="stuD"></span></span>
+      <span class="study-arr">→</span>
+    </a>
+
+    <!-- EKLAVYA — daily LLB study calendar, all 6 semesters -->
+    <a class="study-strip" href="https://lawsticker-ai.com/eklavya.html" style="border-color:rgba(56,189,248,.4);">
+      <span class="study-icon">🏹</span>
+      <span><span class="study-name">Eklavya <span style="font-size:9px;font-weight:900;color:#0D1117;background:linear-gradient(135deg,#38BDF8,#F5D76E);padding:2px 7px;border-radius:8px;margin-left:3px;">AI-klavya</span> — Daily LLB Study Plan (All 6 Semesters)</span><br><span class="study-desc">One topic a day, 45-day calendar per paper — AI lectures, case law, exam angle</span></span>
+      <span class="study-arr">→</span>
+    </a>
   </div>
-
-  <!-- LLB STUDY CORNER -->
-  <a class="study-strip" href="https://lawsticker-ai.com/subjects.html">
-    <span class="study-icon">🎓</span>
-    <span><span class="study-name" id="stuN"></span><br><span class="study-desc" id="stuD"></span></span>
-    <span class="study-arr">→</span>
-  </a>
-
-  <!-- EKLAVYA — daily LLB study calendar, all 6 semesters -->
-  <a class="study-strip" href="https://lawsticker-ai.com/eklavya.html" style="border-color:rgba(56,189,248,.4);">
-    <span class="study-icon">🏹</span>
-    <span><span class="study-name">Eklavya <span style="font-size:9px;font-weight:900;color:#0D1117;background:linear-gradient(135deg,#38BDF8,#F5D76E);padding:2px 7px;border-radius:8px;margin-left:3px;">AI-klavya</span> — Daily LLB Study Plan (All 6 Semesters)</span><br><span class="study-desc">One topic a day, 45-day calendar per paper — AI lectures, case law, exam angle</span></span>
-    <span class="study-arr">→</span>
-  </a>
 
   <!-- SITUATION PICKER -->
   <div class="sec-eyebrow" id="sEye"></div>
@@ -1457,6 +1475,18 @@ function loadTrickCard(){
     .catch(function(){}); // nice-to-have — never break the rest of the page
 }
 
+function formatISTRefreshLine(isoTimestamp){
+  if (!isoTimestamp) return '';
+  try {
+    var d = new Date(isoTimestamp);
+    var istStr = d.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short',
+      hour: 'numeric', minute: '2-digit', hour12: true
+    });
+    return '🕐 Last updated ' + istStr + ' IST · refreshes automatically each day';
+  } catch(e) { return ''; }
+}
+
 function renderTrickCard(){
   if (!trickData) return;
   var lang = (L === 'te' || L === 'hi') ? L : 'en';
@@ -1466,6 +1496,8 @@ function renderTrickCard(){
   document.getElementById('trickExplain').textContent = trickData['explain_' + lang] || trickData.explain_en || '';
   document.getElementById('trickResponse').textContent = trickData['response_' + lang] || trickData.response_en || '';
   document.getElementById('trickLegal').textContent = '⚖️ ' + (trickData.legal_note || '');
+  var trickRefreshEl = document.getElementById('trickRefreshLine');
+  if (trickRefreshEl) trickRefreshEl.textContent = formatISTRefreshLine(trickData.created_at);
 
   var watchList = trickData['watch_for_' + lang] || trickData.watch_for_en || [];
   var watchBox = document.getElementById('trickWatchBox');
@@ -1851,6 +1883,15 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
         '</div>' +
       '</div>';
     }).join('');
+
+    var refreshEl = document.getElementById('scamRefreshLine');
+    if (refreshEl) {
+      var mostRecent = scamPicks.picks.reduce(function(latest, s){
+        var t = s.approved_at || s.submitted_at || '';
+        return (!latest || t > latest) ? t : latest;
+      }, '');
+      refreshEl.textContent = (typeof formatISTRefreshLine === 'function') ? formatISTRefreshLine(mostRecent) : '';
+    }
   }
   window.__renderScamBulletin = renderScamBulletin;
 
