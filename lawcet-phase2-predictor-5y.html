@@ -61,7 +61,10 @@ border-radius:12px;padding:13px 15px;margin-bottom:10px;}
 .rc-name{font-size:13.5px;font-weight:800;color:var(--cream);line-height:1.3;}
 .rc-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;}
 .rc-course-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:900;padding:5px 11px;
-border-radius:8px;letter-spacing:.2px;background:rgba(107,168,240,0.22);color:#8fc1ff;border:1.5px solid rgba(107,168,240,0.5);}
+border-radius:8px;letter-spacing:.2px;}
+.rc-course-badge.ballb{background:rgba(107,168,240,0.22);color:#8fc1ff;border:1.5px solid rgba(107,168,240,0.5);}
+.rc-course-badge.bballb{background:rgba(240,180,41,0.2);color:var(--gold);border:1.5px solid rgba(240,180,41,0.55);}
+.rc-course-badge.bcomllb{background:rgba(29,184,122,0.2);color:#4de0a5;border:1.5px solid rgba(29,184,122,0.55);}
 .rc-chance{text-align:right;flex-shrink:0;}
 .rc-chance-lbl{font-size:11px;font-weight:900;}
 .rc-chance-lbl.strong{color:var(--green);}
@@ -167,6 +170,12 @@ var DATA = {"colleges": [{"key": "aurora's legal service academy", "name": "AURO
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 
+function courseBadgeInfo(course){
+  if (course === 'BBA LLB') return {cls: 'bballb', icon: '💼'};
+  if (course === 'B.Com LLB') return {cls: 'bcomllb', icon: '📊'};
+  return {cls: 'ballb', icon: '📘'};
+}
+
 function predict(){
   var rank = parseInt(document.getElementById('rankInput').value, 10);
   if (!rank || rank < 1) { alert('Please enter your rank as a number.'); return; }
@@ -218,7 +227,7 @@ function predict(){
       var chanceCls = item.missedBy <= 300 ? 'strong' : 'possible';
       out += '<div class="result-card ' + chanceCls + '">' +
         '<div class="rc-top"><div><div class="rc-name">' + esc(item.c.name) + '</div>' +
-        '<div class="rc-badges"><span class="rc-course-badge">📘 ' + esc(item.c.course) + '</span></div></div>' +
+        '<div class="rc-badges"><span class="rc-course-badge ' + courseBadgeInfo(item.c.course).cls + '">' + courseBadgeInfo(item.c.course).icon + ' ' + esc(item.c.course) + '</span></div></div>' +
         '<div class="rc-chance"><div class="rc-chance-lbl ' + chanceCls + '">' + chanceLabel + '</div></div></div>' +
         '<div class="rc-meta">In Round 1, you were short by <b>' + item.missedBy + ' ranks</b> — and <b>' + item.vacancy + ' seat' + (item.vacancy===1?'':'s') + '</b> are open now — you can try this college.</div>' +
       '</div>';
