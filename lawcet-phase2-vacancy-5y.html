@@ -52,8 +52,10 @@ border-radius:12px;padding:13px 15px;margin-bottom:10px;}
 .college-card.full{border-left-color:var(--red);}
 .cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px;}
 .cc-name{font-size:13.5px;font-weight:800;color:var(--cream);line-height:1.3;}
-.cc-course{display:inline-block;font-size:11px;font-weight:900;padding:4px 10px;border-radius:8px;margin-top:6px;
-background:rgba(107,168,240,0.2);color:#8fc1ff;border:1.5px solid rgba(107,168,240,0.5);}
+.cc-course{display:inline-block;font-size:11px;font-weight:900;padding:4px 10px;border-radius:8px;margin-top:6px;}
+.cc-course.ballb{background:rgba(107,168,240,0.2);color:#8fc1ff;border:1.5px solid rgba(107,168,240,0.5);}
+.cc-course.bballb{background:rgba(240,180,41,0.2);color:var(--gold);border:1.5px solid rgba(240,180,41,0.55);}
+.cc-course.bcomllb{background:rgba(29,184,122,0.2);color:#4de0a5;border:1.5px solid rgba(29,184,122,0.55);}
 .cc-vacancy{text-align:right;flex-shrink:0;}
 .cc-vacancy-num{font-size:20px;font-weight:900;}
 .cc-vacancy-num.good{color:var(--green);}
@@ -136,6 +138,12 @@ function setFilter(f){
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 
+function courseBadgeInfo(course){
+  if (course === 'BBA LLB') return {cls: 'bballb', icon: '💼'};
+  if (course === 'B.Com LLB') return {cls: 'bcomllb', icon: '📊'};
+  return {cls: 'ballb', icon: '📘'};
+}
+
 function render(){
   var rows = DATA.colleges.filter(function(r){ return currentFilter === 'all' || r.course === currentFilter; });
   rows = rows.slice().sort(function(a,b){
@@ -149,7 +157,7 @@ function render(){
     var vacText = r.vacancy === null ? 'N/A' : (r.vacancy > 0 ? '+' + r.vacancy : '0');
     return '<div class="college-card ' + cls + '">' +
       '<div class="cc-top">' +
-        '<div><div class="cc-name">' + esc(r.name) + '</div><span class="cc-course">' + esc(r.course) + '</span></div>' +
+        '<div><div class="cc-name">' + esc(r.name) + '</div><span class="cc-course ' + courseBadgeInfo(r.course).cls + '">' + courseBadgeInfo(r.course).icon + ' ' + esc(r.course) + '</span></div>' +
         '<div class="cc-vacancy"><div class="cc-vacancy-num ' + cls + '">' + vacText + '</div><div class="cc-vacancy-lbl">' + statusLabel(r.vacancy) + '</div></div>' +
       '</div>' +
       '<div class="cc-meta">' + (r.convener_intake !== null ? ('<b>Convener Intake:</b> ' + r.convener_intake + ' · <b>Filled in Phase 1:</b> ' + r.filled) : 'No vacancy record found for this college') + '</div>' +
