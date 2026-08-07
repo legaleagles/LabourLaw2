@@ -144,7 +144,7 @@ function render(){
     var displayVac = r.vacancy === null ? null : Math.max(0, r.vacancy);
   var vacText = displayVac === null ? 'N/A' : (displayVac > 0 ? '+' + displayVac : '0');
     var courseLabel = r.course === '3LH' ? 'LLB (Hons)' : 'LLB Regular';
-    var phase1Text = r.phase1_allotted === null ? 'N/A' : r.phase1_allotted;
+    var phase1Text = (r.filled === null || r.filled === undefined) ? 'N/A' : r.filled;
     return '<div class="college-card ' + cls + '">' +
       '<div class="cc-top">' +
         '<div><div class="cc-name">' + esc(r.name) + '</div><span class="cc-course">' + courseLabel + ' · ' + esc(r.university) + '</span></div>' +
