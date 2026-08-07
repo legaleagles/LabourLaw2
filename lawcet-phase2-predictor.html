@@ -101,11 +101,11 @@ gtag('config', 'G-TJXHVW6XCL');
   <div class="header">
     <div class="badge">TG LAWCET 2026 · LLB 3-YDC ONLY</div>
     <h1>Phase 2 <span>College Chance Predictor</span></h1>
-    <p>Enter your rank and category — see exactly which colleges are realistic tries for Phase 2, based on real Phase 1 results, not guesswork.</p>
+    <p>Type in your rank. We'll show you which colleges you have a real chance of getting into in Round 2 — in simple terms, no confusing numbers.</p>
   </div>
 
   <div class="card">
-    <h2>📝 Tell Us About Your Rank</h2>
+    <h2>📝 Fill In These Details</h2>
 
     <div class="field">
       <label>Your LAWCET Rank</label>
@@ -113,7 +113,7 @@ gtag('config', 'G-TJXHVW6XCL');
     </div>
 
     <div class="field">
-      <label>Your Reservation Category</label>
+      <label>Your Category (OC, BC, SC, ST, or EWS)</label>
       <select id="catInput">
         <option value="OPEN">OC / General</option>
         <option value="BCA">BC-A</option>
@@ -138,16 +138,16 @@ gtag('config', 'G-TJXHVW6XCL');
     </div>
 
     <div class="field">
-      <label>Local Status</label>
+      <label>Are You "Local" or "Open" Category?</label>
       <select id="zoneInput">
         <option value="OU">Local</option>
         <option value="UNR">Unreserved / Open (State-wide)</option>
       </select>
-      <div class="field-hint">This is the same Local/Unreserved status you selected during your original LAWCET application — not sure? Check your Phase 1 allotment memo, or just try both and compare.</div>
+      <div class="field-hint">Not sure which one you are? Most students pick "Local." If you are still unsure, try both options below and see which gives better results.</div>
     </div>
 
     <div class="field">
-      <label>Person with Disability (optional)</label>
+      <label>Do You Have a Disability? (only if yes)</label>
       <select id="pwdInput">
         <option value="">No / Not applicable</option>
         <option value="PHO">Yes — Orthopedic</option>
@@ -157,7 +157,7 @@ gtag('config', 'G-TJXHVW6XCL');
       </select>
     </div>
 
-    <button class="go-btn" onclick="predict()">🎯 Show My Chances</button>
+    <button class="go-btn" onclick="predict()">🎯 Show Me My Colleges</button>
   </div>
 
   <div id="resultsArea"></div>
@@ -214,14 +214,14 @@ function predict(){
 
   if (worthTrying.length > 0) {
     out += '<div class="summary-card"><div class="summary-title">🎯 ' + worthTrying.length + ' college' + (worthTrying.length===1?'':'s') + ' worth trying in Phase 2</div>' +
-      '<div class="summary-sub">These are colleges you didn\'t get into Phase 1, but seats have opened up — Phase 2 cutoffs usually drop, so these are genuine possibilities.</div></div>';
+      '<div class="summary-sub">You did not get these colleges in Round 1. But seats have opened up now — you have a real chance of getting one of these in Round 2.</div></div>';
   } else {
     out += '<div class="summary-card none"><div class="summary-title">😕 No strong Phase 2 options found for this exact rank/category</div>' +
-      '<div class="summary-sub">This can happen if your rank is far from any remaining open seats. Double check your category selections above, or see the full seat list linked below.</div></div>';
+      '<div class="summary-sub">This can happen if your rank is far from the open seats. Please check that you picked the right category above, or look at the full list of colleges below.</div></div>';
   }
 
   if (worthTrying.length){
-    out += '<div class="section-hd">🎯 Worth Trying in Phase 2</div>';
+    out += '<div class="section-hd">🎯 Try These Colleges in Round 2</div>';
     worthTrying.forEach(function(item){
       var isHons = item.c.course === '3LH';
       var courseLabel = isHons ? '⭐ LLB (Hons)' : '📘 LLB Regular';
@@ -232,24 +232,24 @@ function predict(){
         '<div class="rc-top"><div><div class="rc-name">' + esc(item.c.name) + '</div>' +
         '<div class="rc-badges"><span class="rc-course-badge ' + courseCls + '">' + courseLabel + '</span><span class="rc-uni-badge">' + esc(item.c.university) + '</span></div></div>' +
         '<div class="rc-chance"><div class="rc-chance-lbl ' + chanceCls + '">' + chanceLabel + '</div></div></div>' +
-        '<div class="rc-meta">You missed Phase 1 here by <b>' + item.missedBy + ' ranks</b> — and <b>' + item.vacancy + ' seat' + (item.vacancy===1?'':'s') + '</b> are now open. Fee: ₹' + item.c.fee.toLocaleString('en-IN') + '/yr</div>' +
+        '<div class="rc-meta">In Round 1, you were short by <b>' + item.missedBy + ' ranks</b> — and <b>' + item.vacancy + ' seat' + (item.vacancy===1?'':'s') + '</b> are open now — you can try this college. Fee: ₹' + item.c.fee.toLocaleString('en-IN') + '/yr</div>' +
       '</div>';
     });
   }
 
   if (alreadyGettable.length){
-    out += '<div class="section-hd">✅ You\'d Already Have Gotten These in Phase 1</div>';
-    out += '<div class="empty-note" style="padding:8px 0 12px;text-align:left;">If you\'re not currently studying at one of these, you may still be able to move here in Phase 2 as an upgrade — check the official portal for upgrade options.</div>';
+    out += '<div class="section-hd">✅ You Could Already Get Into These</div>';
+    out += '<div class="empty-note" style="padding:8px 0 12px;text-align:left;">If you are not already studying at one of these, you may still be able to switch here in Round 2. Check the official website for how to do this.</div>';
     alreadyGettable.slice(0, 8).forEach(function(item){
       var courseLabel = item.c.course === '3LH' ? 'LLB (Hons)' : 'LLB Regular';
-      out += '<div class="already-card"><b>' + esc(item.c.name) + '</b> (' + courseLabel + ') — your rank beat the Phase 1 cutoff by ' + item.margin + '</div>';
+      out += '<div class="already-card"><b>' + esc(item.c.name) + '</b> (' + courseLabel + ') — your rank was good enough here, by ' + item.margin + '</div>';
     });
     if (alreadyGettable.length > 8) {
       out += '<div class="empty-note">+ ' + (alreadyGettable.length - 8) + ' more colleges</div>';
     }
   }
 
-  out += '<div class="disclaimer">⚠️ This is based on real Phase 1 cutoffs and estimated seat vacancies, not an official prediction. Phase 2 cutoffs can move, and actual seat availability may differ from this estimate — always confirm on the official TG LAWCET portal before making a decision. "Missed by" shows how many ranks separated you from that college\'s Phase 1 cutoff in your category — smaller numbers mean a more realistic chance.</div>';
+  out += '<div class="disclaimer">⚠️ This is our best estimate using real Round 1 data — it is NOT an official result. Numbers can change in Round 2. Always check the official TG LAWCET website before making your final decision. A smaller "short by" number means a better chance.</div>';
 
   document.getElementById('resultsArea').innerHTML = out;
   document.getElementById('resultsArea').scrollIntoView({behavior:'smooth', block:'start'});
