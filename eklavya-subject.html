@@ -53,6 +53,8 @@ font-size:10px;cursor:default;border:1.5px solid transparent;position:relative;}
 
 .lecture-panel{background:#fff;border:1px solid #EEE7D6;border-radius:16px;padding:18px 16px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
 .lec-unit{font-size:9.5px;font-weight:800;color:#0369A1;text-transform:uppercase;letter-spacing:.5px;}
+.lec-refresh-line{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#92400E;
+background:#FFFBEB;border:1px solid #FDE68A;border-radius:20px;padding:4px 11px;margin:8px 0 10px;font-weight:800;}
 .lec-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 12px;line-height:1.3;}
 .lec-hook{background:linear-gradient(135deg,#1a1030,#2d1b4e);border-radius:13px;padding:13px 14px;margin-bottom:16px;
 display:flex;align-items:flex-start;gap:10px;box-shadow:0 4px 14px rgba(45,27,78,.25);}
@@ -314,6 +316,12 @@ function renderLecture(day){
 
   var out = '';
   out += '<div class="lec-unit">' + esc(lec.unit) + ' · Day ' + lec.day + ' · ' + esc(new Date(lec.date + 'T00:00:00').toLocaleDateString('en-IN',{weekday:'long', day:'numeric', month:'long', year:'numeric'})) + '</div>';
+  if (lec.generated_at) {
+    try {
+      var istStr = new Date(lec.generated_at).toLocaleString('en-IN', {timeZone:'Asia/Kolkata', day:'numeric', month:'short', hour:'numeric', minute:'2-digit', hour12:true});
+      out += '<div class="lec-refresh-line">🕐 Generated ' + esc(istStr) + ' IST</div>';
+    } catch(e) {}
+  }
   out += '<div class="lec-title">' + esc(lec.lecture_title) + '</div>';
 
   if (lec.memory_hook){
