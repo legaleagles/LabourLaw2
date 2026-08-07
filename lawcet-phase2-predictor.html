@@ -55,8 +55,13 @@ border-radius:12px;padding:13px 15px;margin-bottom:10px;}
 .result-card.possible{border-left-color:var(--orange);}
 .rc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
 .rc-name{font-size:13.5px;font-weight:800;color:var(--cream);line-height:1.3;}
-.rc-course{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:4px;
-background:rgba(107,168,240,0.2);color:var(--blue);}
+.rc-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;}
+.rc-course-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:900;padding:5px 11px;
+border-radius:8px;letter-spacing:.2px;}
+.rc-course-badge.regular{background:rgba(107,168,240,0.22);color:#8fc1ff;border:1.5px solid rgba(107,168,240,0.5);}
+.rc-course-badge.hons{background:rgba(240,180,41,0.2);color:var(--gold);border:1.5px solid rgba(240,180,41,0.55);}
+.rc-uni-badge{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;padding:5px 10px;
+border-radius:8px;background:rgba(255,255,255,0.08);color:var(--cream2);}
 .rc-chance{text-align:right;flex-shrink:0;}
 .rc-chance-lbl{font-size:11px;font-weight:900;}
 .rc-chance-lbl.strong{color:var(--green);}
@@ -210,12 +215,14 @@ function predict(){
   if (worthTrying.length){
     out += '<div class="section-hd">🎯 Worth Trying in Phase 2</div>';
     worthTrying.forEach(function(item){
-      var courseLabel = item.c.course === '3LH' ? 'LLB (Hons)' : 'LLB Regular';
+      var isHons = item.c.course === '3LH';
+      var courseLabel = isHons ? '⭐ LLB (Hons)' : '📘 LLB Regular';
+      var courseCls = isHons ? 'hons' : 'regular';
       var chanceLabel = item.missedBy <= 300 ? 'Strong Chance' : 'Possible';
       var chanceCls = item.missedBy <= 300 ? 'strong' : 'possible';
       out += '<div class="result-card ' + chanceCls + '">' +
         '<div class="rc-top"><div><div class="rc-name">' + esc(item.c.name) + '</div>' +
-        '<span class="rc-course">' + courseLabel + ' · ' + esc(item.c.university) + '</span></div>' +
+        '<div class="rc-badges"><span class="rc-course-badge ' + courseCls + '">' + courseLabel + '</span><span class="rc-uni-badge">' + esc(item.c.university) + '</span></div></div>' +
         '<div class="rc-chance"><div class="rc-chance-lbl ' + chanceCls + '">' + chanceLabel + '</div></div></div>' +
         '<div class="rc-meta">You missed Phase 1 here by <b>' + item.missedBy + ' ranks</b> — and <b>' + item.vacancy + ' seat' + (item.vacancy===1?'':'s') + '</b> are now open. Fee: ₹' + item.c.fee.toLocaleString('en-IN') + '/yr</div>' +
       '</div>';
