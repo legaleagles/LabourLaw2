@@ -265,7 +265,10 @@ gtag('config', 'G-TJXHVW6XCL');
       <div class="field">
         <label id="g-l-rate">Gold Rate — must be the 24K / 999 rate <span class="hint" id="g-l-rate-h">(this calculator can use two different purities at once — new item + old exchange item — so it always needs the pure 24K reference rate)</span></label>
         <div class="pfx"><span class="p">₹</span><input type="number" id="g-rate" value="9500"></div>
-        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="g-rate-link">🔗 Check today's rate on GoodReturns →</a>
+        <button type="button" id="loadLiveRateBtn" onclick="loadLiveGoldRate()" style="width:100%;margin-top:8px;padding:10px;
+          border-radius:9px;border:1.5px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FEF3C7);
+          color:#92400E;font-weight:800;font-size:12.5px;cursor:pointer;">🔄 Load Today's Rate</button>
+        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="g-rate-link">🔗 Or check today's rate on GoodReturns →</a>
         <div style="font-size:10px;color:var(--muted);margin-top:4px" id="g-rate-updated"></div>
         <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
           border-radius:7px;padding:7px 9px;">
@@ -1293,30 +1296,38 @@ buildExplainer();
 fetchGlobalVisits();
 </script>
 <script>
-/* Pull today's gold/silver rate from shared site-config.json (updated via hidden admin page).
-   Silently keeps the hardcoded default if the fetch fails — never blocks the calculator. */
-document.addEventListener('DOMContentLoaded',function(){
-  fetch('site-config.json').then(function(r){return r.json();}).then(function(cfg){
-    var g = cfg && cfg.rates && cfg.rates.gold_24k_per_gram_inr;
-    var s = cfg && cfg.rates && cfg.rates.silver_999_per_gram_inr;
-    var updatedAt = cfg && cfg.rates && cfg.rates.updated_at;
-    var gEl = document.getElementById('g-rate');
-    var sEl = document.getElementById('s-rate');
-    if(g && gEl) gEl.value = g;
-    if(s && sEl) sEl.value = s;
-    if(updatedAt){
-      var d = new Date(updatedAt);
-      var stamp = 'Rate last refreshed: ' + d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
-      var gU = document.getElementById('g-rate-updated');
-      var sU = document.getElementById('s-rate-updated');
-      if(gU) gU.textContent = stamp;
-      if(sU) sU.textContent = stamp;
-    }
-    if((g && gEl) || (s && sEl)){
-      try{ if(typeof calcGold==='function') calcGold(); }catch(e){}
-    }
-  }).catch(function(){ /* keep hardcoded defaults, no error shown to user */ });
-});
+/* Click-triggered live rate load — fetches fresh every time, no daily
+   cron dependency, no caching. Fills the 24K value directly since this
+   calculator's own math always multiplies by purity itself. */
+function loadLiveGoldRate(){
+  var btn = document.getElementById('loadLiveRateBtn');
+  var stampEl = document.getElementById('g-rate-updated');
+  var sStampEl = document.getElementById('s-rate-updated');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Loading…'; }
+
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 Load Today\'s Rate'; }
+      if (!data.ok) { if (stampEl) stampEl.textContent = 'Could not load — try again.'; return; }
+
+      var gEl = document.getElementById('g-rate');
+      var sEl = document.getElementById('s-rate');
+      if (gEl) gEl.value = data.gold_by_purity_per_gram_inr['24'];
+      if (sEl) sEl.value = data.silver_999_per_gram_inr;
+
+      var d = new Date(data.fetched_at);
+      var stamp = '✅ Loaded just now (' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST)';
+      if (stampEl) stampEl.textContent = stamp;
+      if (sStampEl) sStampEl.textContent = stamp;
+
+      try { if (typeof calcGold === 'function') calcGold(); } catch(e) {}
+    })
+    .catch(function(){
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 Load Today\'s Rate'; }
+      if (stampEl) stampEl.textContent = 'Could not reach the server — try again.';
+    });
+}
 </script>
 <script>
 /* Language persistence — remembers choice across all pages */
