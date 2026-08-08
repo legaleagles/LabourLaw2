@@ -432,27 +432,24 @@ display:flex;align-items:center;justify-content:center;}
 .sb-viewall{display:block;text-align:center;font-size:11.5px;font-weight:800;color:#F5D76E;
 margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.08);text-decoration:none;}
 .sb-loading{font-size:11.5px;color:rgba(255,255,255,.4);padding:8px 2px;}
-.news-ticker-card{background:linear-gradient(135deg,#0c2436,#0D1117);border:1px solid rgba(14,165,233,.35);
-border-radius:18px;padding:16px 18px;margin-bottom:20px;}
-.news-ticker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.news-ticker-live{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;
-letter-spacing:1px;color:#F87171;text-transform:uppercase;}
-.news-ticker-live .pulse-dot{background:#F87171;}
-.news-ticker-cat{font-size:10px;font-weight:800;color:#38BDF8;background:rgba(14,165,233,.14);
-padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;}
-.news-ticker-headline{min-height:52px;display:flex;align-items:center;}
-.news-ticker-headline a{color:#fff;font-size:14px;font-weight:700;line-height:1.5;text-decoration:none;
-display:block;transition:opacity .4s;}
-.news-ticker-headline a.fade{opacity:0;}
-.news-ticker-bottom{display:flex;justify-content:flex-end;margin-top:10px;}
-.news-ticker-link{font-size:11px;font-weight:800;color:#38BDF8;text-decoration:none;}
-.news-ticker-empty{color:rgba(255,255,255,.4);font-size:12px;}
-.news-list{display:flex;flex-direction:column;gap:11px;}
-.news-item{display:block;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:11px;}
-.news-item:last-child{border-bottom:none;padding-bottom:0;}
-.news-item-cat{font-size:9px;font-weight:800;color:#38BDF8;background:rgba(14,165,233,.14);
-padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px;display:inline-block;margin-bottom:5px;}
-.news-item-title{color:#fff;font-size:13px;font-weight:700;line-height:1.5;display:block;}
+.legal-update-card{background:linear-gradient(150deg,#0D1117 0%,#161225 55%,#1a1830 100%);
+border:1px solid rgba(240,180,41,.3);border-radius:18px;padding:18px;margin-bottom:20px;}
+.lu-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.lu-badge{font-size:10.5px;font-weight:900;padding:5px 12px;border-radius:9px;letter-spacing:.3px;}
+.lu-badge.sc{background:rgba(240,180,41,.2);color:#F5D76E;border:1.5px solid rgba(240,180,41,.5);}
+.lu-badge.hc{background:rgba(107,168,240,.2);color:#8fc1ff;border:1.5px solid rgba(107,168,240,.5);}
+.lu-badge.law{background:rgba(167,139,250,.22);color:#c4b5fd;border:1.5px solid rgba(167,139,250,.5);}
+.lu-badge.scheme{background:rgba(29,184,122,.2);color:#4de0a5;border:1.5px solid rgba(29,184,122,.5);}
+.lu-badge.consumer{background:rgba(220,38,38,.2);color:#fca5a5;border:1.5px solid rgba(220,38,38,.5);}
+.lu-refresh-line{font-size:10px;color:rgba(255,255,255,.4);font-weight:600;}
+.lu-authority{font-size:11px;font-weight:800;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.lu-title{color:#fff;font-size:15.5px;font-weight:800;line-height:1.4;margin-bottom:10px;}
+.lu-summary{color:rgba(255,255,255,.75);font-size:12.5px;line-height:1.65;margin-bottom:12px;}
+.lu-why-box{background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);border-radius:11px;
+padding:11px 13px;margin-bottom:12px;}
+.lu-why-label{font-size:10px;font-weight:900;color:#F5D76E;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.lu-why-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;}
+.lu-source-link{font-size:11px;font-weight:800;color:#38BDF8;text-decoration:none;}
 .ig-teaser{position:relative;border-radius:20px;padding:2px;margin-bottom:20px;
 background:linear-gradient(135deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);
 background-size:300% 300%;animation:igShimmer 6s ease infinite;overflow:hidden;}
@@ -676,14 +673,19 @@ gtag('config', 'G-TJXHVW6XCL');
   </div>
 
   <!-- NEWS — EXPANDED -->
-  <div class="news-ticker-card" id="newsTickerCard" style="display:none;">
-    <div class="news-ticker-top">
-      <div class="news-ticker-live"><span class="pulse-dot"></span><span id="newsTickerLiveLabel"></span></div>
+  <div class="legal-update-card" id="legalUpdateCard" style="display:none;">
+    <div class="lu-top">
+      <div class="lu-badge" id="luTypeBadge"></div>
+      <div class="lu-refresh-line" id="luRefreshLine"></div>
     </div>
-    <div class="news-list" id="newsList"></div>
-    <div class="news-ticker-bottom">
-      <a class="news-ticker-link" href="https://lawsticker-ai.com/news.html" id="newsTickerSeeAll"></a>
+    <div class="lu-authority" id="luAuthority"></div>
+    <div class="lu-title" id="luTitle"></div>
+    <div class="lu-summary" id="luSummary"></div>
+    <div class="lu-why-box">
+      <div class="lu-why-label" id="luWhyLabel"></div>
+      <div class="lu-why-text" id="luWhy"></div>
     </div>
+    <a class="lu-source-link" id="luSourceLink" href="#" target="_blank" rel="noopener"></a>
   </div>
 </div>
 
@@ -1277,7 +1279,7 @@ let L='en', tagIdx=0, tagTimer=null;
 function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000);}
 
 function setLang(l,b){L=l;document.querySelectorAll('.nav-lang').forEach(x=>x.classList.remove('active'));
- if(b)b.classList.add('active');render();if(trickData)renderTrickCard();if(window.__renderScamBulletin)window.__renderScamBulletin();}
+ if(b)b.classList.add('active');render();if(trickData)renderTrickCard();if(window.__renderScamBulletin)window.__renderScamBulletin();if(window.__rerenderLegalUpdate)window.__rerenderLegalUpdate();}
 
 function render(){
  const U=UI[L];
@@ -1838,36 +1840,61 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
 </script>
 <script>
 (function(){
-  var CAT_LABELS = {legal: 'Legal', regional: 'Regional', national: 'National', international: 'World'};
+  var TYPE_MAP = {
+    'Supreme Court': {cls: 'sc', icon: '⚖️', label: {en:'Supreme Court', te:'సుప్రీం కోర్టు', hi:'सुप्रीम कोर्ट'}},
+    'High Court': {cls: 'hc', icon: '🏛️', label: {en:'High Court', te:'హైకోర్టు', hi:'हाई कोर्ट'}},
+    'New Law or Amendment': {cls: 'law', icon: '📜', label: {en:'New Law', te:'కొత్త చట్టం', hi:'नया कानून'}},
+    'Government Scheme or Notification': {cls: 'scheme', icon: '🏢', label: {en:'Govt. Scheme', te:'ప్రభుత్వ పథకం', hi:'सरकारी योजना'}},
+    'Consumer Protection Order': {cls: 'consumer', icon: '🛡️', label: {en:'Consumer Protection', te:'వినియోగదారుల రక్షణ', hi:'उपभोक्ता सुरक्षा'}},
+  };
+  var WHY_LABEL = {en:'Why It Matters To You', te:'ఇది మీకు ఎందుకు ముఖ్యం', hi:'यह आपके लिए क्यों मायने रखता है'};
+  var SOURCE_LABEL = {en:'Read the source →', te:'మూలం చదవండి →', hi:'स्रोत पढ़ें →'};
 
-  fetch('news-feed.json?t=' + Date.now())
-    .then(function(r){ if (!r.ok) throw new Error('no feed'); return r.json(); })
-    .then(function(data){
-      var categories = data.categories || {};
-      var items = [];
-      // One headline from each category, in a fixed useful order — legal
-      // first since it's the most site-relevant, then regional/national/world.
-      ['legal', 'regional', 'national', 'international'].forEach(function(cat){
-        var arts = categories[cat] || [];
-        if (arts.length) items.push({title: arts[0].title, link: arts[0].link, cat: cat});
+  function formatISTLine(iso){
+    if (!iso) return '';
+    try {
+      var d = new Date(iso);
+      var s = d.toLocaleString('en-IN', {timeZone:'Asia/Kolkata', day:'numeric', month:'short', hour:'numeric', minute:'2-digit', hour12:true});
+      return '🕐 Updated ' + s + ' IST';
+    } catch(e) { return ''; }
+  }
+
+  function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function renderLegalUpdate(){
+    fetch('legal-update.json?t=' + Date.now())
+      .then(function(r){ if (!r.ok) throw new Error('no feed'); return r.json(); })
+      .then(function(data){
+        var history = data.history || {};
+        var dates = Object.keys(history).sort().reverse();
+        if (!dates.length) return;
+        var entry = history[dates[0]];
+
+        var lang = (typeof L !== 'undefined' && (L === 'te' || L === 'hi')) ? L : 'en';
+        var typeInfo = TYPE_MAP[entry.update_type] || {cls: 'sc', icon: '⚖️', label: {en: entry.update_type, te: entry.update_type, hi: entry.update_type}};
+
+        document.getElementById('luTypeBadge').className = 'lu-badge ' + typeInfo.cls;
+        document.getElementById('luTypeBadge').textContent = typeInfo.icon + ' ' + typeInfo.label[lang];
+        document.getElementById('luRefreshLine').textContent = formatISTLine(entry.generated_at);
+        document.getElementById('luAuthority').textContent = entry.court_or_authority || '';
+        document.getElementById('luTitle').textContent = entry['title_' + lang] || entry.title_en;
+        document.getElementById('luSummary').textContent = entry['summary_' + lang] || entry.summary_en;
+        document.getElementById('luWhyLabel').textContent = WHY_LABEL[lang];
+        document.getElementById('luWhy').textContent = entry['why_it_matters_' + lang] || entry.why_it_matters_en;
+        var sourceLink = document.getElementById('luSourceLink');
+        sourceLink.href = entry.source_url;
+        sourceLink.textContent = SOURCE_LABEL[lang];
+
+        document.getElementById('legalUpdateCard').style.display = 'block';
+        try { gtag('event', 'legal_update_shown', {type: entry.update_type}); } catch(e) {}
+      })
+      .catch(function(){
+        // Not ready yet or unavailable — card stays hidden, no broken state shown.
       });
-      if (!items.length) return;
+  }
 
-      var card = document.getElementById('newsTickerCard');
-      var list = document.getElementById('newsList');
-      card.style.display = 'block';
-      list.innerHTML = items.map(function(item){
-        return '<a class="news-item" href="news.html?cat=' + item.cat + '">' +
-          '<span class="news-item-cat">' + (CAT_LABELS[item.cat] || item.cat) + '</span>' +
-          '<span class="news-item-title">' + item.title.replace(/</g, '&lt;') + '</span></a>';
-      }).join('');
-
-      try { gtag('event', 'news_list_shown', {count: items.length}); } catch(e) {}
-    })
-    .catch(function(){
-      // News feed not ready yet or unavailable — card stays hidden,
-      // no broken/empty state shown.
-    });
+  renderLegalUpdate();
+  window.__rerenderLegalUpdate = renderLegalUpdate; // re-run on language change, same pattern as other cards
 })();
 </script>
 <script>
