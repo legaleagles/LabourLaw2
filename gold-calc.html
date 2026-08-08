@@ -450,10 +450,14 @@ gtag('config', 'G-TJXHVW6XCL');
             <option value="purity" id="opt-basis-purity">My selected purity directly (e.g. this is already a 22K rate)</option>
           </select>
         </div>
+        <button type="button" id="loadLiveRateBtn" onclick="loadLiveGoldRate()" style="width:100%;margin-top:8px;padding:10px;
+          border-radius:9px;border:1.5px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FEF3C7);
+          color:#92400E;font-weight:800;font-size:12.5px;cursor:pointer;">🔄 Load Today's Rate</button>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px;text-align:center;" id="rate-loaded-stamp"></div>
         <div style="margin-top:6px;font-size:11px;">
           <a href="https://www.goodreturns.in/gold-rates/" target="_blank" id="rate-link"
             style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
-            🔗 Check today's rate on GoodReturns →
+            🔗 Or check today's rate on GoodReturns →
           </a>
         </div>
         <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
@@ -1028,6 +1032,39 @@ document.getElementById('makingType').addEventListener('change', function() {
 //  HELPERS
 // ══════════════════════════════════════════
 function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function loadLiveGoldRate(){
+  var btn = document.getElementById('loadLiveRateBtn');
+  var stampEl = document.getElementById('rate-loaded-stamp');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Loading…'; }
+
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (btn) { btn.disabled = false; btn.textContent = "🔄 Load Today's Rate"; }
+      if (!data.ok) { if (stampEl) stampEl.textContent = 'Could not load — try again.'; return; }
+
+      var purityEl = document.getElementById('purity');
+      var purity = purityEl ? purityEl.value : '22';
+      var rateVal = data.gold_by_purity_per_gram_inr[purity] || data.gold_by_purity_per_gram_inr['22'];
+
+      var rateInput = document.getElementById('goldRate');
+      var basisSelect = document.getElementById('rateBasis');
+      if (rateInput) rateInput.value = rateVal;
+      // The endpoint already returns the rate matched to this exact purity,
+      // ready to use directly — same as how real bills quote it.
+      if (basisSelect) basisSelect.value = 'purity';
+
+      var d = new Date(data.fetched_at);
+      if (stampEl) stampEl.textContent = '✅ Loaded just now (' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST) — set as your ' + purity + 'K rate directly';
+
+      if (typeof calculate === 'function') calculate();
+    })
+    .catch(function(){
+      if (btn) { btn.disabled = false; btn.textContent = "🔄 Load Today's Rate"; }
+      if (stampEl) stampEl.textContent = 'Could not reach the server — try again.';
+    });
+}
+
 function purityFactor(k) { return {24:1, 22:0.916, 18:0.75, 14:0.585}[k] || 0.916; }
 const t = () => T[lang];
 
