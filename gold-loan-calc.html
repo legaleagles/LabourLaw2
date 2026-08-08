@@ -188,7 +188,11 @@ gtag('config', 'G-TJXHVW6XCL');
           <option value="purity">My selected purity directly (e.g. this is already a 22K rate)</option>
         </select>
       </div>
-      <a href="https://www.goodreturns.in/gold-rates/" target="_blank" style="display:block;margin-top:6px;font-size:11px;font-weight:600;color:var(--gold-deep);text-decoration:none">🔗 Check live rate on GoodReturns →</a>
+      <button type="button" id="loadLiveRateBtn" onclick="loadLiveGoldRate()" style="width:100%;margin-top:8px;padding:10px;
+        border-radius:9px;border:1.5px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FEF3C7);
+        color:#92400E;font-weight:800;font-size:12.5px;cursor:pointer;">🔄 Load Today's Rate</button>
+      <div style="font-size:10px;color:var(--muted);margin-top:5px;text-align:center;" id="rate-loaded-stamp"></div>
+      <a href="https://www.goodreturns.in/gold-rates/" target="_blank" style="display:block;margin-top:6px;font-size:11px;font-weight:600;color:var(--gold-deep);text-decoration:none">🔗 Or check live rate on GoodReturns →</a>
       <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
         border-radius:7px;padding:7px 9px;">
         ⚠️ Many sites (including GoodReturns) show the 22K rate directly, not 24K — if your rate came from one of those, pick "My selected purity directly" above, or your gold value will come out too low.
@@ -499,6 +503,34 @@ function setLang(l) {
 // ══════════════════════════════════════════
 //  CALCULATE
 // ══════════════════════════════════════════
+function loadLiveGoldRate(){
+  const btn = el('loadLiveRateBtn');
+  const stampEl = el('rate-loaded-stamp');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Loading…'; }
+
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate')
+    .then(r => r.json())
+    .then(data => {
+      if (btn) { btn.disabled = false; btn.textContent = "🔄 Load Today's Rate"; }
+      if (!data.ok) { if (stampEl) stampEl.textContent = 'Could not load — try again.'; return; }
+
+      const pur = el('g-pur') ? el('g-pur').value : '22';
+      const rateVal = data.gold_by_purity_per_gram_inr[pur] || data.gold_by_purity_per_gram_inr['22'];
+
+      if (el('g-rate')) el('g-rate').value = rateVal;
+      if (el('rateBasis')) el('rateBasis').value = 'purity';
+
+      const d = new Date(data.fetched_at);
+      if (stampEl) stampEl.textContent = '✅ Loaded just now (' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST) — set as your ' + pur + 'K rate directly';
+
+      if (typeof calculate === 'function') calculate();
+    })
+    .catch(() => {
+      if (btn) { btn.disabled = false; btn.textContent = "🔄 Load Today's Rate"; }
+      if (stampEl) stampEl.textContent = 'Could not reach the server — try again.';
+    });
+}
+
 function calculate() {
   const t = T[lang];
 
