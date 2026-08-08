@@ -439,15 +439,26 @@ gtag('config', 'G-TJXHVW6XCL');
         </div>
       </div>
       <div class="field">
-        <label id="l-rate">Today's Gold Rate <span class="hint" id="l-rate-hint">(₹ per gram for 24K)</span></label>
+        <label id="l-rate">Gold Rate <span class="hint" id="l-rate-hint">— enter whatever rate you're comparing against</span></label>
         <div class="prefix-wrap"><span class="prefix">₹</span>
           <input type="number" id="goldRate" value="9500">
+        </div>
+        <div style="margin-top:8px;">
+          <label style="font-size:11.5px;font-weight:700;color:var(--gold-deep);display:block;margin-bottom:5px;" id="l-rate-basis-label">This rate is for:</label>
+          <select id="rateBasis" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--gold);background:#FFFBEB;font-size:13px;">
+            <option value="24k" id="opt-basis-24k">24K / 999 pure gold (we'll adjust for your purity)</option>
+            <option value="purity" id="opt-basis-purity">My selected purity directly (e.g. this is already a 22K rate)</option>
+          </select>
         </div>
         <div style="margin-top:6px;font-size:11px;">
           <a href="https://www.goodreturns.in/gold-rates/" target="_blank" id="rate-link"
             style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
             🔗 Check today's rate on GoodReturns →
           </a>
+        </div>
+        <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
+          border-radius:7px;padding:7px 9px;" id="rate-basis-warning">
+          ⚠️ Many sites (including GoodReturns) show the 22K rate directly, not 24K — if your rate came from one of those, pick "My selected purity directly" above, or your total will come out too low.
         </div>
       </div>
     </div>
@@ -537,7 +548,7 @@ gtag('config', 'G-TJXHVW6XCL');
         </div>
       </div>
       <div class="field">
-        <label id="ex-l-rate">Today's Gold Rate <span class="hint" id="ex-l-rate-hint">(₹/g for 24K)</span></label>
+        <label id="ex-l-rate">Gold Rate — must be the 24K / 999 rate <span class="hint" id="ex-l-rate-hint">(this field calculates two different purities, so it needs the pure 24K reference rate, not a purity-specific one)</span></label>
         <div class="prefix-wrap"><span class="prefix">₹</span>
           <input type="number" id="ex-goldRate" value="9500">
         </div>
@@ -546,6 +557,10 @@ gtag('config', 'G-TJXHVW6XCL');
             style="color:var(--gold-deep);text-decoration:none;font-weight:600;">
             🔗 Check today's rate on GoodReturns →
           </a>
+        </div>
+        <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
+          border-radius:7px;padding:7px 9px;">
+          ⚠️ Many sites (including GoodReturns) show the 22K rate front and center, not 24K — using that number here directly will undervalue your old gold. Look for the "999" or "24K" rate specifically, or divide a 22K rate by 0.916 to get it.
         </div>
       </div>
       <div class="toggle-field">
@@ -1017,7 +1032,8 @@ function calculate() {
 function calcBuy() {
   const wt = parseFloat(document.getElementById('weight').value) || 0;
   const purity = parseInt(document.getElementById('purity').value);
-  const rate24k = parseFloat(document.getElementById('goldRate').value) || 0;
+  const rateEntered = parseFloat(document.getElementById('goldRate').value) || 0;
+  const rateBasis = document.getElementById('rateBasis') ? document.getElementById('rateBasis').value : '24k';
   const makingType = document.getElementById('makingType').value;
   const makingVal = parseFloat(document.getElementById('makingValue').value) || 0;
   const wastageOn = document.getElementById('wastageToggle').checked;
@@ -1026,7 +1042,8 @@ function calcBuy() {
   const hallmark = parseFloat(document.getElementById('hallmarkCharge').value) || 0;
 
   const pf = purityFactor(purity);
-  const rateForPurity = rate24k * pf;
+  const rateForPurity = (rateBasis === 'purity') ? rateEntered : rateEntered * pf;
+  const rate24k = rateEntered;
   const goldValue = wt * rateForPurity;
   let making = 0;
   if (makingType === 'pct') making = goldValue * makingVal / 100;
@@ -1040,7 +1057,7 @@ function calcBuy() {
 
   document.getElementById('r-total').textContent = fmt(total);
   document.getElementById('r-sub').textContent =
-    `${wt}g ${purity}K @ ₹${rate24k.toLocaleString('en-IN')}/g`;
+    `${wt}g ${purity}K @ ₹${Math.round(rateForPurity).toLocaleString('en-IN')}/g effective`;
 
   document.getElementById('r-insights').innerHTML = `
     <div class="insight-box"><div class="val">₹${Math.round(effectivePerGram).toLocaleString('en-IN')}</div><div class="lbl">${t().perGram}</div></div>
