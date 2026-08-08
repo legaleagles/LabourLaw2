@@ -179,9 +179,20 @@ gtag('config', 'G-TJXHVW6XCL');
       </div>
     </div>
     <div class="field">
-      <label id="l-rate">Today's Gold Rate <span class="hint">(₹ per gram, 24K)</span></label>
+      <label id="l-rate">Gold Rate <span class="hint">— enter whatever rate you're comparing against</span></label>
       <div class="pfx"><span class="p">₹</span><input type="number" id="g-rate" value="9500" step="100"></div>
+      <div style="margin-top:8px;">
+        <label style="font-size:11.5px;font-weight:700;color:var(--gold-deep);display:block;margin-bottom:5px;">This rate is for:</label>
+        <select id="rateBasis" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--gold);background:#FFFBEB;font-size:13px;">
+          <option value="24k">24K / 999 pure gold (we'll adjust for your purity)</option>
+          <option value="purity">My selected purity directly (e.g. this is already a 22K rate)</option>
+        </select>
+      </div>
       <a href="https://www.goodreturns.in/gold-rates/" target="_blank" style="display:block;margin-top:6px;font-size:11px;font-weight:600;color:var(--gold-deep);text-decoration:none">🔗 Check live rate on GoodReturns →</a>
+      <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
+        border-radius:7px;padding:7px 9px;">
+        ⚠️ Many sites (including GoodReturns) show the 22K rate directly, not 24K — if your rate came from one of those, pick "My selected purity directly" above, or your gold value will come out too low.
+      </div>
     </div>
     <div class="toggle-row">
       <div class="tl" id="l-ltv">LTV % Offered <span class="sub" id="l-ltv-s">RBI max 75% — lender quoted how much?</span></div>
@@ -494,7 +505,9 @@ function calculate() {
   // Inputs
   const wt       = parseFloat(el('g-wt').value) || 0;
   const pur      = parseInt(el('g-pur').value) || 22;
-  const rate24   = parseFloat(el('g-rate').value) || 0;
+  const rateEntered = parseFloat(el('g-rate').value) || 0;
+  const rateBasis = el('rateBasis') ? el('rateBasis').value : '24k';
+  const rate24   = rateEntered; // kept for the display line below
   const ltv      = parseFloat(el('g-ltv').value) || 70;
   const intRate  = parseFloat(el('l-rate-val').value) || 12;
   const tenureM  = parseInt(el('l-tenure-val').value) || 12;
@@ -503,7 +516,8 @@ function calculate() {
   const repay    = el('l-repay-val').value;
 
   // Core calcs
-  const goldVal  = wt * rate24 * purity(pur);
+  const effectiveRate = (rateBasis === 'purity') ? rateEntered : rateEntered * purity(pur);
+  const goldVal  = wt * effectiveRate;
   const loanAmt  = goldVal * ltv / 100;
   const procFee  = loanAmt * procPct / 100;
   const totalFees = procFee + valFee;
@@ -543,7 +557,7 @@ function calculate() {
 
   // ── Hero ──
   s('r-amount', fmt(loanAmt));
-  s('r-sub', `${wt}g ${pur}K · ₹${rate24.toLocaleString('en-IN')}/g · ${ltv}% LTV · ${intRate}% p.a.`);
+  s('r-sub', `${wt}g ${pur}K @ ₹${Math.round(effectiveRate).toLocaleString('en-IN')}/g effective · ${ltv}% LTV · ${intRate}% p.a.`);
 
   // ── Insight boxes ──
   el('r-i1').textContent = fmtL(goldVal);
@@ -553,7 +567,7 @@ function calculate() {
   // ── Breakdown ──
   const repayLabel = {emi:'Monthly EMI', bullet:'Bullet (lump sum at end)', interest:'Interest-only monthly'}[repay] || repay;
   el('r-rows').innerHTML = `
-    <div class="brow pos"><div class="bl">${t.goldVal}<span class="bs">${wt}g × ₹${rate24.toLocaleString('en-IN')} × ${(purity(pur)*100).toFixed(1)}%</span></div><div class="ba">${fmt(goldVal)}</div></div>
+    <div class="brow pos"><div class="bl">${t.goldVal}<span class="bs">${wt}g × ₹${Math.round(effectiveRate).toLocaleString('en-IN')}/g effective</span></div><div class="ba">${fmt(goldVal)}</div></div>
     <div class="brow"><div class="bl">${t.loanAmt}<span class="bs">${ltv}% LTV</span></div><div class="ba">${fmt(loanAmt)}</div></div>
     <div class="brow"><div class="bl">${t.repayTypeLabel}</div><div class="ba" style="font-size:12px">${repayLabel}</div></div>
     ${procFee > 0 ? `<div class="brow neg"><div class="bl">${t.procFee}<span class="bs">${procPct}% of loan</span></div><div class="ba">+ ${fmt(procFee)}</div></div>` : ''}
