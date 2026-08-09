@@ -736,15 +736,6 @@ gtag('config', 'G-TJXHVW6XCL');
   onclick="toggleStats()">
   <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,0.45);margin-bottom:10px;" id="stats-eyebrow">📊 Usage Stats</div>
 
-  <!-- Global visits (real, all users) -->
-  <div style="background:rgba(245,215,110,0.06);border:1px solid rgba(245,215,110,0.15);border-radius:12px;padding:10px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
-    <div style="text-align:left;">
-      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold-light);line-height:1;" id="stat-global-visits">⏳</div>
-      <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,0.5);margin-top:3px;" id="stat-global-lbl">Total Visits</div>
-    </div>
-    <div style="font-size:10px;color:rgba(255,255,255,0.25);text-align:right;" id="stats-global-note">🌐 All users · live</div>
-  </div>
-
   <!-- Personal stats (this device) -->
   <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
     <div style="text-align:center;">
@@ -1725,20 +1716,6 @@ function recordCalc(mode) {
   renderStats();
 }
 
-// Global counter — CountAPI (free, no auth, shared across all users)
-async function fetchGlobalVisits() {
-  try {
-    const res = await fetch('https://api.counterapi.dev/v1/lawsticker/gold-calc-visits/up');
-    const data = await res.json();
-    const count = data.count || data.value || 0;
-    const el = document.getElementById('stat-global-visits');
-    if (el) el.textContent = count.toLocaleString('en-IN');
-  } catch(e) {
-    const el = document.getElementById('stat-global-visits');
-    if (el) el.textContent = '—';
-  }
-}
-
 function renderStats() {
   const s = loadStats();
   const l = lang;
@@ -1789,7 +1766,7 @@ function toggleStats() {
 // Init on load
 recordVisit();
 renderStats();
-fetchGlobalVisits(); // async — fills in global count when ready
+// (global visits counter removed)
 
 // init
 applyLang();
