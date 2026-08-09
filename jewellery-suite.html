@@ -271,7 +271,7 @@ gtag('config', 'G-TJXHVW6XCL');
         <div style="font-size:10px;color:var(--muted);margin-top:4px" id="g-rate-updated"></div>
 
         <div style="margin-top:10px;">
-          <label style="font-size:11.5px;font-weight:700;color:var(--gold-deep);display:block;margin-bottom:5px;">Your City</label>
+          <label id="g-city-label" style="font-size:11.5px;font-weight:700;color:var(--gold-deep);display:block;margin-bottom:5px;">Your City</label>
           <div style="display:flex;gap:6px;">
             <select id="citySelect" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--gold);background:#FFFBEB;font-size:13px;">
               <option value="hyderabad">Hyderabad</option>
@@ -304,7 +304,7 @@ gtag('config', 'G-TJXHVW6XCL');
         <a class="rate-link" href="https://www.goodreturns.in/gold-rates/hyderabad.html" target="_blank" id="g-rate-link" style="margin-top:8px;display:block;">🔗 Check your city's exact rate on GoodReturns →</a>
 
         <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
-          border-radius:7px;padding:7px 9px;">
+          border-radius:7px;padding:7px 9px;" id="g-city-info-box">
           ℹ️ Pick your city above, then tap "Load Today's Rate" — this fetches the real published rate for your city, not an estimate. If we can't reach it for some reason, we'll clearly say so and show a fallback estimate instead. If typing your own rate manually, enter the 24K/999 rate — we'll adjust for your purity automatically.
         </div>
       </div>
@@ -633,6 +633,15 @@ const T = {
     gLOded:'Deduction %',gLOdedS:'0% = Zero Deduction offer',
     gOptPct:'% of gold value',gOptPgram:'₹ per gram',gOptNone:'No Making (free)',
     gRateLink:'🔗 Check today\'s rate on GoodReturns →',
+    gLoadRateBtn:'🔄 Load Today\'s Rate',gCityLabel:'Your City',gDetectBtn:'📍 Detect',
+    gCityInfoBox:'ℹ️ Pick your city above, then tap "Load Today\'s Rate" — this fetches the real published rate for your city, not an estimate. If we can\'t reach it for some reason, we\'ll clearly say so and show a fallback estimate instead. If typing your own rate manually, enter the 24K/999 rate — we\'ll adjust for your purity automatically.',
+    gRateBoxWarn:'⚠️ If typing your own rate manually (without using the button above), enter the 24K/999 rate — we\'ll adjust for your purity automatically. Many sites show 22K directly instead, so double check which one you have before typing it in.',
+    gRateLoading:'⏳ Loading…',gRateRealPrefix:'✅ Real published rate for ',gRateEstFallback:'⚠️ Estimate (could not reach real rate this time)',
+    gRateLoadedAt:' — loaded ',gRateDirectSuffix:'K rate directly',gRateLoadFail:'Could not load — try again.',
+    gRateServerFail:'Could not reach the server — try again.',
+    gDetectDetecting:'Detecting your location…',gDetectNotSupported:'Location not supported on this browser.',
+    gDetectPrefix:'✅ Detected: ',gDetectNoMatch:'Could not match your city to our list — please pick manually.',
+    gDetectFail:'Could not detect — please pick your city manually.',gDetectDenied:'Location permission denied — please pick your city manually.',
     sC1:'Silver Details',sLWt:'Weight',sLPur:'Purity',sLRate:"Today's Silver Rate",sLRateH:'(₹/g for 999)',
     sC2:'Making Charges',sLMtype:'Making Type',sLMtypeS:'Flat ₹/gram is common for silver',
     sLMval:'Making Rate',sMvalHint:'Typical ₹50–200/g for silver',sLGst:'GST on Silver',sLGstS:'3% on silver + making',
@@ -731,6 +740,15 @@ const T = {
     gLOded:'తగ్గింపు %',gLOdedS:'0% = జీరో డిడక్షన్ ఆఫర్',
     gOptPct:'% (బంగారం విలువపై)',gOptPgram:'₹ గ్రాముకు',gOptNone:'మేకింగ్ ఛార్జ్ లేదు',
     gRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
+    gLoadRateBtn:'🔄 నేటి రేటు లోడ్ చేయండి',gCityLabel:'మీ నగరం',gDetectBtn:'📍 గుర్తించండి',
+    gCityInfoBox:'ℹ️ మీ నగరాన్ని ఎంచుకుని, "నేటి రేటు లోడ్ చేయండి" నొక్కండి — ఇది మీ నగరానికి నిజమైన ప్రచురిత రేటును తెస్తుంది, అంచనా కాదు. మేము దానిని పొందలేకపోతే, స్పష్టంగా చెప్పి బదులుగా అంచనా రేటు చూపిస్తాము. మీరే మాన్యువల్‌గా టైప్ చేస్తే, 24K/999 రేటు ఎంటర్ చేయండి — మీ శుద్ధతకు మేము స్వయంచాలకంగా సర్దుబాటు చేస్తాము.',
+    gRateBoxWarn:'⚠️ పైన బటన్ ఉపయోగించకుండా మాన్యువల్‌గా టైప్ చేస్తుంటే, 24K/999 రేటు ఎంటర్ చేయండి — మీ శుద్ధతకు మేము స్వయంచాలకంగా సర్దుబాటు చేస్తాము. చాలా సైట్లు 22K నేరుగా చూపిస్తాయి, కాబట్టి టైప్ చేసే ముందు మీకున్నది ఏది అని రెండుసార్లు తనిఖీ చేయండి.',
+    gRateLoading:'⏳ లోడ్ అవుతోంది…',gRateRealPrefix:'✅ నిజమైన ప్రచురిత రేటు ',gRateEstFallback:'⚠️ అంచనా (ఈసారి నిజమైన రేటు అందుబాటులో లేదు)',
+    gRateLoadedAt:' — లోడ్ చేయబడింది ',gRateDirectSuffix:'K రేటు నేరుగా',gRateLoadFail:'లోడ్ చేయలేకపోయాము — మళ్ళీ ప్రయత్నించండి.',
+    gRateServerFail:'సర్వర్‌ను చేరుకోలేకపోయాము — మళ్ళీ ప్రయత్నించండి.',
+    gDetectDetecting:'మీ లొకేషన్ గుర్తిస్తోంది…',gDetectNotSupported:'ఈ బ్రౌజర్‌లో లొకేషన్ మద్దతు లేదు.',
+    gDetectPrefix:'✅ గుర్తించబడింది: ',gDetectNoMatch:'మీ నగరాన్ని మా జాబితాతో సరిపోల్చలేకపోయాము — దయచేసి మాన్యువల్‌గా ఎంచుకోండి.',
+    gDetectFail:'గుర్తించలేకపోయాము — దయచేసి మీ నగరాన్ని మాన్యువల్‌గా ఎంచుకోండి.',gDetectDenied:'లొకేషన్ అనుమతి నిరాకరించబడింది — దయచేసి మాన్యువల్‌గా ఎంచుకోండి.',
     sC1:'వెండి వివరాలు',sLWt:'బరువు',sLPur:'స్వచ్ఛత',sLRate:'నేటి వెండి రేటు',sLRateH:'(₹/g 999 కోసం)',
     sC2:'మేకింగ్ ఛార్జీలు',sLMtype:'మేకింగ్ రకం',sLMtypeS:'వెండికి గ్రాముకు ₹ సాధారణం',
     sLMval:'మేకింగ్ రేటు',sMvalHint:'సాధారణంగా ₹50–200/g',sLGst:'వెండిపై GST',sLGstS:'వెండి + మేకింగ్‌పై 3%',
@@ -828,6 +846,15 @@ const T = {
     gLOded:'कटौती %',gLOdedS:'0% = जीरो डिडक्शन ऑफर',
     gOptPct:'% (सोने की कीमत पर)',gOptPgram:'₹ प्रति ग्राम',gOptNone:'मेकिंग शुल्क नहीं',
     gRateLink:'🔗 GoodReturns पर आज की दर देखें →',
+    gLoadRateBtn:'🔄 आज की दर लोड करें',gCityLabel:'आपका शहर',gDetectBtn:'📍 पता लगाएं',
+    gCityInfoBox:'ℹ️ ऊपर अपना शहर चुनें, फिर "आज की दर लोड करें" पर टैप करें — यह आपके शहर की असली प्रकाशित दर लाता है, अनुमान नहीं। अगर हम इसे किसी वजह से नहीं ला पाए, तो हम साफ बता देंगे और इसके बजाय अनुमानित दर दिखाएंगे। अगर मैन्युअल रूप से अपनी दर टाइप कर रहे हैं, तो 24K/999 दर डालें — हम आपकी शुद्धता के हिसाब से अपने आप समायोजित कर देंगे।',
+    gRateBoxWarn:'⚠️ अगर ऊपर बटन का उपयोग किए बिना मैन्युअल रूप से टाइप कर रहे हैं, तो 24K/999 दर डालें — हम आपकी शुद्धता के हिसाब से अपने आप समायोजित कर देंगे। कई साइटें सीधे 22K दिखाती हैं, इसलिए टाइप करने से पहले जांच लें आपके पास कौन सी है।',
+    gRateLoading:'⏳ लोड हो रहा है…',gRateRealPrefix:'✅ असली प्रकाशित दर ',gRateEstFallback:'⚠️ अनुमान (इस बार असली दर नहीं मिल पाई)',
+    gRateLoadedAt:' — लोड किया गया ',gRateDirectSuffix:'K दर सीधे',gRateLoadFail:'लोड नहीं हो पाया — फिर से कोशिश करें।',
+    gRateServerFail:'सर्वर तक नहीं पहुंच पाए — फिर से कोशिश करें।',
+    gDetectDetecting:'आपकी लोकेशन का पता लगाया जा रहा है…',gDetectNotSupported:'इस ब्राउज़र पर लोकेशन समर्थित नहीं है।',
+    gDetectPrefix:'✅ पता चला: ',gDetectNoMatch:'आपके शहर को हमारी सूची से मिला नहीं पाए — कृपया मैन्युअल रूप से चुनें।',
+    gDetectFail:'पता नहीं लगा पाए — कृपया अपना शहर मैन्युअल रूप से चुनें।',gDetectDenied:'लोकेशन अनुमति अस्वीकृत — कृपया मैन्युअल रूप से चुनें।',
     sC1:'चाँदी की जानकारी',sLWt:'वजन',sLPur:'शुद्धता',sLRate:'आज की चाँदी दर',sLRateH:'(₹/g 999 के लिए)',
     sC2:'मेकिंग शुल्क',sLMtype:'मेकिंग का प्रकार',sLMtypeS:'चाँदी के लिए ₹/ग्राम सामान्य है',
     sLMval:'मेकिंग दर',sMvalHint:'सामान्यतः ₹50–200/g',sLGst:'चाँदी पर GST',sLGstS:'चाँदी + मेकिंग पर 3%',
@@ -931,6 +958,8 @@ function applyLang() {
   s('g-l-owt',t.gLOwt);s('g-l-owt-s',t.gLOwtS);s('g-l-opur',t.gLOpur);s('g-l-oded',t.gLOded);s('g-l-oded-s',t.gLOdedS);
   el('g-opt-pct').textContent=t.gOptPct;el('g-opt-pgram').textContent=t.gOptPgram;el('g-opt-none').textContent=t.gOptNone;
   s('g-rate-link',t.gRateLink);
+  s('loadLiveRateBtn',t.gLoadRateBtn);s('g-city-label',t.gCityLabel);s('detectCityBtn',t.gDetectBtn);
+  s('g-city-info-box',t.gCityInfoBox);
   // silver
   s('s-c1',t.sC1);s('s-l-wt',t.sLWt);s('s-l-pur',t.sLPur);s('s-l-rate',t.sLRate);s('s-l-rate-h',t.sLRateH);
   s('s-c2',t.sC2);s('s-l-mtype',t.sLMtype);s('s-l-mtype-s',t.sLMtypeS);
@@ -998,7 +1027,7 @@ function calculate(){
   else calcDiamond();
 }
 
-function calcGold(){
+function calcGold(silent){
   const t=T[lang];
   const wt=parseFloat(el('g-weight').value)||0;
   const pur=parseInt(el('g-purity').value);
@@ -1086,7 +1115,7 @@ function calcGold(){
     stoneOn,stoneWt,stoneVal,stoneOvercharge};
   _lastCtx=ctx;
   buildNego(ctx);
-  showResults();
+  showResults(silent);
   recordCalc('gold');
 }
 
@@ -1184,9 +1213,9 @@ function calcDiamond(){
   recordCalc('diamond');
 }
 
-function showResults(){
+function showResults(silent){
   el('results').classList.add('visible');
-  el('results').scrollIntoView({behavior:'smooth'});
+  if (!silent) el('results').scrollIntoView({behavior:'smooth'});
 }
 
 // ══════════════════════════════════════════
@@ -1356,12 +1385,13 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function detectMyCity(){
+  var t = T[lang];
   var statusEl = document.getElementById('city-detect-status');
   var btn = document.getElementById('detectCityBtn');
-  if (!navigator.geolocation) { if (statusEl) statusEl.textContent = 'Location not supported on this browser.'; return; }
+  if (!navigator.geolocation) { if (statusEl) statusEl.textContent = t.gDetectNotSupported; return; }
 
   if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
-  if (statusEl) statusEl.textContent = 'Detecting your location…';
+  if (statusEl) statusEl.textContent = t.gDetectDetecting;
 
   navigator.geolocation.getCurrentPosition(function(pos){
     var lat = pos.coords.latitude, lon = pos.coords.longitude;
@@ -1369,41 +1399,42 @@ function detectMyCity(){
     fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10')
       .then(function(r){ return r.json(); })
       .then(function(data){
-        if (btn) { btn.disabled = false; btn.textContent = '📍 Detect'; }
+        if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
         var addr = data.address || {};
         var found = (addr.city || addr.town || addr.state_district || addr.county || '').toLowerCase();
         var matchedKey = Object.keys(CITY_GOODRETURNS_SLUGS).find(function(k){ return found.indexOf(k) !== -1; });
         if (matchedKey) {
           document.getElementById('citySelect').value = matchedKey;
           updateCityLink();
-          if (statusEl) statusEl.textContent = '✅ Detected: ' + matchedKey.charAt(0).toUpperCase() + matchedKey.slice(1);
+          if (statusEl) statusEl.textContent = t.gDetectPrefix + matchedKey.charAt(0).toUpperCase() + matchedKey.slice(1);
         } else {
-          if (statusEl) statusEl.textContent = 'Could not match your city to our list — please pick manually.';
+          if (statusEl) statusEl.textContent = t.gDetectNoMatch;
         }
       })
       .catch(function(){
-        if (btn) { btn.disabled = false; btn.textContent = '📍 Detect'; }
-        if (statusEl) statusEl.textContent = 'Could not detect — please pick your city manually.';
+        if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
+        if (statusEl) statusEl.textContent = t.gDetectFail;
       });
   }, function(){
-    if (btn) { btn.disabled = false; btn.textContent = '📍 Detect'; }
-    if (statusEl) statusEl.textContent = 'Location permission denied — please pick your city manually.';
+    if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
+    if (statusEl) statusEl.textContent = t.gDetectDenied;
   }, {timeout: 10000});
 }
 
 function loadLiveGoldRate(){
+  var t = T[lang];
   var btn = document.getElementById('loadLiveRateBtn');
   var stampEl = document.getElementById('g-rate-updated');
   var sStampEl = document.getElementById('s-rate-updated');
   var citySel = document.getElementById('citySelect');
   var city = citySel ? citySel.value : 'hyderabad';
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Loading…'; }
+  if (btn) { btn.disabled = true; btn.textContent = t.gRateLoading; }
 
   fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate?city=' + encodeURIComponent(city))
     .then(function(r){ return r.json(); })
     .then(function(data){
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Load Today\'s Rate'; }
-      if (!data.ok) { if (stampEl) stampEl.textContent = 'Could not load — try again.'; return; }
+      if (btn) { btn.disabled = false; btn.textContent = t.gLoadRateBtn; }
+      if (!data.ok) { if (stampEl) stampEl.textContent = t.gRateLoadFail; return; }
 
       // Keep the full purity map available to calcGold() so it can use
       // exact per-purity rates directly instead of a 24K conversion.
@@ -1418,17 +1449,17 @@ function loadLiveGoldRate(){
 
       var d = new Date(data.fetched_at);
       var sourceTag = data.source === 'goodreturns_real'
-        ? ('✅ Real published rate for ' + (data.city || city).charAt(0).toUpperCase() + (data.city || city).slice(1))
-        : '⚠️ Estimate (could not reach real rate this time)';
-      var stamp = sourceTag + ' — loaded ' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST, your ' + pur + 'K rate directly';
+        ? (t.gRateRealPrefix + (data.city || city).charAt(0).toUpperCase() + (data.city || city).slice(1))
+        : t.gRateEstFallback;
+      var stamp = sourceTag + t.gRateLoadedAt + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST, ' + pur + t.gRateDirectSuffix;
       if (stampEl) stampEl.textContent = stamp;
-      if (sStampEl) sStampEl.textContent = '✅ Loaded just now';
+      if (sStampEl) sStampEl.textContent = '✅';
 
-      try { if (typeof calcGold === 'function') calcGold(); } catch(e) {}
+      try { if (typeof calcGold === 'function') calcGold(true); } catch(e) {}
     })
     .catch(function(){
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Load Today\'s Rate'; }
-      if (stampEl) stampEl.textContent = 'Could not reach the server — try again.';
+      if (btn) { btn.disabled = false; btn.textContent = t.gLoadRateBtn; }
+      if (stampEl) stampEl.textContent = t.gRateServerFail;
     });
 }
 </script>
