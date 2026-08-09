@@ -578,10 +578,6 @@ gtag('config', 'G-TJXHVW6XCL');
 <!-- STATS -->
 <div class="stats-bar" onclick="document.getElementById('stats-detail').style.display=document.getElementById('stats-detail').style.display==='none'?'block':'none'">
   <div class="stats-eye" id="stats-eye">📊 Usage Stats</div>
-  <div class="stats-global">
-    <div><div class="sg-n" id="sg-visits">⏳</div><div class="sg-l" id="sg-lbl">Total Visits</div></div>
-    <div class="sg-note" id="sg-note">🌐 All users · live</div>
-  </div>
   <div class="stats-personal">
     <div class="sp-item"><div class="sp-n" id="sp-calcs">—</div><div class="sp-l" id="sp-calcs-l">Your Calcs</div></div>
     <div class="sp-item"><div class="sp-n" id="sp-streak">—</div><div class="sp-l" id="sp-streak-l">Day Streak</div></div>
@@ -977,7 +973,7 @@ function applyLang() {
   s('expl-hdr-txt',t.exHdr);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
   s('nego-eye',t.negoEye);s('nego-ttl',t.negoTtl);s('nego-score-lbl',t.negoScoreLbl);
   s('nego-sav-lbl',t.negoSavLbl);s('nego-sav-sub',t.negoSavSub);s('nego-timing-eye',t.negoTimingEye);
-  s('stats-eye',t.statsEye);s('sg-lbl',t.sgLbl);s('sg-note',t.sgNote);
+  s('stats-eye',t.statsEye);
   s('sp-calcs-l',t.spCalcsL);s('sp-streak-l',t.spStreakL);s('sp-last-l',t.spLastL);s('sp-note',t.spNote);
   // rebuild explainer
   buildExplainer();
@@ -1349,19 +1345,10 @@ function renderStats(){
     <div class="mode-chip"><div class="mc-n">${v}</div><div class="mc-l">${modeNames[k]||k}</div></div>`).join('');
 }
 
-async function fetchGlobalVisits(){
-  try{
-    const r=await fetch('https://api.counterapi.dev/v1/lawsticker/jewellery-suite-visits/up');
-    const d=await r.json();
-    if(el('sg-visits')) el('sg-visits').textContent=(d.count||d.value||0).toLocaleString('en-IN');
-  }catch(e){if(el('sg-visits'))el('sg-visits').textContent='—';}
-}
-
 // INIT
 recordVisit();
 applyLang();
 buildExplainer();
-fetchGlobalVisits();
 </script>
 <script>
 /* Click-triggered live rate load — fetches fresh every time, no daily
