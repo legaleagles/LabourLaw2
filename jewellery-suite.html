@@ -305,7 +305,7 @@ gtag('config', 'G-TJXHVW6XCL');
 
         <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
           border-radius:7px;padding:7px 9px;">
-          ℹ️ Our "Load Today's Rate" gives a national reference rate — gold prices can vary a little city to city due to local bullion association rates. Pick your city above and use the link for the exact local number if you want precision down to the rupee. If typing your own rate manually, enter the 24K/999 rate — we'll adjust for your purity automatically.
+          ℹ️ Pick your city above, then tap "Load Today's Rate" — this fetches the real published rate for your city, not an estimate. If we can't reach it for some reason, we'll clearly say so and show a fallback estimate instead. If typing your own rate manually, enter the 24K/999 rate — we'll adjust for your purity automatically.
         </div>
       </div>
     </div>
@@ -1395,9 +1395,11 @@ function loadLiveGoldRate(){
   var btn = document.getElementById('loadLiveRateBtn');
   var stampEl = document.getElementById('g-rate-updated');
   var sStampEl = document.getElementById('s-rate-updated');
+  var citySel = document.getElementById('citySelect');
+  var city = citySel ? citySel.value : 'hyderabad';
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Loading…'; }
 
-  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate')
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate?city=' + encodeURIComponent(city))
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (btn) { btn.disabled = false; btn.textContent = '🔄 Load Today\'s Rate'; }
@@ -1415,7 +1417,10 @@ function loadLiveGoldRate(){
       if (sEl) sEl.value = data.silver_999_per_gram_inr;
 
       var d = new Date(data.fetched_at);
-      var stamp = '✅ Loaded just now (' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST) — this is your ' + pur + 'K rate directly';
+      var sourceTag = data.source === 'goodreturns_real'
+        ? ('✅ Real published rate for ' + (data.city || city).charAt(0).toUpperCase() + (data.city || city).slice(1))
+        : '⚠️ Estimate (could not reach real rate this time)';
+      var stamp = sourceTag + ' — loaded ' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST, your ' + pur + 'K rate directly';
       if (stampEl) stampEl.textContent = stamp;
       if (sStampEl) sStampEl.textContent = '✅ Loaded just now';
 
