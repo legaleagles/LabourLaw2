@@ -130,7 +130,6 @@ gtag('config', 'G-TJXHVW6XCL');
   <p class="hero-sub" id="h-sub">Calculators that show you every rupee — with negotiation tips backed by real data.</p>
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-num" id="hs-tools">25</div><div class="hstat-lbl" id="hsl-tools">Calculators</div></div>
-    <div class="hstat"><div class="hstat-num" id="hs-visits">⏳</div><div class="hstat-lbl" id="hsl-visits">Total Visits</div></div>
     <div class="hstat"><div class="hstat-num">3</div><div class="hstat-lbl" id="hsl-langs">Languages</div></div>
   </div>
 </div>
@@ -434,7 +433,7 @@ const h=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v};
 function applyLang(){
   const t=T[lang];
   s('h-eyebrow',t.hEyebrow); h('h-title',t.hTitle); s('h-sub',t.hSub);
-  s('hsl-tools',t.hsTools); s('hsl-visits',t.hsVisits); s('hsl-langs',t.hsLangs);
+  s('hsl-tools',t.hsTools); s('hsl-langs',t.hsLangs);
   s('ft-all',t.ftAll); s('ft-jwl',t.ftJwl); s('ft-prop',t.ftProp);
   s('ft-food',t.ftFood); s('ft-util',t.ftUtil); s('ft-law',t.ftLaw);
   s('gs-jwl',t.gsJwl); s('gs-prop',t.gsProp); s('gs-food',t.gsFood);
@@ -469,20 +468,7 @@ function filterCat(cat){
   });
 }
 
-async function fetchVisits(){
-  try{
-    const r=await fetch('https://api.counterapi.dev/v1/lawsticker/calculators-visits/up');
-    const d=await r.json();
-    const el=document.getElementById('hs-visits');
-    if(el)el.textContent=(d.count||d.value||0).toLocaleString('en-IN');
-  }catch(e){
-    const el=document.getElementById('hs-visits');
-    if(el)el.textContent='—';
-  }
-}
-
 applyLang();
-fetchVisits();
 </script>
 <script>
 /* Language persistence — remembers choice across all pages */
