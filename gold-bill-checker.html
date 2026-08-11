@@ -63,6 +63,7 @@ font-size:15px;padding:15px;border:none;border-radius:14px;cursor:pointer;margin
 .check-card.ok{border-left-color:var(--green);background:#ECFDF5;}
 .check-card.warn{border-left-color:var(--amber);background:#FFFBEB;}
 .check-card.info{border-left-color:#0369A1;background:#F0F9FF;}
+.check-card.caution{border-left-color:#DC2626;background:#FEF2F2;}
 .check-icon{font-size:16px;margin-right:6px;}
 .check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
 .check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
@@ -301,7 +302,7 @@ function renderResults(ex, checks, stoneTable, mcRange){
     out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
   }
   checks.forEach(function(c){
-    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : 'ℹ️');
+    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
     out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + esc(c.detail) + '</div></div>';
   });
 
