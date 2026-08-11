@@ -70,6 +70,18 @@ font-size:15px;padding:15px;border:none;border-radius:14px;cursor:pointer;margin
 .stones-list{margin-top:14px;}
 .stone-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dashed #F0F0F0;color:#4B5563;}
 
+.stone-table-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:16px;padding:16px;margin-bottom:16px;}
+.stone-table-hint{font-size:11px;color:var(--muted);margin:4px 0 12px;}
+.stone-compare-row{display:flex;flex-direction:column;gap:5px;padding:10px 0;border-bottom:1px solid #F3F4F6;}
+.stone-compare-row:last-child{border-bottom:none;}
+.stone-compare-name{font-weight:800;font-size:13px;color:var(--ink);}
+.stone-compare-nums{display:flex;justify-content:space-between;font-size:12px;color:#4B5563;}
+.stone-you{font-weight:700;}
+.stone-market{color:var(--muted);}
+.stone-badge{align-self:flex-start;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:8px;}
+.stone-badge-ok{background:#ECFDF5;color:var(--green);}
+.stone-badge-high{background:#FFFBEB;color:var(--amber);}
+.stone-badge-low{background:#F0F9FF;color:#0369A1;}
 .disclaimer-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:13px 15px;margin-top:20px;font-size:11.5px;color:#991B1B;line-height:1.65;}
 .trust-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:#92400E;line-height:1.6;text-align:center;}
 </style>
@@ -192,7 +204,7 @@ function checkBill(){
             '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
           return;
         }
-        renderResults(data.extracted, data.checks);
+        renderResults(data.extracted, data.checks, data.stone_price_table);
       })
       .catch(function(){
         document.getElementById('resultArea').innerHTML =
@@ -202,7 +214,7 @@ function checkBill(){
   reader.readAsDataURL(selectedFile);
 }
 
-function renderResults(ex, checks){
+function renderResults(ex, checks, stoneTable){
   var out = '';
 
   out += '<div class="summary-card">';
@@ -231,6 +243,26 @@ function renderResults(ex, checks){
     var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : 'ℹ️');
     out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + esc(c.detail) + '</div></div>';
   });
+
+  if (stoneTable && stoneTable.length) {
+    out += '<div class="stone-table-card">';
+    out += '<div class="check-title">💎 Stone Pricing — You vs. Typical Market</div>';
+    out += '<div class="stone-table-hint">Rough guide only — real pricing depends on quality you can\'t judge from a bill.</div>';
+    stoneTable.forEach(function(s){
+      var billRate = s.bill_rate_per_ct || 0;
+      var lo = s.market_low_per_ct || 0;
+      var hi = s.market_high_per_ct || 0;
+      var withinRange = billRate >= lo && billRate <= hi;
+      var badgeClass = withinRange ? 'stone-badge-ok' : (billRate > hi ? 'stone-badge-high' : 'stone-badge-low');
+      var badgeText = withinRange ? 'Within range' : (billRate > hi ? 'Above typical' : 'Below typical');
+      out += '<div class="stone-compare-row">' +
+        '<div class="stone-compare-name">' + esc(s.stone_type) + '</div>' +
+        '<div class="stone-compare-nums"><span class="stone-you">You: ' + fmtRs(billRate) + '/ct</span><span class="stone-market">Market: ' + fmtRs(lo) + '–' + fmtRs(hi) + '/ct</span></div>' +
+        '<div class="stone-badge ' + badgeClass + '">' + badgeText + '</div>' +
+      '</div>';
+    });
+    out += '</div>';
+  }
 
   out += '<div class="disclaimer-box">⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.</div>';
 
