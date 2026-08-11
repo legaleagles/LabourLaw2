@@ -64,6 +64,19 @@ font-size:15px;padding:15px;border:none;border-radius:14px;cursor:pointer;margin
 .check-card.warn{border-left-color:var(--amber);background:#FFFBEB;}
 .check-card.info{border-left-color:#0369A1;background:#F0F9FF;}
 .check-card.caution{border-left-color:#DC2626;background:#FEF2F2;}
+.rate-banner{background:linear-gradient(135deg,#FFF8E1,#FFFBEB);border:1.5px solid #FDE68A;border-radius:18px;padding:16px 18px;margin-bottom:16px;text-align:center;}
+.rate-banner-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:6px;}
+.rate-banner-22{font-family:'Playfair Display',serif;font-weight:900;font-size:30px;color:#7C5A0B;}
+.rate-banner-22 small{font-size:14px;font-weight:700;color:var(--muted);}
+.rate-banner-24{font-size:13px;color:var(--muted);margin-top:4px;}
+.stone-slider-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 18px;margin-bottom:16px;}
+.stone-slider-row{margin-bottom:18px;}
+.stone-slider-row:last-child{margin-bottom:0;}
+.stone-slider-name{font-size:13px;font-weight:800;margin-bottom:6px;}
+.stone-slider-live{font-size:12.5px;color:var(--muted);margin-top:4px;}
+input.stone-slider{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:#F3F4F6;}
+input.stone-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);cursor:pointer;}
+input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);border:none;cursor:pointer;}
 .check-icon{font-size:16px;margin-right:6px;}
 .check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
 .check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
@@ -229,7 +242,7 @@ function checkBill(){
             '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
           return;
         }
-        renderResults(data.extracted, data.checks, data.stone_price_table, data.making_charge_range);
+        renderResults(data.extracted, data.checks, data.stone_price_table, data.making_charge_range, data.today_gold_rate);
       })
       .catch(function(){
         if (btn) { btn.disabled = false; btn.textContent = '✅ Check This Bill'; }
@@ -240,8 +253,16 @@ function checkBill(){
   reader.readAsDataURL(selectedFile);
 }
 
-function renderResults(ex, checks, stoneTable, mcRange){
+function renderResults(ex, checks, stoneTable, mcRange, todayRate){
   var out = '';
+
+  if (todayRate && todayRate.rate_22k) {
+    out += '<div class="rate-banner">';
+    out += '<div class="rate-banner-label">📍 Today\'s Gold Rate — ' + esc((todayRate.city||'').replace(/\b\w/g, function(c){return c.toUpperCase();})) + '</div>';
+    out += '<div class="rate-banner-22">' + fmtRs(todayRate.rate_22k) + '<small>/g · 22K</small></div>';
+    if (todayRate.rate_24k) out += '<div class="rate-banner-24">24K: ' + fmtRs(todayRate.rate_24k) + '/g</div>';
+    out += '</div>';
+  }
 
   out += '<div class="summary-card">';
   out += '<div class="summary-title">📋 ' + esc(ex.item_description || 'Your Item') + (ex.item_purity_karat ? ' (' + esc(ex.item_purity_karat) + ')' : '') + '</div>';
@@ -297,6 +318,41 @@ function renderResults(ex, checks, stoneTable, mcRange){
     out += '</div>';
   }
 
+  // Interactive Stone Cost sliders — same spirit as the making-charge slider:
+  // let the person literally drag each stone's rate within the market range
+  // and watch the bill total move, instead of just reading a static badge.
+  if (stoneTable && stoneTable.length && ex.gold_value_amount) {
+    window.__stoneState = {
+      goldValue: ex.gold_value_amount || 0,
+      makingAmt: (ex.gold_value_amount || 0) * ((mcRange ? mcRange.bill_va_pct : (ex.va_percent || 0)) / 100),
+      gstPct: ex.gst_percent || 3,
+      stones: stoneTable.map(function(s){
+        return {
+          name: s.stone_type,
+          billAmt: (s.bill_rate_per_ct || 0) * (s.weight_ct || (s.bill_rate_per_ct ? (s.amount||0)/s.bill_rate_per_ct : 0)),
+          weightCt: s.weight_ct || (s.bill_rate_per_ct ? (s.amount||0) / s.bill_rate_per_ct : 0),
+          lo: s.market_low_per_ct || 0,
+          hi: s.market_high_per_ct || 0,
+          cur: s.bill_rate_per_ct || 0,
+        };
+      })
+    };
+    out += '<div class="stone-slider-card">';
+    out += '<div class="slider-card-title">🎚️ Stone Cost — Try Market Rates</div>';
+    out += '<div class="slider-card-note">Drag each stone to a rate within its typical market range and see the total move.</div>';
+    window.__stoneState.stones.forEach(function(s, i){
+      out += '<div class="stone-slider-row">';
+      out += '<div class="stone-slider-name">' + esc(s.name) + ' <span style="color:var(--muted);font-weight:600;">(' + (s.weightCt||0).toFixed(2) + ' ct)</span></div>';
+      out += '<input type="range" class="stone-slider" id="stoneSlider' + i + '" min="' + s.lo + '" max="' + Math.max(s.hi, s.cur) + '" step="10" value="' + s.cur + '" oninput="updateStoneSlider(' + i + ', this.value)">';
+      out += '<div class="stone-slider-live" id="stoneSliderLive' + i + '">' + fmtRs(s.cur) + '/ct · ' + fmtRs(s.billAmt) + ' total</div>';
+      out += '</div>';
+    });
+    out += '<div class="slider-result-row highlight" style="margin-top:6px;"><span class="slider-result-label">Total at these rates</span><span class="slider-result-amt" id="stoneSliderTotal">—</span></div>';
+    out += '<div class="slider-result-row"><span class="slider-result-label">What you\'re billed</span><span class="slider-result-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+    out += '<div id="stoneSliderDiff"></div>';
+    out += '</div>';
+  }
+
   out += '<div class="section-hd">🔎 Your Negotiation Report Card</div>';
   if (!checks.length) {
     out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
@@ -330,6 +386,7 @@ function renderResults(ex, checks, stoneTable, mcRange){
 
   document.getElementById('resultArea').innerHTML = out;
   if (mcRange && ex.gold_value_amount) { updateSliderResult(window.__mcState.billVA); }
+  if (stoneTable && stoneTable.length && ex.gold_value_amount) { updateStoneSliderTotal(); }
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -356,6 +413,41 @@ function updateSliderResult(vaPct){
       diffEl.innerHTML = '<div class="slider-diff save">💰 At ' + vaPct + '%, you\'d pay ' + fmtRs(diff) + ' less than this bill</div>';
     } else {
       diffEl.innerHTML = '<div class="slider-diff extra">At ' + vaPct + '%, this would cost ' + fmtRs(Math.abs(diff)) + ' more than this bill</div>';
+    }
+  }
+}
+
+function updateStoneSlider(idx, rate){
+  var st = window.__stoneState;
+  if (!st) return;
+  rate = parseFloat(rate);
+  var s = st.stones[idx];
+  s.cur = rate;
+  var amt = rate * (s.weightCt || 0);
+  document.getElementById('stoneSliderLive' + idx).textContent = fmtRs(rate) + '/ct · ' + fmtRs(amt) + ' total';
+  updateStoneSliderTotal();
+}
+
+function updateStoneSliderTotal(){
+  var st = window.__stoneState;
+  if (!st) return;
+  var stoneTotal = st.stones.reduce(function(sum, s){ return sum + s.cur * (s.weightCt || 0); }, 0);
+  var preTax = st.goldValue + st.makingAmt + stoneTotal;
+  var gstAmt = preTax * st.gstPct / 100;
+  var total = preTax + gstAmt;
+  var totalEl = document.getElementById('stoneSliderTotal');
+  if (totalEl) totalEl.textContent = fmtRs(total);
+
+  var billTotal = document.querySelector('.summary-final-amt') ? parseFloat(document.querySelector('.summary-final-amt').textContent.replace(/[₹,]/g,'')) : null;
+  var diffEl = document.getElementById('stoneSliderDiff');
+  if (billTotal && diffEl) {
+    var diff = billTotal - total;
+    if (Math.abs(diff) < 100) {
+      diffEl.innerHTML = '';
+    } else if (diff > 0) {
+      diffEl.innerHTML = '<div class="slider-diff save">💰 At these rates, you\'d pay ' + fmtRs(diff) + ' less than this bill</div>';
+    } else {
+      diffEl.innerHTML = '<div class="slider-diff extra">At these rates, this would cost ' + fmtRs(Math.abs(diff)) + ' more than this bill</div>';
     }
   }
 }
