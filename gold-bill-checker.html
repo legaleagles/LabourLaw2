@@ -329,8 +329,8 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
       stones: stoneTable.map(function(s){
         return {
           name: s.stone_type,
-          billAmt: (s.bill_rate_per_ct || 0) * (s.weight_ct || (s.bill_rate_per_ct ? (s.amount||0)/s.bill_rate_per_ct : 0)),
-          weightCt: s.weight_ct || (s.bill_rate_per_ct ? (s.amount||0) / s.bill_rate_per_ct : 0),
+          billAmt: s.bill_amount || 0,
+          weightCt: s.weight_ct || 0,
           lo: s.market_low_per_ct || 0,
           hi: s.market_high_per_ct || 0,
           cur: s.bill_rate_per_ct || 0,
