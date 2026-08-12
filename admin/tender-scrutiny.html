@@ -7,6 +7,8 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--navy:#0D1117;--ink:#111827;--cream:#FEFCF5;--muted:#6B7280;--gold:#C9A227;--gold-l:#F5D76E;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -93,11 +95,7 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 .export-btn{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:12.5px;border:none;cursor:pointer;color:#fff;}
 .export-btn.pdf{background:linear-gradient(135deg,#DC2626,#991B1B);}
 .export-btn.word{background:linear-gradient(135deg,#1D4ED8,#1E40AF);}
-
-@media print{
-  nav,.upload-card,.export-row,#historyArea,.login-box,.section-hd + .empty{display:none !important;}
-  body{background:#fff;}
-}
+.export-btn:disabled{opacity:.6;}
 
 .hist-card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
 .hist-name{font-weight:800;font-size:13px;}
@@ -227,6 +225,12 @@ var lastResult = null;
 
 function renderResult(result){
   lastResult = result;
+
+  var nameInput = document.getElementById('tenderName');
+  if (!nameInput.value.trim() && result.suggested_title) {
+    nameInput.value = result.suggested_title;
+  }
+
   var out = '<div class="summary-card"><div class="summary-title">📋 Tender Summary</div><div class="summary-text">' + hl(result.tender_summary) + '</div></div>';
 
   if (result.plain_language_brief) {
@@ -297,20 +301,56 @@ function renderResult(result){
 
   out += '<div class="assessment-card"><div class="assessment-title">Overall Assessment</div><div class="assessment-text">' + hl(result.overall_assessment) + '</div></div>';
 
-  out += '<div class="export-row"><button class="export-btn pdf" onclick="exportPDF()">⬇️ Save as PDF</button><button class="export-btn word" onclick="exportWord()">⬇️ Save as Word</button></div>';
+  out += '<div class="export-row"><button class="export-btn pdf" id="pdfBtn" onclick="exportPDF()">⬇️ Download PDF</button><button class="export-btn word" onclick="exportWord()">⬇️ Download Word</button></div>';
 
   document.getElementById('resultArea').innerHTML = out;
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+function getReportFilename(){
+  var name = (document.getElementById('tenderName').value.trim() || (lastResult && lastResult.suggested_title) || 'Tender_Analysis');
+  return name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '');
+}
+
 function exportPDF(){
-  window.print();
+  var btn = document.getElementById('pdfBtn');
+  var originalText = btn.textContent;
+  btn.textContent = '⏳ Preparing PDF…';
+  btn.disabled = true;
+
+  var el = document.getElementById('resultArea');
+  html2canvas(el, {scale: 2, backgroundColor: '#FEFCF5', useCORS: true}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    pdf.save(getReportFilename() + '.pdf');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }).catch(function(){
+    btn.textContent = '❌ Failed — try again';
+    btn.disabled = false;
+    setTimeout(function(){ btn.textContent = originalText; }, 2500);
+  });
 }
 
 function exportWord(){
   if (!lastResult) return;
   var reportHtml = document.getElementById('resultArea').innerHTML;
-  var name = (document.getElementById('tenderName').value.trim() || 'Tender Analysis');
+  var name = getReportFilename();
   var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
     '<head><meta charset="utf-8"><title>' + esc(name) + '</title></head>' +
     '<body style="font-family:Calibri,Arial,sans-serif;">' +
@@ -320,7 +360,7 @@ function exportWord(){
   var blob = new Blob(['\ufeff', doc], {type: 'application/msword'});
   var link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = name.replace(/[^a-z0-9]/gi, '_') + '_analysis.doc';
+  link.download = name + '.doc';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
