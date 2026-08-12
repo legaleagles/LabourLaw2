@@ -190,6 +190,10 @@ nav{background:var(--maroon);padding:12px 18px;display:flex;align-items:center;j
 
 footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
 footer a{color:var(--gold-deep);text-decoration:none}
+/* Gold now uses the embedded AI Bill Checker, not the manual calculator -
+   hide the shared calc button/results/stats panel on initial load (before
+   any tab-switch JS has run) whenever Gold is the active metal. */
+body[data-metal="gold"] #calc-btn,body[data-metal="gold"] #results,body[data-metal="gold"] .stats-bar{display:none}
 
 #results{display:none}
 #results.visible{display:block}
@@ -245,155 +249,9 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <!-- ══ GOLD FORM ══ -->
   <div id="form-gold">
-    <a href="gold-bill-checker.html" id="billCheckerCta" style="display:block;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid var(--gold);border-radius:14px;padding:14px 16px;margin-bottom:16px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="font-size:26px;">📸</div>
-        <div style="flex:1;">
-          <div id="billCta1" style="font-weight:800;font-size:13.5px;color:var(--gold-deep);">Already have a shop's bill or estimate?</div>
-          <div id="billCta2" style="font-size:11.5px;color:var(--ink-soft);margin-top:2px;">Photograph it — AI checks the rate, making charge & math, in your language →</div>
-        </div>
-      </div>
-    </a>
-    <div class="card">
-      <div class="card-title" id="g-c1">Gold Details</div>
-      <div class="row2">
-        <div class="field">
-          <label id="g-l-wt">Weight <span class="hint">(grams)</span></label>
-          <div class="pfx"><span class="p">g</span><input type="number" id="g-weight" value="10" min="0.1" step="0.1"></div>
-        </div>
-        <div class="field">
-          <label id="g-l-pur">Purity</label>
-          <select id="g-purity">
-            <option value="24">24K — 99.9%</option>
-            <option value="22" selected>22K — 91.6%</option>
-            <option value="18">18K — 75%</option>
-            <option value="14">14K — 58.5%</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label id="g-l-rate">Gold Rate <span class="hint" id="g-l-rate-h">— tap "Load Today's Rate" below for the exact rate at your purity, or type your own 24K rate manually</span></label>
-        <div class="pfx"><span class="p">₹</span><input type="number" id="g-rate" value="9500"></div>
-        <button type="button" id="loadLiveRateBtn" onclick="loadLiveGoldRate()" style="width:100%;margin-top:8px;padding:10px;
-          border-radius:9px;border:1.5px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FEF3C7);
-          color:#92400E;font-weight:800;font-size:12.5px;cursor:pointer;">🔄 Load Today's Rate</button>
-        <div style="font-size:10px;color:var(--muted);margin-top:4px" id="g-rate-updated"></div>
-
-        <div style="margin-top:10px;">
-          <label id="g-city-label" style="font-size:11.5px;font-weight:700;color:var(--gold-deep);display:block;margin-bottom:5px;">Your City</label>
-          <div style="display:flex;gap:6px;">
-            <select id="citySelect" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--gold);background:#FFFBEB;font-size:13px;">
-              <option value="hyderabad">Hyderabad</option>
-              <option value="vijayawada">Vijayawada</option>
-              <option value="visakhapatnam">Visakhapatnam</option>
-              <option value="chennai">Chennai</option>
-              <option value="bangalore">Bangalore</option>
-              <option value="mumbai">Mumbai</option>
-              <option value="delhi">Delhi</option>
-              <option value="kolkata">Kolkata</option>
-              <option value="pune">Pune</option>
-              <option value="ahmedabad">Ahmedabad</option>
-              <option value="jaipur">Jaipur</option>
-              <option value="lucknow">Lucknow</option>
-              <option value="kochi">Kochi</option>
-              <option value="coimbatore">Coimbatore</option>
-              <option value="nagpur">Nagpur</option>
-              <option value="surat">Surat</option>
-              <option value="patna">Patna</option>
-              <option value="bhopal">Bhopal</option>
-              <option value="chandigarh">Chandigarh</option>
-              <option value="guwahati">Guwahati</option>
-            </select>
-            <button type="button" id="detectCityBtn" onclick="detectMyCity()" style="padding:9px 12px;border-radius:8px;
-              border:1.5px solid var(--gold);background:#fff;color:#92400E;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;">📍 Detect</button>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px" id="city-detect-status"></div>
-        </div>
-
-        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/hyderabad.html" target="_blank" id="g-rate-link" style="margin-top:8px;display:block;">🔗 Check your city's exact rate on GoodReturns →</a>
-
-        <div style="margin-top:6px;font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;
-          border-radius:7px;padding:7px 9px;" id="g-city-info-box">
-          ℹ️ Pick your city above, then tap "Load Today's Rate" — this fetches the real published rate for your city, not an estimate. If we can't reach it for some reason, we'll clearly say so and show a fallback estimate instead. If typing your own rate manually, enter the 24K/999 rate — we'll adjust for your purity automatically.
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="g-c2">Making / VA Charges</div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-mtype">Making Type <span class="sub" id="g-l-mtype-s">Flat % or ₹ per gram</span></div>
-        <select id="g-mtype" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
-          <option value="pct" id="g-opt-pct">% of gold value</option>
-          <option value="pgram" id="g-opt-pgram">₹ per gram</option>
-          <option value="none" id="g-opt-none">No Making (free)</option>
-        </select>
-      </div>
-      <div class="toggle-row" id="g-mval-row">
-        <div class="tl" id="g-l-mval">Making Rate <span class="sub" id="g-mval-hint">e.g. 6.95% from ad</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="g-mval" value="6.95" step="0.01"><span class="unit" id="g-munit">%</span></div>
-      </div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-waste">Wastage <span class="sub" id="g-l-waste-s">Some shops add 2–5%</span></div>
-        <label class="tog"><input type="checkbox" id="g-waste-tog" onchange="document.getElementById('g-waste-row').style.display=this.checked?'flex':'none'"><span class="tog-sl"></span></label>
-      </div>
-      <div class="toggle-row" id="g-waste-row" style="display:none">
-        <div class="tl" id="g-l-wastep">Wastage % <span class="sub" id="g-l-wastep-s">On gold value</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="g-wastep" value="3" step="0.1"><span class="unit" style="color:var(--rose)">%</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="g-c2b">Stones / Gemstones</div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-stone">Does this piece have stones set in it? <span class="sub" id="g-l-stone-s">Diamonds, ruby, emerald, kundan, etc.</span></div>
-        <label class="tog"><input type="checkbox" id="g-stone-tog" onchange="document.getElementById('g-stone-rows').style.display=this.checked?'block':'none'"><span class="tog-sl"></span></label>
-      </div>
-      <div id="g-stone-rows" style="display:none">
-        <div class="toggle-row">
-          <div class="tl" id="g-l-stonewt">Stone weight (grams) <span class="sub" id="g-l-stonewt-s">Weighed separately from gold</span></div>
-          <div class="inline-in"><input type="number" class="mini" id="g-stonewt" value="0.5" step="0.1"><span class="unit">g</span></div>
-        </div>
-        <div class="toggle-row">
-          <div class="tl" id="g-l-stoneval">Stone value billed (₹) <span class="sub" id="g-l-stoneval-s">What the shop is charging for the stone itself</span></div>
-          <div class="inline-in"><input type="number" class="mini" id="g-stoneval" value="0" step="500"><span class="unit">₹</span></div>
-        </div>
-        <div class="toggle-row">
-          <div class="tl" id="g-l-stoneinc">Weight above includes the stones? <span class="sub" id="g-l-stoneinc-s">Most bills weigh the whole piece together</span></div>
-          <label class="tog"><input type="checkbox" id="g-stoneinc-tog" checked><span class="tog-sl"></span></label>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="g-c3">Taxes & Exchange</div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-gst">GST on Gold <span class="sub" id="g-l-gst-s">Standard 3%</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="g-gst" value="3" step="0.1"><span class="unit">%</span></div>
-      </div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-hall">Hallmarking <span class="sub" id="g-l-hall-s">BIS charge if any</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="g-hall" value="0" step="10"><span class="unit">₹</span></div>
-      </div>
-      <div class="toggle-row">
-        <div class="tl" id="g-l-exch">Old Gold Exchange <span class="sub" id="g-l-exch-s">Toggle to add old gold credit</span></div>
-        <label class="tog"><input type="checkbox" id="g-exch-tog" onchange="document.getElementById('g-exch-rows').style.display=this.checked?'block':'none'"><span class="tog-sl"></span></label>
-      </div>
-      <div id="g-exch-rows" style="display:none">
-        <div class="toggle-row">
-          <div class="tl" id="g-l-owt">Old Gold Weight (g) <span class="sub" id="g-l-owt-s">What you're giving back</span></div>
-          <div class="inline-in"><input type="number" class="mini" id="g-owt" value="8" step="0.1"><span class="unit">g</span></div>
-        </div>
-        <div class="toggle-row">
-          <div class="tl" id="g-l-opur">Old Gold Purity</div>
-          <select id="g-opur" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
-            <option value="22" selected>22K</option><option value="24">24K</option><option value="18">18K</option>
-          </select>
-        </div>
-        <div class="toggle-row">
-          <div class="tl" id="g-l-oded">Deduction % <span class="sub" id="g-l-oded-s">0% = Zero Deduction offer</span></div>
-          <div class="inline-in"><input type="number" class="mini" id="g-oded" value="0" step="0.5"><span class="unit" style="color:var(--rose)">%</span></div>
-        </div>
-      </div>
-    </div>
+    <iframe id="goldCheckerFrame" src="gold-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
   </div>
+
 
   <!-- ══ SILVER FORM ══ -->
   <div id="form-silver" style="display:none">
@@ -1011,11 +869,35 @@ function setMetal(m){
   el('nego-wrap').style.display='none';
   _lastCtx=null;
   buildExplainer();
+  // Gold now uses the embedded AI Bill Checker instead of the manual
+  // enter-numbers-and-calculate flow, so hide the shared calc button and
+  // results/stats panels that belong to that older flow when Gold is active.
+  var isGold = (m === 'gold');
+  el('calc-btn').style.display = isGold ? 'none' : '';
+  el('results').style.display = isGold ? 'none' : '';
+  document.querySelector('.stats-bar').style.display = isGold ? 'none' : '';
   // update select styling
   document.querySelectorAll('.field input, .field select, .mini').forEach(e=>{
     e.style.background='var(--ac-pale)';
   });
 }
+
+function resizeGoldFrame(frame){
+  try {
+    var doc = frame.contentWindow.document;
+    var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+    if (h > 200) frame.style.height = (h + 40) + 'px';
+  } catch(e) { /* cross-origin fallback - shouldn't happen, same origin */ }
+}
+// The embedded checker's content height changes a lot after analysis
+// (upload zone -> full report), so listen for it to tell us its new size
+// rather than relying only on the one-time onload resize above.
+window.addEventListener('message', function(ev){
+  if (ev.data && ev.data.type === 'goldCheckerHeight') {
+    var frame = document.getElementById('goldCheckerFrame');
+    if (frame) frame.style.height = (ev.data.height + 40) + 'px';
+  }
+});
 
 el('g-mtype').addEventListener('change',function(){
   el('g-mval-row').style.display=this.value==='none'?'none':'flex';
