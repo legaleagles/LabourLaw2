@@ -55,6 +55,39 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 .flag-concern{font-size:12.5px;color:#374151;line-height:1.55;margin-bottom:10px;}
 .flag-rti{font-size:11.5px;background:#fff;border:1px solid #E5E7EB;border-radius:9px;padding:10px;line-height:1.5;}
 .flag-rti b{color:#7C2D12;}
+.hl-num{font-weight:800;color:#7C2D12;background:rgba(201,162,39,.16);padding:0 3px;border-radius:4px;}
+
+.nature-card{background:#F5F3FF;border:1.5px solid #C4B5FD;border-radius:14px;padding:16px;margin-bottom:16px;}
+.nature-title{font-family:'Playfair Display',serif;font-weight:900;font-size:13px;color:#5B21B6;margin-bottom:6px;}
+.nature-text{font-size:12.5px;color:#4C1D95;line-height:1.6;}
+
+.dates-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px;margin-bottom:16px;}
+.date-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #E5E7EB;font-size:12.5px;}
+.date-row:last-child{border-bottom:none;}
+.date-label{color:var(--muted);font-weight:700;flex:1;}
+.date-value{font-weight:800;text-align:right;}
+.date-concern{font-size:11px;color:#B45309;background:#FFFBEB;padding:8px 10px;border-radius:8px;margin-top:6px;line-height:1.5;}
+.bidwindow-note{font-size:12px;color:#374151;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;margin-top:10px;}
+
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.fin-stat{background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px;}
+.fin-stat-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:4px;}
+.fin-stat-value{font-size:14px;font-weight:900;color:#111827;}
+.fin-note{font-size:12px;color:#374151;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;}
+
+.relax-card{background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:14px;padding:14px;margin-bottom:12px;border-left:5px solid #DC2626;}
+.relax-quote{font-size:12.5px;font-style:italic;color:#7F1D1D;background:rgba(220,38,38,.08);padding:8px 10px;border-radius:8px;margin-bottom:8px;}
+.relax-concern{font-size:12.5px;color:#450A0A;line-height:1.55;}
+
+.export-row{display:flex;gap:10px;margin:24px 0 8px;}
+.export-btn{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:12.5px;border:none;cursor:pointer;color:#fff;}
+.export-btn.pdf{background:linear-gradient(135deg,#DC2626,#991B1B);}
+.export-btn.word{background:linear-gradient(135deg,#1D4ED8,#1E40AF);}
+
+@media print{
+  nav,.upload-card,.export-row,#historyArea,.login-box,.section-hd + .empty{display:none !important;}
+  body{background:#fff;}
+}
 
 .hist-card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
 .hist-name{font-weight:800;font-size:13px;}
@@ -167,28 +200,105 @@ function analyzeTender(){
 
 function esc(s){ return (s||'').toString().replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
-function renderResult(result){
-  var out = '<div class="summary-card"><div class="summary-title">📋 Tender Summary</div><div class="summary-text">' + esc(result.tender_summary) + '</div></div>';
+// Highlights money amounts, percentages, and dates within already-escaped
+// text so the numbers a reader actually needs (₹ figures, %, DD Month
+// YYYY dates) pop out instead of sitting flat in a wall of prose.
+function highlightNums(escapedText){
+  return escapedText
+    .replace(/(₹\s?[\d,]+(?:\.\d+)?(?:\s?(?:Lakh|Lakhs|Crore|Crores))?)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\bRs\.?\s?[\d,]+(?:\.\d+)?(?:\s?(?:Lakh|Lakhs|Crore|Crores))?)/gi, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?%)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\b\d{1,2}\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s\d{4}\b)/gi, '<span class="hl-num">$1</span>')
+    .replace(/(\b\d+\s?(?:days|hours|years|months)\b)/gi, '<span class="hl-num">$1</span>');
+}
+function hl(s){ return highlightNums(esc(s)); }
 
-  out += '<div class="section-hd">🚩 Flagged Clauses (' + (result.flags || []).length + ')</div>';
+var lastResult = null;
+
+function renderResult(result){
+  lastResult = result;
+  var out = '<div class="summary-card"><div class="summary-title">📋 Tender Summary</div><div class="summary-text">' + hl(result.tender_summary) + '</div></div>';
+
+  if (result.nature_of_work) {
+    out += '<div class="nature-card"><div class="nature-title">🏗️ Nature of Work / Procurement</div><div class="nature-text">' + hl(result.nature_of_work) + '</div></div>';
+  }
+
+  if (result.key_dates && result.key_dates.length) {
+    out += '<div class="section-hd">📅 Key Dates</div><div class="dates-card">';
+    result.key_dates.forEach(function(d){
+      out += '<div class="date-row"><span class="date-label">' + esc(d.label) + '</span><span class="date-value">' + hl(d.value) + '</span></div>';
+      if (d.concern) out += '<div class="date-concern">⚠️ ' + hl(d.concern) + '</div>';
+    });
+    if (result.bid_window_assessment) out += '<div class="bidwindow-note"><b>Bid window:</b> ' + hl(result.bid_window_assessment) + '</div>';
+    out += '</div>';
+  }
+
+  if (result.financial_snapshot) {
+    var fs = result.financial_snapshot;
+    out += '<div class="section-hd">💰 Financial Snapshot</div>';
+    out += '<div class="fin-grid">';
+    out += '<div class="fin-stat"><div class="fin-stat-label">Estimated Value</div><div class="fin-stat-value">' + hl(fs.estimated_value) + '</div></div>';
+    out += '<div class="fin-stat"><div class="fin-stat-label">EMD / Bid Security</div><div class="fin-stat-value">' + hl(fs.emd_amount) + '</div></div>';
+    out += '<div class="fin-stat"><div class="fin-stat-label">Performance Security</div><div class="fin-stat-value">' + hl(fs.performance_security) + '</div></div>';
+    out += '<div class="fin-stat"><div class="fin-stat-label">Turnover Threshold</div><div class="fin-stat-value">' + hl(fs.turnover_threshold) + '</div></div>';
+    out += '</div>';
+    if (fs.proportionality_note) out += '<div class="fin-note">' + hl(fs.proportionality_note) + '</div>';
+  }
+
+  if (result.relaxation_clauses && result.relaxation_clauses.length) {
+    out += '<div class="section-hd">🔓 Relaxation / Discretion Clauses (' + result.relaxation_clauses.length + ')</div>';
+    result.relaxation_clauses.forEach(function(rc){
+      out += '<div class="relax-card">';
+      out += '<div class="relax-quote">"' + esc(rc.clause_quote) + '"</div>';
+      out += '<div class="relax-concern">' + hl(rc.concern) + '</div>';
+      out += '</div>';
+    });
+  }
+
+  out += '<div class="section-hd">🚩 Other Flagged Clauses (' + (result.flags || []).length + ')</div>';
   if (!result.flags || !result.flags.length) {
-    out += '<div class="empty">No genuine red flags found — see overall assessment below.</div>';
+    out += '<div class="empty">No further red flags found.</div>';
   } else {
     result.flags.forEach(function(f){
       var sevClass = 'sev-' + (f.severity || 'low').toLowerCase();
       out += '<div class="flag-card ' + sevClass + '">';
       out += '<div class="flag-cat">' + esc(f.category) + '<span class="flag-sev">' + esc(f.severity) + '</span></div>';
       out += '<div class="flag-quote">"' + esc(f.clause_quote) + '"</div>';
-      out += '<div class="flag-concern">' + esc(f.concern) + '</div>';
-      out += '<div class="flag-rti"><b>Suggested RTI question:</b><br>' + esc(f.suggested_rti_question) + '</div>';
+      out += '<div class="flag-concern">' + hl(f.concern) + '</div>';
+      out += '<div class="flag-rti"><b>Suggested RTI question:</b><br>' + hl(f.suggested_rti_question) + '</div>';
       out += '</div>';
     });
   }
 
-  out += '<div class="assessment-card"><div class="assessment-title">Overall Assessment</div><div class="assessment-text">' + esc(result.overall_assessment) + '</div></div>';
+  out += '<div class="assessment-card"><div class="assessment-title">Overall Assessment</div><div class="assessment-text">' + hl(result.overall_assessment) + '</div></div>';
+
+  out += '<div class="export-row"><button class="export-btn pdf" onclick="exportPDF()">⬇️ Save as PDF</button><button class="export-btn word" onclick="exportWord()">⬇️ Save as Word</button></div>';
 
   document.getElementById('resultArea').innerHTML = out;
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function exportPDF(){
+  window.print();
+}
+
+function exportWord(){
+  if (!lastResult) return;
+  var reportHtml = document.getElementById('resultArea').innerHTML;
+  var name = (document.getElementById('tenderName').value.trim() || 'Tender Analysis');
+  var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+    '<head><meta charset="utf-8"><title>' + esc(name) + '</title></head>' +
+    '<body style="font-family:Calibri,Arial,sans-serif;">' +
+    '<h1>' + esc(name) + ' — Tender Scrutiny Report</h1>' +
+    reportHtml.replace(/<button[\s\S]*?<\/button>/g, '').replace(/<div class="export-row">[\s\S]*?<\/div>/g, '') +
+    '</body></html>';
+  var blob = new Blob(['\ufeff', doc], {type: 'application/msword'});
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = name.replace(/[^a-z0-9]/gi, '_') + '_analysis.doc';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function loadHistory(){
