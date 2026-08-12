@@ -61,6 +61,16 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 .nature-title{font-family:'Playfair Display',serif;font-weight:900;font-size:13px;color:#5B21B6;margin-bottom:6px;}
 .nature-text{font-size:12.5px;color:#4C1D95;line-height:1.6;}
 
+.brief-card{background:linear-gradient(135deg,#ECFDF5,#F0FDF4);border:1.5px solid #6EE7B7;border-radius:16px;padding:18px;margin-bottom:20px;}
+.brief-title{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;color:#065F46;margin-bottom:4px;}
+.brief-sub{font-size:11px;color:#047857;margin-bottom:14px;}
+.brief-row{margin-bottom:12px;}
+.brief-row:last-child{margin-bottom:0;}
+.brief-label{font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;color:#059669;margin-bottom:3px;}
+.brief-text{font-size:13px;color:#111827;line-height:1.6;}
+.brief-watch{background:#fff;border:1.5px solid #FCA5A5;border-radius:10px;padding:10px 12px;margin-top:4px;}
+.brief-watch .brief-text{color:#7F1D1D;}
+
 .dates-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px;margin-bottom:16px;}
 .date-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #E5E7EB;font-size:12.5px;}
 .date-row:last-child{border-bottom:none;}
@@ -218,6 +228,21 @@ var lastResult = null;
 function renderResult(result){
   lastResult = result;
   var out = '<div class="summary-card"><div class="summary-title">📋 Tender Summary</div><div class="summary-text">' + hl(result.tender_summary) + '</div></div>';
+
+  if (result.plain_language_brief) {
+    var pb = result.plain_language_brief;
+    out += '<div class="brief-card">';
+    out += '<div class="brief-title">🗣️ Plain-Language Brief</div><div class="brief-sub">The tender, explained in ordinary words — no legal jargon.</div>';
+    out += '<div class="brief-row"><div class="brief-label">What\'s being bought</div><div class="brief-text">' + hl(pb.what_is_being_bought) + '</div></div>';
+    out += '<div class="brief-row"><div class="brief-label">Who can apply</div><div class="brief-text">' + hl(pb.who_can_apply) + '</div></div>';
+    out += '<div class="brief-row"><div class="brief-label">How much money</div><div class="brief-text">' + hl(pb.how_much_money) + '</div></div>';
+    out += '<div class="brief-row"><div class="brief-label">Important dates</div><div class="brief-text">' + hl(pb.important_dates_plain) + '</div></div>';
+    out += '<div class="brief-row"><div class="brief-label">How the winner is chosen</div><div class="brief-text">' + hl(pb.how_winner_is_chosen) + '</div></div>';
+    if (pb.what_to_watch_for) {
+      out += '<div class="brief-row"><div class="brief-label">⚠️ What to watch for</div><div class="brief-watch"><div class="brief-text">' + hl(pb.what_to_watch_for) + '</div></div></div>';
+    }
+    out += '</div>';
+  }
 
   if (result.nature_of_work) {
     out += '<div class="nature-card"><div class="nature-title">🏗️ Nature of Work / Procurement</div><div class="nature-text">' + hl(result.nature_of_work) + '</div></div>';
