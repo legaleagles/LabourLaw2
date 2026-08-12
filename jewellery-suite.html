@@ -858,6 +858,11 @@ function setLang(l){
   document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
   document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
   applyLang();
+  // The embedded Gold Bill Checker has its own language dictionary and no
+  // longer shows its own language buttons when embedded - this page's own
+  // switcher is now the single source of truth for its language too.
+  var frame = document.getElementById('goldCheckerFrame');
+  if (frame && frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: l}, '*');
 }
 
 function setMetal(m){
@@ -888,6 +893,9 @@ function resizeGoldFrame(frame){
     var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
     if (h > 200) frame.style.height = (h + 40) + 'px';
   } catch(e) { /* cross-origin fallback - shouldn't happen, same origin */ }
+  // Sync whatever language this page is currently showing into the checker
+  // on first load, in case it wasn't English when the Gold tab was opened.
+  if (frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: lang}, '*');
 }
 // The embedded checker's content height changes a lot after analysis
 // (upload zone -> full report), so listen for it to tell us its new size
