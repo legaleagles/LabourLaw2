@@ -80,6 +80,12 @@ input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;ba
 .check-icon{font-size:16px;margin-right:6px;}
 .check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
 .check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
+.hl-num{font-weight:800;color:#7C5A0B;background:rgba(201,162,39,.15);padding:0 3px;border-radius:4px;}
+.hl-pair{font-weight:800;color:#B45309;background:rgba(217,119,6,.14);padding:0 4px;border-radius:5px;}
+.lang-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.lang-btn{flex:1;padding:9px;border-radius:9px;border:1.5px solid #E5E7EB;background:#fff;font-weight:700;font-size:12.5px;cursor:pointer;color:#6B7280;}
+.lang-btn.active{background:#0EA5A6;border-color:#0EA5A6;color:#fff;}
+.lang-btn:disabled{opacity:.5;}
 
 .stones-list{margin-top:14px;}
 .stone-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dashed #F0F0F0;color:#4B5563;}
@@ -173,6 +179,20 @@ var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
 var selectedFile = null;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+// Highlights money (₹), weights (g/ct), percentages, and "before → after"
+// number pairs so the specific figures inside a check's explanation (like
+// a weight uplift or a rate difference) actually stand out from the prose
+// instead of blending into a wall of text.
+function highlightNums(escapedText){
+  return escapedText
+    .replace(/(₹\s?[\d,]+(?:\.\d+)?)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?g\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?ct\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?%)/g, '<span class="hl-num">$1</span>')
+    .replace(/(₹?\s?[\d,]+(?:\.\d+)?g?\s?(?:→|-&gt;)\s?₹?\s?[\d,]+(?:\.\d+)?g?)/g, '<span class="hl-pair">$1</span>');
+}
+function hl(s){ return highlightNums(esc(s)); }
 function fmtRs(n){ return '₹' + Math.round(n||0).toLocaleString('en-IN'); }
 
 function handleFile(file){
@@ -254,6 +274,9 @@ function checkBill(){
 }
 
 function renderResults(ex, checks, stoneTable, mcRange, todayRate){
+  window.__enChecks = checks;
+  window.__langCache = { en: checks };
+  window.__currentLang = 'en';
   var out = '';
 
   if (todayRate && todayRate.rate_22k) {
@@ -354,13 +377,20 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
   }
 
   out += '<div class="section-hd">🔎 Your Negotiation Report Card</div>';
+  out += '<div class="lang-toggle">';
+  out += '<button class="lang-btn active" id="langBtn-en" onclick="switchLang(\'en\')">English</button>';
+  out += '<button class="lang-btn" id="langBtn-te" onclick="switchLang(\'te\')">తెలుగు</button>';
+  out += '<button class="lang-btn" id="langBtn-hi" onclick="switchLang(\'hi\')">हिंदी</button>';
+  out += '</div>';
+  out += '<div id="checkCardsArea">';
   if (!checks.length) {
     out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
   }
   checks.forEach(function(c){
     var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
-    out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + esc(c.detail) + '</div></div>';
+    out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + hl(c.detail) + '</div></div>';
   });
+  out += '</div>';
 
   if (stoneTable && stoneTable.length) {
     out += '<div class="stone-table-card">';
@@ -450,6 +480,64 @@ function updateStoneSliderTotal(){
       diffEl.innerHTML = '<div class="slider-diff extra">At these rates, this would cost ' + fmtRs(Math.abs(diff)) + ' more than this bill</div>';
     }
   }
+}
+
+function renderCheckCards(checks){
+  var out = '';
+  if (!checks.length) {
+    out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
+  }
+  checks.forEach(function(c){
+    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
+    out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + hl(c.detail) + '</div></div>';
+  });
+  document.getElementById('checkCardsArea').innerHTML = out;
+}
+
+function switchLang(lang){
+  ['en', 'te', 'hi'].forEach(function(l){
+    var btn = document.getElementById('langBtn-' + l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+  window.__currentLang = lang;
+
+  if (window.__langCache[lang]) {
+    renderCheckCards(window.__langCache[lang]);
+    return;
+  }
+
+  // Not cached yet — translate titles+details in one batched call, then
+  // rebuild the checks array in the same shape (status stays the same,
+  // only the text changes) and cache it so switching back is instant.
+  var enChecks = window.__enChecks;
+  var texts = [];
+  enChecks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
+
+  var btn = document.getElementById('langBtn-' + lang);
+  var originalLabel = btn.textContent;
+  btn.textContent = '…';
+  ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = true; });
+
+  fetch(BACKEND + '/api/translate-gold-checks', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({texts: texts, target_lang: lang})
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = false; });
+    btn.textContent = originalLabel;
+    if (!data.ok) { switchLang('en'); return; }
+    var translated = enChecks.map(function(c, i){
+      return { status: c.status, title: data.translations[i*2], detail: data.translations[i*2 + 1] };
+    });
+    window.__langCache[lang] = translated;
+    renderCheckCards(translated);
+  })
+  .catch(function(){
+    ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = false; });
+    btn.textContent = originalLabel;
+    switchLang('en');
+  });
 }
 </script>
 
