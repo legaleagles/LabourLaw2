@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tender Scrutiny — Private</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1117;--ink:#111827;--cream:#FEFCF5;--muted:#6B7280;--gold:#C9A227;--gold-l:#F5D76E;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+.hero{background:linear-gradient(150deg,#0D1117 0%,#1a1030 55%,#241505 100%);padding:26px 20px 22px;text-align:center;}
+.hero-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:#F5D76E;}
+.hero-sub{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;}
+.wrap{max-width:700px;margin:0 auto;padding:18px 16px 60px;}
+
+.login-box{max-width:340px;margin:60px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-box button{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-err{color:#DC2626;font-size:11.5px;margin-top:8px;}
+
+.upload-card{background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:18px;margin-bottom:20px;text-align:center;}
+.upload-card-title{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;margin-bottom:6px;}
+.upload-card-hint{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.tender-name-input{width:100%;padding:11px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;margin-bottom:12px;}
+.file-label{display:flex;align-items:center;justify-content:center;padding:16px;border:1.5px dashed #C9A227;
+border-radius:12px;font-size:13px;font-weight:800;color:#8a6d1a;cursor:pointer;background:#FFFBEB;margin-bottom:12px;}
+.upload-btn{width:100%;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-weight:800;
+font-size:13.5px;padding:13px;border:none;border-radius:11px;cursor:pointer;}
+.upload-btn:disabled{opacity:.5;}
+.upload-status{font-size:11.5px;margin-top:12px;text-align:center;color:var(--muted);line-height:1.6;}
+
+.summary-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:16px;}
+.summary-title{font-family:'Playfair Display',serif;font-weight:900;font-size:14px;margin-bottom:8px;}
+.summary-text{font-size:12.5px;color:#374151;line-height:1.6;}
+.assessment-card{background:#F0F9FF;border:1.5px solid #7DD3FC;border-radius:14px;padding:16px;margin-bottom:20px;}
+.assessment-title{font-family:'Playfair Display',serif;font-weight:900;font-size:13px;color:#0369A1;margin-bottom:6px;}
+.assessment-text{font-size:12.5px;color:#0C4A6E;line-height:1.6;}
+
+.section-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin:24px 0 12px;
+padding-bottom:6px;border-bottom:2px solid var(--gold);}
+
+.flag-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;border-left:5px solid #ccc;}
+.flag-card.sev-high{border-left-color:#DC2626;background:#FEF2F2;}
+.flag-card.sev-medium{border-left-color:#D97706;background:#FFFBEB;}
+.flag-card.sev-low{border-left-color:#6B7280;background:#F9FAFB;}
+.flag-cat{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
+.flag-sev{display:inline-block;font-size:9px;font-weight:900;padding:2px 8px;border-radius:8px;text-transform:uppercase;margin-left:6px;}
+.sev-high .flag-sev{background:#FCA5A5;color:#7F1D1D;}
+.sev-medium .flag-sev{background:#FDE68A;color:#78350F;}
+.sev-low .flag-sev{background:#E5E7EB;color:#374151;}
+.flag-quote{font-size:12.5px;font-style:italic;color:#1F2937;background:rgba(0,0,0,.04);padding:8px 10px;border-radius:8px;margin:8px 0;}
+.flag-concern{font-size:12.5px;color:#374151;line-height:1.55;margin-bottom:10px;}
+.flag-rti{font-size:11.5px;background:#fff;border:1px solid #E5E7EB;border-radius:9px;padding:10px;line-height:1.5;}
+.flag-rti b{color:#7C2D12;}
+
+.hist-card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
+.hist-name{font-weight:800;font-size:13px;}
+.hist-meta{font-size:10.5px;color:var(--muted);margin-top:2px;}
+
+.empty{font-size:12px;color:var(--muted);text-align:center;padding:20px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-title">🔍 Tender Scrutiny</div>
+  <div class="hero-sub">Private tool — not linked publicly. Upload a tender PDF for a clause-by-clause fairness scan.</div>
+</div>
+
+<div class="wrap">
+
+  <div class="login-box" id="loginBox">
+    <div style="font-weight:800;font-size:14px;">Password required</div>
+    <input type="password" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+
+  <div id="mainArea" style="display:none;">
+
+    <div class="upload-card">
+      <div class="upload-card-title">📄 Analyze a Tender</div>
+      <div class="upload-card-hint">Upload the tender PDF. Text-based PDFs are read directly; scanned copies use AI vision as a fallback.</div>
+      <input type="text" class="tender-name-input" id="tenderName" placeholder="Label for this tender (e.g. CBSE Vehicle Hiring 2026)">
+      <label class="file-label" id="fileLabel">
+        <input type="file" accept="application/pdf" id="fileInput" style="display:none;" onchange="handleFile(this)">
+        <span id="fileLabelText">📎 Choose tender PDF</span>
+      </label>
+      <button class="upload-btn" id="analyzeBtn" onclick="analyzeTender()" disabled>Analyze Tender</button>
+      <div class="upload-status" id="uploadStatus"></div>
+    </div>
+
+    <div id="resultArea"></div>
+
+    <div class="section-hd">📚 Past Analyses</div>
+    <div id="historyArea"><div class="empty">Loading…</div></div>
+
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var tsPassword = localStorage.getItem('tsPassword') || '';
+var pendingBase64 = null;
+
+if (tsPassword) { tryLogin(tsPassword); }
+
+function doLogin(){
+  var pw = document.getElementById('pwInput').value.trim();
+  if (!pw) return;
+  tryLogin(pw, true);
+}
+
+function tryLogin(pw, showErr){
+  fetch(BACKEND + '/api/tender-scrutiny-history', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw}) })
+    .then(function(r){
+      if (r.status === 401) { if (showErr) document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if (!data) return;
+      tsPassword = pw;
+      localStorage.setItem('tsPassword', pw);
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('mainArea').style.display = 'block';
+      renderHistory(data.entries || []);
+    })
+    .catch(function(){ if (showErr) document.getElementById('loginErr').textContent = 'Something went wrong — try again.'; });
+}
+
+function handleFile(input){
+  var file = input.files[0];
+  if (!file) return;
+  document.getElementById('fileLabelText').textContent = '📎 ' + file.name;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    pendingBase64 = e.target.result.split(',')[1];
+    document.getElementById('analyzeBtn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+function analyzeTender(){
+  if (!pendingBase64) return;
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('uploadStatus').textContent = 'Reading and analyzing tender — this can take up to a minute for long documents…';
+  document.getElementById('resultArea').innerHTML = '';
+  fetch(BACKEND + '/api/tender-scrutiny', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: tsPassword, pdf_base64: pendingBase64, tender_name: document.getElementById('tenderName').value.trim()}) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      document.getElementById('analyzeBtn').disabled = false;
+      if (!data.ok) { document.getElementById('uploadStatus').textContent = '❌ ' + (data.error || 'Analysis failed.'); return; }
+      document.getElementById('uploadStatus').textContent = '✅ Analysis complete.';
+      renderResult(data.result);
+      loadHistory();
+    })
+    .catch(function(){
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('uploadStatus').textContent = '❌ Network error — try again.';
+    });
+}
+
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+function renderResult(result){
+  var out = '<div class="summary-card"><div class="summary-title">📋 Tender Summary</div><div class="summary-text">' + esc(result.tender_summary) + '</div></div>';
+
+  out += '<div class="section-hd">🚩 Flagged Clauses (' + (result.flags || []).length + ')</div>';
+  if (!result.flags || !result.flags.length) {
+    out += '<div class="empty">No genuine red flags found — see overall assessment below.</div>';
+  } else {
+    result.flags.forEach(function(f){
+      var sevClass = 'sev-' + (f.severity || 'low').toLowerCase();
+      out += '<div class="flag-card ' + sevClass + '">';
+      out += '<div class="flag-cat">' + esc(f.category) + '<span class="flag-sev">' + esc(f.severity) + '</span></div>';
+      out += '<div class="flag-quote">"' + esc(f.clause_quote) + '"</div>';
+      out += '<div class="flag-concern">' + esc(f.concern) + '</div>';
+      out += '<div class="flag-rti"><b>Suggested RTI question:</b><br>' + esc(f.suggested_rti_question) + '</div>';
+      out += '</div>';
+    });
+  }
+
+  out += '<div class="assessment-card"><div class="assessment-title">Overall Assessment</div><div class="assessment-text">' + esc(result.overall_assessment) + '</div></div>';
+
+  document.getElementById('resultArea').innerHTML = out;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function loadHistory(){
+  fetch(BACKEND + '/api/tender-scrutiny-history', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: tsPassword}) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ if (data.ok) renderHistory(data.entries || []); });
+}
+
+function renderHistory(entries){
+  var el = document.getElementById('historyArea');
+  if (!entries.length) { el.innerHTML = '<div class="empty">No tenders analyzed yet.</div>'; return; }
+  var out = '';
+  entries.forEach(function(e, i){
+    var flagCount = (e.result && e.result.flags) ? e.result.flags.length : 0;
+    var date = new Date(e.analyzed_at).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
+    out += '<div class="hist-card" onclick="renderResult(window.__histEntries[' + i + '].result)">';
+    out += '<div class="hist-name">' + esc(e.tender_name) + '</div>';
+    out += '<div class="hist-meta">' + date + ' · ' + flagCount + ' flag' + (flagCount === 1 ? '' : 's') + '</div>';
+    out += '</div>';
+  });
+  window.__histEntries = entries;
+  el.innerHTML = out;
+}
+</script>
+</body>
+</html>
