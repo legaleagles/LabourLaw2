@@ -149,23 +149,23 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="hero">
   <div class="hero-icon">🧾✨</div>
-  <div class="hero-title">Is Your Gold Bill Fair?</div>
-  <div class="hero-sub">Just take a photo of any jewellery shop's estimate — we'll check the math, the making charge, and today's real gold rate for you. No typing needed.</div>
+  <div class="hero-title" id="tHeroTitle">Is Your Gold Bill Fair?</div>
+  <div class="hero-sub" id="tHeroSub">Just take a photo of any jewellery shop's estimate — we'll check the math, the making charge, and today's real gold rate for you. No typing needed.</div>
 </div>
 
 <div class="wrap">
 
   <div class="upload-zone" id="uploadZone">
     <div class="upload-icon">📸</div>
-    <div class="upload-title">Show Us the Bill</div>
-    <div class="upload-hint">Take a clear photo, or choose one from your gallery — works with any shop's format.</div>
+    <div class="upload-title" id="tUploadTitle">Show Us the Bill</div>
+    <div class="upload-hint" id="tUploadHint">Take a clear photo, or choose one from your gallery — works with any shop's format.</div>
     <div class="upload-btn-row">
       <label class="upload-btn camera">
-        📷 Take a Photo
+        <span id="tCamBtn">📷 Take a Photo</span>
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
       </label>
       <label class="upload-btn file">
-        🖼️ Choose from Gallery
+        <span id="tFileBtn">🖼️ Choose from Gallery</span>
         <input type="file" id="galleryInput" accept="image/*" style="display:none;">
       </label>
     </div>
@@ -179,6 +179,78 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <script>
 var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS — every static UI string on this page, so switching
+//  language actually covers the whole page, not just the AI report text
+//  (which uses a separate mechanism below since it's dynamically generated).
+// ══════════════════════════════════════════
+var GBC_LANG = 'en';
+var GT = {
+  en: {
+    heroTitle:'Is Your Gold Bill Fair?',
+    heroSub:"Just take a photo of any jewellery shop's estimate — we'll check the math, the making charge, and today's real gold rate for you. No typing needed.",
+    uploadTitle:'Show Us the Bill', uploadHint:"Take a clear photo, or choose one from your gallery — works with any shop's format.",
+    camBtn:'📷 Take a Photo', fileBtn:'🖼️ Choose from Gallery',
+    cityLabel:'📍 Your city:', checkBtn:'✅ Check This Bill', checkingBtn:'Reading your bill…', changePhoto:'Choose a different photo',
+    yourItem:'Your Item', netWeight:'Net Gold Weight', shopRate:"Shop's Gold Rate", makingCharge:'Making Charge (VA)',
+    stoneCost:'Stone Cost', gst:'GST', finalAmount:'Final Amount',
+    mcTitle:'🎚️ Making Charge — Try Different Percentages', mcYouCharge:'📌 This bill charges you:', mcTypical:'Typical:',
+    mcTotalAt:'Total at this %', mcBilled:"What you're billed", mcPctLabel:'making charge at this percentage',
+    stoneSliderTitle:'🎚️ Stone Cost — Try Market Rates', stoneSliderHint:'Drag each stone to a rate within its typical market range and see the total move.',
+    stoneSliderTotal:'Total at these rates', stoneSliderTotalWord:'total',
+    reportHeading:'Your Negotiation Report Card', reportHeadingReceipt:'Your Bill Check Report',
+    basicChecksTitle:'Basic checks only', basicChecksDetail:"We could read the bill, but couldn't generate detailed checks this time — the numbers above are still accurate from the bill itself.",
+    stoneTableTitle:'💎 Stone Pricing — You vs. Typical Market', stoneTableHint:"Rough guide only — real pricing depends on quality you can't judge from a bill.",
+    stoneYou:'You:', stoneMarket:'Market:', stoneWithin:'Within range', stoneAbove:'Above typical', stoneBelow:'Below typical',
+    disclaimer:'⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.',
+    todaysRatePrefix:"📍 Today's Gold Rate —",
+    saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
+  },
+  te: {
+    heroTitle:'మీ బంగారు బిల్లు సరైనదేనా?',
+    heroSub:'ఏ నగల దుకాణం అంచనానైనా ఫోటో తీయండి — లెక్క, మేకింగ్ ఛార్జీ, నేటి నిజమైన బంగారం రేటు మేము చెక్ చేస్తాము. టైప్ చేయాల్సిన అవసరం లేదు.',
+    uploadTitle:'బిల్లు చూపించండి', uploadHint:'స్పష్టమైన ఫోటో తీయండి, లేదా గ్యాలరీ నుండి ఎంచుకోండి — ఏ దుకాణం ఫార్మాట్ అయినా పనిచేస్తుంది.',
+    camBtn:'📷 ఫోటో తీయండి', fileBtn:'🖼️ గ్యాలరీ నుండి ఎంచుకోండి',
+    cityLabel:'📍 మీ నగరం:', checkBtn:'✅ ఈ బిల్లును చెక్ చేయండి', checkingBtn:'మీ బిల్లు చదువుతున్నాము…', changePhoto:'వేరే ఫోటో ఎంచుకోండి',
+    yourItem:'మీ వస్తువు', netWeight:'నికర బంగారు బరువు', shopRate:'దుకాణం బంగారు రేటు', makingCharge:'మేకింగ్ ఛార్జీ (VA)',
+    stoneCost:'రాళ్ల ఖర్చు', gst:'GST', finalAmount:'తుది మొత్తం',
+    mcTitle:'🎚️ మేకింగ్ ఛార్జీ — వేర్వేరు శాతాలు ప్రయత్నించండి', mcYouCharge:'📌 ఈ బిల్లు మీ నుండి వసూలు చేసేది:', mcTypical:'సాధారణం:',
+    mcTotalAt:'ఈ శాతం వద్ద మొత్తం', mcBilled:'మీకు బిల్ చేసినది', mcPctLabel:'ఈ శాతం వద్ద మేకింగ్ ఛార్జీ',
+    stoneSliderTitle:'🎚️ రాళ్ల ఖర్చు — మార్కెట్ రేట్లు ప్రయత్నించండి', stoneSliderHint:'ప్రతి రాయిని దాని సాధారణ మార్కెట్ పరిధిలో లాగి మొత్తం ఎలా మారుతుందో చూడండి.',
+    stoneSliderTotal:'ఈ రేట్ల వద్ద మొత్తం', stoneSliderTotalWord:'మొత్తం',
+    reportHeading:'మీ బేరసారాల నివేదిక', reportHeadingReceipt:'మీ బిల్లు చెక్ నివేదిక',
+    basicChecksTitle:'ప్రాథమిక చెక్‌లు మాత్రమే', basicChecksDetail:'బిల్లు చదవగలిగాము, కానీ ఈసారి వివరణాత్మక చెక్‌లు రూపొందించలేకపోయాము — పైన ఉన్న సంఖ్యలు బిల్లు నుండి ఇప్పటికీ కచ్చితమైనవి.',
+    stoneTableTitle:'💎 రాళ్ల ధర — మీరు vs. సాధారణ మార్కెట్', stoneTableHint:'ఇది ఒక స్థూల మార్గదర్శకం మాత్రమే — నిజమైన ధర ఫోటోలో తెలియని నాణ్యతపై ఆధారపడి ఉంటుంది.',
+    stoneYou:'మీరు:', stoneMarket:'మార్కెట్:', stoneWithin:'పరిధిలో ఉంది', stoneAbove:'సాధారణం కంటే ఎక్కువ', stoneBelow:'సాధారణం కంటే తక్కువ',
+    disclaimer:'⚠️ ఇది మీ బిల్లును బాగా అర్థం చేసుకోవడానికి ఒక సహాయకం — ఇది ఏ దుకాణాన్ని తప్పుపట్టదు, మరియు ఇది ధృవీకరించిన విలువాంకనం కాదు. రాళ్ల ధర ముఖ్యంగా ఫోటోలో తెలియని నాణ్యత మరియు స్పష్టతపై ఆధారపడి ఉంటుంది. దీన్ని మీ స్వంత ప్రశ్నలకు ఒక ప్రారంభ బిందువుగా వాడండి, తుది తీర్పుగా కాదు.',
+    todaysRatePrefix:'📍 నేటి బంగారం రేటు —',
+    saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
+  },
+  hi: {
+    heroTitle:'क्या आपका सोने का बिल सही है?',
+    heroSub:'किसी भी ज्वेलरी दुकान के अनुमान की फोटो लें — हम हिसाब, मेकिंग चार्ज और आज की असली सोने की दर आपके लिए जांचेंगे। टाइप करने की जरूरत नहीं।',
+    uploadTitle:'बिल दिखाएं', uploadHint:'साफ फोटो लें, या गैलरी से चुनें — किसी भी दुकान के फॉर्मेट के साथ काम करता है।',
+    camBtn:'📷 फोटो लें', fileBtn:'🖼️ गैलरी से चुनें',
+    cityLabel:'📍 आपका शहर:', checkBtn:'✅ यह बिल जांचें', checkingBtn:'आपका बिल पढ़ रहे हैं…', changePhoto:'दूसरी फोटो चुनें',
+    yourItem:'आपकी वस्तु', netWeight:'शुद्ध सोने का वजन', shopRate:'दुकान की सोने की दर', makingCharge:'मेकिंग चार्ज (VA)',
+    stoneCost:'पत्थर की लागत', gst:'GST', finalAmount:'अंतिम राशि',
+    mcTitle:'🎚️ मेकिंग चार्ज — अलग-अलग प्रतिशत आज़माएं', mcYouCharge:'📌 यह बिल आपसे वसूल रहा है:', mcTypical:'सामान्य:',
+    mcTotalAt:'इस % पर कुल राशि', mcBilled:'आपसे लिया गया', mcPctLabel:'इस प्रतिशत पर मेकिंग चार्ज',
+    stoneSliderTitle:'🎚️ पत्थर की लागत — बाज़ार दरें आज़माएं', stoneSliderHint:'हर पत्थर को उसकी सामान्य बाज़ार सीमा में खींचें और देखें कि कुल राशि कैसे बदलती है।',
+    stoneSliderTotal:'इन दरों पर कुल राशि', stoneSliderTotalWord:'कुल',
+    reportHeading:'आपकी बातचीत रिपोर्ट कार्ड', reportHeadingReceipt:'आपकी बिल जांच रिपोर्ट',
+    basicChecksTitle:'केवल बुनियादी जांच', basicChecksDetail:'हम बिल पढ़ सके, लेकिन इस बार विस्तृत जांच नहीं बना सके — ऊपर दी गई संख्याएं फिर भी बिल से सटीक हैं।',
+    stoneTableTitle:'💎 पत्थर की कीमत — आप बनाम सामान्य बाज़ार', stoneTableHint:'यह केवल एक मोटा मार्गदर्शक है — असली कीमत उस गुणवत्ता पर निर्भर करती है जो फोटो से पता नहीं चलती।',
+    stoneYou:'आप:', stoneMarket:'बाज़ार:', stoneWithin:'सीमा के भीतर', stoneAbove:'सामान्य से अधिक', stoneBelow:'सामान्य से कम',
+    disclaimer:'⚠️ यह आपके बिल को बेहतर समझने के लिए एक सहायक है — यह किसी दुकान पर गलत काम का आरोप नहीं लगाता, और यह प्रमाणित मूल्यांकन नहीं है। पत्थर की कीमत विशेष रूप से उस गुणवत्ता और स्पष्टता पर निर्भर करती है जो फोटो से पता नहीं चलती। इसे अपने सवालों की शुरुआत मानें, अंतिम फैसला नहीं।',
+    todaysRatePrefix:'📍 आज की सोने की दर —',
+    saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
+  },
+};
+function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
+</script>
+<script>
 var selectedFile = null;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
@@ -207,7 +279,7 @@ function handleFile(file){
     zone.classList.add('has-image');
     zone.innerHTML =
       '<img class="preview-img" src="' + e.target.result + '">' +
-      '<div class="city-row">📍 Your city:' +
+      '<div class="city-row">' + esc(L('cityLabel')) +
         '<select id="citySelect">' +
           '<option value="hyderabad">Hyderabad</option><option value="vijayawada">Vijayawada</option>' +
           '<option value="visakhapatnam">Visakhapatnam</option><option value="chennai">Chennai</option>' +
@@ -215,8 +287,8 @@ function handleFile(file){
           '<option value="delhi">Delhi</option><option value="pune">Pune</option>' +
         '</select>' +
       '</div>' +
-      '<button class="check-btn" id="checkBtn" onclick="checkBill()">✅ Check This Bill</button>' +
-      '<span class="reset-link" onclick="resetUpload()">Choose a different photo</span>';
+      '<button class="check-btn" id="checkBtn" onclick="checkBill()">' + esc(L('checkBtn')) + '</button>' +
+      '<span class="reset-link" onclick="resetUpload()">' + esc(L('changePhoto')) + '</span>';
   };
   reader.readAsDataURL(file);
 }
@@ -231,11 +303,11 @@ function resetUpload(){
   zone.classList.remove('has-image');
   zone.innerHTML =
     '<div class="upload-icon">📸</div>' +
-    '<div class="upload-title">Show Us the Bill</div>' +
-    '<div class="upload-hint">Take a clear photo, or choose one from your gallery — works with any shop\'s format.</div>' +
+    '<div class="upload-title">' + esc(L('uploadTitle')) + '</div>' +
+    '<div class="upload-hint">' + esc(L('uploadHint')) + '</div>' +
     '<div class="upload-btn-row">' +
-      '<label class="upload-btn camera">📷 Take a Photo<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;"></label>' +
-      '<label class="upload-btn file">🖼️ Choose from Gallery<input type="file" id="galleryInput" accept="image/*" style="display:none;"></label>' +
+      '<label class="upload-btn camera">' + esc(L('camBtn')) + '<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;"></label>' +
+      '<label class="upload-btn file">' + esc(L('fileBtn')) + '<input type="file" id="galleryInput" accept="image/*" style="display:none;"></label>' +
     '</div>';
   document.getElementById('cameraInput').addEventListener('change', function(){ handleFile(this.files[0]); });
   document.getElementById('galleryInput').addEventListener('change', function(){ handleFile(this.files[0]); });
@@ -245,7 +317,7 @@ function checkBill(){
   if (!selectedFile) return;
   var city = document.getElementById('citySelect').value;
   var btn = document.getElementById('checkBtn');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Reading your bill…'; }
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + L('checkingBtn'); }
 
   document.getElementById('resultArea').innerHTML =
     '<div class="loading-box"><div class="loading-icon">🔍</div><div class="loading-text">Reading the numbers, checking the math, looking up today\'s gold rate — this can take up to a minute.</div></div>';
@@ -259,7 +331,7 @@ function checkBill(){
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
-        if (btn) { btn.disabled = false; btn.textContent = '✅ Check This Bill'; }
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
         if (!data.ok) {
           document.getElementById('resultArea').innerHTML =
             '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
@@ -268,7 +340,7 @@ function checkBill(){
         renderResults(data.extracted, data.checks, data.stone_price_table, data.making_charge_range, data.today_gold_rate);
       })
       .catch(function(){
-        if (btn) { btn.disabled = false; btn.textContent = '✅ Check This Bill'; }
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
         document.getElementById('resultArea').innerHTML =
           '<div class="check-card warn"><div class="check-title">Something went wrong</div><div class="check-detail">Could not reach the server — please try again.</div></div>';
       });
@@ -277,27 +349,31 @@ function checkBill(){
 }
 
 function renderResults(ex, checks, stoneTable, mcRange, todayRate){
+  // Cache every input so switching language later can fully re-render the
+  // whole report (not just the AI-generated check-card text) without
+  // needing to re-fetch anything from the backend.
+  window.__lastRender = {ex: ex, checks: checks, stoneTable: stoneTable, mcRange: mcRange, todayRate: todayRate};
   window.__enChecks = checks;
-  window.__langCache = { en: checks };
-  window.__currentLang = 'en';
+  window.__langCache = window.__langCache || { en: checks };
+  if (GBC_LANG === 'en') window.__langCache.en = checks;
   var out = '';
 
   if (todayRate && todayRate.rate_22k) {
     out += '<div class="rate-banner">';
-    out += '<div class="rate-banner-label">📍 Today\'s Gold Rate — ' + esc((todayRate.city||'').replace(/\b\w/g, function(c){return c.toUpperCase();})) + '</div>';
+    out += '<div class="rate-banner-label">' + esc(L('todaysRatePrefix')) + ' ' + esc((todayRate.city||'').replace(/\b\w/g, function(c){return c.toUpperCase();})) + '</div>';
     out += '<div class="rate-banner-22">' + fmtRs(todayRate.rate_22k) + '<small>/g · 22K</small></div>';
     if (todayRate.rate_24k) out += '<div class="rate-banner-24">24K: ' + fmtRs(todayRate.rate_24k) + '/g</div>';
     out += '</div>';
   }
 
   out += '<div class="summary-card">';
-  out += '<div class="summary-title">📋 ' + esc(ex.item_description || 'Your Item') + (ex.item_purity_karat ? ' (' + esc(ex.item_purity_karat) + ')' : '') + '</div>';
-  if (ex.net_weight_g) out += '<div class="summary-row"><b>Net Gold Weight</b><span>' + ex.net_weight_g + 'g</span></div>';
-  if (ex.printed_gold_rate_per_gram) out += '<div class="summary-row"><b>Shop\'s Gold Rate</b><span>' + fmtRs(ex.printed_gold_rate_per_gram) + '/g</span></div>';
-  if (ex.va_percent) out += '<div class="summary-row"><b>Making Charge (VA)</b><span>' + ex.va_percent + '%</span></div>';
-  if (ex.total_stone_cost) out += '<div class="summary-row"><b>Stone Cost</b><span>' + fmtRs(ex.total_stone_cost) + '</span></div>';
-  if (ex.gst_percent) out += '<div class="summary-row"><b>GST</b><span>' + ex.gst_percent + '%</span></div>';
-  if (ex.final_amount) out += '<div class="summary-final"><span class="summary-final-label">Final Amount</span><span class="summary-final-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+  out += '<div class="summary-title">📋 ' + esc(ex.item_description || L('yourItem')) + (ex.item_purity_karat ? ' (' + esc(ex.item_purity_karat) + ')' : '') + '</div>';
+  if (ex.net_weight_g) out += '<div class="summary-row"><b>' + esc(L('netWeight')) + '</b><span>' + ex.net_weight_g + 'g</span></div>';
+  if (ex.printed_gold_rate_per_gram) out += '<div class="summary-row"><b>' + esc(L('shopRate')) + '</b><span>' + fmtRs(ex.printed_gold_rate_per_gram) + '/g</span></div>';
+  if (ex.va_percent) out += '<div class="summary-row"><b>' + esc(L('makingCharge')) + '</b><span>' + ex.va_percent + '%</span></div>';
+  if (ex.total_stone_cost) out += '<div class="summary-row"><b>' + esc(L('stoneCost')) + '</b><span>' + fmtRs(ex.total_stone_cost) + '</span></div>';
+  if (ex.gst_percent) out += '<div class="summary-row"><b>' + esc(L('gst')) + '</b><span>' + ex.gst_percent + '%</span></div>';
+  if (ex.final_amount) out += '<div class="summary-final"><span class="summary-final-label">' + esc(L('finalAmount')) + '</span><span class="summary-final-amt">' + fmtRs(ex.final_amount) + '</span></div>';
 
   if (ex.stones && ex.stones.length) {
     out += '<div class="stones-list">';
@@ -328,18 +404,18 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
     var zoneWidthPct = ((st.typHigh - st.typLow) / (st.sliderMax - st.sliderMin)) * 100;
 
     out += '<div class="slider-card">';
-    out += '<div class="slider-card-title">🎚️ Making Charge — Try Different Percentages</div>';
+    out += '<div class="slider-card-title">' + esc(L('mcTitle')) + '</div>';
     out += '<div class="slider-card-note">' + esc(mcRange.note || '') + '</div>';
-    out += '<div class="slider-you-badge">📌 This bill charges you: ' + st.billVA + '%</div>';
-    out += '<div class="slider-track-labels"><span>' + st.sliderMin + '%</span><span style="color:var(--green);font-weight:800;">Typical: ' + st.typLow + '–' + st.typHigh + '%</span><span>' + st.sliderMax + '%</span></div>';
+    out += '<div class="slider-you-badge">' + esc(L('mcYouCharge')) + ' ' + st.billVA + '%</div>';
+    out += '<div class="slider-track-labels"><span>' + st.sliderMin + '%</span><span style="color:var(--green);font-weight:800;">' + esc(L('mcTypical')) + ' ' + st.typLow + '–' + st.typHigh + '%</span><span>' + st.sliderMax + '%</span></div>';
     out += '<div class="slider-track-wrap">';
     out += '<div class="typical-zone" style="left:' + zoneLeftPct + '%;width:' + zoneWidthPct + '%;"></div>';
     out += '<input type="range" class="va-slider" id="vaSlider" min="' + st.sliderMin + '" max="' + st.sliderMax + '" step="0.5" value="' + st.billVA + '" oninput="updateSliderResult(this.value)">';
     out += '</div>';
     out += '<div class="slider-live-pct" id="sliderPct">' + st.billVA + '%</div>';
-    out += '<div class="slider-live-label">making charge at this percentage</div>';
-    out += '<div class="slider-result-row highlight"><span class="slider-result-label">Total at this %</span><span class="slider-result-amt" id="sliderTotal">—</span></div>';
-    out += '<div class="slider-result-row"><span class="slider-result-label">What you\'re billed</span><span class="slider-result-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+    out += '<div class="slider-live-label">' + esc(L('mcPctLabel')) + '</div>';
+    out += '<div class="slider-result-row highlight"><span class="slider-result-label">' + esc(L('mcTotalAt')) + '</span><span class="slider-result-amt" id="sliderTotal">—</span></div>';
+    out += '<div class="slider-result-row"><span class="slider-result-label">' + esc(L('mcBilled')) + '</span><span class="slider-result-amt">' + fmtRs(ex.final_amount) + '</span></div>';
     out += '<div id="sliderDiff"></div>';
     out += '</div>';
   }
@@ -364,31 +440,33 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
       })
     };
     out += '<div class="stone-slider-card">';
-    out += '<div class="slider-card-title">🎚️ Stone Cost — Try Market Rates</div>';
-    out += '<div class="slider-card-note">Drag each stone to a rate within its typical market range and see the total move.</div>';
+    out += '<div class="slider-card-title">' + esc(L('stoneSliderTitle')) + '</div>';
+    out += '<div class="slider-card-note">' + esc(L('stoneSliderHint')) + '</div>';
     window.__stoneState.stones.forEach(function(s, i){
       out += '<div class="stone-slider-row">';
       out += '<div class="stone-slider-name">' + esc(s.name) + ' <span style="color:var(--muted);font-weight:600;">(' + (s.weightCt||0).toFixed(2) + ' ct)</span></div>';
       out += '<input type="range" class="stone-slider" id="stoneSlider' + i + '" min="' + s.lo + '" max="' + Math.max(s.hi, s.cur) + '" step="10" value="' + s.cur + '" oninput="updateStoneSlider(' + i + ', this.value)">';
-      out += '<div class="stone-slider-live" id="stoneSliderLive' + i + '">' + fmtRs(s.cur) + '/ct · ' + fmtRs(s.billAmt) + ' total</div>';
+      out += '<div class="stone-slider-live" id="stoneSliderLive' + i + '">' + fmtRs(s.cur) + '/ct · ' + fmtRs(s.billAmt) + ' ' + esc(L('stoneSliderTotalWord')) + '</div>';
       out += '</div>';
     });
-    out += '<div class="slider-result-row highlight" style="margin-top:6px;"><span class="slider-result-label">Total at these rates</span><span class="slider-result-amt" id="stoneSliderTotal">—</span></div>';
-    out += '<div class="slider-result-row"><span class="slider-result-label">What you\'re billed</span><span class="slider-result-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+    out += '<div class="slider-result-row highlight" style="margin-top:6px;"><span class="slider-result-label">' + esc(L('stoneSliderTotal')) + '</span><span class="slider-result-amt" id="stoneSliderTotal">—</span></div>';
+    out += '<div class="slider-result-row"><span class="slider-result-label">' + esc(L('mcBilled')) + '</span><span class="slider-result-amt">' + fmtRs(ex.final_amount) + '</span></div>';
     out += '<div id="stoneSliderDiff"></div>';
     out += '</div>';
   }
 
   var isReceipt = (ex.document_type || '').toLowerCase() === 'receipt';
-  out += '<div class="section-hd">🔎 ' + (isReceipt ? 'Your Bill Check Report' : 'Your Negotiation Report Card') + '</div>';
-  out += '<div class="lang-toggle">';
-  out += '<button class="lang-btn active" id="langBtn-en" onclick="switchLang(\'en\')">English</button>';
-  out += '<button class="lang-btn" id="langBtn-te" onclick="switchLang(\'te\')">తెలుగు</button>';
-  out += '<button class="lang-btn" id="langBtn-hi" onclick="switchLang(\'hi\')">हिंदी</button>';
-  out += '</div>';
+  out += '<div class="section-hd">🔎 ' + esc(isReceipt ? L('reportHeadingReceipt') : L('reportHeading')) + '</div>';
+  if (!window.__embedMode) {
+    out += '<div class="lang-toggle">';
+    out += '<button class="lang-btn' + (GBC_LANG === 'en' ? ' active' : '') + '" id="langBtn-en" onclick="setGoldLang(\'en\')">English</button>';
+    out += '<button class="lang-btn' + (GBC_LANG === 'te' ? ' active' : '') + '" id="langBtn-te" onclick="setGoldLang(\'te\')">తెలుగు</button>';
+    out += '<button class="lang-btn' + (GBC_LANG === 'hi' ? ' active' : '') + '" id="langBtn-hi" onclick="setGoldLang(\'hi\')">हिंदी</button>';
+    out += '</div>';
+  }
   out += '<div id="checkCardsArea">';
   if (!checks.length) {
-    out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
+    out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
   }
   checks.forEach(function(c){
     var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
@@ -398,25 +476,25 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
 
   if (stoneTable && stoneTable.length) {
     out += '<div class="stone-table-card">';
-    out += '<div class="check-title">💎 Stone Pricing — You vs. Typical Market</div>';
-    out += '<div class="stone-table-hint">Rough guide only — real pricing depends on quality you can\'t judge from a bill.</div>';
+    out += '<div class="check-title">' + esc(L('stoneTableTitle')) + '</div>';
+    out += '<div class="stone-table-hint">' + esc(L('stoneTableHint')) + '</div>';
     stoneTable.forEach(function(s){
       var billRate = s.bill_rate_per_ct || 0;
       var lo = s.market_low_per_ct || 0;
       var hi = s.market_high_per_ct || 0;
       var withinRange = billRate >= lo && billRate <= hi;
       var badgeClass = withinRange ? 'stone-badge-ok' : (billRate > hi ? 'stone-badge-high' : 'stone-badge-low');
-      var badgeText = withinRange ? 'Within range' : (billRate > hi ? 'Above typical' : 'Below typical');
+      var badgeText = withinRange ? L('stoneWithin') : (billRate > hi ? L('stoneAbove') : L('stoneBelow'));
       out += '<div class="stone-compare-row">' +
         '<div class="stone-compare-name">' + esc(s.stone_type) + '</div>' +
-        '<div class="stone-compare-nums"><span class="stone-you">You: ' + fmtRs(billRate) + '/ct</span><span class="stone-market">Market: ' + fmtRs(lo) + '–' + fmtRs(hi) + '/ct</span></div>' +
-        '<div class="stone-badge ' + badgeClass + '">' + badgeText + '</div>' +
+        '<div class="stone-compare-nums"><span class="stone-you">' + esc(L('stoneYou')) + ' ' + fmtRs(billRate) + '/ct</span><span class="stone-market">' + esc(L('stoneMarket')) + ' ' + fmtRs(lo) + '–' + fmtRs(hi) + '/ct</span></div>' +
+        '<div class="stone-badge ' + badgeClass + '">' + esc(badgeText) + '</div>' +
       '</div>';
     });
     out += '</div>';
   }
 
-  out += '<div class="disclaimer-box">⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.</div>';
+  out += '<div class="disclaimer-box">' + esc(L('disclaimer')) + '</div>';
 
   document.getElementById('resultArea').innerHTML = out;
   if (mcRange && ex.gold_value_amount) { updateSliderResult(window.__mcState.billVA); }
@@ -444,9 +522,9 @@ function updateSliderResult(vaPct){
     if (Math.abs(diff) < 100) {
       diffEl.innerHTML = '';
     } else if (diff > 0) {
-      diffEl.innerHTML = '<div class="slider-diff save">💰 At ' + vaPct + '%, you\'d pay ' + fmtRs(diff) + ' less than this bill</div>';
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
     } else {
-      diffEl.innerHTML = '<div class="slider-diff extra">At ' + vaPct + '%, this would cost ' + fmtRs(Math.abs(diff)) + ' more than this bill</div>';
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
     }
   }
 }
@@ -458,7 +536,7 @@ function updateStoneSlider(idx, rate){
   var s = st.stones[idx];
   s.cur = rate;
   var amt = rate * (s.weightCt || 0);
-  document.getElementById('stoneSliderLive' + idx).textContent = fmtRs(rate) + '/ct · ' + fmtRs(amt) + ' total';
+  document.getElementById('stoneSliderLive' + idx).textContent = fmtRs(rate) + '/ct · ' + fmtRs(amt) + ' ' + L('stoneSliderTotalWord');
   updateStoneSliderTotal();
 }
 
@@ -479,9 +557,9 @@ function updateStoneSliderTotal(){
     if (Math.abs(diff) < 100) {
       diffEl.innerHTML = '';
     } else if (diff > 0) {
-      diffEl.innerHTML = '<div class="slider-diff save">💰 At these rates, you\'d pay ' + fmtRs(diff) + ' less than this bill</div>';
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('saveStonePrefix')) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
     } else {
-      diffEl.innerHTML = '<div class="slider-diff extra">At these rates, this would cost ' + fmtRs(Math.abs(diff)) + ' more than this bill</div>';
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('saveStonePrefix')) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
     }
   }
 }
@@ -489,7 +567,7 @@ function updateStoneSliderTotal(){
 function renderCheckCards(checks){
   var out = '';
   if (!checks.length) {
-    out += '<div class="check-card info"><div class="check-title">Basic checks only</div><div class="check-detail">We could read the bill, but couldn\'t generate detailed checks this time — the numbers above are still accurate from the bill itself.</div></div>';
+    out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
   }
   checks.forEach(function(c){
     var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
@@ -498,29 +576,42 @@ function renderCheckCards(checks){
   document.getElementById('checkCardsArea').innerHTML = out;
 }
 
-function switchLang(lang){
-  ['en', 'te', 'hi'].forEach(function(l){
-    var btn = document.getElementById('langBtn-' + l);
-    if (btn) btn.classList.toggle('active', l === lang);
-  });
-  window.__currentLang = lang;
+// Applies the static (non-AI-generated) UI strings for the given language —
+// hero, upload zone, button labels — used both before and after a bill has
+// been analysed, so switching language works at any point in the flow.
+function applyStaticLang(){
+  var t = function(id, key){ var el = document.getElementById(id); if (el) el.textContent = L(key); };
+  t('tHeroTitle', 'heroTitle'); t('tHeroSub', 'heroSub');
+  t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
+  t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
+  var checkBtn = document.getElementById('checkBtn');
+  if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
+}
+
+// One entry point for a language change, whether triggered by clicking a
+// button on this page (standalone use) or by a postMessage from the parent
+// Jewellery Suite page (embedded use) — keeps both paths in sync so there's
+// only ever ONE set of controls actually driving the language, never two.
+function setGoldLang(lang){
+  GBC_LANG = lang;
+  applyStaticLang();
+
+  if (!window.__lastRender) return; // nothing analysed yet - static text is enough
+
+  var enChecks = window.__enChecks;
+  if (!enChecks) return;
 
   if (window.__langCache[lang]) {
-    renderCheckCards(window.__langCache[lang]);
+    // Full re-render so slider labels, stone table, disclaimer etc. also
+    // switch language, not just the check cards.
+    var r = window.__lastRender;
+    renderResults(r.ex, window.__langCache[lang], r.stoneTable, r.mcRange, r.todayRate);
+    rehookSlidersAfterLangSwitch();
     return;
   }
 
-  // Not cached yet — translate titles+details in one batched call, then
-  // rebuild the checks array in the same shape (status stays the same,
-  // only the text changes) and cache it so switching back is instant.
-  var enChecks = window.__enChecks;
   var texts = [];
   enChecks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
-
-  var btn = document.getElementById('langBtn-' + lang);
-  var originalLabel = btn.textContent;
-  btn.textContent = '…';
-  ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = true; });
 
   fetch(BACKEND + '/api/translate-gold-checks', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -528,20 +619,24 @@ function switchLang(lang){
   })
   .then(function(r){ return r.json(); })
   .then(function(data){
-    ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = false; });
-    btn.textContent = originalLabel;
-    if (!data.ok) { switchLang('en'); return; }
+    if (!data.ok) { return; }
     var translated = enChecks.map(function(c, i){
       return { status: c.status, title: data.translations[i*2], detail: data.translations[i*2 + 1] };
     });
     window.__langCache[lang] = translated;
-    renderCheckCards(translated);
-  })
-  .catch(function(){
-    ['en', 'te', 'hi'].forEach(function(l){ var b = document.getElementById('langBtn-' + l); if (b) b.disabled = false; });
-    btn.textContent = originalLabel;
-    switchLang('en');
+    var r2 = window.__lastRender;
+    renderResults(r2.ex, translated, r2.stoneTable, r2.mcRange, r2.todayRate);
+    rehookSlidersAfterLangSwitch();
   });
+}
+
+// renderResults resets slider positions to their bill-default values on
+// every call (including language-switch re-renders) - that's fine, it just
+// means an in-progress slider drag resets on language switch, which is an
+// acceptable trade-off for keeping the whole report translated consistently.
+function rehookSlidersAfterLangSwitch(){
+  if (window.__mcState) updateSliderResult(window.__mcState.billVA);
+  if (window.__stoneState) updateStoneSliderTotal();
 }
 </script>
 
@@ -553,8 +648,18 @@ function switchLang(lang){
 (function(){
   var params = new URLSearchParams(window.location.search);
   if (params.get('embed') === '1') {
+    window.__embedMode = true;
     document.getElementById('gbcNav').style.display = 'none';
     document.body.style.paddingTop = '0';
+
+    // In embed mode the parent page's own language switcher is the ONLY
+    // language control shown (renderResults skips drawing this page's own
+    // buttons when __embedMode is true) - listen for its choice here.
+    window.addEventListener('message', function(ev){
+      if (ev.data && ev.data.type === 'setLang' && ['en','te','hi'].indexOf(ev.data.lang) !== -1) {
+        setGoldLang(ev.data.lang);
+      }
+    });
 
     function reportHeight(){
       var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
