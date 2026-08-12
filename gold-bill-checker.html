@@ -137,9 +137,9 @@ gtag('js', new Date());
 gtag('config', 'G-TJXHVW6XCL');
 </script>
 </head>
-<body>
+<body id="gbcBody">
 
-<nav>
+<nav id="gbcNav">
   <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
   <div style="display:flex;gap:8px;">
     <a class="nav-home" href="jewellery-suite.html">💍 Jewellery Suite</a>
@@ -544,5 +544,31 @@ function switchLang(lang){
 }
 </script>
 
+<script>
+// Embed mode: when loaded inside the Jewellery Suite's Gold tab (iframe),
+// hide the duplicate nav/branding since the suite already has its own, and
+// report content height changes to the parent so the iframe can resize
+// itself as the page grows (upload zone -> full analysis report).
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('embed') === '1') {
+    document.getElementById('gbcNav').style.display = 'none';
+    document.body.style.paddingTop = '0';
+
+    function reportHeight(){
+      var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      window.parent.postMessage({type: 'goldCheckerHeight', height: h}, '*');
+    }
+    window.addEventListener('load', reportHeight);
+    // Content height changes after image upload, after analysis completes,
+    // and when the stone/making-charge sliders' cards render - a
+    // MutationObserver catches all of these without needing to hook every
+    // individual render function.
+    var observer = new MutationObserver(function(){ reportHeight(); });
+    observer.observe(document.body, {childList: true, subtree: true});
+    setTimeout(reportHeight, 500);
+  }
+})();
+</script>
 </body>
 </html>
