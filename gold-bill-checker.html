@@ -361,7 +361,14 @@ function checkBill(){
     var base64 = reader.result.split(',')[1];
     fetch(BACKEND + '/api/check-gold-bill', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city, lang: GBC_LANG})
+      // Always request English here — this becomes the one canonical
+      // source of truth cached in window.__lastRenderEN. Any language the
+      // person actually wants to see is then translated from THIS cache
+      // client-side (see showInLang) — much more reliable than re-running
+      // the whole bill analysis (image upload + vision extraction) every
+      // time someone just wants to switch language, and it means a
+      // translation hiccup never wipes out the already-successful analysis.
+      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city, lang: 'en'})
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -371,7 +378,9 @@ function checkBill(){
             '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
           return;
         }
-        renderResults(data.extracted, data.checks, data.stone_price_table, data.making_charge_range, data.today_gold_rate);
+        window.__lastRenderEN = {ex: data.extracted, checks: data.checks, stoneTable: data.stone_price_table, mcRange: data.making_charge_range, todayRate: data.today_gold_rate};
+        window.__translations = {}; // fresh bill - old cached translations no longer apply
+        showInLang(GBC_LANG);
       })
       .catch(function(){
         if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
@@ -382,12 +391,57 @@ function checkBill(){
   reader.readAsDataURL(selectedFile);
 }
 
+// Renders the cached English analysis in whichever language is requested —
+// translating client-side (and caching the result) rather than ever
+// re-running the actual bill analysis. Crucially, this NEVER clears the
+// currently-shown report before the translation is ready, so a slow or
+// failed translation just leaves the previous language on screen instead
+// of "wiping" the analysis.
+function showInLang(lang){
+  var en = window.__lastRenderEN;
+  if (!en) { applyStaticLang(); return; }
+  window.__enChecks = en.checks;
+
+  if (lang === 'en') {
+    renderResults(en.ex, en.checks, en.stoneTable, en.mcRange, en.todayRate);
+    return;
+  }
+
+  window.__translations = window.__translations || {};
+  if (window.__translations[lang]) {
+    var cached = window.__translations[lang];
+    var mcCached = en.mcRange ? Object.assign({}, en.mcRange, {note: cached.mcNote}) : en.mcRange;
+    renderResults(en.ex, cached.checks, en.stoneTable, mcCached, en.todayRate);
+    return;
+  }
+
+  var texts = [];
+  en.checks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
+  var hasNote = !!(en.mcRange && en.mcRange.note);
+  if (hasNote) texts.push(en.mcRange.note);
+
+  fetch(BACKEND + '/api/translate-gold-checks', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({texts: texts, target_lang: lang})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) return; // leave whatever's currently shown as-is
+      var translatedChecks = en.checks.map(function(c, i){
+        return {status: c.status, title: data.translations[i * 2], detail: data.translations[i * 2 + 1]};
+      });
+      var mcNote = hasNote ? data.translations[data.translations.length - 1] : '';
+      window.__translations[lang] = {checks: translatedChecks, mcNote: mcNote};
+      if (GBC_LANG === lang) { // user might have switched again while this was in flight
+        var mc = en.mcRange ? Object.assign({}, en.mcRange, {note: mcNote}) : en.mcRange;
+        renderResults(en.ex, translatedChecks, en.stoneTable, mc, en.todayRate);
+      }
+    })
+    .catch(function(){ /* leave whatever's currently shown - no wipe on failure */ });
+}
+
+
 function renderResults(ex, checks, stoneTable, mcRange, todayRate){
-  // Cache the last render so language switching can trigger a clean refetch
-  // (see setGoldLang) and so the TTS "Listen" button always has the
-  // currently-shown checks to read from.
-  window.__lastRender = {ex: ex, checks: checks, stoneTable: stoneTable, mcRange: mcRange, todayRate: todayRate};
-  window.__enChecks = checks;
   var out = '';
 
   if (todayRate && todayRate.rate_22k) {
@@ -533,9 +587,22 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
 }
 
 function openZoom(sourceImgEl){
-  var img = document.getElementById('zoomImg');
   var srcVal = (sourceImgEl && sourceImgEl.src) || window.__billImgSrc || '';
   if (!srcVal) return; // nothing to show - don't open a blank/dark modal
+
+  // position:fixed inside an iframe is scoped to the IFRAME's own tall
+  // content area (our iframe auto-resizes to fit everything, often way
+  // taller than the visible screen) — not the real browser viewport. A
+  // "fullscreen" modal drawn inside the iframe ends up rendering somewhere
+  // in that tall invisible area instead of where the person is actually
+  // looking, which is exactly what looked broken/dark. When embedded, hand
+  // the zoom off to the parent page instead, which IS the real viewport.
+  if (window.__embedMode && window.parent && window.parent !== window) {
+    window.parent.postMessage({type: 'openZoom', src: srcVal}, '*');
+    return;
+  }
+
+  var img = document.getElementById('zoomImg');
   img.src = srcVal;
   document.body.style.overflow = 'hidden';
   document.getElementById('zoomModal').classList.add('open');
@@ -570,7 +637,7 @@ function exportGoldPdf(){
       pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
     }
-    var name = (window.__lastRender && window.__lastRender.ex && window.__lastRender.ex.item_description) || 'Gold_Bill_Check';
+    var name = (window.__lastRenderEN && window.__lastRenderEN.ex && window.__lastRenderEN.ex.item_description) || 'Gold_Bill_Check';
     pdf.save(name.replace(/[^a-z0-9]+/gi, '_') + '.pdf');
     btn.textContent = original;
     btn.disabled = false;
@@ -705,22 +772,13 @@ function applyStaticLang(){
 // Jewellery Suite page (embedded use) — keeps both paths in sync so there's
 // only ever ONE set of controls actually driving the language, never two.
 //
-// Simplified per real-world testing: rather than translating already-shown
-// English results client-side (fragile — easy to leave a stray English
-// string somewhere), if a bill has already been checked we just re-run the
-// whole check with the new language. The backend returns the full report
-// already translated in one response — simpler and much more reliable.
+// Translates from the cached English analysis (see showInLang) instead of
+// re-running the bill check — instant on a cache hit, and never wipes the
+// currently-shown report even if the translation call is slow or fails.
 function setGoldLang(lang){
   GBC_LANG = lang;
   applyStaticLang();
-
-  if (selectedFile && window.__lastRender && document.getElementById('checkBtn')) {
-    // A result was already shown once — re-run the check in the new
-    // language. (If they've only just chosen a photo and haven't pressed
-    // Check yet, we leave that to their own tap — GBC_LANG is read fresh
-    // at that point anyway, so their language choice still applies.)
-    checkBill();
-  }
+  showInLang(lang);
 }
 
 </script>
