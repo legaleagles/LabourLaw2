@@ -89,7 +89,7 @@ input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;ba
 .top-lang-toggle .lang-btn{flex:0 1 110px;padding:8px;font-size:12px;}
 .preview-img{cursor:zoom-in;}
 .zoom-hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:4px;}
-.zoom-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;}
+.zoom-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:9999;align-items:center;justify-content:center;}
 .zoom-modal.open{display:flex;}
 .zoom-modal img{max-width:96vw;max-height:88vh;touch-action:pinch-zoom;}
 .zoom-close{position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;}
@@ -311,7 +311,7 @@ function handleFile(file){
     var zone = document.getElementById('uploadZone');
     zone.classList.add('has-image');
     zone.innerHTML =
-      '<img class="preview-img" src="' + e.target.result + '" onclick="openZoom()">' +
+      '<img class="preview-img" src="' + e.target.result + '" onclick="openZoom(this)">' +
       '<div class="zoom-hint" id="tZoomHint">' + esc(L('zoomHint')) + '</div>' +
       '<div class="city-row">' + esc(L('cityLabel')) +
         '<select id="citySelect">' +
@@ -361,7 +361,7 @@ function checkBill(){
     var base64 = reader.result.split(',')[1];
     fetch(BACKEND + '/api/check-gold-bill', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city})
+      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city, lang: GBC_LANG})
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -383,13 +383,11 @@ function checkBill(){
 }
 
 function renderResults(ex, checks, stoneTable, mcRange, todayRate){
-  // Cache every input so switching language later can fully re-render the
-  // whole report (not just the AI-generated check-card text) without
-  // needing to re-fetch anything from the backend.
+  // Cache the last render so language switching can trigger a clean refetch
+  // (see setGoldLang) and so the TTS "Listen" button always has the
+  // currently-shown checks to read from.
   window.__lastRender = {ex: ex, checks: checks, stoneTable: stoneTable, mcRange: mcRange, todayRate: todayRate};
   window.__enChecks = checks;
-  window.__langCache = window.__langCache || { en: checks };
-  if (GBC_LANG === 'en') window.__langCache.en = checks;
   var out = '';
 
   if (todayRate && todayRate.rate_22k) {
@@ -534,13 +532,17 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function openZoom(){
+function openZoom(sourceImgEl){
   var img = document.getElementById('zoomImg');
-  img.src = window.__billImgSrc || document.querySelector('.preview-img').src;
+  var srcVal = (sourceImgEl && sourceImgEl.src) || window.__billImgSrc || '';
+  if (!srcVal) return; // nothing to show - don't open a blank/dark modal
+  img.src = srcVal;
+  document.body.style.overflow = 'hidden';
   document.getElementById('zoomModal').classList.add('open');
 }
 function closeZoom(ev){
   if (ev && ev.target.tagName === 'IMG') return; // clicking the image itself shouldn't close it
+  document.body.style.overflow = '';
   document.getElementById('zoomModal').classList.remove('open');
 }
 
@@ -591,7 +593,7 @@ function toggleListen(){
     btn.classList.remove('speaking');
     return;
   }
-  var checks = (window.__lastRender && window.__langCache && window.__langCache[GBC_LANG]) || window.__enChecks || [];
+  var checks = window.__enChecks || [];
   var parts = [];
   checks.forEach(function(c){ parts.push(c.title + '. ' + c.detail); });
   var fullText = parts.join('. . ');
@@ -702,52 +704,25 @@ function applyStaticLang(){
 // button on this page (standalone use) or by a postMessage from the parent
 // Jewellery Suite page (embedded use) — keeps both paths in sync so there's
 // only ever ONE set of controls actually driving the language, never two.
+//
+// Simplified per real-world testing: rather than translating already-shown
+// English results client-side (fragile — easy to leave a stray English
+// string somewhere), if a bill has already been checked we just re-run the
+// whole check with the new language. The backend returns the full report
+// already translated in one response — simpler and much more reliable.
 function setGoldLang(lang){
   GBC_LANG = lang;
   applyStaticLang();
 
-  if (!window.__lastRender) return; // nothing analysed yet - static text is enough
-
-  var enChecks = window.__enChecks;
-  if (!enChecks) return;
-
-  if (window.__langCache[lang]) {
-    // Full re-render so slider labels, stone table, disclaimer etc. also
-    // switch language, not just the check cards.
-    var r = window.__lastRender;
-    renderResults(r.ex, window.__langCache[lang], r.stoneTable, r.mcRange, r.todayRate);
-    rehookSlidersAfterLangSwitch();
-    return;
+  if (selectedFile && window.__lastRender && document.getElementById('checkBtn')) {
+    // A result was already shown once — re-run the check in the new
+    // language. (If they've only just chosen a photo and haven't pressed
+    // Check yet, we leave that to their own tap — GBC_LANG is read fresh
+    // at that point anyway, so their language choice still applies.)
+    checkBill();
   }
-
-  var texts = [];
-  enChecks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
-
-  fetch(BACKEND + '/api/translate-gold-checks', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({texts: texts, target_lang: lang})
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    if (!data.ok) { return; }
-    var translated = enChecks.map(function(c, i){
-      return { status: c.status, title: data.translations[i*2], detail: data.translations[i*2 + 1] };
-    });
-    window.__langCache[lang] = translated;
-    var r2 = window.__lastRender;
-    renderResults(r2.ex, translated, r2.stoneTable, r2.mcRange, r2.todayRate);
-    rehookSlidersAfterLangSwitch();
-  });
 }
 
-// renderResults resets slider positions to their bill-default values on
-// every call (including language-switch re-renders) - that's fine, it just
-// means an in-progress slider drag resets on language switch, which is an
-// acceptable trade-off for keeping the whole report translated consistently.
-function rehookSlidersAfterLangSwitch(){
-  if (window.__mcState) updateSliderResult(window.__mcState.billVA);
-  if (window.__stoneState) updateStoneSliderTotal();
-}
 </script>
 
 <script>
@@ -757,6 +732,11 @@ function rehookSlidersAfterLangSwitch(){
 // itself as the page grows (upload zone -> full analysis report).
 (function(){
   var params = new URLSearchParams(window.location.search);
+  var initialLang = params.get('lang');
+  if (initialLang && ['en','te','hi'].indexOf(initialLang) !== -1) {
+    GBC_LANG = initialLang;
+    applyStaticLang();
+  }
   if (params.get('embed') === '1') {
     window.__embedMode = true;
     document.getElementById('gbcNav').style.display = 'none';
@@ -764,8 +744,10 @@ function rehookSlidersAfterLangSwitch(){
     document.body.style.paddingTop = '0';
 
     // In embed mode the parent page's own language switcher is the ONLY
-    // language control shown (renderResults skips drawing this page's own
-    // buttons when __embedMode is true) - listen for its choice here.
+    // language control shown - the initial ?lang= URL param above sets the
+    // correct language from the very first render (reliable, no timing
+    // dependency), and this listener handles LIVE changes made after the
+    // Gold tab is already open, without needing a full iframe reload.
     window.addEventListener('message', function(ev){
       if (ev.data && ev.data.type === 'setLang' && ['en','te','hi'].indexOf(ev.data.lang) !== -1) {
         setGoldLang(ev.data.lang);
