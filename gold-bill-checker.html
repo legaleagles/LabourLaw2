@@ -81,6 +81,10 @@ input.stone-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heig
 input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);border:none;cursor:pointer;}
 .check-icon{font-size:16px;margin-right:6px;}
 .check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
+.check-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.check-title-row .check-title{flex:1;margin-bottom:6px;}
+.card-listen-btn{flex-shrink:0;background:#fff;border:1.5px solid #E5E7EB;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.card-listen-btn.speaking{background:linear-gradient(135deg,#059669,#047857);border-color:#059669;}
 .check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
 .hl-num{font-weight:800;color:#7C5A0B;background:rgba(201,162,39,.15);padding:0 3px;border-radius:4px;}
 .hl-pair{font-weight:800;color:#B45309;background:rgba(217,119,6,.14);padding:0 4px;border-radius:5px;}
@@ -547,9 +551,15 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
   if (!checks.length) {
     out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
   }
-  checks.forEach(function(c){
+  // Stored in the CURRENTLY DISPLAYED language (not the English cache) so
+  // each card's own listen button reads back exactly what's on screen.
+  window.__displayedChecks = checks;
+  checks.forEach(function(c, i){
     var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
-    out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + hl(c.detail) + '</div></div>';
+    out += '<div class="check-card ' + c.status + '">';
+    out += '<div class="check-title-row"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div>';
+    out += '<button class="card-listen-btn" id="cardListenBtn' + i + '" onclick="speakCard(' + i + ')" aria-label="' + esc(L('listenBtn')) + '">🔊</button></div>';
+    out += '<div class="check-detail">' + hl(c.detail) + '</div></div>';
   });
   out += '</div>';
 
@@ -577,7 +587,6 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
 
   out += '<div class="export-row">';
   out += '<button class="export-btn pdf" id="gbcPdfBtn" onclick="exportGoldPdf()">' + esc(L('downloadPdf')) + '</button>';
-  out += '<button class="export-btn listen" id="gbcListenBtn" onclick="toggleListen()">' + esc(L('listenBtn')) + '</button>';
   out += '</div>';
 
   document.getElementById('resultArea').innerHTML = out;
@@ -647,35 +656,40 @@ function exportGoldPdf(){
   });
 }
 
-// Text-to-speech for people who can't read well — reads the report's check
-// cards aloud in the currently selected language using the browser's own
-// speech engine (free, no backend cost, works offline once voices are
-// downloaded on the device).
+// Text-to-speech for people who can't read well — one small speaker button
+// per check card so someone can listen to just the part they care about
+// instead of waiting through the whole report. Reads from whatever is
+// CURRENTLY DISPLAYED (window.__displayedChecks, set fresh on every render
+// by renderResults) so it always matches the on-screen language, not the
+// cached English source.
 var GBC_SPEECH_LANG = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
-function toggleListen(){
-  var btn = document.getElementById('gbcListenBtn');
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    btn.textContent = L('listenBtn');
-    btn.classList.remove('speaking');
-    return;
+var GBC_SPEAKING_IDX = null;
+function speakCard(i){
+  var btn = document.getElementById('cardListenBtn' + i);
+  var wasSpeaking = window.speechSynthesis.speaking;
+  var wasSameCard = GBC_SPEAKING_IDX === i;
+  window.speechSynthesis.cancel();
+  if (GBC_SPEAKING_IDX !== null) {
+    var prevBtn = document.getElementById('cardListenBtn' + GBC_SPEAKING_IDX);
+    if (prevBtn) prevBtn.classList.remove('speaking');
   }
-  var checks = window.__enChecks || [];
-  var parts = [];
-  checks.forEach(function(c){ parts.push(c.title + '. ' + c.detail); });
-  var fullText = parts.join('. . ');
-  if (!fullText) return;
+  GBC_SPEAKING_IDX = null;
+  if (wasSpeaking && wasSameCard) return; // tapping the same speaking card again just stops it
 
-  var utter = new SpeechSynthesisUtterance(fullText);
+  var checks = window.__displayedChecks || [];
+  var c = checks[i];
+  if (!c) return;
+
+  var utter = new SpeechSynthesisUtterance(c.title + '. ' + c.detail);
   utter.lang = GBC_SPEECH_LANG[GBC_LANG] || 'en-IN';
   utter.rate = 0.92;
-  utter.onend = function(){ btn.textContent = L('listenBtn'); btn.classList.remove('speaking'); };
-  utter.onerror = function(){ btn.textContent = L('listenBtn'); btn.classList.remove('speaking'); };
-  window.speechSynthesis.cancel();
+  utter.onend = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
+  utter.onerror = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
   window.speechSynthesis.speak(utter);
-  btn.textContent = L('listeningBtn');
-  btn.classList.add('speaking');
+  if (btn) btn.classList.add('speaking');
+  GBC_SPEAKING_IDX = i;
 }
+
 function updateSliderResult(vaPct){
   var st = window.__mcState;
   if (!st) return;
@@ -736,18 +750,6 @@ function updateStoneSliderTotal(){
       diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('saveStonePrefix')) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
     }
   }
-}
-
-function renderCheckCards(checks){
-  var out = '';
-  if (!checks.length) {
-    out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
-  }
-  checks.forEach(function(c){
-    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
-    out += '<div class="check-card ' + c.status + '"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div><div class="check-detail">' + hl(c.detail) + '</div></div>';
-  });
-  document.getElementById('checkCardsArea').innerHTML = out;
 }
 
 // Applies the static (non-AI-generated) UI strings for the given language —
