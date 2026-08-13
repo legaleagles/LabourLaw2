@@ -1370,5 +1370,26 @@ document.addEventListener('DOMContentLoaded',function(){
  }catch(e){}
 });
 </script>
+
+<div id="parentZoomModal" onclick="if(event.target.tagName!=='IMG')this.style.display='none'"
+     style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:99999;align-items:center;justify-content:center;">
+  <button onclick="document.getElementById('parentZoomModal').style.display='none'"
+          style="position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;">✕</button>
+  <img id="parentZoomImg" src="" style="max-width:96vw;max-height:88vh;">
+  <div style="position:absolute;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12px;">Pinch or scroll to zoom — tap outside to close</div>
+</div>
+<script>
+// Receives the zoom request from the embedded Gold Bill Checker - see the
+// comment in that page's openZoom() for why this can't just draw its own
+// modal: position:fixed inside a tall auto-resizing iframe doesn't align
+// with the real visible screen, but this page IS the real top-level
+// document, so its own fixed modal behaves correctly.
+window.addEventListener('message', function(ev){
+  if (ev.data && ev.data.type === 'openZoom' && ev.data.src) {
+    document.getElementById('parentZoomImg').src = ev.data.src;
+    document.getElementById('parentZoomModal').style.display = 'flex';
+  }
+});
+</script>
 </body>
 </html>
