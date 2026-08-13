@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Comment Review — Private</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1117;--ink:#111827;--cream:#FEFCF5;--muted:#6B7280;--gold:#C9A227;--gold-l:#F5D76E;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+.hero{background:linear-gradient(150deg,#0D1117 0%,#3d1010 55%,#1a0505 100%);padding:26px 20px 22px;text-align:center;}
+.hero-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:#FCA5A5;}
+.hero-sub{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;}
+.wrap{max-width:700px;margin:0 auto;padding:18px 16px 60px;}
+
+.login-box{max-width:340px;margin:60px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-box button{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-err{color:#DC2626;font-size:11.5px;margin-top:8px;}
+
+.count-bar{text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+.empty{font-size:13px;color:var(--muted);text-align:center;padding:40px 20px;}
+
+.comment-card{background:#fff;border:1.5px solid #FCA5A5;border-left:5px solid #DC2626;border-radius:14px;padding:16px;margin-bottom:16px;}
+.comment-video{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:6px;}
+.comment-author{font-weight:800;font-size:13px;margin-bottom:4px;}
+.comment-text{font-size:13.5px;color:#1F2937;background:#F9FAFB;padding:10px 12px;border-radius:9px;margin-bottom:8px;line-height:1.55;}
+.comment-reason{font-size:11.5px;color:#7F1D1D;background:#FEF2F2;padding:6px 10px;border-radius:8px;display:inline-block;margin-bottom:12px;font-weight:700;}
+.comment-time{font-size:10.5px;color:var(--muted);margin-bottom:12px;}
+.reply-textarea{width:100%;min-height:80px;padding:10px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;font-family:inherit;margin-bottom:10px;resize:vertical;}
+.action-row{display:flex;gap:10px;}
+.action-btn{flex:1;padding:11px;border-radius:9px;border:none;font-weight:800;font-size:12.5px;cursor:pointer;}
+.action-btn.post{background:linear-gradient(135deg,#059669,#047857);color:#fff;}
+.action-btn.dismiss{background:#F3F4F6;color:#374151;}
+.action-btn:disabled{opacity:.5;}
+.status-msg{font-size:11.5px;margin-top:8px;text-align:center;}
+.watch-link{font-size:11px;color:#2563EB;display:inline-block;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-title">🚩 YouTube Comment Review</div>
+  <div class="hero-sub">Private moderation queue — comments flagged as negative, rude, or a complaint. Never auto-posted; review and respond here.</div>
+</div>
+
+<div class="wrap">
+
+  <div class="login-box" id="loginBox">
+    <div style="font-weight:800;font-size:14px;">Password required</div>
+    <input type="password" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+
+  <div id="mainArea" style="display:none;">
+    <div class="count-bar" id="countBar"></div>
+    <div id="listArea"><div class="empty">Loading…</div></div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var ytPassword = localStorage.getItem('ytModPassword') || '';
+
+if (ytPassword) { tryLogin(ytPassword); }
+
+function doLogin(){
+  var pw = document.getElementById('pwInput').value.trim();
+  if (!pw) return;
+  tryLogin(pw, true);
+}
+
+function tryLogin(pw, showErr){
+  fetch(BACKEND + '/api/youtube-flagged-comments', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw}) })
+    .then(function(r){
+      if (r.status === 401) { if (showErr) document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if (!data) return;
+      ytPassword = pw;
+      localStorage.setItem('ytModPassword', pw);
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('mainArea').style.display = 'block';
+      renderList(data.entries || []);
+    })
+    .catch(function(){ if (showErr) document.getElementById('loginErr').textContent = 'Something went wrong — try again.'; });
+}
+
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+function renderList(entries){
+  document.getElementById('countBar').textContent = entries.length + ' comment' + (entries.length === 1 ? '' : 's') + ' awaiting review';
+  var el = document.getElementById('listArea');
+  if (!entries.length) { el.innerHTML = '<div class="empty">Nothing flagged right now — all clear! 🎉</div>'; return; }
+
+  var out = '';
+  entries.forEach(function(e, i){
+    var date = new Date(e.flagged_at).toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+    var watchUrl = 'https://youtube.com/watch?v=' + e.video_id + '&lc=' + e.id;
+    out += '<div class="comment-card">';
+    out += '<div class="comment-video">' + esc(e.video_title || 'Video') + '</div>';
+    out += '<div class="comment-author">' + esc(e.author) + '</div>';
+    out += '<div class="comment-text">' + esc(e.text) + '</div>';
+    out += '<div class="comment-reason">⚠️ ' + esc(e.reason) + '</div>';
+    out += '<div class="comment-time">' + date + ' · <a class="watch-link" href="' + watchUrl + '" target="_blank">View on YouTube ↗</a></div>';
+    out += '<textarea class="reply-textarea" id="reply' + i + '" placeholder="Write a reply (optional — leave blank and tap Dismiss to just clear it)">' + esc(e.suggested_reply || '') + '</textarea>';
+    out += '<div class="action-row">';
+    out += '<button class="action-btn post" id="postBtn' + i + '" onclick="postReply(\'' + e.id + '\', ' + i + ')">✅ Post Reply</button>';
+    out += '<button class="action-btn dismiss" id="dismissBtn' + i + '" onclick="dismissComment(\'' + e.id + '\', ' + i + ')">Dismiss</button>';
+    out += '</div>';
+    out += '<div class="status-msg" id="status' + i + '"></div>';
+    out += '</div>';
+  });
+  el.innerHTML = out;
+}
+
+function setButtonsDisabled(i, disabled){
+  var postBtn = document.getElementById('postBtn' + i);
+  var dismissBtn = document.getElementById('dismissBtn' + i);
+  if (postBtn) postBtn.disabled = disabled;
+  if (dismissBtn) dismissBtn.disabled = disabled;
+}
+
+function postReply(id, i){
+  var text = document.getElementById('reply' + i).value.trim();
+  if (!text) { document.getElementById('status' + i).textContent = 'Write a reply first, or use Dismiss instead.'; return; }
+  setButtonsDisabled(i, true);
+  document.getElementById('status' + i).textContent = 'Posting…';
+  fetch(BACKEND + '/api/youtube-flagged-comment-action', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: ytPassword, id: id, action: 'reply', reply_text: text}) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) { setButtonsDisabled(i, false); document.getElementById('status' + i).textContent = '❌ ' + (data.error || 'Failed to post.'); return; }
+      loadQueue();
+    })
+    .catch(function(){ setButtonsDisabled(i, false); document.getElementById('status' + i).textContent = '❌ Network error — try again.'; });
+}
+
+function dismissComment(id, i){
+  setButtonsDisabled(i, true);
+  document.getElementById('status' + i).textContent = 'Dismissing…';
+  fetch(BACKEND + '/api/youtube-flagged-comment-action', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: ytPassword, id: id, action: 'dismiss'}) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) { setButtonsDisabled(i, false); document.getElementById('status' + i).textContent = '❌ ' + (data.error || 'Failed.'); return; }
+      loadQueue();
+    })
+    .catch(function(){ setButtonsDisabled(i, false); document.getElementById('status' + i).textContent = '❌ Network error — try again.'; });
+}
+
+function loadQueue(){
+  fetch(BACKEND + '/api/youtube-flagged-comments', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: ytPassword}) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ if (data.ok) renderList(data.entries || []); });
+}
+</script>
+</body>
+</html>
