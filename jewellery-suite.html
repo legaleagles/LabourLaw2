@@ -249,7 +249,7 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <!-- ══ GOLD FORM ══ -->
   <div id="form-gold">
-    <iframe id="goldCheckerFrame" src="gold-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
+    <iframe id="goldCheckerFrame" data-base-src="gold-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
   </div>
 
 
@@ -1252,6 +1252,10 @@ function renderStats(){
 recordVisit();
 applyLang();
 buildExplainer();
+(function(){
+  var frame = document.getElementById('goldCheckerFrame');
+  if (frame) frame.src = frame.dataset.baseSrc + '&lang=' + lang;
+})();
 </script>
 <script>
 /* Click-triggered live rate load — fetches fresh every time, no daily
