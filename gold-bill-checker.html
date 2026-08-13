@@ -8,6 +8,8 @@
 <link rel="canonical" href="https://lawsticker-ai.com/gold-bill-checker.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{
   --cream:#FEFCF5; --gold:#C9A227; --gold-l:#F5D76E; --navy:#0D1117;
@@ -83,6 +85,21 @@ input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;ba
 .hl-num{font-weight:800;color:#7C5A0B;background:rgba(201,162,39,.15);padding:0 3px;border-radius:4px;}
 .hl-pair{font-weight:800;color:#B45309;background:rgba(217,119,6,.14);padding:0 4px;border-radius:5px;}
 .lang-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.top-lang-toggle{display:flex;gap:8px;justify-content:center;padding:10px 16px;background:#fff;border-bottom:1px solid #F3E9C9;}
+.top-lang-toggle .lang-btn{flex:0 1 110px;padding:8px;font-size:12px;}
+.preview-img{cursor:zoom-in;}
+.zoom-hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:4px;}
+.zoom-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;}
+.zoom-modal.open{display:flex;}
+.zoom-modal img{max-width:96vw;max-height:88vh;touch-action:pinch-zoom;}
+.zoom-close{position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;}
+.zoom-tip{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12px;}
+.export-row{display:flex;gap:10px;margin:20px 0 8px;}
+.export-btn{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:12.5px;border:none;cursor:pointer;color:#fff;}
+.export-btn.pdf{background:linear-gradient(135deg,#DC2626,#991B1B);}
+.export-btn.listen{background:linear-gradient(135deg,#0EA5A6,#0a7a7b);}
+.export-btn:disabled{opacity:.6;}
+.export-btn.listen.speaking{background:linear-gradient(135deg,#059669,#047857);}
 .lang-btn{flex:1;padding:9px;border-radius:9px;border:1.5px solid #E5E7EB;background:#fff;font-weight:700;font-size:12.5px;cursor:pointer;color:#6B7280;}
 .lang-btn.active{background:#0EA5A6;border-color:#0EA5A6;color:#fff;}
 .lang-btn:disabled{opacity:.5;}
@@ -147,6 +164,12 @@ gtag('config', 'G-TJXHVW6XCL');
   </div>
 </nav>
 
+<div class="top-lang-toggle" id="topLangToggle">
+  <button class="lang-btn active" id="topLangBtn-en" onclick="setGoldLang('en')">English</button>
+  <button class="lang-btn" id="topLangBtn-te" onclick="setGoldLang('te')">తెలుగు</button>
+  <button class="lang-btn" id="topLangBtn-hi" onclick="setGoldLang('hi')">हिंदी</button>
+</div>
+
 <div class="hero">
   <div class="hero-icon">🧾✨</div>
   <div class="hero-title" id="tHeroTitle">Is Your Gold Bill Fair?</div>
@@ -174,6 +197,12 @@ gtag('config', 'G-TJXHVW6XCL');
   <div id="resultArea"></div>
 
   <div class="trust-note">🔒 Your bill photo is only used to read the numbers — it's not saved or shared anywhere.</div>
+
+  <div class="zoom-modal" id="zoomModal" onclick="closeZoom(event)">
+    <button class="zoom-close" onclick="closeZoom(event)">✕</button>
+    <img id="zoomImg" src="">
+    <div class="zoom-tip" id="tZoomTip">Pinch or scroll to zoom — tap outside to close</div>
+  </div>
 
 </div>
 
@@ -206,6 +235,7 @@ var GT = {
     disclaimer:'⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.',
     todaysRatePrefix:"📍 Today's Gold Rate —",
     saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
+    zoomHint:'👆 Tap the photo to zoom in and compare', downloadPdf:'⬇️ Download PDF', listenBtn:'🔊 Listen to this report', listeningBtn:'⏸️ Stop', preparingPdf:'⏳ Preparing…', zoomTip:'Pinch or scroll to zoom — tap outside to close',
   },
   te: {
     heroTitle:'మీ బంగారు బిల్లు సరైనదేనా?',
@@ -226,6 +256,7 @@ var GT = {
     disclaimer:'⚠️ ఇది మీ బిల్లును బాగా అర్థం చేసుకోవడానికి ఒక సహాయకం — ఇది ఏ దుకాణాన్ని తప్పుపట్టదు, మరియు ఇది ధృవీకరించిన విలువాంకనం కాదు. రాళ్ల ధర ముఖ్యంగా ఫోటోలో తెలియని నాణ్యత మరియు స్పష్టతపై ఆధారపడి ఉంటుంది. దీన్ని మీ స్వంత ప్రశ్నలకు ఒక ప్రారంభ బిందువుగా వాడండి, తుది తీర్పుగా కాదు.',
     todaysRatePrefix:'📍 నేటి బంగారం రేటు —',
     saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
+    zoomHint:'👆 జూమ్ చేయడానికి, పోల్చడానికి ఫోటోను తాకండి', downloadPdf:'⬇️ PDF డౌన్‌లోడ్ చేయండి', listenBtn:'🔊 ఈ నివేదిక వినండి', listeningBtn:'⏸️ ఆపు', preparingPdf:'⏳ సిద్ధం చేస్తున్నాము…', zoomTip:'జూమ్ చేయడానికి పించ్ చేయండి లేదా స్క్రోల్ చేయండి — మూసివేయడానికి బయట తాకండి',
   },
   hi: {
     heroTitle:'क्या आपका सोने का बिल सही है?',
@@ -246,6 +277,7 @@ var GT = {
     disclaimer:'⚠️ यह आपके बिल को बेहतर समझने के लिए एक सहायक है — यह किसी दुकान पर गलत काम का आरोप नहीं लगाता, और यह प्रमाणित मूल्यांकन नहीं है। पत्थर की कीमत विशेष रूप से उस गुणवत्ता और स्पष्टता पर निर्भर करती है जो फोटो से पता नहीं चलती। इसे अपने सवालों की शुरुआत मानें, अंतिम फैसला नहीं।',
     todaysRatePrefix:'📍 आज की सोने की दर —',
     saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
+    zoomHint:'👆 ज़ूम करके तुलना करने के लिए फोटो पर टैप करें', downloadPdf:'⬇️ PDF डाउनलोड करें', listenBtn:'🔊 यह रिपोर्ट सुनें', listeningBtn:'⏸️ रोकें', preparingPdf:'⏳ तैयार कर रहे हैं…', zoomTip:'ज़ूम करने के लिए पिंच करें या स्क्रॉल करें — बंद करने के लिए बाहर टैप करें',
   },
 };
 function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
@@ -275,10 +307,12 @@ function handleFile(file){
   selectedFile = file;
   var reader = new FileReader();
   reader.onload = function(e){
+    window.__billImgSrc = e.target.result;
     var zone = document.getElementById('uploadZone');
     zone.classList.add('has-image');
     zone.innerHTML =
-      '<img class="preview-img" src="' + e.target.result + '">' +
+      '<img class="preview-img" src="' + e.target.result + '" onclick="openZoom()">' +
+      '<div class="zoom-hint" id="tZoomHint">' + esc(L('zoomHint')) + '</div>' +
       '<div class="city-row">' + esc(L('cityLabel')) +
         '<select id="citySelect">' +
           '<option value="hyderabad">Hyderabad</option><option value="vijayawada">Vijayawada</option>' +
@@ -457,13 +491,6 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
 
   var isReceipt = (ex.document_type || '').toLowerCase() === 'receipt';
   out += '<div class="section-hd">🔎 ' + esc(isReceipt ? L('reportHeadingReceipt') : L('reportHeading')) + '</div>';
-  if (!window.__embedMode) {
-    out += '<div class="lang-toggle">';
-    out += '<button class="lang-btn' + (GBC_LANG === 'en' ? ' active' : '') + '" id="langBtn-en" onclick="setGoldLang(\'en\')">English</button>';
-    out += '<button class="lang-btn' + (GBC_LANG === 'te' ? ' active' : '') + '" id="langBtn-te" onclick="setGoldLang(\'te\')">తెలుగు</button>';
-    out += '<button class="lang-btn' + (GBC_LANG === 'hi' ? ' active' : '') + '" id="langBtn-hi" onclick="setGoldLang(\'hi\')">हिंदी</button>';
-    out += '</div>';
-  }
   out += '<div id="checkCardsArea">';
   if (!checks.length) {
     out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
@@ -496,12 +523,90 @@ function renderResults(ex, checks, stoneTable, mcRange, todayRate){
 
   out += '<div class="disclaimer-box">' + esc(L('disclaimer')) + '</div>';
 
+  out += '<div class="export-row">';
+  out += '<button class="export-btn pdf" id="gbcPdfBtn" onclick="exportGoldPdf()">' + esc(L('downloadPdf')) + '</button>';
+  out += '<button class="export-btn listen" id="gbcListenBtn" onclick="toggleListen()">' + esc(L('listenBtn')) + '</button>';
+  out += '</div>';
+
   document.getElementById('resultArea').innerHTML = out;
   if (mcRange && ex.gold_value_amount) { updateSliderResult(window.__mcState.billVA); }
   if (stoneTable && stoneTable.length && ex.gold_value_amount) { updateStoneSliderTotal(); }
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+function openZoom(){
+  var img = document.getElementById('zoomImg');
+  img.src = window.__billImgSrc || document.querySelector('.preview-img').src;
+  document.getElementById('zoomModal').classList.add('open');
+}
+function closeZoom(ev){
+  if (ev && ev.target.tagName === 'IMG') return; // clicking the image itself shouldn't close it
+  document.getElementById('zoomModal').classList.remove('open');
+}
+
+function exportGoldPdf(){
+  var btn = document.getElementById('gbcPdfBtn');
+  var original = btn.textContent;
+  btn.textContent = L('preparingPdf');
+  btn.disabled = true;
+
+  var el = document.getElementById('resultArea');
+  html2canvas(el, {scale: 2, backgroundColor: '#FEFCF5', useCORS: true}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    var name = (window.__lastRender && window.__lastRender.ex && window.__lastRender.ex.item_description) || 'Gold_Bill_Check';
+    pdf.save(name.replace(/[^a-z0-9]+/gi, '_') + '.pdf');
+    btn.textContent = original;
+    btn.disabled = false;
+  }).catch(function(){
+    btn.textContent = original;
+    btn.disabled = false;
+  });
+}
+
+// Text-to-speech for people who can't read well — reads the report's check
+// cards aloud in the currently selected language using the browser's own
+// speech engine (free, no backend cost, works offline once voices are
+// downloaded on the device).
+var GBC_SPEECH_LANG = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
+function toggleListen(){
+  var btn = document.getElementById('gbcListenBtn');
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    btn.textContent = L('listenBtn');
+    btn.classList.remove('speaking');
+    return;
+  }
+  var checks = (window.__lastRender && window.__langCache && window.__langCache[GBC_LANG]) || window.__enChecks || [];
+  var parts = [];
+  checks.forEach(function(c){ parts.push(c.title + '. ' + c.detail); });
+  var fullText = parts.join('. . ');
+  if (!fullText) return;
+
+  var utter = new SpeechSynthesisUtterance(fullText);
+  utter.lang = GBC_SPEECH_LANG[GBC_LANG] || 'en-IN';
+  utter.rate = 0.92;
+  utter.onend = function(){ btn.textContent = L('listenBtn'); btn.classList.remove('speaking'); };
+  utter.onerror = function(){ btn.textContent = L('listenBtn'); btn.classList.remove('speaking'); };
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+  btn.textContent = L('listeningBtn');
+  btn.classList.add('speaking');
+}
 function updateSliderResult(vaPct){
   var st = window.__mcState;
   if (!st) return;
@@ -584,8 +689,13 @@ function applyStaticLang(){
   t('tHeroTitle', 'heroTitle'); t('tHeroSub', 'heroSub');
   t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
   t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
+  t('tZoomHint', 'zoomHint'); t('tZoomTip', 'zoomTip');
   var checkBtn = document.getElementById('checkBtn');
   if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
+  ['en', 'te', 'hi'].forEach(function(l){
+    var btn = document.getElementById('topLangBtn-' + l);
+    if (btn) btn.classList.toggle('active', l === GBC_LANG);
+  });
 }
 
 // One entry point for a language change, whether triggered by clicking a
@@ -650,6 +760,7 @@ function rehookSlidersAfterLangSwitch(){
   if (params.get('embed') === '1') {
     window.__embedMode = true;
     document.getElementById('gbcNav').style.display = 'none';
+    document.getElementById('topLangToggle').style.display = 'none';
     document.body.style.paddingTop = '0';
 
     // In embed mode the parent page's own language switcher is the ONLY
