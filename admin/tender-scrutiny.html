@@ -101,6 +101,11 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 .hist-name{font-weight:800;font-size:13px;}
 .hist-meta{font-size:10.5px;color:var(--muted);margin-top:2px;}
 
+.ghmc-card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.ghmc-name{font-size:12.5px;font-weight:700;color:#1F2937;margin-bottom:8px;line-height:1.4;}
+.ghmc-dl-btn{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);padding:7px 12px;border-radius:8px;text-decoration:none;}
+.ghmc-no-doc{font-size:11px;color:var(--muted);font-style:italic;}
+
 .empty{font-size:12px;color:var(--muted);text-align:center;padding:20px;}
 </style>
 </head>
@@ -136,6 +141,11 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 
     <div id="resultArea"></div>
 
+    <div class="section-hd">📋 Live GHMC Tenders — Patancheru watch</div>
+    <div class="upload-card-hint" style="margin-bottom:12px;">Every currently-listed GHMC tender — tap to download any PDF and analyze it above. Patancheru-matching ones are already auto-analyzed and notified on Telegram; this is for browsing everything else too.</div>
+    <button class="upload-btn" style="margin-bottom:14px;" onclick="loadGhmcTenders()">🔄 Refresh GHMC Tender List</button>
+    <div id="ghmcListArea"></div>
+
     <div class="section-hd">📚 Past Analyses</div>
     <div id="historyArea"><div class="empty">Loading…</div></div>
 
@@ -144,6 +154,11 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 
 <script>
 var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+// GHMC's own page rejects requests from europe-west1 (confirmed via
+// testing), so this specific fetch has to go through the India-region
+// (Mumbai) deployment - everything else on this page still uses the main
+// BACKEND above.
+var GHMC_BACKEND = 'https://lawsticker-backend-test-494996217030.asia-south1.run.app';
 var tsPassword = localStorage.getItem('tsPassword') || '';
 var pendingBase64 = null;
 
@@ -386,6 +401,34 @@ function renderHistory(entries){
     out += '</div>';
   });
   window.__histEntries = entries;
+  el.innerHTML = out;
+}
+
+function loadGhmcTenders(){
+  document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Loading current GHMC tenders…</div>';
+  fetch(GHMC_BACKEND + '/api/ghmc-tenders-list')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) { document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Could not load - ' + esc(data.error || 'unknown error') + '</div>'; return; }
+      renderGhmcTenders(data.tenders || []);
+    })
+    .catch(function(){ document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Network error loading GHMC tenders.</div>'; });
+}
+
+function renderGhmcTenders(tenders){
+  var el = document.getElementById('ghmcListArea');
+  if (!tenders.length) { el.innerHTML = '<div class="empty">No tenders currently listed.</div>'; return; }
+  var out = '';
+  tenders.forEach(function(t){
+    out += '<div class="ghmc-card">';
+    out += '<div class="ghmc-name">' + esc(t.work_name) + '</div>';
+    if (t.doc_url) {
+      out += '<a class="ghmc-dl-btn" href="' + esc(t.doc_url) + '" target="_blank" rel="noopener">⬇️ Download PDF</a>';
+    } else {
+      out += '<span class="ghmc-no-doc">No document link found for this row</span>';
+    }
+    out += '</div>';
+  });
   el.innerHTML = out;
 }
 </script>
