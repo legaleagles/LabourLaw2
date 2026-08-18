@@ -532,6 +532,12 @@ function computeQuickFlags(title, detail){
     flags.push({level: 'info', text: 'This tender has at least one corrigendum (amendment after original publication) — worth checking what changed and why.'});
   }
 
+  // Offline submission is less transparent/auditable than the standard
+  // online e-procurement flow most GHMC tenders use.
+  if (detail.tender_type && /offline/i.test(detail.tender_type)) {
+    flags.push({level: 'warn', text: 'This tender uses offline bid submission rather than the standard online e-procurement portal — offline processes are harder to audit after the fact.'});
+  }
+
   return flags;
 }
 
@@ -548,11 +554,13 @@ function fetchGhmcDetail(i){
       if (!data.ok) { area.innerHTML = '<div class="ghmc-no-doc">❌ ' + esc(data.error || 'Could not fetch details.') + '</div>'; return; }
       var d = data.detail;
       var rows = [
-        ['Tender No', d.tender_no], ['Authority', d.authority_name],
+        ['Tender No', d.tender_no], ['TDR Ref No', d.tdr_number], ['Authority', d.authority_name],
         ['Publish Date', d.publish_date], ['Submission Date', d.submission_date],
         ['Tender Value', d.tender_value], ['Tender Fee', d.tender_fee],
+        ['Document Fee', d.document_fee_refundable], ['Documents Attached', d.document_count],
         ['EMD', d.emd], ['EMD Exemption', d.emd_exemption],
         ['Competition Type', d.competition_type], ['Bidding Type', d.bidding_type],
+        ['Tender Type', d.tender_type], ['Quantity', d.quantity],
         ['Location', [d.city, d.state].filter(Boolean).join(', ')],
         ['Corrigendum(s)', d.has_corrigendum ? ('Yes' + (d.corrigendum_count ? ' (~' + d.corrigendum_count + ')' : '')) : 'None found'],
       ];
