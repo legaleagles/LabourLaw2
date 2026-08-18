@@ -447,20 +447,63 @@ function renderGhmcTenders(tenders, totalScanned){
   var el = document.getElementById('ghmcListArea');
   if (!tenders.length) { el.innerHTML = '<div class="empty">No tenders match this filter (scanned ' + (totalScanned || 0) + ' total).</div>'; return; }
   var out = '<div class="upload-card-hint" style="margin-bottom:10px;">Showing ' + tenders.length + ' of ' + totalScanned + ' scanned.</div>';
-  tenders.forEach(function(t){
-    out += '<div class="ghmc-card">';
+  window.__ghmcCards = tenders;
+  tenders.forEach(function(t, i){
+    out += '<div class="ghmc-card" id="ghmc-card-' + i + '">';
     out += '<div class="ghmc-name">' + esc(t.title) + '</div>';
     out += '<div class="ghmc-no-doc">Tender ID: ' + esc(t.id) + ' · Deadline: ' + esc(t.deadline || 'not listed') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
     // The PDF itself is lead-gated on the source site (name/phone/OTP
     // required to unlock it) - there's no free direct document link to
     // fetch server-side, so this can only take you to the real tender page
-    // to grab it yourself, then come back and upload it above.
+    // to grab it yourself, then come back and upload it above. But the
+    // detail page itself has real ungated fields (EMD, tender no, dates,
+    // corrigendum history) - "Get Full Details" fetches those separately.
     var docNote = t.has_tender_document ? '📄 Document available on tender page' : (t.scanned_images_only ? '🖼️ Scanned images only' : '⚠️ No document listed');
     out += '<div class="ghmc-no-doc">' + docNote + '</div>';
-    out += '<a class="ghmc-dl-btn" href="' + esc(t.detail_url) + '" target="_blank" rel="noopener">🔗 View tender & get document</a>';
+    out += '<a class="ghmc-dl-btn" href="' + esc(t.detail_url) + '" target="_blank" rel="noopener">🔗 View tender & get document</a> ';
+    out += '<button class="ghmc-dl-btn" style="border:none;cursor:pointer;" onclick="fetchGhmcDetail(' + i + ')" id="detail-btn-' + i + '">📋 Get Full Details</button>';
+    out += '<div id="detail-area-' + i + '"></div>';
     out += '</div>';
   });
   el.innerHTML = out;
+}
+
+function fetchGhmcDetail(i){
+  var t = window.__ghmcCards[i];
+  var btn = document.getElementById('detail-btn-' + i);
+  var area = document.getElementById('detail-area-' + i);
+  btn.disabled = true;
+  area.innerHTML = '<div class="ghmc-no-doc">Fetching…</div>';
+  fetch(GHMC_BACKEND + '/api/ghmc-tender-detail?url=' + encodeURIComponent(t.detail_url))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if (!data.ok) { area.innerHTML = '<div class="ghmc-no-doc">❌ ' + esc(data.error || 'Could not fetch details.') + '</div>'; return; }
+      var d = data.detail;
+      var rows = [
+        ['Tender No', d.tender_no], ['Authority', d.authority_name],
+        ['Publish Date', d.publish_date], ['Submission Date', d.submission_date],
+        ['Tender Value', d.tender_value], ['Tender Fee', d.tender_fee],
+        ['EMD', d.emd], ['EMD Exemption', d.emd_exemption],
+        ['Competition Type', d.competition_type], ['Bidding Type', d.bidding_type],
+        ['Location', [d.city, d.state].filter(Boolean).join(', ')],
+        ['Corrigendum(s)', d.has_corrigendum ? ('Yes' + (d.corrigendum_count ? ' (~' + d.corrigendum_count + ')' : '')) : 'None found'],
+      ];
+      var html = '<div style="background:#faf7ef; border-radius:8px; padding:10px; margin-top:8px; font-size:14px;">';
+      rows.forEach(function(r){
+        if (!r[1]) return;
+        html += '<div style="margin-bottom:4px;"><b>' + esc(r[0]) + ':</b> ' + esc(r[1]) + '</div>';
+      });
+      html += '</div>';
+      if (!rows.some(function(r){ return r[1]; })) {
+        html = '<div class="ghmc-no-doc">Could not parse details from this page (site markup may have changed) — try "View tender & get document" instead.</div>';
+      }
+      area.innerHTML = html;
+    })
+    .catch(function(){
+      btn.disabled = false;
+      area.innerHTML = '<div class="ghmc-no-doc">❌ Network error.</div>';
+    });
 }
 </script>
 </body>
