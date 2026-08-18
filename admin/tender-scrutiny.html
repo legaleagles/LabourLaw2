@@ -149,7 +149,19 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
         <option value="patancheru">Patancheru / Ameenpur area only</option>
         <option value="all">All GHMC areas</option>
       </select>
-      <input id="ghmcKeywordFilter" type="text" placeholder="Keyword filter (e.g. school, hospital, PHC, anganwadi)" oninput="applyGhmcFilters()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box;">
+      <input id="ghmcKeywordFilter" type="text" placeholder="Keyword filter (e.g. school, hospital, PHC, anganwadi)" oninput="applyGhmcFilters()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; margin-bottom:8px;">
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <input id="ghmcMinValue" type="number" placeholder="Min value (₹)" oninput="applyGhmcFilters()" style="width:50%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box;">
+        <input id="ghmcMaxValue" type="number" placeholder="Max value (₹)" oninput="applyGhmcFilters()" style="width:50%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box;">
+      </div>
+      <select id="ghmcSortBy" onchange="applyGhmcFilters()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
+        <option value="none">Sort: as listed</option>
+        <option value="value_desc">Tender value: high to low</option>
+        <option value="value_asc">Tender value: low to high</option>
+        <option value="deadline_soonest">Deadline: soonest first</option>
+        <option value="days_left">Days left: fewest first</option>
+        <option value="title_az">Title: A–Z</option>
+      </select>
     </div>
     <div id="ghmcListArea"></div>
 
@@ -435,11 +447,37 @@ function applyGhmcFilters(){
   var all = window.__ghmcAllTenders || [];
   var areaMode = document.getElementById('ghmcAreaFilter').value;
   var keyword = document.getElementById('ghmcKeywordFilter').value.trim().toLowerCase();
+  var minVal = parseFloat(document.getElementById('ghmcMinValue').value);
+  var maxVal = parseFloat(document.getElementById('ghmcMaxValue').value);
+  var sortBy = document.getElementById('ghmcSortBy').value;
+
   var filtered = all.filter(function(t){
     if (areaMode === 'patancheru' && !t.is_patancheru_area) return false;
     if (keyword && t.title.toLowerCase().indexOf(keyword) === -1) return false;
+    // Tenders with no parseable value (e.g. "Ref. Document") are excluded
+    // by a min/max filter, since we can't know if they'd qualify - but kept
+    // when no value filter is set at all.
+    if (!isNaN(minVal) && (t.value_rupees == null || t.value_rupees < minVal)) return false;
+    if (!isNaN(maxVal) && (t.value_rupees == null || t.value_rupees > maxVal)) return false;
     return true;
   });
+
+  if (sortBy === 'value_desc') {
+    filtered.sort(function(a, b){ return (b.value_rupees || -1) - (a.value_rupees || -1); });
+  } else if (sortBy === 'value_asc') {
+    filtered.sort(function(a, b){ return (a.value_rupees == null ? Infinity : a.value_rupees) - (b.value_rupees == null ? Infinity : b.value_rupees); });
+  } else if (sortBy === 'deadline_soonest') {
+    filtered.sort(function(a, b){
+      var da = a.deadline ? new Date(a.deadline).getTime() : Infinity;
+      var db = b.deadline ? new Date(b.deadline).getTime() : Infinity;
+      return da - db;
+    });
+  } else if (sortBy === 'days_left') {
+    filtered.sort(function(a, b){ return (a.days_left == null ? Infinity : a.days_left) - (b.days_left == null ? Infinity : b.days_left); });
+  } else if (sortBy === 'title_az') {
+    filtered.sort(function(a, b){ return a.title.localeCompare(b.title); });
+  }
+
   renderGhmcTenders(filtered, all.length);
 }
 
@@ -451,7 +489,9 @@ function renderGhmcTenders(tenders, totalScanned){
   tenders.forEach(function(t, i){
     out += '<div class="ghmc-card" id="ghmc-card-' + i + '">';
     out += '<div class="ghmc-name">' + esc(t.title) + '</div>';
-    out += '<div class="ghmc-no-doc">Tender ID: ' + esc(t.id) + ' · Deadline: ' + esc(t.deadline || 'not listed') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
+    out += '<div class="ghmc-no-doc">Tender ID: ' + esc(t.id) + ' · Deadline: ' + esc(t.deadline || 'not listed') + (t.days_left != null ? ' (' + t.days_left + ' days left)' : '') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
+    var metaBits = [t.status, t.tender_mode, t.category].filter(Boolean);
+    if (metaBits.length) out += '<div class="ghmc-no-doc">' + esc(metaBits.join(' · ')) + '</div>';
     // The PDF itself is lead-gated on the source site (name/phone/OTP
     // required to unlock it) - there's no free direct document link to
     // fetch server-side, so this can only take you to the real tender page
