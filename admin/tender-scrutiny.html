@@ -141,9 +141,16 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 
     <div id="resultArea"></div>
 
-    <div class="section-hd">📋 Live Patancheru-Area Tenders</div>
-    <div class="upload-card-hint" style="margin-bottom:12px;">Pulled from a public tender-listing service, filtered to Patancheru/Ameenpur-area circles and wards. The actual document isn't freely downloadable from this source (it's gated behind a signup form on their site) — tap "View tender & get document" to open the real page, grab the PDF there, then come back and upload it above to analyze.</div>
+    <div class="section-hd">📋 Live GHMC Tenders</div>
+    <div class="upload-card-hint" style="margin-bottom:12px;">Pulled from a public tender-listing service. The actual document isn't freely downloadable from this source (it's gated behind a signup form on their site) — tap "View tender & get document" to open the real page, grab the PDF there, then come back and upload it above to analyze.</div>
     <button class="upload-btn" style="margin-bottom:14px;" onclick="loadGhmcTenders()">🔄 Refresh GHMC Tender List</button>
+    <div id="ghmcFiltersArea" style="display:none; margin-bottom:14px;">
+      <select id="ghmcAreaFilter" onchange="applyGhmcFilters()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom:8px;">
+        <option value="patancheru">Patancheru / Ameenpur area only</option>
+        <option value="all">All GHMC areas</option>
+      </select>
+      <input id="ghmcKeywordFilter" type="text" placeholder="Keyword filter (e.g. school, hospital, PHC, anganwadi)" oninput="applyGhmcFilters()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box;">
+    </div>
     <div id="ghmcListArea"></div>
 
     <div class="section-hd">📚 Past Analyses</div>
@@ -406,23 +413,38 @@ function renderHistory(entries){
 
 function loadGhmcTenders(){
   document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Loading current GHMC tenders…</div>';
+  document.getElementById('ghmcFiltersArea').style.display = 'none';
   fetch(GHMC_BACKEND + '/api/ghmc-tenders-list')
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (!data.ok) { document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Could not load - ' + esc(data.error || 'unknown error') + '</div>'; return; }
-      renderGhmcTenders(data.tenders || []);
+      window.__ghmcAllTenders = data.tenders || [];
+      document.getElementById('ghmcFiltersArea').style.display = window.__ghmcAllTenders.length ? 'block' : 'none';
+      applyGhmcFilters();
     })
     .catch(function(){ document.getElementById('ghmcListArea').innerHTML = '<div class="empty">Network error loading GHMC tenders.</div>'; });
 }
 
-function renderGhmcTenders(tenders){
+function applyGhmcFilters(){
+  var all = window.__ghmcAllTenders || [];
+  var areaMode = document.getElementById('ghmcAreaFilter').value;
+  var keyword = document.getElementById('ghmcKeywordFilter').value.trim().toLowerCase();
+  var filtered = all.filter(function(t){
+    if (areaMode === 'patancheru' && !t.is_patancheru_area) return false;
+    if (keyword && t.title.toLowerCase().indexOf(keyword) === -1) return false;
+    return true;
+  });
+  renderGhmcTenders(filtered, all.length);
+}
+
+function renderGhmcTenders(tenders, totalScanned){
   var el = document.getElementById('ghmcListArea');
-  if (!tenders.length) { el.innerHTML = '<div class="empty">No Patancheru-area tenders currently listed.</div>'; return; }
-  var out = '';
+  if (!tenders.length) { el.innerHTML = '<div class="empty">No tenders match this filter (scanned ' + (totalScanned || 0) + ' total).</div>'; return; }
+  var out = '<div class="upload-card-hint" style="margin-bottom:10px;">Showing ' + tenders.length + ' of ' + totalScanned + ' scanned.</div>';
   tenders.forEach(function(t){
     out += '<div class="ghmc-card">';
     out += '<div class="ghmc-name">' + esc(t.title) + '</div>';
-    out += '<div class="ghmc-no-doc">Deadline: ' + esc(t.deadline || 'not listed') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
+    out += '<div class="ghmc-no-doc">Tender ID: ' + esc(t.id) + ' · Deadline: ' + esc(t.deadline || 'not listed') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
     // The PDF itself is lead-gated on the source site (name/phone/OTP
     // required to unlock it) - there's no free direct document link to
     // fetch server-side, so this can only take you to the real tender page
