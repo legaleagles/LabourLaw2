@@ -624,12 +624,105 @@ function runGeminiMetadataReview(i){
         html += '<div style="margin-top:8px; font-style:italic; color:#5a6a7a;">' + esc(r.what_the_document_would_show) + '</div>';
       }
       html += '</div>';
+      window.__ghmcReviews = window.__ghmcReviews || {};
+      window.__ghmcReviews[i] = r;
+      html += '<div style="margin-top:10px;"><button class="ghmc-dl-btn" style="border:none;cursor:pointer;width:100%;" onclick="downloadGhmcCardPdf(' + i + ')" id="pdf-dl-btn-' + i + '">⬇️ Download as PDF</button></div>';
       out.innerHTML = html;
     })
     .catch(function(){
       btn.disabled = false;
       out.innerHTML = '<div class="ghmc-no-doc">❌ Network error.</div>';
     });
+}
+
+function downloadGhmcCardPdf(i){
+  var t = window.__ghmcCards[i];
+  var d = window.__ghmcDetails[i];
+  var r = window.__ghmcReviews[i];
+  var btn = document.getElementById('pdf-dl-btn-' + i);
+  var originalText = btn.textContent;
+  btn.textContent = '⏳ Preparing PDF…';
+  btn.disabled = true;
+
+  // Built as a dedicated printable layout (not a screenshot of the page's
+  // buttons/interactive UI) so the PDF reads as a clean document rather
+  // than an app screenshot.
+  var detailRows = [
+    ['Tender No', d.tender_no], ['TDR Ref No', d.tdr_number], ['Authority', d.authority_name],
+    ['Publish Date', d.publish_date], ['Submission Date', d.submission_date],
+    ['Tender Value', d.tender_value], ['Tender Fee', d.tender_fee],
+    ['Document Fee', d.document_fee_refundable], ['Documents Attached', d.document_count],
+    ['EMD', d.emd], ['EMD Exemption', d.emd_exemption],
+    ['Competition Type', d.competition_type], ['Bidding Type', d.bidding_type],
+    ['Tender Type', d.tender_type], ['Quantity', d.quantity],
+    ['Location', [d.city, d.state].filter(Boolean).join(', ')],
+    ['Corrigendum(s)', d.has_corrigendum ? ('Yes' + (d.corrigendum_count ? ' (~' + d.corrigendum_count + ')' : '')) : 'None found'],
+    ['Tender ID', t.id], ['Source Page', t.detail_url],
+  ];
+  var flags = computeQuickFlags(t.title, d);
+
+  var doc = document.createElement('div');
+  doc.style.cssText = 'position:fixed; left:-9999px; top:0; width:780px; background:#ffffff; padding:36px; font-family:Georgia,serif; color:#222;';
+  var html = '<div style="font-size:22px; font-weight:700; margin-bottom:4px; color:#7a5c00;">Tender Summary Report</div>';
+  html += '<div style="font-size:12px; color:#888; margin-bottom:20px;">Generated ' + new Date().toLocaleString('en-IN') + ' via LawSticker AI Tender Scrutiny</div>';
+  html += '<div style="font-size:16px; font-weight:700; margin-bottom:14px; line-height:1.4;">' + esc(t.title) + '</div>';
+
+  html += '<div style="font-size:15px; font-weight:700; margin:18px 0 8px; border-bottom:2px solid #d4af37; padding-bottom:4px;">Tender Details</div>';
+  detailRows.forEach(function(row){
+    if (!row[1]) return;
+    html += '<div style="font-size:13px; margin-bottom:6px; display:flex;"><div style="width:180px; font-weight:700; flex-shrink:0;">' + esc(row[0]) + '</div><div>' + esc(String(row[1])) + '</div></div>';
+  });
+
+  if (flags.length) {
+    html += '<div style="font-size:15px; font-weight:700; margin:18px 0 8px; border-bottom:2px solid #d4af37; padding-bottom:4px;">Quick Flags <span style="font-size:11px; font-weight:400; color:#888;">(computed from listed data)</span></div>';
+    flags.forEach(function(f){
+      var icon = f.level === 'warn' ? '[!]' : (f.level === 'ok' ? '[OK]' : '[i]');
+      html += '<div style="font-size:13px; margin-bottom:6px;"><b>' + icon + '</b> ' + esc(f.text) + '</div>';
+    });
+  }
+
+  if (r) {
+    html += '<div style="font-size:15px; font-weight:700; margin:18px 0 8px; border-bottom:2px solid #d4af37; padding-bottom:4px;">AI Metadata Review <span style="font-size:11px; font-weight:400; color:#888;">(metadata only — no PDF was reviewed)</span></div>';
+    html += '<div style="font-size:13px; margin-bottom:10px; line-height:1.5;">' + esc(r.assessment) + '</div>';
+    (r.flags || []).forEach(function(f){
+      html += '<div style="font-size:13px; margin-bottom:6px;"><b>' + esc(f.severity) + ':</b> ' + esc(f.point) + '</div>';
+    });
+    if (r.what_the_document_would_show) {
+      html += '<div style="font-size:12px; margin-top:10px; font-style:italic; color:#555;">' + esc(r.what_the_document_would_show) + '</div>';
+    }
+  }
+
+  html += '<div style="font-size:10px; color:#999; margin-top:24px; border-top:1px solid #ddd; padding-top:10px;">Compiled from public tender-listing metadata. No tender document (PDF) was reviewed for this report — this is a plausibility summary, not a clause-level fairness audit. Verify all details against the original source before relying on them.</div>';
+  doc.innerHTML = html;
+  document.body.appendChild(doc);
+
+  html2canvas(doc, {scale: 2, backgroundColor: '#ffffff', useCORS: true}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    var filename = ('Tender_' + (t.id || 'Report') + '_' + (t.title || '').slice(0, 40)).replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '');
+    pdf.save(filename + '.pdf');
+    document.body.removeChild(doc);
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }).catch(function(){
+    document.body.removeChild(doc);
+    btn.textContent = '❌ Failed — try again';
+    btn.disabled = false;
+  });
 }
 </script>
 </body>
