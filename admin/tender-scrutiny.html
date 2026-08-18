@@ -468,6 +468,73 @@ function renderGhmcTenders(tenders, totalScanned){
   el.innerHTML = out;
 }
 
+function computeQuickFlags(title, detail){
+  // Plausibility checks computable from metadata alone - no PDF, no AI call.
+  // Deliberately calibrated: flags note what's unusual and invite a look,
+  // they don't assert wrongdoing. This is NOT clause-level scrutiny (can't
+  // see eligibility/discretion clauses without the actual document) - only
+  // surface-level plausibility signals.
+  var flags = [];
+
+  // Parse tender value to rupees (handles "7.14 Lakhs", "2.74 Crore", etc.)
+  function toRupees(str){
+    if (!str) return null;
+    var m = str.match(/([\d,]+\.?\d*)\s*(Crore|Lakh|Lakhs|Lac)?/i);
+    if (!m) return null;
+    var num = parseFloat(m[1].replace(/,/g, ''));
+    if (isNaN(num)) return null;
+    var unit = (m[2] || '').toLowerCase();
+    if (unit.indexOf('crore') === 0) return num * 1e7;
+    if (unit.indexOf('lakh') === 0 || unit.indexOf('lac') === 0) return num * 1e5;
+    return num; // bare number, e.g. EMD "17866"
+  }
+
+  var valueRs = toRupees(detail.tender_value);
+  var emdRs = toRupees(detail.emd);
+  if (valueRs && emdRs) {
+    var pct = (emdRs / valueRs) * 100;
+    if (pct < 0.5) {
+      flags.push({level: 'info', text: 'EMD is unusually low (' + pct.toFixed(2) + '% of tender value) — typical range is roughly 1–5%. Low EMD can make it easier for less-serious bidders to participate.'});
+    } else if (pct > 5) {
+      flags.push({level: 'info', text: 'EMD is on the higher side (' + pct.toFixed(2) + '% of tender value) — worth checking this doesn\'t discourage smaller genuine bidders.'});
+    } else {
+      flags.push({level: 'ok', text: 'EMD is ' + pct.toFixed(2) + '% of tender value — within the typical 1–5% range.'});
+    }
+  }
+
+  // Bid window: publish date -> submission date
+  function parseDate(str){
+    if (!str) return null;
+    var d = new Date(str);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  var pubDate = parseDate(detail.publish_date);
+  var subDate = parseDate(detail.submission_date);
+  if (pubDate && subDate) {
+    var days = Math.round((subDate - pubDate) / 86400000);
+    if (days <= 3) {
+      flags.push({level: 'warn', text: 'Very short bid window — only ' + days + ' day(s) between publish and submission. Short windows can limit genuine competition.'});
+    } else if (days <= 7) {
+      flags.push({level: 'info', text: 'Short bid window — ' + days + ' days between publish and submission.'});
+    } else {
+      flags.push({level: 'ok', text: 'Bid window is ' + days + ' days — a reasonable amount of time to prepare a bid.'});
+    }
+  }
+
+  // Recall / re-tender signal, visible in the title itself
+  var recallMatch = title.match(/(\d+)(?:st|nd|rd|th)?\s*recall|re-?call/i);
+  if (recallMatch) {
+    flags.push({level: 'warn', text: 'This is a re-issued tender (' + (title.match(/\d+(?:st|nd|rd|th)?\s*recall/i) || ['recall'])[0] + ') — worth checking why the earlier round didn\'t result in an award (no bidders, disqualification, or a cancelled process are all possible reasons).'});
+  }
+
+  // Corrigendum frequency
+  if (detail.has_corrigendum) {
+    flags.push({level: 'info', text: 'This tender has at least one corrigendum (amendment after original publication) — worth checking what changed and why.'});
+  }
+
+  return flags;
+}
+
 function fetchGhmcDetail(i){
   var t = window.__ghmcCards[i];
   var btn = document.getElementById('detail-btn-' + i);
@@ -495,8 +562,20 @@ function fetchGhmcDetail(i){
         html += '<div style="margin-bottom:4px;"><b>' + esc(r[0]) + ':</b> ' + esc(r[1]) + '</div>';
       });
       html += '</div>';
-      if (!rows.some(function(r){ return r[1]; })) {
+      var foundAny = rows.some(function(r){ return r[1]; });
+      if (!foundAny) {
         html = '<div class="ghmc-no-doc">Could not parse details from this page (site markup may have changed) — try "View tender & get document" instead.</div>';
+      } else {
+        var flags = computeQuickFlags(t.title, d);
+        if (flags.length) {
+          html += '<div style="margin-top:10px; padding-top:10px; border-top:1px solid #e5ddc8;">';
+          html += '<div style="font-weight:700; margin-bottom:6px;">⚡ Quick Flags <span style="font-weight:400; font-size:12px; color:#8a7f5f;">(from listed data only — not a full document review)</span></div>';
+          flags.forEach(function(f){
+            var icon = f.level === 'warn' ? '🚩' : (f.level === 'ok' ? '✅' : 'ℹ️');
+            html += '<div style="margin-bottom:6px; font-size:13px;">' + icon + ' ' + esc(f.text) + '</div>';
+          });
+          html += '</div>';
+        }
       }
       area.innerHTML = html;
     })
