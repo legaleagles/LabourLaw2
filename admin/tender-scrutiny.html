@@ -141,8 +141,8 @@ padding-bottom:6px;border-bottom:2px solid var(--gold);}
 
     <div id="resultArea"></div>
 
-    <div class="section-hd">📋 Live GHMC Tenders — Patancheru watch</div>
-    <div class="upload-card-hint" style="margin-bottom:12px;">Only tenders that actually have a real, downloadable document attached — the rest (postback-only listings with no genuine file link) are filtered out. Tap Download PDF, then upload it above to analyze.</div>
+    <div class="section-hd">📋 Live Patancheru-Area Tenders</div>
+    <div class="upload-card-hint" style="margin-bottom:12px;">Pulled from a public tender-listing service, filtered to Patancheru/Ameenpur-area circles and wards. The actual document isn't freely downloadable from this source (it's gated behind a signup form on their site) — tap "View tender & get document" to open the real page, grab the PDF there, then come back and upload it above to analyze.</div>
     <button class="upload-btn" style="margin-bottom:14px;" onclick="loadGhmcTenders()">🔄 Refresh GHMC Tender List</button>
     <div id="ghmcListArea"></div>
 
@@ -417,52 +417,22 @@ function loadGhmcTenders(){
 
 function renderGhmcTenders(tenders){
   var el = document.getElementById('ghmcListArea');
-  if (!tenders.length) { el.innerHTML = '<div class="empty">No tenders currently listed.</div>'; return; }
+  if (!tenders.length) { el.innerHTML = '<div class="empty">No Patancheru-area tenders currently listed.</div>'; return; }
   var out = '';
-  window.__ghmcTenders = tenders;
-  tenders.forEach(function(t, i){
-    out += '<div class="ghmc-card" id="ghmc-card-' + i + '">';
-    out += '<div class="ghmc-name">' + esc(t.work_name) + '</div>';
-    // GHMC's "Download" links are ASP.NET postback triggers (javascript:
-    // __doPostBack(...)), not real fetchable file URLs - there's no static
-    // PDF link to hand out directly for those. Only real http(s) links can
-    // be fetched server-side for one-click Scrutinize; postback-only rows
-    // fall back to the manual download-then-upload flow.
-    var isRealLink = t.doc_url && t.doc_url.indexOf('http') === 0 && t.doc_url.indexOf('javascript:') === -1;
-    if (isRealLink) {
-      out += '<a class="ghmc-dl-btn" href="' + esc(t.doc_url) + '" target="_blank" rel="noopener">⬇️ Download PDF</a> ';
-      out += '<button class="ghmc-dl-btn" style="border:none;cursor:pointer;" onclick="scrutinizeGhmcTender(' + i + ')" id="scrutinize-btn-' + i + '">🔎 Scrutinize</button>';
-    } else {
-      out += '<a class="ghmc-dl-btn" href="https://www.ghmc.gov.in/Tenderspage.aspx" target="_blank" rel="noopener">🔗 Open on GHMC site to download</a>';
-      out += '<div class="ghmc-no-doc" style="margin-top:6px;">No direct file link from GHMC for this one — download manually above, then upload it in "Analyze a Tender" above.</div>';
-    }
-    out += '<div class="ghmc-no-doc" id="scrutinize-status-' + i + '" style="margin-top:6px;"></div>';
+  tenders.forEach(function(t){
+    out += '<div class="ghmc-card">';
+    out += '<div class="ghmc-name">' + esc(t.title) + '</div>';
+    out += '<div class="ghmc-no-doc">Deadline: ' + esc(t.deadline || 'not listed') + ' · Value: ' + esc(t.value || 'Ref. Document') + '</div>';
+    // The PDF itself is lead-gated on the source site (name/phone/OTP
+    // required to unlock it) - there's no free direct document link to
+    // fetch server-side, so this can only take you to the real tender page
+    // to grab it yourself, then come back and upload it above.
+    var docNote = t.has_tender_document ? '📄 Document available on tender page' : (t.scanned_images_only ? '🖼️ Scanned images only' : '⚠️ No document listed');
+    out += '<div class="ghmc-no-doc">' + docNote + '</div>';
+    out += '<a class="ghmc-dl-btn" href="' + esc(t.detail_url) + '" target="_blank" rel="noopener">🔗 View tender & get document</a>';
     out += '</div>';
   });
   el.innerHTML = out;
-}
-
-function scrutinizeGhmcTender(i){
-  var t = window.__ghmcTenders[i];
-  var btn = document.getElementById('scrutinize-btn-' + i);
-  var status = document.getElementById('scrutinize-status-' + i);
-  btn.disabled = true;
-  status.textContent = 'Fetching from GHMC and analyzing — this can take up to a minute…';
-  fetch(GHMC_BACKEND + '/api/ghmc-tender-scrutinize', { method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ password: tsPassword, doc_url: t.doc_url, work_name: t.work_name }) })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      btn.disabled = false;
-      if (!data.ok) { status.textContent = '❌ ' + (data.error || 'Scrutinize failed.'); return; }
-      status.textContent = '✅ Analysis complete — see report below.';
-      document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
-      renderResult(data.result);
-      loadHistory();
-    })
-    .catch(function(){
-      btn.disabled = false;
-      status.textContent = '❌ Network error — try again.';
-    });
 }
 </script>
 </body>
