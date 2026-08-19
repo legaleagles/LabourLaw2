@@ -122,6 +122,40 @@ table.cmp td.cmp-label{font-weight:700;white-space:nowrap;}
 .field input[type=number],.field input[type=text],.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #DDD5C0;font-size:14px;font-family:inherit;background:#fff;}
 .field textarea{resize:vertical;min-height:52px;}
 .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+
+/* Interactive sliders - same drag-and-see-it-move pattern as the Gold
+   Bill Checker's making-charge slider, applied here to scheme inputs. */
+.slider-field{margin-bottom:16px;}
+.slider-field-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.slider-field-label span:first-child{font-size:12.5px;font-weight:700;color:var(--ink);}
+.slider-live-val{font-size:15px;font-weight:800;color:#7C5A0B;background:#FFFBEB;padding:3px 10px;border-radius:20px;border:1.5px solid var(--gold-l);}
+.scheme-slider{width:100%;height:8px;border-radius:6px;-webkit-appearance:none;appearance:none;background:linear-gradient(to right, var(--gold) 0%, var(--gold) var(--fill,50%), #EDE6D0 var(--fill,50%), #EDE6D0 100%);outline:none;}
+.scheme-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--gold);box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;}
+.scheme-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--gold);box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;}
+
+/* Tap-to-select chips - replaces free-text fields entirely */
+.chip-field{margin-bottom:16px;}
+.chip-field-label{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{background:#fff;border:1.5px solid #DDD5C0;border-radius:20px;padding:9px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s;}
+.chip.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:800;}
+
+/* Live preview card - pure client-side arithmetic, no AI needed, updates
+   on every drag/tap instantly. */
+.live-preview{background:#fff;border-radius:14px;padding:14px 16px;margin:6px 0 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.live-preview-title{font-weight:800;font-size:13.5px;color:#7C5A0B;margin-bottom:10px;}
+.live-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F3EFDD;font-size:13px;color:var(--ink);}
+.live-amt{font-weight:800;font-size:15px;color:var(--ink);}
+.live-amt.good{color:var(--green);}
+.live-compare{margin-top:10px;padding-top:10px;}
+.live-compare-label{font-size:11.5px;color:var(--muted);margin-bottom:10px;}
+.compare-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.compare-bar-tag{font-size:10.5px;font-weight:700;color:var(--muted);width:110px;flex-shrink:0;}
+.compare-bar-track{flex:1;height:14px;background:#F0EBDA;border-radius:8px;overflow:hidden;}
+.compare-bar-fill{height:100%;border-radius:8px;transition:width .3s ease;}
+.compare-bar-fill.scheme{background:var(--gold);}
+.compare-bar-fill.rd{background:#94A3B8;}
+.compare-bar-num{font-size:11px;font-weight:800;color:var(--ink);width:38px;text-align:right;flex-shrink:0;}
 .toggle-row input{width:18px;height:18px;}
 .toggle-row label{font-size:12.5px;font-weight:600;color:var(--ink);}
 .check-btn{width:100%;background:var(--gold);color:#fff;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:14.5px;cursor:pointer;font-family:inherit;}
@@ -217,33 +251,80 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);}
 
   <!-- AI TOOL -->
   <div class="section-hd"><span id="tToolHd">🔍 Check Your Specific Scheme</span></div>
-  <div class="section-sub" id="tToolSub">Being offered a jeweller's monthly scheme? Enter what they've told you and get an honest read — including questions to ask before you sign anything.</div>
+  <div class="section-sub" id="tToolSub">Being offered a jeweller's monthly scheme? Drag the sliders and tap what applies — see the real numbers instantly, then get an AI read with questions to ask.</div>
   <div class="tool-card">
-    <div class="field">
-      <label id="tLMonthly">Monthly amount you'd pay (₹)</label>
-      <input type="number" id="inMonthly" placeholder="e.g. 5000" min="0">
+
+    <div class="slider-field">
+      <div class="slider-field-label"><span id="tLMonthly">Monthly amount you'd pay</span><span class="slider-live-val" id="monthlyVal">₹5,000</span></div>
+      <input type="range" class="scheme-slider" id="inMonthly" min="500" max="20000" step="500" value="5000" oninput="onSchemeInputChange()">
     </div>
-    <div class="field">
-      <label id="tLDuration">Duration (months)</label>
-      <input type="number" id="inDuration" placeholder="e.g. 11" min="1">
+
+    <div class="slider-field">
+      <div class="slider-field-label"><span id="tLDuration">Duration</span><span class="slider-live-val" id="durationVal">11 months</span></div>
+      <input type="range" class="scheme-slider" id="inDuration" min="3" max="24" step="1" value="11" oninput="onSchemeInputChange()">
     </div>
+
     <div class="toggle-row">
-      <input type="checkbox" id="inBonus">
+      <input type="checkbox" id="inBonus" checked onchange="onBonusToggle()">
       <label id="tLBonus" for="inBonus">Shop is offering a bonus/extra month</label>
     </div>
-    <div class="field">
-      <label id="tLBonusDetail">What exactly is the bonus? (optional)</label>
-      <input type="text" id="inBonusDetail" placeholder="e.g. 12th month free">
+    <div class="slider-field" id="bonusSliderWrap">
+      <div class="slider-field-label"><span id="tLBonusMonths">Bonus offered</span><span class="slider-live-val" id="bonusVal">1 month</span></div>
+      <input type="range" class="scheme-slider" id="inBonusMonths" min="0" max="3" step="0.5" value="1" oninput="onSchemeInputChange()">
     </div>
-    <div class="field">
-      <label id="tLRedeem">Redemption condition (what did they tell you?)</label>
-      <textarea id="inRedeem" placeholder="e.g. Can only redeem against jewellery purchase at this shop"></textarea>
+
+    <div class="chip-field">
+      <div class="chip-field-label" id="tLRedeemChip">What can you redeem it for?</div>
+      <div class="chip-row" id="redeemChips" data-selected="jewellery_only">
+        <button type="button" class="chip active" data-val="jewellery_only" onclick="selectChip(this)"><span id="tChipJewelleryOnly">💍 Jewellery only</span></button>
+        <button type="button" class="chip" data-val="cash_allowed" onclick="selectChip(this)"><span id="tChipCash">💰 Cash allowed</span></button>
+        <button type="button" class="chip" data-val="not_told" onclick="selectChip(this)"><span id="tChipNotTold1">🤷 Not told</span></button>
+      </div>
     </div>
-    <div class="field">
-      <label id="tLOther">Any other terms mentioned? (optional)</label>
-      <textarea id="inOther" placeholder="e.g. Rate locked at joining, or market rate at redemption"></textarea>
+
+    <div class="chip-field">
+      <div class="chip-field-label" id="tLWhereChip">Where can you redeem it?</div>
+      <div class="chip-row" id="whereChips" data-selected="this_shop">
+        <button type="button" class="chip active" data-val="this_shop" onclick="selectChip(this)"><span id="tChipThisShop">🏪 This shop only</span></button>
+        <button type="button" class="chip" data-val="any_branch" onclick="selectChip(this)"><span id="tChipAnyBranch">🏬 Any branch</span></button>
+        <button type="button" class="chip" data-val="not_told" onclick="selectChip(this)"><span id="tChipNotTold2">🤷 Not told</span></button>
+      </div>
     </div>
-    <button class="check-btn" id="checkSchemeBtn" onclick="checkScheme()"><span id="tCheckBtn">🔍 Check This Scheme</span></button>
+
+    <div class="chip-field">
+      <div class="chip-field-label" id="tLRateChip">Is the gold rate locked?</div>
+      <div class="chip-row" id="rateChips" data-selected="not_told">
+        <button type="button" class="chip" data-val="locked" onclick="selectChip(this)"><span id="tChipLocked">🔒 Locked at joining</span></button>
+        <button type="button" class="chip" data-val="market" onclick="selectChip(this)"><span id="tChipMarket">📈 Market rate at redemption</span></button>
+        <button type="button" class="chip active" data-val="not_told" onclick="selectChip(this)"><span id="tChipNotTold3">🤷 Not told</span></button>
+      </div>
+    </div>
+
+    <!-- LIVE PREVIEW - pure client-side arithmetic, updates instantly on
+         every slider drag, no AI call needed for this part. Mirrors the
+         gold-bill-checker's making-charge slider pattern (drag → see the
+         real number move) rather than making people submit a form to find
+         out anything. -->
+    <div class="live-preview" id="livePreview">
+      <div class="live-preview-title" id="tLivePreviewTitle">📊 What This Actually Adds Up To</div>
+      <div class="live-row"><span id="tLiveTotalPaid">Total you'll pay in</span><span class="live-amt" id="liveTotalPaid">₹0</span></div>
+      <div class="live-row"><span id="tLiveBonusWorth">The bonus is worth</span><span class="live-amt good" id="liveBonusWorth">₹0</span></div>
+      <div class="live-compare">
+        <div class="live-compare-label" id="tLiveCompareLabel">Bonus as a rough annual rate, vs a typical bank RD:</div>
+        <div class="compare-bar-row">
+          <span class="compare-bar-tag" id="tThisScheme">This scheme</span>
+          <div class="compare-bar-track"><div class="compare-bar-fill scheme" id="schemeBar"></div></div>
+          <span class="compare-bar-num" id="schemeBarNum">0%</span>
+        </div>
+        <div class="compare-bar-row">
+          <span class="compare-bar-tag" id="tBankRd">Bank RD (~6.5%)</span>
+          <div class="compare-bar-track"><div class="compare-bar-fill rd" style="width:43%;"></div></div>
+          <span class="compare-bar-num">6.5%</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="check-btn" id="checkSchemeBtn" onclick="checkScheme()"><span id="tCheckBtn">🔍 Get the Full AI Read</span></button>
   </div>
   <div class="result-area" id="resultArea"></div>
 
@@ -551,7 +632,7 @@ en: {
   toolHd:'🔍 Check Your Specific Scheme', toolSub:"Being offered a jeweller's monthly scheme? Enter what they've told you and get an honest read — including questions to ask before you sign anything.",
   lMonthly:'Monthly amount you\'d pay (₹)', lDuration:'Duration (months)', lBonus:'Shop is offering a bonus/extra month',
   lBonusDetail:'What exactly is the bonus? (optional)', lRedeem:'Redemption condition (what did they tell you?)', lOther:'Any other terms mentioned? (optional)',
-  checkBtn:'🔍 Check This Scheme', checkingBtn:'⏳ Checking…',
+  checkBtn:'🔍 Get the Full AI Read', checkingBtn:'⏳ Checking…',
   disclaimer:'⚠️ This is educational information and a helper for asking the right questions — not financial advice, and not a certified valuation of any specific scheme. Gold-linked returns are never guaranteed; prices can fall as well as rise. For significant amounts, consider speaking with a registered financial advisor.',
   linkJewellery:'💍 Jewellery Suite', linkGoldChecker:'🧾 Gold Bill Checker', linkCalcs:'🧮 All Calculators',
   footer:'Jewellery Suite · Free · No login · Made in Hyderabad 🇮🇳',
@@ -559,6 +640,12 @@ en: {
   fillRequired:'Please enter at least the monthly amount and duration.',
   errorGeneric:'Something went wrong — please try again.',
   loadingText:'Reading your scheme terms and working out an honest read — a few seconds…',
+  lBonusMonths:'Bonus offered', lRedeemChip:'What can you redeem it for?', lWhereChip:'Where can you redeem it?', lRateChip:'Is the gold rate locked?',
+  chipJewelleryOnly:'💍 Jewellery only', chipCash:'💰 Cash allowed', chipNotTold:'🤷 Not told',
+  chipThisShop:'🏪 This shop only', chipAnyBranch:'🏬 Any branch',
+  chipLocked:'🔒 Locked at joining', chipMarket:'📈 Market rate at redemption',
+  livePreviewTitle:'📊 What This Actually Adds Up To', liveTotalPaid:"Total you'll pay in", liveBonusWorth:'The bonus is worth',
+  liveCompareLabel:'Bonus as a rough annual rate, vs a typical bank RD:', thisScheme:'This scheme', bankRd:'Bank RD (~6.5%)',
   storySkip:'Skip ✕', storyHint:"👆 Tap left/right, or wait — it moves on its own",
 },
 te: {
@@ -571,7 +658,7 @@ te: {
   toolHd:'🔍 మీ నిర్దిష్ట పథకాన్ని చెక్ చేయండి', toolSub:'నగల దుకాణం మంతిక పథకం ఆఫర్ చేస్తున్నారా? వారు మీకు చెప్పింది నమోదు చేసి నిజాయితీగల అభిప్రాయం పొందండి — దేనిపైనైనా సంతకం చేసే ముందు అడగాల్సిన ప్రశ్నలతో సహా.',
   lMonthly:'మీరు చెల్లించే నెలవారీ మొత్తం (₹)', lDuration:'కాలవ్యవధి (నెలలు)', lBonus:'దుకాణం బోనస్/అదనపు నెల ఆఫర్ చేస్తోంది',
   lBonusDetail:'బోనస్ ఖచ్చితంగా ఏమిటి? (ఐచ్ఛికం)', lRedeem:'రీడెంప్షన్ షరతు (వారు మీకు ఏమి చెప్పారు?)', lOther:'ఇతర ఏవైనా నిబంధనలు చెప్పారా? (ఐచ్ఛికం)',
-  checkBtn:'🔍 ఈ పథకాన్ని చెక్ చేయండి', checkingBtn:'⏳ చెక్ చేస్తున్నాము…',
+  checkBtn:'🔍 పూర్తి AI అభిప్రాయం పొందండి', checkingBtn:'⏳ చెక్ చేస్తున్నాము…',
   disclaimer:'⚠️ ఇది విద్యా సమాచారం మరియు సరైన ప్రశ్నలు అడగడానికి సహాయకం — ఆర్థిక సలహా కాదు, ఏ నిర్దిష్ట పథకం యొక్క ధృవీకరించిన మదింపు కాదు. బంగారం-లింక్డ్ రిటర్న్‌లు ఎప్పుడూ హామీ ఇవ్వబడవు; ధరలు పెరగవచ్చు, తగ్గవచ్చు. పెద్ద మొత్తాల కోసం, నమోదిత ఆర్థిక సలహాదారుతో మాట్లాడటం పరిగణించండి.',
   linkJewellery:'💍 నగల సూట్', linkGoldChecker:'🧾 గోల్డ్ బిల్ చెకర్', linkCalcs:'🧮 అన్ని కాలిక్యులేటర్లు',
   footer:'నగల సూట్ · ఉచితం · లాగిన్ లేదు · హైదరాబాద్‌లో తయారు 🇮🇳',
@@ -579,6 +666,12 @@ te: {
   fillRequired:'దయచేసి కనీసం నెలవారీ మొత్తం మరియు వ్యవధిని నమోదు చేయండి.',
   errorGeneric:'ఏదో తప్పు జరిగింది — దయచేసి మళ్లీ ప్రయత్నించండి.',
   loadingText:'మీ పథక నిబంధనలను చదివి నిజాయితీగల అభిప్రాయాన్ని రూపొందిస్తున్నాము — కొన్ని సెకన్లు…',
+  lBonusMonths:'ఆఫర్ చేసిన బోనస్', lRedeemChip:'దేనికి రీడీమ్ చేసుకోవచ్చు?', lWhereChip:'ఎక్కడ రీడీమ్ చేసుకోవచ్చు?', lRateChip:'బంగారం రేటు లాక్ చేయబడిందా?',
+  chipJewelleryOnly:'💍 నగలు మాత్రమే', chipCash:'💰 నగదు అనుమతించబడుతుంది', chipNotTold:'🤷 చెప్పలేదు',
+  chipThisShop:'🏪 ఈ దుకాణంలో మాత్రమే', chipAnyBranch:'🏬 ఏ శాఖలోనైనా',
+  chipLocked:'🔒 చేరేటప్పుడు లాక్ చేయబడింది', chipMarket:'📈 రీడెంప్షన్ వద్ద మార్కెట్ రేటు',
+  livePreviewTitle:'📊 ఇది నిజంగా ఎంత అవుతుంది', liveTotalPaid:'మీరు మొత్తం చెల్లించేది', liveBonusWorth:'బోనస్ విలువ',
+  liveCompareLabel:'బోనస్ స్థూల వార్షిక రేటుగా, సాధారణ బ్యాంక్ RD తో పోలిస్తే:', thisScheme:'ఈ పథకం', bankRd:'బ్యాంక్ RD (~6.5%)',
   storySkip:'దాటవేయండి ✕', storyHint:'👆 ఎడమ/కుడి తాకండి, లేదా వేచి ఉండండి — అదే ముందుకు సాగుతుంది',
 },
 hi: {
@@ -591,7 +684,7 @@ hi: {
   toolHd:'🔍 अपनी विशिष्ट योजना जांचें', toolSub:'क्या आपको किसी ज्वेलर की मासिक योजना का प्रस्ताव मिला है? उन्होंने आपको जो बताया है वह दर्ज करें और एक ईमानदार राय पाएं — किसी भी चीज़ पर हस्ताक्षर करने से पहले पूछने योग्य सवालों के साथ।',
   lMonthly:'आप जो मासिक राशि चुकाएंगे (₹)', lDuration:'अवधि (महीने)', lBonus:'दुकान बोनस/अतिरिक्त महीना दे रही है',
   lBonusDetail:'बोनस वास्तव में क्या है? (वैकल्पिक)', lRedeem:'भुनाने की शर्त (उन्होंने आपको क्या बताया?)', lOther:'कोई अन्य शर्तें बताई गईं? (वैकल्पिक)',
-  checkBtn:'🔍 इस योजना को जांचें', checkingBtn:'⏳ जांच रहे हैं…',
+  checkBtn:'🔍 पूरी AI राय पाएं', checkingBtn:'⏳ जांच रहे हैं…',
   disclaimer:'⚠️ यह शैक्षिक जानकारी है और सही सवाल पूछने में मदद करता है — यह वित्तीय सलाह नहीं है, और किसी विशिष्ट योजना का प्रमाणित मूल्यांकन नहीं है। सोने से जुड़े रिटर्न की कभी गारंटी नहीं होती; कीमतें बढ़ भी सकती हैं और गिर भी सकती हैं। बड़ी राशियों के लिए, एक पंजीकृत वित्तीय सलाहकार से बात करने पर विचार करें।',
   linkJewellery:'💍 ज्वेलरी सूट', linkGoldChecker:'🧾 गोल्ड बिल चेकर', linkCalcs:'🧮 सभी कैलकुलेटर',
   footer:'ज्वेलरी सूट · मुफ्त · कोई लॉगिन नहीं · हैदराबाद में बनाया गया 🇮🇳',
@@ -599,6 +692,12 @@ hi: {
   fillRequired:'कृपया कम से कम मासिक राशि और अवधि दर्ज करें।',
   errorGeneric:'कुछ गड़बड़ हुई — कृपया फिर से कोशिश करें।',
   loadingText:'आपकी योजना की शर्तें पढ़ रहे हैं और एक ईमानदार राय बना रहे हैं — कुछ सेकंड…',
+  lBonusMonths:'दिया जा रहा बोनस', lRedeemChip:'आप इसे किसके लिए भुना सकते हैं?', lWhereChip:'आप इसे कहां भुना सकते हैं?', lRateChip:'क्या सोने की दर लॉक है?',
+  chipJewelleryOnly:'💍 सिर्फ गहने', chipCash:'💰 नकद स्वीकार्य', chipNotTold:'🤷 नहीं बताया',
+  chipThisShop:'🏪 सिर्फ इस दुकान पर', chipAnyBranch:'🏬 किसी भी शाखा में',
+  chipLocked:'🔒 शामिल होने पर लॉक', chipMarket:'📈 भुनाने पर बाज़ार दर',
+  livePreviewTitle:'📊 यह वास्तव में कितना बनता है', liveTotalPaid:'आप कुल चुकाएंगे', liveBonusWorth:'बोनस की कीमत है',
+  liveCompareLabel:'बोनस एक मोटे वार्षिक दर के रूप में, एक सामान्य बैंक RD की तुलना में:', thisScheme:'यह योजना', bankRd:'बैंक RD (~6.5%)',
   storySkip:'छोड़ें ✕', storyHint:'👆 बाएं/दाएं टैप करें, या रुकें — यह अपने आप आगे बढ़ता है',
 },
 };
@@ -614,7 +713,13 @@ function applyStaticLang(){
   t('tRankHd','rankHd'); t('tRankSub','rankSub');
   t('tToolHd','toolHd'); t('tToolSub','toolSub');
   t('tLMonthly','lMonthly'); t('tLDuration','lDuration'); t('tLBonus','lBonus');
-  t('tLBonusDetail','lBonusDetail'); t('tLRedeem','lRedeem'); t('tLOther','lOther');
+  t('tLBonusMonths','lBonusMonths'); t('tLRedeemChip','lRedeemChip'); t('tLWhereChip','lWhereChip'); t('tLRateChip','lRateChip');
+  t('tChipJewelleryOnly','chipJewelleryOnly'); t('tChipCash','chipCash');
+  t('tChipNotTold1','chipNotTold'); t('tChipNotTold2','chipNotTold'); t('tChipNotTold3','chipNotTold');
+  t('tChipThisShop','chipThisShop'); t('tChipAnyBranch','chipAnyBranch');
+  t('tChipLocked','chipLocked'); t('tChipMarket','chipMarket');
+  t('tLivePreviewTitle','livePreviewTitle'); t('tLiveTotalPaid','liveTotalPaid'); t('tLiveBonusWorth','liveBonusWorth');
+  t('tLiveCompareLabel','liveCompareLabel'); t('tThisScheme','thisScheme'); t('tBankRd','bankRd');
   t('tCheckBtn','checkBtn'); t('tDisclaimer','disclaimer');
   t('tLinkJewellery','linkJewellery'); t('tLinkGoldChecker','linkGoldChecker'); t('tLinkCalcs','linkCalcs');
   t('tFooter','footer');
@@ -631,6 +736,7 @@ function setPageLang(lang){
   applyStaticLang();
   renderGuideContent();
   renderRankingContent();
+  updateLivePreview();
   // If the story is still active (not skipped/finished), re-render the
   // current slide in the new language rather than restarting it from
   // slide 1 - language switching shouldn't reset someone's progress.
@@ -650,13 +756,89 @@ function setPageLang(lang){
   }
 }
 
+// ══════════════════════════════════════════
+//  INTERACTIVE SCHEME TOOL - sliders + tap-chips replace free-text entry
+//  entirely. A live preview computes instantly client-side (pure
+//  arithmetic, no AI) on every drag/tap, same "see the number move as you
+//  drag" pattern as the Gold Bill Checker's making-charge slider. The AI
+//  call (checkScheme) only fires when the person explicitly wants the
+//  qualitative read + questions on top of these numbers.
+// ══════════════════════════════════════════
+var CHIP_LABELS = {
+  redeemChips: { jewellery_only: 'Jewellery only', cash_allowed: 'Cash allowed', not_told: 'not specified' },
+  whereChips: { this_shop: 'only at that one shop', any_branch: 'any branch of the chain', not_told: 'not specified' },
+  rateChips: { locked: 'locked at the joining rate', market: 'set at market rate on redemption day', not_told: 'not specified' },
+};
+
+function selectChip(el){
+  var row = el.parentElement;
+  Array.prototype.forEach.call(row.querySelectorAll('.chip'), function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  row.dataset.selected = el.dataset.val;
+  updateLivePreview();
+}
+
+function onBonusToggle(){
+  var checked = document.getElementById('inBonus').checked;
+  document.getElementById('bonusSliderWrap').style.display = checked ? 'block' : 'none';
+  updateLivePreview();
+}
+
+function setSliderFill(id){
+  var el = document.getElementById(id);
+  var pct = ((el.value - el.min) / (el.max - el.min)) * 100;
+  el.style.setProperty('--fill', pct + '%');
+}
+
+function onSchemeInputChange(){
+  setSliderFill('inMonthly');
+  setSliderFill('inDuration');
+  setSliderFill('inBonusMonths');
+  updateLivePreview();
+}
+
+function updateLivePreview(){
+  var monthly = parseFloat(document.getElementById('inMonthly').value) || 0;
+  var duration = parseFloat(document.getElementById('inDuration').value) || 0;
+  var bonusOn = document.getElementById('inBonus').checked;
+  var bonusMonths = bonusOn ? (parseFloat(document.getElementById('inBonusMonths').value) || 0) : 0;
+
+  document.getElementById('monthlyVal').textContent = fmtRs(monthly);
+  document.getElementById('durationVal').textContent = duration + (PAGE_LANG === 'en' ? ' months' : (PAGE_LANG === 'te' ? ' నెలలు' : ' महीने'));
+  document.getElementById('bonusVal').textContent = bonusMonths + (PAGE_LANG === 'en' ? ' month' + (bonusMonths === 1 ? '' : 's') : (PAGE_LANG === 'te' ? ' నెలలు' : ' महीने'));
+
+  var totalPaid = monthly * duration;
+  var bonusWorth = monthly * bonusMonths;
+  document.getElementById('liveTotalPaid').textContent = fmtRs(totalPaid);
+  document.getElementById('liveBonusWorth').textContent = fmtRs(bonusWorth);
+
+  // Rough annualized-equivalent rate: bonus value as a % of what you paid,
+  // scaled to a 12-month basis so it's comparable to a bank RD's annual
+  // rate - clearly labelled as rough since real gold-price movement isn't
+  // factored in, only the bonus/discount itself.
+  var annualPct = 0;
+  if (totalPaid > 0 && duration > 0) {
+    annualPct = (bonusWorth / totalPaid) * (12 / duration) * 100;
+  }
+  var displayPct = Math.round(annualPct * 10) / 10;
+  var barMaxRef = 20; // reference scale for the bar - 20% annualized is already an extreme outlier
+  var barWidth = Math.min(100, (displayPct / barMaxRef) * 100);
+  document.getElementById('schemeBar').style.width = barWidth + '%';
+  document.getElementById('schemeBarNum').textContent = displayPct + '%';
+}
+
 function checkScheme(){
   var monthly = document.getElementById('inMonthly').value;
   var duration = document.getElementById('inDuration').value;
   var bonus = document.getElementById('inBonus').checked;
-  var bonusDetail = document.getElementById('inBonusDetail').value;
-  var redeem = document.getElementById('inRedeem').value;
-  var other = document.getElementById('inOther').value;
+  var bonusMonths = parseFloat(document.getElementById('inBonusMonths').value) || 0;
+  var bonusDetail = bonus ? (bonusMonths + ' month(s) bonus/extra value offered') : '';
+
+  var redeemSel = document.getElementById('redeemChips').dataset.selected;
+  var whereSel = document.getElementById('whereChips').dataset.selected;
+  var rateSel = document.getElementById('rateChips').dataset.selected;
+  var redeem = 'Redeemable for: ' + CHIP_LABELS.redeemChips[redeemSel] + '. Where: ' + CHIP_LABELS.whereChips[whereSel] + '.';
+  var other = 'Gold rate: ' + CHIP_LABELS.rateChips[rateSel] + '.';
 
   if (!monthly || !duration) {
     document.getElementById('resultArea').innerHTML = '<div class="result-card"><p>' + esc(L('fillRequired')) + '</p></div>';
@@ -896,6 +1078,8 @@ renderGuideContent();
 renderRankingContent();
 applyStaticLang();
 initStory();
+onSchemeInputChange();
+updateLivePreview();
 </script>
 </body>
 </html>
