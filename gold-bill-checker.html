@@ -30,8 +30,11 @@ nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-
 
 .upload-zone{background:#fff;border:2.5px dashed var(--gold);border-radius:22px;padding:40px 20px;text-align:center;margin-bottom:18px;}
 
-.howto-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.howto-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-weight:700;font-size:14px;color:#7C5A0B;background:#FFFBEB;}
+.howto-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 14px rgba(201,162,39,.25);border:2px solid var(--gold);}
+@keyframes howtoGlow{0%,100%{box-shadow:0 3px 14px rgba(201,162,39,.25);}50%{box-shadow:0 3px 20px rgba(201,162,39,.55);}}
+.howto-card.attention{animation:howtoGlow 2.2s ease-in-out infinite;}
+.howto-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-weight:800;font-size:14.5px;color:#7C5A0B;background:linear-gradient(135deg,#FFF7D6,#FDECC8);position:relative;}
+.howto-new-badge{position:absolute;top:-9px;left:14px;background:var(--rose,#DC2626);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:.4px;box-shadow:0 2px 4px rgba(0,0,0,.2);}
 .howto-chevron{transition:transform .2s;}
 .howto-chevron.open{transform:rotate(180deg);}
 .howto-body{padding:16px;}
@@ -210,6 +213,7 @@ gtag('config', 'G-TJXHVW6XCL');
        needing separate media per language. -->
   <div class="howto-card" id="howtoCard">
     <div class="howto-toggle" onclick="toggleHowto()">
+      <span class="howto-new-badge" id="howtoNewBadge">NEW</span>
       <span id="tHowtoToggle">📖 New here? See how this works</span>
       <span class="howto-chevron" id="howtoChevron">▾</span>
     </div>
@@ -364,13 +368,38 @@ var selectedFile = null;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 
+var HOWTO_SEEN_KEY = 'lawsticker_howto_seen_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+
 function toggleHowto(){
   var body = document.getElementById('howtoBody');
   var chev = document.getElementById('howtoChevron');
+  var card = document.getElementById('howtoCard');
+  var badge = document.getElementById('howtoNewBadge');
   var isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
   chev.classList.toggle('open', !isOpen);
+  // The pulsing glow + NEW badge are there to catch a first-time visitor's
+  // eye - once they've actually opened it once, it's served its purpose
+  // and would just be an annoying permanent pulse on every future visit,
+  // so it's remembered per-device and never shown again after the first open.
+  if (!isOpen) {
+    try { localStorage.setItem(HOWTO_SEEN_KEY, '1'); } catch (e) {}
+    if (card) card.classList.remove('attention');
+    if (badge) badge.style.display = 'none';
+  }
 }
+
+(function(){
+  var alreadySeen = false;
+  try { alreadySeen = localStorage.getItem(HOWTO_SEEN_KEY) === '1'; } catch (e) {}
+  if (!alreadySeen) {
+    var card = document.getElementById('howtoCard');
+    if (card) card.classList.add('attention');
+  } else {
+    var badge = document.getElementById('howtoNewBadge');
+    if (badge) badge.style.display = 'none';
+  }
+})();
 
 // Highlights money (₹), weights (g/ct), percentages, and "before → after"
 // number pairs so the specific figures inside a check's explanation (like
