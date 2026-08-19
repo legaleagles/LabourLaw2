@@ -255,146 +255,14 @@ gtag('config', 'G-TJXHVW6XCL');
 
   <!-- ══ SILVER FORM ══ -->
   <div id="form-silver" style="display:none">
-    <div class="card">
-      <div class="card-title" id="s-c1">Silver Details</div>
-      <div class="row2">
-        <div class="field">
-          <label id="s-l-wt">Weight <span class="hint">(grams)</span></label>
-          <div class="pfx"><span class="p">g</span><input type="number" id="s-weight" value="100" min="1" step="1"></div>
-        </div>
-        <div class="field">
-          <label id="s-l-pur">Purity</label>
-          <select id="s-purity">
-            <option value="999">999 — Fine Silver</option>
-            <option value="925" selected>925 — Sterling</option>
-            <option value="800">800 — German Silver</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label id="s-l-rate">Today's Silver Rate <span class="hint" id="s-l-rate-h">(₹/g for 999)</span></label>
-        <div class="pfx"><span class="p">₹</span><input type="number" id="s-rate" value="95"></div>
-        <a class="rate-link" href="https://www.goodreturns.in/silver-rates/" target="_blank" id="s-rate-link">🔗 Check today's rate on GoodReturns →</a>
-        <div style="font-size:10px;color:var(--muted);margin-top:4px" id="s-rate-updated"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="s-c2">Making Charges</div>
-      <div class="toggle-row">
-        <div class="tl" id="s-l-mtype">Making Type <span class="sub" id="s-l-mtype-s">Flat ₹/gram is common for silver</span></div>
-        <select id="s-mtype" style="padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:12px;font-family:inherit;background:var(--ac-pale)">
-          <option value="pgram" id="s-opt-pgram">₹ per gram</option>
-          <option value="pct" id="s-opt-pct">% of silver value</option>
-          <option value="fixed" id="s-opt-fixed">Fixed ₹ per piece</option>
-          <option value="none" id="s-opt-none">No Making</option>
-        </select>
-      </div>
-      <div class="toggle-row" id="s-mval-row">
-        <div class="tl" id="s-l-mval">Making Rate <span class="sub" id="s-mval-hint">Typical ₹50–200/g for silver</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="s-mval" value="100" step="1"><span class="unit" id="s-munit">₹/g</span></div>
-      </div>
-      <div class="toggle-row">
-        <div class="tl" id="s-l-gst">GST on Silver <span class="sub" id="s-l-gst-s">3% on silver + making</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="s-gst" value="3" step="0.1"><span class="unit">%</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="s-c3">Bulk / Scheme Discount</div>
-      <div class="toggle-row">
-        <div class="tl" id="s-l-bulk">Flat scheme discount offered? <span class="sub" id="s-l-bulk-s">e.g. "₹10,000 off on 1kg" ads</span></div>
-        <input type="checkbox" id="s-bulk-toggle" onchange="document.getElementById('s-bulk-row').style.display=this.checked?'flex':'none'">
-      </div>
-      <div class="toggle-row" id="s-bulk-row" style="display:none">
-        <div class="tl" id="s-l-bulkamt">Flat discount amount (₹)</div>
-        <div class="inline-in"><input type="number" class="mini" id="s-bulk-amt" value="10000" step="500"><span class="unit">₹</span></div>
-      </div>
-    </div>
+    <iframe id="silverCheckerFrame" data-base-src="silver-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
+
   </div>
 
   <!-- ══ DIAMOND FORM ══ -->
   <div id="form-diamond" style="display:none">
-    <div class="card">
-      <div class="card-title" id="d-c1">Diamond Details</div>
-      <div class="row2">
-        <div class="field">
-          <label id="d-l-ct">Diamond Weight <span class="hint">(carats)</span></label>
-          <div class="pfx"><span class="p">ct</span><input type="number" id="d-carat" value="0.5" min="0.1" step="0.1" style="padding-left:36px"></div>
-        </div>
-        <div class="field">
-          <label id="d-l-shape">Shape / Cut</label>
-          <select id="d-shape">
-            <option value="round">Round Brilliant</option>
-            <option value="princess">Princess</option>
-            <option value="oval">Oval</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="field">
-          <label id="d-l-color">Colour Grade</label>
-          <select id="d-color">
-            <option value="1.3">D–F (Colourless)</option>
-            <option value="1.0" selected>G–H (Near Colourless)</option>
-            <option value="0.8">I–J (Slightly Tinted)</option>
-            <option value="0.6">K–M (Faint)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label id="d-l-clarity">Clarity</label>
-          <select id="d-clarity">
-            <option value="1.4">IF/VVS1</option>
-            <option value="1.2" selected>VS1/VS2</option>
-            <option value="1.0">SI1/SI2</option>
-            <option value="0.75">I1/I2</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label id="d-l-ppc">Approx. Diamond Price <span class="hint" id="d-l-ppc-h">(₹ per carat — check cert)</span></label>
-        <div class="pfx"><span class="p">₹</span><input type="number" id="d-ppc" value="49900" step="100"></div>
-        <a class="rate-link" href="https://www.goodreturns.in/gold-rates/" target="_blank" id="d-rate-link">🔗 Verify against IGI/GIA certificate →</a>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="d-c2">Gold Setting</div>
-      <div class="row2">
-        <div class="field">
-          <label id="d-l-gwt">Setting Weight <span class="hint">(g)</span></label>
-          <div class="pfx"><span class="p">g</span><input type="number" id="d-gwt" value="3" min="0.5" step="0.5"></div>
-        </div>
-        <div class="field">
-          <label id="d-l-gpur">Setting Purity</label>
-          <select id="d-gpur">
-            <option value="18" selected>18K (most common)</option>
-            <option value="14">14K</option>
-            <option value="22">22K</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label id="d-l-grate">Gold Rate <span class="hint">(₹/g 24K)</span></label>
-        <div class="pfx"><span class="p">₹</span><input type="number" id="d-grate" value="9500"></div>
-      </div>
-      <div class="toggle-row">
-        <div class="tl" id="d-l-mval">Making Charges <span class="sub" id="d-l-mval-s">% on gold setting value</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="d-making" value="12" step="0.1"><span class="unit">%</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="d-c3">GST — Important</div>
-      <div class="toggle-row" style="border-bottom:none">
-        <div class="tl">GST on Gold Setting <span class="sub">3% on gold + making</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="d-ggst" value="3" step="0.1"><span class="unit">%</span></div>
-      </div>
-      <div style="background:#FEF3C7;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#92400E;line-height:1.55;" id="d-gst-note">
-        ⚠️ <strong>Hidden charge alert:</strong> Cut and polished diamonds attract <strong>GST @ 1.5%</strong> separately from the gold setting. Many shops bundle this silently. Ask for a split invoice.
-      </div>
-      <div class="toggle-row" style="margin-top:10px">
-        <div class="tl">GST on Diamond <span class="sub">1.5% on diamond value</span></div>
-        <div class="inline-in"><input type="number" class="mini" id="d-dgst" value="1.5" step="0.1"><span class="unit">%</span></div>
-      </div>
-    </div>
+    <iframe id="diamondCheckerFrame" data-base-src="diamond-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
+
   </div>
 
   <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Total Price →</button>
@@ -827,18 +695,10 @@ function applyLang() {
   s('g-rate-link',t.gRateLink);
   s('loadLiveRateBtn',t.gLoadRateBtn);s('g-city-label',t.gCityLabel);s('detectCityBtn',t.gDetectBtn);
   s('g-city-info-box',t.gCityInfoBox);
-  // silver
-  s('s-c1',t.sC1);s('s-l-wt',t.sLWt);s('s-l-pur',t.sLPur);s('s-l-rate',t.sLRate);s('s-l-rate-h',t.sLRateH);
-  s('s-c2',t.sC2);s('s-l-mtype',t.sLMtype);s('s-l-mtype-s',t.sLMtypeS);
-  s('s-l-mval',t.sLMval);s('s-mval-hint',t.sMvalHint);s('s-l-gst',t.sLGst);s('s-l-gst-s',t.sLGstS);
-  s('s-c3',t.sC3);s('s-l-bulk',t.sLBulk);s('s-l-bulk-s',t.sLBulkS);s('s-l-bulkamt',t.sLBulkAmt);
-  el('s-opt-pgram').textContent=t.sOptPgram;el('s-opt-pct').textContent=t.sOptPct;el('s-opt-fixed').textContent=t.sOptFixed;el('s-opt-none').textContent=t.sOptNone;
-  s('s-rate-link',t.sRateLink);
-  // diamond
-  s('d-c1',t.dC1);s('d-l-ct',t.dLCt);s('d-l-shape',t.dLShape);s('d-l-color',t.dLColor);s('d-l-clarity',t.dLClarity);
-  s('d-l-ppc',t.dLPpc);s('d-l-ppc-h',t.dLPpcH);
-  s('d-c2',t.dC2);s('d-l-gwt',t.dLGwt);s('d-l-gpur',t.dLGpur);s('d-l-grate',t.dLGrate);s('d-l-mval',t.dLMval);s('d-l-mval-s',t.dLMvalS);
-  s('d-c3',t.dC3);h('d-gst-note',t.dGstNote);s('d-rate-link',t.dRateLink);
+  // Silver and diamond form fields no longer exist in the DOM (both tabs
+  // now embed their own AI Bill Checker iframe, which has its own
+  // trilingual UI) - the old per-field label translation calls for them
+  // were removed rather than left to silently target nothing.
   // shared
   s('calc-btn',t.calcBtn);s('r-label',t.rLabel);s('r-bd-head',t.rBdHead);
   s('expl-hdr-txt',t.exHdr);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
@@ -858,11 +718,15 @@ function setLang(l){
   document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
   document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
   applyLang();
-  // The embedded Gold Bill Checker has its own language dictionary and no
-  // longer shows its own language buttons when embedded - this page's own
-  // switcher is now the single source of truth for its language too.
-  var frame = document.getElementById('goldCheckerFrame');
-  if (frame && frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: l}, '*');
+  // All three metals now embed their own AI Bill Checker (Gold/Silver/
+  // Diamond), each with its own language dictionary and no visible language
+  // buttons of its own when embedded - this page's switcher is the single
+  // source of truth for all three, so the language is pushed to every
+  // checker frame (harmless for the two currently hidden/inactive ones).
+  ['goldCheckerFrame','silverCheckerFrame','diamondCheckerFrame'].forEach(function(id){
+    var frame = document.getElementById(id);
+    if (frame && frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: l}, '*');
+  });
 }
 
 function setMetal(m){
@@ -874,13 +738,19 @@ function setMetal(m){
   el('nego-wrap').style.display='none';
   _lastCtx=null;
   buildExplainer();
-  // Gold now uses the embedded AI Bill Checker instead of the manual
-  // enter-numbers-and-calculate flow, so hide the shared calc button and
-  // results/stats panels that belong to that older flow when Gold is active.
-  var isGold = (m === 'gold');
-  el('calc-btn').style.display = isGold ? 'none' : '';
-  el('results').style.display = isGold ? 'none' : '';
-  document.querySelector('.stats-bar').style.display = isGold ? 'none' : '';
+  // All three metals now use their own embedded AI Bill Checker instead of
+  // the old manual enter-numbers-and-calculate flow, so the shared calc
+  // button and results/stats panels from that older flow are never shown
+  // for any of them anymore.
+  el('calc-btn').style.display = 'none';
+  el('results').style.display = 'none';
+  document.querySelector('.stats-bar').style.display = 'none';
+  // Lazy-load this metal's checker iframe the first time its tab is opened
+  // (see the init IIFE below, which only eagerly loads the default 'gold'
+  // frame) - avoids fetching and running all three checkers' full JS on
+  // every page load when only one is ever visible at a time.
+  var frame = el(m + 'CheckerFrame');
+  if (frame && !frame.src) frame.src = frame.dataset.baseSrc + '&lang=' + lang;
   // update select styling
   document.querySelectorAll('.field input, .field select, .mini').forEach(e=>{
     e.style.background='var(--ac-pale)';
@@ -894,24 +764,27 @@ function resizeGoldFrame(frame){
     if (h > 200) frame.style.height = (h + 40) + 'px';
   } catch(e) { /* cross-origin fallback - shouldn't happen, same origin */ }
   // Sync whatever language this page is currently showing into the checker
-  // on first load, in case it wasn't English when the Gold tab was opened.
+  // on first load, in case it wasn't English when this tab was opened.
   if (frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: lang}, '*');
 }
-// The embedded checker's content height changes a lot after analysis
-// (upload zone -> full report), so listen for it to tell us its new size
-// rather than relying only on the one-time onload resize above.
+// The embedded checkers' content height changes a lot after analysis
+// (upload zone -> full report), so listen for it to tell us the new size
+// rather than relying only on the one-time onload resize above. Matched by
+// ev.source (the actual frame window that sent the message) rather than a
+// single hardcoded frame id, since any of the three metals' frames can post
+// this now, not just Gold's.
 window.addEventListener('message', function(ev){
   if (ev.data && ev.data.type === 'goldCheckerHeight') {
-    var frame = document.getElementById('goldCheckerFrame');
-    if (frame) frame.style.height = (ev.data.height + 40) + 'px';
+    ['goldCheckerFrame','silverCheckerFrame','diamondCheckerFrame'].forEach(function(id){
+      var frame = document.getElementById(id);
+      if (frame && frame.contentWindow === ev.source) frame.style.height = (ev.data.height + 40) + 'px';
+    });
   }
 });
 
-el('s-mtype').addEventListener('change',function(){
-  el('s-mval-row').style.display=this.value==='none'?'none':'flex';
-  const u={pct:'%',pgram:'₹/g',fixed:'₹'};
-  el('s-munit').textContent=u[this.value]||'₹/g';
-});
+
+// The old s-mtype change listener was removed - that select field no
+// longer exists (Silver tab now embeds its own AI Bill Checker iframe).
 
 // ══════════════════════════════════════════
 //  CALCULATE
@@ -1249,7 +1122,11 @@ recordVisit();
 applyLang();
 buildExplainer();
 (function(){
-  var frame = document.getElementById('goldCheckerFrame');
+  // Only the initially-active metal's checker frame loads eagerly - the
+  // other two are lazy-loaded (src set on first switch, see setMetal)
+  // rather than all three fetching and running their full JS on every page
+  // load regardless of which tab is actually visible.
+  var frame = document.getElementById(metal + 'CheckerFrame');
   if (frame) frame.src = frame.dataset.baseSrc + '&lang=' + lang;
 })();
 </script>
