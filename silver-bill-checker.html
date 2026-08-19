@@ -29,6 +29,27 @@ nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-
 .wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
 
 .upload-zone{background:#fff;border:2.5px dashed var(--gold);border-radius:22px;padding:40px 20px;text-align:center;margin-bottom:18px;}
+
+.howto-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.howto-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-weight:700;font-size:14px;color:#7C5A0B;background:#FFFBEB;}
+.howto-chevron{transition:transform .2s;}
+.howto-chevron.open{transform:rotate(180deg);}
+.howto-body{padding:16px;}
+.howto-steps{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:4px;}
+.howto-step{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;font-size:11px;color:var(--muted);font-weight:600;}
+.howto-step-icon{font-size:26px;margin-bottom:4px;}
+.howto-step-arrow{color:var(--gold);font-size:16px;flex-shrink:0;}
+.sample-bill-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:8px;}
+.sample-bill{background:#FEFCF5;border:1.5px dashed #DDD5C0;border-radius:12px;padding:10px 12px;margin-bottom:10px;}
+.sample-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEE8D8;font-size:12.5px;}
+.sample-row:last-child{border-bottom:none;}
+.sample-row.sample-final{font-weight:800;color:#7C5A0B;}
+.sample-num{background:var(--gold);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.sample-label{flex:1;color:var(--muted);}
+.sample-val{font-weight:700;color:var(--ink);}
+.sample-callouts{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.sample-callouts div{margin-bottom:4px;}
+.sample-note{font-size:11px;color:var(--muted);font-style:italic;border-top:1px solid #EEE8D8;padding-top:10px;}
 .upload-zone.has-image{border-style:solid;padding:16px;}
 .upload-icon{font-size:52px;margin-bottom:14px;}
 .upload-title{font-family:'Playfair Display',serif;font-weight:900;font-size:17px;color:var(--ink);margin-bottom:8px;}
@@ -182,6 +203,38 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="wrap">
 
+  <div class="howto-card" id="howtoCard">
+    <div class="howto-toggle" onclick="toggleHowto()">
+      <span id="tHowtoToggle">📖 New here? See how this works</span>
+      <span class="howto-chevron" id="howtoChevron">▾</span>
+    </div>
+    <div class="howto-body" id="howtoBody" style="display:none;">
+      <div class="howto-steps">
+        <div class="howto-step"><span class="howto-step-icon">📸</span><span id="tStep1">Take a photo of your bill</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">🤖</span><span id="tStep2">AI reads every number</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">✅</span><span id="tStep3">See your fairness report</span></div>
+      </div>
+      <div class="sample-bill-title" id="tSampleTitle">📋 What a silver bill looks like</div>
+      <div class="sample-bill">
+        <div class="sample-row"><span class="sample-num">1</span><span class="sample-label" id="tS1">Item</span><span class="sample-val">Silver Payal</span></div>
+        <div class="sample-row"><span class="sample-num">2</span><span class="sample-label" id="tS2">Net Weight</span><span class="sample-val">100.000 g</span></div>
+        <div class="sample-row"><span class="sample-num">3</span><span class="sample-label" id="tS3">Today's Rate</span><span class="sample-val">₹255/g</span></div>
+        <div class="sample-row"><span class="sample-num">4</span><span class="sample-label" id="tS4">Making Charge</span><span class="sample-val">₹100/g</span></div>
+        <div class="sample-row"><span class="sample-num">5</span><span class="sample-label" id="tS5">GST</span><span class="sample-val">3%</span></div>
+        <div class="sample-row sample-final"><span class="sample-num">6</span><span class="sample-label" id="tS6">Final Amount</span><span class="sample-val">₹36,565</span></div>
+      </div>
+      <div class="sample-callouts" id="sampleCallouts">
+        <div><b>1–2</b> <span id="tC12">— tells us what's being weighed, and its purity (999/925/800).</span></div>
+        <div><b>3</b> <span id="tC3">— we check this against today's real published silver rate.</span></div>
+        <div><b>4</b> <span id="tC4">— silver is often charged ₹ per gram flat, not a percentage — we check the structure and the typical range for this rate.</span></div>
+        <div><b>5–6</b> <span id="tC56">— we verify the maths adds up correctly to this final number.</span></div>
+      </div>
+      <div class="sample-note" id="tSampleNote">Your own bill doesn't need to look exactly like this — every shop's format is different, and the AI reads whatever is actually printed.</div>
+    </div>
+  </div>
+
   <div class="upload-zone" id="uploadZone">
     <div class="upload-icon">📸</div>
     <div class="upload-title" id="tUploadTitle">Show Us the Bill</div>
@@ -240,6 +293,11 @@ var GT = {
     todaysRatePrefix:"📍 Today's Silver Rate —",
     saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
     zoomHint:'👆 Tap the photo to zoom in and compare', downloadPdf:'⬇️ Download PDF', listenBtn:'🔊 Listen to this report', listeningBtn:'⏸️ Stop', preparingPdf:'⏳ Preparing…', zoomTip:'Pinch or scroll to zoom — tap outside to close',
+    howtoToggle:'📖 New here? See how this works', step1:'Take a photo of your bill', step2:'AI reads every number', step3:'See your fairness report',
+    sampleTitle:'📋 What a silver bill looks like',
+    sLabel1:'Item', sLabel2:'Net Weight', sLabel3:"Today's Rate", sLabel4:'Making Charge', sLabel5:'GST', sLabel6:'Final Amount',
+    callout12:"— tells us what's being weighed, and its purity (999/925/800).", callout3:"— we check this against today's real published silver rate.", callout4:'— silver is often charged ₹ per gram flat, not a percentage — we check the structure and the typical range for this rate.', callout56:'— we verify the maths adds up correctly to this final number.',
+    sampleNote:"Your own bill doesn't need to look exactly like this — every shop's format is different, and the AI reads whatever is actually printed.",
   },
   te: {
     heroTitle:'మీ వెండి బిల్లు సరైనదేనా?',
@@ -261,6 +319,11 @@ var GT = {
     todaysRatePrefix:'📍 నేటి వెండి రేటు —',
     saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
     zoomHint:'👆 జూమ్ చేయడానికి, పోల్చడానికి ఫోటోను తాకండి', downloadPdf:'⬇️ PDF డౌన్‌లోడ్ చేయండి', listenBtn:'🔊 ఈ నివేదిక వినండి', listeningBtn:'⏸️ ఆపు', preparingPdf:'⏳ సిద్ధం చేస్తున్నాము…', zoomTip:'జూమ్ చేయడానికి పించ్ చేయండి లేదా స్క్రోల్ చేయండి — మూసివేయడానికి బయట తాకండి',
+    howtoToggle:'📖 కొత్తగా వచ్చారా? ఇది ఎలా పనిచేస్తుందో చూడండి', step1:'మీ బిల్లు ఫోటో తీయండి', step2:'AI ప్రతి సంఖ్యను చదువుతుంది', step3:'మీ నివేదికను చూడండి',
+    sampleTitle:'📋 వెండి బిల్లు ఎలా ఉంటుంది',
+    sLabel1:'వస్తువు', sLabel2:'నికర బరువు', sLabel3:'నేటి రేటు', sLabel4:'మేకింగ్ ఛార్జీ', sLabel5:'GST', sLabel6:'తుది మొత్తం',
+    callout12:'— దేనిని తూకం వేస్తున్నారో, దాని స్వచ్ఛత (999/925/800) చెబుతుంది.', callout3:'— దీన్ని నేటి నిజమైన ప్రచురిత వెండి రేటుతో సరిపోల్చుతాము.', callout4:'— వెండికి తరచుగా గ్రాముకు ఫ్లాట్ ₹ వసూలు చేస్తారు, శాతం కాదు — ఈ నిర్మాణం మరియు సాధారణ పరిధిని చెక్ చేస్తాము.', callout56:'— లెక్క ఈ తుది సంఖ్యకు సరిగ్గా సరిపోతుందో ధృవీకరిస్తాము.',
+    sampleNote:'మీ సొంత బిల్లు ఇలాగే ఉండాల్సిన అవసరం లేదు — ప్రతి దుకాణం ఫార్మాట్ వేరుగా ఉంటుంది, ప్రింట్ అయిన దాన్ని AI చదువుతుంది.',
   },
   hi: {
     heroTitle:'क्या आपका चांदी का बिल सही है?',
@@ -282,6 +345,11 @@ var GT = {
     todaysRatePrefix:'📍 आज की चांदी की दर —',
     saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
     zoomHint:'👆 ज़ूम करके तुलना करने के लिए फोटो पर टैप करें', downloadPdf:'⬇️ PDF डाउनलोड करें', listenBtn:'🔊 यह रिपोर्ट सुनें', listeningBtn:'⏸️ रोकें', preparingPdf:'⏳ तैयार कर रहे हैं…', zoomTip:'ज़ूम करने के लिए पिंच करें या स्क्रॉल करें — बंद करने के लिए बाहर टैप करें',
+    howtoToggle:'📖 नए हैं? देखें यह कैसे काम करता है', step1:'अपने बिल की फोटो लें', step2:'AI हर संख्या पढ़ता है', step3:'अपनी रिपोर्ट देखें',
+    sampleTitle:'📋 चांदी का बिल कैसा दिखता है',
+    sLabel1:'वस्तु', sLabel2:'शुद्ध वजन', sLabel3:'आज की दर', sLabel4:'मेकिंग चार्ज', sLabel5:'GST', sLabel6:'अंतिम राशि',
+    callout12:'— बताता है क्या तोला जा रहा है, और उसकी शुद्धता (999/925/800) क्या है।', callout3:'— हम इसे आज की असली प्रकाशित चांदी दर से जांचते हैं।', callout4:'— चांदी पर अक्सर प्रति ग्राम फ्लैट ₹ लिया जाता है, प्रतिशत नहीं — हम यह संरचना और सामान्य सीमा जांचते हैं।', callout56:'— हम सत्यापित करते हैं कि हिसाब सही ढंग से इस अंतिम राशि तक पहुंचता है।',
+    sampleNote:'आपके अपने बिल को बिल्कुल ऐसा दिखना ज़रूरी नहीं है — हर दुकान का फॉर्मेट अलग होता है, AI जो भी छपा है उसे पढ़ लेता है।',
   },
 };
 function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
@@ -290,6 +358,14 @@ function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key
 var selectedFile = null;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function toggleHowto(){
+  var body = document.getElementById('howtoBody');
+  var chev = document.getElementById('howtoChevron');
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chev.classList.toggle('open', !isOpen);
+}
 
 // Highlights money (₹), weights (g/ct), percentages, and "before → after"
 // number pairs so the specific figures inside a check's explanation (like
@@ -677,6 +753,12 @@ function applyStaticLang(){
   t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
   t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
   t('tZoomHint', 'zoomHint'); t('tZoomTip', 'zoomTip');
+  t('tHowtoToggle', 'howtoToggle');
+  t('tStep1', 'step1'); t('tStep2', 'step2'); t('tStep3', 'step3');
+  t('tSampleTitle', 'sampleTitle');
+  t('tS1', 'sLabel1'); t('tS2', 'sLabel2'); t('tS3', 'sLabel3'); t('tS4', 'sLabel4'); t('tS5', 'sLabel5'); t('tS6', 'sLabel6');
+  t('tC12', 'callout12'); t('tC3', 'callout3'); t('tC4', 'callout4'); t('tC56', 'callout56');
+  t('tSampleNote', 'sampleNote');
   var checkBtn = document.getElementById('checkBtn');
   if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
   ['en', 'te', 'hi'].forEach(function(l){
