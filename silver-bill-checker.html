@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silver Bill Checker — Is Your Silver Bill Fair? | LawSticker AI</title>
+<meta name="description" content="Photograph any silver bill and get a plain-language check — is the silver rate right, is the making charge typical, does the math add up.">
+<link rel="canonical" href="https://lawsticker-ai.com/silver-bill-checker.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --cream:#FEFCF5; --gold:#C9A227; --gold-l:#F5D76E; --navy:#0D1117;
+  --ink:#111827; --muted:#6B7280; --green:#059669; --amber:#D97706; --rose:#DC2626;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.nav-home{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);text-decoration:none;background:rgba(255,255,255,.08);padding:6px 12px;border-radius:8px;}
+
+.hero{background:linear-gradient(160deg,#FFFBEB 0%,#FEF3C7 50%,#FEFCF5 100%);padding:32px 20px 26px;text-align:center;}
+.hero-icon{font-size:44px;margin-bottom:8px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#7C5A0B;line-height:1.3;}
+.hero-sub{font-size:13px;color:#8a6d1a;margin-top:10px;line-height:1.65;max-width:440px;margin-left:auto;margin-right:auto;}
+
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
+
+.upload-zone{background:#fff;border:2.5px dashed var(--gold);border-radius:22px;padding:40px 20px;text-align:center;margin-bottom:18px;}
+.upload-zone.has-image{border-style:solid;padding:16px;}
+.upload-icon{font-size:52px;margin-bottom:14px;}
+.upload-title{font-family:'Playfair Display',serif;font-weight:900;font-size:17px;color:var(--ink);margin-bottom:8px;}
+.upload-hint{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.upload-btn-row{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.upload-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:14px;
+font-weight:800;font-size:14px;cursor:pointer;border:none;}
+.upload-btn.camera{background:linear-gradient(135deg,#C9A227,#8a6d1a);color:#fff;}
+.upload-btn.file{background:#F3F4F6;color:var(--ink);border:1.5px solid #E5E7EB;}
+.preview-img{width:100%;max-height:340px;object-fit:contain;border-radius:14px;margin-bottom:12px;background:#F9FAFB;}
+.city-row{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:14px;font-size:12.5px;}
+.city-row select{padding:8px 10px;border-radius:8px;border:1.5px solid #E5E7EB;font-size:12.5px;}
+.check-btn{width:100%;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-weight:800;
+font-size:15px;padding:15px;border:none;border-radius:14px;cursor:pointer;margin-top:14px;}
+.check-btn:disabled{opacity:.5;}
+.reset-link{display:block;text-align:center;font-size:12px;color:var(--muted);margin-top:10px;text-decoration:underline;cursor:pointer;}
+
+.loading-box{text-align:center;padding:30px 20px;}
+.loading-icon{font-size:40px;margin-bottom:12px;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.loading-text{font-size:13px;color:var(--muted);}
+
+.summary-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:18px;margin-bottom:16px;}
+.summary-title{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin-bottom:12px;}
+.summary-row{display:flex;justify-content:space-between;font-size:14.5px;padding:9px 0;border-bottom:1px solid #F3F4F6;}
+.summary-row:last-child{border-bottom:none;}
+.summary-row b{color:var(--muted);font-weight:600;}
+.summary-final{background:#FFFBEB;border-radius:10px;padding:12px 14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;}
+.summary-final-label{font-size:12px;font-weight:700;color:#92400E;}
+.summary-final-amt{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#92400E;}
+
+.section-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin:22px 0 12px;}
+.check-card{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--muted);}
+.check-card.ok{border-left-color:var(--green);background:#ECFDF5;}
+.check-card.warn{border-left-color:var(--amber);background:#FFFBEB;}
+.check-card.info{border-left-color:#0369A1;background:#F0F9FF;}
+.check-card.caution{border-left-color:#DC2626;background:#FEF2F2;}
+.rate-banner{background:linear-gradient(135deg,#FFF8E1,#FFFBEB);border:1.5px solid #FDE68A;border-radius:18px;padding:16px 18px;margin-bottom:16px;text-align:center;}
+.rate-banner-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:6px;}
+.rate-banner-22{font-family:'Playfair Display',serif;font-weight:900;font-size:30px;color:#7C5A0B;}
+.rate-banner-22 small{font-size:14px;font-weight:700;color:var(--muted);}
+.rate-banner-24{font-size:13px;color:var(--muted);margin-top:4px;}
+.stone-slider-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 18px;margin-bottom:16px;}
+.stone-slider-row{margin-bottom:18px;}
+.stone-slider-row:last-child{margin-bottom:0;}
+.stone-slider-name{font-size:13px;font-weight:800;margin-bottom:6px;}
+.stone-slider-live{font-size:12.5px;color:var(--muted);margin-top:4px;}
+input.stone-slider{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:#F3F4F6;}
+input.stone-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);cursor:pointer;}
+input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);border:none;cursor:pointer;}
+.check-icon{font-size:16px;margin-right:6px;}
+.check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
+.check-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.check-title-row .check-title{flex:1;margin-bottom:6px;}
+.card-listen-btn{flex-shrink:0;background:#fff;border:1.5px solid #E5E7EB;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.card-listen-btn.speaking{background:linear-gradient(135deg,#059669,#047857);border-color:#059669;}
+.check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
+.hl-num{font-weight:800;color:#7C5A0B;background:rgba(201,162,39,.15);padding:0 3px;border-radius:4px;}
+.hl-pair{font-weight:800;color:#B45309;background:rgba(217,119,6,.14);padding:0 4px;border-radius:5px;}
+.lang-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.top-lang-toggle{display:flex;gap:8px;justify-content:center;padding:10px 16px;background:#fff;border-bottom:1px solid #F3E9C9;}
+.top-lang-toggle .lang-btn{flex:0 1 110px;padding:8px;font-size:12px;}
+.preview-img{cursor:zoom-in;}
+.zoom-hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:4px;}
+.zoom-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:9999;align-items:center;justify-content:center;}
+.zoom-modal.open{display:flex;}
+.zoom-modal img{max-width:96vw;max-height:88vh;touch-action:pinch-zoom;}
+.zoom-close{position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;}
+.zoom-tip{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12px;}
+.export-row{display:flex;gap:10px;margin:20px 0 8px;}
+.export-btn{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:12.5px;border:none;cursor:pointer;color:#fff;}
+.export-btn.pdf{background:linear-gradient(135deg,#DC2626,#991B1B);}
+.export-btn.listen{background:linear-gradient(135deg,#0EA5A6,#0a7a7b);}
+.export-btn:disabled{opacity:.6;}
+.export-btn.listen.speaking{background:linear-gradient(135deg,#059669,#047857);}
+.lang-btn{flex:1;padding:9px;border-radius:9px;border:1.5px solid #E5E7EB;background:#fff;font-weight:700;font-size:12.5px;cursor:pointer;color:#6B7280;}
+.lang-btn.active{background:#0EA5A6;border-color:#0EA5A6;color:#fff;}
+.lang-btn:disabled{opacity:.5;}
+
+.stones-list{margin-top:14px;}
+.stone-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dashed #F0F0F0;color:#4B5563;}
+
+.stone-table-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:16px;padding:16px;margin-bottom:16px;}
+.stone-table-hint{font-size:12.5px;color:var(--muted);margin:4px 0 12px;line-height:1.5;}
+.stone-compare-row{display:flex;flex-direction:column;gap:5px;padding:10px 0;border-bottom:1px solid #F3F4F6;}
+.stone-compare-row:last-child{border-bottom:none;}
+.stone-compare-name{font-weight:800;font-size:15px;color:var(--ink);}
+.stone-compare-nums{display:flex;justify-content:space-between;font-size:13.5px;color:#4B5563;}
+.stone-you{font-weight:700;}
+.stone-market{color:var(--muted);}
+.stone-badge{align-self:flex-start;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:8px;}
+.stone-badge-ok{background:#ECFDF5;color:var(--green);}
+.stone-badge-high{background:#FFFBEB;color:var(--amber);}
+.stone-badge-low{background:#F0F9FF;color:#0369A1;}
+.slider-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 18px;margin-bottom:16px;}
+.slider-card-title{font-family:'Playfair Display',serif;font-weight:900;font-size:16.5px;margin-bottom:6px;}
+.slider-card-note{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.slider-you-badge{display:inline-flex;align-items:center;gap:6px;background:#FFFBEB;border:1.5px solid #FDE68A;
+border-radius:10px;padding:8px 13px;font-size:13px;font-weight:800;color:#92400E;margin-bottom:16px;}
+.slider-track-wrap{position:relative;margin:24px 4px 10px;}
+.slider-track-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.typical-zone{position:absolute;top:14px;height:8px;background:#D1FAE5;border-radius:6px;pointer-events:none;}
+input.va-slider{width:100%;-webkit-appearance:none;height:8px;border-radius:6px;background:#F3F4F6;position:relative;z-index:1;}
+input.va-slider::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+background:linear-gradient(135deg,#C9A227,#8a6d1a);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer;}
+input.va-slider::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#C9A227,#8a6d1a);
+border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer;}
+.slider-live-pct{text-align:center;font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#7C5A0B;margin:14px 0 4px;}
+.slider-live-label{text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.slider-result-row{display:flex;justify-content:space-between;align-items:center;background:#F9FAFB;border-radius:12px;
+padding:14px 16px;margin-bottom:8px;}
+.slider-result-row.highlight{background:#ECFDF5;border:1.5px solid #A7F3D0;}
+.slider-result-label{font-size:12.5px;font-weight:700;color:#4B5563;}
+.slider-result-amt{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);}
+.slider-diff{text-align:center;margin-top:14px;font-size:14px;font-weight:800;padding:10px;border-radius:10px;}
+.slider-diff.save{background:#ECFDF5;color:var(--green);}
+.slider-diff.extra{background:#FEF2F2;color:var(--rose);}
+.disclaimer-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:14px 16px;margin-top:20px;font-size:13px;color:#991B1B;line-height:1.7;}
+.trust-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:#92400E;line-height:1.6;text-align:center;}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TJXHVW6XCL');
+</script>
+</head>
+<body id="gbcBody">
+
+<nav id="gbcNav">
+  <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
+  <div style="display:flex;gap:8px;">
+    <a class="nav-home" href="jewellery-suite.html">💍 Jewellery Suite</a>
+    <a class="nav-home" href="index.html">← Home</a>
+  </div>
+</nav>
+
+<div class="top-lang-toggle" id="topLangToggle">
+  <button class="lang-btn active" id="topLangBtn-en" onclick="setGoldLang('en')">English</button>
+  <button class="lang-btn" id="topLangBtn-te" onclick="setGoldLang('te')">తెలుగు</button>
+  <button class="lang-btn" id="topLangBtn-hi" onclick="setGoldLang('hi')">हिंदी</button>
+</div>
+
+<div class="hero">
+  <div class="hero-icon">🧾🥈</div>
+  <div class="hero-title" id="tHeroTitle">Is Your Silver Bill Fair?</div>
+  <div class="hero-sub" id="tHeroSub">Just take a photo of any silver bill or estimate — we'll check the math, the making charge, and today's real silver rate for you. No typing needed.</div>
+</div>
+
+<div class="wrap">
+
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-icon">📸</div>
+    <div class="upload-title" id="tUploadTitle">Show Us the Bill</div>
+    <div class="upload-hint" id="tUploadHint">Take a clear photo, or choose one from your gallery — works with any shop's format.</div>
+    <div class="upload-btn-row">
+      <label class="upload-btn camera">
+        <span id="tCamBtn">📷 Take a Photo</span>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
+      </label>
+      <label class="upload-btn file">
+        <span id="tFileBtn">🖼️ Choose from Gallery</span>
+        <input type="file" id="galleryInput" accept="image/*" style="display:none;">
+      </label>
+    </div>
+  </div>
+
+  <div id="resultArea"></div>
+
+  <div class="trust-note">🔒 Your bill photo is only used to read the numbers — it's not saved or shared anywhere.</div>
+
+  <div class="zoom-modal" id="zoomModal" onclick="closeZoom(event)">
+    <button class="zoom-close" onclick="closeZoom(event)">✕</button>
+    <img id="zoomImg" src="">
+    <div class="zoom-tip" id="tZoomTip">Pinch or scroll to zoom — tap outside to close</div>
+  </div>
+
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS — every static UI string on this page, so switching
+//  language actually covers the whole page, not just the AI report text
+//  (which uses a separate mechanism below since it's dynamically generated).
+// ══════════════════════════════════════════
+var GBC_LANG = 'en';
+var GT = {
+  en: {
+    heroTitle:'Is Your Gold Bill Fair?',
+    heroSub:"Just take a photo of any jewellery shop's estimate — we'll check the math, the making charge, and today's real gold rate for you. No typing needed.",
+    uploadTitle:'Show Us the Bill', uploadHint:"Take a clear photo, or choose one from your gallery — works with any shop's format.",
+    camBtn:'📷 Take a Photo', fileBtn:'🖼️ Choose from Gallery',
+    cityLabel:'📍 Your city:', checkBtn:'✅ Check This Bill', checkingBtn:'Reading your bill…', changePhoto:'Choose a different photo',
+    yourItem:'Your Item', netWeight:'Net Gold Weight', shopRate:"Shop's Gold Rate", makingCharge:'Making Charge (VA)',
+    stoneCost:'Stone Cost', gst:'GST', finalAmount:'Final Amount',
+    mcTitle:'🎚️ Making Charge — Try Different Percentages', mcYouCharge:'📌 This bill charges you:', mcTypical:'Typical:',
+    mcTotalAt:'Total at this %', mcBilled:"What you're billed", mcPctLabel:'making charge at this percentage',
+    stoneSliderTitle:'🎚️ Stone Cost — Try Market Rates', stoneSliderHint:'Drag each stone to a rate within its typical market range and see the total move.',
+    stoneSliderTotal:'Total at these rates', stoneSliderTotalWord:'total',
+    reportHeading:'Your Negotiation Report Card', reportHeadingReceipt:'Your Bill Check Report',
+    basicChecksTitle:'Basic checks only', basicChecksDetail:"We could read the bill, but couldn't generate detailed checks this time — the numbers above are still accurate from the bill itself.",
+    stoneTableTitle:'💎 Stone Pricing — You vs. Typical Market', stoneTableHint:"Rough guide only — real pricing depends on quality you can't judge from a bill.",
+    stoneYou:'You:', stoneMarket:'Market:', stoneWithin:'Within range', stoneAbove:'Above typical', stoneBelow:'Below typical',
+    disclaimer:'⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.',
+    todaysRatePrefix:"📍 Today's Gold Rate —",
+    saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
+    zoomHint:'👆 Tap the photo to zoom in and compare', downloadPdf:'⬇️ Download PDF', listenBtn:'🔊 Listen to this report', listeningBtn:'⏸️ Stop', preparingPdf:'⏳ Preparing…', zoomTip:'Pinch or scroll to zoom — tap outside to close',
+  },
+  te: {
+    heroTitle:'మీ బంగారు బిల్లు సరైనదేనా?',
+    heroSub:'ఏ నగల దుకాణం అంచనానైనా ఫోటో తీయండి — లెక్క, మేకింగ్ ఛార్జీ, నేటి నిజమైన బంగారం రేటు మేము చెక్ చేస్తాము. టైప్ చేయాల్సిన అవసరం లేదు.',
+    uploadTitle:'బిల్లు చూపించండి', uploadHint:'స్పష్టమైన ఫోటో తీయండి, లేదా గ్యాలరీ నుండి ఎంచుకోండి — ఏ దుకాణం ఫార్మాట్ అయినా పనిచేస్తుంది.',
+    camBtn:'📷 ఫోటో తీయండి', fileBtn:'🖼️ గ్యాలరీ నుండి ఎంచుకోండి',
+    cityLabel:'📍 మీ నగరం:', checkBtn:'✅ ఈ బిల్లును చెక్ చేయండి', checkingBtn:'మీ బిల్లు చదువుతున్నాము…', changePhoto:'వేరే ఫోటో ఎంచుకోండి',
+    yourItem:'మీ వస్తువు', netWeight:'నికర బంగారు బరువు', shopRate:'దుకాణం బంగారు రేటు', makingCharge:'మేకింగ్ ఛార్జీ (VA)',
+    stoneCost:'రాళ్ల ఖర్చు', gst:'GST', finalAmount:'తుది మొత్తం',
+    mcTitle:'🎚️ మేకింగ్ ఛార్జీ — వేర్వేరు శాతాలు ప్రయత్నించండి', mcYouCharge:'📌 ఈ బిల్లు మీ నుండి వసూలు చేసేది:', mcTypical:'సాధారణం:',
+    mcTotalAt:'ఈ శాతం వద్ద మొత్తం', mcBilled:'మీకు బిల్ చేసినది', mcPctLabel:'ఈ శాతం వద్ద మేకింగ్ ఛార్జీ',
+    stoneSliderTitle:'🎚️ రాళ్ల ఖర్చు — మార్కెట్ రేట్లు ప్రయత్నించండి', stoneSliderHint:'ప్రతి రాయిని దాని సాధారణ మార్కెట్ పరిధిలో లాగి మొత్తం ఎలా మారుతుందో చూడండి.',
+    stoneSliderTotal:'ఈ రేట్ల వద్ద మొత్తం', stoneSliderTotalWord:'మొత్తం',
+    reportHeading:'మీ బేరసారాల నివేదిక', reportHeadingReceipt:'మీ బిల్లు చెక్ నివేదిక',
+    basicChecksTitle:'ప్రాథమిక చెక్‌లు మాత్రమే', basicChecksDetail:'బిల్లు చదవగలిగాము, కానీ ఈసారి వివరణాత్మక చెక్‌లు రూపొందించలేకపోయాము — పైన ఉన్న సంఖ్యలు బిల్లు నుండి ఇప్పటికీ కచ్చితమైనవి.',
+    stoneTableTitle:'💎 రాళ్ల ధర — మీరు vs. సాధారణ మార్కెట్', stoneTableHint:'ఇది ఒక స్థూల మార్గదర్శకం మాత్రమే — నిజమైన ధర ఫోటోలో తెలియని నాణ్యతపై ఆధారపడి ఉంటుంది.',
+    stoneYou:'మీరు:', stoneMarket:'మార్కెట్:', stoneWithin:'పరిధిలో ఉంది', stoneAbove:'సాధారణం కంటే ఎక్కువ', stoneBelow:'సాధారణం కంటే తక్కువ',
+    disclaimer:'⚠️ ఇది మీ బిల్లును బాగా అర్థం చేసుకోవడానికి ఒక సహాయకం — ఇది ఏ దుకాణాన్ని తప్పుపట్టదు, మరియు ఇది ధృవీకరించిన విలువాంకనం కాదు. రాళ్ల ధర ముఖ్యంగా ఫోటోలో తెలియని నాణ్యత మరియు స్పష్టతపై ఆధారపడి ఉంటుంది. దీన్ని మీ స్వంత ప్రశ్నలకు ఒక ప్రారంభ బిందువుగా వాడండి, తుది తీర్పుగా కాదు.',
+    todaysRatePrefix:'📍 నేటి బంగారం రేటు —',
+    saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
+    zoomHint:'👆 జూమ్ చేయడానికి, పోల్చడానికి ఫోటోను తాకండి', downloadPdf:'⬇️ PDF డౌన్‌లోడ్ చేయండి', listenBtn:'🔊 ఈ నివేదిక వినండి', listeningBtn:'⏸️ ఆపు', preparingPdf:'⏳ సిద్ధం చేస్తున్నాము…', zoomTip:'జూమ్ చేయడానికి పించ్ చేయండి లేదా స్క్రోల్ చేయండి — మూసివేయడానికి బయట తాకండి',
+  },
+  hi: {
+    heroTitle:'क्या आपका सोने का बिल सही है?',
+    heroSub:'किसी भी ज्वेलरी दुकान के अनुमान की फोटो लें — हम हिसाब, मेकिंग चार्ज और आज की असली सोने की दर आपके लिए जांचेंगे। टाइप करने की जरूरत नहीं।',
+    uploadTitle:'बिल दिखाएं', uploadHint:'साफ फोटो लें, या गैलरी से चुनें — किसी भी दुकान के फॉर्मेट के साथ काम करता है।',
+    camBtn:'📷 फोटो लें', fileBtn:'🖼️ गैलरी से चुनें',
+    cityLabel:'📍 आपका शहर:', checkBtn:'✅ यह बिल जांचें', checkingBtn:'आपका बिल पढ़ रहे हैं…', changePhoto:'दूसरी फोटो चुनें',
+    yourItem:'आपकी वस्तु', netWeight:'शुद्ध सोने का वजन', shopRate:'दुकान की सोने की दर', makingCharge:'मेकिंग चार्ज (VA)',
+    stoneCost:'पत्थर की लागत', gst:'GST', finalAmount:'अंतिम राशि',
+    mcTitle:'🎚️ मेकिंग चार्ज — अलग-अलग प्रतिशत आज़माएं', mcYouCharge:'📌 यह बिल आपसे वसूल रहा है:', mcTypical:'सामान्य:',
+    mcTotalAt:'इस % पर कुल राशि', mcBilled:'आपसे लिया गया', mcPctLabel:'इस प्रतिशत पर मेकिंग चार्ज',
+    stoneSliderTitle:'🎚️ पत्थर की लागत — बाज़ार दरें आज़माएं', stoneSliderHint:'हर पत्थर को उसकी सामान्य बाज़ार सीमा में खींचें और देखें कि कुल राशि कैसे बदलती है।',
+    stoneSliderTotal:'इन दरों पर कुल राशि', stoneSliderTotalWord:'कुल',
+    reportHeading:'आपकी बातचीत रिपोर्ट कार्ड', reportHeadingReceipt:'आपकी बिल जांच रिपोर्ट',
+    basicChecksTitle:'केवल बुनियादी जांच', basicChecksDetail:'हम बिल पढ़ सके, लेकिन इस बार विस्तृत जांच नहीं बना सके — ऊपर दी गई संख्याएं फिर भी बिल से सटीक हैं।',
+    stoneTableTitle:'💎 पत्थर की कीमत — आप बनाम सामान्य बाज़ार', stoneTableHint:'यह केवल एक मोटा मार्गदर्शक है — असली कीमत उस गुणवत्ता पर निर्भर करती है जो फोटो से पता नहीं चलती।',
+    stoneYou:'आप:', stoneMarket:'बाज़ार:', stoneWithin:'सीमा के भीतर', stoneAbove:'सामान्य से अधिक', stoneBelow:'सामान्य से कम',
+    disclaimer:'⚠️ यह आपके बिल को बेहतर समझने के लिए एक सहायक है — यह किसी दुकान पर गलत काम का आरोप नहीं लगाता, और यह प्रमाणित मूल्यांकन नहीं है। पत्थर की कीमत विशेष रूप से उस गुणवत्ता और स्पष्टता पर निर्भर करती है जो फोटो से पता नहीं चलती। इसे अपने सवालों की शुरुआत मानें, अंतिम फैसला नहीं।',
+    todaysRatePrefix:'📍 आज की सोने की दर —',
+    saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
+    zoomHint:'👆 ज़ूम करके तुलना करने के लिए फोटो पर टैप करें', downloadPdf:'⬇️ PDF डाउनलोड करें', listenBtn:'🔊 यह रिपोर्ट सुनें', listeningBtn:'⏸️ रोकें', preparingPdf:'⏳ तैयार कर रहे हैं…', zoomTip:'ज़ूम करने के लिए पिंच करें या स्क्रॉल करें — बंद करने के लिए बाहर टैप करें',
+  },
+};
+function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
+</script>
+<script>
+var selectedFile = null;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+// Highlights money (₹), weights (g/ct), percentages, and "before → after"
+// number pairs so the specific figures inside a check's explanation (like
+// a weight uplift or a rate difference) actually stand out from the prose
+// instead of blending into a wall of text.
+function highlightNums(escapedText){
+  return escapedText
+    .replace(/(₹\s?[\d,]+(?:\.\d+)?)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?g\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?ct\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?%)/g, '<span class="hl-num">$1</span>')
+    .replace(/(₹?\s?[\d,]+(?:\.\d+)?g?\s?(?:→|-&gt;)\s?₹?\s?[\d,]+(?:\.\d+)?g?)/g, '<span class="hl-pair">$1</span>');
+}
+function hl(s){ return highlightNums(esc(s)); }
+function fmtRs(n){ return '₹' + Math.round(n||0).toLocaleString('en-IN'); }
+
+function handleFile(file){
+  if (!file) return;
+  selectedFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    window.__billImgSrc = e.target.result;
+    var zone = document.getElementById('uploadZone');
+    zone.classList.add('has-image');
+    zone.innerHTML =
+      '<img class="preview-img" src="' + e.target.result + '" onclick="openZoom(this)">' +
+      '<div class="zoom-hint" id="tZoomHint">' + esc(L('zoomHint')) + '</div>' +
+      '<div class="city-row">' + esc(L('cityLabel')) +
+        '<select id="citySelect">' +
+          '<option value="hyderabad">Hyderabad</option><option value="vijayawada">Vijayawada</option>' +
+          '<option value="visakhapatnam">Visakhapatnam</option><option value="chennai">Chennai</option>' +
+          '<option value="bangalore">Bangalore</option><option value="mumbai">Mumbai</option>' +
+          '<option value="delhi">Delhi</option><option value="pune">Pune</option>' +
+        '</select>' +
+      '</div>' +
+      '<button class="check-btn" id="checkBtn" onclick="checkBill()">' + esc(L('checkBtn')) + '</button>' +
+      '<span class="reset-link" onclick="resetUpload()">' + esc(L('changePhoto')) + '</span>';
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('cameraInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+document.getElementById('galleryInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+
+function resetUpload(){
+  selectedFile = null;
+  document.getElementById('resultArea').innerHTML = '';
+  var zone = document.getElementById('uploadZone');
+  zone.classList.remove('has-image');
+  zone.innerHTML =
+    '<div class="upload-icon">📸</div>' +
+    '<div class="upload-title">' + esc(L('uploadTitle')) + '</div>' +
+    '<div class="upload-hint">' + esc(L('uploadHint')) + '</div>' +
+    '<div class="upload-btn-row">' +
+      '<label class="upload-btn camera">' + esc(L('camBtn')) + '<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;"></label>' +
+      '<label class="upload-btn file">' + esc(L('fileBtn')) + '<input type="file" id="galleryInput" accept="image/*" style="display:none;"></label>' +
+    '</div>';
+  document.getElementById('cameraInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+  document.getElementById('galleryInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+}
+
+function checkBill(){
+  if (!selectedFile) return;
+  var city = document.getElementById('citySelect').value;
+  var btn = document.getElementById('checkBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + L('checkingBtn'); }
+
+  document.getElementById('resultArea').innerHTML =
+    '<div class="loading-box"><div class="loading-icon">🔍</div><div class="loading-text">Reading the numbers, checking the math, looking up today\'s silver rate — this can take up to a minute.</div></div>';
+
+  var reader = new FileReader();
+  reader.onload = function(){
+    var base64 = reader.result.split(',')[1];
+    fetch(BACKEND + '/api/check-silver-bill', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      // Always request English here — this becomes the one canonical
+      // source of truth cached in window.__lastRenderEN. Any language the
+      // person actually wants to see is then translated from THIS cache
+      // client-side (see showInLang) — much more reliable than re-running
+      // the whole bill analysis (image upload + vision extraction) every
+      // time someone just wants to switch language, and it means a
+      // translation hiccup never wipes out the already-successful analysis.
+      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city, lang: 'en'})
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
+        if (!data.ok) {
+          document.getElementById('resultArea').innerHTML =
+            '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
+          return;
+        }
+        window.__lastRenderEN = {ex: data.extracted, checks: data.checks, mcRange: data.making_charge_range, todayRate: data.today_silver_rate};
+        window.__translations = {}; // fresh bill - old cached translations no longer apply
+        showInLang(GBC_LANG);
+      })
+      .catch(function(){
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
+        document.getElementById('resultArea').innerHTML =
+          '<div class="check-card warn"><div class="check-title">Something went wrong</div><div class="check-detail">Could not reach the server — please try again.</div></div>';
+      });
+  };
+  reader.readAsDataURL(selectedFile);
+}
+
+// Renders the cached English analysis in whichever language is requested —
+// translating client-side (and caching the result) rather than ever
+// re-running the actual bill analysis. Crucially, this NEVER clears the
+// currently-shown report before the translation is ready, so a slow or
+// failed translation just leaves the previous language on screen instead
+// of "wiping" the analysis.
+function showInLang(lang){
+  var en = window.__lastRenderEN;
+  if (!en) { applyStaticLang(); return; }
+  window.__enChecks = en.checks;
+
+  if (lang === 'en') {
+    renderResults(en.ex, en.checks, en.mcRange, en.todayRate);
+    return;
+  }
+
+  window.__translations = window.__translations || {};
+  if (window.__translations[lang]) {
+    var cached = window.__translations[lang];
+    var mcCached = en.mcRange ? Object.assign({}, en.mcRange, {note: cached.mcNote}) : en.mcRange;
+    renderResults(en.ex, cached.checks, mcCached, en.todayRate);
+    return;
+  }
+
+  var texts = [];
+  en.checks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
+  var hasNote = !!(en.mcRange && en.mcRange.note);
+  if (hasNote) texts.push(en.mcRange.note);
+
+  fetch(BACKEND + '/api/translate-gold-checks', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({texts: texts, target_lang: lang})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) return;
+      var translatedChecks = en.checks.map(function(c, i){
+        return {status: c.status, title: data.translations[i * 2], detail: data.translations[i * 2 + 1]};
+      });
+      var mcNote = hasNote ? data.translations[data.translations.length - 1] : '';
+      window.__translations[lang] = {checks: translatedChecks, mcNote: mcNote};
+      if (GBC_LANG === lang) {
+        var mc = en.mcRange ? Object.assign({}, en.mcRange, {note: mcNote}) : en.mcRange;
+        renderResults(en.ex, translatedChecks, mc, en.todayRate);
+      }
+    })
+    .catch(function(){});
+}
+
+
+function renderResults(ex, checks, mcRange, todayRate){
+  var out = '';
+
+  if (todayRate && todayRate.rate_999) {
+    out += '<div class="rate-banner">';
+    out += '<div class="rate-banner-label">' + esc(L('todaysRatePrefix')) + ' ' + esc((todayRate.city||'').replace(/\b\w/g, function(c){return c.toUpperCase();})) + '</div>';
+    out += '<div class="rate-banner-22">' + fmtRs(todayRate.rate_999) + '<small>/g · 999</small></div>';
+    if (todayRate.rate_925) out += '<div class="rate-banner-24">925: ' + fmtRs(todayRate.rate_925) + '/g</div>';
+    out += '</div>';
+  }
+
+  out += '<div class="summary-card">';
+  out += '<div class="summary-title">📋 ' + esc(ex.item_description || L('yourItem')) + (ex.item_purity ? ' (' + esc(ex.item_purity) + ')' : '') + '</div>';
+  if (ex.net_weight_g) out += '<div class="summary-row"><b>' + esc(L('netWeight')) + '</b><span>' + ex.net_weight_g + 'g</span></div>';
+  if (ex.printed_silver_rate_per_gram) out += '<div class="summary-row"><b>' + esc(L('shopRate')) + '</b><span>' + fmtRs(ex.printed_silver_rate_per_gram) + '/g</span></div>';
+  if (ex.making_charge_amount) out += '<div class="summary-row"><b>' + esc(L('makingCharge')) + '</b><span>' + fmtRs(ex.making_charge_amount) + '</span></div>';
+  if (ex.bulk_discount_amount) out += '<div class="summary-row"><b>' + esc(L('bulkDiscount')) + '</b><span>-' + fmtRs(ex.bulk_discount_amount) + '</span></div>';
+  if (ex.gst_percent) out += '<div class="summary-row"><b>' + esc(L('gst')) + '</b><span>' + ex.gst_percent + '%</span></div>';
+  if (ex.final_amount) out += '<div class="summary-final"><span class="summary-final-label">' + esc(L('finalAmount')) + '</span><span class="summary-final-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+  out += '</div>';
+
+  // Static making-charge comparison card (no live slider for silver v1 -
+  // the unit varies per bill, per_gram rupees vs percent vs fixed, so a
+  // single slider scale doesn't cleanly generalize the way gold's
+  // consistent %-based VA does). Still gives a clear you-vs-typical read.
+  if (mcRange && mcRange.typical_high) {
+    var unitLabel = mcRange.unit === 'percent' ? '%' : (mcRange.unit === 'per_gram_rupees' ? '₹/g' : '');
+    var billVal = mcRange.bill_rate || 0;
+    var within = billVal >= mcRange.typical_low && billVal <= mcRange.typical_high;
+    var badgeClass = within ? 'stone-badge-ok' : (billVal > mcRange.typical_high ? 'stone-badge-high' : 'stone-badge-low');
+    var badgeText = within ? L('stoneWithin') : (billVal > mcRange.typical_high ? L('stoneAbove') : L('stoneBelow'));
+    out += '<div class="stone-table-card">';
+    out += '<div class="check-title">' + esc(L('mcTitle')) + '</div>';
+    out += '<div class="stone-table-hint">' + esc(mcRange.note || '') + '</div>';
+    out += '<div class="stone-compare-row">' +
+      '<div class="stone-compare-nums"><span class="stone-you">' + esc(L('stoneYou')) + ' ' + billVal + unitLabel + '</span><span class="stone-market">' + esc(L('stoneMarket')) + ' ' + mcRange.typical_low + '–' + mcRange.typical_high + unitLabel + '</span></div>' +
+      '<div class="stone-badge ' + badgeClass + '">' + esc(badgeText) + '</div>' +
+    '</div></div>';
+  }
+
+  var isReceipt = (ex.document_type || '').toLowerCase() === 'receipt';
+  out += '<div class="section-hd">🔎 ' + esc(isReceipt ? L('reportHeadingReceipt') : L('reportHeading')) + '</div>';
+  out += '<div id="checkCardsArea">';
+  if (!checks.length) {
+    out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
+  }
+  window.__displayedChecks = checks;
+  checks.forEach(function(c, i){
+    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
+    out += '<div class="check-card ' + c.status + '">';
+    out += '<div class="check-title-row"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div>';
+    out += '<button class="card-listen-btn" id="cardListenBtn' + i + '" onclick="speakCard(' + i + ')" aria-label="' + esc(L('listenBtn')) + '">🔊</button></div>';
+    out += '<div class="check-detail">' + hl(c.detail) + '</div></div>';
+  });
+  out += '</div>';
+
+  out += '<div class="disclaimer-box">' + esc(L('disclaimer')) + '</div>';
+
+  out += '<div class="export-row">';
+  out += '<button class="export-btn pdf" id="gbcPdfBtn" onclick="exportGoldPdf()">' + esc(L('downloadPdf')) + '</button>';
+  out += '</div>';
+
+  document.getElementById('resultArea').innerHTML = out;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function openZoom(sourceImgEl){
+  var srcVal = (sourceImgEl && sourceImgEl.src) || window.__billImgSrc || '';
+  if (!srcVal) return; // nothing to show - don't open a blank/dark modal
+
+  // position:fixed inside an iframe is scoped to the IFRAME's own tall
+  // content area (our iframe auto-resizes to fit everything, often way
+  // taller than the visible screen) — not the real browser viewport. A
+  // "fullscreen" modal drawn inside the iframe ends up rendering somewhere
+  // in that tall invisible area instead of where the person is actually
+  // looking, which is exactly what looked broken/dark. When embedded, hand
+  // the zoom off to the parent page instead, which IS the real viewport.
+  if (window.__embedMode && window.parent && window.parent !== window) {
+    window.parent.postMessage({type: 'openZoom', src: srcVal}, '*');
+    return;
+  }
+
+  var img = document.getElementById('zoomImg');
+  img.src = srcVal;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('zoomModal').classList.add('open');
+}
+function closeZoom(ev){
+  if (ev && ev.target.tagName === 'IMG') return; // clicking the image itself shouldn't close it
+  document.body.style.overflow = '';
+  document.getElementById('zoomModal').classList.remove('open');
+}
+
+function exportGoldPdf(){
+  var btn = document.getElementById('gbcPdfBtn');
+  var original = btn.textContent;
+  btn.textContent = L('preparingPdf');
+  btn.disabled = true;
+
+  var el = document.getElementById('resultArea');
+  html2canvas(el, {scale: 2, backgroundColor: '#FEFCF5', useCORS: true}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    var name = (window.__lastRenderEN && window.__lastRenderEN.ex && window.__lastRenderEN.ex.item_description) || 'Gold_Bill_Check';
+    pdf.save(name.replace(/[^a-z0-9]+/gi, '_') + '.pdf');
+    btn.textContent = original;
+    btn.disabled = false;
+  }).catch(function(){
+    btn.textContent = original;
+    btn.disabled = false;
+  });
+}
+
+// Text-to-speech for people who can't read well — one small speaker button
+// per check card so someone can listen to just the part they care about
+// instead of waiting through the whole report. Reads from whatever is
+// CURRENTLY DISPLAYED (window.__displayedChecks, set fresh on every render
+// by renderResults) so it always matches the on-screen language, not the
+// cached English source.
+var GBC_SPEECH_LANG = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
+var GBC_SPEAKING_IDX = null;
+function speakCard(i){
+  var btn = document.getElementById('cardListenBtn' + i);
+  var wasSpeaking = window.speechSynthesis.speaking;
+  var wasSameCard = GBC_SPEAKING_IDX === i;
+  window.speechSynthesis.cancel();
+  if (GBC_SPEAKING_IDX !== null) {
+    var prevBtn = document.getElementById('cardListenBtn' + GBC_SPEAKING_IDX);
+    if (prevBtn) prevBtn.classList.remove('speaking');
+  }
+  GBC_SPEAKING_IDX = null;
+  if (wasSpeaking && wasSameCard) return; // tapping the same speaking card again just stops it
+
+  var checks = window.__displayedChecks || [];
+  var c = checks[i];
+  if (!c) return;
+
+  var utter = new SpeechSynthesisUtterance(c.title + '. ' + c.detail);
+  utter.lang = GBC_SPEECH_LANG[GBC_LANG] || 'en-IN';
+  utter.rate = 0.92;
+  utter.onend = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
+  utter.onerror = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
+  window.speechSynthesis.speak(utter);
+  if (btn) btn.classList.add('speaking');
+  GBC_SPEAKING_IDX = i;
+}
+
+function updateSliderResult(vaPct){
+  var st = window.__mcState;
+  if (!st) return;
+  vaPct = parseFloat(vaPct);
+  document.getElementById('sliderPct').textContent = vaPct + '%';
+
+  var makingAmt = st.goldValue * vaPct / 100;
+  var preTax = st.goldValue + st.stoneValue + makingAmt;
+  var gstAmt = preTax * st.gstPct / 100;
+  var total = preTax + gstAmt;
+
+  document.getElementById('sliderTotal').textContent = fmtRs(total);
+
+  var billTotal = document.querySelector('.summary-final-amt') ? parseFloat(document.querySelector('.summary-final-amt').textContent.replace(/[₹,]/g,'')) : null;
+  var diffEl = document.getElementById('sliderDiff');
+  if (billTotal && diffEl) {
+    var diff = billTotal - total;
+    if (Math.abs(diff) < 100) {
+      diffEl.innerHTML = '';
+    } else if (diff > 0) {
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
+    } else {
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
+    }
+  }
+}
+
+function updateStoneSlider(idx, rate){
+  var st = window.__stoneState;
+  if (!st) return;
+  rate = parseFloat(rate);
+  var s = st.stones[idx];
+  s.cur = rate;
+  var amt = rate * (s.weightCt || 0);
+  document.getElementById('stoneSliderLive' + idx).textContent = fmtRs(rate) + '/ct · ' + fmtRs(amt) + ' ' + L('stoneSliderTotalWord');
+  updateStoneSliderTotal();
+}
+
+function updateStoneSliderTotal(){
+  var st = window.__stoneState;
+  if (!st) return;
+  var stoneTotal = st.stones.reduce(function(sum, s){ return sum + s.cur * (s.weightCt || 0); }, 0);
+  var preTax = st.goldValue + st.makingAmt + stoneTotal;
+  var gstAmt = preTax * st.gstPct / 100;
+  var total = preTax + gstAmt;
+  var totalEl = document.getElementById('stoneSliderTotal');
+  if (totalEl) totalEl.textContent = fmtRs(total);
+
+  var billTotal = document.querySelector('.summary-final-amt') ? parseFloat(document.querySelector('.summary-final-amt').textContent.replace(/[₹,]/g,'')) : null;
+  var diffEl = document.getElementById('stoneSliderDiff');
+  if (billTotal && diffEl) {
+    var diff = billTotal - total;
+    if (Math.abs(diff) < 100) {
+      diffEl.innerHTML = '';
+    } else if (diff > 0) {
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('saveStonePrefix')) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
+    } else {
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('saveStonePrefix')) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
+    }
+  }
+}
+
+// Applies the static (non-AI-generated) UI strings for the given language —
+// hero, upload zone, button labels — used both before and after a bill has
+// been analysed, so switching language works at any point in the flow.
+function applyStaticLang(){
+  var t = function(id, key){ var el = document.getElementById(id); if (el) el.textContent = L(key); };
+  t('tHeroTitle', 'heroTitle'); t('tHeroSub', 'heroSub');
+  t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
+  t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
+  t('tZoomHint', 'zoomHint'); t('tZoomTip', 'zoomTip');
+  var checkBtn = document.getElementById('checkBtn');
+  if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
+  ['en', 'te', 'hi'].forEach(function(l){
+    var btn = document.getElementById('topLangBtn-' + l);
+    if (btn) btn.classList.toggle('active', l === GBC_LANG);
+  });
+}
+
+// One entry point for a language change, whether triggered by clicking a
+// button on this page (standalone use) or by a postMessage from the parent
+// Jewellery Suite page (embedded use) — keeps both paths in sync so there's
+// only ever ONE set of controls actually driving the language, never two.
+//
+// Translates from the cached English analysis (see showInLang) instead of
+// re-running the bill check — instant on a cache hit, and never wipes the
+// currently-shown report even if the translation call is slow or fails.
+function setGoldLang(lang){
+  GBC_LANG = lang;
+  applyStaticLang();
+  showInLang(lang);
+}
+
+</script>
+
+<script>
+// Embed mode: when loaded inside the Jewellery Suite's Gold tab (iframe),
+// hide the duplicate nav/branding since the suite already has its own, and
+// report content height changes to the parent so the iframe can resize
+// itself as the page grows (upload zone -> full analysis report).
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var initialLang = params.get('lang');
+  if (initialLang && ['en','te','hi'].indexOf(initialLang) !== -1) {
+    GBC_LANG = initialLang;
+    applyStaticLang();
+  }
+  if (params.get('embed') === '1') {
+    window.__embedMode = true;
+    document.getElementById('gbcNav').style.display = 'none';
+    document.getElementById('topLangToggle').style.display = 'none';
+    document.body.style.paddingTop = '0';
+
+    // In embed mode the parent page's own language switcher is the ONLY
+    // language control shown - the initial ?lang= URL param above sets the
+    // correct language from the very first render (reliable, no timing
+    // dependency), and this listener handles LIVE changes made after the
+    // Gold tab is already open, without needing a full iframe reload.
+    window.addEventListener('message', function(ev){
+      if (ev.data && ev.data.type === 'setLang' && ['en','te','hi'].indexOf(ev.data.lang) !== -1) {
+        setGoldLang(ev.data.lang);
+      }
+    });
+
+    function reportHeight(){
+      var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      window.parent.postMessage({type: 'goldCheckerHeight', height: h}, '*');
+    }
+    window.addEventListener('load', reportHeight);
+    // Content height changes after image upload, after analysis completes,
+    // and when the stone/making-charge sliders' cards render - a
+    // MutationObserver catches all of these without needing to hook every
+    // individual render function.
+    var observer = new MutationObserver(function(){ reportHeight(); });
+    observer.observe(document.body, {childList: true, subtree: true});
+    setTimeout(reportHeight, 500);
+  }
+})();
+</script>
+</body>
+</html>
