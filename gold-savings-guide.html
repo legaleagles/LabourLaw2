@@ -36,7 +36,12 @@ nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-
 .story-dot{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden;}
 .story-dot-fill{height:100%;width:0%;background:var(--gold-l);transition:width .1s linear;}
 .story-dot.done .story-dot-fill{width:100%;transition:none;}
-.story-slide{min-height:290px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 24px 20px;position:relative;}
+.story-slide{min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 24px 20px;position:relative;}
+.story-bullets{display:flex;flex-direction:column;gap:5px;margin-top:14px;text-align:left;width:100%;max-width:320px;}
+.story-bullet-row{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:#F0E6CC;}
+.story-bullet-icon{flex-shrink:0;font-size:12px;margin-top:1px;}
+.story-bullet-row.watch{color:#F5CBA0;}
+.story-badge{display:inline-block;background:rgba(255,255,255,.12);color:var(--gold-l);font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px;}
 .story-icon{font-size:68px;margin-bottom:14px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));animation:storyPop .4s ease;}
 @keyframes storyPop{0%{transform:scale(.6);opacity:0;}100%{transform:scale(1);opacity:1;}}
 .story-headline{font-family:'Playfair Display',serif;font-weight:900;font-size:19px;color:#FEFCF5;line-height:1.35;margin-bottom:8px;}
@@ -83,6 +88,27 @@ table.cmp td.cmp-label{font-weight:700;white-space:nowrap;}
 
 /* Best practices checklist */
 .checklist-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+
+/* Ranking */
+.rank-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:4px solid var(--gold);position:relative;}
+.rank-card.r1{border-top-color:#D4AF37;}
+.rank-card.r2{border-top-color:#A8A8A8;}
+.rank-card.r3{border-top-color:#B08D57;}
+.rank-card.r4{border-top-color:#CBB994;}
+.rank-medal{position:absolute;top:-14px;left:14px;background:#fff;border:2px solid var(--gold);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+.rank-head{display:flex;align-items:center;gap:10px;margin:8px 0 12px;padding-left:26px;}
+.rank-icon{font-size:24px;}
+.rank-title{font-weight:800;font-size:14.5px;color:var(--ink);}
+.rank-scores{display:flex;gap:10px;margin-bottom:12px;}
+.rank-score{flex:1;text-align:center;}
+.rank-score-label{font-size:9.5px;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:.3px;margin-bottom:4px;}
+.rank-score-bar{height:6px;border-radius:4px;background:#F0EBDA;overflow:hidden;margin-bottom:3px;}
+.rank-score-fill{height:100%;border-radius:4px;background:var(--gold);}
+.rank-score-num{font-size:10.5px;font-weight:700;color:var(--ink);}
+.rank-why{font-size:12.5px;line-height:1.6;color:var(--ink);}
+.rank-note-box{background:#F0F9FF;border:1.5px solid #BAE6FD;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.6;color:#075985;}
+.rank-note-box.gray{background:#F9FAFB;border-color:#E5E7EB;color:#4B5563;}
+.rank-note-title{font-weight:800;font-size:12.5px;margin-bottom:4px;}
 .checklist-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #F3EFDD;font-size:13px;line-height:1.55;}
 .checklist-item:last-child{border-bottom:none;}
 .checklist-icon{flex-shrink:0;font-size:16px;}
@@ -156,8 +182,10 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);}
       <div class="story-tap-zone left" onclick="storyPrev()"></div>
       <div class="story-tap-zone right" onclick="storyNext()"></div>
       <div class="story-icon" id="storyIcon">🪙</div>
+      <div class="story-badge" id="storyBadge" style="display:none;"></div>
       <div class="story-headline" id="storyHeadline"></div>
       <div class="story-sub" id="storySub"></div>
+      <div class="story-bullets" id="storyBullets"></div>
     </div>
     <div class="story-nav-hint" id="tStoryHint">👆 Tap left/right, or wait — it moves on its own</div>
   </div>
@@ -181,6 +209,11 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);}
   <div class="section-hd"><span id="tBpHd">✅ Before You Sign Up Anywhere</span></div>
   <div class="section-sub" id="tBpSub">Whichever option you're considering, these apply.</div>
   <div class="checklist-card" id="checklistArea"></div>
+
+  <!-- RANKING -->
+  <div class="section-hd"><span id="tRankHd">🏆 Our Ranking</span></div>
+  <div class="section-sub" id="tRankSub">Among the options open to new savers right now, ranked on efficiency, cost, and safety from scams — with our reasoning for each.</div>
+  <div id="rankArea"></div>
 
   <!-- AI TOOL -->
   <div class="section-hd"><span id="tToolHd">🔍 Check Your Specific Scheme</span></div>
@@ -381,6 +414,93 @@ hi: {
 },
 };
 
+// ══════════════════════════════════════════
+//  RANKING — editorial judgment on the options currently open to new
+//  savers, scored 1-5 on efficiency (real value for money), cost (fees/
+//  charges), and safety from scams/fraud (regulation + provider risk).
+//  SGB and the Bank Deposit scheme are deliberately excluded from the
+//  ranked list itself (shown as separate notes instead) since one isn't
+//  open to new savers and the other isn't a way to build fresh savings -
+//  ranking them alongside options a new saver can actually choose today
+//  would be misleading.
+// ══════════════════════════════════════════
+var RANKING_DATA = {
+en: {
+  items: [
+    { medal:'🥇', icon:'📈', title:'Gold ETF / Mutual Fund', eff:4, cost:4, safety:5,
+      why:'Best all-around choice open to new savers right now. SEBI regulation means real oversight, costs are low and transparent, and you can exit anytime the market is open. The only real friction is needing a demat account for the ETF route — the mutual fund route avoids even that.' },
+    { medal:'🥈', icon:'📱', title:'Digital Gold', eff:4, cost:3, safety:3,
+      why:"Genuinely flexible and low-barrier to start. But this is the one where \"who exactly is holding my gold\" matters most — it isn't regulated by SEBI/RBI the way ETFs and banks are, so provider credibility is doing a lot of the safety work. Stick to well-established, recognizable names." },
+    { medal:'🥉', icon:'🪙', title:'Physical Gold — Coins & Bars', eff:3, cost:2, safety:4,
+      why:"The most tangible, easiest-to-understand option — once purchased from a reputable source, there is no scheme or provider that can fail on you. The tradeoff is real making charges upfront and the storage responsibility is entirely yours." },
+    { medal:'4', icon:'🏪', title:'Jeweller Monthly Scheme', eff:2, cost:2, safety:2,
+      why:'The most heavily marketed option, and the weakest by these three measures. The "bonus" typically works out close to what a normal bank recurring deposit would pay — not a real edge — while carrying real shop-closure and lock-in risk that the safer options above do not. Makes the most sense only if you were already planning to buy jewellery at that specific shop anyway.' },
+  ],
+  notes: [
+    { title:'💭 What about Sovereign Gold Bonds?', body:'SGBs would rank #1 on every measure here — government-backed safety, zero fees, plus 2.5% extra yearly interest that no other option offers. They are excluded from the ranking only because they are not currently open to new investors (paused since February 2024). If issuance resumes, this ranking would change.' },
+    { title:'💭 What about Bank Gold Deposit?', body:"Not ranked here because it is not a way to build new savings — it only applies if you already own physical gold and want to earn interest on it instead of leaving it idle. If that is your situation, it is a safe, bank-regulated option worth considering separately." },
+  ],
+  effLabel:'Efficiency', costLabel:'Cost', safetyLabel:'Scam Safety',
+},
+te: {
+  items: [
+    { medal:'🥇', icon:'📈', title:'గోల్డ్ ETF / మ్యూచువల్ ఫండ్', eff:4, cost:4, safety:5,
+      why:'ప్రస్తుతం కొత్త పొదుపుదారులకు తెరిచి ఉన్నదానిలో అత్యుత్తమ ఆల్-రౌండ్ ఎంపిక. SEBI నియంత్రణ అంటే నిజమైన పర్యవేక్షణ, ఖర్చులు తక్కువ మరియు పారదర్శకం, మార్కెట్ తెరిచి ఉన్నప్పుడు ఎప్పుడైనా వైదొలగవచ్చు. ETF మార్గానికి డీమ్యాట్ ఖాతా అవసరమే నిజమైన అడ్డంకి — మ్యూచువల్ ఫండ్ మార్గం దాన్ని కూడా తప్పిస్తుంది.' },
+    { medal:'🥈', icon:'📱', title:'డిజిటల్ గోల్డ్', eff:4, cost:3, safety:3,
+      why:'ప్రారంభించడానికి నిజంగా ఫ్లెక్సిబుల్ మరియు తక్కువ అడ్డంకి. కానీ "నా బంగారాన్ని ఖచ్చితంగా ఎవరు కలిగి ఉన్నారు" అనేది ఇక్కడ చాలా ముఖ్యం — ETF లు మరియు బ్యాంకుల్లా ఇది SEBI/RBI చే నియంత్రించబడదు, కాబట్టి ప్రొవైడర్ విశ్వసనీయత భద్రతా పనిలో ఎక్కువ భాగం చేస్తుంది. బాగా స్థిరపడిన, గుర్తించదగిన పేర్లకే కట్టుబడి ఉండండి.' },
+    { medal:'🥉', icon:'🪙', title:'భౌతిక బంగారం — నాణేలు & కడ్డీలు', eff:3, cost:2, safety:4,
+      why:'అత్యంత స్పష్టమైన, అర్థం చేసుకోవడానికి సులభమైన ఆప్షన్ — విశ్వసనీయ మూలం నుండి కొనుగోలు చేసిన తర్వాత, మిమ్మల్ని విఫలం చేసే పథకం లేదా ప్రొవైడర్ లేదు. నిజమైన మేకింగ్ ఛార్జీలు ముందుగానే మరియు నిల్వ బాధ్యత పూర్తిగా మీదే అనేది ట్రేడ్-ఆఫ్.' },
+    { medal:'4', icon:'🏪', title:'నగల దుకాణం మంతిక పథకం', eff:2, cost:2, safety:2,
+      why:'అత్యంత ఎక్కువగా ప్రచారం చేయబడిన ఆప్షన్, మరియు ఈ మూడు కొలమానాల ప్రకారం అత్యంత బలహీనమైనది. "బోనస్" సాధారణంగా ఒక సాధారణ బ్యాంక్ రికరింగ్ డిపాజిట్ ఇచ్చే దానికి దగ్గరగా ఉంటుంది — నిజమైన ప్రయోజనం కాదు — పైన ఉన్న సురక్షితమైన ఆప్షన్లకు లేని దుకాణం-మూసివేత మరియు లాక్-ఇన్ రిస్క్‌ను కలిగి ఉంటుంది. మీరు ఎలాగూ ఆ నిర్దిష్ట దుకాణంలో నగలు కొనాలని ప్లాన్ చేసుకున్నప్పుడు మాత్రమే ఇది అర్థవంతంగా ఉంటుంది.' },
+  ],
+  notes: [
+    { title:'💭 సావరిన్ గోల్డ్ బాండ్ల సంగతేంటి?', body:'SGB లు ఇక్కడ ప్రతి కొలమానంలో #1 స్థానంలో ఉంటాయి — ప్రభుత్వ-మద్దతు గల భద్రత, జీరో ఫీజులు, ఇతర ఆప్షన్ ఇవ్వని అదనపు 2.5% వార్షిక వడ్డీ. అవి ప్రస్తుతం కొత్త పెట్టుబడిదారులకు తెరిచి లేనందున మాత్రమే (ఫిబ్రవరి 2024 నుండి నిలిపివేయబడింది) ర్యాంకింగ్ నుండి మినహాయించబడ్డాయి. జారీ తిరిగి ప్రారంభమైతే, ఈ ర్యాంకింగ్ మారుతుంది.' },
+    { title:'💭 బ్యాంక్ గోల్డ్ డిపాజిట్ సంగతేంటి?', body:'ఇది కొత్త పొదుపును నిర్మించే మార్గం కానందున ఇక్కడ ర్యాంక్ చేయబడలేదు — మీకు ఇప్పటికే భౌతిక బంగారం ఉండి, దాన్ని నిష్క్రియంగా ఉంచడానికి బదులు దానిపై వడ్డీ సంపాదించాలనుకుంటే మాత్రమే ఇది వర్తిస్తుంది. అది మీ పరిస్థితి అయితే, ఇది వేరుగా పరిగణించదగిన సురక్షితమైన, బ్యాంక్-నియంత్రిత ఆప్షన్.' },
+  ],
+  effLabel:'సామర్థ్యం', costLabel:'ఖర్చు', safetyLabel:'మోసం నుండి భద్రత',
+},
+hi: {
+  items: [
+    { medal:'🥇', icon:'📈', title:'गोल्ड ETF / म्यूचुअल फंड', eff:4, cost:4, safety:5,
+      why:'फिलहाल नए बचतकर्ताओं के लिए खुला सबसे अच्छा ऑल-राउंड विकल्प। SEBI विनियमन का मतलब है वास्तविक निगरानी, लागत कम और पारदर्शी, और बाज़ार खुला होने पर कभी भी बाहर निकल सकते हैं। एकमात्र वास्तविक बाधा ETF मार्ग के लिए डीमैट खाते की जरूरत है — म्यूचुअल फंड मार्ग इससे भी बचाता है।' },
+    { medal:'🥈', icon:'📱', title:'डिजिटल गोल्ड', eff:4, cost:3, safety:3,
+      why:'शुरू करने के लिए वाकई लचीला और कम बाधा वाला। लेकिन यही वह जगह है जहां "मेरा सोना वास्तव में किसके पास है" सबसे ज्यादा मायने रखता है — यह ETF और बैंकों की तरह SEBI/RBI द्वारा विनियमित नहीं है, इसलिए प्रदाता की विश्वसनीयता सुरक्षा का अधिकतर काम करती है। अच्छी तरह से स्थापित, पहचाने जाने वाले नामों से चिपके रहें।' },
+    { medal:'🥉', icon:'🪙', title:'भौतिक सोना — सिक्के और बार', eff:3, cost:2, safety:4,
+      why:'सबसे स्पष्ट, समझने में सबसे आसान विकल्प — एक प्रतिष्ठित स्रोत से खरीदने के बाद, कोई योजना या प्रदाता नहीं है जो आपको असफल कर सके। असली मेकिंग शुल्क पहले से और भंडारण की जिम्मेदारी पूरी तरह आपकी है, यही समझौता है।' },
+    { medal:'4', icon:'🏪', title:'ज्वेलर मासिक योजना', eff:2, cost:2, safety:2,
+      why:'सबसे ज्यादा प्रचारित विकल्प, और इन तीन मापदंडों पर सबसे कमजोर। "बोनस" आमतौर पर एक सामान्य बैंक रिकरिंग डिपॉजिट जितना ही होता है — कोई वास्तविक बढ़त नहीं — जबकि ऊपर के सुरक्षित विकल्पों में न होने वाला दुकान-बंद होने और लॉक-इन का जोखिम रहता है। यह तभी सबसे ज्यादा मायने रखता है जब आप वैसे भी उसी दुकान से गहने खरीदने की योजना बना रहे हों।' },
+  ],
+  notes: [
+    { title:'💭 सॉवरेन गोल्ड बॉन्ड का क्या?', body:'SGB यहां हर मापदंड पर #1 स्थान पर होते — सरकार समर्थित सुरक्षा, शून्य शुल्क, साथ ही अतिरिक्त 2.5% सालाना ब्याज जो कोई अन्य विकल्प नहीं देता। वे केवल इसलिए रैंकिंग से बाहर हैं क्योंकि वे फिलहाल नए निवेशकों के लिए खुले नहीं हैं (फरवरी 2024 से रुके हुए)। यदि जारी करना फिर से शुरू होता है, तो यह रैंकिंग बदल जाएगी।' },
+    { title:'💭 बैंक गोल्ड डिपॉजिट का क्या?', body:'इसे यहां रैंक नहीं किया गया क्योंकि यह नई बचत बनाने का तरीका नहीं है — यह केवल तभी लागू होता है जब आपके पास पहले से भौतिक सोना है और आप इसे निष्क्रिय छोड़ने के बजाय इस पर ब्याज कमाना चाहते हैं। अगर यह आपकी स्थिति है, तो यह अलग से विचार करने योग्य एक सुरक्षित, बैंक-विनियमित विकल्प है।' },
+  ],
+  effLabel:'दक्षता', costLabel:'लागत', safetyLabel:'धोखाधड़ी से सुरक्षा',
+},
+};
+
+function renderRankingContent(){
+  var d = RANKING_DATA[PAGE_LANG] || RANKING_DATA.en;
+  var html = '';
+  d.items.forEach(function(item, i){
+    var rankClass = 'r' + (i + 1);
+    html += '<div class="rank-card ' + rankClass + '">';
+    html += '<div class="rank-medal">' + esc(item.medal) + '</div>';
+    html += '<div class="rank-head"><span class="rank-icon">' + item.icon + '</span><span class="rank-title">' + esc(item.title) + '</span></div>';
+    html += '<div class="rank-scores">';
+    [['effLabel', item.eff], ['costLabel', item.cost], ['safetyLabel', item.safety]].forEach(function(pair){
+      var pct = (pair[1] / 5) * 100;
+      html += '<div class="rank-score"><div class="rank-score-label">' + esc(d[pair[0]]) + '</div><div class="rank-score-bar"><div class="rank-score-fill" style="width:' + pct + '%;"></div></div><div class="rank-score-num">' + pair[1] + '/5</div></div>';
+    });
+    html += '</div>';
+    html += '<div class="rank-why">' + esc(item.why) + '</div>';
+    html += '</div>';
+  });
+  d.notes.forEach(function(note){
+    html += '<div class="rank-note-box gray"><div class="rank-note-title">' + esc(note.title) + '</div>' + esc(note.body) + '</div>';
+  });
+  document.getElementById('rankArea').innerHTML = html;
+}
+
 function renderGuideContent(){
   var d = GUIDE_DATA[PAGE_LANG] || GUIDE_DATA.en;
 
@@ -427,6 +547,7 @@ en: {
   mythsHd:'🚫 Myths, Busted', mythsSub:"What people commonly believe about gold saving — and what's actually true.",
   cmpHd:'⚖️ Side-by-Side', cmpSub:'Scroll sideways to see all options compared on what actually matters.',
   bpHd:'✅ Before You Sign Up Anywhere', bpSub:"Whichever option you're considering, these apply.",
+  rankHd:'🏆 Our Ranking', rankSub:'Among the options open to new savers right now, ranked on efficiency, cost, and safety from scams — with our reasoning for each.',
   toolHd:'🔍 Check Your Specific Scheme', toolSub:"Being offered a jeweller's monthly scheme? Enter what they've told you and get an honest read — including questions to ask before you sign anything.",
   lMonthly:'Monthly amount you\'d pay (₹)', lDuration:'Duration (months)', lBonus:'Shop is offering a bonus/extra month',
   lBonusDetail:'What exactly is the bonus? (optional)', lRedeem:'Redemption condition (what did they tell you?)', lOther:'Any other terms mentioned? (optional)',
@@ -446,6 +567,7 @@ te: {
   mythsHd:'🚫 అపోహలు, తీర్చబడ్డాయి', mythsSub:'బంగారు పొదుపు గురించి ప్రజలు సాధారణంగా నమ్మేది — మరియు నిజంగా ఏమిటి.',
   cmpHd:'⚖️ పక్కపక్కన పోలిక', cmpSub:'నిజంగా ముఖ్యమైన వాటిపై అన్ని ఆప్షన్లను పోల్చడానికి పక్కకు స్క్రోల్ చేయండి.',
   bpHd:'✅ ఎక్కడైనా చేరే ముందు', bpSub:'మీరు ఏ ఆప్షన్ పరిగణిస్తున్నా, ఇవి వర్తిస్తాయి.',
+  rankHd:'🏆 మా ర్యాంకింగ్', rankSub:'ప్రస్తుతం కొత్త పొదుపుదారులకు తెరిచి ఉన్న ఆప్షన్లలో, సామర్థ్యం, ఖర్చు, మరియు మోసాల నుండి భద్రత ఆధారంగా ర్యాంక్ చేయబడింది — ప్రతిదానికి మా కారణంతో సహా.',
   toolHd:'🔍 మీ నిర్దిష్ట పథకాన్ని చెక్ చేయండి', toolSub:'నగల దుకాణం మంతిక పథకం ఆఫర్ చేస్తున్నారా? వారు మీకు చెప్పింది నమోదు చేసి నిజాయితీగల అభిప్రాయం పొందండి — దేనిపైనైనా సంతకం చేసే ముందు అడగాల్సిన ప్రశ్నలతో సహా.',
   lMonthly:'మీరు చెల్లించే నెలవారీ మొత్తం (₹)', lDuration:'కాలవ్యవధి (నెలలు)', lBonus:'దుకాణం బోనస్/అదనపు నెల ఆఫర్ చేస్తోంది',
   lBonusDetail:'బోనస్ ఖచ్చితంగా ఏమిటి? (ఐచ్ఛికం)', lRedeem:'రీడెంప్షన్ షరతు (వారు మీకు ఏమి చెప్పారు?)', lOther:'ఇతర ఏవైనా నిబంధనలు చెప్పారా? (ఐచ్ఛికం)',
@@ -465,6 +587,7 @@ hi: {
   mythsHd:'🚫 भ्रम, दूर किए गए', mythsSub:'सोने की बचत के बारे में लोग आमतौर पर क्या मानते हैं — और असल में क्या सच है।',
   cmpHd:'⚖️ पक्ष-पक्ष तुलना', cmpSub:'जो वाकई मायने रखता है उस पर सभी विकल्पों की तुलना देखने के लिए बगल में स्क्रॉल करें।',
   bpHd:'✅ कहीं भी शामिल होने से पहले', bpSub:'आप जो भी विकल्प सोच रहे हों, ये लागू होते हैं।',
+  rankHd:'🏆 हमारी रैंकिंग', rankSub:'फिलहाल नए बचतकर्ताओं के लिए खुले विकल्पों में से, दक्षता, लागत, और धोखाधड़ी से सुरक्षा के आधार पर रैंक किया गया — हर एक के लिए हमारे तर्क के साथ।',
   toolHd:'🔍 अपनी विशिष्ट योजना जांचें', toolSub:'क्या आपको किसी ज्वेलर की मासिक योजना का प्रस्ताव मिला है? उन्होंने आपको जो बताया है वह दर्ज करें और एक ईमानदार राय पाएं — किसी भी चीज़ पर हस्ताक्षर करने से पहले पूछने योग्य सवालों के साथ।',
   lMonthly:'आप जो मासिक राशि चुकाएंगे (₹)', lDuration:'अवधि (महीने)', lBonus:'दुकान बोनस/अतिरिक्त महीना दे रही है',
   lBonusDetail:'बोनस वास्तव में क्या है? (वैकल्पिक)', lRedeem:'भुनाने की शर्त (उन्होंने आपको क्या बताया?)', lOther:'कोई अन्य शर्तें बताई गईं? (वैकल्पिक)',
@@ -488,6 +611,7 @@ function applyStaticLang(){
   t('tMythsHd','mythsHd'); t('tMythsSub','mythsSub');
   t('tCmpHd','cmpHd'); t('tCmpSub','cmpSub');
   t('tBpHd','bpHd'); t('tBpSub','bpSub');
+  t('tRankHd','rankHd'); t('tRankSub','rankSub');
   t('tToolHd','toolHd'); t('tToolSub','toolSub');
   t('tLMonthly','lMonthly'); t('tLDuration','lDuration'); t('tLBonus','lBonus');
   t('tLBonusDetail','lBonusDetail'); t('tLRedeem','lRedeem'); t('tLOther','lOther');
@@ -506,6 +630,7 @@ function setPageLang(lang){
   document.body.setAttribute('lang', lang);
   applyStaticLang();
   renderGuideContent();
+  renderRankingContent();
   // If the story is still active (not skipped/finished), re-render the
   // current slide in the new language rather than restarting it from
   // slide 1 - language switching shouldn't reset someone's progress.
@@ -600,40 +725,79 @@ function renderSchemeResult(r){
 // ══════════════════════════════════════════
 var STORY_DATA = {
 en: [
-  { icon:'🪙', h:'Gold prices keep rising', s:'More people are looking for ways to save in gold every year.' },
-  { icon:'🏪', h:'Jeweller Schemes', s:'Pay monthly, get a bonus — but usually only redeemable for jewellery, not cash.' },
-  { icon:'📱', h:'Digital Gold', s:'Buy tiny amounts anytime through an app — flexible, but check who actually holds it.' },
-  { icon:'📈', h:'Gold ETFs & Funds', s:'Buy through the stock market — liquid, no storage worries.' },
-  { icon:'🏛️', h:'Government Bonds (SGB)', s:'Paid extra interest — but currently paused for new buyers since 2024.' },
-  { icon:'🪙🔒', h:'Coins & Bars', s:'You own it outright — but keeping it safe is your job.' },
-  { icon:'🚫', h:'Not All Schemes Are Equal', s:'Some myths can cost you real money — scroll down to see them busted.' },
+  { icon:'🪙', h:'Gold prices keep rising', s:'More people are looking for ways to save in gold every year. Here are all 6 real options — one slide each.' },
+  { icon:'🏪', h:'Jeweller Monthly Scheme', badge:'Most Common', s:"Pay a fixed amount monthly, get a bonus at the end.",
+    good:['No lump sum needed upfront', 'Bonus adds value if buying anyway'],
+    watch:['Jewellery only, usually — no cash back', 'Locked to that one shop', 'Risk if the shop closes'] },
+  { icon:'📱', h:'Digital Gold', badge:'Flexible', s:'Buy tiny amounts of real 24K gold anytime through an app.',
+    good:['Start with ₹10–100', 'Sell anytime, no lock-in'],
+    watch:['Not RBI/SEBI regulated like banks', 'Fees on storage/conversion', 'Usually capped at 2 years'] },
+  { icon:'📈', h:'Gold ETF / Mutual Fund', badge:'Market-Linked', s:'Buy units tracking gold price through the stock market or a fund.',
+    good:['Very liquid, sell anytime market\'s open', 'No storage or purity worries'],
+    watch:['Small annual fund fee', 'Capital gains tax on selling', 'ETF needs a demat account'] },
+  { icon:'🏛️', h:'Sovereign Gold Bond (SGB)', badge:'Currently Paused', s:'Govt-backed, pays 2.5% extra interest yearly.',
+    good:['Government-backed, safest option', '+2.5%/yr interest, most others don\'t offer this'],
+    watch:['Not open to new buyers since Feb 2024', 'Secondary-market only now', 'Full 8-yr term needed for tax benefit'] },
+  { icon:'🪙', h:'Physical Gold — Coins & Bars', badge:'Traditional', s:'Buy coins or bars directly and hold them yourself.',
+    good:['You own it outright, no scheme risk', 'Sell anywhere, universally accepted'],
+    watch:['Storage & safety is on you', 'Making charges reduce resale value', 'Buy-back rate can differ — ask first'] },
+  { icon:'🏦', h:'Bank Gold Deposit', badge:'Lesser-Known', s:'For gold you already own — deposit it, earn interest.',
+    good:['Idle jewellery earns interest', 'Bank-backed and regulated'],
+    watch:["You give up the gold for the term", 'Minimum 10g+ usually required', "Only useful if you already own gold"] },
+  { icon:'🚫', h:'Not All Schemes Are Equal', s:'Some myths can cost you real money — scroll down to see them busted, plus our ranking of which option we\'d suggest.' },
   { icon:'✅', h:'Before You Sign Anything', s:'Ask the right questions — or check your specific scheme with our tool below.' },
 ],
 te: [
-  { icon:'🪙', h:'బంగారం ధరలు పెరుగుతూనే ఉన్నాయి', s:'ప్రతి సంవత్సరం ఎక్కువ మంది బంగారంలో పొదుపు చేసే మార్గాలు వెతుకుతున్నారు.' },
-  { icon:'🏪', h:'నగల దుకాణం పథకాలు', s:'నెలవారీ చెల్లించండి, బోనస్ పొందండి — కానీ సాధారణంగా నగలకు మాత్రమే, నగదుకు కాదు.' },
-  { icon:'📱', h:'డిజిటల్ గోల్డ్', s:'యాప్ ద్వారా ఎప్పుడైనా చిన్న మొత్తాలు కొనండి — ఫ్లెక్సిబుల్, కానీ దీన్ని ఎవరు నిల్వ చేస్తున్నారో చెక్ చేయండి.' },
-  { icon:'📈', h:'గోల్డ్ ETF & ఫండ్స్', s:'స్టాక్ మార్కెట్ ద్వారా కొనండి — లిక్విడ్, నిల్వ చింత లేదు.' },
-  { icon:'🏛️', h:'ప్రభుత్వ బాండ్లు (SGB)', s:'అదనపు వడ్డీ చెల్లించేవి — కానీ 2024 నుండి కొత్త కొనుగోలుదారులకు నిలిపివేయబడ్డాయి.' },
-  { icon:'🪙🔒', h:'నాణేలు & కడ్డీలు', s:'మీరు పూర్తిగా సొంతం చేసుకుంటారు — కానీ భద్రత మీ బాధ్యత.' },
-  { icon:'🚫', h:'అన్ని పథకాలు సమానం కావు', s:'కొన్ని అపోహలు నిజమైన డబ్బును ఖర్చు చేయించవచ్చు — వాటిని తీర్చడం క్రింద చూడండి.' },
+  { icon:'🪙', h:'బంగారం ధరలు పెరుగుతూనే ఉన్నాయి', s:'ప్రతి సంవత్సరం ఎక్కువ మంది బంగారంలో పొదుపు చేసే మార్గాలు వెతుకుతున్నారు. ఇక్కడ అన్ని 6 నిజమైన ఆప్షన్లు — ఒక్కొక్కటి ఒక స్లయిడ్.' },
+  { icon:'🏪', h:'నగల దుకాణం మంతిక పథకం', badge:'అత్యంత సాధారణం', s:'నెలవారీ స్థిర మొత్తం చెల్లించండి, చివర్లో బోనస్ పొందండి.',
+    good:['ముందుగా పెద్ద మొత్తం అవసరం లేదు', 'ఎలాగూ కొనాలంటే బోనస్ విలువైనది'],
+    watch:['సాధారణంగా నగలకు మాత్రమే — నగదు వాపసు లేదు', 'ఆ ఒక్క దుకాణానికే లాక్', 'దుకాణం మూతపడితే రిస్క్'] },
+  { icon:'📱', h:'డిజిటల్ గోల్డ్', badge:'ఫ్లెక్సిబుల్', s:'యాప్ ద్వారా ఎప్పుడైనా చిన్న మొత్తాల్లో నిజమైన 24K బంగారం కొనండి.',
+    good:['₹10–100 తో మొదలుపెట్టవచ్చు', 'ఎప్పుడైనా అమ్మవచ్చు, లాక్-ఇన్ లేదు'],
+    watch:['బ్యాంకుల్లా RBI/SEBI నియంత్రణలో లేదు', 'నిల్వ/మార్పిడి ఛార్జీలు', 'సాధారణంగా 2 సంవత్సరాల పరిమితి'] },
+  { icon:'📈', h:'గోల్డ్ ETF / మ్యూచువల్ ఫండ్', badge:'మార్కెట్-లింక్డ్', s:'స్టాక్ మార్కెట్ లేదా ఫండ్ ద్వారా బంగారం ధరను అనుసరించే యూనిట్లు కొనండి.',
+    good:['చాలా లిక్విడ్, మార్కెట్ తెరిచినప్పుడు ఎప్పుడైనా', 'నిల్వ లేదా స్వచ్ఛత చింత లేదు'],
+    watch:['చిన్న వార్షిక ఫండ్ ఫీజు', 'అమ్మేటప్పుడు క్యాపిటల్ గెయిన్స్ టాక్స్', 'ETF కి డీమ్యాట్ ఖాతా అవసరం'] },
+  { icon:'🏛️', h:'సావరిన్ గోల్డ్ బాండ్ (SGB)', badge:'ప్రస్తుతం నిలిపివేయబడింది', s:'ప్రభుత్వ-మద్దతు, వార్షికంగా అదనంగా 2.5% వడ్డీ చెల్లిస్తుంది.',
+    good:['ప్రభుత్వ-మద్దతు, అత్యంత సురక్షితం', '+2.5%/సం. వడ్డీ, చాలా ఇతరులు ఇవ్వరు'],
+    watch:['ఫిబ్రవరి 2024 నుండి కొత్త కొనుగోలుదారులకు లేదు', 'ఇప్పుడు సెకండరీ-మార్కెట్ మాత్రమే', 'పన్ను ప్రయోజనానికి పూర్తి 8 సం. అవసరం'] },
+  { icon:'🪙', h:'భౌతిక బంగారం — నాణేలు & కడ్డీలు', badge:'సాంప్రదాయ', s:'నేరుగా నాణేలు లేదా కడ్డీలు కొని మీరే భద్రపరచుకోండి.',
+    good:['మీరు పూర్తిగా సొంతం, పథక రిస్క్ లేదు', 'ఎక్కడైనా అమ్మవచ్చు, సార్వత్రిక ఆమోదం'],
+    watch:['నిల్వ & భద్రత మీపైనే', 'మేకింగ్ ఛార్జీలు రీసేల్ విలువ తగ్గిస్తాయి', 'బై-బ్యాక్ రేటు భిన్నంగా ఉండొచ్చు — ముందే అడగండి'] },
+  { icon:'🏦', h:'బ్యాంక్ గోల్డ్ డిపాజిట్', badge:'తక్కువ తెలిసినది', s:'మీ దగ్గర ఇప్పటికే ఉన్న బంగారం కోసం — డిపాజిట్ చేసి వడ్డీ సంపాదించండి.',
+    good:['నిష్క్రియ నగలు వడ్డీ సంపాదిస్తాయి', 'బ్యాంక్-మద్దతు మరియు నియంత్రితం'],
+    watch:['కాలవ్యవధికి బంగారాన్ని వదులుకోవాలి', 'సాధారణంగా కనీసం 10g+ అవసరం', 'బంగారం ఇప్పటికే ఉంటేనే ఉపయోగం'] },
+  { icon:'🚫', h:'అన్ని పథకాలు సమానం కావు', s:'కొన్ని అపోహలు నిజమైన డబ్బును ఖర్చు చేయించవచ్చు — వాటిని తీర్చడం మరియు మా ర్యాంకింగ్ కోసం క్రింద చూడండి.' },
   { icon:'✅', h:'దేనిపైనైనా సంతకం చేసే ముందు', s:'సరైన ప్రశ్నలు అడగండి — లేదా క్రింద మా టూల్‌తో మీ పథకాన్ని చెక్ చేయండి.' },
 ],
 hi: [
-  { icon:'🪙', h:'सोने की कीमतें बढ़ती जा रही हैं', s:'हर साल ज्यादा लोग सोने में बचत के तरीके ढूंढ रहे हैं।' },
-  { icon:'🏪', h:'ज्वेलर योजनाएं', s:'हर महीने चुकाएं, बोनस पाएं — पर आमतौर पर सिर्फ गहनों के लिए, नकद नहीं।' },
-  { icon:'📱', h:'डिजिटल गोल्ड', s:'ऐप के जरिए कभी भी छोटी मात्रा खरीदें — लचीला, पर देखें कौन इसे रखता है।' },
-  { icon:'📈', h:'गोल्ड ETF और फंड', s:'शेयर बाज़ार से खरीदें — तरल, भंडारण की चिंता नहीं।' },
-  { icon:'🏛️', h:'सरकारी बॉन्ड (SGB)', s:'अतिरिक्त ब्याज देते थे — पर 2024 से नए खरीदारों के लिए रुके हुए हैं।' },
-  { icon:'🪙🔒', h:'सिक्के और बार', s:'आप पूरी तरह मालिक हैं — पर सुरक्षा आपकी जिम्मेदारी है।' },
-  { icon:'🚫', h:'सभी योजनाएं एक जैसी नहीं होतीं', s:'कुछ भ्रम असली पैसे का नुकसान करा सकते हैं — नीचे उन्हें दूर होते देखें।' },
+  { icon:'🪙', h:'सोने की कीमतें बढ़ती जा रही हैं', s:'हर साल ज्यादा लोग सोने में बचत के तरीके ढूंढ रहे हैं। यहां सभी 6 असली विकल्प — एक-एक स्लाइड।' },
+  { icon:'🏪', h:'ज्वेलर मासिक योजना', badge:'सबसे आम', s:'हर महीने एक तय राशि चुकाएं, अंत में बोनस पाएं।',
+    good:['पहले बड़ी राशि की जरूरत नहीं', 'अगर वैसे भी खरीदना है तो बोनस मूल्यवान'],
+    watch:['आमतौर पर सिर्फ गहने — नकद वापसी नहीं', 'उसी एक दुकान से बंधे', 'दुकान बंद होने पर जोखिम'] },
+  { icon:'📱', h:'डिजिटल गोल्ड', badge:'लचीला', s:'ऐप के जरिए कभी भी थोड़ी मात्रा में असली 24K सोना खरीदें।',
+    good:['₹10–100 से शुरू करें', 'कभी भी बेचें, कोई लॉक-इन नहीं'],
+    watch:['बैंकों की तरह RBI/SEBI विनियमित नहीं', 'भंडारण/रूपांतरण शुल्क', 'आमतौर पर 2 साल की सीमा'] },
+  { icon:'📈', h:'गोल्ड ETF / म्यूचुअल फंड', badge:'बाज़ार-आधारित', s:'शेयर बाज़ार या फंड के जरिए सोने की कीमत ट्रैक करने वाली यूनिट खरीदें।',
+    good:['बहुत तरल, बाज़ार खुला होने पर कभी भी', 'भंडारण या शुद्धता की चिंता नहीं'],
+    watch:['छोटा वार्षिक फंड शुल्क', 'बेचने पर पूंजीगत लाभ कर', 'ETF के लिए डीमैट खाता चाहिए'] },
+  { icon:'🏛️', h:'सॉवरेन गोल्ड बॉन्ड (SGB)', badge:'फिलहाल रुका हुआ', s:'सरकार समर्थित, सालाना अतिरिक्त 2.5% ब्याज देता है।',
+    good:['सरकार समर्थित, सबसे सुरक्षित', '+2.5%/साल ब्याज, अधिकतर अन्य नहीं देते'],
+    watch:['फरवरी 2024 से नए खरीदारों के लिए नहीं', 'अब केवल सेकेंडरी-मार्केट', 'टैक्स लाभ के लिए पूरे 8 साल चाहिए'] },
+  { icon:'🪙', h:'भौतिक सोना — सिक्के और बार', badge:'पारंपरिक', s:'सीधे सिक्के या बार खरीदें और खुद रखें।',
+    good:['आप पूर्ण मालिक, कोई योजना जोखिम नहीं', 'कहीं भी बेचें, सार्वभौमिक स्वीकृति'],
+    watch:['भंडारण और सुरक्षा आप पर', 'मेकिंग शुल्क पुनर्विक्रय मूल्य घटाते हैं', 'बाय-बैक दर अलग हो सकती है — पहले पूछें'] },
+  { icon:'🏦', h:'बैंक गोल्ड डिपॉजिट', badge:'कम जाना-पहचाना', s:'आपके पास पहले से मौजूद सोने के लिए — जमा करें, ब्याज कमाएं।',
+    good:['निष्क्रिय गहने ब्याज कमाते हैं', 'बैंक समर्थित और विनियमित'],
+    watch:['अवधि के लिए सोना छोड़ना होगा', 'आमतौर पर कम से कम 10g+ चाहिए', 'सिर्फ अगर पहले से सोना है तो उपयोगी'] },
+  { icon:'🚫', h:'सभी योजनाएं एक जैसी नहीं होतीं', s:'कुछ भ्रम असली पैसे का नुकसान करा सकते हैं — नीचे उन्हें दूर होते और हमारी रैंकिंग देखें।' },
   { icon:'✅', h:'कुछ भी साइन करने से पहले', s:'सही सवाल पूछें — या नीचे हमारे टूल से अपनी योजना जांचें।' },
 ],
 };
 
 var STORY_IDX = 0;
 var STORY_TIMER = null;
-var STORY_SLIDE_MS = 4000;
+var STORY_SLIDE_MS = 7000;
 var STORY_SEEN_KEY = 'lawsticker_story_seen_gold_savings_guide';
 
 function storySlides(){ return STORY_DATA[PAGE_LANG] || STORY_DATA.en; }
@@ -654,8 +818,20 @@ function renderStorySlide(){
   document.getElementById('storyIcon').style.animation = 'none';
   void document.getElementById('storyIcon').offsetWidth; // restart pop animation
   document.getElementById('storyIcon').style.animation = '';
+  var badgeEl = document.getElementById('storyBadge');
+  if (s.badge) { badgeEl.textContent = s.badge; badgeEl.style.display = 'inline-block'; }
+  else { badgeEl.style.display = 'none'; }
   document.getElementById('storyHeadline').textContent = s.h;
   document.getElementById('storySub').textContent = s.s;
+  var bulletsEl = document.getElementById('storyBullets');
+  if ((s.good && s.good.length) || (s.watch && s.watch.length)) {
+    var bHtml = '';
+    (s.good || []).forEach(function(g){ bHtml += '<div class="story-bullet-row good"><span class="story-bullet-icon">✅</span><span>' + esc(g) + '</span></div>'; });
+    (s.watch || []).forEach(function(w){ bHtml += '<div class="story-bullet-row watch"><span class="story-bullet-icon">⚠️</span><span>' + esc(w) + '</span></div>'; });
+    bulletsEl.innerHTML = bHtml;
+  } else {
+    bulletsEl.innerHTML = '';
+  }
   for (var i = 0; i < slides.length; i++) {
     var dot = document.getElementById('storyDot' + i);
     var fill = document.getElementById('storyDotFill' + i);
@@ -717,6 +893,7 @@ function initStory(){
 
 // INIT
 renderGuideContent();
+renderRankingContent();
 applyStaticLang();
 initStory();
 </script>
