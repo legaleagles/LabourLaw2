@@ -29,6 +29,27 @@ nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-
 .wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
 
 .upload-zone{background:#fff;border:2.5px dashed var(--gold);border-radius:22px;padding:40px 20px;text-align:center;margin-bottom:18px;}
+
+.howto-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.howto-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-weight:700;font-size:14px;color:#7C5A0B;background:#FFFBEB;}
+.howto-chevron{transition:transform .2s;}
+.howto-chevron.open{transform:rotate(180deg);}
+.howto-body{padding:16px;}
+.howto-steps{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:4px;}
+.howto-step{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;font-size:11px;color:var(--muted);font-weight:600;}
+.howto-step-icon{font-size:26px;margin-bottom:4px;}
+.howto-step-arrow{color:var(--gold);font-size:16px;flex-shrink:0;}
+.sample-bill-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:8px;}
+.sample-bill{background:#FEFCF5;border:1.5px dashed #DDD5C0;border-radius:12px;padding:10px 12px;margin-bottom:10px;}
+.sample-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEE8D8;font-size:12.5px;}
+.sample-row:last-child{border-bottom:none;}
+.sample-row.sample-final{font-weight:800;color:#7C5A0B;}
+.sample-num{background:var(--gold);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.sample-label{flex:1;color:var(--muted);}
+.sample-val{font-weight:700;color:var(--ink);}
+.sample-callouts{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.sample-callouts div{margin-bottom:4px;}
+.sample-note{font-size:11px;color:var(--muted);font-style:italic;border-top:1px solid #EEE8D8;padding-top:10px;}
 .upload-zone.has-image{border-style:solid;padding:16px;}
 .upload-icon{font-size:52px;margin-bottom:14px;}
 .upload-title{font-family:'Playfair Display',serif;font-weight:900;font-size:17px;color:var(--ink);margin-bottom:8px;}
@@ -182,6 +203,38 @@ gtag('config', 'G-TJXHVW6XCL');
 
 <div class="wrap">
 
+  <div class="howto-card" id="howtoCard">
+    <div class="howto-toggle" onclick="toggleHowto()">
+      <span id="tHowtoToggle">📖 New here? See how this works</span>
+      <span class="howto-chevron" id="howtoChevron">▾</span>
+    </div>
+    <div class="howto-body" id="howtoBody" style="display:none;">
+      <div class="howto-steps">
+        <div class="howto-step"><span class="howto-step-icon">📸</span><span id="tStep1">Take a photo of your bill</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">🤖</span><span id="tStep2">AI reads every number</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">✅</span><span id="tStep3">See your fairness report</span></div>
+      </div>
+      <div class="sample-bill-title" id="tSampleTitle">📋 What a diamond bill looks like</div>
+      <div class="sample-bill">
+        <div class="sample-row"><span class="sample-num">1</span><span class="sample-label" id="tS1">Diamond</span><span class="sample-val">0.50 ct, VS1, G-H</span></div>
+        <div class="sample-row"><span class="sample-num">2</span><span class="sample-label" id="tS2">Certificate</span><span class="sample-val">IGI #1234567890</span></div>
+        <div class="sample-row"><span class="sample-num">3</span><span class="sample-label" id="tS3">Price per Carat</span><span class="sample-val">₹55,000/ct</span></div>
+        <div class="sample-row"><span class="sample-num">4</span><span class="sample-label" id="tS4">Gold Setting</span><span class="sample-val">3g, 18K</span></div>
+        <div class="sample-row"><span class="sample-num">5</span><span class="sample-label" id="tS5">Making + GST</span><span class="sample-val">₹5,000 + 3%</span></div>
+        <div class="sample-row sample-final"><span class="sample-num">6</span><span class="sample-label" id="tS6">Final Amount</span><span class="sample-val">₹53,560</span></div>
+      </div>
+      <div class="sample-callouts" id="sampleCallouts">
+        <div><b>1</b> <span id="tC12">— the carat, cut, colour and clarity grades tell us the diamond's real quality tier.</span></div>
+        <div><b>2</b> <span id="tC3">— if a certificate number is printed, we tell you to verify it independently on the lab's own website.</span></div>
+        <div><b>3</b> <span id="tC4">— we check this against typical market pricing for this exact grade.</span></div>
+        <div><b>4–6</b> <span id="tC56">— the gold setting is checked like an ordinary gold bill, and we verify the final maths.</span></div>
+      </div>
+      <div class="sample-note" id="tSampleNote">Your own bill doesn't need to look exactly like this — every shop's format is different, and the AI reads whatever is actually printed.</div>
+    </div>
+  </div>
+
   <div class="upload-zone" id="uploadZone">
     <div class="upload-icon">📸</div>
     <div class="upload-title" id="tUploadTitle">Show Us the Bill</div>
@@ -241,6 +294,11 @@ var GT = {
     todaysRatePrefix:"📍 Today's Gold Rate —",
     saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
     zoomHint:'👆 Tap the photo to zoom in and compare', downloadPdf:'⬇️ Download PDF', listenBtn:'🔊 Listen to this report', listeningBtn:'⏸️ Stop', preparingPdf:'⏳ Preparing…', zoomTip:'Pinch or scroll to zoom — tap outside to close',
+    howtoToggle:'📖 New here? See how this works', step1:'Take a photo of your bill', step2:'AI reads every number', step3:'See your fairness report',
+    sampleTitle:'📋 What a diamond bill looks like',
+    sLabel1:'Diamond', sLabel2:'Certificate', sLabel3:'Price per Carat', sLabel4:'Gold Setting', sLabel5:'Making + GST', sLabel6:'Final Amount',
+    callout12:"— the carat, cut, colour and clarity grades tell us the diamond's real quality tier.", callout3:"— if a certificate number is printed, we tell you to verify it independently on the lab's own website.", callout4:'— we check this against typical market pricing for this exact grade.', callout56:'— the gold setting is checked like an ordinary gold bill, and we verify the final maths.',
+    sampleNote:"Your own bill doesn't need to look exactly like this — every shop's format is different, and the AI reads whatever is actually printed.",
   },
   te: {
     heroTitle:'మీ డైమండ్ బిల్లు సరైనదేనా?',
@@ -263,6 +321,11 @@ var GT = {
     todaysRatePrefix:'📍 నేటి బంగారం రేటు —',
     saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
     zoomHint:'👆 జూమ్ చేయడానికి, పోల్చడానికి ఫోటోను తాకండి', downloadPdf:'⬇️ PDF డౌన్‌లోడ్ చేయండి', listenBtn:'🔊 ఈ నివేదిక వినండి', listeningBtn:'⏸️ ఆపు', preparingPdf:'⏳ సిద్ధం చేస్తున్నాము…', zoomTip:'జూమ్ చేయడానికి పించ్ చేయండి లేదా స్క్రోల్ చేయండి — మూసివేయడానికి బయట తాకండి',
+    howtoToggle:'📖 కొత్తగా వచ్చారా? ఇది ఎలా పనిచేస్తుందో చూడండి', step1:'మీ బిల్లు ఫోటో తీయండి', step2:'AI ప్రతి సంఖ్యను చదువుతుంది', step3:'మీ నివేదికను చూడండి',
+    sampleTitle:'📋 డైమండ్ బిల్లు ఎలా ఉంటుంది',
+    sLabel1:'డైమండ్', sLabel2:'సర్టిఫికేట్', sLabel3:'క్యారెట్‌కు ధర', sLabel4:'బంగారం సెట్టింగ్', sLabel5:'మేకింగ్ + GST', sLabel6:'తుది మొత్తం',
+    callout12:'— క్యారెట్, కట్, రంగు, స్పష్టత గ్రేడ్‌లు డైమండ్ నిజమైన నాణ్యత స్థాయిని చెబుతాయి.', callout3:'— సర్టిఫికేట్ నంబర్ ప్రింట్ అయి ఉంటే, దాన్ని ల్యాబ్ వెబ్‌సైట్‌లో స్వతంత్రంగా ధృవీకరించమని చెబుతాము.', callout4:'— దీన్ని ఈ ఖచ్చితమైన గ్రేడ్‌కు సాధారణ మార్కెట్ ధరతో సరిపోల్చుతాము.', callout56:'— బంగారం సెట్టింగ్‌ను సాధారణ బంగారు బిల్లులాగే చెక్ చేస్తాము, మరియు తుది లెక్కను ధృవీకరిస్తాము.',
+    sampleNote:'మీ సొంత బిల్లు ఇలాగే ఉండాల్సిన అవసరం లేదు — ప్రతి దుకాణం ఫార్మాట్ వేరుగా ఉంటుంది, ప్రింట్ అయిన దాన్ని AI చదువుతుంది.',
   },
   hi: {
     heroTitle:'क्या आपका हीरे का बिल सही है?',
@@ -285,6 +348,11 @@ var GT = {
     todaysRatePrefix:'📍 आज की सोने की दर —',
     saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
     zoomHint:'👆 ज़ूम करके तुलना करने के लिए फोटो पर टैप करें', downloadPdf:'⬇️ PDF डाउनलोड करें', listenBtn:'🔊 यह रिपोर्ट सुनें', listeningBtn:'⏸️ रोकें', preparingPdf:'⏳ तैयार कर रहे हैं…', zoomTip:'ज़ूम करने के लिए पिंच करें या स्क्रॉल करें — बंद करने के लिए बाहर टैप करें',
+    howtoToggle:'📖 नए हैं? देखें यह कैसे काम करता है', step1:'अपने बिल की फोटो लें', step2:'AI हर संख्या पढ़ता है', step3:'अपनी रिपोर्ट देखें',
+    sampleTitle:'📋 हीरे का बिल कैसा दिखता है',
+    sLabel1:'हीरा', sLabel2:'प्रमाणपत्र', sLabel3:'प्रति कैरेट कीमत', sLabel4:'सोने की सेटिंग', sLabel5:'मेकिंग + GST', sLabel6:'अंतिम राशि',
+    callout12:'— कैरेट, कट, रंग और स्पष्टता ग्रेड हीरे की असली गुणवत्ता बताते हैं।', callout3:'— अगर प्रमाणपत्र संख्या छपी है, तो हम आपको लैब की अपनी वेबसाइट पर स्वतंत्र रूप से सत्यापित करने को कहते हैं।', callout4:'— हम इसे इस सटीक ग्रेड की सामान्य बाज़ार कीमत से जांचते हैं।', callout56:'— सोने की सेटिंग को सामान्य सोने के बिल की तरह जांचा जाता है, और हम अंतिम हिसाब सत्यापित करते हैं।',
+    sampleNote:'आपके अपने बिल को बिल्कुल ऐसा दिखना ज़रूरी नहीं है — हर दुकान का फॉर्मेट अलग होता है, AI जो भी छपा है उसे पढ़ लेता है।',
   },
 };
 function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
@@ -293,6 +361,14 @@ function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key
 var selectedFile = null;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function toggleHowto(){
+  var body = document.getElementById('howtoBody');
+  var chev = document.getElementById('howtoChevron');
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chev.classList.toggle('open', !isOpen);
+}
 
 // Highlights money (₹), weights (g/ct), percentages, and "before → after"
 // number pairs so the specific figures inside a check's explanation (like
@@ -684,6 +760,12 @@ function applyStaticLang(){
   t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
   t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
   t('tZoomHint', 'zoomHint'); t('tZoomTip', 'zoomTip');
+  t('tHowtoToggle', 'howtoToggle');
+  t('tStep1', 'step1'); t('tStep2', 'step2'); t('tStep3', 'step3');
+  t('tSampleTitle', 'sampleTitle');
+  t('tS1', 'sLabel1'); t('tS2', 'sLabel2'); t('tS3', 'sLabel3'); t('tS4', 'sLabel4'); t('tS5', 'sLabel5'); t('tS6', 'sLabel6');
+  t('tC12', 'callout12'); t('tC3', 'callout3'); t('tC4', 'callout4'); t('tC56', 'callout56');
+  t('tSampleNote', 'sampleNote');
   var checkBtn = document.getElementById('checkBtn');
   if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
   ['en', 'te', 'hi'].forEach(function(l){
