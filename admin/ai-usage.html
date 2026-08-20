@@ -110,6 +110,7 @@ var usagePassword = localStorage.getItem('aiUsagePassword') || '';
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 function fmtUsd(n){ return '$' + (n || 0).toFixed(4); }
+function fmtInr(n){ return '₹' + (n || 0).toFixed(2); }
 
 function doLogin(){
   var pw = document.getElementById('pwInput').value;
@@ -150,19 +151,20 @@ function renderFeatureList(byAction, containerId){
   entries.forEach(function(f){
     html += '<div class="feature-row"><div><div class="feature-name">' + esc(f.label) + '</div>' +
       '<div class="feature-calls">' + f.calls + ' call' + (f.calls === 1 ? '' : 's') + ' · ' + (f.input_tokens + f.output_tokens).toLocaleString('en-IN') + ' tokens</div></div>' +
-      '<div class="feature-cost">' + fmtUsd(f.cost_usd) + '</div></div>';
+      '<div class="feature-cost">' + fmtInr(f.cost_inr) + '<div style="font-size:9.5px;color:var(--muted);font-weight:600;">' + fmtUsd(f.cost_usd) + '</div></div></div>';
   });
   el.innerHTML = html;
 }
 
 function renderDashboard(data){
-  document.getElementById('todayCost').textContent = fmtUsd(data.today.total_cost_usd);
-  document.getElementById('todayCalls').textContent = data.today.total_calls + ' calls';
-  document.getElementById('weekCost').textContent = fmtUsd(data.last_7_days.total_cost_usd);
-  document.getElementById('weekCalls').textContent = data.last_7_days.total_calls + ' calls';
+  document.getElementById('todayCost').textContent = fmtInr(data.today.total_cost_inr);
+  document.getElementById('todayCalls').textContent = data.today.total_calls + ' calls · ' + fmtUsd(data.today.total_cost_usd);
+  document.getElementById('weekCost').textContent = fmtInr(data.last_7_days.total_cost_inr);
+  document.getElementById('weekCalls').textContent = data.last_7_days.total_calls + ' calls · ' + fmtUsd(data.last_7_days.total_cost_usd);
 
-  document.getElementById('forecastVal').textContent = '~$' + data.forecast.forecast_30_day_cost_usd.toFixed(2);
-  document.getElementById('forecastNote').textContent = data.forecast.note + ' (' + data.forecast.basis + ')';
+  document.getElementById('forecastVal').textContent = '~' + fmtInr(data.forecast.forecast_30_day_cost_inr);
+  var rateNote = data.exchange_rate ? (' · ' + (data.exchange_rate.source === 'live' ? 'live' : 'fallback') + ' rate ₹' + data.exchange_rate.usd_to_inr.toFixed(2) + '/USD') : '';
+  document.getElementById('forecastNote').textContent = '~' + fmtUsd(data.forecast.forecast_30_day_cost_usd) + ' · ' + data.forecast.note + ' (' + data.forecast.basis + ')' + rateNote;
 
   renderFeatureList(data.today.by_action, 'todayFeatures');
   renderFeatureList(data.last_7_days.by_action, 'weekFeatures');
