@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Usage Dashboard | LawSticker AI</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1117;--ink:#111827;--cream:#FEFCF5;--muted:#6B7280;--gold:#C9A227;--gold-l:#F5D76E;--green:#059669;--amber:#D97706;--red:#DC2626;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:var(--navy);padding:12px 16px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.hero{background:linear-gradient(150deg,#0D1117 0%,#1a1030 55%,#241505 100%);padding:26px 20px 22px;text-align:center;}
+.hero-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:#F5D76E;}
+.hero-sub{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;}
+.wrap{max-width:680px;margin:0 auto;padding:18px 16px 60px;}
+
+.login-box{max-width:340px;margin:60px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-box button{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-err{color:#DC2626;font-size:11.5px;margin-top:8px;}
+
+.stat-row{display:flex;gap:10px;margin-bottom:16px;}
+.stat-card{flex:1;background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:14px;text-align:center;}
+.stat-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.stat-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--navy);}
+.stat-sub{font-size:10.5px;color:var(--muted);margin-top:3px;}
+
+.forecast-card{background:linear-gradient(135deg,#1a1030,#2d1b4e);border-radius:16px;padding:18px;margin-bottom:18px;}
+.forecast-title{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;color:#F5D76E;margin-bottom:6px;}
+.forecast-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#fff;margin:6px 0;}
+.forecast-note{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;}
+
+.gap-warning{background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:11.5px;color:#92400E;line-height:1.55;}
+
+.section-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin:22px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
+
+.feature-row{display:flex;align-items:center;background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.feature-name{flex:1;font-weight:700;font-size:12.5px;color:var(--ink);}
+.feature-calls{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.feature-cost{font-weight:800;font-size:13px;color:var(--navy);}
+.empty-msg{text-align:center;color:var(--muted);padding:24px;font-size:12px;}
+
+.refresh-btn{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:13px;border:none;border-radius:11px;cursor:pointer;font-size:13px;margin-top:6px;}
+.telegram-btn{width:100%;background:#0088cc;color:#fff;font-weight:800;padding:12px;border:none;border-radius:11px;cursor:pointer;font-size:12.5px;margin-top:8px;}
+.telegram-btn:disabled{opacity:.5;}
+.status-msg{text-align:center;font-size:11.5px;color:var(--muted);margin-top:10px;}
+</style>
+</head>
+<body>
+
+<nav><a class="nav-brand" href="/">⚖️ LawSticker AI</a></nav>
+
+<div id="loginGate">
+  <div class="login-box">
+    <div class="hero-title" style="color:var(--ink);">🔒 AI Usage Dashboard</div>
+    <div class="hero-sub" style="color:var(--muted);">Private — password required</div>
+    <input type="password" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<div id="dashboard" style="display:none;">
+  <div class="hero">
+    <div class="hero-title">📊 AI Usage Dashboard</div>
+    <div class="hero-sub">Every Gemini call across the site, tracked with real token counts and cost — updated live, not estimated after the fact.</div>
+  </div>
+
+  <div class="wrap">
+    <div id="gapWarning"></div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-label">Today</div>
+        <div class="stat-val" id="todayCost">—</div>
+        <div class="stat-sub" id="todayCalls">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Last 7 Days</div>
+        <div class="stat-val" id="weekCost">—</div>
+        <div class="stat-sub" id="weekCalls">—</div>
+      </div>
+    </div>
+
+    <div class="forecast-card">
+      <div class="forecast-title">📈 30-Day Forecast</div>
+      <div class="forecast-val" id="forecastVal">—</div>
+      <div class="forecast-note" id="forecastNote">—</div>
+    </div>
+
+    <div class="section-hd">Today, by Feature</div>
+    <div id="todayFeatures"><div class="empty-msg">Loading…</div></div>
+
+    <div class="section-hd">Last 7 Days, by Feature</div>
+    <div id="weekFeatures"><div class="empty-msg">Loading…</div></div>
+
+    <button class="refresh-btn" onclick="loadDashboard()">🔄 Refresh</button>
+    <button class="telegram-btn" id="tgBtn" onclick="sendToTelegram()">📤 Send This Summary to Telegram Now</button>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var usagePassword = localStorage.getItem('aiUsagePassword') || '';
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function fmtUsd(n){ return '$' + (n || 0).toFixed(4); }
+
+function doLogin(){
+  var pw = document.getElementById('pwInput').value;
+  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(pw))
+    .then(function(r){
+      if (r.status === 401) { document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if (!data) return;
+      usagePassword = pw;
+      localStorage.setItem('aiUsagePassword', pw);
+      document.getElementById('loginGate').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      renderDashboard(data);
+    })
+    .catch(function(){ document.getElementById('loginErr').textContent = 'Could not reach the server — try again.'; });
+}
+
+function loadDashboard(){
+  document.getElementById('statusMsg').textContent = 'Refreshing…';
+  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(usagePassword))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) { document.getElementById('statusMsg').textContent = data.error || 'Could not load.'; return; }
+      renderDashboard(data);
+      document.getElementById('statusMsg').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN');
+    })
+    .catch(function(){ document.getElementById('statusMsg').textContent = 'Could not reach the server.'; });
+}
+
+function renderFeatureList(byAction, containerId){
+  var el = document.getElementById(containerId);
+  var entries = Object.keys(byAction).map(function(k){ return byAction[k]; });
+  entries.sort(function(a,b){ return b.cost_usd - a.cost_usd; });
+  if (!entries.length) { el.innerHTML = '<div class="empty-msg">No AI calls in this period.</div>'; return; }
+  var html = '';
+  entries.forEach(function(f){
+    html += '<div class="feature-row"><div><div class="feature-name">' + esc(f.label) + '</div>' +
+      '<div class="feature-calls">' + f.calls + ' call' + (f.calls === 1 ? '' : 's') + ' · ' + (f.input_tokens + f.output_tokens).toLocaleString('en-IN') + ' tokens</div></div>' +
+      '<div class="feature-cost">' + fmtUsd(f.cost_usd) + '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderDashboard(data){
+  document.getElementById('todayCost').textContent = fmtUsd(data.today.total_cost_usd);
+  document.getElementById('todayCalls').textContent = data.today.total_calls + ' calls';
+  document.getElementById('weekCost').textContent = fmtUsd(data.last_7_days.total_cost_usd);
+  document.getElementById('weekCalls').textContent = data.last_7_days.total_calls + ' calls';
+
+  document.getElementById('forecastVal').textContent = '~$' + data.forecast.forecast_30_day_cost_usd.toFixed(2);
+  document.getElementById('forecastNote').textContent = data.forecast.note + ' (' + data.forecast.basis + ')';
+
+  renderFeatureList(data.today.by_action, 'todayFeatures');
+  renderFeatureList(data.last_7_days.by_action, 'weekFeatures');
+
+  if (data.known_gap) {
+    document.getElementById('gapWarning').innerHTML = '<div class="gap-warning">⚠️ ' + esc(data.known_gap) + '</div>';
+  }
+}
+
+function sendToTelegram(){
+  var btn = document.getElementById('tgBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Sending…';
+  fetch(BACKEND + '/api/ai-usage-summary?telegram=1&password=' + encodeURIComponent(usagePassword))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      btn.textContent = '📤 Send This Summary to Telegram Now';
+      document.getElementById('statusMsg').textContent = data.telegram_sent ? 'Sent to Telegram ✅' : ('Could not send: ' + (data.telegram_error || 'unknown error'));
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = '📤 Send This Summary to Telegram Now';
+      document.getElementById('statusMsg').textContent = 'Could not reach the server.';
+    });
+}
+
+// Auto-login if password already saved from a previous visit
+if (usagePassword) {
+  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(usagePassword))
+    .then(function(r){ return r.status === 401 ? null : r.json(); })
+    .then(function(data){
+      if (data && data.ok) {
+        document.getElementById('loginGate').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        renderDashboard(data);
+      }
+    })
+    .catch(function(){});
+}
+</script>
+</body>
+</html>
