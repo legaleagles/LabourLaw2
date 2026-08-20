@@ -113,7 +113,7 @@ function fmtUsd(n){ return '$' + (n || 0).toFixed(4); }
 
 function doLogin(){
   var pw = document.getElementById('pwInput').value;
-  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(pw))
+  fetch(BACKEND + '/api/ai-usage-summary', {headers: {'X-Admin-Password': pw}})
     .then(function(r){
       if (r.status === 401) { document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
       return r.json();
@@ -131,7 +131,7 @@ function doLogin(){
 
 function loadDashboard(){
   document.getElementById('statusMsg').textContent = 'Refreshing…';
-  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(usagePassword))
+  fetch(BACKEND + '/api/ai-usage-summary', {headers: {'X-Admin-Password': usagePassword}})
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (!data.ok) { document.getElementById('statusMsg').textContent = data.error || 'Could not load.'; return; }
@@ -176,7 +176,7 @@ function sendToTelegram(){
   var btn = document.getElementById('tgBtn');
   btn.disabled = true;
   btn.textContent = '⏳ Sending…';
-  fetch(BACKEND + '/api/ai-usage-summary?telegram=1&password=' + encodeURIComponent(usagePassword))
+  fetch(BACKEND + '/api/ai-usage-summary?telegram=1', {headers: {'X-Admin-Password': usagePassword}})
     .then(function(r){ return r.json(); })
     .then(function(data){
       btn.disabled = false;
@@ -192,7 +192,7 @@ function sendToTelegram(){
 
 // Auto-login if password already saved from a previous visit
 if (usagePassword) {
-  fetch(BACKEND + '/api/ai-usage-summary?password=' + encodeURIComponent(usagePassword))
+  fetch(BACKEND + '/api/ai-usage-summary', {headers: {'X-Admin-Password': usagePassword}})
     .then(function(r){ return r.status === 401 ? null : r.json(); })
     .then(function(data){
       if (data && data.ok) {
