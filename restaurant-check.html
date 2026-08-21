@@ -3,101 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restaurant Bill Checker — GST & Service Charge | LawSticker AI</title>
-  <meta name="description" content="Verify restaurant bill GST and service charge. Service charge is NOT mandatory — know your consumer rights. Calculate correct bill amount.">
-  <link rel="canonical" href="https://lawsticker-ai.com/restaurant-check.html">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lawsticker-ai.com/restaurant-check.html">
-  <meta property="og:title" content="Restaurant Bill Checker — GST & Service Charge | LawSticker AI">
-  <meta property="og:description" content="Verify restaurant bill GST and service charge. Service charge is NOT mandatory — know your consumer rights. Calculate correct bill amount.">
-  <meta property="og:site_name" content="LawSticker AI">
-  <meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Restaurant Bill Checker — GST & Service Charge | LawSticker AI">
-  <meta name="twitter:description" content="Verify restaurant bill GST and service charge. Service charge is NOT mandatory — know your consumer rights. Calculate correct bill amount.">
-  <meta name="twitter:image" content="https://lawsticker-ai.com/og-image.png">
+<title>Restaurant Bill Checker — Is Your Bill Fair? | LawSticker AI</title>
+<meta name="description" content="Photograph any restaurant bill and check whether the service charge is legally disclosed as voluntary, and whether the GST rate is correct for a standalone restaurant.">
+<link rel="canonical" href="https://lawsticker-ai.com/restaurant-check.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root{--teal:#0D9488;--teal-l:#5EEAD4;--teal-pale:#F0FDFA;--teal-deep:#115E59;--ink:#1A1208;--ink-soft:#2D3748;--cream:#FEFCF5;--muted:#8B95A8;--light:#E8EDF3;--jade:#10B981;--jade-bg:#D1FAE5;--rose:#DC2626;--rose-bg:#FEE2E2;--amber:#D97706;--amber-bg:#FEF3C7;--navy:#0D1117;}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
-nav{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.nav-left{display:flex;align-items:center;gap:10px}
-.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:600}
-.nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--teal-l)}
-.nav-langs{display:flex;gap:4px}
-.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
-.nav-lang.active{border-color:var(--teal-l);color:var(--teal-l);background:rgba(94,234,212,.1)}
-.container{max-width:680px;margin:0 auto;padding:16px 16px 60px}
-.alert{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:14px}
-.alert.info{background:var(--teal-pale);border-left:3px solid var(--teal);color:var(--teal-deep)}
-.alert.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
-.alert.good{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
-.alert.bad{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
-.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--teal),transparent)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
-.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--teal-pale);-webkit-appearance:none}
-.field input:focus,.field select:focus{outline:none;border-color:var(--teal);background:#fff}
-.pfx{position:relative}
-.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--teal-deep);pointer-events:none}
-.pfx input{padding-left:28px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
-.toggle-row:last-child{border-bottom:none}
-.tl{font-size:13px;font-weight:500;color:var(--ink)}
-.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
-.tog{position:relative;width:42px;height:22px;flex-shrink:0}
-.tog input{opacity:0;width:0;height:0}
-.tog-sl{position:absolute;inset:0;background:#D0C9B8;border-radius:22px;cursor:pointer;transition:.2s}
-.tog-sl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.tog input:checked+.tog-sl{background:var(--teal)}
-.tog input:checked+.tog-sl::before{transform:translateX(20px)}
-.inline-in{display:flex;align-items:center;gap:6px}
-.mini{width:80px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--teal-pale);text-align:right;font-family:inherit}
-.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(13,148,136,.3);transition:transform .1s}
-.calc-btn:active{transform:scale(.98)}
-#results{display:none}
-#results.visible{display:block}
-.verdict{border-radius:16px;padding:20px;text-align:center;margin-bottom:14px}
-.verdict.ok{background:linear-gradient(135deg,#065F46,#047857)}
-.verdict.warn{background:linear-gradient(135deg,#92400E,#B45309)}
-.verdict.bad{background:linear-gradient(135deg,#7F1D1D,#991B1B)}
-.verdict-icon{font-size:36px;margin-bottom:8px}
-.verdict-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
-.verdict-sub{font-size:13px;color:rgba(255,255,255,.6)}
-.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
-.bdown-head{background:var(--teal-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal-deep)}
-.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
-.brow:last-child{border-bottom:none}
-.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
-.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
-.brow .ba{font-weight:700;color:var(--ink)}
-.brow.ok .ba{color:var(--jade)}
-.brow.bad .ba{color:var(--rose)}
-.brow.warn .ba{color:var(--amber)}
-.brow.tot{background:var(--navy)}
-.brow.tot .bl{color:var(--teal-l);font-weight:700}
-.brow.tot .ba{color:var(--teal-l);font-size:15px}
-.issue-list{padding:14px;display:flex;flex-direction:column;gap:8px}
-.issue{border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.6}
-.issue.bad{background:var(--rose-bg);border-left:3px solid var(--rose);color:#7F1D1D}
-.issue.warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:#78350F}
-.issue.ok{background:var(--jade-bg);border-left:3px solid var(--jade);color:#065F46}
-.issue strong{font-weight:700}
-.rights-box{background:linear-gradient(135deg,#0A1628,#112244);border-radius:14px;padding:16px;margin-bottom:14px}
-.rights-box h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(94,234,212,.6);margin-bottom:10px}
-.right-item{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.right-item:last-child{border-bottom:none}
-.right-item span{color:#5EEAD4;font-weight:600}
-.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
-footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
-footer a{color:var(--teal-deep);text-decoration:none}
-@media(max-width:400px){.row2{grid-template-columns:1fr}}
+:root{
+  --cream:#FEFCF5; --gold:#C9A227; --gold-l:#F5D76E; --navy:#0D1117;
+  --ink:#111827; --muted:#6B7280; --green:#059669; --amber:#D97706; --rose:#DC2626;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.nav-home{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);text-decoration:none;background:rgba(255,255,255,.08);padding:6px 12px;border-radius:8px;}
+
+.hero{background:linear-gradient(160deg,#FFFBEB 0%,#FEF3C7 50%,#FEFCF5 100%);padding:32px 20px 26px;text-align:center;}
+.hero-icon{font-size:44px;margin-bottom:8px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#7C5A0B;line-height:1.3;}
+.hero-sub{font-size:13px;color:#8a6d1a;margin-top:10px;line-height:1.65;max-width:440px;margin-left:auto;margin-right:auto;}
+
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
+
+.upload-zone{background:#fff;border:2.5px dashed var(--gold);border-radius:22px;padding:40px 20px;text-align:center;margin-bottom:18px;}
+
+.howto-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 14px rgba(201,162,39,.25);border:2px solid var(--gold);}
+@keyframes howtoGlow{0%,100%{box-shadow:0 3px 14px rgba(201,162,39,.25);}50%{box-shadow:0 3px 20px rgba(201,162,39,.55);}}
+.howto-card.attention{animation:howtoGlow 2.2s ease-in-out infinite;}
+.howto-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-weight:800;font-size:14.5px;color:#7C5A0B;background:linear-gradient(135deg,#FFF7D6,#FDECC8);position:relative;}
+.howto-new-badge{position:absolute;top:-9px;left:14px;background:var(--rose,#DC2626);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:.4px;box-shadow:0 2px 4px rgba(0,0,0,.2);}
+.howto-chevron{transition:transform .2s;}
+.howto-chevron.open{transform:rotate(180deg);}
+.howto-body{padding:16px;}
+.howto-steps{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:4px;}
+.howto-step{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;font-size:11px;color:var(--muted);font-weight:600;}
+.howto-step-icon{font-size:26px;margin-bottom:4px;}
+.howto-step-arrow{color:var(--gold);font-size:16px;flex-shrink:0;}
+.sample-bill-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:8px;}
+.sample-bill{background:#FEFCF5;border:1.5px dashed #DDD5C0;border-radius:12px;padding:10px 12px;margin-bottom:10px;}
+.sample-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEE8D8;font-size:12.5px;}
+.sample-row:last-child{border-bottom:none;}
+.sample-row.sample-final{font-weight:800;color:#7C5A0B;}
+.sample-num{background:var(--gold);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.sample-label{flex:1;color:var(--muted);}
+.sample-val{font-weight:700;color:var(--ink);}
+.sample-callouts{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.sample-callouts div{margin-bottom:4px;}
+.sample-note{font-size:11px;color:var(--muted);font-style:italic;border-top:1px solid #EEE8D8;padding-top:10px;}
+.upload-zone.has-image{border-style:solid;padding:16px;}
+.upload-icon{font-size:52px;margin-bottom:14px;}
+.upload-title{font-family:'Playfair Display',serif;font-weight:900;font-size:17px;color:var(--ink);margin-bottom:8px;}
+.upload-hint{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.upload-btn-row{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.upload-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:14px;
+font-weight:800;font-size:14px;cursor:pointer;border:none;}
+.upload-btn.camera{background:linear-gradient(135deg,#C9A227,#8a6d1a);color:#fff;}
+.upload-btn.file{background:#F3F4F6;color:var(--ink);border:1.5px solid #E5E7EB;}
+.preview-img{width:100%;max-height:340px;object-fit:contain;border-radius:14px;margin-bottom:12px;background:#F9FAFB;}
+.city-row{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:14px;font-size:12.5px;}
+.city-row select{padding:8px 10px;border-radius:8px;border:1.5px solid #E5E7EB;font-size:12.5px;}
+.check-btn{width:100%;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-weight:800;
+font-size:15px;padding:15px;border:none;border-radius:14px;cursor:pointer;margin-top:14px;}
+.check-btn:disabled{opacity:.5;}
+.reset-link{display:block;text-align:center;font-size:12px;color:var(--muted);margin-top:10px;text-decoration:underline;cursor:pointer;}
+
+.loading-box{text-align:center;padding:30px 20px;}
+.loading-icon{font-size:40px;margin-bottom:12px;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.loading-text{font-size:13px;color:var(--muted);}
+
+.summary-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:18px;margin-bottom:16px;}
+.summary-title{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin-bottom:12px;}
+.summary-row{display:flex;justify-content:space-between;font-size:14.5px;padding:9px 0;border-bottom:1px solid #F3F4F6;}
+.summary-row:last-child{border-bottom:none;}
+.summary-row b{color:var(--muted);font-weight:600;}
+.summary-final{background:#FFFBEB;border-radius:10px;padding:12px 14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;}
+.summary-final-label{font-size:12px;font-weight:700;color:#92400E;}
+.summary-final-amt{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#92400E;}
+
+.section-hd{font-family:'Playfair Display',serif;font-weight:900;font-size:16px;margin:22px 0 12px;}
+.check-card{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--muted);}
+.check-card.ok{border-left-color:var(--green);background:#ECFDF5;}
+.check-card.warn{border-left-color:var(--amber);background:#FFFBEB;}
+.check-card.info{border-left-color:#0369A1;background:#F0F9FF;}
+.check-card.caution{border-left-color:#DC2626;background:#FEF2F2;}
+.rate-banner{background:linear-gradient(135deg,#FFF8E1,#FFFBEB);border:1.5px solid #FDE68A;border-radius:18px;padding:16px 18px;margin-bottom:16px;text-align:center;}
+.rate-banner-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:6px;}
+.rate-banner-22{font-family:'Playfair Display',serif;font-weight:900;font-size:30px;color:#7C5A0B;}
+.rate-banner-22 small{font-size:14px;font-weight:700;color:var(--muted);}
+.rate-banner-24{font-size:13px;color:var(--muted);margin-top:4px;}
+.stone-slider-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 18px;margin-bottom:16px;}
+.stone-slider-row{margin-bottom:18px;}
+.stone-slider-row:last-child{margin-bottom:0;}
+.stone-slider-name{font-size:13px;font-weight:800;margin-bottom:6px;}
+.stone-slider-live{font-size:12.5px;color:var(--muted);margin-top:4px;}
+input.stone-slider{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:#F3F4F6;}
+input.stone-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);cursor:pointer;}
+input.stone-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0EA5A6,#0a7a7b);border:none;cursor:pointer;}
+.check-icon{font-size:16px;margin-right:6px;}
+.check-title{font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:6px;}
+.check-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.check-title-row .check-title{flex:1;margin-bottom:6px;}
+.card-listen-btn{flex-shrink:0;background:#fff;border:1.5px solid #E5E7EB;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.card-listen-btn.speaking{background:linear-gradient(135deg,#059669,#047857);border-color:#059669;}
+.check-detail{font-size:14.5px;color:#374151;line-height:1.7;}
+.hl-num{font-weight:800;color:#7C5A0B;background:rgba(201,162,39,.15);padding:0 3px;border-radius:4px;}
+.hl-pair{font-weight:800;color:#B45309;background:rgba(217,119,6,.14);padding:0 4px;border-radius:5px;}
+.lang-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.top-lang-toggle{display:flex;gap:8px;justify-content:center;padding:10px 16px;background:#fff;border-bottom:1px solid #F3E9C9;}
+.top-lang-toggle .lang-btn{flex:0 1 110px;padding:8px;font-size:12px;}
+.preview-img{cursor:zoom-in;}
+.zoom-hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:4px;}
+.zoom-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:9999;align-items:center;justify-content:center;}
+.zoom-modal.open{display:flex;}
+.zoom-modal img{max-width:96vw;max-height:88vh;touch-action:pinch-zoom;}
+.zoom-close{position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;}
+.zoom-tip{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12px;}
+.export-row{display:flex;gap:10px;margin:20px 0 8px;}
+.export-btn{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:12.5px;border:none;cursor:pointer;color:#fff;}
+.export-btn.pdf{background:linear-gradient(135deg,#DC2626,#991B1B);}
+.export-btn.listen{background:linear-gradient(135deg,#0EA5A6,#0a7a7b);}
+.export-btn:disabled{opacity:.6;}
+.export-btn.listen.speaking{background:linear-gradient(135deg,#059669,#047857);}
+.lang-btn{flex:1;padding:9px;border-radius:9px;border:1.5px solid #E5E7EB;background:#fff;font-weight:700;font-size:12.5px;cursor:pointer;color:#6B7280;}
+.lang-btn.active{background:#0EA5A6;border-color:#0EA5A6;color:#fff;}
+.lang-btn:disabled{opacity:.5;}
+
+.stones-list{margin-top:14px;}
+.stone-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dashed #F0F0F0;color:#4B5563;}
+
+.stone-table-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:16px;padding:16px;margin-bottom:16px;}
+.stone-table-hint{font-size:12.5px;color:var(--muted);margin:4px 0 12px;line-height:1.5;}
+.stone-compare-row{display:flex;flex-direction:column;gap:5px;padding:10px 0;border-bottom:1px solid #F3F4F6;}
+.stone-compare-row:last-child{border-bottom:none;}
+.stone-compare-name{font-weight:800;font-size:15px;color:var(--ink);}
+.stone-compare-nums{display:flex;justify-content:space-between;font-size:13.5px;color:#4B5563;}
+.stone-you{font-weight:700;}
+.stone-market{color:var(--muted);}
+.stone-badge{align-self:flex-start;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:8px;}
+.stone-badge-ok{background:#ECFDF5;color:var(--green);}
+.stone-badge-high{background:#FFFBEB;color:var(--amber);}
+.stone-badge-low{background:#F0F9FF;color:#0369A1;}
+.slider-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 18px;margin-bottom:16px;}
+.slider-card-title{font-family:'Playfair Display',serif;font-weight:900;font-size:16.5px;margin-bottom:6px;}
+.slider-card-note{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.slider-you-badge{display:inline-flex;align-items:center;gap:6px;background:#FFFBEB;border:1.5px solid #FDE68A;
+border-radius:10px;padding:8px 13px;font-size:13px;font-weight:800;color:#92400E;margin-bottom:16px;}
+.slider-track-wrap{position:relative;margin:24px 4px 10px;}
+.slider-track-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.typical-zone{position:absolute;top:14px;height:8px;background:#D1FAE5;border-radius:6px;pointer-events:none;}
+input.va-slider{width:100%;-webkit-appearance:none;height:8px;border-radius:6px;background:#F3F4F6;position:relative;z-index:1;}
+input.va-slider::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+background:linear-gradient(135deg,#C9A227,#8a6d1a);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer;}
+input.va-slider::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#C9A227,#8a6d1a);
+border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer;}
+.slider-live-pct{text-align:center;font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#7C5A0B;margin:14px 0 4px;}
+.slider-live-label{text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.slider-result-row{display:flex;justify-content:space-between;align-items:center;background:#F9FAFB;border-radius:12px;
+padding:14px 16px;margin-bottom:8px;}
+.slider-result-row.highlight{background:#ECFDF5;border:1.5px solid #A7F3D0;}
+.slider-result-label{font-size:12.5px;font-weight:700;color:#4B5563;}
+.slider-result-amt{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);}
+.slider-diff{text-align:center;margin-top:14px;font-size:14px;font-weight:800;padding:10px;border-radius:10px;}
+.slider-diff.save{background:#ECFDF5;color:var(--green);}
+.slider-diff.extra{background:#FEF2F2;color:var(--rose);}
+.disclaimer-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:14px 16px;margin-top:20px;font-size:13px;color:#991B1B;line-height:1.7;}
+.trust-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:#92400E;line-height:1.6;text-align:center;}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
@@ -107,937 +181,651 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-TJXHVW6XCL');
 </script>
-<!-- Tesseract.js (OCR engine) is loaded dynamically at scan-time, not here -- see runBillOcr() -->
 </head>
-<body>
-<nav>
-  <div class="nav-left">
-    <a class="nav-back" href="calculators.html">← Calculators</a>
-    <div class="nav-title" id="nav-title">🧾 Restaurant Bill Checker</div>
-  </div>
-  <div class="nav-langs">
-    <button class="nav-lang active" onclick="setLang('en')">EN</button>
-    <button class="nav-lang" onclick="setLang('te')">తె</button>
-    <button class="nav-lang" onclick="setLang('hi')">हि</button>
+<body id="gbcBody">
+
+<nav id="gbcNav">
+  <a class="nav-brand" href="index.html">⚖️ LawSticker AI</a>
+  <div style="display:flex;gap:8px;">
+    <a class="nav-home" href="jewellery-suite.html">💍 Jewellery Suite</a>
+    <a class="nav-home" href="index.html">← Home</a>
   </div>
 </nav>
-<div class="container">
-  <div class="alert info" id="top-info">
-    ℹ️ <strong>Your rights:</strong> Service charge is <strong>NOT mandatory</strong> — you can legally refuse it. GST is mandatory but must be at correct rate (5% for restaurants without AC/liquor, 18% for AC restaurants).
-  </div>
 
-  <div class="card" id="billViewerCard">
-    <div class="card-title">📷 Have a Photo of Your Bill?</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Upload it here to view it clearly alongside the calculator — read off the numbers and type them in below. Your bill stays on your device; nothing is uploaded anywhere.</div>
-    <div id="billUploadZone" style="border:2.5px dashed var(--light);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--teal-pale);" onclick="document.getElementById('billFileInput').click()">
-      <div style="font-size:32px;margin-bottom:6px;">🧾</div>
-      <div style="font-size:13.5px;font-weight:800;color:var(--teal-deep);">Tap to upload a photo or PDF of your bill</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px;">JPG, PNG, or PDF</div>
-      <input type="file" id="billFileInput" accept="image/*,application/pdf" style="display:none;">
-    </div>
-    <div id="billViewerResult" style="display:none;margin-top:12px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:11px;font-weight:700;color:var(--teal-deep);">📄 <span id="billFileName"></span></span>
-        <button onclick="resetBillChecker()" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Everything</button>
-      </div>
-      <div id="billImageWrap" style="position:relative;border:1px solid var(--light);border-radius:12px;overflow:hidden;background:#000;">
-        <img id="billImagePreview" style="width:100%;display:block;cursor:zoom-in;" onclick="toggleBillZoom(this)">
-      </div>
-      <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;">Tap the image to zoom in and read exact figures — then fill in the cart below</div>
-      <iframe id="billPdfPreview" style="width:100%;height:420px;border:1px solid var(--light);border-radius:12px;display:none;"></iframe>
-      <button id="ocrScanBtn" onclick="runBillOcr()" style="width:100%;margin-top:10px;padding:12px;background:var(--teal);color:white;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;">✨ Try Auto-Fill from Photo (Beta)</button>
-      <div id="ocrProgress" style="display:none;text-align:center;margin-top:8px;">
-        <div style="font-size:12px;color:var(--teal-deep);font-weight:700;" id="ocrProgressText">Reading your bill…</div>
-        <div style="background:var(--light);border-radius:8px;height:6px;margin-top:6px;overflow:hidden;"><div id="ocrProgressBar" style="background:var(--teal);height:100%;width:0%;transition:width .2s;"></div></div>
-      </div>
-      <div id="ocrResult" style="display:none;margin-top:10px;background:var(--jade-bg);border:1px solid #A7F3D0;border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:4px;">✅ Auto-filled below — please double-check every item and number</div>
-        <div style="font-size:10.5px;color:#065F46;line-height:1.5;">This is a Beta feature and can make mistakes, especially on blurry or angled photos. Always compare against your actual bill before trusting the result.</div>
-      </div>
-      <div id="ocrNoMatch" style="display:none;margin-top:10px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;font-weight:800;color:#78350F;">⚠️ Couldn't confidently read this photo</div>
-        <div style="font-size:10.5px;color:#78350F;line-height:1.5;margin-top:3px;" id="ocrNoMatchText">Try a clearer, well-lit, straight-on photo — or just type the items in manually below using the zoomed view.</div>
-        <button id="ocrRetryBtn" onclick="retryBillOcr()" style="width:100%;margin-top:8px;padding:9px;background:#fff;border:1.5px solid var(--amber);border-radius:10px;font-size:12px;font-weight:700;color:#78350F;cursor:pointer;display:none;">🔁 Try a Different Reading Technique</button>
-      </div>
-
-      <div id="itemCartSection" style="display:none;margin-top:14px;">
-        <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🛒 Your Bill Items — Add, Edit, or Remove</div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;padding:0 2px;">
-          <span style="flex:2;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;">Item</span>
-          <span style="width:44px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:center;">Qty</span>
-          <span style="width:64px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:center;">Price</span>
-          <span style="width:70px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:right;">Total</span>
-          <span style="width:30px;"></span>
-        </div>
-        <div id="itemListRows"></div>
-        <button onclick="addItemRow('', 1, '')" style="width:100%;margin-top:6px;padding:9px;background:#fff;border:1.5px dashed var(--light);border-radius:10px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;">+ Add Item</button>
-        <div id="itemSumDisplay" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;">Items Total: ₹0.00</div>
-
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--light);">
-          <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">GST on This Bill</div>
-          <div style="margin-bottom:10px;">
-            <label style="font-size:10.5px;color:var(--muted);font-weight:700;display:block;margin-bottom:6px;">Which GST slab applies here?</label>
-            <div style="display:flex;gap:8px;">
-              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;cursor:pointer;">
-                <input type="radio" name="gst-slab" value="5" checked onchange="onGstSlabChange()"> 5% GST
-              </label>
-              <label style="flex:1;display:flex;align-items:center;gap:6px;padding:9px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;cursor:pointer;">
-                <input type="radio" name="gst-slab" value="18" onchange="onGstSlabChange()"> 18% GST
-              </label>
-            </div>
-            <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;background:var(--teal-pale);border-radius:8px;padding:8px 10px;">
-              <b>5% applies</b> to standalone/non-AC restaurants with no liquor license (no input tax credit claimed by the restaurant).<br>
-              <b>18% applies</b> to restaurants inside hotels with room tariffs above ₹7,500/night, or those that serve alcohol. <span style="color:var(--teal-deep);font-weight:700;">(Coming later: we plan to auto-detect this from the restaurant's actual GST registration via an official lookup API — for now, check which applies using the criteria above, or your bill's own printed rate.)</span>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <div>
-              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">CGST (auto-calculated)</label>
-              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-cgst" value="0" step="0.01" readonly style="padding-left:24px;background:var(--light);color:var(--muted);"></div>
-            </div>
-            <div>
-              <label style="font-size:10.5px;color:var(--muted);font-weight:700;">SGST (auto-calculated)</label>
-              <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sgst" value="0" step="0.01" readonly style="padding-left:24px;background:var(--light);color:var(--muted);"></div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4;">CGST + SGST together make up the total GST rate above (e.g. 5% = 2.5% CGST + 2.5% SGST). These update automatically from your Items Total and the slab you picked — no need to type them in.</div>
-          <div style="margin-top:12px;">
-            <label style="font-size:10.5px;color:var(--muted);font-weight:700;">Service Charge (if any)</label>
-            <div class="pfx" style="margin-top:4px;"><span class="p">₹</span><input type="number" id="cart-sc" value="0" step="0.01" style="padding-left:24px;"></div>
-          </div>
-        </div>
-
-        <button id="completeCartBtn" onclick="completeCart()" style="width:100%;margin-top:14px;padding:13px;background:var(--teal-deep);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;">✅ Complete Cart &amp; Check My Bill</button>
-      </div>
-
-      <div id="verdictSection" style="display:none;margin-top:14px;"></div>
-    </div>
-  </div>
+<div class="top-lang-toggle" id="topLangToggle">
+  <button class="lang-btn active" id="topLangBtn-en" onclick="setGoldLang('en')">English</button>
+  <button class="lang-btn" id="topLangBtn-te" onclick="setGoldLang('te')">తెలుగు</button>
+  <button class="lang-btn" id="topLangBtn-hi" onclick="setGoldLang('hi')">हिंदी</button>
 </div>
 
-<footer><span id="footer-txt">Restaurant Bill Checker · Free · LawSticker AI</span> · <a href="calculators.html">All Calculators</a></footer>
+<div class="hero">
+  <div class="hero-icon">🧾🍽️</div>
+  <div class="hero-title" id="tHeroTitle">Is Your Restaurant Bill Fair?</div>
+  <div class="hero-sub" id="tHeroSub">Take a photo of any restaurant bill — we'll check if the service charge is legally voluntary, and if the GST rate is right for this kind of restaurant. No typing needed.</div>
+</div>
+
+<div class="wrap">
+
+  <!-- How it works + sample bill - collapsed by default, tap to expand.
+       Built as an illustrated mockup + numbered callouts rather than a
+       real photo/video, since accuracy and instant load matter more here
+       than realism, and this works identically in all 3 languages without
+       needing separate media per language. -->
+  <div class="howto-card" id="howtoCard">
+    <div class="howto-toggle" onclick="toggleHowto()">
+      <span class="howto-new-badge" id="howtoNewBadge">NEW</span>
+      <span id="tHowtoToggle">📖 New here? See how this works</span>
+      <span class="howto-chevron" id="howtoChevron">▾</span>
+    </div>
+    <div class="howto-body" id="howtoBody" style="display:none;">
+      <div class="howto-steps">
+        <div class="howto-step"><span class="howto-step-icon">📸</span><span id="tStep1">Take a photo of your bill</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">🤖</span><span id="tStep2">AI reads every number</span></div>
+        <div class="howto-step-arrow">→</div>
+        <div class="howto-step"><span class="howto-step-icon">✅</span><span id="tStep3">See your fairness report</span></div>
+      </div>
+      <div class="sample-bill-title" id="tSampleTitle">📋 What a restaurant bill looks like</div>
+      <div class="sample-bill">
+        <div class="sample-row"><span class="sample-num">1</span><span class="sample-label" id="tS1">Subtotal</span><span class="sample-val">₹1,000</span></div>
+        <div class="sample-row"><span class="sample-num">2</span><span class="sample-label" id="tS2">Service Charge</span><span class="sample-val">Voluntary, 10%</span></div>
+        <div class="sample-row"><span class="sample-num">3</span><span class="sample-label" id="tS3">CGST + SGST</span><span class="sample-val">2.5% + 2.5%</span></div>
+        <div class="sample-row"><span class="sample-num">4</span><span class="sample-label" id="tS4">GST Rate</span><span class="sample-val">5%</span></div>
+        <div class="sample-row sample-final"><span class="sample-num">5</span><span class="sample-label" id="tS5">Final Amount</span><span class="sample-val">₹1,155</span></div>
+      </div>
+      <div class="sample-callouts" id="sampleCallouts">
+        <div><b>1</b> <span id="tC12">— the food total before any charges or tax.</span></div>
+        <div><b>2</b> <span id="tC3">— we check the exact wording to see if it's genuinely disclosed as voluntary, per the 2022 consumer protection rules.</span></div>
+        <div><b>3–4</b> <span id="tC4">— we check this matches 5% for a standalone restaurant, or explain when 18% is genuinely valid.</span></div>
+        <div><b>5</b> <span id="tC56">— we verify the maths adds up correctly to this final number.</span></div>
+      </div>
+      <div class="sample-note" id="tSampleNote">Your own bill doesn't need to look exactly like this — every restaurant's format is different, and the AI reads whatever is actually printed.</div>
+    </div>
+  </div>
+
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-icon">📸</div>
+    <div class="upload-title" id="tUploadTitle">Show Us the Bill</div>
+    <div class="upload-hint" id="tUploadHint">Take a clear photo, or choose one from your gallery — works with any shop's format.</div>
+    <div class="upload-btn-row">
+      <label class="upload-btn camera">
+        <span id="tCamBtn">📷 Take a Photo</span>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
+      </label>
+      <label class="upload-btn file">
+        <span id="tFileBtn">🖼️ Choose from Gallery</span>
+        <input type="file" id="galleryInput" accept="image/*" style="display:none;">
+      </label>
+    </div>
+  </div>
+
+  <div id="resultArea"></div>
+
+  <div class="trust-note">🔒 Your bill photo is only used to read the numbers — it's not saved or shared anywhere.</div>
+
+  <div class="zoom-modal" id="zoomModal" onclick="closeZoom(event)">
+    <button class="zoom-close" onclick="closeZoom(event)">✕</button>
+    <img id="zoomImg" src="">
+    <div class="zoom-tip" id="tZoomTip">Pinch or scroll to zoom — tap outside to close</div>
+  </div>
+
+</div>
+
 <script>
-let lang='en';
-const T={
-  en:{
-    navTitle:'🧾 Restaurant Bill Checker',
-    topInfo:'ℹ️ <strong>Your rights:</strong> Service charge is <strong>NOT mandatory</strong> — you can legally refuse it (CCPA guidelines 2022). GST is mandatory but at correct rate only.',
-    c1:'Bill Details',lFood:'Food & Drinks Total',lResttype:'Restaurant Type',
-    lGstBilled:'GST Charged on Bill',lGstBilledS:'Amount shown on your bill',
-    lSc:'Service Charge on Bill',lScS:'Leave 0 if not charged',
-    lOther:'Other Charges',lOtherS:'Packaging, cover charge etc.',
-    lTotalBilled:'Total Billed to You',lTotalBilledS:'Grand total on your bill',
-    calcBtn:'Verify My Bill →',
-    rBdHead:'Bill Breakdown & Verification',rIssuesHead:'Issues Found',
-    rightsTitle:'Your Legal Rights at a Restaurant',
-    resetBtn:'← Check Another Bill',
-    footerTxt:'Restaurant Bill Checker · Free · LawSticker AI',
-    verdictOk:'Bill Looks Correct',verdictWarn:'Minor Issues Found',verdictBad:'Overcharged!',
-    verdictOkSub:'All charges verified against legal rates',
-    verdictWarnSub:'Some charges need clarification',
-    verdictBadSub:'You may be able to dispute this bill',
-    correctGst:'Correct GST Amount',yourGst:'GST on Your Bill',
-    overcharged:'Overpaid by',undercharged:'Underpaid by',correct:'Correct ✓',
-    serviceCharge:'Service Charge',foodTotal:'Food & Drinks',
-    gstRow:'GST',totalRow:'YOUR TOTAL',correctTotal:'CORRECT TOTAL',
-    rights:[
-      ['Service charge is voluntary','CCPA guidelines (July 2022) clearly state restaurants CANNOT force service charge. You can legally ask them to remove it from your bill.'],
-      ['Correct GST rates','Non-AC / no liquor restaurant: 5% GST. AC restaurant or one serving liquor: 18% GST. GST must be on food value only — not on service charge.'],
-      ['No GST on service charge','Many restaurants illegally apply GST on top of service charge too. GST must be calculated on food total only.'],
-      ['Complaint options','If overcharged: contact CCPA helpline 1800-11-4000 or file complaint at consumerhelpline.gov.in. Keep your bill as evidence.'],
-      ['Right to itemised bill','You have the right to an itemised bill showing each charge separately. Never pay a bundled amount without breakdown.'],
-    ],
-    issues:{
-      gstHigh:(diff)=>`GST overcharged by ₹${Math.round(diff).toLocaleString('en-IN')}. You were charged ₹X but should be ₹Y at the applicable rate.`,
-      gstLow:(diff)=>`GST appears undercharged by ₹${Math.round(diff).toLocaleString('en-IN')}. Check if the restaurant is GST-registered — unregistered restaurants cannot charge GST.`,
-      scIllegal:(amt)=>`Service charge of ₹${Math.round(amt).toLocaleString('en-IN')} is NOT mandatory. CCPA guidelines 2022 say you can refuse this. Politely ask them to remove it.`,
-      totalMismatch:(diff)=>`Your total doesn't add up — there is an unexplained difference of ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')}. Ask for an itemised breakdown.`,
-    },
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+
+// ══════════════════════════════════════════
+//  TRANSLATIONS — every static UI string on this page, so switching
+//  language actually covers the whole page, not just the AI report text
+//  (which uses a separate mechanism below since it's dynamically generated).
+// ══════════════════════════════════════════
+var GBC_LANG = 'en';
+var GT = {
+  en: {
+    heroTitle:'Is Your Restaurant Bill Fair?',
+    heroSub:"Take a photo of any restaurant bill — we'll check if the service charge is legally voluntary, and if the GST rate is right for this kind of restaurant. No typing needed.",
+    uploadTitle:'Show Us the Bill', uploadHint:"Take a clear photo, or choose one from your gallery — works with any shop's format.",
+    camBtn:'📷 Take a Photo', fileBtn:'🖼️ Choose from Gallery',
+    cityLabel:'📍 Your city:', checkBtn:'✅ Check This Bill', checkingBtn:'Reading your bill…', changePhoto:'Choose a different photo',
+    yourItem:'Restaurant Bill', subtotal:'Subtotal', serviceCharge:'Service Charge', cgst:'CGST', sgst:'SGST', gstRate:'GST Rate', legacyServiceTax:'Service Tax (old format)',
+    stoneCost:'Stone Cost', gst:'GST', finalAmount:'Final Amount',
+    mcTitle:'🎚️ Making Charge — Try Different Percentages', mcYouCharge:'📌 This bill charges you:', mcTypical:'Typical:',
+    mcTotalAt:'Total at this %', mcBilled:"What you're billed", mcPctLabel:'making charge at this percentage',
+    stoneSliderTitle:'🎚️ Stone Cost — Try Market Rates', stoneSliderHint:'Drag each stone to a rate within its typical market range and see the total move.',
+    stoneSliderTotal:'Total at these rates', stoneSliderTotalWord:'total',
+    reportHeading:'Your Negotiation Report Card', reportHeadingReceipt:'Your Bill Check Report',
+    basicChecksTitle:'Basic checks only', basicChecksDetail:"We could read the bill, but couldn't generate detailed checks this time — the numbers above are still accurate from the bill itself.",
+    stoneTableTitle:'💎 Stone Pricing — You vs. Typical Market', stoneTableHint:"Rough guide only — real pricing depends on quality you can't judge from a bill.",
+    stoneYou:'You:', stoneMarket:'Market:', stoneWithin:'Within range', stoneAbove:'Above typical', stoneBelow:'Below typical',
+    disclaimer:'⚠️ This is a helper to understand your bill better — it does not accuse any shop of wrongdoing, and it is not a certified valuation. Stone pricing especially depends on quality and clarity that a photo can\'t capture. Use this as a starting point for your own questions, not a final verdict.',
+    todaysRatePrefix:"📍 Today's Gold Rate —",
+    saveMore:'you\'d pay ₹{amt} less than this bill', saveLess:'this would cost ₹{amt} more than this bill', savePrefix:'At {pct}%, ', saveStonePrefix:'At these rates, ',
+    zoomHint:'👆 Tap the photo to zoom in and compare', downloadPdf:'⬇️ Download PDF', listenBtn:'🔊 Listen to this report', listeningBtn:'⏸️ Stop', preparingPdf:'⏳ Preparing…', zoomTip:'Pinch or scroll to zoom — tap outside to close',
+    howtoToggle:'📖 New here? See how this works', step1:'Take a photo of your bill', step2:'AI reads every number', step3:'See your fairness report',
+    sampleTitle:'📋 What a restaurant bill looks like',
+    sLabel1:'Subtotal', sLabel2:'Service Charge', sLabel3:'CGST + SGST', sLabel4:'GST Rate', sLabel5:'Final Amount',
+    callout12:'— the food total before any charges or tax.', callout3:"— we check the exact wording to see if it's genuinely disclosed as voluntary, per the 2022 consumer protection rules.", callout4:'— we check this matches 5% for a standalone restaurant, or explain when 18% is genuinely valid.', callout56:'— we verify the maths adds up correctly to this final number.',
+    sampleNote:"Your own bill doesn't need to look exactly like this — every shop's format is different, and the AI reads whatever is actually printed.",
   },
-  te:{
-    navTitle:'🧾 రెస్టారెంట్ బిల్ తనిఖీ',
-    topInfo:'ℹ️ <strong>మీ హక్కులు:</strong> సర్వీస్ ఛార్జ్ <strong>తప్పనిసరి కాదు</strong> — మీరు చట్టబద్ధంగా తిరస్కరించవచ్చు (CCPA మార్గదర్శకాలు 2022). GST తప్పనిసరి కానీ సరైన రేటులో మాత్రమే.',
-    c1:'బిల్ వివరాలు',lFood:'ఆహారం & పానీయాల మొత్తం',lResttype:'రెస్టారెంట్ రకం',
-    lGstBilled:'బిల్‌లో వేసిన GST',lGstBilledS:'మీ బిల్‌లో చూపించిన మొత్తం',
-    lSc:'సర్వీస్ ఛార్జ్',lScS:'వేయకపోతే 0 వదలండి',
-    lOther:'ఇతర ఛార్జీలు',lOtherS:'ప్యాకేజింగ్, కవర్ ఛార్జ్ మొదలైనవి',
-    lTotalBilled:'మీకు వేసిన మొత్తం',lTotalBilledS:'బిల్‌లో గ్రాండ్ టోటల్',
-    calcBtn:'నా బిల్ తనిఖీ చేయండి →',
-    rBdHead:'బిల్ వివరాలు & తనిఖీ',rIssuesHead:'కనుగొన్న సమస్యలు',
-    rightsTitle:'రెస్టారెంట్‌లో మీ చట్టపర హక్కులు',
-    resetBtn:'← మరో బిల్ తనిఖీ చేయండి',
-    footerTxt:'రెస్టారెంట్ బిల్ తనిఖీ · ఉచితం · LawSticker AI',
-    verdictOk:'బిల్ సరిగ్గా ఉంది',verdictWarn:'చిన్న సమస్యలు కనుగొన్నారు',verdictBad:'అధిక ఛార్జ్ వేశారు!',
-    verdictOkSub:'అన్ని ఛార్జీలు చట్టపర రేట్లతో సరిపోయాయి',
-    verdictWarnSub:'కొన్ని ఛార్జీలు స్పష్టత అవసరం',
-    verdictBadSub:'మీరు ఈ బిల్‌ను వివాదానికి తీసుకెళ్ళవచ్చు',
-    correctGst:'సరైన GST మొత్తం',yourGst:'మీ బిల్‌లో GST',
-    overcharged:'అధికంగా చెల్లించారు',undercharged:'తక్కువ చెల్లించారు',correct:'సరైనది ✓',
-    serviceCharge:'సర్వీస్ ఛార్జ్',foodTotal:'ఆహారం & పానీయాలు',
-    gstRow:'GST',totalRow:'మీ మొత్తం',correctTotal:'సరైన మొత్తం',
-    rights:[
-      ['సర్వీస్ ఛార్జ్ స్వచ్ఛందం','CCPA మార్గదర్శకాలు (జూలై 2022) స్పష్టంగా రెస్టారెంట్లు సర్వీస్ ఛార్జ్ తప్పనిసరి చేయలేవని చెప్తున్నాయి. మీరు చట్టబద్ధంగా దాన్ని తొలగించమని అడగవచ్చు.'],
-      ['సరైన GST రేట్లు','AC లేని / మద్యం అందించని రెస్టారెంట్: 5% GST. AC లేదా మద్యం అందించే రెస్టారెంట్: 18% GST. GST ఆహారం విలువపై మాత్రమే వేయాలి.'],
-      ['సర్వీస్ ఛార్జ్‌పై GST వేయకూడదు','చాలా రెస్టారెంట్లు సర్వీస్ ఛార్జ్‌పై కూడా GST వేస్తాయి — ఇది చట్టవిరుద్ధం.'],
-      ['ఫిర్యాదు ఎంపికలు','అధిక ఛార్జ్ అయితే: CCPA హెల్ప్‌లైన్ 1800-11-4000 కు సంప్రదించండి లేదా consumerhelpline.gov.in లో ఫిర్యాదు చేయండి.'],
-      ['వివరణాత్మక బిల్ హక్కు','ప్రతి ఛార్జ్ వేరుగా చూపించే వివరణాత్మక బిల్ పొందే హక్కు మీకు ఉంది.'],
-    ],
-    issues:{
-      gstHigh:(diff)=>`GST అధికంగా వేశారు — ₹${Math.round(diff).toLocaleString('en-IN')} ఎక్కువ.`,
-      gstLow:(diff)=>`GST తక్కువగా వేశారు — రెస్టారెంట్ GST నమోదిత అవునో తనిఖీ చేయండి.`,
-      scIllegal:(amt)=>`సర్వీస్ ఛార్జ్ ₹${Math.round(amt).toLocaleString('en-IN')} తప్పనిసరి కాదు. CCPA 2022 ప్రకారం మీరు తిరస్కరించవచ్చు.`,
-      totalMismatch:(diff)=>`మొత్తం సరిపోవడం లేదు — ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')} వ్యత్యాసం. వివరణాత్మక బిల్ అడగండి.`,
-    },
+  te: {
+    heroTitle:'మీ రెస్టారెంట్ బిల్లు సరైనదేనా?',
+    heroSub:'ఏదైనా రెస్టారెంట్ బిల్లు ఫోటో తీయండి — సర్వీస్ ఛార్జీ చట్టబద్ధంగా స్వచ్ఛందమా, GST రేటు ఈ రకమైన రెస్టారెంట్‌కు సరైనదేనా అని చెక్ చేస్తాము. టైప్ చేయాల్సిన అవసరం లేదు.',
+    uploadTitle:'బిల్లు చూపించండి', uploadHint:'స్పష్టమైన ఫోటో తీయండి, లేదా గ్యాలరీ నుండి ఎంచుకోండి — ఏ దుకాణం ఫార్మాట్ అయినా పనిచేస్తుంది.',
+    camBtn:'📷 ఫోటో తీయండి', fileBtn:'🖼️ గ్యాలరీ నుండి ఎంచుకోండి',
+    cityLabel:'📍 మీ నగరం:', checkBtn:'✅ ఈ బిల్లును చెక్ చేయండి', checkingBtn:'మీ బిల్లు చదువుతున్నాము…', changePhoto:'వేరే ఫోటో ఎంచుకోండి',
+    yourItem:'రెస్టారెంట్ బిల్లు', subtotal:'సబ్‌టోటల్', serviceCharge:'సర్వీస్ ఛార్జీ', cgst:'CGST', sgst:'SGST', gstRate:'GST రేటు', legacyServiceTax:'సర్వీస్ టాక్స్ (పాత ఫార్మాట్)',
+    stoneCost:'రాళ్ల ఖర్చు', gst:'GST', finalAmount:'తుది మొత్తం',
+    mcTitle:'🎚️ మేకింగ్ ఛార్జీ — వేర్వేరు శాతాలు ప్రయత్నించండి', mcYouCharge:'📌 ఈ బిల్లు మీ నుండి వసూలు చేసేది:', mcTypical:'సాధారణం:',
+    mcTotalAt:'ఈ శాతం వద్ద మొత్తం', mcBilled:'మీకు బిల్ చేసినది', mcPctLabel:'ఈ శాతం వద్ద మేకింగ్ ఛార్జీ',
+    stoneSliderTitle:'🎚️ రాళ్ల ఖర్చు — మార్కెట్ రేట్లు ప్రయత్నించండి', stoneSliderHint:'ప్రతి రాయిని దాని సాధారణ మార్కెట్ పరిధిలో లాగి మొత్తం ఎలా మారుతుందో చూడండి.',
+    stoneSliderTotal:'ఈ రేట్ల వద్ద మొత్తం', stoneSliderTotalWord:'మొత్తం',
+    reportHeading:'మీ బేరసారాల నివేదిక', reportHeadingReceipt:'మీ బిల్లు చెక్ నివేదిక',
+    basicChecksTitle:'ప్రాథమిక చెక్‌లు మాత్రమే', basicChecksDetail:'బిల్లు చదవగలిగాము, కానీ ఈసారి వివరణాత్మక చెక్‌లు రూపొందించలేకపోయాము — పైన ఉన్న సంఖ్యలు బిల్లు నుండి ఇప్పటికీ కచ్చితమైనవి.',
+    stoneTableTitle:'💎 రాళ్ల ధర — మీరు vs. సాధారణ మార్కెట్', stoneTableHint:'ఇది ఒక స్థూల మార్గదర్శకం మాత్రమే — నిజమైన ధర ఫోటోలో తెలియని నాణ్యతపై ఆధారపడి ఉంటుంది.',
+    stoneYou:'మీరు:', stoneMarket:'మార్కెట్:', stoneWithin:'పరిధిలో ఉంది', stoneAbove:'సాధారణం కంటే ఎక్కువ', stoneBelow:'సాధారణం కంటే తక్కువ',
+    disclaimer:'⚠️ ఇది మీ బిల్లును బాగా అర్థం చేసుకోవడానికి ఒక సహాయకం — ఇది ఏ దుకాణాన్ని తప్పుపట్టదు, మరియు ఇది ధృవీకరించిన విలువాంకనం కాదు. రాళ్ల ధర ముఖ్యంగా ఫోటోలో తెలియని నాణ్యత మరియు స్పష్టతపై ఆధారపడి ఉంటుంది. దీన్ని మీ స్వంత ప్రశ్నలకు ఒక ప్రారంభ బిందువుగా వాడండి, తుది తీర్పుగా కాదు.',
+    todaysRatePrefix:'📍 నేటి బంగారం రేటు —',
+    saveMore:'మీరు ఈ బిల్లు కంటే ₹{amt} తక్కువ చెల్లిస్తారు', saveLess:'ఇది ఈ బిల్లు కంటే ₹{amt} ఎక్కువ ఖర్చవుతుంది', savePrefix:'{pct}% వద్ద, ', saveStonePrefix:'ఈ రేట్ల వద్ద, ',
+    zoomHint:'👆 జూమ్ చేయడానికి, పోల్చడానికి ఫోటోను తాకండి', downloadPdf:'⬇️ PDF డౌన్‌లోడ్ చేయండి', listenBtn:'🔊 ఈ నివేదిక వినండి', listeningBtn:'⏸️ ఆపు', preparingPdf:'⏳ సిద్ధం చేస్తున్నాము…', zoomTip:'జూమ్ చేయడానికి పించ్ చేయండి లేదా స్క్రోల్ చేయండి — మూసివేయడానికి బయట తాకండి',
+    howtoToggle:'📖 కొత్తగా వచ్చారా? ఇది ఎలా పనిచేస్తుందో చూడండి', step1:'మీ బిల్లు ఫోటో తీయండి', step2:'AI ప్రతి సంఖ్యను చదువుతుంది', step3:'మీ నివేదికను చూడండి',
+    sampleTitle:'📋 రెస్టారెంట్ బిల్లు ఎలా ఉంటుంది',
+    sLabel1:'సబ్‌టోటల్', sLabel2:'సర్వీస్ ఛార్జీ', sLabel3:'CGST + SGST', sLabel4:'GST రేటు', sLabel5:'తుది మొత్తం',
+    callout12:'— ఏ ఛార్జీలు లేదా పన్ను లేకుండా ఆహారం మొత్తం.', callout3:'— ఇది నిజంగా స్వచ్ఛందంగా వెల్లడించబడిందో లేదో ఖచ్చితమైన పదాలను చెక్ చేస్తాము, 2022 వినియోగదారు రక్షణ నిబంధనల ప్రకారం.', callout4:'— ఇది స్వతంత్ర రెస్టారెంట్‌కు 5%కి సరిపోతుందో చెక్ చేస్తాము, లేదా 18% ఎప్పుడు నిజంగా చెల్లుబాటు అవుతుందో వివరిస్తాము.', callout56:'— లెక్క ఈ తుది సంఖ్యకు సరిగ్గా సరిపోతుందో ధృవీకరిస్తాము.',
+    sampleNote:'మీ సొంత బిల్లు ఇలాగే ఉండాల్సిన అవసరం లేదు — ప్రతి దుకాణం ఫార్మాట్ వేరుగా ఉంటుంది, ప్రింట్ అయిన దాన్ని AI చదువుతుంది.',
   },
-  hi:{
-    navTitle:'🧾 रेस्तरां बिल चेकर',
-    topInfo:'ℹ️ <strong>आपके अधिकार:</strong> सर्विस चार्ज <strong>अनिवार्य नहीं है</strong> — आप इसे कानूनी रूप से मना कर सकते हैं (CCPA दिशानिर्देश 2022). GST अनिवार्य है लेकिन सही दर पर।',
-    c1:'बिल विवरण',lFood:'खाना और पेय कुल',lResttype:'रेस्तरां का प्रकार',
-    lGstBilled:'बिल में GST',lGstBilledS:'आपके बिल में दिखाई गई राशि',
-    lSc:'सर्विस चार्ज',lScS:'नहीं है तो 0 छोड़ें',
-    lOther:'अन्य शुल्क',lOtherS:'पैकेजिंग, कवर चार्ज आदि',
-    lTotalBilled:'कुल बिल',lTotalBilledS:'बिल पर ग्रैंड टोटल',
-    calcBtn:'मेरा बिल जांचें →',
-    rBdHead:'बिल विवरण और सत्यापन',rIssuesHead:'समस्याएं मिलीं',
-    rightsTitle:'रेस्तरां में आपके कानूनी अधिकार',
-    resetBtn:'← दूसरा बिल जांचें',
-    footerTxt:'रेस्तरां बिल चेकर · मुफ्त · LawSticker AI',
-    verdictOk:'बिल सही लगता है',verdictWarn:'छोटी समस्याएं मिलीं',verdictBad:'अधिक शुल्क लिया गया!',
-    verdictOkSub:'सभी शुल्क कानूनी दरों से मेल खाते हैं',
-    verdictWarnSub:'कुछ शुल्कों को स्पष्टीकरण की ज़रूरत है',
-    verdictBadSub:'आप इस बिल पर विवाद कर सकते हैं',
-    correctGst:'सही GST राशि',yourGst:'आपके बिल में GST',
-    overcharged:'अधिक भुगतान',undercharged:'कम भुगतान',correct:'सही ✓',
-    serviceCharge:'सर्विस चार्ज',foodTotal:'खाना और पेय',
-    gstRow:'GST',totalRow:'आपका कुल',correctTotal:'सही कुल',
-    rights:[
-      ['सर्विस चार्ज स्वैच्छिक है','CCPA दिशानिर्देश (जुलाई 2022) स्पष्ट रूप से कहते हैं कि रेस्तरां सर्विस चार्ज अनिवार्य नहीं कर सकते। आप इसे हटाने के लिए कह सकते हैं।'],
-      ['सही GST दरें','गैर-AC / बिना शराब वाला रेस्तरां: 5% GST. AC या शराब परोसने वाला: 18% GST. GST केवल खाने की कीमत पर।'],
-      ['सर्विस चार्ज पर GST नहीं','GST केवल खाने की कीमत पर लगती है — सर्विस चार्ज पर नहीं। यह अवैध है।'],
-      ['शिकायत विकल्प','अधिक शुल्क पर: CCPA हेल्पलाइन 1800-11-4000 या consumerhelpline.gov.in पर शिकायत करें।'],
-      ['आइटमाइज्ड बिल का अधिकार','आपको प्रत्येक शुल्क अलग दिखाने वाला बिल पाने का अधिकार है।'],
-    ],
-    issues:{
-      gstHigh:(diff)=>`GST अधिक लिया — ₹${Math.round(diff).toLocaleString('en-IN')} ज़्यादा।`,
-      gstLow:(diff)=>`GST कम लिया — जांचें कि रेस्तरां GST पंजीकृत है या नहीं।`,
-      scIllegal:(amt)=>`सर्विस चार्ज ₹${Math.round(amt).toLocaleString('en-IN')} अनिवार्य नहीं। CCPA 2022 के तहत आप मना कर सकते हैं।`,
-      totalMismatch:(diff)=>`कुल मेल नहीं खाता — ₹${Math.round(Math.abs(diff)).toLocaleString('en-IN')} का अंतर है। आइटमाइज्ड बिल मांगें।`,
-    },
-  }
+  hi: {
+    heroTitle:'क्या आपका रेस्तरां बिल सही है?',
+    heroSub:'किसी भी रेस्तरां बिल की फोटो लें — हम जांचेंगे कि सर्विस चार्ज कानूनी रूप से स्वैच्छिक है या नहीं, और GST दर इस तरह के रेस्तरां के लिए सही है या नहीं। टाइप करने की जरूरत नहीं।',
+    uploadTitle:'बिल दिखाएं', uploadHint:'साफ फोटो लें, या गैलरी से चुनें — किसी भी दुकान के फॉर्मेट के साथ काम करता है।',
+    camBtn:'📷 फोटो लें', fileBtn:'🖼️ गैलरी से चुनें',
+    cityLabel:'📍 आपका शहर:', checkBtn:'✅ यह बिल जांचें', checkingBtn:'आपका बिल पढ़ रहे हैं…', changePhoto:'दूसरी फोटो चुनें',
+    yourItem:'रेस्तरां बिल', subtotal:'सबटोटल', serviceCharge:'सर्विस चार्ज', cgst:'CGST', sgst:'SGST', gstRate:'GST दर', legacyServiceTax:'सर्विस टैक्स (पुराना प्रारूप)',
+    stoneCost:'पत्थर की लागत', gst:'GST', finalAmount:'अंतिम राशि',
+    mcTitle:'🎚️ मेकिंग चार्ज — अलग-अलग प्रतिशत आज़माएं', mcYouCharge:'📌 यह बिल आपसे वसूल रहा है:', mcTypical:'सामान्य:',
+    mcTotalAt:'इस % पर कुल राशि', mcBilled:'आपसे लिया गया', mcPctLabel:'इस प्रतिशत पर मेकिंग चार्ज',
+    stoneSliderTitle:'🎚️ पत्थर की लागत — बाज़ार दरें आज़माएं', stoneSliderHint:'हर पत्थर को उसकी सामान्य बाज़ार सीमा में खींचें और देखें कि कुल राशि कैसे बदलती है।',
+    stoneSliderTotal:'इन दरों पर कुल राशि', stoneSliderTotalWord:'कुल',
+    reportHeading:'आपकी बातचीत रिपोर्ट कार्ड', reportHeadingReceipt:'आपकी बिल जांच रिपोर्ट',
+    basicChecksTitle:'केवल बुनियादी जांच', basicChecksDetail:'हम बिल पढ़ सके, लेकिन इस बार विस्तृत जांच नहीं बना सके — ऊपर दी गई संख्याएं फिर भी बिल से सटीक हैं।',
+    stoneTableTitle:'💎 पत्थर की कीमत — आप बनाम सामान्य बाज़ार', stoneTableHint:'यह केवल एक मोटा मार्गदर्शक है — असली कीमत उस गुणवत्ता पर निर्भर करती है जो फोटो से पता नहीं चलती।',
+    stoneYou:'आप:', stoneMarket:'बाज़ार:', stoneWithin:'सीमा के भीतर', stoneAbove:'सामान्य से अधिक', stoneBelow:'सामान्य से कम',
+    disclaimer:'⚠️ यह आपके बिल को बेहतर समझने के लिए एक सहायक है — यह किसी दुकान पर गलत काम का आरोप नहीं लगाता, और यह प्रमाणित मूल्यांकन नहीं है। पत्थर की कीमत विशेष रूप से उस गुणवत्ता और स्पष्टता पर निर्भर करती है जो फोटो से पता नहीं चलती। इसे अपने सवालों की शुरुआत मानें, अंतिम फैसला नहीं।',
+    todaysRatePrefix:'📍 आज की सोने की दर —',
+    saveMore:'आप इस बिल से ₹{amt} कम चुकाएंगे', saveLess:'यह इस बिल से ₹{amt} ज़्यादा होगा', savePrefix:'{pct}% पर, ', saveStonePrefix:'इन दरों पर, ',
+    zoomHint:'👆 ज़ूम करके तुलना करने के लिए फोटो पर टैप करें', downloadPdf:'⬇️ PDF डाउनलोड करें', listenBtn:'🔊 यह रिपोर्ट सुनें', listeningBtn:'⏸️ रोकें', preparingPdf:'⏳ तैयार कर रहे हैं…', zoomTip:'ज़ूम करने के लिए पिंच करें या स्क्रॉल करें — बंद करने के लिए बाहर टैप करें',
+    howtoToggle:'📖 नए हैं? देखें यह कैसे काम करता है', step1:'अपने बिल की फोटो लें', step2:'AI हर संख्या पढ़ता है', step3:'अपनी रिपोर्ट देखें',
+    sampleTitle:'📋 रेस्तरां बिल कैसा दिखता है',
+    sLabel1:'सबटोटल', sLabel2:'सर्विस चार्ज', sLabel3:'CGST + SGST', sLabel4:'GST दर', sLabel5:'अंतिम राशि',
+    callout12:'— बिना किसी चार्ज या टैक्स के भोजन का कुल योग।', callout3:'— हम ठीक शब्दों की जांच करते हैं कि क्या यह वाकई स्वैच्छिक बताया गया है, 2022 उपभोक्ता संरक्षण नियमों के अनुसार।', callout4:'— हम जांचते हैं कि यह एक स्वतंत्र रेस्तरां के लिए 5% से मेल खाता है, या बताते हैं कि 18% कब वाकई मान्य है।', callout56:'— हम सत्यापित करते हैं कि हिसाब सही ढंग से इस अंतिम राशि तक पहुंचता है।',
+    sampleNote:'आपके अपने बिल को बिल्कुल ऐसा दिखना ज़रूरी नहीं है — हर दुकान का फॉर्मेट अलग होता है, AI जो भी छपा है उसे पढ़ लेता है।',
+  },
 };
-let lang_='en';
-const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-const h=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v};
-const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
-
-function applyLang(){
-  const t=T[lang_];
-  s('nav-title',t.navTitle);h('top-info',t.topInfo);
-  s('c1',t.c1);s('l-food',t.lFood);s('l-resttype',t.lResttype);
-  s('l-gstbilled',t.lGstBilled);s('l-gstbilled-s',t.lGstBilledS);
-  s('l-sc',t.lSc);s('l-sc-s',t.lScS);
-  s('l-other',t.lOther);s('l-other-s',t.lOtherS);
-  s('footer-txt',t.footerTxt);
-}
-function setLang(l){
-  lang_=l;
-  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
-  applyLang();
-}
-// ═══ BILL PHOTO/PDF VIEWER (upload, view, zoom -- no OCR, purely a reading aid) ═══
-document.getElementById('billFileInput').addEventListener('change', function(e){
- const file = e.target.files[0];
- if(!file) return;
- handleBillFile(file);
-});
-
-document.getElementById('billUploadZone').addEventListener('dragover', function(e){
- e.preventDefault();
- this.style.background = '#E0F2F1';
-});
-document.getElementById('billUploadZone').addEventListener('dragleave', function(){
- this.style.background = 'var(--teal-pale)';
-});
-document.getElementById('billUploadZone').addEventListener('drop', function(e){
- e.preventDefault();
- this.style.background = 'var(--teal-pale)';
- const file = e.dataTransfer.files[0];
- if(file) handleBillFile(file);
-});
-
-function handleBillFile(file){
- const isImage = file.type.startsWith('image/');
- const isPdf = file.type === 'application/pdf';
- if(!isImage && !isPdf){
-  alert('Please upload a JPG, PNG, or PDF file.');
-  return;
- }
- const url = URL.createObjectURL(file);
- document.getElementById('billFileName').textContent = file.name;
- document.getElementById('billViewerResult').style.display = 'block';
- document.getElementById('billUploadZone').style.display = 'none';
-
- const img = document.getElementById('billImagePreview');
- const pdfFrame = document.getElementById('billPdfPreview');
- if(isImage){
-  img.src = url;
-  img.style.display = 'block';
-  pdfFrame.style.display = 'none';
- }else{
-  pdfFrame.src = url;
-  pdfFrame.style.display = 'block';
-  img.style.display = 'none';
- }
-}
-
-function toggleBillZoom(img){
- if(img.style.transform === 'scale(2)'){
-  img.style.transform = 'scale(1)';
-  img.style.cursor = 'zoom-in';
- }else{
-  img.style.transform = 'scale(2)';
-  img.style.transformOrigin = 'center top';
-  img.style.cursor = 'zoom-out';
- }
-}
-
-// ═══ OCR AUTO-FILL (Beta) -- Tesseract.js, entirely in-browser, no server, no API key ═══
-let tesseractLoaded = false;
-
-function loadTesseract(){
- return new Promise((resolve, reject) => {
-  if(typeof Tesseract !== 'undefined'){ tesseractLoaded = true; resolve(); return; }
-  const s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js';
-  s.onload = () => { tesseractLoaded = true; resolve(); };
-  s.onerror = () => reject(new Error('Could not load the text-recognition engine.'));
-  document.head.appendChild(s);
- });
-}
-
-async function runBillOcr(){
- const img = document.getElementById('billImagePreview');
- if(!img.src || img.style.display === 'none'){
-  alert('Auto-fill currently works on photo uploads only (not PDF) -- please upload a JPG or PNG of your bill.');
-  return;
- }
- // If the user already attempted a scan before (e.g. clicked this same button again
- // rather than the smaller retry button), resume from the NEXT technique rather than
- // silently restarting at technique 1 and discarding that progress -- this was the real
- // bug behind "retry always shows attempt 1 and the same result," since this button
- // stays visible and clickable throughout, and clicking it again used to always reset
- // to technique 1 no matter how far the user had already gotten.
- const nextTechnique = ocrHasRunOnce ? Math.min(lastOcrTechnique + 1, 3) : 1;
- ocrHasRunOnce = true;
- await performOcrPass(nextTechnique);
-}
-
-// Runs one OCR "technique" pass. technique 1 = normal read. technique 2 = upscaled
-// render (helps with faint/small text). technique 3 = high-contrast black & white
-// render (helps with low-contrast thermal-printer receipts, common for small shops).
-// Each technique is a genuinely different image transformation, not a cosmetic retry --
-// per the user's request for 2-3 real reading techniques before handing off to manual editing.
-async function performOcrPass(technique){
- const img = document.getElementById('billImagePreview');
- const btn = document.getElementById('ocrScanBtn');
- const progressBox = document.getElementById('ocrProgress');
- const progressText = document.getElementById('ocrProgressText');
- const progressBar = document.getElementById('ocrProgressBar');
- const resultBox = document.getElementById('ocrResult');
- const noMatchBox = document.getElementById('ocrNoMatch');
- const retryBtn = document.getElementById('ocrRetryBtn');
-
- btn.disabled = true;
- resultBox.style.display = 'none';
- noMatchBox.style.display = 'none';
- retryBtn.style.display = 'none';
- progressBox.style.display = 'block';
- progressText.textContent = 'Loading text-recognition engine… (Attempt ' + technique + ' of 3)';
- progressBar.style.width = '10%';
-
- try{
-  await loadTesseract();
-
-  let sourceForOcr = img.src;
-  if(technique === 2){
-   progressText.textContent = 'Reading (enlarged pass)… (Attempt 2 of 3)';
-   const canvas = document.createElement('canvas');
-   const scale = 1.6;
-   canvas.width = img.naturalWidth * scale;
-   canvas.height = img.naturalHeight * scale;
-   const ctx = canvas.getContext('2d');
-   ctx.imageSmoothingEnabled = false; // avoid blurring text edges when upscaling
-   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-   sourceForOcr = canvas.toDataURL('image/png');
-  }else if(technique === 3){
-   progressText.textContent = 'Reading (high-contrast pass)… (Attempt 3 of 3)';
-   const canvas = document.createElement('canvas');
-   canvas.width = img.naturalWidth;
-   canvas.height = img.naturalHeight;
-   const ctx = canvas.getContext('2d');
-   ctx.drawImage(img, 0, 0);
-   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-   const d = imageData.data;
-   for(let i = 0; i < d.length; i += 4){
-    const gray = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
-    const bw = gray > 140 ? 255 : 0; // hard black/white threshold, helps faded thermal print
-    d[i] = d[i+1] = d[i+2] = bw;
-   }
-   ctx.putImageData(imageData, 0, 0);
-   sourceForOcr = canvas.toDataURL('image/png');
-  }else{
-   // Technique 1 (the default first attempt) previously used the raw, unprocessed photo
-   // as-is. Converting to grayscale and boosting contrast here -- rather than only doing
-   // this as a last-resort fallback in technique 3 -- gives Tesseract a cleaner starting
-   // point on the very first try, since color noise (paper texture, shadows, slight
-   // yellowing) measurably hurts character recognition even on decent photos.
-   progressText.textContent = 'Reading your bill… (Attempt ' + technique + ' of 3)';
-   const canvas = document.createElement('canvas');
-   canvas.width = img.naturalWidth;
-   canvas.height = img.naturalHeight;
-   const ctx = canvas.getContext('2d');
-   ctx.drawImage(img, 0, 0);
-   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-   const d = imageData.data;
-   for(let i = 0; i < d.length; i += 4){
-    const gray = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
-    // Mild contrast stretch (not a hard threshold like technique 3) -- pushes light
-    // pixels lighter and dark pixels darker without fully binarizing, which keeps more
-    // detail for Tesseract's LSTM engine to work with on a first attempt
-    const contrasted = Math.min(255, Math.max(0, (gray - 128) * 1.3 + 128));
-    d[i] = d[i+1] = d[i+2] = contrasted;
-   }
-   ctx.putImageData(imageData, 0, 0);
-   sourceForOcr = canvas.toDataURL('image/png');
-  }
-  progressBar.style.width = '30%';
-
-  // Using the explicit worker API (createWorker/setParameters/recognize) rather than the
-  // older Tesseract.recognize() convenience function -- the Tesseract.js maintainers'
-  // own release notes state their docs were deliberately changed to steer users away
-  // from that older function, and setParameters is the only reliably-documented way to
-  // actually change the page segmentation mode (an inline options object on recognize()
-  // is not confirmed to work for this specific parameter across versions).
-  const worker = await Tesseract.createWorker('eng', 1, {
-   logger: m => {
-    if(m.status === 'recognizing text' && m.progress){
-     const pct = 30 + Math.round(m.progress * 65);
-     progressBar.style.width = pct + '%';
-    }
-   }
-  });
-  // PSM 4 = "single column of text of variable sizes" -- documented specifically as
-  // correct for receipt/column-style layouts. Tesseract's default (PSM 3, "fully
-  // automatic page segmentation") cannot reliably associate text sitting on the same
-  // row together, which is a real, evidence-backed contributor to items being missed or
-  // split incorrectly on narrow receipt images like the ones this tool processes.
-  await worker.setParameters({ tessedit_pageseg_mode: '4' });
-  const { data } = await worker.recognize(sourceForOcr);
-  await worker.terminate();
-
-  progressText.textContent = 'Finding the items… (Attempt ' + technique + ' of 3)';
-  progressBar.style.width = '95%';
-
-  billItems = extractLineItems(data.text);
-  const extracted = parseBillAmounts(data.text);
-  if(extracted.serviceCharge !== null) document.getElementById('cart-sc').value = extracted.serviceCharge;
-  onGstSlabChange(); // recompute CGST/SGST from the default 5% slab against the newly-extracted items
-
-  progressBar.style.width = '100%';
-  setTimeout(() => { progressBox.style.display = 'none'; }, 300);
-
-  lastOcrTechnique = technique; // always record which technique just ran, success or not
-
-  if(billItems.length > 0){
-   document.getElementById('itemCartSection').style.display = 'block';
-   renderItemRows();
-   resultBox.style.display = 'block';
-   // Even when items ARE found, still offer a retry with a different technique --
-   // "found some items" is not the same as "found them correctly," and the user should
-   // be free to try again if what's shown doesn't look right, up to technique 3.
-   if(technique < 3){
-    document.getElementById('ocrRetryBtn').style.display = 'block';
-    document.getElementById('ocrRetryBtn').textContent = '🔁 Not Right? Try Reading Attempt ' + (technique + 1) + ' of 3';
-   }
-  }else{
-   noMatchBox.style.display = 'block';
-   lastOcrTechnique = technique;
-   if(technique < 3){
-    document.getElementById('ocrRetryBtn').style.display = 'block';
-    document.getElementById('ocrRetryBtn').textContent = '🔁 Try Reading Attempt ' + (technique + 1) + ' of 3';
-   }else{
-    document.getElementById('ocrNoMatchText').textContent = 'We tried all 3 reading techniques (attempt 3 of 3 complete) and still could not confidently find items on this photo. Please add your items manually below using the zoomed view — it only takes a moment.';
-    document.getElementById('itemCartSection').style.display = 'block';
-   }
-  }
- }catch(err){
-  progressBox.style.display = 'none';
-  noMatchBox.style.display = 'block';
-  document.getElementById('ocrNoMatchText').textContent = 'Something went wrong reading this photo (' + (err.message || 'unknown error') + '). Please add your items manually below.';
-  document.getElementById('itemCartSection').style.display = 'block';
- }
- btn.disabled = false;
-}
-
-let lastOcrTechnique = 1;
-let ocrHasRunOnce = false;
-function retryBillOcr(){
- performOcrPass(lastOcrTechnique + 1);
-}
-
-// Attempts to extract individual line items (name + price) from raw OCR bill text.
-// This is genuinely harder and less reliable than finding a labelled "Total" line,
-// since item lines have no consistent keyword to anchor on -- just arbitrary text
-// followed by a price. Heuristic: a plausible item line has some letters (an item
-// name), ends in a currency-shaped number, and is NOT itself a total/tax/address line
-// (those are excluded via the same keyword and address-pattern lists used elsewhere,
-// so a line never gets double-counted as both an item AND a total).
-function extractLineItems(rawText){
- const text = rawText.replace(/\r/g, '');
- const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
- // Excludes address/contact/identifier lines, PLUS (found via real user bill testing)
- // date/time stamps, bill/employee ID lines, disclaimer boilerplate, and HSN codes --
- // all of which have digits on the same line as real-looking words and were getting
- // mistaken for items before this list was extended.
- const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|invoice no|invoice number|invoice date|order\s*#|order no|order number|bill no|receipt no|emp\s*id|cashier|sales\s*man|customer name|customer phone|-\s*\d{6}\s*,|,\s*\d{6}\s*$|\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}|\d{1,2}:\d{2}(:\d{2})?|hsn\s*#?|fssai|estd\.?\s*\d{4}|once sold|shall not be|taken back|exchanged|thanks for visiting|received qty|s\.?no\.?\s*item|qty\s+mrp|\bnh\s*\d+\b|\bnear\b|\bnagar\b|\bfloor\b|\bganj\b|\bcolony\b|\bstreet\b|\broad\b|\bpost\s*office\b|,\s*telangana|,\s*india\b)/i;
- const totalLikeKeywords = ['grand total', 'total amount', 'net amount', 'net payable', 'amount payable',
-  'total gst', 'gst', 'cgst', 'sgst', 'tax', 'convenience fee', 'service charge', 'svc charge',
-  'service chg', 'sub total', 'subtotal', 'food total', 'item total', 'discount', 'round off',
-  'qty', 'quantity', 'taxable', 'bill amount', 'date:', 'time:'];
-
- function isExcludedLine(line){
-  const lower = line.toLowerCase();
-  return addressLikePattern.test(line) || totalLikeKeywords.some(k => lower.includes(k));
- }
-
- function cleanItemName(name){
-  name = name.replace(/[\-–—.:]+$/, '').trim();
-  name = name.replace(/^\d{1,3}\s+/, '').trim(); // strip a leading serial number
-  return name;
- }
-
- const items = [];
- const consumedLineIndices = new Set();
-
- // Given a list of numbers found on a line, tries to detect the qty/unitPrice/amount
- // pattern (three numbers where qty * unitPrice ≈ amount) -- common on itemized bills.
- // Falls back to treating the single found number as a qty-1 item if the pattern doesn't
- // hold, which is the safe default when a bill only shows a flat price per line.
- function detectQtyAndUnitPrice(nums){
-  if(nums.length >= 3){
-   const qty = nums[nums.length - 3];
-   const unitPrice = nums[nums.length - 2];
-   const amount = nums[nums.length - 1];
-   const isWholeQty = Number.isInteger(qty) && qty >= 1 && qty <= 100;
-   const productMatches = Math.abs(qty * unitPrice - amount) <= Math.max(1, amount * 0.02);
-   if(isWholeQty && productMatches){
-    return { qty, unitPrice };
-   }
-  }
-  // Fallback: treat the last number as the line amount, quantity 1
-  return { qty: 1, unitPrice: nums[nums.length - 1] };
- }
-
- // Pass 1: single-line items (name and price on the same line)
- for(let i = 0; i < rawLines.length; i++){
-  const line = rawLines[i];
-  if(isExcludedLine(line)) continue;
-  if(!/[a-zA-Z]{3,}/.test(line)) continue;
-
-  const matches = line.match(/[\d,]+\.?\d{0,2}/g);
-  if(!matches) continue;
-  const priceCandidates = matches
-   .map(m => parseFloat(m.replace(/,/g, '')))
-   .filter(n => !isNaN(n) && n > 0 && n < 100000)
-   .filter(n => !(Number.isInteger(n) && String(Math.round(n)).length === 6)) // exclude PIN-shaped values
-   .filter(n => !(Number.isInteger(n) && n >= 1900 && n <= 2100)); // exclude bare 4-digit years (e.g. "Estd. 1948")
-  if(priceCandidates.length === 0) continue;
-
-  const { qty, unitPrice } = detectQtyAndUnitPrice(priceCandidates);
-  // When multiple numbers were found (qty/unitPrice/amount columns), the item name is
-  // everything before the FIRST number column, not just before the last one -- otherwise
-  // the quantity/price digits stay stuck onto the end of the name.
-  const nameEndIdx = matches.length >= 3 ? line.indexOf(matches[matches.length - 3]) : line.lastIndexOf(matches[matches.length - 1]);
-  const name = cleanItemName(line.slice(0, nameEndIdx));
-  if(name.length < 3) continue;
-
-  items.push({ name, qty, unitPrice });
-  consumedLineIndices.add(i);
- }
-
- // Pass 2: two-line items -- a line that is ALL letters (an item name, no numbers at all)
- // immediately followed by a line that is ALL numbers (quantity, unit price, amount, e.g.
- // "3   45.00   135.00"). This pattern is common on receipts where the item name is too
- // long to fit on the same line as its price columns. Only runs on lines Pass 1 didn't
- // already use, so nothing is double-counted.
- for(let i = 0; i < rawLines.length - 1; i++){
-  if(consumedLineIndices.has(i) || consumedLineIndices.has(i + 1)) continue;
-  const nameLine = rawLines[i];
-  const numberLine = rawLines[i + 1];
-
-  if(isExcludedLine(nameLine) || isExcludedLine(numberLine)) continue;
-  if(!/^[a-zA-Z][a-zA-Z\s\-]{2,}$/.test(nameLine)) continue; // name line: letters/spaces/hyphens only, no digits
-  if(!/^[\d,.\s]+$/.test(numberLine)) continue; // number line: only digits, commas, dots, spaces
-
-  const numMatches = numberLine.match(/[\d,]+\.?\d{0,2}/g);
-  if(!numMatches || numMatches.length === 0) continue;
-  const nums = numMatches
-   .map(m => parseFloat(m.replace(/,/g, '')))
-   .filter(n => !isNaN(n) && n > 0 && n < 100000);
-  if(nums.length === 0) continue;
-
-  const { qty, unitPrice } = detectQtyAndUnitPrice(nums);
-  const name = cleanItemName(nameLine);
-  if(name.length < 3) continue;
-
-  items.push({ name, qty, unitPrice });
-  consumedLineIndices.add(i);
-  consumedLineIndices.add(i + 1);
- }
-
- return items;
-}
-
-// Cross-checks whether the SUM of extracted line items plausibly matches the bill's
-// own stated food/subtotal figure -- flags a discrepancy rather than silently trusting
-// either number, since OCR can miss an item OR misread a total.
-function validateItemSum(items, statedSubtotal){
- if(items.length === 0 || statedSubtotal === null) return null;
- const itemSum = items.reduce((sum, item) => {
-  const lineTotal = (item.qty !== undefined) ? (item.qty * item.unitPrice) : item.price;
-  return sum + lineTotal;
- }, 0);
- const diff = Math.abs(itemSum - statedSubtotal);
- // Allow a small tolerance (rounding, minor OCR noise on one digit) before flagging
- const tolerance = Math.max(2, statedSubtotal * 0.02); // 2 rupees or 2%, whichever is larger
- return {
-  itemSum,
-  statedSubtotal,
-  matches: diff <= tolerance,
-  diff
- };
-}
-
-// Validates that the GST charged is consistent with a real, standard GST rate (5% for
-// non-AC/no-liquor restaurants, 18% for AC or liquor-serving ones) applied to the
-// subtotal -- flags anything that doesn't correspond to a recognised rate, which can
-// indicate an OCR misread OR a genuine overcharge on the actual bill.
-function validateGstPattern(gstAmount, subtotal){
- if(gstAmount === null || subtotal === null || subtotal === 0) return null;
- const actualRatePct = (gstAmount / subtotal) * 100;
- const STANDARD_RATES = [5, 18]; // the only two real GST rates that apply to restaurants
- const closestRate = STANDARD_RATES.reduce((closest, rate) =>
-  Math.abs(actualRatePct - rate) < Math.abs(actualRatePct - closest) ? rate : closest
- , STANDARD_RATES[0]);
- const rateDiff = Math.abs(actualRatePct - closestRate);
- return {
-  actualRatePct,
-  closestStandardRate: closestRate,
-  matchesStandardRate: rateDiff <= 0.3, // small tolerance for rounding
-  rateDiff
- };
-}
-
-// Parses raw OCR text for likely bill amounts. This is pattern-matching on common Indian
-// restaurant-bill phrasing, not true document understanding -- it looks for currency-like
-// numbers near recognisable keywords, picks the most plausible candidate for each field,
-// and leaves everything editable, since it WILL get some bills wrong.
-function parseBillAmounts(rawText){
- const text = rawText.replace(/\r/g, '');
- const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
- // Lines that are clearly address/contact/identifier metadata, not bill amounts, get excluded
- // entirely before any number extraction runs -- this is what goes wrong on invoices where a
- // PIN code, GSTIN, phone number, state code, invoice number, or order number sits near words
- // like "total"/"amount", or where OCR line-breaks merge two unrelated lines together.
- const addressLikePattern = /(pincode|pin code|gstin|pan\s*:|mobile\s*:|phone\s*:|state code|invoice no|invoice number|invoice date|order\s*#|order no|order number|bill no|receipt no|-\s*\d{6}\s*,|,\s*\d{6}\s*$)/i;
- const lines = rawLines.filter(l => !addressLikePattern.test(l));
-
- function extractNumber(line){
-  // Grabs the rightmost currency-like number on a line (bills usually right-align amounts).
-  // Deliberately requires the line to look money-shaped: either it has a currency symbol/
-  // word (Rs, INR, ₹) somewhere on it, OR the matched number has a decimal point (most
-  // invoice/order/reference numbers are bare integers, real bill amounts are very often
-  // written with paise, e.g. "84.75") -- this rules out picking up ID-shaped digit strings
-  // by accident.
-  const hasCurrencyMarker = /(rs\.?|inr|₹|rupees)/i.test(line);
-  const matches = line.match(/[\d,]+\.?\d{0,2}/g);
-  if(!matches) return null;
-  const nums = matches
-   .map(m => ({ raw: m, val: parseFloat(m.replace(/,/g, '')) }))
-   .filter(x => !isNaN(x.val) && x.val > 0 && x.val < 100000)
-   .filter(x => !(Number.isInteger(x.val) && String(Math.round(x.val)).length === 6)) // exclude bare 6-digit PIN-shaped values
-   .filter(x => hasCurrencyMarker || x.raw.includes('.')); // require a currency marker OR a decimal amount
-  return nums.length ? nums[nums.length - 1].val : null;
- }
-
- function findByKeywords(keywords){
-  for(const line of lines){
-   const lower = line.toLowerCase();
-   if(keywords.some(k => lower.includes(k))){
-    const n = extractNumber(line);
-    if(n !== null) return n;
-   }
-  }
-  return null;
- }
-
- const result = {
-  total: findByKeywords(['grand total', 'total amount', 'net amount', 'net payable', 'amount payable']),
-  gst: findByKeywords(['total gst', 'gst', 'cgst', 'sgst', 'tax']),
-  serviceCharge: findByKeywords(['convenience fee', 'service charge', 'svc charge', 'service chg']),
-  subtotal: findByKeywords(['sub total', 'subtotal', 'food total', 'item total']),
- };
-
- // Fallback: if no labelled "total" line matched, use the single largest number found
- // anywhere in the (already address-filtered) bill as a reasonable guess for the grand total.
- if(result.total === null){
-  const allNums = lines.map(extractNumber).filter(n => n !== null);
-  if(allNums.length) result.total = Math.max(...allNums);
- }
-
- // Plausibility guard: a grand total should never be wildly smaller than its own GST +
- // service charge components -- if it is, something was almost certainly misread (e.g. a
- // PIN code or phone fragment slipped through), so drop it rather than show a nonsense figure.
- const componentSum = (result.gst || 0) + (result.serviceCharge || 0) + (result.subtotal || 0);
- if(result.total !== null && componentSum > 0 && result.total < componentSum * 0.5){
-  result.total = null;
- }
-
- result.matchCount = Object.keys(result).filter(k => k !== 'matchCount' && result[k] !== null).length;
- return result;
-}
-
-// ═══ ITEM CART (add/edit/remove) ═══
-let billItems = [];
-
-// Escapes HTML special characters so item names typed/OCR'd from a bill can't break
-// the page's markup or (in the unlikely case of adversarial input) inject a script tag.
-function escapeHtml(s){
- const d = document.createElement('div');
- d.textContent = s;
- return d.innerHTML;
-}
-
-function renderItemRows(){
- const container = document.getElementById('itemListRows');
- container.innerHTML = '';
- billItems.forEach((item, i) => {
-  const lineTotal = (item.qty || 1) * (item.unitPrice || 0);
-  const row = document.createElement('div');
-  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center;';
-  row.innerHTML = `
-   <input type="text" value="${escapeHtml(item.name)}" placeholder="Item name" style="flex:2;padding:8px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;" oninput="updateItemField(${i}, 'name', this.value)">
-   <input type="number" value="${item.qty}" min="1" step="1" style="width:44px;padding:8px 4px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;text-align:center;" oninput="updateItemField(${i}, 'qty', this.value)">
-   <input type="number" value="${item.unitPrice}" placeholder="0.00" style="width:64px;padding:8px 4px;border:1.5px solid var(--light);border-radius:8px;font-size:12px;text-align:center;" oninput="updateItemField(${i}, 'unitPrice', this.value)">
-   <span style="width:70px;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:right;" id="lineTotal-${i}">₹${lineTotal.toFixed(2)}</span>
-   <button onclick="removeItemRow(${i})" style="background:var(--rose-bg);color:var(--rose);border:none;border-radius:8px;width:30px;height:30px;font-size:13px;cursor:pointer;flex-shrink:0;">✕</button>
-  `;
-  container.appendChild(row);
- });
- updateItemSumDisplay();
-}
-
-function addItemRow(name, qty, unitPrice){
- billItems.push({ name: name || '', qty: parseFloat(qty) || 1, unitPrice: parseFloat(unitPrice) || 0 });
- renderItemRows();
- document.getElementById('itemCartSection').style.display = 'block';
- onGstSlabChange();
-}
-
-function removeItemRow(i){
- billItems.splice(i, 1);
- renderItemRows(); // a row genuinely disappearing requires a full rebuild -- fine here,
-                    // since removal isn't a per-keystroke action the way typing is
- onGstSlabChange();
-}
-
-// Updates the in-memory item state AND the read-only line-total label in place, WITHOUT
-// rebuilding the input elements themselves. The earlier version called renderItemRows()
-// on every keystroke, which destroys and recreates every <input> in the list -- including
-// the one the user is actively typing into -- causing the browser to lose focus mid-edit
-// and making it impossible to comfortably delete/retype a digit. Only the specific
-// lineTotal span for this row is touched now; every input element stays exactly as it was,
-// so focus and cursor position are never disturbed.
-function updateItemField(i, field, value){
- if(field === 'qty') billItems[i].qty = Math.max(1, parseFloat(value) || 1);
- else if(field === 'unitPrice') billItems[i].unitPrice = parseFloat(value) || 0;
- else billItems[i].name = value;
-
- const lineTotal = (billItems[i].qty || 1) * (billItems[i].unitPrice || 0);
- const lineTotalEl = document.getElementById('lineTotal-' + i);
- if(lineTotalEl) lineTotalEl.textContent = '₹' + lineTotal.toFixed(2);
-
- updateItemSumDisplay();
- onGstSlabChange(); // CGST/SGST are derived from the items total, so a price/qty edit must recompute them
-}
-
-function updateItemSumDisplay(){
- const sum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
- document.getElementById('itemSumDisplay').textContent = 'Items Total: ₹' + sum.toFixed(2);
-}
-
-// ═══ COMPLETE CART -- the ONE place calculations and the verdict happen ═══
-// Deliberately gated behind an explicit user action (the Complete Cart button), rather
-// than firing automatically after OCR -- OCR/extraction can be wrong, and showing a
-// confident "Overcharged!" verdict built on unreviewed, possibly-garbage data is worse
-// than showing nothing. The user reviews and fixes the cart FIRST; only then do we judge.
-// Auto-computes CGST and SGST the moment a GST slab (5% or 18%) is picked, using the
-// current Items Total -- the user never types a GST amount by hand, since that text box
-// was error-prone (OCR sometimes captured the wrong number into it, and manual entry is
-// easy to fat-finger). CGST and SGST are always exactly half the total slab rate.
-// Computes CGST/SGST TWO different correct ways, since which one is right depends on
-// whether GST is added on top of the items total or already folded into it -- these are
-// genuinely different formulas, not the same math applied twice:
-//   - ADDED ON TOP: the items total IS the pre-tax (taxable) amount, so tax is simply
-//     itemSum x rate. This is the straightforward case.
-//   - ALREADY INCLUDED: the items total is a POST-tax amount that already contains the
-//     tax within it. You cannot just multiply the inclusive total by the rate -- that
-//     double-counts, since a percentage of a tax-inclusive figure isn't the same as a
-//     percentage of the pre-tax figure. The tax must be backed OUT first, using
-//     Taxable = Total / (1 + rate), then Tax = Total - Taxable. This distinction was
-//     missing before, and is exactly why a real bill (Taxable 223.86, not 235) produced
-//     a wrong 5.88 instead of matching the bill's own printed 5.57.
-function computeGstBothWays(itemSum, slabRatePct){
- const rate = slabRatePct / 100;
-
- // Case A: GST added on top -- itemSum is already the pre-tax base
- const addedOnTopTax = itemSum * rate;
- const addedOnTopCgst = addedOnTopTax / 2;
- const addedOnTopSgst = addedOnTopTax / 2;
-
- // Case B: GST already included -- back the tax OUT of the inclusive total
- const includedTaxableBase = itemSum / (1 + rate);
- const includedTax = itemSum - includedTaxableBase;
- const includedCgst = includedTax / 2;
- const includedSgst = includedTax / 2;
-
- return {
-  addedOnTop: { cgst: addedOnTopCgst, sgst: addedOnTopSgst, tax: addedOnTopTax, taxableBase: itemSum },
-  included: { cgst: includedCgst, sgst: includedSgst, tax: includedTax, taxableBase: includedTaxableBase },
- };
-}
-
-function onGstSlabChange(){
- const slabInput = document.querySelector('input[name="gst-slab"]:checked');
- const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
- const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
- // The CGST/SGST fields shown while editing use the "added on top" numbers as the
- // default working figures (completeCart() below computes and displays BOTH cases
- // correctly regardless of what's shown here) -- this is just the live preview while
- // still building the cart.
- const both = computeGstBothWays(itemSum, slabRate);
- document.getElementById('cart-cgst').value = both.addedOnTop.cgst.toFixed(2);
- document.getElementById('cart-sgst').value = both.addedOnTop.sgst.toFixed(2);
-}
-
-function completeCart(){
- if(billItems.length === 0){
-  alert('Please add at least one item to your bill before checking it.');
-  return;
- }
-
- const itemSum = billItems.reduce((s, item) => s + (item.qty || 1) * (item.unitPrice || 0), 0);
- const slabInput = document.querySelector('input[name="gst-slab"]:checked');
- const slabRate = slabInput ? parseFloat(slabInput.value) : 5;
- const scCharged = parseFloat(document.getElementById('cart-sc').value) || 0;
- const both = computeGstBothWays(itemSum, slabRate);
-
- // Each interpretation gets its OWN correctly-derived tax breakdown -- "added on top"
- // uses itemSum as the pre-tax base directly; "already included" backs the tax OUT of
- // itemSum first (Taxable = Total / (1+rate)), since applying the rate directly to an
- // already-inclusive total would double-count, which was the actual bug reported.
- const totalIfAdded = itemSum + both.addedOnTop.tax + scCharged;
- const totalIfIncluded = itemSum + scCharged; // GST already inside itemSum in this case
-
- const verdictBox = document.getElementById('verdictSection');
- let html = '';
-
- html += `<div style="background:#fff;border:1.5px solid var(--light);border-radius:14px;padding:14px;margin-bottom:10px;">
-   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Bill Summary</div>
-   <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Items Total</span><span style="font-weight:700;">₹${itemSum.toFixed(2)}</span></div>
-   ${scCharged > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;"><span style="color:var(--muted);">Service Charge</span><span style="font-weight:700;">₹${scCharged.toFixed(2)}</span></div>` : ''}
- </div>`;
-
- html += `<div style="background:var(--teal-pale);border:1.5px solid var(--teal);border-radius:14px;padding:14px;margin-bottom:10px;">
-   <div style="font-size:11px;font-weight:800;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Compare Against Your Bill's Printed Total</div>
-   <div style="padding:8px 0;border-bottom:1px dashed var(--light);">
-     <div style="display:flex;justify-content:space-between;font-size:13px;"><span>If GST is <b>added on top</b> of items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfAdded.toFixed(2)}</span></div>
-     <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">Taxable base ₹${both.addedOnTop.taxableBase.toFixed(2)} → CGST ₹${both.addedOnTop.cgst.toFixed(2)} + SGST ₹${both.addedOnTop.sgst.toFixed(2)}</div>
-   </div>
-   <div style="padding:8px 0;">
-     <div style="display:flex;justify-content:space-between;font-size:13px;"><span>If GST is <b>already included</b> in items</span><span style="font-weight:900;color:var(--teal-deep);">₹${totalIfIncluded.toFixed(2)}</span></div>
-     <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">Taxable base ₹${both.included.taxableBase.toFixed(2)} → CGST ₹${both.included.cgst.toFixed(2)} + SGST ₹${both.included.sgst.toFixed(2)} (backed out of the ₹${itemSum.toFixed(2)} total, not added on top of it)</div>
-   </div>
-   <div style="font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5;">Look at the FINAL total printed on your actual bill — whichever of the two numbers above it matches tells you which case applies. That's the correct total; the other one doesn't apply to this bill.</div>
- </div>`;
-
- // GST rate is now fixed by the slab the user picked (not compared against a possibly-
- // wrong OCR-captured number), so this section explains the slab criteria rather than
- // flagging a mismatch that can no longer occur by construction.
- html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
-   <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ You selected the ${slabRate}% GST slab</div>
-   <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">${slabRate === 5 ? 'This applies to standalone/non-AC restaurants with no liquor license.' : 'This applies to restaurants in hotels with room tariffs above ₹7,500/night, or those serving alcohol.'} If this restaurant doesn't actually match that description, switch the slab above and the numbers will recalculate automatically.</div>
- </div>`;
- html += `<div style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.4;">🔮 Coming later: we plan to verify a restaurant's actual registered GST slab automatically via an official GST lookup API, instead of asking you to pick it above.</div>`;
-
- // Service charge is never mandatory -- always worth restating regardless of the numbers
- if(scCharged > 0){
-  html += `<div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-bottom:10px;">
-    <div style="font-size:11px;font-weight:800;color:#78350F;">ℹ️ Service Charge is Not Mandatory</div>
-    <div style="font-size:11px;color:#78350F;line-height:1.6;margin-top:3px;">You were charged ₹${scCharged.toFixed(2)} in service charge. This is legally optional in India — you can ask for it to be removed if you're unhappy with the service.</div>
-  </div>`;
- }
-
- verdictBox.innerHTML = html;
- verdictBox.style.display = 'block';
- verdictBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ═══ FULL RESET ═══
-function resetBillChecker(){
- document.getElementById('billFileInput').value = '';
- document.getElementById('billViewerResult').style.display = 'none';
- document.getElementById('billUploadZone').style.display = 'block';
- const img = document.getElementById('billImagePreview');
- img.src = '';
- img.style.transform = 'scale(1)';
- document.getElementById('billPdfPreview').src = '';
- document.getElementById('ocrResult').style.display = 'none';
- document.getElementById('ocrNoMatch').style.display = 'none';
- document.getElementById('ocrRetryBtn').style.display = 'none';
- document.getElementById('ocrProgress').style.display = 'none';
- document.getElementById('itemCartSection').style.display = 'none';
- document.getElementById('verdictSection').style.display = 'none';
- document.getElementById('verdictSection').innerHTML = '';
- document.getElementById('cart-cgst').value = '0';
- document.getElementById('cart-sgst').value = '0';
- document.getElementById('cart-sc').value = '0';
- const slab5Radio = document.querySelector('input[name="gst-slab"][value="5"]');
- if(slab5Radio) slab5Radio.checked = true;
- billItems = [];
- lastOcrTechnique = 1;
- ocrHasRunOnce = false;
-}
-applyLang();
+function L(key){ return (GT[GBC_LANG] && GT[GBC_LANG][key]) || GT.en[key] || key; }
 </script>
 <script>
-/* Language persistence — remembers choice across all pages */
-document.addEventListener('DOMContentLoaded',function(){
- try{
-  var langs=['en','te','hi'];
-  var btns=document.querySelectorAll('.nav-lang');
-  btns.forEach(function(b,i){
-   b.addEventListener('click',function(){try{localStorage.setItem('lsLang',langs[i]);}catch(e){}});
-  });
-  var s=localStorage.getItem('lsLang');
-  if(s&&typeof setLang==='function'){
-   var i=langs.indexOf(s);
-   if(i>0&&btns[i])setLang(s,btns[i]);
+var selectedFile = null;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+var HOWTO_SEEN_KEY = 'lawsticker_howto_seen_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+
+function toggleHowto(){
+  var body = document.getElementById('howtoBody');
+  var chev = document.getElementById('howtoChevron');
+  var card = document.getElementById('howtoCard');
+  var badge = document.getElementById('howtoNewBadge');
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chev.classList.toggle('open', !isOpen);
+  // The pulsing glow + NEW badge are there to catch a first-time visitor's
+  // eye - once they've actually opened it once, it's served its purpose
+  // and would just be an annoying permanent pulse on every future visit,
+  // so it's remembered per-device and never shown again after the first open.
+  if (!isOpen) {
+    try { localStorage.setItem(HOWTO_SEEN_KEY, '1'); } catch (e) {}
+    if (card) card.classList.remove('attention');
+    if (badge) badge.style.display = 'none';
   }
- }catch(e){}
-});
+}
+
+(function(){
+  var alreadySeen = false;
+  try { alreadySeen = localStorage.getItem(HOWTO_SEEN_KEY) === '1'; } catch (e) {}
+  if (!alreadySeen) {
+    var card = document.getElementById('howtoCard');
+    if (card) card.classList.add('attention');
+  } else {
+    var badge = document.getElementById('howtoNewBadge');
+    if (badge) badge.style.display = 'none';
+  }
+})();
+
+// Highlights money (₹), weights (g/ct), percentages, and "before → after"
+// number pairs so the specific figures inside a check's explanation (like
+// a weight uplift or a rate difference) actually stand out from the prose
+// instead of blending into a wall of text.
+function highlightNums(escapedText){
+  return escapedText
+    .replace(/(₹\s?[\d,]+(?:\.\d+)?)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?g\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?ct\b)/g, '<span class="hl-num">$1</span>')
+    .replace(/(\d+(?:\.\d+)?\s?%)/g, '<span class="hl-num">$1</span>')
+    .replace(/(₹?\s?[\d,]+(?:\.\d+)?g?\s?(?:→|-&gt;)\s?₹?\s?[\d,]+(?:\.\d+)?g?)/g, '<span class="hl-pair">$1</span>');
+}
+function hl(s){ return highlightNums(esc(s)); }
+function fmtRs(n){ return '₹' + Math.round(n||0).toLocaleString('en-IN'); }
+
+function handleFile(file){
+  if (!file) return;
+  selectedFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    window.__billImgSrc = e.target.result;
+    var zone = document.getElementById('uploadZone');
+    zone.classList.add('has-image');
+    zone.innerHTML =
+      '<img class="preview-img" src="' + e.target.result + '" onclick="openZoom(this)">' +
+      '<div class="zoom-hint" id="tZoomHint">' + esc(L('zoomHint')) + '</div>' +
+      '<div class="city-row">' + esc(L('cityLabel')) +
+        '<select id="citySelect">' +
+          '<option value="hyderabad">Hyderabad</option><option value="vijayawada">Vijayawada</option>' +
+          '<option value="visakhapatnam">Visakhapatnam</option><option value="chennai">Chennai</option>' +
+          '<option value="bangalore">Bangalore</option><option value="mumbai">Mumbai</option>' +
+          '<option value="delhi">Delhi</option><option value="pune">Pune</option>' +
+        '</select>' +
+      '</div>' +
+      '<button class="check-btn" id="checkBtn" onclick="checkBill()">' + esc(L('checkBtn')) + '</button>' +
+      '<span class="reset-link" onclick="resetUpload()">' + esc(L('changePhoto')) + '</span>';
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('cameraInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+document.getElementById('galleryInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+
+function resetUpload(){
+  selectedFile = null;
+  document.getElementById('resultArea').innerHTML = '';
+  var zone = document.getElementById('uploadZone');
+  zone.classList.remove('has-image');
+  zone.innerHTML =
+    '<div class="upload-icon">📸</div>' +
+    '<div class="upload-title">' + esc(L('uploadTitle')) + '</div>' +
+    '<div class="upload-hint">' + esc(L('uploadHint')) + '</div>' +
+    '<div class="upload-btn-row">' +
+      '<label class="upload-btn camera">' + esc(L('camBtn')) + '<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;"></label>' +
+      '<label class="upload-btn file">' + esc(L('fileBtn')) + '<input type="file" id="galleryInput" accept="image/*" style="display:none;"></label>' +
+    '</div>';
+  document.getElementById('cameraInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+  document.getElementById('galleryInput').addEventListener('change', function(){ handleFile(this.files[0]); });
+}
+
+function checkBill(){
+  if (!selectedFile) return;
+  var city = document.getElementById('citySelect').value;
+  var btn = document.getElementById('checkBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + L('checkingBtn'); }
+
+  document.getElementById('resultArea').innerHTML =
+    '<div class="loading-box"><div class="loading-icon">🔍</div><div class="loading-text">Reading the numbers, checking the service charge disclosure, and the GST rate — this can take up to a minute.</div></div>';
+
+  var reader = new FileReader();
+  reader.onload = function(){
+    var base64 = reader.result.split(',')[1];
+    fetch(BACKEND + '/api/check-restaurant-bill', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      // Always request English here — this becomes the one canonical
+      // source of truth cached in window.__lastRenderEN. Any language the
+      // person actually wants to see is then translated from THIS cache
+      // client-side (see showInLang) — much more reliable than re-running
+      // the whole bill analysis (image upload + vision extraction) every
+      // time someone just wants to switch language, and it means a
+      // translation hiccup never wipes out the already-successful analysis.
+      body: JSON.stringify({image_base64: base64, image_mime: selectedFile.type || 'image/jpeg', city: city, lang: 'en'})
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
+        if (!data.ok) {
+          document.getElementById('resultArea').innerHTML =
+            '<div class="check-card warn"><div class="check-title">Couldn\'t read this bill</div><div class="check-detail">' + esc(data.error || 'Please try a clearer photo, with good lighting and the full bill visible.') + '</div></div>';
+          return;
+        }
+        window.__lastRenderEN = {ex: data.extracted, checks: data.checks};
+        window.__translations = {}; // fresh bill - old cached translations no longer apply
+        showInLang(GBC_LANG);
+      })
+      .catch(function(){
+        if (btn) { btn.disabled = false; btn.textContent = L('checkBtn'); }
+        document.getElementById('resultArea').innerHTML =
+          '<div class="check-card warn"><div class="check-title">Something went wrong</div><div class="check-detail">Could not reach the server — please try again.</div></div>';
+      });
+  };
+  reader.readAsDataURL(selectedFile);
+}
+
+// Renders the cached English analysis in whichever language is requested —
+// translating client-side (and caching the result) rather than ever
+// re-running the actual bill analysis. Crucially, this NEVER clears the
+// currently-shown report before the translation is ready, so a slow or
+// failed translation just leaves the previous language on screen instead
+// of "wiping" the analysis.
+function showInLang(lang){
+  var en = window.__lastRenderEN;
+  if (!en) { applyStaticLang(); return; }
+  window.__enChecks = en.checks;
+
+  if (lang === 'en') {
+    renderResults(en.ex, en.checks);
+    return;
+  }
+
+  window.__translations = window.__translations || {};
+  if (window.__translations[lang]) {
+    renderResults(en.ex, window.__translations[lang].checks);
+    return;
+  }
+
+  var texts = [];
+  en.checks.forEach(function(c){ texts.push(c.title); texts.push(c.detail); });
+
+  fetch(BACKEND + '/api/translate-gold-checks', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({texts: texts, target_lang: lang})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) return;
+      var translatedChecks = en.checks.map(function(c, i){
+        return {status: c.status, title: data.translations[i * 2], detail: data.translations[i * 2 + 1]};
+      });
+      window.__translations[lang] = {checks: translatedChecks};
+      if (GBC_LANG === lang) {
+        renderResults(en.ex, translatedChecks);
+      }
+    })
+    .catch(function(){});
+}
+
+
+function renderResults(ex, checks){
+  var out = '';
+
+  out += '<div class="summary-card">';
+  out += '<div class="summary-title">🍽️ ' + esc(ex.restaurant_name || L('yourItem')) + '</div>';
+  if (ex.subtotal) out += '<div class="summary-row"><b>' + esc(L('subtotal')) + '</b><span>' + fmtRs(ex.subtotal) + '</span></div>';
+  if (ex.service_charge_amount) out += '<div class="summary-row"><b>' + esc(L('serviceCharge')) + '</b><span>' + fmtRs(ex.service_charge_amount) + (ex.service_charge_percent ? ' (' + ex.service_charge_percent + '%)' : '') + '</span></div>';
+  if (ex.cgst_amount) out += '<div class="summary-row"><b>' + esc(L('cgst')) + '</b><span>' + fmtRs(ex.cgst_amount) + '</span></div>';
+  if (ex.sgst_amount) out += '<div class="summary-row"><b>' + esc(L('sgst')) + '</b><span>' + fmtRs(ex.sgst_amount) + '</span></div>';
+  if (ex.gst_percent_stated) out += '<div class="summary-row"><b>' + esc(L('gstRate')) + '</b><span>' + ex.gst_percent_stated + '%</span></div>';
+  if (ex.legacy_service_tax_amount) out += '<div class="summary-row"><b>' + esc(L('legacyServiceTax')) + '</b><span>' + fmtRs(ex.legacy_service_tax_amount) + '</span></div>';
+  if (ex.final_amount) out += '<div class="summary-final"><span class="summary-final-label">' + esc(L('finalAmount')) + '</span><span class="summary-final-amt">' + fmtRs(ex.final_amount) + '</span></div>';
+  out += '</div>';
+
+  out += '<div class="section-hd">🔎 ' + esc(L('reportHeading')) + '</div>';
+  out += '<div id="checkCardsArea">';
+  if (!checks.length) {
+    out += '<div class="check-card info"><div class="check-title">' + esc(L('basicChecksTitle')) + '</div><div class="check-detail">' + esc(L('basicChecksDetail')) + '</div></div>';
+  }
+  window.__displayedChecks = checks;
+  checks.forEach(function(c, i){
+    var icon = c.status === 'ok' ? '✅' : (c.status === 'warn' ? '⚠️' : (c.status === 'caution' ? '🔴' : 'ℹ️'));
+    out += '<div class="check-card ' + c.status + '">';
+    out += '<div class="check-title-row"><div class="check-title">' + icon + ' ' + esc(c.title) + '</div>';
+    out += '<button class="card-listen-btn" id="cardListenBtn' + i + '" onclick="speakCard(' + i + ')" aria-label="' + esc(L('listenBtn')) + '">🔊</button></div>';
+    out += '<div class="check-detail">' + hl(c.detail) + '</div></div>';
+  });
+  out += '</div>';
+
+  out += '<div class="disclaimer-box">' + esc(L('disclaimer')) + '</div>';
+
+  out += '<div class="export-row">';
+  out += '<button class="export-btn pdf" id="gbcPdfBtn" onclick="exportGoldPdf()">' + esc(L('downloadPdf')) + '</button>';
+  out += '</div>';
+
+  document.getElementById('resultArea').innerHTML = out;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function openZoom(sourceImgEl){
+  var srcVal = (sourceImgEl && sourceImgEl.src) || window.__billImgSrc || '';
+  if (!srcVal) return; // nothing to show - don't open a blank/dark modal
+
+  // position:fixed inside an iframe is scoped to the IFRAME's own tall
+  // content area (our iframe auto-resizes to fit everything, often way
+  // taller than the visible screen) — not the real browser viewport. A
+  // "fullscreen" modal drawn inside the iframe ends up rendering somewhere
+  // in that tall invisible area instead of where the person is actually
+  // looking, which is exactly what looked broken/dark. When embedded, hand
+  // the zoom off to the parent page instead, which IS the real viewport.
+  if (window.__embedMode && window.parent && window.parent !== window) {
+    window.parent.postMessage({type: 'openZoom', src: srcVal}, '*');
+    return;
+  }
+
+  var img = document.getElementById('zoomImg');
+  img.src = srcVal;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('zoomModal').classList.add('open');
+}
+function closeZoom(ev){
+  if (ev && ev.target.tagName === 'IMG') return; // clicking the image itself shouldn't close it
+  document.body.style.overflow = '';
+  document.getElementById('zoomModal').classList.remove('open');
+}
+
+function exportGoldPdf(){
+  var btn = document.getElementById('gbcPdfBtn');
+  var original = btn.textContent;
+  btn.textContent = L('preparingPdf');
+  btn.disabled = true;
+
+  var el = document.getElementById('resultArea');
+  html2canvas(el, {scale: 2, backgroundColor: '#FEFCF5', useCORS: true}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    var name = (window.__lastRenderEN && window.__lastRenderEN.ex && window.__lastRenderEN.ex.restaurant_name) || 'Restaurant_Bill_Check';
+    pdf.save(name.replace(/[^a-z0-9]+/gi, '_') + '.pdf');
+    btn.textContent = original;
+    btn.disabled = false;
+  }).catch(function(){
+    btn.textContent = original;
+    btn.disabled = false;
+  });
+}
+
+// Text-to-speech for people who can't read well — one small speaker button
+// per check card so someone can listen to just the part they care about
+// instead of waiting through the whole report. Reads from whatever is
+// CURRENTLY DISPLAYED (window.__displayedChecks, set fresh on every render
+// by renderResults) so it always matches the on-screen language, not the
+// cached English source.
+var GBC_SPEECH_LANG = {en: 'en-IN', te: 'te-IN', hi: 'hi-IN'};
+var GBC_SPEAKING_IDX = null;
+function speakCard(i){
+  var btn = document.getElementById('cardListenBtn' + i);
+  var wasSpeaking = window.speechSynthesis.speaking;
+  var wasSameCard = GBC_SPEAKING_IDX === i;
+  window.speechSynthesis.cancel();
+  if (GBC_SPEAKING_IDX !== null) {
+    var prevBtn = document.getElementById('cardListenBtn' + GBC_SPEAKING_IDX);
+    if (prevBtn) prevBtn.classList.remove('speaking');
+  }
+  GBC_SPEAKING_IDX = null;
+  if (wasSpeaking && wasSameCard) return; // tapping the same speaking card again just stops it
+
+  var checks = window.__displayedChecks || [];
+  var c = checks[i];
+  if (!c) return;
+
+  var utter = new SpeechSynthesisUtterance(c.title + '. ' + c.detail);
+  utter.lang = GBC_SPEECH_LANG[GBC_LANG] || 'en-IN';
+  utter.rate = 0.92;
+  utter.onend = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
+  utter.onerror = function(){ if (btn) btn.classList.remove('speaking'); if (GBC_SPEAKING_IDX === i) GBC_SPEAKING_IDX = null; };
+  window.speechSynthesis.speak(utter);
+  if (btn) btn.classList.add('speaking');
+  GBC_SPEAKING_IDX = i;
+}
+
+function updateSliderResult(vaPct){
+  var st = window.__mcState;
+  if (!st) return;
+  vaPct = parseFloat(vaPct);
+  document.getElementById('sliderPct').textContent = vaPct + '%';
+
+  var makingAmt = st.goldValue * vaPct / 100;
+  var preTax = st.goldValue + st.stoneValue + makingAmt;
+  var gstAmt = preTax * st.gstPct / 100;
+  var total = preTax + gstAmt;
+
+  document.getElementById('sliderTotal').textContent = fmtRs(total);
+
+  var billTotal = document.querySelector('.summary-final-amt') ? parseFloat(document.querySelector('.summary-final-amt').textContent.replace(/[₹,]/g,'')) : null;
+  var diffEl = document.getElementById('sliderDiff');
+  if (billTotal && diffEl) {
+    var diff = billTotal - total;
+    if (Math.abs(diff) < 100) {
+      diffEl.innerHTML = '';
+    } else if (diff > 0) {
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
+    } else {
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('savePrefix').replace('{pct}', vaPct)) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
+    }
+  }
+}
+
+function updateStoneSlider(idx, rate){
+  var st = window.__stoneState;
+  if (!st) return;
+  rate = parseFloat(rate);
+  var s = st.stones[idx];
+  s.cur = rate;
+  var amt = rate * (s.weightCt || 0);
+  document.getElementById('stoneSliderLive' + idx).textContent = fmtRs(rate) + '/ct · ' + fmtRs(amt) + ' ' + L('stoneSliderTotalWord');
+  updateStoneSliderTotal();
+}
+
+function updateStoneSliderTotal(){
+  var st = window.__stoneState;
+  if (!st) return;
+  var stoneTotal = st.stones.reduce(function(sum, s){ return sum + s.cur * (s.weightCt || 0); }, 0);
+  var preTax = st.goldValue + st.makingAmt + stoneTotal;
+  var gstAmt = preTax * st.gstPct / 100;
+  var total = preTax + gstAmt;
+  var totalEl = document.getElementById('stoneSliderTotal');
+  if (totalEl) totalEl.textContent = fmtRs(total);
+
+  var billTotal = document.querySelector('.summary-final-amt') ? parseFloat(document.querySelector('.summary-final-amt').textContent.replace(/[₹,]/g,'')) : null;
+  var diffEl = document.getElementById('stoneSliderDiff');
+  if (billTotal && diffEl) {
+    var diff = billTotal - total;
+    if (Math.abs(diff) < 100) {
+      diffEl.innerHTML = '';
+    } else if (diff > 0) {
+      diffEl.innerHTML = '<div class="slider-diff save">💰 ' + esc(L('saveStonePrefix')) + esc(L('saveMore').replace('{amt}', fmtRs(diff).replace('₹',''))) + '</div>';
+    } else {
+      diffEl.innerHTML = '<div class="slider-diff extra">' + esc(L('saveStonePrefix')) + esc(L('saveLess').replace('{amt}', fmtRs(Math.abs(diff)).replace('₹',''))) + '</div>';
+    }
+  }
+}
+
+// Applies the static (non-AI-generated) UI strings for the given language —
+// hero, upload zone, button labels — used both before and after a bill has
+// been analysed, so switching language works at any point in the flow.
+function applyStaticLang(){
+  var t = function(id, key){ var el = document.getElementById(id); if (el) el.textContent = L(key); };
+  t('tHeroTitle', 'heroTitle'); t('tHeroSub', 'heroSub');
+  t('tUploadTitle', 'uploadTitle'); t('tUploadHint', 'uploadHint');
+  t('tCamBtn', 'camBtn'); t('tFileBtn', 'fileBtn');
+  t('tZoomHint', 'zoomHint'); t('tZoomTip', 'zoomTip');
+  t('tHowtoToggle', 'howtoToggle');
+  t('tStep1', 'step1'); t('tStep2', 'step2'); t('tStep3', 'step3');
+  t('tSampleTitle', 'sampleTitle');
+  t('tS1', 'sLabel1'); t('tS2', 'sLabel2'); t('tS3', 'sLabel3'); t('tS4', 'sLabel4'); t('tS5', 'sLabel5');
+  t('tC12', 'callout12'); t('tC3', 'callout3'); t('tC4', 'callout4'); t('tC56', 'callout56');
+  t('tSampleNote', 'sampleNote');
+  var checkBtn = document.getElementById('checkBtn');
+  if (checkBtn && !checkBtn.disabled) checkBtn.textContent = L('checkBtn');
+  ['en', 'te', 'hi'].forEach(function(l){
+    var btn = document.getElementById('topLangBtn-' + l);
+    if (btn) btn.classList.toggle('active', l === GBC_LANG);
+  });
+}
+
+// One entry point for a language change, whether triggered by clicking a
+// button on this page (standalone use) or by a postMessage from the parent
+// Jewellery Suite page (embedded use) — keeps both paths in sync so there's
+// only ever ONE set of controls actually driving the language, never two.
+//
+// Translates from the cached English analysis (see showInLang) instead of
+// re-running the bill check — instant on a cache hit, and never wipes the
+// currently-shown report even if the translation call is slow or fails.
+function setGoldLang(lang){
+  GBC_LANG = lang;
+  applyStaticLang();
+  showInLang(lang);
+}
+
+</script>
+
+<script>
+// Embed mode: when loaded inside the Jewellery Suite's Gold tab (iframe),
+// hide the duplicate nav/branding since the suite already has its own, and
+// report content height changes to the parent so the iframe can resize
+// itself as the page grows (upload zone -> full analysis report).
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var initialLang = params.get('lang');
+  if (initialLang && ['en','te','hi'].indexOf(initialLang) !== -1) {
+    GBC_LANG = initialLang;
+    applyStaticLang();
+  }
+  if (params.get('embed') === '1') {
+    window.__embedMode = true;
+    document.getElementById('gbcNav').style.display = 'none';
+    document.getElementById('topLangToggle').style.display = 'none';
+    document.body.style.paddingTop = '0';
+
+    // In embed mode the parent page's own language switcher is the ONLY
+    // language control shown - the initial ?lang= URL param above sets the
+    // correct language from the very first render (reliable, no timing
+    // dependency), and this listener handles LIVE changes made after the
+    // Gold tab is already open, without needing a full iframe reload.
+    window.addEventListener('message', function(ev){
+      if (ev.data && ev.data.type === 'setLang' && ['en','te','hi'].indexOf(ev.data.lang) !== -1) {
+        setGoldLang(ev.data.lang);
+      }
+    });
+
+    function reportHeight(){
+      var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      window.parent.postMessage({type: 'goldCheckerHeight', height: h}, '*');
+    }
+    window.addEventListener('load', reportHeight);
+    // Content height changes after image upload, after analysis completes,
+    // and when the stone/making-charge sliders' cards render - a
+    // MutationObserver catches all of these without needing to hook every
+    // individual render function.
+    var observer = new MutationObserver(function(){ reportHeight(); });
+    observer.observe(document.body, {childList: true, subtree: true});
+    setTimeout(reportHeight, 500);
+  }
+})();
 </script>
 </body>
 </html>
