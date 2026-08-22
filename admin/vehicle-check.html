@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle Compliance Check | LawSticker AI (Private)</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#E8C766;--ink:#111827;--muted:#6B7280;--cream:#FEFCF5;--red:#DC2626;--green:#059669;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:var(--navy);padding:12px 16px;}
+.nav-brand{font-weight:900;font-size:16px;color:var(--gold-l);}
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
+
+.login-box{max-width:320px;margin:70px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-box button{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-err{color:var(--red);font-size:11.5px;margin-top:8px;}
+
+.hero-title{font-size:22px;font-weight:900;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+
+.privacy-note{background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:12px;padding:12px 14px;font-size:12px;color:#92400E;line-height:1.6;margin-bottom:20px;}
+
+.vnum-box{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:20px;}
+.vnum-box label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;}
+.vnum-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:16px;text-transform:uppercase;letter-spacing:1px;text-align:center;font-weight:700;}
+.vnum-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+
+.check-card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:12px;}
+.check-card-title{font-weight:800;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.check-card-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px;}
+.check-card-what{font-size:11.5px;background:var(--cream);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.6;}
+.check-card-what b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-bottom:3px;}
+.go-btn{display:block;width:100%;text-align:center;background:var(--navy);color:var(--gold-l);text-decoration:none;font-weight:800;padding:12px;border-radius:9px;font-size:13px;}
+.go-btn.disabled{background:#E5E7EB;color:var(--muted);pointer-events:none;}
+
+.gap-note{font-size:11px;color:var(--muted);text-align:center;margin:4px 0 18px;}
+
+.section-hd{font-weight:900;font-size:15px;margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
+.fir-box{background:#fff;border:1.5px solid var(--red);border-radius:14px;padding:16px;}
+.fir-box-title{font-weight:800;font-size:14px;color:var(--red);margin-bottom:6px;}
+.fir-box p{font-size:12.5px;color:var(--ink);line-height:1.65;margin-bottom:8px;}
+.fir-box ul{margin:0 0 8px 18px;font-size:12.5px;line-height:1.7;}
+
+.copy-btn{background:var(--gold);color:var(--navy);border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<nav><span class="nav-brand">⚖️ LawSticker AI — Private</span></nav>
+
+<div id="loginGate">
+  <div class="login-box">
+    <div style="font-weight:800;margin-bottom:4px;">🔒 Vehicle Compliance Check</div>
+    <div style="font-size:11.5px;color:var(--muted);">Private — Durga &amp; Sreekanth only</div>
+    <input type="password" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<div id="mainArea" style="display:none;">
+  <div class="wrap">
+    <div class="hero-title">🚗 Vehicle Compliance Check</div>
+    <div class="hero-sub">If a vehicle has damaged your property, been involved in an incident with you, or is repeatedly violating traffic rules near you — check its real compliance status before escalating.</div>
+
+    <div class="privacy-note">
+      ⚠️ <b>What this deliberately won't show:</b> the government masks full owner names and never shows address/phone in any public search — specifically because full exposure was being misused for stalking and harassment. This page only helps you reach the same masked, public information anyone official would see — nothing more. If you need full unmasked owner details for a real incident, see "Need full owner details?" below — that's a police matter, not something this page can or should shortcut.
+    </div>
+
+    <div class="vnum-box">
+      <label>Vehicle Registration Number</label>
+      <input type="text" id="vehicleNum" placeholder="e.g. TS09AB1234" maxlength="12" oninput="updateLinks()">
+      <div class="vnum-hint">Enter exactly as shown on the number plate, no spaces.</div>
+    </div>
+
+    <div class="check-card">
+      <div class="check-card-title">🚦 Pending Traffic Challans</div>
+      <div class="check-card-desc">Genuinely public — no login needed, just a CAPTCHA (which is why this can't be automated behind this page; you'll complete it yourself on the government site).</div>
+      <div class="check-card-what"><b>You'll see</b>Violation type, date, location, fine amount, and payment status for any pending challan on this vehicle.</div>
+      <a class="go-btn" id="challanBtn" href="https://echallan.parivahan.gov.in/index/checkchallan" target="_blank" rel="noopener">Open Challan Check →</a>
+    </div>
+
+    <div class="check-card">
+      <div class="check-card-title">📋 RC Status, Insurance, PUC, Fitness</div>
+      <div class="check-card-desc">Requires signing in with a mobile number + OTP on the government's own portal — that OTP goes to whoever's phone is used, so this has to be done live by a real person, not automated.</div>
+      <div class="check-card-what"><b>You'll see</b>RC validity, insurance/PUC/fitness expiry, vehicle class, fuel type, blacklist status, and the owner's name masked to first + last letter only (e.g. "R**** K****") — the same level of detail the government shows any citizen.</div>
+      <a class="go-btn" id="vahanBtn" href="https://vahan.parivahan.gov.in/vahannextgen/" target="_blank" rel="noopener">Open RC / Compliance Check →</a>
+    </div>
+
+    <div class="gap-note">Both open in a new tab. Copy the vehicle number above and paste it into the government's form.</div>
+
+    <div class="section-hd">Need full, unmasked owner details?</div>
+    <div class="fir-box">
+      <div class="fir-box-title">This is a police matter, not a lookup</div>
+      <p>If you genuinely need full owner name and address — for example, after a real hit-and-run or property damage — the correct path is:</p>
+      <ul>
+        <li>File a police complaint / FIR, citing the vehicle number and what happened</li>
+        <li>Police and courts have authorized access to full, unmasked VAHAN records specifically for this purpose</li>
+        <li>This also creates an official record, which matters far more than owner details alone if you want the matter actually resolved</li>
+      </ul>
+      <p style="margin-bottom:0;">Any third-party site or app offering full owner name + address "instantly" for a fee is operating outside what the government intends to be public — worth being cautious of those, not just skeptical.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var vcPassword = localStorage.getItem('vcPassword') || '';
+
+if (vcPassword) { tryLogin(vcPassword); }
+
+function doLogin(){
+  var pw = document.getElementById('pwInput').value.trim();
+  if (!pw) return;
+  tryLogin(pw, true);
+}
+
+function tryLogin(pw, showErr){
+  fetch(BACKEND + '/api/vehicle-check-auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw}) })
+    .then(function(r){
+      if (r.status === 401) { if (showErr) document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if (!data || !data.ok) return;
+      vcPassword = pw;
+      localStorage.setItem('vcPassword', pw);
+      document.getElementById('loginGate').style.display = 'none';
+      document.getElementById('mainArea').style.display = 'block';
+    })
+    .catch(function(){ if (showErr) document.getElementById('loginErr').textContent = 'Could not reach the server — try again.'; });
+}
+
+function updateLinks(){
+  var v = document.getElementById('vehicleNum').value.trim();
+  // No confirmed URL pre-fill support on either government portal (both are
+  // JS-driven forms, not simple GET query params) - so this just keeps the
+  // base links correct rather than promising a pre-fill that may not exist.
+  // Kept as a hook in case pre-fill support is confirmed later.
+}
+</script>
+</body>
+</html>
