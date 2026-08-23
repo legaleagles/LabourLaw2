@@ -217,19 +217,36 @@ box-shadow:0 8px 28px rgba(245,158,11,.16);}
 .trick-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
 background:radial-gradient(circle,rgba(245,158,11,.18),transparent 70%);pointer-events:none;}
 
-/* X PULSE — deliberately lighter, less certain-looking than Scam Bulletin/
-   Smart Shopper (plain card, dashed border, no dark hero gradient) since
-   this is an AI impression of social sentiment, not a verified sourced
-   report - the visual weight should honestly match the epistemic weight. */
-.xpulse-card{background:#fff;border:1.5px dashed #9CA3AF;border-radius:16px;padding:16px 17px;margin-bottom:20px;}
-.xpulse-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.xpulse-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#4B5563;}
+/* X PULSE — now matches the dark-gradient card family visually (same
+   language as Scam Bulletin/Smart Shopper), using a distinct blue accent
+   for its own identity rather than a dashed border that read as "broken"
+   rather than "intentionally different." The lower-certainty framing now
+   lives in the copy (badge text, disclaimer, visible metrics showing how
+   the read was formed) rather than in a visually weaker card. */
+.xpulse-card{background:linear-gradient(150deg,#0D1117 0%,#0f1f38 55%,#0a2847 100%);
+border:1.5px solid rgba(56,132,255,.5);border-left:5px solid #3884FF;border-radius:18px;
+padding:18px 16px 16px;margin-bottom:20px;position:relative;overflow:hidden;
+box-shadow:0 8px 28px rgba(56,132,255,.16);}
+.xpulse-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+background:radial-gradient(circle,rgba(56,132,255,.18),transparent 70%);pointer-events:none;}
+.xpulse-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;position:relative;z-index:1;}
+.xpulse-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(56,132,255,.2);
+border:1px solid rgba(56,132,255,.4);color:#8AB6FF;font-size:10.5px;font-weight:700;
+padding:4px 10px;border-radius:20px;}
 .xpulse-vol{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;}
-.xpulse-vol.low{background:#F3F4F6;color:#6B7280;}
-.xpulse-vol.moderate{background:#FEF3C7;color:#92400E;}
-.xpulse-vol.high{background:#FEE2E2;color:#B91C1C;}
-.xpulse-summary{font-size:12.5px;color:#374151;line-height:1.65;margin-bottom:8px;}
-.xpulse-disclaimer{font-size:10px;color:#9CA3AF;font-style:italic;}
+.xpulse-vol.low{background:rgba(156,163,175,.25);color:#D1D5DB;}
+.xpulse-vol.moderate{background:rgba(245,158,11,.25);color:#FCD34D;}
+.xpulse-vol.high{background:rgba(220,38,38,.25);color:#FCA5A5;}
+.xpulse-topic{font-size:16px;font-weight:800;color:#fff;margin:10px 0 4px;position:relative;z-index:1;line-height:1.35;}
+.xpulse-metrics{display:flex;gap:14px;font-size:10.5px;color:rgba(255,255,255,.5);margin-bottom:10px;position:relative;z-index:1;}
+.xpulse-metrics b{color:rgba(255,255,255,.8);}
+.xpulse-sentiment-bar{display:flex;height:8px;border-radius:5px;overflow:hidden;margin-bottom:8px;position:relative;z-index:1;}
+.xpulse-sentiment-seg{height:100%;}
+.xpulse-sentiment-legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:12px;position:relative;z-index:1;}
+.xpulse-sentiment-legend span{display:inline-flex;align-items:center;gap:4px;}
+.xpulse-sentiment-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.xpulse-summary{font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.65;margin-bottom:10px;position:relative;z-index:1;}
+.xpulse-disclaimer{font-size:10px;color:rgba(255,255,255,.4);font-style:italic;position:relative;z-index:1;}
 .trick-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;position:relative;z-index:1;}
 .trick-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.2);
 border:1px solid rgba(245,158,11,.5);color:#FCD34D;font-size:9.5px;font-weight:900;
@@ -691,11 +708,15 @@ gtag('config', 'G-TJXHVW6XCL');
          rather than showing a stale or broken card. -->
     <div class="xpulse-card" id="xPulseCard" style="display:none;">
       <div class="xpulse-top">
-        <div class="xpulse-badge">🐦 X Pulse — AI's read of X sentiment today</div>
+        <div class="xpulse-badge">🐦 X Pulse</div>
         <div class="xpulse-vol" id="xPulseVol"></div>
       </div>
+      <div class="xpulse-topic" id="xPulseTopic"></div>
+      <div class="xpulse-metrics" id="xPulseMetrics"></div>
+      <div class="xpulse-sentiment-bar" id="xPulseSentimentBar"></div>
+      <div class="xpulse-sentiment-legend" id="xPulseSentimentLegend"></div>
       <div class="xpulse-summary" id="xPulseSummary"></div>
-      <div class="xpulse-disclaimer">Not a verified report — an AI impression of what's being discussed on X, refreshed daily.</div>
+      <div class="xpulse-disclaimer">Not a verified report — an AI impression of what's being discussed on X today, based on the estimated post volume above. If political, every viewpoint found is reported neutrally — this reflects what people are posting, not any view of ours.</div>
     </div>
   </div>
 
@@ -1527,6 +1548,8 @@ document.addEventListener('DOMContentLoaded',render);
 // ============================================================
 let trickData = null;
 
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
 function loadTrickCard(){
   fetch('marketing-tricks.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
@@ -1548,11 +1571,39 @@ function loadXPulse(){
       // Only show if genuinely from today - an old/stale record just stays hidden rather than misleadingly showing yesterday's read as if current.
       var todayIST = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Kolkata'});
       if (data.date !== todayIST) return;
+
       var vol = (data.volume || 'unknown').toLowerCase();
       var volEl = document.getElementById('xPulseVol');
       volEl.textContent = data.volume || 'Unknown';
       volEl.className = 'xpulse-vol ' + (['low','moderate','high'].indexOf(vol) !== -1 ? vol : '');
+
+      document.getElementById('xPulseTopic').textContent = data.topic || 'Trending on X today';
+      document.getElementById('xPulseMetrics').innerHTML = data.est_posts ? ('<span><b>~Posts analyzed:</b> ' + esc(data.est_posts) + '</span>') : '';
       document.getElementById('xPulseSummary').textContent = data.summary;
+
+      // Sentiment bar - deliberately neutral blue-family shades by position
+      // (not red/green "bad/good" colors), since coloring one viewpoint
+      // red and another green would visually imply a value judgment,
+      // especially on political topics where staying neutral matters.
+      var neutralShades = ['#3884FF', '#6BA3FF', '#9EC2FF', '#C9DEFF'];
+      var breakdown = data.sentiment_breakdown || [];
+      var barEl = document.getElementById('xPulseSentimentBar');
+      var legendEl = document.getElementById('xPulseSentimentLegend');
+      if (breakdown.length) {
+        var barHtml = '', legendHtml = '';
+        breakdown.forEach(function(seg, i){
+          var color = neutralShades[i % neutralShades.length];
+          barHtml += '<div class="xpulse-sentiment-seg" style="width:' + seg.pct + '%;background:' + color + ';"></div>';
+          legendHtml += '<span><span class="xpulse-sentiment-dot" style="background:' + color + ';"></span>' + esc(seg.label) + ' (' + seg.pct + '%)</span>';
+        });
+        barEl.innerHTML = barHtml;
+        legendEl.innerHTML = legendHtml;
+        barEl.style.display = 'flex';
+      } else {
+        barEl.style.display = 'none';
+        legendEl.innerHTML = '';
+      }
+
       document.getElementById('xPulseCard').style.display = 'block';
     })
     .catch(function(){}); // nice-to-have — never break the rest of the page
