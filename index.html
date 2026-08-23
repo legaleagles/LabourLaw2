@@ -246,7 +246,13 @@ padding:4px 10px;border-radius:20px;}
 .xpulse-sentiment-legend span{display:inline-flex;align-items:center;gap:4px;}
 .xpulse-sentiment-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .xpulse-summary{font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.65;margin-bottom:10px;position:relative;z-index:1;}
-.xpulse-disclaimer{font-size:10px;color:rgba(255,255,255,.4);font-style:italic;position:relative;z-index:1;}
+.xpulse-disclaimer{font-size:10px;color:rgba(255,255,255,.4);font-style:italic;position:relative;z-index:1;line-height:1.55;margin-bottom:12px;}
+.xpulse-vote-row{display:flex;align-items:center;gap:8px;position:relative;z-index:1;flex-wrap:wrap;}
+.xpulse-vote-label{font-size:10.5px;color:rgba(255,255,255,.6);margin-right:2px;}
+.xpulse-vote-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;
+font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:inherit;}
+.xpulse-vote-btn:disabled{opacity:.5;cursor:default;}
+.xpulse-vote-thanks{font-size:11px;color:#8AB6FF;font-weight:700;position:relative;z-index:1;}
 .trick-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;position:relative;z-index:1;}
 .trick-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.2);
 border:1px solid rgba(245,158,11,.5);color:#FCD34D;font-size:9.5px;font-weight:900;
@@ -711,12 +717,22 @@ gtag('config', 'G-TJXHVW6XCL');
         <div class="xpulse-badge">🐦 X Pulse</div>
         <div class="xpulse-vol" id="xPulseVol"></div>
       </div>
+      <div class="ai-refresh-line" id="xPulseRefreshLine"></div>
+      <div class="trick-ai-line"><span class="ai-chip" style="background:linear-gradient(135deg,#3884FF,#1a5fd9);">AI</span> Powered by Grok (xAI) · X sentiment read fresh, daily</div>
       <div class="xpulse-topic" id="xPulseTopic"></div>
       <div class="xpulse-metrics" id="xPulseMetrics"></div>
       <div class="xpulse-sentiment-bar" id="xPulseSentimentBar"></div>
       <div class="xpulse-sentiment-legend" id="xPulseSentimentLegend"></div>
       <div class="xpulse-summary" id="xPulseSummary"></div>
-      <div class="xpulse-disclaimer">Not a verified report — an AI impression of what's being discussed on X today, based on the estimated post volume above. If political, every viewpoint found is reported neutrally — this reflects what people are posting, not any view of ours.</div>
+      <div class="xpulse-disclaimer">
+        Educational purpose only — this shows sentiment volume, not verified facts. LawSticker AI takes no side and expresses no opinion of its own. If political, every viewpoint found is reported neutrally, based purely on what people are posting on X.
+      </div>
+      <div class="xpulse-vote-row" id="xPulseVoteRow">
+        <span class="xpulse-vote-label">Is this worth showing daily?</span>
+        <button class="xpulse-vote-btn" id="xPulseLikeBtn" onclick="voteXPulse('like')">👍 Yes</button>
+        <button class="xpulse-vote-btn" id="xPulseDislikeBtn" onclick="voteXPulse('dislike')">👎 No</button>
+      </div>
+      <div class="xpulse-vote-thanks" id="xPulseVoteThanks" style="display:none;">Thanks for the feedback! 🙏</div>
     </div>
   </div>
 
@@ -1580,6 +1596,8 @@ function loadXPulse(){
       document.getElementById('xPulseTopic').textContent = data.topic || 'Trending on X today';
       document.getElementById('xPulseMetrics').innerHTML = data.est_posts ? ('<span><b>~Posts analyzed:</b> ' + esc(data.est_posts) + '</span>') : '';
       document.getElementById('xPulseSummary').textContent = data.summary;
+      document.getElementById('xPulseRefreshLine').textContent = formatISTRefreshLine(data.generated_at);
+      window.__xPulseDate = data.date;
 
       // Sentiment bar - deliberately neutral blue-family shades by position
       // (not red/green "bad/good" colors), since coloring one viewpoint
@@ -1604,9 +1622,41 @@ function loadXPulse(){
         legendEl.innerHTML = '';
       }
 
+      // One vote per device per day - checked via localStorage so the
+      // buttons show "already voted" state instead of allowing repeat
+      // clicks to inflate the count, which would defeat the point of
+      // using this as a real usage signal.
+      var votedKey = 'xpulse_voted_' + data.date;
+      if (localStorage.getItem(votedKey)) {
+        document.getElementById('xPulseVoteRow').style.display = 'none';
+        document.getElementById('xPulseVoteThanks').style.display = 'block';
+      }
+
       document.getElementById('xPulseCard').style.display = 'block';
     })
     .catch(function(){}); // nice-to-have — never break the rest of the page
+}
+
+function voteXPulse(vote){
+  var date = window.__xPulseDate;
+  if (!date) return;
+  document.getElementById('xPulseLikeBtn').disabled = true;
+  document.getElementById('xPulseDislikeBtn').disabled = true;
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/x-pulse-vote', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({date: date, vote: vote})
+  })
+    .then(function(){
+      localStorage.setItem('xpulse_voted_' + date, '1');
+      document.getElementById('xPulseVoteRow').style.display = 'none';
+      document.getElementById('xPulseVoteThanks').style.display = 'block';
+    })
+    .catch(function(){
+      // Even if the network call fails, don't leave the buttons stuck
+      // disabled with no feedback - re-enable so the person can retry.
+      document.getElementById('xPulseLikeBtn').disabled = false;
+      document.getElementById('xPulseDislikeBtn').disabled = false;
+    });
 }
 
 function formatISTRefreshLine(isoTimestamp){
