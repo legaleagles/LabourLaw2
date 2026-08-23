@@ -237,16 +237,31 @@ padding:4px 10px;border-radius:20px;}
 .xpulse-vol.low{background:rgba(156,163,175,.25);color:#D1D5DB;}
 .xpulse-vol.moderate{background:rgba(245,158,11,.25);color:#FCD34D;}
 .xpulse-vol.high{background:rgba(220,38,38,.25);color:#FCA5A5;}
-.xpulse-topic{font-size:16px;font-weight:800;color:#fff;margin:10px 0 4px;position:relative;z-index:1;line-height:1.35;}
-.xpulse-metrics{display:flex;gap:14px;font-size:10.5px;color:rgba(255,255,255,.5);margin-bottom:10px;position:relative;z-index:1;}
-.xpulse-metrics b{color:rgba(255,255,255,.8);}
-.xpulse-sentiment-bar{display:flex;height:8px;border-radius:5px;overflow:hidden;margin-bottom:8px;position:relative;z-index:1;}
+
+/* Comparative attention chart - the actual "graph" element, ranking all 5
+   topics by relative discussion volume so it reads as data-driven ranking
+   rather than any single narrative being pushed. */
+.xpulse-chart-title{font-size:11px;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 8px;position:relative;z-index:1;}
+.xpulse-chart-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;position:relative;z-index:1;}
+.xpulse-chart-rank{font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);width:14px;flex-shrink:0;}
+.xpulse-chart-label{font-size:11px;color:rgba(255,255,255,.85);width:100px;flex-shrink:0;line-height:1.3;}
+.xpulse-chart-track{flex:1;height:14px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.xpulse-chart-fill{height:100%;background:linear-gradient(90deg,#3884FF,#6BA3FF);border-radius:4px;}
+.xpulse-chart-posts{font-size:9.5px;color:rgba(255,255,255,.4);width:46px;flex-shrink:0;text-align:right;}
+
+.xpulse-topics-title{font-size:11px;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 10px;position:relative;z-index:1;}
+.xpulse-topic-block{background:rgba(255,255,255,.04);border-radius:12px;padding:12px 13px;margin-bottom:9px;position:relative;z-index:1;}
+.xpulse-topic-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.xpulse-topic-name{font-size:13px;font-weight:800;color:#fff;line-height:1.35;}
+.xpulse-topic-vol{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;flex-shrink:0;}
+.xpulse-sentiment-bar{display:flex;height:7px;border-radius:4px;overflow:hidden;margin-bottom:6px;}
 .xpulse-sentiment-seg{height:100%;}
-.xpulse-sentiment-legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:12px;position:relative;z-index:1;}
+.xpulse-sentiment-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:9.5px;color:rgba(255,255,255,.6);margin-bottom:8px;}
 .xpulse-sentiment-legend span{display:inline-flex;align-items:center;gap:4px;}
-.xpulse-sentiment-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.xpulse-summary{font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.65;margin-bottom:10px;position:relative;z-index:1;}
-.xpulse-disclaimer{font-size:10px;color:rgba(255,255,255,.4);font-style:italic;position:relative;z-index:1;line-height:1.55;margin-bottom:12px;}
+.xpulse-sentiment-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.xpulse-topic-summary{font-size:11.5px;color:rgba(255,255,255,.78);line-height:1.6;}
+
+.xpulse-disclaimer{font-size:10px;color:rgba(255,255,255,.4);font-style:italic;position:relative;z-index:1;line-height:1.55;margin-bottom:12px;margin-top:14px;}
 .xpulse-vote-row{display:flex;align-items:center;gap:8px;position:relative;z-index:1;flex-wrap:wrap;}
 .xpulse-vote-label{font-size:10.5px;color:rgba(255,255,255,.6);margin-right:2px;}
 .xpulse-vote-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;
@@ -714,16 +729,17 @@ gtag('config', 'G-TJXHVW6XCL');
          rather than showing a stale or broken card. -->
     <div class="xpulse-card" id="xPulseCard" style="display:none;">
       <div class="xpulse-top">
-        <div class="xpulse-badge">🐦 X Pulse</div>
-        <div class="xpulse-vol" id="xPulseVol"></div>
+        <div class="xpulse-badge">🐦 X Pulse — Top 5 Trending Today</div>
       </div>
       <div class="ai-refresh-line" id="xPulseRefreshLine"></div>
       <div class="trick-ai-line"><span class="ai-chip" style="background:linear-gradient(135deg,#3884FF,#1a5fd9);">AI</span> Powered by Grok (xAI) · X sentiment read fresh, daily</div>
-      <div class="xpulse-topic" id="xPulseTopic"></div>
-      <div class="xpulse-metrics" id="xPulseMetrics"></div>
-      <div class="xpulse-sentiment-bar" id="xPulseSentimentBar"></div>
-      <div class="xpulse-sentiment-legend" id="xPulseSentimentLegend"></div>
-      <div class="xpulse-summary" id="xPulseSummary"></div>
+
+      <div class="xpulse-chart-title">📉 Relative Attention (by estimated posts)</div>
+      <div id="xPulseChart"></div>
+
+      <div class="xpulse-topics-title">Sentiment by Topic</div>
+      <div id="xPulseTopicsList"></div>
+
       <div class="xpulse-disclaimer">
         Educational purpose only — this shows sentiment volume, not verified facts. LawSticker AI takes no side and expresses no opinion of its own. If political, every viewpoint found is reported neutrally, based purely on what people are posting on X.
       </div>
@@ -1579,48 +1595,75 @@ function loadTrickCard(){
     .catch(function(){}); // nice-to-have — never break the rest of the page
 }
 
+function extractPostMagnitude(estPostsStr){
+  // "roughly 50-150 posts" -> average of 50 and 150 -> 100, used purely as
+  // a relative sizing value for the comparison chart, never displayed as
+  // an exact number itself (the original range text is what's shown).
+  var nums = (estPostsStr || '').match(/\d+/g);
+  if (!nums || !nums.length) return 0;
+  var vals = nums.map(Number);
+  return vals.reduce(function(a,b){return a+b;}, 0) / vals.length;
+}
+
 function loadXPulse(){
   fetch('x-pulse.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(data){
-      if (!data || !data.summary) return;
+      if (!data || !data.topics || !data.topics.length) return;
       // Only show if genuinely from today - an old/stale record just stays hidden rather than misleadingly showing yesterday's read as if current.
       var todayIST = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Kolkata'});
       if (data.date !== todayIST) return;
 
-      var vol = (data.volume || 'unknown').toLowerCase();
-      var volEl = document.getElementById('xPulseVol');
-      volEl.textContent = data.volume || 'Unknown';
-      volEl.className = 'xpulse-vol ' + (['low','moderate','high'].indexOf(vol) !== -1 ? vol : '');
-
-      document.getElementById('xPulseTopic').textContent = data.topic || 'Trending on X today';
-      document.getElementById('xPulseMetrics').innerHTML = data.est_posts ? ('<span><b>~Posts analyzed:</b> ' + esc(data.est_posts) + '</span>') : '';
-      document.getElementById('xPulseSummary').textContent = data.summary;
       document.getElementById('xPulseRefreshLine').textContent = formatISTRefreshLine(data.generated_at);
       window.__xPulseDate = data.date;
 
-      // Sentiment bar - deliberately neutral blue-family shades by position
-      // (not red/green "bad/good" colors), since coloring one viewpoint
-      // red and another green would visually imply a value judgment,
-      // especially on political topics where staying neutral matters.
+      var topics = data.topics.slice(0, 5);
       var neutralShades = ['#3884FF', '#6BA3FF', '#9EC2FF', '#C9DEFF'];
-      var breakdown = data.sentiment_breakdown || [];
-      var barEl = document.getElementById('xPulseSentimentBar');
-      var legendEl = document.getElementById('xPulseSentimentLegend');
-      if (breakdown.length) {
-        var barHtml = '', legendHtml = '';
-        breakdown.forEach(function(seg, i){
-          var color = neutralShades[i % neutralShades.length];
-          barHtml += '<div class="xpulse-sentiment-seg" style="width:' + seg.pct + '%;background:' + color + ';"></div>';
-          legendHtml += '<span><span class="xpulse-sentiment-dot" style="background:' + color + ';"></span>' + esc(seg.label) + ' (' + seg.pct + '%)</span>';
-        });
-        barEl.innerHTML = barHtml;
-        legendEl.innerHTML = legendHtml;
-        barEl.style.display = 'flex';
-      } else {
-        barEl.style.display = 'none';
-        legendEl.innerHTML = '';
-      }
+
+      // Comparative attention chart - ranked by estimated post volume,
+      // sized relative to whichever topic has the most. This is the actual
+      // graph/data element: a ranking, not a single narrative pushed as
+      // "the story of the day."
+      var withMagnitude = topics.map(function(t){ return {t: t, mag: extractPostMagnitude(t.est_posts)}; });
+      var maxMag = Math.max.apply(null, withMagnitude.map(function(x){ return x.mag; }).concat([1]));
+      var chartHtml = '';
+      withMagnitude.forEach(function(item, i){
+        var widthPct = maxMag > 0 ? Math.max(6, Math.round(item.mag / maxMag * 100)) : 6;
+        chartHtml += '<div class="xpulse-chart-row">' +
+          '<span class="xpulse-chart-rank">#' + (i+1) + '</span>' +
+          '<span class="xpulse-chart-label">' + esc(item.t.topic) + '</span>' +
+          '<span class="xpulse-chart-track"><span class="xpulse-chart-fill" style="width:' + widthPct + '%;"></span></span>' +
+          '<span class="xpulse-chart-posts">' + esc(item.t.est_posts || '') + '</span>' +
+          '</div>';
+      });
+      document.getElementById('xPulseChart').innerHTML = chartHtml;
+
+      // Per-topic sentiment breakdown + summary
+      var listHtml = '';
+      topics.forEach(function(t){
+        var vol = (t.volume || 'unknown').toLowerCase().split('-')[0]; // handles "Low-Moderate" style values defensively
+        var volClass = ['low','moderate','high'].indexOf(vol) !== -1 ? vol : '';
+        listHtml += '<div class="xpulse-topic-block">' +
+          '<div class="xpulse-topic-head"><span class="xpulse-topic-name">' + esc(t.topic) + '</span>' +
+          '<span class="xpulse-topic-vol xpulse-vol ' + volClass + '">' + esc(t.volume || '') + '</span></div>';
+
+        var breakdown = t.sentiment_breakdown || [];
+        if (breakdown.length) {
+          listHtml += '<div class="xpulse-sentiment-bar">';
+          breakdown.forEach(function(seg, i){
+            var color = neutralShades[i % neutralShades.length];
+            listHtml += '<div class="xpulse-sentiment-seg" style="width:' + seg.pct + '%;background:' + color + ';"></div>';
+          });
+          listHtml += '</div><div class="xpulse-sentiment-legend">';
+          breakdown.forEach(function(seg, i){
+            var color = neutralShades[i % neutralShades.length];
+            listHtml += '<span><span class="xpulse-sentiment-dot" style="background:' + color + ';"></span>' + esc(seg.label) + ' (' + seg.pct + '%)</span>';
+          });
+          listHtml += '</div>';
+        }
+        listHtml += '<div class="xpulse-topic-summary">' + esc(t.summary) + '</div></div>';
+      });
+      document.getElementById('xPulseTopicsList').innerHTML = listHtml;
 
       // One vote per device per day - checked via localStorage so the
       // buttons show "already voted" state instead of allowing repeat
