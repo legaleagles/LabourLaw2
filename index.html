@@ -216,6 +216,20 @@ padding:20px 17px 18px;margin-top:10px;margin-bottom:20px;position:relative;over
 box-shadow:0 8px 28px rgba(245,158,11,.16);}
 .trick-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
 background:radial-gradient(circle,rgba(245,158,11,.18),transparent 70%);pointer-events:none;}
+
+/* X PULSE — deliberately lighter, less certain-looking than Scam Bulletin/
+   Smart Shopper (plain card, dashed border, no dark hero gradient) since
+   this is an AI impression of social sentiment, not a verified sourced
+   report - the visual weight should honestly match the epistemic weight. */
+.xpulse-card{background:#fff;border:1.5px dashed #9CA3AF;border-radius:16px;padding:16px 17px;margin-bottom:20px;}
+.xpulse-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.xpulse-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#4B5563;}
+.xpulse-vol{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;}
+.xpulse-vol.low{background:#F3F4F6;color:#6B7280;}
+.xpulse-vol.moderate{background:#FEF3C7;color:#92400E;}
+.xpulse-vol.high{background:#FEE2E2;color:#B91C1C;}
+.xpulse-summary{font-size:12.5px;color:#374151;line-height:1.65;margin-bottom:8px;}
+.xpulse-disclaimer{font-size:10px;color:#9CA3AF;font-style:italic;}
 .trick-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;position:relative;z-index:1;}
 .trick-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.2);
 border:1px solid rgba(245,158,11,.5);color:#FCD34D;font-size:9.5px;font-weight:900;
@@ -669,6 +683,19 @@ gtag('config', 'G-TJXHVW6XCL');
         <button class="trick-share-btn native" id="trickShareNative">📤 More Options</button>
       </div>
       <a href="smart-shopper.html" class="sb-viewall" style="margin-top:12px;">See all past tricks →</a>
+    </div>
+
+    <!-- X PULSE — standalone, low-stakes, uses Grok's X-search specifically
+         (not Gemini) since this needs live social sentiment, not a single
+         sourced article. Hidden entirely if there's no data for today,
+         rather than showing a stale or broken card. -->
+    <div class="xpulse-card" id="xPulseCard" style="display:none;">
+      <div class="xpulse-top">
+        <div class="xpulse-badge">🐦 X Pulse — AI's read of X sentiment today</div>
+        <div class="xpulse-vol" id="xPulseVol"></div>
+      </div>
+      <div class="xpulse-summary" id="xPulseSummary"></div>
+      <div class="xpulse-disclaimer">Not a verified report — an AI impression of what's being discussed on X, refreshed daily.</div>
     </div>
   </div>
 
@@ -1513,6 +1540,24 @@ function loadTrickCard(){
     .catch(function(){}); // nice-to-have — never break the rest of the page
 }
 
+function loadXPulse(){
+  fetch('x-pulse.json?t=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data || !data.summary) return;
+      // Only show if genuinely from today - an old/stale record just stays hidden rather than misleadingly showing yesterday's read as if current.
+      var todayIST = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Kolkata'});
+      if (data.date !== todayIST) return;
+      var vol = (data.volume || 'unknown').toLowerCase();
+      var volEl = document.getElementById('xPulseVol');
+      volEl.textContent = data.volume || 'Unknown';
+      volEl.className = 'xpulse-vol ' + (['low','moderate','high'].indexOf(vol) !== -1 ? vol : '');
+      document.getElementById('xPulseSummary').textContent = data.summary;
+      document.getElementById('xPulseCard').style.display = 'block';
+    })
+    .catch(function(){}); // nice-to-have — never break the rest of the page
+}
+
 function formatISTRefreshLine(isoTimestamp){
   if (!isoTimestamp) return '';
   try {
@@ -1590,7 +1635,7 @@ function renderTrickCard(){
   };
 }
 
-document.addEventListener('DOMContentLoaded',()=>{loadTrickCard();loadYtStats();});
+document.addEventListener('DOMContentLoaded',()=>{loadTrickCard();loadYtStats();loadXPulse();});
 
 function loadYtStats(){
   fetch('youtube-stats.json?t=' + Date.now())
