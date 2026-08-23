@@ -743,6 +743,7 @@ gtag('config', 'G-TJXHVW6XCL');
       <div class="xpulse-disclaimer">
         Educational purpose only — this shows sentiment volume, not verified facts. LawSticker AI takes no side and expresses no opinion of its own. If political, every viewpoint found is reported neutrally, based purely on what people are posting on X.
       </div>
+      <button class="xpulse-vote-btn" id="xPulseShareBtn" onclick="shareXPulse()" style="margin-bottom:10px;">📤 Share Today's Pulse</button>
       <div class="xpulse-vote-row" id="xPulseVoteRow">
         <span class="xpulse-vote-label">Is this worth showing daily?</span>
         <button class="xpulse-vote-btn" id="xPulseLikeBtn" onclick="voteXPulse('like')">👍 Yes</button>
@@ -1616,6 +1617,7 @@ function loadXPulse(){
 
       document.getElementById('xPulseRefreshLine').textContent = formatISTRefreshLine(data.generated_at);
       window.__xPulseDate = data.date;
+      window.__xPulseTopics = data.topics;
 
       var topics = data.topics.slice(0, 5);
       var neutralShades = ['#3884FF', '#6BA3FF', '#9EC2FF', '#C9DEFF'];
@@ -1700,6 +1702,23 @@ function voteXPulse(vote){
       document.getElementById('xPulseLikeBtn').disabled = false;
       document.getElementById('xPulseDislikeBtn').disabled = false;
     });
+}
+
+function shareXPulse(){
+  var topics = window.__xPulseTopics || [];
+  var pageUrl = 'https://lawsticker-ai.com/';
+  var text;
+  if (topics.length) {
+    var top = topics[0];
+    text = '🐦 Today\'s X Pulse on LawSticker AI\n\n#1 trending: ' + top.topic + ' (' + top.volume + ' discussion)\n\nSee the full top-5 sentiment breakdown, neutrally reported from real X data →';
+  } else {
+    text = '🐦 Check today\'s X Pulse — a neutral, data-based read of what\'s trending on X — on LawSticker AI:';
+  }
+  if (navigator.share) {
+    navigator.share({title: "Today's X Pulse — LawSticker AI", text: text, url: pageUrl}).catch(function(){});
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + pageUrl), '_blank');
+  }
 }
 
 function formatISTRefreshLine(isoTimestamp){
