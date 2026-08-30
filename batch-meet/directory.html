@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directory &amp; RSVP — Batch Get-Together</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--teal:#0F766E;--teal-l:#14B8A6;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;
+--green:#059669;--red:#DC2626;--amber:#D97706;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+nav{background:var(--teal);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+nav .title{font-weight:700;font-size:14.5px;}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px;}
+
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:14px;margin-bottom:10px;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;}
+.field input{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;}
+.rsvp-row{display:flex;gap:8px;}
+.rsvp-btn{flex:1;padding:10px;border:1.5px solid var(--line);border-radius:8px;background:#fff;font-size:13px;font-weight:700;cursor:pointer;}
+.rsvp-btn.selected.yes{background:#D1FAE5;border-color:var(--green);color:var(--green);}
+.rsvp-btn.selected.maybe{background:#FEF3C7;border-color:var(--amber);color:var(--amber);}
+.rsvp-btn.selected.no{background:#FEE2E2;border-color:var(--red);color:var(--red);}
+.submit-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;}
+.submit-btn:disabled{opacity:.6;}
+.msg{font-size:12px;margin-top:8px;text-align:center;}
+.msg.ok{color:var(--green);}
+.msg.err{color:var(--red);}
+
+.summary-row{display:flex;gap:8px;margin-bottom:12px;}
+.summary-pill{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:11.5px;font-weight:700;}
+.summary-pill.yes{background:#D1FAE5;color:var(--green);}
+.summary-pill.maybe{background:#FEF3C7;color:var(--amber);}
+.summary-pill.no{background:#FEE2E2;color:var(--red);}
+.search-input{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:10px;}
+
+.entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.entry-row:last-child{border-bottom:none;}
+.entry-name{font-weight:600;}
+.entry-rsvp{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;}
+.entry-rsvp.yes{background:#D1FAE5;color:var(--green);}
+.entry-rsvp.maybe{background:#FEF3C7;color:var(--amber);}
+.entry-rsvp.no{background:#FEE2E2;color:var(--red);}
+.empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Home</a><span class="title" style="margin-left:8px;">Directory &amp; RSVP</span></nav>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Add Yourself / Update Your RSVP</h2>
+    <div class="field"><label>Name</label><input type="text" id="fName" placeholder="Your full name"></div>
+    <div class="field"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="e.g. 9876543210"></div>
+    <div class="field">
+      <label>Attending?</label>
+      <div class="rsvp-row">
+        <button class="rsvp-btn" id="rsvpYes" onclick="selectRsvp('yes')">✅ Yes</button>
+        <button class="rsvp-btn" id="rsvpMaybe" onclick="selectRsvp('maybe')">🤔 Maybe</button>
+        <button class="rsvp-btn" id="rsvpNo" onclick="selectRsvp('no')">❌ No</button>
+      </div>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="submitEntry()">Save</button>
+    <div class="msg" id="submitMsg"></div>
+    <div style="font-size:10.5px;color:var(--muted);margin-top:6px;">Already submitted? Enter the same phone number again to update your RSVP.</div>
+  </div>
+
+  <div class="card">
+    <h2>Who's Coming</h2>
+    <div class="summary-row">
+      <div class="summary-pill yes" id="sumYes">0 Yes</div>
+      <div class="summary-pill maybe" id="sumMaybe">0 Maybe</div>
+      <div class="summary-pill no" id="sumNo">0 No</div>
+    </div>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by name..." oninput="renderList()">
+    <div id="listArea"></div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var selectedRsvp = null;
+var allEntries = [];
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function selectRsvp(val){
+  selectedRsvp = val;
+  ['Yes','Maybe','No'].forEach(function(v){
+    document.getElementById('rsvp'+v).classList.remove('selected','yes','maybe','no');
+  });
+  document.getElementById('rsvp' + val.charAt(0).toUpperCase() + val.slice(1)).classList.add('selected', val);
+}
+
+function submitEntry(){
+  var name = document.getElementById('fName').value.trim();
+  var phone = document.getElementById('fPhone').value.trim();
+  var msgEl = document.getElementById('submitMsg');
+  if (!name || !phone || !selectedRsvp) {
+    msgEl.textContent = 'Please fill in your name, phone, and RSVP choice.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  fetch(BACKEND + '/api/batch-meet/directory', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name: name, phone: phone, rsvp: selectedRsvp})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if (data.ok) {
+        msgEl.textContent = 'Saved! Thanks, ' + name + '.';
+        msgEl.className = 'msg ok';
+        allEntries = data.entries;
+        renderList();
+      } else {
+        msgEl.textContent = data.error || 'Something went wrong.';
+        msgEl.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function renderList(){
+  var search = document.getElementById('searchInput').value.trim().toLowerCase();
+  var filtered = allEntries.filter(function(e){ return !search || e.name.toLowerCase().indexOf(search) !== -1; });
+
+  document.getElementById('sumYes').textContent = allEntries.filter(function(e){return e.rsvp==='yes';}).length + ' Yes';
+  document.getElementById('sumMaybe').textContent = allEntries.filter(function(e){return e.rsvp==='maybe';}).length + ' Maybe';
+  document.getElementById('sumNo').textContent = allEntries.filter(function(e){return e.rsvp==='no';}).length + ' No';
+
+  var html = filtered.length ? '' : '<div class="empty-note">No entries yet.</div>';
+  filtered.forEach(function(e){
+    html += '<div class="entry-row"><span class="entry-name">' + esc(e.name) + '</span>' +
+      '<span class="entry-rsvp ' + e.rsvp + '">' + e.rsvp + '</span></div>';
+  });
+  document.getElementById('listArea').innerHTML = html;
+}
+
+function loadDirectory(){
+  fetch(BACKEND + '/api/batch-meet/directory')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) { allEntries = data.entries; renderList(); }
+    })
+    .catch(function(){});
+}
+loadDirectory();
+</script>
+</body>
+</html>
