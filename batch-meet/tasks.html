@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasks &amp; Teams — Batch Get-Together</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--teal:#0F766E;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;
+--green:#059669;--red:#DC2626;--amber:#D97706;--blue:#2563EB;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+nav{background:var(--teal);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+nav .title{font-weight:700;font-size:14.5px;}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px;}
+
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:14px;margin-bottom:10px;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;}
+.field textarea{resize:vertical;min-height:50px;}
+.submit-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;}
+.submit-btn:disabled{opacity:.6;}
+.msg{font-size:12px;margin-top:8px;text-align:center;}
+.msg.ok{color:var(--green);}
+.msg.err{color:var(--red);}
+
+.filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;}
+.filter-chip{flex-shrink:0;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;background:#F3F4F6;color:var(--muted);cursor:pointer;white-space:nowrap;}
+.filter-chip.active{background:var(--teal);color:#fff;}
+
+.task-card{border:1.5px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:10px;}
+.task-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;}
+.task-cat{font-size:9.5px;font-weight:800;text-transform:uppercase;color:var(--teal);}
+.task-title{font-weight:700;font-size:13.5px;margin-top:2px;}
+.task-status{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;flex-shrink:0;}
+.task-status.open{background:#FEE2E2;color:var(--red);}
+.task-status.in-progress{background:#FEF3C7;color:var(--amber);}
+.task-status.done{background:#D1FAE5;color:var(--green);}
+.task-owner{font-size:11.5px;color:var(--muted);margin-top:3px;}
+.task-notes{font-size:11.5px;color:var(--ink);margin-top:5px;background:var(--bg);padding:6px 8px;border-radius:6px;}
+.task-actions{display:flex;gap:6px;margin-top:8px;}
+.task-actions select{flex:1;padding:6px;border-radius:6px;border:1px solid var(--line);font-size:11.5px;}
+.empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Home</a><span class="title" style="margin-left:8px;">Tasks &amp; Teams</span></nav>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Add a Task</h2>
+    <div class="field">
+      <label>Team / Category</label>
+      <select id="fCategory">
+        <option value="Venue &amp; Menu">Venue &amp; Menu</option>
+        <option value="Finance">Finance</option>
+        <option value="Agenda &amp; MCs">Agenda &amp; MCs</option>
+        <option value="Event Management">Event Management</option>
+        <option value="Audit">Audit</option>
+        <option value="Digital">Digital</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field"><label>Task</label><input type="text" id="fTitle" placeholder="e.g. Finalize hall booking"></div>
+    <div class="field"><label>Assigned To (optional)</label><input type="text" id="fOwner" placeholder="Name"></div>
+    <div class="field"><label>Notes (optional)</label><textarea id="fNotes" placeholder="Any details..."></textarea></div>
+    <button class="submit-btn" id="submitBtn" onclick="addTask()">Add Task</button>
+    <div class="msg" id="submitMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>All Tasks</h2>
+    <div class="filter-row" id="filterRow"></div>
+    <div id="listArea"></div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var allTasks = [];
+var activeFilter = 'All';
+var CATEGORIES = ['All', 'Venue & Menu', 'Finance', 'Agenda & MCs', 'Event Management', 'Audit', 'Digital', 'Other'];
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function addTask(){
+  var category = document.getElementById('fCategory').value;
+  var title = document.getElementById('fTitle').value.trim();
+  var owner = document.getElementById('fOwner').value.trim();
+  var notes = document.getElementById('fNotes').value.trim();
+  var msgEl = document.getElementById('submitMsg');
+  if (!title) {
+    msgEl.textContent = 'Please enter a task title.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  fetch(BACKEND + '/api/batch-meet/tasks', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({category: category, title: title, owner: owner, notes: notes})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if (data.ok) {
+        msgEl.textContent = 'Task added!';
+        msgEl.className = 'msg ok';
+        document.getElementById('fTitle').value = '';
+        document.getElementById('fOwner').value = '';
+        document.getElementById('fNotes').value = '';
+        allTasks = data.tasks;
+        renderList();
+      } else {
+        msgEl.textContent = data.error || 'Something went wrong.';
+        msgEl.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function updateTaskStatus(id, newStatus){
+  fetch(BACKEND + '/api/batch-meet/tasks/update', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({id: id, status: newStatus})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ if (data.ok) { allTasks = data.tasks; renderList(); } })
+    .catch(function(){});
+}
+
+function renderFilters(){
+  var html = '';
+  CATEGORIES.forEach(function(c){
+    html += '<div class="filter-chip' + (c === activeFilter ? ' active' : '') + '" onclick="setFilter(\'' + c.replace(/'/g, "\\'") + '\')">' + esc(c) + '</div>';
+  });
+  document.getElementById('filterRow').innerHTML = html;
+}
+function setFilter(c){ activeFilter = c; renderFilters(); renderList(); }
+
+function renderList(){
+  var filtered = activeFilter === 'All' ? allTasks : allTasks.filter(function(t){ return t.category === activeFilter; });
+  var html = filtered.length ? '' : '<div class="empty-note">No tasks in this category yet.</div>';
+  filtered.forEach(function(t){
+    html += '<div class="task-card">' +
+      '<div class="task-top"><div><div class="task-cat">' + esc(t.category) + '</div>' +
+      '<div class="task-title">' + esc(t.title) + '</div></div>' +
+      '<span class="task-status ' + t.status + '">' + esc(t.status) + '</span></div>';
+    if (t.owner) html += '<div class="task-owner">👤 ' + esc(t.owner) + '</div>';
+    if (t.notes) html += '<div class="task-notes">' + esc(t.notes) + '</div>';
+    html += '<div class="task-actions"><select onchange="updateTaskStatus(' + t.id + ', this.value)">' +
+      '<option value="open"' + (t.status === 'open' ? ' selected' : '') + '>Open</option>' +
+      '<option value="in-progress"' + (t.status === 'in-progress' ? ' selected' : '') + '>In Progress</option>' +
+      '<option value="done"' + (t.status === 'done' ? ' selected' : '') + '>Done</option>' +
+      '</select></div></div>';
+  });
+  document.getElementById('listArea').innerHTML = html;
+}
+
+function loadTasks(){
+  fetch(BACKEND + '/api/batch-meet/tasks')
+    .then(function(r){ return r.json(); })
+    .then(function(data){ if (data.ok) { allTasks = data.tasks; renderList(); } })
+    .catch(function(){});
+}
+renderFilters();
+loadTasks();
+</script>
+</body>
+</html>
