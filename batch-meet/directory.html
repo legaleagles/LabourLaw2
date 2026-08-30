@@ -46,6 +46,11 @@ nav .title{font-weight:700;font-size:14.5px;}
 .entry-rsvp.maybe{background:#FEF3C7;color:var(--amber);}
 .entry-rsvp.no{background:#FEE2E2;color:var(--red);}
 .empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
+
+.danger-toggle{font-size:11px;color:var(--muted);text-align:center;margin-top:14px;cursor:pointer;text-decoration:underline;}
+.danger-box{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--red);}
+.danger-box input{width:100%;padding:9px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:8px;}
+.danger-btn{width:100%;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:9px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -68,6 +73,13 @@ nav .title{font-weight:700;font-size:14.5px;}
     <button class="submit-btn" id="submitBtn" onclick="submitEntry()">Save</button>
     <div class="msg" id="submitMsg"></div>
     <div style="font-size:10.5px;color:var(--muted);margin-top:6px;">Already submitted? Enter the same phone number again to update your RSVP.</div>
+
+    <div class="danger-toggle" onclick="toggleDanger()">Made a mistake? Remove your entry entirely</div>
+    <div class="danger-box" id="dangerBox">
+      <input type="tel" id="deletePhone" placeholder="Your phone number">
+      <button class="danger-btn" onclick="deleteMyEntry()">Remove My Entry</button>
+      <div class="msg" id="deleteMsg"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -146,6 +158,41 @@ function renderList(){
       '<span class="entry-rsvp ' + e.rsvp + '">' + e.rsvp + '</span></div>';
   });
   document.getElementById('listArea').innerHTML = html;
+}
+
+function toggleDanger(){
+  var box = document.getElementById('dangerBox');
+  box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+function deleteMyEntry(){
+  var phone = document.getElementById('deletePhone').value.trim();
+  var msgEl = document.getElementById('deleteMsg');
+  if (!phone) {
+    msgEl.textContent = 'Please enter your phone number.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  fetch(BACKEND + '/api/batch-meet/directory/delete', {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({phone: phone})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) {
+        msgEl.textContent = 'Your entry has been removed.';
+        msgEl.className = 'msg ok';
+        document.getElementById('deletePhone').value = '';
+        allEntries = data.entries;
+        renderList();
+      } else {
+        msgEl.textContent = data.error || 'Something went wrong.';
+        msgEl.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
 }
 
 function loadDirectory(){
