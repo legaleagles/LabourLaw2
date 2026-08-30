@@ -31,6 +31,12 @@ nav .title{font-weight:700;font-size:14.5px;}
 .msg{font-size:12px;margin-top:8px;text-align:center;}
 .msg.ok{color:var(--green);}
 .msg.err{color:var(--red);}
+.msg.warn{color:var(--amber, #D97706);background:#FEF3C7;border-radius:8px;padding:8px;text-align:left;}
+
+.danger-toggle{font-size:11px;color:var(--muted);text-align:center;margin-top:14px;cursor:pointer;text-decoration:underline;}
+.danger-box{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--red);}
+.danger-box input{width:100%;padding:9px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:8px;}
+.danger-btn{width:100%;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:9px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;}
 
 .search-input{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:10px;}
 .entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;gap:8px;}
@@ -68,12 +74,19 @@ nav .title{font-weight:700;font-size:14.5px;}
     <div class="field"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="Same number used in Directory"></div>
     <div class="field"><label>Amount Paid (₹)</label><input type="number" id="fAmount" placeholder="e.g. 500"></div>
     <div class="field">
-      <label>Payment Screenshot (optional, but helps transparency)</label>
+      <label>Payment Screenshot (required)</label>
       <input type="file" id="fReceipt" accept="image/*" capture="environment">
       <div id="receiptPreviewNote" style="font-size:10.5px;color:var(--muted);margin-top:4px;"></div>
     </div>
     <button class="submit-btn" id="submitBtn" onclick="submitPayment()">Save Payment</button>
     <div class="msg" id="submitMsg"></div>
+
+    <div class="danger-toggle" onclick="toggleDanger()">Made a mistake? Remove your payment entry</div>
+    <div class="danger-box" id="dangerBox">
+      <input type="tel" id="deletePhone" placeholder="Your phone number">
+      <button class="danger-btn" onclick="deleteMyPayment()">Remove My Payment Entry</button>
+      <div class="msg" id="deleteMsg"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -108,20 +121,22 @@ function submitPayment(){
   var phone = document.getElementById('fPhone').value.trim();
   var amount = parseFloat(document.getElementById('fAmount').value);
   var msgEl = document.getElementById('submitMsg');
+  var receiptFile = document.getElementById('fReceipt').files[0];
   if (!name || !phone || isNaN(amount) || amount < 0) {
     msgEl.textContent = 'Please fill in your name, phone, and a valid amount.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  if (!receiptFile) {
+    msgEl.textContent = 'A payment screenshot is required.';
     msgEl.className = 'msg err';
     return;
   }
   var btn = document.getElementById('submitBtn');
   btn.disabled = true;
 
-  var receiptFile = document.getElementById('fReceipt').files[0];
-  var receiptPromise = receiptFile ? compressImage(receiptFile) : Promise.resolve(null);
-
-  receiptPromise.then(function(receiptBase64){
-    var payload = {name: name, phone: phone, amount_paid: amount};
-    if (receiptBase64) { payload.receipt_image_base64 = receiptBase64; payload.receipt_mime = 'image/jpeg'; }
+  compressImage(receiptFile).then(function(receiptBase64){
+    var payload = {name: name, phone: phone, amount_paid: amount, receipt_image_base64: receiptBase64, receipt_mime: 'image/jpeg'};
     return fetch(BACKEND + '/api/batch-meet/ledger', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(payload)
@@ -131,8 +146,13 @@ function submitPayment(){
     .then(function(data){
       btn.disabled = false;
       if (data.ok) {
-        msgEl.textContent = 'Payment recorded — thanks, ' + name + '!';
-        msgEl.className = 'msg ok';
+        if (data.receipt_warning) {
+          msgEl.textContent = '✅ Saved. ⚠️ ' + data.receipt_warning;
+          msgEl.className = 'msg warn';
+        } else {
+          msgEl.textContent = 'Payment recorded — thanks, ' + name + '!';
+          msgEl.className = 'msg ok';
+        }
         document.getElementById('fReceipt').value = '';
         loadLedger();
       } else {
@@ -188,6 +208,40 @@ function compressImage(file){
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+function toggleDanger(){
+  var box = document.getElementById('dangerBox');
+  box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+function deleteMyPayment(){
+  var phone = document.getElementById('deletePhone').value.trim();
+  var msgEl = document.getElementById('deleteMsg');
+  if (!phone) {
+    msgEl.textContent = 'Please enter your phone number.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  fetch(BACKEND + '/api/batch-meet/ledger/delete', {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({phone: phone})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) {
+        msgEl.textContent = 'Your payment entry has been removed.';
+        msgEl.className = 'msg ok';
+        document.getElementById('deletePhone').value = '';
+        loadLedger();
+      } else {
+        msgEl.textContent = data.error || 'Something went wrong.';
+        msgEl.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
 }
 
 function loadLedger(){
