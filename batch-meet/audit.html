@@ -36,6 +36,12 @@ border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-famil
 .outstanding-row:last-child{border-bottom:none;}
 .outstanding-name{font-weight:600;}
 .outstanding-amt{color:var(--red);font-weight:700;}
+
+.flagged-row{padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+.flagged-row:last-child{border-bottom:none;}
+.flagged-top{display:flex;justify-content:space-between;font-weight:600;margin-bottom:3px;}
+.flagged-reason{color:var(--amber);font-size:11.5px;line-height:1.5;}
+.flagged-link{font-size:11px;color:var(--teal);text-decoration:none;}
 .empty-note{text-align:center;color:var(--muted);font-size:12px;padding:14px;}
 
 .category-progress{margin-bottom:10px;}
@@ -64,6 +70,12 @@ border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-famil
     <h2>💰 Outstanding Payments</h2>
     <div class="card-sub">People who confirmed "Yes" but haven't fully paid the per-head amount yet</div>
     <div id="outstandingArea"></div>
+  </div>
+
+  <div class="card">
+    <h2>🤖 AI-Flagged Receipts</h2>
+    <div class="card-sub">Gemini checked each screenshot against the entered amount — these are worth a second look, not automatically wrong</div>
+    <div id="flaggedArea"></div>
   </div>
 
   <div class="card">
@@ -161,6 +173,16 @@ function render(){
   });
   document.getElementById('outstandingArea').innerHTML = outHtml;
 
+  var flagged = liveLedger.entries.filter(function(e){ return e.receipt_flag; });
+  var flagHtml = flagged.length ? '' : '<div class="empty-note">No flagged receipts — everything checked out. 🎉</div>';
+  flagged.forEach(function(e){
+    flagHtml += '<div class="flagged-row"><div class="flagged-top"><span>' + esc(e.name) + '</span><span>₹' + Math.round(e.amount_paid) + '</span></div>' +
+      '<div class="flagged-reason">⚠️ ' + esc(e.receipt_flag) + '</div>' +
+      (e.receipt_url ? '<a class="flagged-link" href="' + esc(e.receipt_url) + '" target="_blank">📎 View screenshot</a>' : '') +
+      '</div>';
+  });
+  document.getElementById('flaggedArea').innerHTML = flagHtml;
+
   var categories = {};
   liveTasks.forEach(function(t){
     if (!categories[t.category]) categories[t.category] = {total: 0, done: 0};
@@ -185,8 +207,8 @@ function downloadCsv(which){
     liveDirectory.forEach(function(e){ rows.push([e.name, e.phone, e.rsvp, e.added_at || '']); });
   } else if (which === 'ledger') {
     filename = 'batch-meet-ledger.csv';
-    rows.push(['Name', 'Phone', 'Amount Paid', 'Paid At', 'Receipt']);
-    liveLedger.entries.forEach(function(e){ rows.push([e.name, e.phone, e.amount_paid, e.paid_at || '', e.receipt_url || '']); });
+    rows.push(['Name', 'Phone', 'Amount Paid', 'Paid At', 'Receipt', 'AI Flag']);
+    liveLedger.entries.forEach(function(e){ rows.push([e.name, e.phone, e.amount_paid, e.paid_at || '', e.receipt_url || '', e.receipt_flag || '']); });
   } else if (which === 'tasks') {
     filename = 'batch-meet-tasks.csv';
     rows.push(['Category', 'Title', 'Owner', 'Status', 'Notes', 'Created At']);
@@ -236,6 +258,18 @@ function downloadPdfReport(){
     outstanding.forEach(function(p){
       checkPageBreak(13);
       addWrapped(p.name + '  —  Rs ' + Math.round(p.owed) + ' due (paid Rs ' + Math.round(p.paid) + ' so far)', 9, '', '#991B1B', 13);
+    });
+  }
+  y += 8;
+
+  addWrapped('Ledger — AI-Flagged Receipts', 13, 'bold', '#0F766E', 18);
+  var flaggedPdf = liveLedger.entries.filter(function(e){ return e.receipt_flag; });
+  if (!flaggedPdf.length) {
+    addWrapped('None — every receipt checked out.', 9, 'italic', '#059669', 13);
+  } else {
+    flaggedPdf.forEach(function(e){
+      checkPageBreak(13);
+      addWrapped(e.name + ' (Rs ' + Math.round(e.amount_paid) + '): ' + e.receipt_flag, 9, '', '#92400E', 13);
     });
   }
   y += 8;
