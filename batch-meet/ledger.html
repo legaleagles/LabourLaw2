@@ -33,10 +33,12 @@ nav .title{font-weight:700;font-size:14.5px;}
 .msg.err{color:var(--red);}
 
 .search-input{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:10px;}
-.entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;gap:8px;}
 .entry-row:last-child{border-bottom:none;}
 .entry-name{font-weight:600;}
+.entry-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .entry-amt{font-weight:700;color:var(--teal);}
+.receipt-link{font-size:10.5px;color:var(--teal);text-decoration:none;border:1px solid var(--teal);border-radius:20px;padding:2px 8px;}
 .empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
 
 .admin-toggle{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline;}
@@ -65,6 +67,11 @@ nav .title{font-weight:700;font-size:14.5px;}
     <div class="field"><label>Name</label><input type="text" id="fName" placeholder="Your full name"></div>
     <div class="field"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="Same number used in Directory"></div>
     <div class="field"><label>Amount Paid (₹)</label><input type="number" id="fAmount" placeholder="e.g. 500"></div>
+    <div class="field">
+      <label>Payment Screenshot (optional, but helps transparency)</label>
+      <input type="file" id="fReceipt" accept="image/*" capture="environment">
+      <div id="receiptPreviewNote" style="font-size:10.5px;color:var(--muted);margin-top:4px;"></div>
+    </div>
     <button class="submit-btn" id="submitBtn" onclick="submitPayment()">Save Payment</button>
     <div class="msg" id="submitMsg"></div>
   </div>
@@ -108,9 +115,17 @@ function submitPayment(){
   }
   var btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  fetch(BACKEND + '/api/batch-meet/ledger', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({name: name, phone: phone, amount_paid: amount})
+
+  var receiptFile = document.getElementById('fReceipt').files[0];
+  var receiptPromise = receiptFile ? compressImage(receiptFile) : Promise.resolve(null);
+
+  receiptPromise.then(function(receiptBase64){
+    var payload = {name: name, phone: phone, amount_paid: amount};
+    if (receiptBase64) { payload.receipt_image_base64 = receiptBase64; payload.receipt_mime = 'image/jpeg'; }
+    return fetch(BACKEND + '/api/batch-meet/ledger', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -118,6 +133,7 @@ function submitPayment(){
       if (data.ok) {
         msgEl.textContent = 'Payment recorded — thanks, ' + name + '!';
         msgEl.className = 'msg ok';
+        document.getElementById('fReceipt').value = '';
         loadLedger();
       } else {
         msgEl.textContent = data.error || 'Something went wrong.';
@@ -137,9 +153,41 @@ function renderList(){
   var html = filtered.length ? '' : '<div class="empty-note">No payments recorded yet.</div>';
   filtered.forEach(function(e){
     html += '<div class="entry-row"><span class="entry-name">' + esc(e.name) + '</span>' +
-      '<span class="entry-amt">₹' + Math.round(e.amount_paid) + '</span></div>';
+      '<span class="entry-right">' +
+      (e.receipt_url ? '<a class="receipt-link" href="' + esc(e.receipt_url) + '" target="_blank">📎 Receipt</a>' : '') +
+      '<span class="entry-amt">₹' + Math.round(e.amount_paid) + '</span></span></div>';
   });
   document.getElementById('listArea').innerHTML = html;
+}
+
+function compressImage(file){
+  // Resize/compress client-side before upload - matters at ~150-person
+  // scale, since an uncompressed phone photo (often 3-5MB) would make the
+  // ledger noticeably slower to work with for everyone, not just the
+  // person uploading. Caps the longest side at 1000px and uses JPEG
+  // quality 0.7, which keeps a payment screenshot perfectly legible while
+  // landing well under the backend's size limit.
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var maxDim = 1000;
+        var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        resolve(dataUrl.split(',')[1]); // strip the "data:image/jpeg;base64," prefix
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 function loadLedger(){
