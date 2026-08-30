@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Get-Together — Home</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--teal:#0F766E;--teal-l:#14B8A6;--coral:#F97316;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+.hero{background:linear-gradient(135deg,var(--teal),#0D5C56);color:#fff;padding:28px 20px 34px;text-align:center;}
+.hero-title{font-size:22px;font-weight:800;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.8);margin-top:6px;}
+.wrap{max-width:480px;margin:0 auto;padding:20px 16px 40px;}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:-18px;position:relative;z-index:1;margin-bottom:20px;}
+.stat-card{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.stat-num{font-size:19px;font-weight:800;color:var(--teal);}
+.stat-label{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
+
+.nav-card{display:block;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;}
+.nav-card:active{background:#F9FAFB;}
+.nav-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.nav-icon.dir{background:#DBEAFE;}
+.nav-icon.ledg{background:#D1FAE5;}
+.nav-icon.task{background:#FEF3C7;}
+.nav-title{font-weight:700;font-size:14.5px;}
+.nav-sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.nav-arrow{margin-left:auto;color:var(--muted);}
+
+.note{font-size:11px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-title">🎉 Batch Get-Together</div>
+  <div class="hero-sub">Everything for the event, in one place — RSVP, contributions, and who's doing what.</div>
+</div>
+
+<div class="wrap">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="statAttending">–</div><div class="stat-label">Attending</div></div>
+    <div class="stat-card"><div class="stat-num" id="statCollected">–</div><div class="stat-label">Collected</div></div>
+    <div class="stat-card"><div class="stat-num" id="statTasksOpen">–</div><div class="stat-label">Open Tasks</div></div>
+  </div>
+
+  <a class="nav-card" href="directory.html">
+    <div class="nav-icon dir">👥</div>
+    <div><div class="nav-title">Directory &amp; RSVP</div><div class="nav-sub">Add yourself, confirm attendance</div></div>
+    <div class="nav-arrow">→</div>
+  </a>
+
+  <a class="nav-card" href="ledger.html">
+    <div class="nav-icon ledg">💰</div>
+    <div><div class="nav-title">Contributions</div><div class="nav-sub">See amount per head, mark your payment</div></div>
+    <div class="nav-arrow">→</div>
+  </a>
+
+  <a class="nav-card" href="tasks.html">
+    <div class="nav-icon task">✅</div>
+    <div><div class="nav-title">Tasks &amp; Teams</div><div class="nav-sub">Venue, finance, agenda, event mgmt, audit, digital</div></div>
+    <div class="nav-arrow">→</div>
+  </a>
+
+  <div class="note">Open to everyone in the batch — no login needed. Please be considerate: this only works if everyone enters their real info honestly.</div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+
+fetch(BACKEND + '/api/batch-meet/directory').then(function(r){return r.json();}).then(function(d){
+  if (d.ok) document.getElementById('statAttending').textContent = d.summary.yes;
+}).catch(function(){});
+
+fetch(BACKEND + '/api/batch-meet/ledger').then(function(r){return r.json();}).then(function(d){
+  if (d.ok) document.getElementById('statCollected').textContent = '₹' + Math.round(d.total_collected);
+}).catch(function(){});
+
+fetch(BACKEND + '/api/batch-meet/tasks').then(function(r){return r.json();}).then(function(d){
+  if (d.ok) document.getElementById('statTasksOpen').textContent = d.tasks.filter(function(t){return t.status !== 'done';}).length;
+}).catch(function(){});
+</script>
+</body>
+</html>
