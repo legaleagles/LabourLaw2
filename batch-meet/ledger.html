@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contributions — Batch Get-Together</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--teal:#0F766E;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;--green:#059669;--red:#DC2626;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+nav{background:var(--teal);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+nav .title{font-weight:700;font-size:14.5px;}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px;}
+
+.hero-card{background:linear-gradient(135deg,var(--teal),#0D5C56);color:#fff;border-radius:14px;padding:18px;margin-bottom:14px;text-align:center;}
+.hero-amount{font-size:28px;font-weight:800;}
+.hero-label{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;}
+.hero-progress{margin-top:12px;background:rgba(255,255,255,.2);border-radius:20px;height:8px;overflow:hidden;}
+.hero-progress-fill{height:100%;background:#fff;display:block;}
+.hero-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:6px;}
+
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:14px;margin-bottom:10px;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;}
+.field input{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;}
+.submit-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;}
+.submit-btn:disabled{opacity:.6;}
+.msg{font-size:12px;margin-top:8px;text-align:center;}
+.msg.ok{color:var(--green);}
+.msg.err{color:var(--red);}
+
+.search-input{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:10px;}
+.entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.entry-row:last-child{border-bottom:none;}
+.entry-name{font-weight:600;}
+.entry-amt{font-weight:700;color:var(--teal);}
+.empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
+
+.admin-toggle{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline;}
+.admin-box{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Home</a><span class="title" style="margin-left:8px;">Contributions</span></nav>
+
+<div class="wrap">
+  <div class="hero-card">
+    <div class="hero-amount" id="perHeadAmount">₹–</div>
+    <div class="hero-label">Amount per head</div>
+    <div class="hero-progress"><span class="hero-progress-fill" id="progressFill" style="width:0%;"></span></div>
+    <div class="hero-sub" id="collectedSummary">Loading...</div>
+    <div class="admin-toggle" onclick="toggleAdmin()">Finance team: set/update amount per head</div>
+    <div class="admin-box" id="adminBox">
+      <input type="number" id="newAmount" placeholder="New amount per head" style="width:100%;padding:8px;border-radius:8px;border:none;margin-bottom:6px;">
+      <button class="submit-btn" style="background:#fff;color:var(--teal);" onclick="setPerHead()">Update Amount</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Mark Your Contribution</h2>
+    <div class="field"><label>Name</label><input type="text" id="fName" placeholder="Your full name"></div>
+    <div class="field"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="Same number used in Directory"></div>
+    <div class="field"><label>Amount Paid (₹)</label><input type="number" id="fAmount" placeholder="e.g. 500"></div>
+    <button class="submit-btn" id="submitBtn" onclick="submitPayment()">Save Payment</button>
+    <div class="msg" id="submitMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>Who's Paid</h2>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by name..." oninput="renderList()">
+    <div id="listArea"></div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var allEntries = [];
+var perHead = 0;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function toggleAdmin(){
+  var box = document.getElementById('adminBox');
+  box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+function setPerHead(){
+  var amt = parseFloat(document.getElementById('newAmount').value);
+  if (isNaN(amt) || amt < 0) return;
+  fetch(BACKEND + '/api/batch-meet/ledger/set-per-head', {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({amount: amt})
+  }).then(function(){ loadLedger(); toggleAdmin(); }).catch(function(){});
+}
+
+function submitPayment(){
+  var name = document.getElementById('fName').value.trim();
+  var phone = document.getElementById('fPhone').value.trim();
+  var amount = parseFloat(document.getElementById('fAmount').value);
+  var msgEl = document.getElementById('submitMsg');
+  if (!name || !phone || isNaN(amount) || amount < 0) {
+    msgEl.textContent = 'Please fill in your name, phone, and a valid amount.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  fetch(BACKEND + '/api/batch-meet/ledger', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name: name, phone: phone, amount_paid: amount})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if (data.ok) {
+        msgEl.textContent = 'Payment recorded — thanks, ' + name + '!';
+        msgEl.className = 'msg ok';
+        loadLedger();
+      } else {
+        msgEl.textContent = data.error || 'Something went wrong.';
+        msgEl.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function renderList(){
+  var search = document.getElementById('searchInput').value.trim().toLowerCase();
+  var filtered = allEntries.filter(function(e){ return !search || e.name.toLowerCase().indexOf(search) !== -1; });
+  var html = filtered.length ? '' : '<div class="empty-note">No payments recorded yet.</div>';
+  filtered.forEach(function(e){
+    html += '<div class="entry-row"><span class="entry-name">' + esc(e.name) + '</span>' +
+      '<span class="entry-amt">₹' + Math.round(e.amount_paid) + '</span></div>';
+  });
+  document.getElementById('listArea').innerHTML = html;
+}
+
+function loadLedger(){
+  fetch(BACKEND + '/api/batch-meet/ledger')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.ok) return;
+      allEntries = data.entries;
+      perHead = data.per_head_amount || 0;
+      document.getElementById('perHeadAmount').textContent = '₹' + Math.round(perHead);
+      var total = data.total_collected || 0;
+      var expected = perHead * allEntries.length;
+      var pct = expected > 0 ? Math.min(100, Math.round(total / expected * 100)) : 0;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('collectedSummary').textContent =
+        '₹' + Math.round(total) + ' collected from ' + allEntries.length + ' ' + (allEntries.length === 1 ? 'person' : 'people');
+      renderList();
+    })
+    .catch(function(){});
+}
+loadLedger();
+</script>
+</body>
+</html>
