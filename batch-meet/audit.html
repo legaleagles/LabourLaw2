@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit &amp; Transparency — Batch Get-Together</title>
+<meta name="robots" content="noindex">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--teal:#0F766E;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;
+--green:#059669;--red:#DC2626;--amber:#D97706;--blue:#2563EB;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+nav{background:var(--teal);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+nav .title{font-weight:700;font-size:14.5px;}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px;}
+
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.summary-card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;}
+.summary-num{font-size:17px;font-weight:800;color:var(--teal);}
+.summary-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.02em;margin-top:2px;}
+
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:14px;margin-bottom:4px;}
+.card-sub{font-size:11.5px;color:var(--muted);margin-bottom:12px;}
+.dl-btn{display:flex;align-items:center;gap:10px;width:100%;background:var(--bg);border:1.5px solid var(--line);
+border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;text-align:left;color:var(--ink);}
+.dl-btn:last-child{margin-bottom:0;}
+.dl-btn .icon{font-size:18px;}
+.dl-btn .sub{font-size:10.5px;color:var(--muted);font-weight:400;margin-top:1px;}
+.dl-btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);}
+.dl-btn.primary .sub{color:rgba(255,255,255,.75);}
+
+.outstanding-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+.outstanding-row:last-child{border-bottom:none;}
+.outstanding-name{font-weight:600;}
+.outstanding-amt{color:var(--red);font-weight:700;}
+.empty-note{text-align:center;color:var(--muted);font-size:12px;padding:14px;}
+
+.category-progress{margin-bottom:10px;}
+.category-progress-top{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px;}
+.category-progress-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
+.category-progress-fill{height:100%;background:var(--teal);display:block;}
+
+.transparency-box{background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:12px;padding:12px 14px;font-size:11.5px;color:#1E3A8A;line-height:1.65;}
+.transparency-box a{color:var(--blue);}
+.raw-links{margin-top:8px;font-size:11px;}
+.raw-links a{display:block;color:var(--blue);margin-bottom:3px;}
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Home</a><span class="title" style="margin-left:8px;">Audit &amp; Transparency</span></nav>
+
+<div class="wrap">
+  <div class="summary-grid">
+    <div class="summary-card"><div class="summary-num" id="sAttending">–</div><div class="summary-label">Attending</div></div>
+    <div class="summary-card"><div class="summary-num" id="sCollected">–</div><div class="summary-label">Collected</div></div>
+    <div class="summary-card"><div class="summary-num" id="sTasksDone">–</div><div class="summary-label">Tasks Done</div></div>
+  </div>
+
+  <div class="card">
+    <h2>💰 Outstanding Payments</h2>
+    <div class="card-sub">People who confirmed "Yes" but haven't fully paid the per-head amount yet</div>
+    <div id="outstandingArea"></div>
+  </div>
+
+  <div class="card">
+    <h2>✅ Progress by Team</h2>
+    <div class="card-sub">Share of tasks marked done, per category</div>
+    <div id="categoryProgressArea"></div>
+  </div>
+
+  <div class="card">
+    <h2>Download Reports</h2>
+    <div class="card-sub">Live snapshot at the moment you download — always current, never stale</div>
+    <button class="dl-btn primary" onclick="downloadPdfReport()">
+      <span class="icon">📄</span>
+      <span><div>Full Audit Report (PDF)</div><div class="sub">Directory, finances, and tasks — one complete document</div></span>
+    </button>
+    <button class="dl-btn" onclick="downloadCsv('directory')">
+      <span class="icon">👥</span>
+      <span><div>Directory (CSV)</div><div class="sub">For spreadsheet number-crunching</div></span>
+    </button>
+    <button class="dl-btn" onclick="downloadCsv('ledger')">
+      <span class="icon">💰</span>
+      <span><div>Ledger (CSV)</div><div class="sub">Every payment, raw</div></span>
+    </button>
+    <button class="dl-btn" onclick="downloadCsv('tasks')">
+      <span class="icon">✅</span>
+      <span><div>Tasks (CSV)</div><div class="sub">Every task, status, and owner</div></span>
+    </button>
+  </div>
+
+  <div class="transparency-box">
+    <b>How this stays transparent:</b> every entry, payment, and task update is stored as a separate, timestamped, permanent record in a public version-history log — nothing can be silently edited or deleted without leaving a visible trace. Anyone can check the raw records directly, anytime:
+    <div class="raw-links">
+      <a href="https://github.com/legaleagles/LabourLaw2/commits/main/batch-meet-directory.json" target="_blank">→ Full directory change history</a>
+      <a href="https://github.com/legaleagles/LabourLaw2/commits/main/batch-meet-ledger.json" target="_blank">→ Full ledger change history</a>
+      <a href="https://github.com/legaleagles/LabourLaw2/commits/main/batch-meet-tasks.json" target="_blank">→ Full tasks change history</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var liveDirectory = [], liveLedger = {per_head_amount: 0, entries: []}, liveTasks = [];
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function csvEscape(val){
+  var s = String(val === undefined || val === null ? '' : val);
+  if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+function downloadFile(filename, content, mime){
+  var blob = new Blob([content], {type: mime});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function loadAll(){
+  return Promise.all([
+    fetch(BACKEND + '/api/batch-meet/directory').then(function(r){return r.json();}),
+    fetch(BACKEND + '/api/batch-meet/ledger').then(function(r){return r.json();}),
+    fetch(BACKEND + '/api/batch-meet/tasks').then(function(r){return r.json();}),
+  ]).then(function(results){
+    liveDirectory = results[0].ok ? results[0].entries : [];
+    liveLedger = results[1].ok ? results[1] : {per_head_amount: 0, entries: [], total_collected: 0};
+    liveTasks = results[2].ok ? results[2].tasks : [];
+    render();
+  }).catch(function(){});
+}
+
+function getOutstanding(){
+  var attending = liveDirectory.filter(function(d){ return d.rsvp === 'yes'; });
+  var perHead = liveLedger.per_head_amount || 0;
+  return attending.map(function(person){
+    var payment = liveLedger.entries.find(function(e){ return e.phone === person.phone; });
+    var paid = payment ? payment.amount_paid : 0;
+    return {name: person.name, paid: paid, owed: Math.max(0, perHead - paid)};
+  }).filter(function(p){ return p.owed > 0; });
+}
+
+function render(){
+  document.getElementById('sAttending').textContent = liveDirectory.filter(function(d){return d.rsvp==='yes';}).length;
+  document.getElementById('sCollected').textContent = '₹' + Math.round(liveLedger.total_collected || liveLedger.entries.reduce(function(s,e){return s+e.amount_paid;},0));
+  var doneCount = liveTasks.filter(function(t){return t.status==='done';}).length;
+  document.getElementById('sTasksDone').textContent = doneCount + '/' + liveTasks.length;
+
+  var outstanding = getOutstanding();
+  var outHtml = outstanding.length ? '' : '<div class="empty-note">Everyone who confirmed "Yes" is fully paid up. 🎉</div>';
+  outstanding.forEach(function(p){
+    outHtml += '<div class="outstanding-row"><span class="outstanding-name">' + esc(p.name) + '</span>' +
+      '<span class="outstanding-amt">₹' + Math.round(p.owed) + ' due</span></div>';
+  });
+  document.getElementById('outstandingArea').innerHTML = outHtml;
+
+  var categories = {};
+  liveTasks.forEach(function(t){
+    if (!categories[t.category]) categories[t.category] = {total: 0, done: 0};
+    categories[t.category].total++;
+    if (t.status === 'done') categories[t.category].done++;
+  });
+  var catHtml = Object.keys(categories).length ? '' : '<div class="empty-note">No tasks added yet.</div>';
+  Object.keys(categories).forEach(function(cat){
+    var c = categories[cat];
+    var pct = Math.round(c.done / c.total * 100);
+    catHtml += '<div class="category-progress"><div class="category-progress-top"><span>' + esc(cat) + '</span><span>' + c.done + '/' + c.total + '</span></div>' +
+      '<div class="category-progress-track"><span class="category-progress-fill" style="width:' + pct + '%;"></span></div></div>';
+  });
+  document.getElementById('categoryProgressArea').innerHTML = catHtml;
+}
+
+function downloadCsv(which){
+  var rows = [], filename = '';
+  if (which === 'directory') {
+    filename = 'batch-meet-directory.csv';
+    rows.push(['Name', 'Phone', 'RSVP', 'Added At']);
+    liveDirectory.forEach(function(e){ rows.push([e.name, e.phone, e.rsvp, e.added_at || '']); });
+  } else if (which === 'ledger') {
+    filename = 'batch-meet-ledger.csv';
+    rows.push(['Name', 'Phone', 'Amount Paid', 'Paid At']);
+    liveLedger.entries.forEach(function(e){ rows.push([e.name, e.phone, e.amount_paid, e.paid_at || '']); });
+  } else if (which === 'tasks') {
+    filename = 'batch-meet-tasks.csv';
+    rows.push(['Category', 'Title', 'Owner', 'Status', 'Notes', 'Created At']);
+    liveTasks.forEach(function(t){ rows.push([t.category, t.title, t.owner || '', t.status, t.notes || '', t.created_at || '']); });
+  }
+  var csv = rows.map(function(row){ return row.map(csvEscape).join(','); }).join('\n');
+  downloadFile(filename, csv, 'text/csv');
+}
+
+function downloadPdfReport(){
+  var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+  var margin = 44, y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
+  var maxWidth = pageWidth - margin * 2;
+
+  function checkPageBreak(needed){ if (y + needed > pageHeight - margin) { pdf.addPage(); y = margin; } }
+  function addWrapped(text, size, style, color, lineHeight){
+    pdf.setFont('Helvetica', style || ''); pdf.setFontSize(size); pdf.setTextColor(color || '#111827');
+    var lines = pdf.splitTextToSize(String(text), maxWidth);
+    lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight; });
+  }
+
+  addWrapped('Batch Get-Together — Audit Report', 17, 'bold', '#0F766E', 22);
+  addWrapped('Generated ' + new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata', dateStyle:'medium', timeStyle:'short'}) + ' IST', 9, 'italic', '#6B7280', 16);
+  y += 6;
+
+  addWrapped('Summary', 13, 'bold', '#0F766E', 18);
+  var attending = liveDirectory.filter(function(d){return d.rsvp==='yes';}).length;
+  var totalCollected = liveLedger.total_collected || liveLedger.entries.reduce(function(s,e){return s+e.amount_paid;},0);
+  var expected = (liveLedger.per_head_amount || 0) * attending;
+  addWrapped('Attending: ' + attending + '  |  Per head: Rs ' + Math.round(liveLedger.per_head_amount || 0) + '  |  Collected: Rs ' + Math.round(totalCollected) + ' of Rs ' + Math.round(expected) + ' expected', 10, '', '#111827', 16);
+  var tasksDone = liveTasks.filter(function(t){return t.status==='done';}).length;
+  addWrapped('Tasks: ' + tasksDone + ' of ' + liveTasks.length + ' done', 10, '', '#111827', 16);
+  y += 8;
+
+  addWrapped('Directory (' + liveDirectory.length + ' entries)', 13, 'bold', '#0F766E', 18);
+  liveDirectory.forEach(function(e){
+    checkPageBreak(13);
+    addWrapped(e.name + '  —  ' + e.phone + '  —  ' + e.rsvp.toUpperCase(), 9, '', '#111827', 13);
+  });
+  y += 8;
+
+  addWrapped('Ledger — Outstanding Payments', 13, 'bold', '#0F766E', 18);
+  var outstanding = getOutstanding();
+  if (!outstanding.length) {
+    addWrapped('None — everyone who confirmed Yes is fully paid.', 9, 'italic', '#059669', 13);
+  } else {
+    outstanding.forEach(function(p){
+      checkPageBreak(13);
+      addWrapped(p.name + '  —  Rs ' + Math.round(p.owed) + ' due (paid Rs ' + Math.round(p.paid) + ' so far)', 9, '', '#991B1B', 13);
+    });
+  }
+  y += 8;
+
+  addWrapped('Tasks (' + liveTasks.length + ' total)', 13, 'bold', '#0F766E', 18);
+  var byCategory = {};
+  liveTasks.forEach(function(t){ (byCategory[t.category] = byCategory[t.category] || []).push(t); });
+  Object.keys(byCategory).forEach(function(cat){
+    checkPageBreak(16);
+    addWrapped(cat, 10.5, 'bold', '#1F2937', 15);
+    byCategory[cat].forEach(function(t){
+      checkPageBreak(13);
+      addWrapped('[' + t.status.toUpperCase() + '] ' + t.title + (t.owner ? '  (owner: ' + t.owner + ')' : ''), 9, '', '#374151', 13);
+    });
+  });
+
+  y += 14;
+  checkPageBreak(20);
+  addWrapped('This is a live snapshot generated directly from the event data at download time.', 8, 'italic', '#9CA3AF', 11);
+
+  pdf.save('batch-meet-audit-report.pdf');
+}
+
+loadAll();
+</script>
+</body>
+</html>
