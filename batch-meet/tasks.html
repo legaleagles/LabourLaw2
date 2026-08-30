@@ -43,6 +43,7 @@ nav .title{font-weight:700;font-size:14.5px;}
 .task-notes{font-size:11.5px;color:var(--ink);margin-top:5px;background:var(--bg);padding:6px 8px;border-radius:6px;}
 .task-actions{display:flex;gap:6px;margin-top:8px;}
 .task-actions select{flex:1;padding:6px;border-radius:6px;border:1px solid var(--line);font-size:11.5px;}
+.task-delete-btn{background:#fff;border:1px solid var(--red);color:var(--red);border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer;flex-shrink:0;}
 .empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
 </style>
 </head>
@@ -137,6 +138,20 @@ function updateTaskStatus(id, newStatus){
     .catch(function(){});
 }
 
+function deleteTask(id, title){
+  // Tasks aren't tied to personal identity, so a confirm prompt is the
+  // safeguard here instead of a phone-scoped check - just enough friction
+  // to stop a pure misclick, not a full identity gate.
+  if (!window.confirm('Delete this task?\n\n"' + title + '"')) return;
+  fetch(BACKEND + '/api/batch-meet/tasks/delete', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({id: id})
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ if (data.ok) { allTasks = data.tasks; renderList(); } })
+    .catch(function(){});
+}
+
 function renderFilters(){
   var html = '';
   CATEGORIES.forEach(function(c){
@@ -160,7 +175,7 @@ function renderList(){
       '<option value="open"' + (t.status === 'open' ? ' selected' : '') + '>Open</option>' +
       '<option value="in-progress"' + (t.status === 'in-progress' ? ' selected' : '') + '>In Progress</option>' +
       '<option value="done"' + (t.status === 'done' ? ' selected' : '') + '>Done</option>' +
-      '</select></div></div>';
+      '</select><button class="task-delete-btn" onclick="deleteTask(' + t.id + ', \'' + esc(t.title).replace(/'/g, "\\'") + '\')">🗑</button></div></div>';
   });
   document.getElementById('listArea').innerHTML = html;
 }
