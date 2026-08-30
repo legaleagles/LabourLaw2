@@ -185,8 +185,8 @@ function downloadCsv(which){
     liveDirectory.forEach(function(e){ rows.push([e.name, e.phone, e.rsvp, e.added_at || '']); });
   } else if (which === 'ledger') {
     filename = 'batch-meet-ledger.csv';
-    rows.push(['Name', 'Phone', 'Amount Paid', 'Paid At']);
-    liveLedger.entries.forEach(function(e){ rows.push([e.name, e.phone, e.amount_paid, e.paid_at || '']); });
+    rows.push(['Name', 'Phone', 'Amount Paid', 'Paid At', 'Receipt']);
+    liveLedger.entries.forEach(function(e){ rows.push([e.name, e.phone, e.amount_paid, e.paid_at || '', e.receipt_url || '']); });
   } else if (which === 'tasks') {
     filename = 'batch-meet-tasks.csv';
     rows.push(['Category', 'Title', 'Owner', 'Status', 'Notes', 'Created At']);
