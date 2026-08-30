@@ -25,6 +25,8 @@ nav .title{font-weight:700;font-size:14.5px;}
 .rsvp-btn.selected.yes{background:#D1FAE5;border-color:var(--green);color:var(--green);}
 .rsvp-btn.selected.maybe{background:#FEF3C7;border-color:var(--amber);color:var(--amber);}
 .rsvp-btn.selected.no{background:#FEE2E2;border-color:var(--red);color:var(--red);}
+.rsvp-btn.selected.veg{background:#D1FAE5;border-color:var(--green);color:var(--green);}
+.rsvp-btn.selected.non-veg{background:#FFEDD5;border-color:#EA580C;color:#EA580C;}
 .submit-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;}
 .submit-btn:disabled{opacity:.6;}
 .msg{font-size:12px;margin-top:8px;text-align:center;}
@@ -62,6 +64,14 @@ nav .title{font-weight:700;font-size:14.5px;}
     <h2>Add Yourself / Update Your RSVP</h2>
     <div class="field"><label>Name</label><input type="text" id="fName" placeholder="Your full name"></div>
     <div class="field"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="e.g. 9876543210"></div>
+    <div class="field"><label>Roll Number</label><input type="text" id="fRoll" placeholder="e.g. 21LLB045"></div>
+    <div class="field">
+      <label>Food Preference</label>
+      <div class="rsvp-row">
+        <button class="rsvp-btn" id="foodVeg" onclick="selectFood('veg')">🥗 Veg</button>
+        <button class="rsvp-btn" id="foodNonVeg" onclick="selectFood('non-veg')">🍗 Non-Veg</button>
+      </div>
+    </div>
     <div class="field">
       <label>Attending?</label>
       <div class="rsvp-row">
@@ -109,12 +119,31 @@ function selectRsvp(val){
   document.getElementById('rsvp' + val.charAt(0).toUpperCase() + val.slice(1)).classList.add('selected', val);
 }
 
+var selectedFood = null;
+function selectFood(val){
+  selectedFood = val;
+  document.getElementById('foodVeg').classList.remove('selected', 'veg', 'non-veg');
+  document.getElementById('foodNonVeg').classList.remove('selected', 'veg', 'non-veg');
+  document.getElementById(val === 'veg' ? 'foodVeg' : 'foodNonVeg').classList.add('selected', val);
+}
+
 function submitEntry(){
   var name = document.getElementById('fName').value.trim();
   var phone = document.getElementById('fPhone').value.trim();
+  var rollNumber = document.getElementById('fRoll').value.trim();
   var msgEl = document.getElementById('submitMsg');
   if (!name || !phone || !selectedRsvp) {
     msgEl.textContent = 'Please fill in your name, phone, and RSVP choice.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  if (!rollNumber) {
+    msgEl.textContent = 'Please enter your roll number.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  if (!selectedFood) {
+    msgEl.textContent = 'Please select a food preference.';
     msgEl.className = 'msg err';
     return;
   }
@@ -122,7 +151,7 @@ function submitEntry(){
   btn.disabled = true;
   fetch(BACKEND + '/api/batch-meet/directory', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({name: name, phone: phone, rsvp: selectedRsvp})
+    body: JSON.stringify({name: name, phone: phone, rsvp: selectedRsvp, roll_number: rollNumber, food_pref: selectedFood})
   })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -154,7 +183,7 @@ function renderList(){
 
   var html = filtered.length ? '' : '<div class="empty-note">No entries yet.</div>';
   filtered.forEach(function(e){
-    html += '<div class="entry-row"><span class="entry-name">' + esc(e.name) + '</span>' +
+    html += '<div class="entry-row"><span class="entry-name">' + esc(e.name) + (e.food_pref ? ' ' + (e.food_pref === 'veg' ? '🥗' : '🍗') : '') + '</span>' +
       '<span class="entry-rsvp ' + e.rsvp + '">' + e.rsvp + '</span></div>';
   });
   document.getElementById('listArea').innerHTML = html;
