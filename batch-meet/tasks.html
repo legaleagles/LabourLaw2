@@ -45,9 +45,25 @@ nav .title{font-weight:700;font-size:14.5px;}
 .task-actions select{flex:1;padding:6px;border-radius:6px;border:1px solid var(--line);font-size:11.5px;}
 .task-delete-btn{background:#fff;border:1px solid var(--red);color:var(--red);border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer;flex-shrink:0;}
 .empty-note{text-align:center;color:var(--muted);font-size:12px;padding:16px;}
+
+.login-gate-box{max-width:320px;margin:70px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-gate-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-gate-box button{width:100%;background:#0F766E;color:#fff;font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-gate-err{color:#DC2626;font-size:11.5px;margin-top:8px;}
 </style>
 </head>
 <body>
+<div id="loginGate">
+  <div class="login-gate-box">
+    <div style="font-weight:800;margin-bottom:4px;">🔒 Batch Get-Together</div>
+    <div style="font-size:11.5px;color:#6B7280;">This page is now private — ask an organizer for the password</div>
+    <input type="password" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="login-gate-err" id="loginErr"></div>
+  </div>
+</div>
+
+<div id="mainArea" style="display:none;">
 
 <nav><a href="index.html">← Home</a><span class="title" style="margin-left:8px;">Tasks &amp; Teams</span></nav>
 
@@ -188,6 +204,35 @@ function loadTasks(){
 }
 renderFilters();
 loadTasks();
+
+var bmPassword = localStorage.getItem('bmPassword') || '';
+if (bmPassword) { tryLogin(bmPassword); }
+
+function doLogin(){
+  var pw = document.getElementById('pwInput').value.trim();
+  if (!pw) return;
+  tryLogin(pw, true);
+}
+
+function tryLogin(pw, showErr){
+  var backendUrl = (typeof BACKEND !== 'undefined' ? BACKEND : 'https://lawsticker-backend-494996217030.europe-west1.run.app');
+  fetch(backendUrl + '/api/vehicle-check-auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw}) })
+    .then(function(r){
+      if (r.status === 401) { if (showErr) document.getElementById('loginErr').textContent = 'Incorrect password.'; return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if (!data || !data.ok) return;
+      bmPassword = pw;
+      localStorage.setItem('bmPassword', pw);
+      document.getElementById('loginGate').style.display = 'none';
+      document.getElementById('mainArea').style.display = 'block';
+    })
+    .catch(function(){ if (showErr) document.getElementById('loginErr').textContent = 'Could not reach the server — try again.'; });
+}
 </script>
+
+</div>
 </body>
 </html>
