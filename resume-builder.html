@@ -22,6 +22,23 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
 .hero p{font-size:13px;color:#5C6B63;margin-top:6px;line-height:1.6;}
 
 .step-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+
+.upload-card{background:linear-gradient(135deg,#fff,#F0FDFA);border:1.5px dashed var(--teal);border-radius:16px;padding:16px 18px;margin-bottom:16px;text-align:center;}
+.upload-card h3{font-size:13.5px;color:var(--navy);margin-bottom:4px;}
+.upload-card p{font-size:11px;color:#5C6B63;margin-bottom:10px;line-height:1.5;}
+.upload-btn-label{display:inline-block;background:var(--teal);color:#fff;font-weight:700;font-size:12.5px;padding:9px 18px;border-radius:20px;cursor:pointer;}
+.upload-btn-label input{display:none;}
+.upload-status{font-size:11.5px;margin-top:8px;}
+.upload-status.ok{color:var(--green);}
+.upload-status.err{color:var(--red);}
+.or-divider{text-align:center;font-size:11px;color:var(--silver);margin:14px 0;position:relative;}
+.or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--mist);}
+.or-divider::before{left:0;} .or-divider::after{right:0;}
+
+.skill-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.skill-chip{font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--mist);background:#fff;color:var(--ink);cursor:pointer;}
+.skill-chip.selected{background:var(--teal);border-color:var(--teal);color:#fff;}
+.skill-hint{font-size:10.5px;color:var(--silver);margin-bottom:8px;}
 .step-tab{flex-shrink:0;font-size:11.5px;font-weight:700;padding:8px 14px;border-radius:20px;background:var(--mist);color:var(--silver);cursor:pointer;white-space:nowrap;}
 .step-tab.active{background:var(--navy);color:var(--gold-l);}
 .step-tab.done{background:#D1FAE5;color:var(--green);}
@@ -67,6 +84,14 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
     <h1>📄 Free Resume Builder</h1>
     <p>No design skills needed. Fill in your details in plain language — AI helps polish it into a professional resume. Nothing you enter is saved anywhere.</p>
   </div>
+
+  <div class="upload-card">
+    <h3>📤 Already have a resume?</h3>
+    <p>Upload it and we'll pre-fill everything below — you can review and edit before generating.</p>
+    <label class="upload-btn-label">Upload Resume (PDF or Photo)<input type="file" id="uploadInput" accept="application/pdf,image/*" onchange="handleUpload(this)"></label>
+    <div class="upload-status" id="uploadStatus"></div>
+  </div>
+  <div class="or-divider">or fill in manually</div>
 
   <div class="step-tabs" id="stepTabs"></div>
 
@@ -114,7 +139,8 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
   <div id="step-skills" class="step-panel" style="display:none;">
     <div class="card">
       <h2>Skills</h2>
-      <div class="card-sub">Separate with commas</div>
+      <div class="card-sub">Separate with commas — or tap suggestions below based on your target role</div>
+      <div id="skillSuggestions"></div>
       <div class="field"><textarea id="pSkills" placeholder="e.g. MS Excel, Communication, Tally, Customer Service"></textarea></div>
       <div class="field"><label>Professional Summary (optional — leave blank and AI will write one)</label><textarea id="pSummary" placeholder="A few lines about yourself, in your own words..."></textarea></div>
     </div>
@@ -146,40 +172,159 @@ function renderTabs(){
   document.getElementById('stepTabs').innerHTML = html;
 }
 
+// Static role -> skill suggestions, chosen deliberately over an AI call:
+// this is a fixed lookup, not something that benefits from generation,
+// so a dictionary is instant, free, and never counts against the rate
+// limit - matching the same cost-consciousness as everything else here.
+var ROLE_SKILLS = {
+  'customer support': ['Communication', 'Conflict Resolution', 'CRM Software', 'Patience', 'Multitasking', 'Problem Solving'],
+  'customer service': ['Communication', 'Conflict Resolution', 'CRM Software', 'Patience', 'Multitasking', 'Problem Solving'],
+  'sales': ['Negotiation', 'Cold Calling', 'CRM Software', 'Target Achievement', 'Relationship Building', 'Persuasion'],
+  'accounting': ['Tally', 'MS Excel', 'GST Filing', 'Bookkeeping', 'Bank Reconciliation', 'Attention to Detail'],
+  'accountant': ['Tally', 'MS Excel', 'GST Filing', 'Bookkeeping', 'Bank Reconciliation', 'Attention to Detail'],
+  'finance': ['Financial Analysis', 'MS Excel', 'Budgeting', 'Tally', 'Reporting', 'Attention to Detail'],
+  'retail': ['Customer Service', 'Cash Handling', 'Inventory Management', 'Billing', 'Visual Merchandising'],
+  'shop': ['Customer Service', 'Cash Handling', 'Inventory Management', 'Billing', 'Stock Management'],
+  'data entry': ['MS Excel', 'Typing Speed', 'Attention to Detail', 'Data Accuracy', 'MS Office'],
+  'teaching': ['Lesson Planning', 'Classroom Management', 'Communication', 'Patience', 'Curriculum Development'],
+  'teacher': ['Lesson Planning', 'Classroom Management', 'Communication', 'Patience', 'Curriculum Development'],
+  'software': ['Problem Solving', 'Git', 'Debugging', 'Team Collaboration', 'Programming Fundamentals'],
+  'developer': ['Problem Solving', 'Git', 'Debugging', 'Team Collaboration', 'Programming Fundamentals'],
+  'it support': ['Troubleshooting', 'Hardware/Software Support', 'Ticketing Systems', 'Networking Basics', 'Customer Service'],
+  'human resources': ['Recruitment', 'Onboarding', 'Employee Relations', 'MS Excel', 'Communication'],
+  'hr': ['Recruitment', 'Onboarding', 'Employee Relations', 'MS Excel', 'Communication'],
+  'marketing': ['Social Media', 'Content Creation', 'Communication', 'MS Excel', 'Campaign Planning'],
+  'administrative': ['MS Office', 'Scheduling', 'Record Keeping', 'Communication', 'Organization'],
+  'office': ['MS Office', 'Scheduling', 'Record Keeping', 'Communication', 'Organization'],
+  'legal': ['Legal Research', 'Drafting', 'Attention to Detail', 'MS Word', 'Case Documentation'],
+  'delivery': ['Time Management', 'Route Planning', 'Customer Service', 'Reliability'],
+  'logistics': ['Inventory Management', 'Route Planning', 'Coordination', 'MS Excel'],
+  'hospitality': ['Customer Service', 'Communication', 'Multitasking', 'Team Coordination'],
+};
+var GENERIC_SKILLS = ['Communication', 'Teamwork', 'Time Management', 'MS Office', 'Problem Solving', 'Adaptability'];
+
+function matchRoleSkills(roleText){
+  var lower = (roleText || '').toLowerCase();
+  for (var key in ROLE_SKILLS) {
+    if (lower.indexOf(key) !== -1) return ROLE_SKILLS[key];
+  }
+  return GENERIC_SKILLS;
+}
+
+function getCurrentSkillsList(){
+  return document.getElementById('pSkills').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+}
+
+function toggleSkillChip(skill){
+  var current = getCurrentSkillsList();
+  var idx = current.findIndex(function(s){ return s.toLowerCase() === skill.toLowerCase(); });
+  if (idx === -1) current.push(skill); else current.splice(idx, 1);
+  document.getElementById('pSkills').value = current.join(', ');
+  renderSkillSuggestions();
+}
+
+function renderSkillSuggestions(){
+  var role = document.getElementById('pRole').value;
+  var suggestions = matchRoleSkills(role);
+  var current = getCurrentSkillsList().map(function(s){ return s.toLowerCase(); });
+  var html = '<div class="skill-hint">' + (role ? 'Suggested for "' + esc(role) + '" — tap to add or remove' : 'Suggested general skills — tap to add or remove') + '</div><div class="skill-chip-row">';
+  suggestions.forEach(function(skill){
+    var selected = current.indexOf(skill.toLowerCase()) !== -1;
+    html += '<div class="skill-chip' + (selected ? ' selected' : '') + '" onclick="toggleSkillChip(' + JSON.stringify(skill).replace(/"/g, '&quot;') + ')">' + (selected ? '✓ ' : '+ ') + esc(skill) + '</div>';
+  });
+  html += '</div>';
+  document.getElementById('skillSuggestions').innerHTML = html;
+}
+
 function goStep(n){
   currentStep = n;
   STEPS.forEach(function(s, i){
     document.getElementById('step-' + s).style.display = i === n ? 'block' : 'none';
   });
   renderTabs();
+  if (n === 3) renderSkillSuggestions(); // Skills step - refresh suggestions based on whatever role was entered
   window.scrollTo(0, 0);
 }
 
-function addEducation(){
+function addEducation(values){
   eduCount++;
   var id = 'edu' + eduCount;
+  var v = values || {};
   var div = document.createElement('div');
   div.className = 'entry-block';
   div.id = id;
   div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
-    '<div class="field"><label>Degree / Course</label><input type="text" class="edu-degree" placeholder="e.g. B.Com"></div>' +
-    '<div class="field-row"><div class="field"><label>Institution</label><input type="text" class="edu-institution" placeholder="e.g. Osmania University"></div>' +
-    '<div class="field"><label>Year</label><input type="text" class="edu-year" placeholder="e.g. 2024"></div></div>';
+    '<div class="field"><label>Degree / Course</label><input type="text" class="edu-degree" placeholder="e.g. B.Com" value="' + esc(v.degree) + '"></div>' +
+    '<div class="field-row"><div class="field"><label>Institution</label><input type="text" class="edu-institution" placeholder="e.g. Osmania University" value="' + esc(v.institution) + '"></div>' +
+    '<div class="field"><label>Year</label><input type="text" class="edu-year" placeholder="e.g. 2024" value="' + esc(v.year) + '"></div></div>';
   document.getElementById('educationList').appendChild(div);
 }
 
-function addExperience(){
+function addExperience(values){
   expCount++;
   var id = 'exp' + expCount;
+  var v = values || {};
   var div = document.createElement('div');
   div.className = 'entry-block';
   div.id = id;
   div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
-    '<div class="field-row"><div class="field"><label>Role / Title</label><input type="text" class="exp-title" placeholder="e.g. Shop Assistant"></div>' +
-    '<div class="field"><label>Organization</label><input type="text" class="exp-org" placeholder="e.g. Local Store"></div></div>' +
-    '<div class="field"><label>Duration</label><input type="text" class="exp-duration" placeholder="e.g. Jan 2023 - Jun 2023"></div>' +
-    '<div class="field"><label>What did you do? (plain words, any language)</label><textarea class="exp-rough" placeholder="e.g. helped customers, did billing, managed stock"></textarea></div>';
+    '<div class="field-row"><div class="field"><label>Role / Title</label><input type="text" class="exp-title" placeholder="e.g. Shop Assistant" value="' + esc(v.title) + '"></div>' +
+    '<div class="field"><label>Organization</label><input type="text" class="exp-org" placeholder="e.g. Local Store" value="' + esc(v.org) + '"></div></div>' +
+    '<div class="field"><label>Duration</label><input type="text" class="exp-duration" placeholder="e.g. Jan 2023 - Jun 2023" value="' + esc(v.duration) + '"></div>' +
+    '<div class="field"><label>What did you do? (plain words, any language)</label><textarea class="exp-rough" placeholder="e.g. helped customers, did billing, managed stock">' + esc(v.rough_description) + '</textarea></div>';
   document.getElementById('experienceList').appendChild(div);
+}
+
+function handleUpload(input){
+  var file = input.files[0];
+  var statusEl = document.getElementById('uploadStatus');
+  if (!file) return;
+  statusEl.textContent = 'Reading your resume...';
+  statusEl.className = 'upload-status';
+
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var base64 = e.target.result.split(',')[1];
+    fetch(BACKEND + '/api/resume-parse', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({file_base64: base64, file_mime: file.type || 'application/pdf'})
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (!data.ok) {
+          statusEl.textContent = data.error || 'Could not read this file.';
+          statusEl.className = 'upload-status err';
+          return;
+        }
+        // Pre-fill everything into the SAME editable form - never a
+        // separate read-only view, so the person can review and correct
+        // anything (including things like an obviously-wrong year) before
+        // generating the final PDF.
+        document.getElementById('pName').value = data.name || '';
+        document.getElementById('pPhone').value = data.phone || '';
+        document.getElementById('pEmail').value = data.email || '';
+        document.getElementById('pCity').value = data.city || '';
+        document.getElementById('pSummary').value = data.summary || '';
+        document.getElementById('pSkills').value = (data.skills || []).join(', ');
+
+        document.getElementById('educationList').innerHTML = '';
+        (data.education || []).forEach(function(edu){ addEducation(edu); });
+        if (!(data.education || []).length) addEducation();
+
+        document.getElementById('experienceList').innerHTML = '';
+        (data.experience || []).forEach(function(exp){ addExperience(exp); });
+        if (!(data.experience || []).length) addExperience();
+
+        statusEl.textContent = '✅ Pre-filled! Review each step and edit anything before generating.';
+        statusEl.className = 'upload-status ok';
+        goStep(0);
+      })
+      .catch(function(){
+        statusEl.textContent = 'Could not reach the server — please try again.';
+        statusEl.className = 'upload-status err';
+      });
+  };
+  reader.readAsDataURL(file);
 }
 
 function collectFormData(){
@@ -278,11 +423,11 @@ function buildPdf(data, summary, experience){
     lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight; });
   }
   function sectionHeading(text){
-    y += 6; checkPageBreak(20);
-    addWrapped(text.toUpperCase(), 11, 'bold', '#0D1117', 14);
-    pdf.setDrawColor('#D4A017'); pdf.setLineWidth(1.2);
-    pdf.line(margin, y - 8, pageWidth - margin, y - 8);
-    y += 4;
+    y += 8; checkPageBreak(22);
+    addWrapped(text.toUpperCase(), 11.5, 'bold', '#0D9488', 15);
+    pdf.setDrawColor('#D4A017'); pdf.setLineWidth(1.4);
+    pdf.line(margin, y - 9, pageWidth - margin, y - 9);
+    y += 5;
   }
 
   addWrapped(data.name || 'Your Name', 20, 'bold', '#0D1117', 24);
