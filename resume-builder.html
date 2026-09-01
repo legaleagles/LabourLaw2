@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Resume Builder — Simple &amp; Quick | LawSticker AI</title>
+<meta name="description" content="Build a professional resume for free, in minutes. No design skills needed — AI helps polish your experience into professional language.">
+<link rel="canonical" href="https://lawsticker-ai.com/resume-builder.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--navy:#0D1117;--navy2:#161B27;--gold:#D4A017;--gold-l:#F5D76E;--teal:#0D9488;--cream:#FEFCF5;--mist:#F3F4F6;--silver:#8B95A8;--ink:#1A1208;--red:#B91C1C;--green:#059669;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;}
+
+.hero{text-align:center;margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--navy);}
+.hero p{font-size:13px;color:#5C6B63;margin-top:6px;line-height:1.6;}
+
+.step-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+.step-tab{flex-shrink:0;font-size:11.5px;font-weight:700;padding:8px 14px;border-radius:20px;background:var(--mist);color:var(--silver);cursor:pointer;white-space:nowrap;}
+.step-tab.active{background:var(--navy);color:var(--gold-l);}
+.step-tab.done{background:#D1FAE5;color:var(--green);}
+
+.card{background:#fff;border:1.5px solid var(--mist);border-radius:16px;padding:18px;margin-bottom:16px;}
+.card h2{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:4px;}
+.card-sub{font-size:11.5px;color:var(--silver);margin-bottom:14px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11.5px;font-weight:700;margin-bottom:5px;}
+.field input,.field textarea{width:100%;padding:10px;border:1.5px solid var(--mist);border-radius:9px;font-size:13.5px;font-family:inherit;}
+.field textarea{resize:vertical;min-height:60px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.entry-block{background:var(--mist);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;}
+.entry-remove{position:absolute;top:10px;right:10px;background:#fff;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:11px;padding:3px 8px;cursor:pointer;}
+.add-entry-btn{width:100%;background:#fff;border:1.5px dashed var(--gold);color:var(--navy);font-weight:700;font-size:12.5px;padding:10px;border-radius:9px;cursor:pointer;margin-top:4px;}
+
+.polish-btn{background:linear-gradient(135deg,var(--teal),#0B7A6F);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:11.5px;font-weight:700;cursor:pointer;margin-top:6px;}
+.polish-btn:disabled{opacity:.6;}
+.polished-preview{background:#F0FDFA;border:1px solid #99F6E4;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.6;display:none;}
+.polished-preview ul{margin-left:16px;margin-top:4px;}
+
+.nav-buttons{display:flex;gap:8px;margin-top:6px;}
+.nav-btn{flex:1;padding:12px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;border:none;}
+.nav-btn.next{background:var(--navy);color:var(--gold-l);}
+.nav-btn.back{background:var(--mist);color:var(--ink);}
+
+.generate-btn{width:100%;background:linear-gradient(135deg,var(--gold),#B8860B);color:var(--navy);border:none;border-radius:12px;padding:15px;font-weight:900;font-size:15px;cursor:pointer;margin-top:10px;}
+.generate-btn:disabled{opacity:.6;}
+.msg{font-size:12px;text-align:center;margin-top:8px;}
+.msg.err{color:var(--red);}
+.msg.ok{color:var(--green);}
+
+.disclaimer{font-size:10.5px;color:var(--silver);text-align:center;margin-top:18px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav><a class="nav-brand" href="/">⚖️ LawSticker AI</a></nav>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>📄 Free Resume Builder</h1>
+    <p>No design skills needed. Fill in your details in plain language — AI helps polish it into a professional resume. Nothing you enter is saved anywhere.</p>
+  </div>
+
+  <div class="step-tabs" id="stepTabs"></div>
+
+  <div id="step-personal" class="step-panel">
+    <div class="card">
+      <h2>Personal Details</h2>
+      <div class="card-sub">This appears at the top of your resume</div>
+      <div class="field"><label>Full Name</label><input type="text" id="pName" placeholder="e.g. Priya Reddy"></div>
+      <div class="field-row">
+        <div class="field"><label>Phone</label><input type="tel" id="pPhone" placeholder="9876543210"></div>
+        <div class="field"><label>Email</label><input type="text" id="pEmail" placeholder="you@email.com"></div>
+      </div>
+      <div class="field"><label>City</label><input type="text" id="pCity" placeholder="e.g. Hyderabad"></div>
+      <div class="field"><label>Target Role (optional — helps AI tailor wording)</label><input type="text" id="pRole" placeholder="e.g. Customer Support, Junior Accountant"></div>
+    </div>
+    <div class="nav-buttons"><button class="nav-btn next" onclick="goStep(1)">Next: Education →</button></div>
+  </div>
+
+  <div id="step-education" class="step-panel" style="display:none;">
+    <div class="card">
+      <h2>Education</h2>
+      <div class="card-sub">Add your qualifications, most recent first</div>
+      <div id="educationList"></div>
+      <button class="add-entry-btn" onclick="addEducation()">+ Add Education</button>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn back" onclick="goStep(0)">← Back</button>
+      <button class="nav-btn next" onclick="goStep(2)">Next: Experience →</button>
+    </div>
+  </div>
+
+  <div id="step-experience" class="step-panel" style="display:none;">
+    <div class="card">
+      <h2>Work / Internship Experience</h2>
+      <div class="card-sub">Write it in your own simple words — AI will polish it professionally</div>
+      <div id="experienceList"></div>
+      <button class="add-entry-btn" onclick="addExperience()">+ Add Experience</button>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn back" onclick="goStep(1)">← Back</button>
+      <button class="nav-btn next" onclick="goStep(3)">Next: Skills →</button>
+    </div>
+  </div>
+
+  <div id="step-skills" class="step-panel" style="display:none;">
+    <div class="card">
+      <h2>Skills</h2>
+      <div class="card-sub">Separate with commas</div>
+      <div class="field"><textarea id="pSkills" placeholder="e.g. MS Excel, Communication, Tally, Customer Service"></textarea></div>
+      <div class="field"><label>Professional Summary (optional — leave blank and AI will write one)</label><textarea id="pSummary" placeholder="A few lines about yourself, in your own words..."></textarea></div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn back" onclick="goStep(2)">← Back</button>
+    </div>
+    <button class="generate-btn" id="generateBtn" onclick="generateResume()">✨ Polish with AI &amp; Generate PDF</button>
+    <div class="msg" id="genMsg"></div>
+  </div>
+
+  <div class="disclaimer">Free forever, no login, nothing you enter is stored. This gives you a solid, properly formatted starting point — worth reviewing and adjusting for each specific job you apply to.</div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var STEPS = ['personal', 'education', 'experience', 'skills'];
+var currentStep = 0;
+var eduCount = 0, expCount = 0;
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function renderTabs(){
+  var labels = ['Personal', 'Education', 'Experience', 'Skills'];
+  var html = '';
+  labels.forEach(function(label, i){
+    var cls = i === currentStep ? 'active' : (i < currentStep ? 'done' : '');
+    html += '<div class="step-tab ' + cls + '" onclick="goStep(' + i + ')">' + (i < currentStep ? '✓ ' : '') + esc(label) + '</div>';
+  });
+  document.getElementById('stepTabs').innerHTML = html;
+}
+
+function goStep(n){
+  currentStep = n;
+  STEPS.forEach(function(s, i){
+    document.getElementById('step-' + s).style.display = i === n ? 'block' : 'none';
+  });
+  renderTabs();
+  window.scrollTo(0, 0);
+}
+
+function addEducation(){
+  eduCount++;
+  var id = 'edu' + eduCount;
+  var div = document.createElement('div');
+  div.className = 'entry-block';
+  div.id = id;
+  div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
+    '<div class="field"><label>Degree / Course</label><input type="text" class="edu-degree" placeholder="e.g. B.Com"></div>' +
+    '<div class="field-row"><div class="field"><label>Institution</label><input type="text" class="edu-institution" placeholder="e.g. Osmania University"></div>' +
+    '<div class="field"><label>Year</label><input type="text" class="edu-year" placeholder="e.g. 2024"></div></div>';
+  document.getElementById('educationList').appendChild(div);
+}
+
+function addExperience(){
+  expCount++;
+  var id = 'exp' + expCount;
+  var div = document.createElement('div');
+  div.className = 'entry-block';
+  div.id = id;
+  div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
+    '<div class="field-row"><div class="field"><label>Role / Title</label><input type="text" class="exp-title" placeholder="e.g. Shop Assistant"></div>' +
+    '<div class="field"><label>Organization</label><input type="text" class="exp-org" placeholder="e.g. Local Store"></div></div>' +
+    '<div class="field"><label>Duration</label><input type="text" class="exp-duration" placeholder="e.g. Jan 2023 - Jun 2023"></div>' +
+    '<div class="field"><label>What did you do? (plain words, any language)</label><textarea class="exp-rough" placeholder="e.g. helped customers, did billing, managed stock"></textarea></div>';
+  document.getElementById('experienceList').appendChild(div);
+}
+
+function collectFormData(){
+  var education = Array.from(document.querySelectorAll('#educationList .entry-block')).map(function(el){
+    return {
+      degree: el.querySelector('.edu-degree').value.trim(),
+      institution: el.querySelector('.edu-institution').value.trim(),
+      year: el.querySelector('.edu-year').value.trim(),
+    };
+  }).filter(function(e){ return e.degree || e.institution; });
+
+  var experience = Array.from(document.querySelectorAll('#experienceList .entry-block')).map(function(el){
+    return {
+      title: el.querySelector('.exp-title').value.trim(),
+      org: el.querySelector('.exp-org').value.trim(),
+      duration: el.querySelector('.exp-duration').value.trim(),
+      rough_description: el.querySelector('.exp-rough').value.trim(),
+    };
+  }).filter(function(e){ return e.title || e.rough_description; });
+
+  var skills = document.getElementById('pSkills').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+
+  return {
+    name: document.getElementById('pName').value.trim(),
+    phone: document.getElementById('pPhone').value.trim(),
+    email: document.getElementById('pEmail').value.trim(),
+    city: document.getElementById('pCity').value.trim(),
+    target_role: document.getElementById('pRole').value.trim(),
+    summary: document.getElementById('pSummary').value.trim(),
+    education: education,
+    experience: experience,
+    skills: skills,
+  };
+}
+
+function generateResume(){
+  var data = collectFormData();
+  var msgEl = document.getElementById('genMsg');
+  if (!data.name) {
+    msgEl.textContent = 'Please enter your name on the Personal Details step.';
+    msgEl.className = 'msg err';
+    goStep(0);
+    return;
+  }
+  var btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.textContent = 'Polishing with AI...';
+  msgEl.textContent = '';
+
+  fetch(BACKEND + '/api/resume-polish', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: data.name, target_role: data.target_role, summary: data.summary,
+      education: data.education, experience: data.experience, skills: data.skills,
+    })
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(polish){
+      btn.disabled = false;
+      btn.textContent = '✨ Polish with AI & Generate PDF';
+      var finalSummary = data.summary;
+      var finalExperience = data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); });
+
+      if (polish.ok) {
+        finalSummary = polish.summary || data.summary;
+        (polish.experience_bullets || []).forEach(function(pb){
+          if (finalExperience[pb.index]) finalExperience[pb.index].bullets = pb.bullets;
+        });
+      } else {
+        msgEl.textContent = 'AI polish had an issue, generating with your original text instead.';
+        msgEl.className = 'msg err';
+      }
+
+      buildPdf(data, finalSummary, finalExperience);
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = '✨ Polish with AI & Generate PDF';
+      // AI polish failing shouldn't block someone from getting a resume at
+      // all - fall back to generating the PDF with their own original text.
+      buildPdf(data, data.summary, data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); }));
+      msgEl.textContent = 'Could not reach AI polish — generated using your original text instead.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function buildPdf(data, summary, experience){
+  var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+  var margin = 50, y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
+  var maxWidth = pageWidth - margin * 2;
+
+  function checkPageBreak(needed){ if (y + needed > pageHeight - margin) { pdf.addPage(); y = margin; } }
+  function addWrapped(text, size, style, color, lineHeight){
+    pdf.setFont('Helvetica', style || ''); pdf.setFontSize(size); pdf.setTextColor(color || '#111827');
+    var lines = pdf.splitTextToSize(String(text), maxWidth);
+    lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight; });
+  }
+  function sectionHeading(text){
+    y += 6; checkPageBreak(20);
+    addWrapped(text.toUpperCase(), 11, 'bold', '#0D1117', 14);
+    pdf.setDrawColor('#D4A017'); pdf.setLineWidth(1.2);
+    pdf.line(margin, y - 8, pageWidth - margin, y - 8);
+    y += 4;
+  }
+
+  addWrapped(data.name || 'Your Name', 20, 'bold', '#0D1117', 24);
+  var contactLine = [data.phone, data.email, data.city].filter(Boolean).join('  |  ');
+  if (contactLine) addWrapped(contactLine, 9.5, '', '#5C6B63', 14);
+  y += 6;
+
+  if (summary) { sectionHeading('Professional Summary'); addWrapped(summary, 10, '', '#1A1208', 14); }
+
+  if (data.education.length) {
+    sectionHeading('Education');
+    data.education.forEach(function(e){
+      checkPageBreak(15);
+      addWrapped((e.degree || '') + (e.institution ? ' — ' + e.institution : '') + (e.year ? ' (' + e.year + ')' : ''), 10, 'bold', '#1A1208', 14);
+    });
+  }
+
+  if (experience.length) {
+    sectionHeading('Experience');
+    experience.forEach(function(e){
+      checkPageBreak(15);
+      addWrapped((e.title || '') + (e.org ? ' — ' + e.org : ''), 10.5, 'bold', '#1A1208', 14);
+      if (e.duration) addWrapped(e.duration, 9, 'italic', '#5C6B63', 13);
+      var bullets = e.bullets && e.bullets.length ? e.bullets : (e.rough_description ? [e.rough_description] : []);
+      bullets.forEach(function(b){ addWrapped('•  ' + b, 9.5, '', '#1A1208', 13); });
+      y += 4;
+    });
+  }
+
+  if (data.skills.length) { sectionHeading('Skills'); addWrapped(data.skills.join('  •  '), 10, '', '#1A1208', 14); }
+
+  var filename = (data.name || 'resume').replace(/[^a-z0-9]+/gi, '_') + '_Resume.pdf';
+  pdf.save(filename);
+}
+
+addEducation();
+addExperience();
+renderTabs();
+</script>
+</body>
+</html>
