@@ -132,7 +132,20 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
     </div>
     <div class="nav-buttons">
       <button class="nav-btn back" onclick="goStep(1)">← Back</button>
-      <button class="nav-btn next" onclick="goStep(3)">Next: Skills →</button>
+      <button class="nav-btn next" onclick="goStep(3)">Next: Projects →</button>
+    </div>
+  </div>
+
+  <div id="step-projects" class="step-panel" style="display:none;">
+    <div class="card">
+      <h2>Academic / Personal Projects <span style="font-weight:400;color:var(--silver);font-size:11px;">(optional)</span></h2>
+      <div class="card-sub">Especially useful if you're a fresher with limited work experience — leave empty if not relevant</div>
+      <div id="projectsList"></div>
+      <button class="add-entry-btn" onclick="addProject()">+ Add Project</button>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn back" onclick="goStep(2)">← Back</button>
+      <button class="nav-btn next" onclick="goStep(4)">Next: Skills →</button>
     </div>
   </div>
 
@@ -143,9 +156,13 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
       <div id="skillSuggestions"></div>
       <div class="field"><textarea id="pSkills" placeholder="e.g. MS Excel, Communication, Tally, Customer Service"></textarea></div>
       <div class="field"><label>Professional Summary (optional — leave blank and AI will write one)</label><textarea id="pSummary" placeholder="A few lines about yourself, in your own words..."></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Certifications (optional, comma-separated)</label><input type="text" id="pCerts" placeholder="e.g. NPTEL Course, AWS Basics"></div>
+        <div class="field"><label>Languages Known (optional)</label><input type="text" id="pLanguages" placeholder="e.g. English, Telugu, Hindi"></div>
+      </div>
     </div>
     <div class="nav-buttons">
-      <button class="nav-btn back" onclick="goStep(2)">← Back</button>
+      <button class="nav-btn back" onclick="goStep(3)">← Back</button>
     </div>
     <button class="generate-btn" id="generateBtn" onclick="generateResume()">✨ Polish with AI &amp; Generate PDF</button>
     <div class="msg" id="genMsg"></div>
@@ -156,14 +173,14 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
 
 <script>
 var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
-var STEPS = ['personal', 'education', 'experience', 'skills'];
+var STEPS = ['personal', 'education', 'experience', 'projects', 'skills'];
 var currentStep = 0;
 var eduCount = 0, expCount = 0;
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 
 function renderTabs(){
-  var labels = ['Personal', 'Education', 'Experience', 'Skills'];
+  var labels = ['Personal', 'Education', 'Experience', 'Projects', 'Skills'];
   var html = '';
   labels.forEach(function(label, i){
     var cls = i === currentStep ? 'active' : (i < currentStep ? 'done' : '');
@@ -242,7 +259,7 @@ function goStep(n){
     document.getElementById('step-' + s).style.display = i === n ? 'block' : 'none';
   });
   renderTabs();
-  if (n === 3) renderSkillSuggestions(); // Skills step - refresh suggestions based on whatever role was entered
+  if (n === 4) renderSkillSuggestions(); // Skills step - refresh suggestions based on whatever role was entered
   window.scrollTo(0, 0);
 }
 
@@ -256,7 +273,8 @@ function addEducation(values){
   div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
     '<div class="field"><label>Degree / Course</label><input type="text" class="edu-degree" placeholder="e.g. B.Com" value="' + esc(v.degree) + '"></div>' +
     '<div class="field-row"><div class="field"><label>Institution</label><input type="text" class="edu-institution" placeholder="e.g. Osmania University" value="' + esc(v.institution) + '"></div>' +
-    '<div class="field"><label>Year</label><input type="text" class="edu-year" placeholder="e.g. 2024" value="' + esc(v.year) + '"></div></div>';
+    '<div class="field"><label>Year</label><input type="text" class="edu-year" placeholder="e.g. 2024" value="' + esc(v.year) + '"></div></div>' +
+    '<div class="field"><label>Percentage / CGPA (optional)</label><input type="text" class="edu-percentage" placeholder="e.g. 78% or 7.8 CGPA" value="' + esc(v.percentage) + '"></div>';
   document.getElementById('educationList').appendChild(div);
 }
 
@@ -306,6 +324,8 @@ function handleUpload(input){
         document.getElementById('pCity').value = data.city || '';
         document.getElementById('pSummary').value = data.summary || '';
         document.getElementById('pSkills').value = (data.skills || []).join(', ');
+        document.getElementById('pCerts').value = (data.certifications || []).join(', ');
+        document.getElementById('pLanguages').value = (data.languages || []).join(', ');
 
         document.getElementById('educationList').innerHTML = '';
         (data.education || []).forEach(function(edu){ addEducation(edu); });
@@ -314,6 +334,9 @@ function handleUpload(input){
         document.getElementById('experienceList').innerHTML = '';
         (data.experience || []).forEach(function(exp){ addExperience(exp); });
         if (!(data.experience || []).length) addExperience();
+
+        document.getElementById('projectsList').innerHTML = '';
+        (data.projects || []).forEach(function(proj){ addProject(proj); });
 
         statusEl.textContent = '✅ Pre-filled! Review each step and edit anything before generating.';
         statusEl.className = 'upload-status ok';
@@ -327,12 +350,25 @@ function handleUpload(input){
   reader.readAsDataURL(file);
 }
 
+function addProject(values){
+  var v = values || {};
+  var id = 'proj' + (document.querySelectorAll('#projectsList .entry-block').length + 1) + '_' + Date.now();
+  var div = document.createElement('div');
+  div.className = 'entry-block';
+  div.id = id;
+  div.innerHTML = '<button class="entry-remove" onclick="document.getElementById(\'' + id + '\').remove()">Remove</button>' +
+    '<div class="field"><label>Project Title</label><input type="text" class="proj-title" placeholder="e.g. Line Follower Robot" value="' + esc(v.title) + '"></div>' +
+    '<div class="field"><label>What was it about? (plain words)</label><textarea class="proj-rough" placeholder="e.g. built a robot for college project using sensors">' + esc(v.rough_description) + '</textarea></div>';
+  document.getElementById('projectsList').appendChild(div);
+}
+
 function collectFormData(){
   var education = Array.from(document.querySelectorAll('#educationList .entry-block')).map(function(el){
     return {
       degree: el.querySelector('.edu-degree').value.trim(),
       institution: el.querySelector('.edu-institution').value.trim(),
       year: el.querySelector('.edu-year').value.trim(),
+      percentage: el.querySelector('.edu-percentage').value.trim(),
     };
   }).filter(function(e){ return e.degree || e.institution; });
 
@@ -345,7 +381,16 @@ function collectFormData(){
     };
   }).filter(function(e){ return e.title || e.rough_description; });
 
+  var projects = Array.from(document.querySelectorAll('#projectsList .entry-block')).map(function(el){
+    return {
+      title: el.querySelector('.proj-title').value.trim(),
+      rough_description: el.querySelector('.proj-rough').value.trim(),
+    };
+  }).filter(function(p){ return p.title || p.rough_description; });
+
   var skills = document.getElementById('pSkills').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  var certifications = document.getElementById('pCerts').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  var languages = document.getElementById('pLanguages').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
 
   return {
     name: document.getElementById('pName').value.trim(),
@@ -356,7 +401,10 @@ function collectFormData(){
     summary: document.getElementById('pSummary').value.trim(),
     education: education,
     experience: experience,
+    projects: projects,
     skills: skills,
+    certifications: certifications,
+    languages: languages,
   };
 }
 
@@ -378,7 +426,7 @@ function generateResume(){
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       name: data.name, target_role: data.target_role, summary: data.summary,
-      education: data.education, experience: data.experience, skills: data.skills,
+      education: data.education, experience: data.experience, skills: data.skills, projects: data.projects,
     })
   })
     .then(function(r){ return r.json(); })
@@ -387,61 +435,93 @@ function generateResume(){
       btn.textContent = '✨ Polish with AI & Generate PDF';
       var finalSummary = data.summary;
       var finalExperience = data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); });
+      var finalProjects = data.projects.map(function(p){ return Object.assign({}, p, {bullets: null}); });
 
       if (polish.ok) {
         finalSummary = polish.summary || data.summary;
         (polish.experience_bullets || []).forEach(function(pb){
           if (finalExperience[pb.index]) finalExperience[pb.index].bullets = pb.bullets;
         });
+        (polish.project_bullets || []).forEach(function(pb){
+          if (finalProjects[pb.index]) finalProjects[pb.index].bullets = pb.bullets;
+        });
       } else {
         msgEl.textContent = 'AI polish had an issue, generating with your original text instead.';
         msgEl.className = 'msg err';
       }
 
-      buildPdf(data, finalSummary, finalExperience);
+      buildPdf(data, finalSummary, finalExperience, finalProjects);
     })
     .catch(function(){
       btn.disabled = false;
       btn.textContent = '✨ Polish with AI & Generate PDF';
       // AI polish failing shouldn't block someone from getting a resume at
       // all - fall back to generating the PDF with their own original text.
-      buildPdf(data, data.summary, data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); }));
+      buildPdf(data, data.summary,
+        data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); }),
+        data.projects.map(function(p){ return Object.assign({}, p, {bullets: null}); }));
       msgEl.textContent = 'Could not reach AI polish — generated using your original text instead.';
       msgEl.className = 'msg err';
     });
 }
 
-function buildPdf(data, summary, experience){
+function estimateContentVolume(data, summary, experience, projects){
+  // Rough character count across everything that will actually render -
+  // used to choose spacing generosity, not to decide what content to
+  // show. A genuinely short resume (like a fresher with one internship
+  // and no projects) should still look intentionally, professionally
+  // formatted on one page - generous native spacing does that honestly,
+  // unlike inventing content to hit a word count.
+  var chars = (summary || '').length;
+  experience.forEach(function(e){ (e.bullets || [e.rough_description] || []).forEach(function(b){ chars += (b || '').length; }); });
+  projects.forEach(function(p){ (p.bullets || [p.rough_description] || []).forEach(function(b){ chars += (b || '').length; }); });
+  chars += data.skills.join('').length + data.certifications.join('').length + data.languages.join('').length;
+  chars += data.education.length * 40;
+  return chars;
+}
+
+function buildPdf(data, summary, experience, projects){
   var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
-  var margin = 50, y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
+
+  // Adaptive spacing: thin real content gets more generous native
+  // spacing (bigger margins, more line/section breathing room, slightly
+  // larger body text) so it fills the page as an intentional, confident
+  // one-page layout - not by padding the words themselves.
+  var volume = estimateContentVolume(data, summary, experience, projects);
+  var spacing = volume < 500 ? 1.55 : volume < 1000 ? 1.25 : 1.0;
+  var bodySize = volume < 500 ? 11 : 10;
+
+  var margin = 50 * (spacing > 1.3 ? 1.15 : 1), y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
   var maxWidth = pageWidth - margin * 2;
 
   function checkPageBreak(needed){ if (y + needed > pageHeight - margin) { pdf.addPage(); y = margin; } }
   function addWrapped(text, size, style, color, lineHeight){
     pdf.setFont('Helvetica', style || ''); pdf.setFontSize(size); pdf.setTextColor(color || '#111827');
     var lines = pdf.splitTextToSize(String(text), maxWidth);
-    lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight; });
+    lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight * spacing; });
   }
   function sectionHeading(text){
-    y += 8; checkPageBreak(22);
+    y += 8 * spacing; checkPageBreak(22);
     addWrapped(text.toUpperCase(), 11.5, 'bold', '#0D9488', 15);
     pdf.setDrawColor('#D4A017'); pdf.setLineWidth(1.4);
-    pdf.line(margin, y - 9, pageWidth - margin, y - 9);
-    y += 5;
+    pdf.line(margin, y - 9 * spacing, pageWidth - margin, y - 9 * spacing);
+    y += 5 * spacing;
   }
 
-  addWrapped(data.name || 'Your Name', 20, 'bold', '#0D1117', 24);
+  addWrapped(data.name || 'Your Name', spacing > 1.3 ? 23 : 20, 'bold', '#0D1117', 24);
   var contactLine = [data.phone, data.email, data.city].filter(Boolean).join('  |  ');
   if (contactLine) addWrapped(contactLine, 9.5, '', '#5C6B63', 14);
-  y += 6;
+  y += 6 * spacing;
 
-  if (summary) { sectionHeading('Professional Summary'); addWrapped(summary, 10, '', '#1A1208', 14); }
+  if (summary) { sectionHeading('Professional Summary'); addWrapped(summary, bodySize, '', '#1A1208', 14); }
 
   if (data.education.length) {
     sectionHeading('Education');
     data.education.forEach(function(e){
       checkPageBreak(15);
-      addWrapped((e.degree || '') + (e.institution ? ' — ' + e.institution : '') + (e.year ? ' (' + e.year + ')' : ''), 10, 'bold', '#1A1208', 14);
+      var line = (e.degree || '') + (e.institution ? ' — ' + e.institution : '') + (e.year ? ' (' + e.year + ')' : '');
+      addWrapped(line, bodySize, 'bold', '#1A1208', 14);
+      if (e.percentage) addWrapped(e.percentage, 9, '', '#5C6B63', 13);
     });
   }
 
@@ -449,15 +529,28 @@ function buildPdf(data, summary, experience){
     sectionHeading('Experience');
     experience.forEach(function(e){
       checkPageBreak(15);
-      addWrapped((e.title || '') + (e.org ? ' — ' + e.org : ''), 10.5, 'bold', '#1A1208', 14);
+      addWrapped((e.title || '') + (e.org ? ' — ' + e.org : ''), bodySize + 0.5, 'bold', '#1A1208', 14);
       if (e.duration) addWrapped(e.duration, 9, 'italic', '#5C6B63', 13);
       var bullets = e.bullets && e.bullets.length ? e.bullets : (e.rough_description ? [e.rough_description] : []);
-      bullets.forEach(function(b){ addWrapped('•  ' + b, 9.5, '', '#1A1208', 13); });
-      y += 4;
+      bullets.forEach(function(b){ addWrapped('•  ' + b, bodySize - 0.5, '', '#1A1208', 13); });
+      y += 4 * spacing;
     });
   }
 
-  if (data.skills.length) { sectionHeading('Skills'); addWrapped(data.skills.join('  •  '), 10, '', '#1A1208', 14); }
+  if (projects.length) {
+    sectionHeading('Projects');
+    projects.forEach(function(p){
+      checkPageBreak(15);
+      addWrapped(p.title || '', bodySize, 'bold', '#1A1208', 14);
+      var bullets = p.bullets && p.bullets.length ? p.bullets : (p.rough_description ? [p.rough_description] : []);
+      bullets.forEach(function(b){ addWrapped('•  ' + b, bodySize - 0.5, '', '#1A1208', 13); });
+      y += 4 * spacing;
+    });
+  }
+
+  if (data.skills.length) { sectionHeading('Skills'); addWrapped(data.skills.join('  •  '), bodySize, '', '#1A1208', 14); }
+  if (data.certifications.length) { sectionHeading('Certifications'); addWrapped(data.certifications.join('  •  '), bodySize, '', '#1A1208', 14); }
+  if (data.languages.length) { sectionHeading('Languages'); addWrapped(data.languages.join('  •  '), bodySize, '', '#1A1208', 14); }
 
   var filename = (data.name || 'resume').replace(/[^a-z0-9]+/gi, '_') + '_Resume.pdf';
   pdf.save(filename);
@@ -465,6 +558,7 @@ function buildPdf(data, summary, experience){
 
 addEducation();
 addExperience();
+addProject();
 renderTabs();
 </script>
 </body>
