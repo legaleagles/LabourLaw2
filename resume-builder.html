@@ -73,6 +73,16 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
 .msg.ok{color:var(--green);}
 
 .disclaimer{font-size:10.5px;color:var(--silver);text-align:center;margin-top:18px;line-height:1.6;}
+
+.extras-section{display:none;margin-top:18px;}
+.extras-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);text-align:center;margin-bottom:4px;}
+.extras-sub{font-size:12px;color:var(--silver);text-align:center;margin-bottom:14px;}
+.match-assessment{background:var(--mist);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-bottom:12px;}
+.missing-skills-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.suggestion-item{background:#F0FDFA;border-left:3px solid var(--teal);border-radius:6px;padding:8px 10px;font-size:12px;line-height:1.5;margin-bottom:8px;}
+.cover-letter-output{background:var(--mist);border-radius:10px;padding:14px;font-size:12.5px;line-height:1.7;white-space:pre-wrap;margin-top:10px;margin-bottom:10px;}
+.secondary-btn{width:100%;background:var(--navy);color:var(--gold-l);border:none;border-radius:9px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;margin-top:6px;}
+.secondary-btn:disabled{opacity:.6;}
 </style>
 </head>
 <body>
@@ -166,6 +176,34 @@ nav{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
     </div>
     <button class="generate-btn" id="generateBtn" onclick="generateResume()">✨ Polish with AI &amp; Generate PDF</button>
     <div class="msg" id="genMsg"></div>
+  </div>
+
+  <div class="extras-section" id="extrasSection">
+    <div class="extras-title">🎯 Tailor It Further</div>
+    <div class="extras-sub">Optional — use your just-generated resume for a specific job application</div>
+
+    <div class="card">
+      <h2>Job Description Match</h2>
+      <div class="card-sub">Paste a job posting to see how well your resume fits, and what's missing</div>
+      <div class="field"><textarea id="jobDescription" placeholder="Paste the job description here..." style="min-height:90px;"></textarea></div>
+      <button class="secondary-btn" id="matchBtn" onclick="analyzeJobMatch()">Analyze Match</button>
+      <div class="msg" id="matchMsg"></div>
+      <div id="matchResults" style="margin-top:12px;display:none;">
+        <div class="match-assessment" id="matchAssessment"></div>
+        <div style="font-size:11.5px;font-weight:700;margin-bottom:6px;" id="missingSkillsLabel"></div>
+        <div class="missing-skills-row" id="missingSkillsRow"></div>
+        <div id="suggestionsArea"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Cover Letter</h2>
+      <div class="card-sub">Generated from your real resume content — paste a job description above first for best results, or leave blank for a general one</div>
+      <button class="secondary-btn" id="coverLetterBtn" onclick="generateCoverLetter()">✉️ Generate Cover Letter</button>
+      <div class="msg" id="coverLetterMsg"></div>
+      <div class="cover-letter-output" id="coverLetterOutput" style="display:none;"></div>
+      <button class="add-entry-btn" id="downloadCoverBtn" style="display:none;" onclick="downloadCoverLetterPdf()">📄 Download Cover Letter (PDF)</button>
+    </div>
   </div>
 
   <div class="disclaimer">Free forever, no login, nothing you enter is stored. This gives you a solid, properly formatted starting point — worth reviewing and adjusting for each specific job you apply to.</div>
@@ -450,19 +488,136 @@ function generateResume(){
         msgEl.className = 'msg err';
       }
 
+      lastGeneratedData = data; lastGeneratedSummary = finalSummary; lastGeneratedExperience = finalExperience;
       buildPdf(data, finalSummary, finalExperience, finalProjects);
+      document.getElementById('extrasSection').style.display = 'block';
     })
     .catch(function(){
       btn.disabled = false;
       btn.textContent = '✨ Polish with AI & Generate PDF';
       // AI polish failing shouldn't block someone from getting a resume at
       // all - fall back to generating the PDF with their own original text.
-      buildPdf(data, data.summary,
-        data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); }),
+      var fallbackExperience = data.experience.map(function(e){ return Object.assign({}, e, {bullets: null}); });
+      lastGeneratedData = data; lastGeneratedSummary = data.summary; lastGeneratedExperience = fallbackExperience;
+      buildPdf(data, data.summary, fallbackExperience,
         data.projects.map(function(p){ return Object.assign({}, p, {bullets: null}); }));
       msgEl.textContent = 'Could not reach AI polish — generated using your original text instead.';
       msgEl.className = 'msg err';
+      document.getElementById('extrasSection').style.display = 'block';
     });
+}
+
+var lastGeneratedData = null, lastGeneratedSummary = '', lastGeneratedExperience = [];
+
+function analyzeJobMatch(){
+  var jobDescription = document.getElementById('jobDescription').value.trim();
+  var msgEl = document.getElementById('matchMsg');
+  if (!jobDescription) {
+    msgEl.textContent = 'Please paste a job description first.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  if (!lastGeneratedData) {
+    msgEl.textContent = 'Please generate your resume first.';
+    msgEl.className = 'msg err';
+    return;
+  }
+  var btn = document.getElementById('matchBtn');
+  btn.disabled = true;
+  msgEl.textContent = '';
+
+  fetch(BACKEND + '/api/resume-job-match', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: lastGeneratedData.name, summary: lastGeneratedSummary,
+      education: lastGeneratedData.education, experience: lastGeneratedExperience,
+      skills: lastGeneratedData.skills, job_description: jobDescription,
+    })
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if (!data.ok) {
+        msgEl.textContent = data.error || 'Could not analyze this match.';
+        msgEl.className = 'msg err';
+        return;
+      }
+      document.getElementById('matchAssessment').textContent = data.match_assessment;
+      var missingHtml = '';
+      (data.missing_skills || []).forEach(function(skill){
+        missingHtml += '<div class="skill-chip" onclick="toggleSkillChip(' + JSON.stringify(skill).replace(/"/g, '&quot;') + ')">+ ' + esc(skill) + '</div>';
+      });
+      document.getElementById('missingSkillsLabel').textContent = (data.missing_skills || []).length
+        ? 'Missing skills this job asks for (tap to add for your next generation):' : 'No obviously missing skills detected.';
+      document.getElementById('missingSkillsRow').innerHTML = missingHtml;
+      var suggHtml = '';
+      (data.emphasis_suggestions || []).forEach(function(s){
+        suggHtml += '<div class="suggestion-item">💡 ' + esc(s.suggestion) + '</div>';
+      });
+      document.getElementById('suggestionsArea').innerHTML = suggHtml;
+      document.getElementById('matchResults').style.display = 'block';
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function generateCoverLetter(){
+  if (!lastGeneratedData) {
+    document.getElementById('coverLetterMsg').textContent = 'Please generate your resume first.';
+    document.getElementById('coverLetterMsg').className = 'msg err';
+    return;
+  }
+  var btn = document.getElementById('coverLetterBtn');
+  btn.disabled = true;
+  btn.textContent = 'Writing...';
+  var msgEl = document.getElementById('coverLetterMsg');
+  msgEl.textContent = '';
+
+  fetch(BACKEND + '/api/resume-cover-letter', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: lastGeneratedData.name, target_role: lastGeneratedData.target_role, summary: lastGeneratedSummary,
+      experience: lastGeneratedExperience, skills: lastGeneratedData.skills,
+      job_description: document.getElementById('jobDescription').value.trim(),
+    })
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      btn.textContent = '✉️ Generate Cover Letter';
+      if (!data.ok) {
+        msgEl.textContent = data.error || 'Could not generate a cover letter.';
+        msgEl.className = 'msg err';
+        return;
+      }
+      window.__coverLetterText = data.cover_letter;
+      document.getElementById('coverLetterOutput').textContent = data.cover_letter;
+      document.getElementById('coverLetterOutput').style.display = 'block';
+      document.getElementById('downloadCoverBtn').style.display = 'block';
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = '✉️ Generate Cover Letter';
+      msgEl.textContent = 'Could not reach the server — please try again.';
+      msgEl.className = 'msg err';
+    });
+}
+
+function downloadCoverLetterPdf(){
+  var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+  var margin = 60, y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
+  var maxWidth = pageWidth - margin * 2;
+  pdf.setFont('Helvetica', ''); pdf.setFontSize(11); pdf.setTextColor('#1A1208');
+  var lines = pdf.splitTextToSize(window.__coverLetterText || '', maxWidth);
+  lines.forEach(function(line){
+    if (y + 16 > pageHeight - margin) { pdf.addPage(); y = margin; }
+    pdf.text(line, margin, y); y += 16;
+  });
+  var filename = (lastGeneratedData && lastGeneratedData.name ? lastGeneratedData.name.replace(/[^a-z0-9]+/gi, '_') : 'cover_letter') + '_Cover_Letter.pdf';
+  pdf.save(filename);
 }
 
 function estimateContentVolume(data, summary, experience, projects){
