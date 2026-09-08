@@ -684,11 +684,11 @@ gtag('config', 'G-TJXHVW6XCL');
 
     <div class="scam-bulletin">
       <div class="sb-top">
-        <div class="sb-badge"><span class="sb-badge-dot"></span> Live Today</div>
+        <div class="sb-badge" id="sbLiveBadge"><span class="sb-badge-dot"></span> Live Today</div>
       </div>
       <div class="ai-refresh-line" id="scamRefreshLine"></div>
-      <div class="sb-heading">🛡️ Today's Scam Bulletin</div>
-      <div class="sb-sub">3 real scams uncovered today — see exactly how they worked</div>
+      <div class="sb-heading" id="sbHeading">🛡️ Today's Scam Bulletin</div>
+      <div class="sb-sub" id="sbSub">3 real scams uncovered today — see exactly how they worked</div>
       <div class="sb-stories" id="scamBulletinStories">
         <div class="sb-loading">Loading today's stories…</div>
       </div>
@@ -2134,6 +2134,22 @@ fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/pulse')
     var lang = (L === 'te' || L === 'hi') ? L : 'en';
     var container = document.getElementById('scamBulletinStories');
     if (!container) return;
+
+    // The badge/heading/subtitle used to be hardcoded "Live Today" text
+    // regardless of whether the content was actually from today - showing
+    // a false "live" claim next to a correctly-dated but much older
+    // timestamp underneath it. Now genuinely reflects freshness.
+    var liveBadge = document.getElementById('sbLiveBadge');
+    var heading = document.getElementById('sbHeading');
+    var sub = document.getElementById('sbSub');
+    if (liveBadge) liveBadge.innerHTML = scamPicks.hasToday
+      ? '<span class="sb-badge-dot"></span> Live Today'
+      : '<span class="sb-badge-dot" style="background:#9CA3AF;"></span> Recent Alerts';
+    if (heading) heading.textContent = scamPicks.hasToday ? "🛡️ Today's Scam Bulletin" : '🛡️ Scam Bulletin';
+    if (sub) sub.textContent = scamPicks.hasToday
+      ? '3 real scams uncovered today — see exactly how they worked'
+      : 'Recent real scams — see exactly how they worked';
+
     container.innerHTML = scamPicks.picks.map(function(s, i){
       var title = s['title_' + lang] || s.title_en || s.title || '';
       var body  = s['story_' + lang] || s.story_en || s.anonymized_story || '';
