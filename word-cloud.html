@@ -93,6 +93,17 @@ canvas{max-width:100%;}
       <div class="option-chip active" data-size="varied" onclick="selectSizing('varied')">Varied Sizes</div>
       <div class="option-chip" data-size="equal" onclick="selectSizing('equal')">Equal Sizes</div>
     </div>
+    <div class="option-row" id="shapeOptions">
+      <div class="option-chip active" data-shape="oval" onclick="selectShape('oval')">Oval (Default)</div>
+      <div class="option-chip" data-shape="circle" onclick="selectShape('circle')">Circle</div>
+      <div class="option-chip" data-shape="heart" onclick="selectShape('heart')">Heart</div>
+      <div class="option-chip" data-shape="star" onclick="selectShape('star')">Star</div>
+      <div class="option-chip" data-shape="custom" onclick="selectShape('custom')">Custom Image</div>
+    </div>
+    <div class="field-row" id="customShapeRow" style="display:none;">
+      <label class="upload-label">🖼️ Upload Shape Image<input type="file" id="shapeFileInput" accept="image/*" onchange="handleShapeUpload(this)"></label>
+      <span class="count-pill" id="shapeStatusPill">No image uploaded</span>
+    </div>
 
     <button class="generate-btn" id="generateBtn" onclick="generateCloud()">☁️ Generate</button>
     <div class="msg" id="genMsg"></div>
@@ -190,6 +201,162 @@ function selectSizing(sizing){
   document.querySelector('#sizeOptions [data-size="' + sizing + '"]').classList.add('active');
 }
 
+var selectedShape = 'oval';
+var customShapeImage = null;
+
+function selectShape(shape){
+  selectedShape = shape;
+  document.querySelectorAll('#shapeOptions .option-chip').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelector('#shapeOptions [data-shape="' + shape + '"]').classList.add('active');
+  document.getElementById('customShapeRow').style.display = shape === 'custom' ? 'flex' : 'none';
+}
+
+function handleShapeUpload(input){
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      customShapeImage = img;
+      document.getElementById('shapeStatusPill').textContent = '✅ ' + file.name;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Builds a boolean "inside the shape" mask at canvas resolution. Presets
+// are drawn as simple vector paths; custom images are drawn scaled/centered
+// and thresholded - if the image has real transparency, alpha decides
+// inside/outside; otherwise darkness does (handles both a transparent PNG
+// silhouette and a plain white-background image the same way).
+function buildShapeMask(shape, width, height, customImg){
+  var maskCanvas = document.createElement('canvas');
+  maskCanvas.width = width; maskCanvas.height = height;
+  var mctx = maskCanvas.getContext('2d');
+  mctx.clearRect(0, 0, width, height);
+
+  var usesAlpha = false;
+
+  if (shape === 'circle') {
+    mctx.fillStyle = '#000';
+    mctx.beginPath();
+    mctx.arc(width/2, height/2, Math.min(width,height)/2 - 10, 0, Math.PI*2);
+    mctx.fill();
+  } else if (shape === 'heart') {
+    mctx.fillStyle = '#000';
+    var cx = width/2, cy = height/2 - 30, s = Math.min(width,height)/2.6;
+    mctx.beginPath();
+    mctx.moveTo(cx, cy + s*0.9);
+    mctx.bezierCurveTo(cx - s*1.6, cy - s*0.5, cx - s*0.5, cy - s*1.6, cx, cy - s*0.5);
+    mctx.bezierCurveTo(cx + s*0.5, cy - s*1.6, cx + s*1.6, cy - s*0.5, cx, cy + s*0.9);
+    mctx.closePath();
+    mctx.fill();
+  } else if (shape === 'star') {
+    mctx.fillStyle = '#000';
+    var scx = width/2, scy = height/2, outerR = Math.min(width,height)/2.2, innerR = outerR*0.42;
+    mctx.beginPath();
+    for (var i = 0; i < 10; i++){
+      var r = (i % 2 === 0) ? outerR : innerR;
+      var angle = (Math.PI/5)*i - Math.PI/2;
+      var px = scx + r*Math.cos(angle), py = scy + r*Math.sin(angle);
+      if (i === 0) mctx.moveTo(px, py); else mctx.lineTo(px, py);
+    }
+    mctx.closePath();
+    mctx.fill();
+  } else if (shape === 'custom' && customImg) {
+    var scale = Math.min(width / customImg.width, height / customImg.height) * 0.9;
+    var dw = customImg.width * scale, dh = customImg.height * scale;
+    mctx.drawImage(customImg, (width-dw)/2, (height-dh)/2, dw, dh);
+    usesAlpha = true; // determined properly below by checking real alpha variance
+  }
+
+  var imgData = mctx.getImageData(0, 0, width, height).data;
+  var mask = new Uint8Array(width * height);
+
+  if (shape === 'custom') {
+    // Detect whether this image actually uses transparency meaningfully;
+    // if not (a plain photo/screenshot with no alpha channel used),
+    // fall back to a brightness threshold instead.
+    var hasRealAlpha = false;
+    for (var p = 3; p < imgData.length; p += 4 * 97){ if (imgData[p] > 10 && imgData[p] < 245){ hasRealAlpha = true; break; } }
+    for (var i2 = 0; i2 < width*height; i2++){
+      var idx = i2*4;
+      var alpha = imgData[idx+3];
+      if (hasRealAlpha) {
+        mask[i2] = alpha > 128 ? 1 : 0;
+      } else {
+        var luminance = 0.299*imgData[idx] + 0.587*imgData[idx+1] + 0.114*imgData[idx+2];
+        mask[i2] = (alpha > 20 && luminance < 200) ? 1 : 0;
+      }
+    }
+  } else {
+    for (var i3 = 0; i3 < width*height; i3++){ mask[i3] = imgData[i3*4+3] > 128 ? 1 : 0; }
+  }
+  return mask;
+}
+
+function isRectInsideMask(mask, width, height, cx, cy, w, h){
+  // Samples the word's bounding-box corners/edges/center rather than every
+  // pixel - a real, deliberate accuracy/speed tradeoff, since checking
+  // every pixel for every placement attempt would be far too slow for an
+  // in-browser tool with hundreds of attempts per word.
+  var points = [
+    [cx, cy], [cx-w/2, cy-h/2], [cx+w/2, cy-h/2], [cx-w/2, cy+h/2], [cx+w/2, cy+h/2],
+    [cx, cy-h/2], [cx, cy+h/2], [cx-w/2, cy], [cx+w/2, cy],
+  ];
+  for (var i = 0; i < points.length; i++){
+    var px = Math.round(points[i][0]), py = Math.round(points[i][1]);
+    if (px < 0 || px >= width || py < 0 || py >= height) return false;
+    if (mask[py*width + px] === 0) return false;
+  }
+  return true;
+}
+
+function rectsOverlap(a, b){
+  return !(a.cx + a.w/2 < b.cx - b.w/2 || a.cx - a.w/2 > b.cx + b.w/2 ||
+           a.cy + a.h/2 < b.cy - b.h/2 || a.cy - a.h/2 > b.cy + b.h/2);
+}
+
+function layoutWordsInShape(words, width, height, mask, ctx){
+  // Biggest words placed first (standard word-cloud practice) - placing
+  // small words first would let them scatter and box out the big ones
+  // that actually need the most room.
+  var sorted = words.slice().sort(function(a,b){ return b.size - a.size; });
+  var placed = [];
+  var skipped = [];
+
+  sorted.forEach(function(word){
+    var size = word.size;
+    var attempts = 0, maxAttempts = 200, shrinkSteps = 0, maxShrinks = 6;
+    var found = false;
+
+    while (!found && shrinkSteps <= maxShrinks) {
+      ctx.font = size + 'px Arial';
+      var metrics = ctx.measureText(word.text);
+      var w = metrics.width, h = size * 1.15;
+
+      while (attempts < maxAttempts) {
+        attempts++;
+        var rx = Math.random() * width, ry = Math.random() * height;
+        if (mask[Math.floor(ry)*width + Math.floor(rx)] === 0) continue; // start from a point actually inside the shape
+        if (!isRectInsideMask(mask, width, height, rx, ry, w, h)) continue;
+        var candidate = { cx: rx, cy: ry, w: w, h: h };
+        var collides = placed.some(function(p){ return rectsOverlap(candidate, p); });
+        if (collides) continue;
+        placed.push({ text: word.text, cx: rx, cy: ry, w: w, h: h, size: size });
+        found = true;
+        break;
+      }
+      if (!found) { size = size * 0.82; shrinkSteps++; attempts = 0; }
+    }
+    if (!found) skipped.push(word.text);
+  });
+
+  return { placed: placed, skipped: skipped };
+}
+
 var THEMES = {
   gold: ['#0D1117', '#D4A017', '#8B6914', '#374151', '#B8860B'],
   vivid: ['#DC2626', '#059669', '#2563EB', '#D97706', '#7C3AED', '#DB2777'],
@@ -258,19 +425,56 @@ function generateCloud(){
     words = buildWordListFromNames(names);
   }
 
+  if (selectedShape === 'custom' && !customShapeImage) {
+    msgEl.textContent = 'Please upload a shape image first, or choose a different shape.';
+    msgEl.className = 'msg err';
+    return;
+  }
+
   var colors = THEMES[selectedTheme];
   var canvas = document.getElementById('cloudCanvas');
   var width = canvas.width, height = canvas.height;
 
-  d3.layout.cloud()
-    .size([width, height])
-    .words(words)
-    .padding(4)
-    .rotate(function(){ return (Math.random() < 0.75) ? 0 : 90; })
-    .font('Arial')
-    .fontSize(function(d){ return d.size; })
-    .on('end', function(placedWords){ drawCloud(placedWords, width, height, colors); })
-    .start();
+  if (selectedShape === 'oval') {
+    d3.layout.cloud()
+      .size([width, height])
+      .words(words)
+      .padding(4)
+      .rotate(function(){ return (Math.random() < 0.75) ? 0 : 90; })
+      .font('Arial')
+      .fontSize(function(d){ return d.size; })
+      .on('end', function(placedWords){ drawCloud(placedWords, width, height, colors); })
+      .start();
+  } else {
+    var mask = buildShapeMask(selectedShape, width, height, customShapeImage);
+    var tempCtx = canvas.getContext('2d');
+    var result2 = layoutWordsInShape(words, width, height, mask, tempCtx);
+    drawShapedCloud(result2.placed, width, height, colors);
+    if (result2.skipped.length > 0) {
+      msgEl.textContent = (msgEl.textContent ? msgEl.textContent + ' ' : '') +
+        result2.skipped.length + ' name(s) didn\'t fit in this shape and were left out: ' + result2.skipped.slice(0,5).join(', ') + (result2.skipped.length > 5 ? '...' : '');
+      msgEl.className = 'msg err';
+    }
+  }
+}
+
+function drawShapedCloud(placed, width, height, colors){
+  var canvas = document.getElementById('cloudCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, width, height);
+
+  placed.forEach(function(w, i){
+    ctx.font = w.size + 'px Arial';
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(w.text, w.cx, w.cy);
+  });
+
+  document.getElementById('canvasWrap').style.display = 'block';
+  document.getElementById('downloadBtn').style.display = 'block';
 }
 
 function drawCloud(placedWords, width, height, colors){
