@@ -376,13 +376,20 @@ function expandForDensity(words, targetCount){
   // randomized size multiplier per repeat (0.65x-1.35x) so repeated
   // instances of the same word don't all render at an identical, visibly
   // mechanical size - matches how a real dense word-cloud looks organic.
+  //
+  // Also scales longer words down slightly (lengthAdjust) - a 9-letter
+  // name needs a much wider contiguous gap to place than a 5-letter one,
+  // so without this, longer words get systematically skipped more often
+  // as the shape fills up and open space gets scarce, even though every
+  // word was given an equal number of repeat attempts to begin with.
   if (words.length === 0) return words;
   var expanded = [];
   var i = 0;
   while (expanded.length < targetCount) {
     var base = words[i % words.length];
     var sizeMult = 0.65 + Math.random() * 0.7;
-    expanded.push({ text: base.text, size: base.size * sizeMult });
+    var lengthAdjust = Math.min(1, 6 / Math.max(base.text.length, 1));
+    expanded.push({ text: base.text, size: base.size * sizeMult * lengthAdjust });
     i++;
   }
   return expanded;
