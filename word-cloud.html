@@ -371,6 +371,23 @@ function rectsOverlap(a, b){
            a.cy + a.h/2 < b.cy - b.h/2 || a.cy - a.h/2 > b.cy + b.h/2);
 }
 
+function expandForDensity(words, targetCount){
+  // Cycles through the original short list, repeating each entry with a
+  // randomized size multiplier per repeat (0.65x-1.35x) so repeated
+  // instances of the same word don't all render at an identical, visibly
+  // mechanical size - matches how a real dense word-cloud looks organic.
+  if (words.length === 0) return words;
+  var expanded = [];
+  var i = 0;
+  while (expanded.length < targetCount) {
+    var base = words[i % words.length];
+    var sizeMult = 0.65 + Math.random() * 0.7;
+    expanded.push({ text: base.text, size: base.size * sizeMult });
+    i++;
+  }
+  return expanded;
+}
+
 function layoutWordsInShape(words, width, height, mask, ctx){
   // Biggest words placed first (standard word-cloud practice) - placing
   // small words first would let them scatter and box out the big ones
@@ -498,13 +515,20 @@ function generateCloud(){
       .on('end', function(placedWords){ drawCloud(placedWords, width, height, colors); })
       .start();
   } else {
+    // A short list (a handful of unique names, no repeats) can never
+    // visually read as any shape, no matter how correct the placement
+    // math is - shape word-art needs real density to trace an outline,
+    // the same way the reference wine-glass example had names repeating
+    // dozens of times at varying sizes. Auto-repeat a short list to build
+    // that density, rather than showing 4 sparse words and calling it done.
+    var shapeWords = words.length < 40 ? expandForDensity(words, 40) : words;
     var mask = buildShapeMask(selectedShape, width, height, customShapeImage);
     var tempCtx = canvas.getContext('2d');
-    var result2 = layoutWordsInShape(words, width, height, mask, tempCtx);
+    var result2 = layoutWordsInShape(shapeWords, width, height, mask, tempCtx);
     drawShapedCloud(result2.placed, width, height, colors);
     if (result2.skipped.length > 0) {
       msgEl.textContent = (msgEl.textContent ? msgEl.textContent + ' ' : '') +
-        result2.skipped.length + ' name(s) didn\'t fit in this shape and were left out: ' + result2.skipped.slice(0,5).join(', ') + (result2.skipped.length > 5 ? '...' : '');
+        result2.skipped.length + ' repeated instance(s) didn\'t fit and were left out - this is expected once the shape is reasonably full.';
       msgEl.className = 'msg err';
     }
   }
