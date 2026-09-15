@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Word Cloud &amp; Name Cloud Generator | LawSticker AI</title>
+<meta name="description" content="Create a free word cloud from any text, or a name cloud for a get-together or presentation attendee list. No login, nothing saved, download as an image.">
+<link rel="canonical" href="https://lawsticker-ai.com/word-cloud.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.7/d3.layout.cloud.min.js"></script>
+<style>
+:root{--navy:#0D1117;--gold:#D4A017;--gold-l:#F5D76E;--teal:#0D9488;--cream:#FEFCF5;--mist:#F3F4F6;--silver:#8B95A8;--ink:#1A1208;--red:#B91C1C;--green:#059669;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
+nav{background:var(--navy);padding:14px 20px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px;}
+
+.hero{text-align:center;margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--navy);}
+.hero p{font-size:13px;color:#5C6B63;margin-top:6px;line-height:1.6;}
+
+.mode-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.mode-tab{flex:1;text-align:center;padding:11px;border-radius:10px;font-size:13px;font-weight:700;background:var(--mist);color:var(--silver);cursor:pointer;}
+.mode-tab.active{background:var(--navy);color:var(--gold-l);}
+
+.card{background:#fff;border:1.5px solid var(--mist);border-radius:16px;padding:18px;margin-bottom:16px;}
+.card h2{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:4px;}
+.card-sub{font-size:11.5px;color:var(--silver);margin-bottom:10px;}
+textarea{width:100%;min-height:150px;padding:10px;border:1.5px solid var(--mist);border-radius:9px;font-size:13.5px;font-family:inherit;resize:vertical;}
+.field-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;}
+.upload-label{display:inline-block;background:var(--cream);border:1.5px dashed var(--gold);color:var(--navy);font-weight:700;font-size:12px;padding:9px 14px;border-radius:9px;cursor:pointer;}
+.upload-label input{display:none;}
+.count-pill{font-size:11px;color:var(--silver);}
+
+.option-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.option-chip{font-size:11.5px;font-weight:700;padding:7px 13px;border-radius:20px;background:var(--mist);color:var(--silver);cursor:pointer;border:1.5px solid transparent;}
+.option-chip.active{background:var(--navy);color:var(--gold-l);border-color:var(--navy);}
+
+.generate-btn{width:100%;background:linear-gradient(135deg,var(--gold),#B8860B);color:var(--navy);border:none;border-radius:12px;padding:14px;font-weight:900;font-size:14.5px;cursor:pointer;margin-top:14px;}
+.generate-btn:disabled{opacity:.6;}
+.msg{font-size:12px;text-align:center;margin-top:8px;}
+.msg.err{color:var(--red);}
+
+.canvas-wrap{background:#fff;border:1.5px solid var(--mist);border-radius:16px;padding:10px;display:none;text-align:center;overflow-x:auto;}
+canvas{max-width:100%;}
+.download-btn{width:100%;background:var(--navy);color:var(--gold-l);border:none;border-radius:9px;padding:12px;font-weight:800;font-size:13.5px;cursor:pointer;margin-top:10px;display:none;}
+
+.disclaimer{font-size:10.5px;color:var(--silver);text-align:center;margin-top:16px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav><a class="nav-brand" href="/">⚖️ LawSticker AI</a></nav>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>☁️ Word Cloud Generator</h1>
+    <p>Free, no login, nothing you enter is saved. Turn any text into a word cloud, or create a name cloud for a get-together or presentation.</p>
+  </div>
+
+  <div class="mode-tabs">
+    <div class="mode-tab active" id="tabFreeText" onclick="switchMode('freetext')">📝 From Any Text</div>
+    <div class="mode-tab" id="tabList" onclick="switchMode('list')">👥 From a Name List</div>
+  </div>
+
+  <div class="card">
+    <div id="freetextPanel">
+      <h2>Paste Any Text</h2>
+      <div class="card-sub">A speech, description, article — common words are ignored automatically, real words are sized by how often they appear</div>
+      <textarea id="freetextInput" placeholder="Paste any block of text here..."></textarea>
+      <div class="field-row"><span class="count-pill" id="freetextCountPill">0 words detected</span></div>
+    </div>
+
+    <div id="listPanel" style="display:none;">
+      <h2>Names</h2>
+      <div class="card-sub">One name per line, or upload a CSV/text file (first column used if there are multiple)</div>
+      <textarea id="namesInput" placeholder="Priya Reddy&#10;Ravi Kumar&#10;Sreekanth&#10;..."></textarea>
+      <div class="field-row">
+        <label class="upload-label">📤 Upload CSV/TXT<input type="file" id="fileInput" accept=".csv,.txt" onchange="handleFileUpload(this)"></label>
+        <span class="count-pill" id="listCountPill">0 names</span>
+      </div>
+    </div>
+
+    <div class="option-row" id="colorOptions">
+      <div class="option-chip active" data-theme="gold" onclick="selectTheme('gold')">Gold &amp; Navy</div>
+      <div class="option-chip" data-theme="vivid" onclick="selectTheme('vivid')">Vivid</div>
+      <div class="option-chip" data-theme="mono" onclick="selectTheme('mono')">Monochrome Navy</div>
+    </div>
+    <div class="option-row" id="sizeOptions">
+      <div class="option-chip active" data-size="varied" onclick="selectSizing('varied')">Varied Sizes</div>
+      <div class="option-chip" data-size="equal" onclick="selectSizing('equal')">Equal Sizes</div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn" onclick="generateCloud()">☁️ Generate</button>
+    <div class="msg" id="genMsg"></div>
+  </div>
+
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="cloudCanvas" width="800" height="600"></canvas>
+  </div>
+  <button class="download-btn" id="downloadBtn" onclick="downloadImage()">⬇️ Download as Image</button>
+
+  <div class="disclaimer">Nothing entered here is saved or sent anywhere except your own browser. Standard oval-layout word cloud; custom shape silhouettes aren't supported yet.</div>
+</div>
+
+<script>
+var currentMode = 'freetext';
+var selectedTheme = 'gold';
+var selectedSizing = 'varied';
+
+function switchMode(mode){
+  currentMode = mode;
+  document.getElementById('tabFreeText').classList.toggle('active', mode === 'freetext');
+  document.getElementById('tabList').classList.toggle('active', mode === 'list');
+  document.getElementById('freetextPanel').style.display = mode === 'freetext' ? 'block' : 'none';
+  document.getElementById('listPanel').style.display = mode === 'list' ? 'block' : 'none';
+}
+
+// A standard, reasonably complete English stop-word list - filtered out in
+// free-text mode so the word cloud highlights genuinely meaningful words
+// rather than "the", "and", "is" dominating just by raw frequency.
+var STOP_WORDS = new Set(['a','an','the','and','or','but','if','then','else','when','at','by','for','with',
+  'about','against','between','into','through','during','before','after','above','below','to','from','up',
+  'down','in','out','on','off','over','under','again','further','once','is','am','are','was','were','be',
+  'been','being','have','has','had','having','do','does','did','doing','will','would','shall','should','can',
+  'could','may','might','must','this','that','these','those','i','you','he','she','it','we','they','me','him',
+  'her','us','them','my','your','his','its','our','their','mine','yours','hers','ours','theirs','myself',
+  'yourself','himself','herself','itself','ourselves','yourselves','themselves','what','which','who','whom',
+  'whose','not','no','nor','so','than','too','very','just','also','of','as','such']);
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function extractWordsFromText(text){
+  // Tokenizes on non-letter characters, lowercases for counting but
+  // preserves the most common ORIGINAL capitalization of each word for
+  // display (so "India" doesn't render as lowercase "india").
+  var rawWords = text.match(/[A-Za-z]+/g) || [];
+  var counts = {}, displayForm = {};
+  rawWords.forEach(function(w){
+    var lower = w.toLowerCase();
+    if (lower.length < 2 || STOP_WORDS.has(lower)) return;
+    counts[lower] = (counts[lower] || 0) + 1;
+    if (!displayForm[lower]) displayForm[lower] = w;
+  });
+  return { counts: counts, displayForm: displayForm };
+}
+
+function updateFreetextCount(){
+  var result = extractWordsFromText(document.getElementById('freetextInput').value);
+  var uniqueCount = Object.keys(result.counts).length;
+  document.getElementById('freetextCountPill').textContent = uniqueCount + ' distinct word' + (uniqueCount === 1 ? '' : 's') + ' detected';
+}
+document.getElementById('freetextInput').addEventListener('input', updateFreetextCount);
+
+function parseNames(rawText){
+  return rawText.split(/\r?\n/)
+    .map(function(line){ return line.split(',')[0].trim(); })
+    .filter(function(name){ return name.length > 0; });
+}
+
+function updateListCount(){
+  var names = parseNames(document.getElementById('namesInput').value);
+  document.getElementById('listCountPill').textContent = names.length + ' name' + (names.length === 1 ? '' : 's');
+}
+document.getElementById('namesInput').addEventListener('input', updateListCount);
+
+function handleFileUpload(input){
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    document.getElementById('namesInput').value = e.target.result;
+    updateListCount();
+  };
+  reader.readAsText(file);
+}
+
+function selectTheme(theme){
+  selectedTheme = theme;
+  document.querySelectorAll('#colorOptions .option-chip').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelector('#colorOptions [data-theme="' + theme + '"]').classList.add('active');
+}
+
+function selectSizing(sizing){
+  selectedSizing = sizing;
+  document.querySelectorAll('#sizeOptions .option-chip').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelector('#sizeOptions [data-size="' + sizing + '"]').classList.add('active');
+}
+
+var THEMES = {
+  gold: ['#0D1117', '#D4A017', '#8B6914', '#374151', '#B8860B'],
+  vivid: ['#DC2626', '#059669', '#2563EB', '#D97706', '#7C3AED', '#DB2777'],
+  mono: ['#0D1117', '#1F2937', '#374151', '#4B5563', '#6B7280'],
+};
+
+function buildWordListFromCounts(counts, displayForm){
+  // Shared by both modes - free-text mode has real, meaningful frequency
+  // counts already; list mode's repeat-count serves the same role.
+  var maxCount = Math.max.apply(null, Object.values(counts).concat([1]));
+  return Object.keys(counts).map(function(key){
+    var count = counts[key];
+    var label = displayForm ? displayForm[key] : key;
+    var size;
+    if (selectedSizing === 'equal') {
+      size = 32;
+    } else {
+      var relative = count / maxCount; // 0 to 1
+      size = 18 + relative * 52; // 18 to 70
+    }
+    return { text: label, size: size };
+  });
+}
+
+function buildWordListFromNames(names){
+  var counts = {}, displayForm = {};
+  names.forEach(function(n){
+    var key = n.toLowerCase();
+    counts[key] = (counts[key] || 0) + 1;
+    if (!displayForm[key]) displayForm[key] = n;
+  });
+  return buildWordListFromCounts(counts, displayForm);
+}
+
+function generateCloud(){
+  var msgEl = document.getElementById('genMsg');
+  var words;
+
+  if (currentMode === 'freetext') {
+    var result = extractWordsFromText(document.getElementById('freetextInput').value);
+    if (Object.keys(result.counts).length === 0) {
+      msgEl.textContent = 'Please paste some text first.';
+      msgEl.className = 'msg err';
+      return;
+    }
+    // Cap to the top 150 most frequent words - keeps very long pasted
+    // text (e.g. a full article) from producing an unreadably cluttered
+    // cloud with hundreds of once-only words crammed in.
+    var sorted = Object.keys(result.counts).sort(function(a,b){ return result.counts[b] - result.counts[a]; }).slice(0, 150);
+    var cappedCounts = {}, cappedDisplay = {};
+    sorted.forEach(function(k){ cappedCounts[k] = result.counts[k]; cappedDisplay[k] = result.displayForm[k]; });
+    words = buildWordListFromCounts(cappedCounts, cappedDisplay);
+  } else {
+    var names = parseNames(document.getElementById('namesInput').value);
+    if (names.length === 0) {
+      msgEl.textContent = 'Please add at least one name.';
+      msgEl.className = 'msg err';
+      return;
+    }
+    if (names.length > 300) {
+      msgEl.textContent = "That's a lot of names (300+) — results may look cramped. Consider splitting into groups.";
+      msgEl.className = 'msg err';
+    } else {
+      msgEl.textContent = '';
+    }
+    words = buildWordListFromNames(names);
+  }
+
+  var colors = THEMES[selectedTheme];
+  var canvas = document.getElementById('cloudCanvas');
+  var width = canvas.width, height = canvas.height;
+
+  d3.layout.cloud()
+    .size([width, height])
+    .words(words)
+    .padding(4)
+    .rotate(function(){ return (Math.random() < 0.75) ? 0 : 90; })
+    .font('Arial')
+    .fontSize(function(d){ return d.size; })
+    .on('end', function(placedWords){ drawCloud(placedWords, width, height, colors); })
+    .start();
+}
+
+function drawCloud(placedWords, width, height, colors){
+  var canvas = document.getElementById('cloudCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.save();
+  ctx.translate(width / 2, height / 2);
+  placedWords.forEach(function(w, i){
+    ctx.save();
+    ctx.translate(w.x, w.y);
+    ctx.rotate(w.rotate * Math.PI / 180);
+    ctx.font = w.size + 'px Arial';
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(w.text, 0, 0);
+    ctx.restore();
+  });
+  ctx.restore();
+
+  document.getElementById('canvasWrap').style.display = 'block';
+  document.getElementById('downloadBtn').style.display = 'block';
+}
+
+function downloadImage(){
+  var canvas = document.getElementById('cloudCanvas');
+  var link = document.createElement('a');
+  link.download = 'word-cloud.png';
+  link.href = canvas.toDataURL('image/png');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+</body>
+</html>
