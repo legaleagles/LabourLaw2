@@ -114,7 +114,7 @@ canvas{max-width:100%;}
   </div>
   <button class="download-btn" id="downloadBtn" onclick="downloadImage()">⬇️ Download as Image</button>
 
-  <div class="disclaimer">Nothing entered here is saved or sent anywhere except your own browser. Standard oval-layout word cloud; custom shape silhouettes aren't supported yet.</div>
+  <div class="disclaimer">Nothing entered here is saved or sent anywhere except your own browser. Custom shapes work best with a clean, high-contrast image — a simple outline on a plain background, or a transparent-background silhouette.</div>
 </div>
 
 <script>
@@ -277,24 +277,76 @@ function buildShapeMask(shape, width, height, customImg){
 
   if (shape === 'custom') {
     // Detect whether this image actually uses transparency meaningfully;
-    // if not (a plain photo/screenshot with no alpha channel used),
-    // fall back to a brightness threshold instead.
+    // if not (a plain photo with no alpha channel used), fall back to an
+    // ADAPTIVE brightness threshold (Otsu's method) instead of a fixed
+    // cutoff - a fixed threshold marks almost the entire image as "inside"
+    // for any normally-lit photo, since most real photos have plenty of
+    // pixels darker than a flat number. Otsu's finds the threshold that
+    // actually best separates the image into two real clusters (shape vs
+    // background), computed from the image's own content instead of guessed.
     var hasRealAlpha = false;
     for (var p = 3; p < imgData.length; p += 4 * 97){ if (imgData[p] > 10 && imgData[p] < 245){ hasRealAlpha = true; break; } }
-    for (var i2 = 0; i2 < width*height; i2++){
-      var idx = i2*4;
-      var alpha = imgData[idx+3];
-      if (hasRealAlpha) {
-        mask[i2] = alpha > 128 ? 1 : 0;
-      } else {
-        var luminance = 0.299*imgData[idx] + 0.587*imgData[idx+1] + 0.114*imgData[idx+2];
-        mask[i2] = (alpha > 20 && luminance < 200) ? 1 : 0;
+
+    if (hasRealAlpha) {
+      for (var i2 = 0; i2 < width*height; i2++){ mask[i2] = imgData[i2*4+3] > 128 ? 1 : 0; }
+    } else {
+      var otsu = computeOtsuThreshold(imgData, width, height);
+      for (var i4 = 0; i4 < width*height; i4++){
+        var idx4 = i4*4;
+        var alpha4 = imgData[idx4+3];
+        if (alpha4 <= 20) { mask[i4] = 0; continue; }
+        var lum = 0.299*imgData[idx4] + 0.587*imgData[idx4+1] + 0.114*imgData[idx4+2];
+        var isDarkSide = lum <= otsu.threshold;
+        mask[i4] = (isDarkSide === otsu.shapeIsDark) ? 1 : 0;
       }
     }
   } else {
     for (var i3 = 0; i3 < width*height; i3++){ mask[i3] = imgData[i3*4+3] > 128 ? 1 : 0; }
   }
   return mask;
+}
+
+function computeOtsuThreshold(imgData, width, height){
+  // Standard Otsu's method: builds a 256-bin luminance histogram (only
+  // over pixels that are actually part of the drawn image, not the
+  // transparent margin around it), then finds the threshold that maximizes
+  // the variance BETWEEN the two resulting classes - the point where the
+  // image most cleanly splits into two real groups, rather than a guess.
+  var histogram = new Array(256).fill(0);
+  var totalPixels = 0;
+  for (var i = 0; i < width*height; i++){
+    var idx = i*4;
+    if (imgData[idx+3] <= 20) continue; // skip transparent margin
+    var lum = Math.round(0.299*imgData[idx] + 0.587*imgData[idx+1] + 0.114*imgData[idx+2]);
+    histogram[lum]++;
+    totalPixels++;
+  }
+  if (totalPixels === 0) return { threshold: 128, shapeIsDark: true };
+
+  var sumAll = 0;
+  for (var t = 0; t < 256; t++) sumAll += t * histogram[t];
+
+  var sumBg = 0, weightBg = 0, maxVariance = 0, bestThreshold = 128;
+  for (var th = 0; th < 256; th++){
+    weightBg += histogram[th];
+    if (weightBg === 0) continue;
+    var weightFg = totalPixels - weightBg;
+    if (weightFg === 0) break;
+    sumBg += th * histogram[th];
+    var meanBg = sumBg / weightBg;
+    var meanFg = (sumAll - sumBg) / weightFg;
+    var variance = weightBg * weightFg * (meanBg - meanFg) * (meanBg - meanFg);
+    if (variance > maxVariance) { maxVariance = variance; bestThreshold = th; }
+  }
+
+  // Whichever cluster (dark side or light side) has FEWER pixels is
+  // assumed to be the actual shape/subject - a standard, reasonable
+  // heuristic, since a photo's background usually covers more area than
+  // its subject, regardless of which one happens to be darker.
+  var darkCount = 0;
+  for (var d = 0; d <= bestThreshold; d++) darkCount += histogram[d];
+  var lightCount = totalPixels - darkCount;
+  return { threshold: bestThreshold, shapeIsDark: darkCount <= lightCount };
 }
 
 function isRectInsideMask(mask, width, height, cx, cy, w, h){
