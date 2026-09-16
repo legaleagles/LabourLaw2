@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Cluster Notes — Review Draft</title>
 <meta name="robots" content="noindex">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{--navy:#0D1117;--gold:#C9A227;--teal:#0F766E;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;--red:#B91C1C;--green:#059669;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -44,6 +45,23 @@ nav{background:var(--navy);padding:14px 16px;color:#fff;font-weight:800;}
 .scenario-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
 
 .loading{text-align:center;padding:30px;color:var(--muted);}
+
+.progress-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px;}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.progress-title{font-size:14px;font-weight:800;color:var(--navy);}
+.progress-count{font-size:12px;color:var(--muted);}
+.progress-bar-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:12px;}
+.progress-bar-fill{height:100%;background:var(--teal);display:block;}
+.index-table{width:100%;font-size:11.5px;border-collapse:collapse;}
+.index-table td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top;}
+.index-num{color:var(--muted);width:20px;}
+.index-status{width:90px;font-weight:700;}
+.index-status.done{color:var(--green);}
+.index-status.pending{color:var(--muted);}
+.index-date{width:75px;color:var(--muted);font-size:10.5px;}
+
+.download-btn{width:100%;background:var(--navy);color:#F5D76E;border:none;border-radius:9px;padding:12px;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:18px;}
+.download-btn:disabled{opacity:.6;}
 </style>
 </head>
 <body>
@@ -53,6 +71,8 @@ nav{background:var(--navy);padding:14px 16px;color:#fff;font-weight:800;}
 
 <div class="wrap">
   <div class="subject-tabs" id="subjectTabs"></div>
+  <button class="download-btn" id="downloadBtn" onclick="downloadPdf()">⬇️ Download This Subject's Notes (PDF)</button>
+  <div id="progressArea"></div>
   <div id="content"><div class="loading">Loading...</div></div>
 </div>
 
@@ -66,6 +86,7 @@ var SUBJECTS = {
   ethics: 'Professional Ethics',
 };
 var allData = {};
+var allPyq = {};
 var activeSubject = 'adr';
 
 function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
@@ -81,7 +102,46 @@ function renderTabs(){
 function switchSubject(key){
   activeSubject = key;
   renderTabs();
+  renderProgress();
   renderContent();
+}
+
+function renderProgress(){
+  var pyq = allPyq[activeSubject];
+  var data = allData[activeSubject];
+  var container = document.getElementById('progressArea');
+  if (!pyq || !pyq.topics) { container.innerHTML = ''; return; }
+
+  // Same ranking the generator itself uses (High importance, most-asked
+  // first) so this index shows topics in the actual order they will be
+  // generated, not just PYQ file order.
+  var importanceRank = {High: 0, Medium: 1, Low: 2};
+  var ranked = pyq.topics.slice().sort(function(a,b){
+    var ra = importanceRank[a.marks_weighted_importance] !== undefined ? importanceRank[a.marks_weighted_importance] : 3;
+    var rb = importanceRank[b.marks_weighted_importance] !== undefined ? importanceRank[b.marks_weighted_importance] : 3;
+    if (ra !== rb) return ra - rb;
+    return (b.times_asked||0) - (a.times_asked||0);
+  });
+
+  var doneMap = {};
+  (data && data.clusters ? data.clusters : []).forEach(function(c){ doneMap[c.topic] = c.generated_at; });
+  var doneCount = ranked.filter(function(t){ return doneMap[t.topic]; }).length;
+  var pct = ranked.length ? Math.round((doneCount / ranked.length) * 100) : 0;
+
+  var html = '<div class="progress-card">';
+  html += '<div class="progress-header"><div class="progress-title">📊 Progress Index</div><div class="progress-count">' + doneCount + ' of ' + ranked.length + ' generated</div></div>';
+  html += '<div class="progress-bar-track"><span class="progress-bar-fill" style="width:' + pct + '%;"></span></div>';
+  html += '<table class="index-table">';
+  ranked.forEach(function(t, i){
+    var generatedAt = doneMap[t.topic];
+    var dateStr = generatedAt ? new Date(generatedAt).toLocaleDateString('en-IN', {day:'numeric', month:'short'}) : '—';
+    html += '<tr><td class="index-num">' + (i+1) + '</td>' +
+      '<td>' + esc(t.topic) + '</td>' +
+      '<td class="index-status ' + (generatedAt ? 'done' : 'pending') + '">' + (generatedAt ? '✅ Generated' : '⏳ Pending') + '</td>' +
+      '<td class="index-date">' + dateStr + '</td></tr>';
+  });
+  html += '</table></div>';
+  container.innerHTML = html;
 }
 
 function renderContent(){
@@ -135,19 +195,75 @@ function renderContent(){
 function loadAll(){
   var keys = Object.keys(SUBJECTS);
   var loaded = 0;
+  function checkDone(){
+    loaded++;
+    if (loaded === keys.length * 2) { renderTabs(); renderProgress(); renderContent(); }
+  }
   keys.forEach(function(key){
     fetch(BACKEND_RAW + 'llb5-' + key + '-clusters.json?t=' + Date.now())
       .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(data){
-        allData[key] = data;
-        loaded++;
-        if (loaded === keys.length) { renderTabs(); renderContent(); }
-      })
-      .catch(function(){
-        loaded++;
-        if (loaded === keys.length) { renderTabs(); renderContent(); }
-      });
+      .then(function(data){ allData[key] = data; checkDone(); })
+      .catch(function(){ checkDone(); });
+
+    fetch(BACKEND_RAW + 'llb-pyq-analysis-' + key + '.json?t=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(data){ allPyq[key] = data; checkDone(); })
+      .catch(function(){ checkDone(); });
   });
+}
+
+function downloadPdf(){
+  var data = allData[activeSubject];
+  if (!data || !data.clusters || data.clusters.length === 0) {
+    alert('No clusters generated yet for this subject.');
+    return;
+  }
+  var pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+  var margin = 48, y = margin, pageWidth = pdf.internal.pageSize.getWidth(), pageHeight = pdf.internal.pageSize.getHeight();
+  var maxWidth = pageWidth - margin * 2;
+
+  function checkPageBreak(needed){ if (y + needed > pageHeight - margin) { pdf.addPage(); y = margin; } }
+  function addWrapped(text, size, style, color, lineHeight){
+    pdf.setFont('Helvetica', style || ''); pdf.setFontSize(size); pdf.setTextColor(color || '#111827');
+    var lines = pdf.splitTextToSize(String(text), maxWidth);
+    lines.forEach(function(line){ checkPageBreak(lineHeight); pdf.text(line, margin, y); y += lineHeight; });
+  }
+
+  addWrapped(SUBJECTS[activeSubject] + ' — Exam Cluster Notes', 16, 'bold', '#0D1117', 20);
+  addWrapped('DRAFT — verify case law before exam use. Generated ' + new Date().toLocaleDateString('en-IN'), 8.5, 'italic', '#B91C1C', 14);
+  y += 8;
+
+  data.clusters.forEach(function(c, idx){
+    checkPageBreak(30);
+    addWrapped((idx+1) + '. ' + (c.cluster_title || c.topic), 13, 'bold', '#0F766E', 18);
+    addWrapped('Core idea: ' + c.one_line_core_idea, 9.5, 'italic', '#374151', 13);
+    y += 4;
+
+    addWrapped('Real-life: ' + c.real_life_scenario, 9, '', '#4B5563', 12);
+    y += 6;
+
+    addWrapped('PART A — SHORT NOTE (6 MARKS)', 10, 'bold', '#0D1117', 14);
+    addWrapped(c.part_a_content, 9, '', '#1F2937', 12);
+    (c.part_a_key_points || []).forEach(function(p){ addWrapped('• ' + p, 8.5, '', '#1F2937', 11); });
+    if (c.part_a_trick) addWrapped('TRICK: ' + c.part_a_trick, 8.5, 'italic', '#92400E', 11);
+    y += 6;
+
+    addWrapped('PART B — FULL ESSAY (15 MARKS)', 10, 'bold', '#0D1117', 14);
+    addWrapped(c.part_b_content, 9, '', '#1F2937', 12);
+    (c.part_b_case_laws || []).forEach(function(cl){
+      addWrapped(cl.case_name + (cl.citation ? ' (' + cl.citation + ')' : '') + ': ' + cl.holding, 8.5, '', '#1E40AF', 11);
+      if (cl.trick) addWrapped('  TRICK: ' + cl.trick, 8.5, 'italic', '#92400E', 11);
+    });
+    y += 6;
+
+    addWrapped('PART C — PROBLEM ANSWER (10 MARKS)', 10, 'bold', '#0D1117', 14);
+    addWrapped('Scenario: ' + c.part_c_scenario, 9, '', '#4B5563', 12);
+    addWrapped(c.part_c_content, 9, '', '#1F2937', 12);
+    if (c.part_c_trick) addWrapped('TRICK: ' + c.part_c_trick, 8.5, 'italic', '#92400E', 11);
+    y += 16;
+  });
+
+  pdf.save(activeSubject + '-exam-cluster-notes-draft.pdf');
 }
 
 renderTabs();
