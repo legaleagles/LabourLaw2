@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Cluster Notes — Review Draft</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--teal:#0F766E;--ink:#1F2937;--muted:#6B7280;--bg:#FBFBFA;--line:#E5E7EB;--red:#B91C1C;--green:#059669;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;}
+.banner{background:#FEF3C7;border-bottom:2px solid var(--gold);padding:12px 16px;text-align:center;font-size:12.5px;font-weight:700;color:#92400E;}
+nav{background:var(--navy);padding:14px 16px;color:#fff;font-weight:800;}
+.wrap{max-width:720px;margin:0 auto;padding:16px;}
+
+.subject-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+.subject-tab{flex-shrink:0;font-size:12px;font-weight:700;padding:8px 14px;border-radius:20px;background:var(--line);color:var(--muted);cursor:pointer;}
+.subject-tab.active{background:var(--navy);color:#fff;}
+
+.cluster-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px;}
+.cluster-title{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.pyq-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;margin-bottom:10px;}
+.pyq-badge.high{background:#D1FAE5;color:var(--green);}
+.pyq-badge.medium{background:#FEF3C7;color:#92400E;}
+
+.core-idea{background:#F0FDFA;border-left:3px solid var(--teal);padding:8px 12px;font-size:13px;font-style:italic;margin-bottom:10px;}
+.real-life{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;}
+.real-life-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+
+.part-block{border-top:1.5px solid var(--line);padding-top:12px;margin-top:12px;}
+.part-label{font-size:11px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.part-content{font-size:13.5px;margin-bottom:8px;}
+.key-points{margin:8px 0;padding-left:0;list-style:none;}
+.key-points li{font-size:12.5px;margin-bottom:5px;padding-left:14px;position:relative;}
+.key-points li::before{content:'▸';position:absolute;left:0;color:var(--gold);}
+.trick{background:#FFFBEB;border:1px dashed var(--gold);border-radius:6px;padding:6px 10px;font-size:11.5px;margin-top:6px;}
+.trick b{color:#92400E;}
+
+.case-law{background:#EFF6FF;border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;}
+.case-law b{color:#1E40AF;}
+.verify-link{font-size:10.5px;color:var(--teal);}
+
+.scenario-box{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12.5px;margin-bottom:8px;}
+.scenario-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+
+.loading{text-align:center;padding:30px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="banner">⚠️ DRAFT REVIEW PAGE — not the final feature. Spot-check content (especially case law) before trusting for exam use.</div>
+<nav>📚 Exam Cluster Notes — Review Draft</nav>
+
+<div class="wrap">
+  <div class="subject-tabs" id="subjectTabs"></div>
+  <div id="content"><div class="loading">Loading...</div></div>
+</div>
+
+<script>
+var BACKEND_RAW = 'https://raw.githubusercontent.com/legaleagles/LabourLaw2/main/';
+var SUBJECTS = {
+  adr: 'Alternate Dispute Resolution',
+  banking: 'Banking Law',
+  bnss: 'BNSS',
+  cpc: 'Civil Procedure Code',
+  ethics: 'Professional Ethics',
+};
+var allData = {};
+var activeSubject = 'adr';
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+function renderTabs(){
+  var html = '';
+  Object.keys(SUBJECTS).forEach(function(key){
+    html += '<div class="subject-tab' + (key === activeSubject ? ' active' : '') + '" onclick="switchSubject(\'' + key + '\')">' + esc(SUBJECTS[key]) + '</div>';
+  });
+  document.getElementById('subjectTabs').innerHTML = html;
+}
+
+function switchSubject(key){
+  activeSubject = key;
+  renderTabs();
+  renderContent();
+}
+
+function renderContent(){
+  var data = allData[activeSubject];
+  var container = document.getElementById('content');
+  if (!data || !data.clusters || data.clusters.length === 0) {
+    container.innerHTML = '<div class="loading">No clusters generated yet for this subject.</div>';
+    return;
+  }
+
+  var html = '';
+  data.clusters.forEach(function(c){
+    var importanceClass = (c.pyq_context && c.pyq_context.marks_weighted_importance === 'High') ? 'high' : 'medium';
+    html += '<div class="cluster-card">';
+    html += '<div class="cluster-title">' + esc(c.cluster_title || c.topic) + '</div>';
+    if (c.pyq_context) {
+      html += '<span class="pyq-badge ' + importanceClass + '">' + esc(c.pyq_context.marks_weighted_importance || '') + ' importance — asked ' + esc(String(c.pyq_context.times_asked || '?')) + 'x</span>';
+    }
+    html += '<div class="core-idea">💡 ' + esc(c.one_line_core_idea) + '</div>';
+    html += '<div class="real-life"><div class="real-life-label">Real-Life Scenario</div>' + esc(c.real_life_scenario) + '</div>';
+
+    html += '<div class="part-block"><div class="part-label">Part A — Short Note (6 Marks)</div>';
+    html += '<div class="part-content">' + esc(c.part_a_content) + '</div>';
+    if (c.part_a_key_points && c.part_a_key_points.length) {
+      html += '<ul class="key-points">' + c.part_a_key_points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>';
+    }
+    if (c.part_a_trick) html += '<div class="trick"><b>TRICK:</b> ' + esc(c.part_a_trick) + '</div>';
+    html += '</div>';
+
+    html += '<div class="part-block"><div class="part-label">Part B — Full Essay (15 Marks)</div>';
+    html += '<div class="part-content">' + esc(c.part_b_content) + '</div>';
+    (c.part_b_case_laws || []).forEach(function(cl){
+      html += '<div class="case-law"><b>' + esc(cl.case_name) + '</b>' + (cl.citation ? ' (' + esc(cl.citation) + ')' : '') + '<br>' + esc(cl.holding);
+      html += '<br><span class="verify-link">🔍 Verify: <a href="https://www.google.com/search?q=' + encodeURIComponent(cl.case_name) + '" target="_blank">search this case name</a></span>';
+      if (cl.trick) html += '<div class="trick" style="margin-top:4px;"><b>TRICK:</b> ' + esc(cl.trick) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    html += '<div class="part-block"><div class="part-label">Part C — Problem Answer (10 Marks)</div>';
+    html += '<div class="scenario-box"><div class="scenario-label">Scenario</div>' + esc(c.part_c_scenario) + '</div>';
+    html += '<div class="part-content">' + esc(c.part_c_content) + '</div>';
+    if (c.part_c_trick) html += '<div class="trick"><b>TRICK:</b> ' + esc(c.part_c_trick) + '</div>';
+    html += '</div>';
+
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function loadAll(){
+  var keys = Object.keys(SUBJECTS);
+  var loaded = 0;
+  keys.forEach(function(key){
+    fetch(BACKEND_RAW + 'llb5-' + key + '-clusters.json?t=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(data){
+        allData[key] = data;
+        loaded++;
+        if (loaded === keys.length) { renderTabs(); renderContent(); }
+      })
+      .catch(function(){
+        loaded++;
+        if (loaded === keys.length) { renderTabs(); renderContent(); }
+      });
+  });
+}
+
+renderTabs();
+loadAll();
+</script>
+</body>
+</html>
