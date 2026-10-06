@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Litigant Search | LawSticker AI (Private)</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#E8C766;--ink:#111827;--muted:#6B7280;--cream:#FEFCF5;--red:#DC2626;--green:#059669;--blue:#1D4ED8;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-weight:900;font-size:16px;color:var(--gold-l);}
+.nav-out{background:none;border:1px solid #374151;color:#9CA3AF;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
+.login-box{max-width:320px;margin:70px auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:22px;text-align:center;}
+.login-box input{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:14px;margin:14px 0;text-align:center;}
+.login-box button{width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;}
+.login-err{color:var(--red);font-size:11.5px;margin-top:8px;}
+.hero-title{font-size:22px;font-weight:900;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+.note{background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:12px;padding:12px 14px;font-size:12px;color:#92400E;line-height:1.6;margin-bottom:16px;}
+.box{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:16px;}
+.box label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;}
+.box input[type=text]{width:100%;padding:12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:16px;}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.row>div{flex:1;min-width:150px;}
+select{width:100%;padding:10px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;background:#fff;}
+.hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+.go{margin-top:14px;width:100%;background:var(--navy);color:var(--gold-l);font-weight:800;padding:13px;border:none;border-radius:10px;font-size:14px;cursor:pointer;}
+.go:disabled{opacity:.5;cursor:default;}
+.status{font-size:13px;color:var(--muted);margin:10px 0;}
+.err{background:#FEE2E2;border:1px solid #FECACA;color:#991B1B;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px;}
+.case{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:14px;margin-bottom:10px;}
+.case-title{font-weight:800;font-size:14px;line-height:1.4;}
+.vs{color:var(--muted);font-weight:600;padding:0 4px;}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12px;color:#374151;}
+.meta b{color:var(--muted);font-weight:600;}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-right:6px;}
+.tag.pending{background:#DBEAFE;color:#1E40AF;}
+.tag.disposed{background:#E5E7EB;color:#374151;}
+.tag.role{background:#FEF3C7;color:#92400E;}
+.actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+.btn{font-size:12px;font-weight:700;padding:7px 12px;border-radius:8px;border:1.5px solid #E5E7EB;background:#fff;cursor:pointer;color:var(--ink);text-decoration:none;}
+.detail{margin-top:10px;border-top:1px dashed #E5E7EB;padding-top:10px;font-size:12.5px;line-height:1.6;}
+.detail h4{font-size:12px;margin:8px 0 3px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.detail pre{background:#F3F4F6;border-radius:8px;padding:10px;font-size:11px;overflow:auto;max-height:260px;white-space:pre-wrap;word-break:break-word;}
+.pager{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<nav><span class="nav-brand">Litigant Search (Private)</span><button class="nav-out hidden" id="logout">Log out</button></nav>
+
+<div id="login" class="login-box">
+  <div style="font-weight:900;font-size:16px;">Private tool</div>
+  <input type="password" id="pw" placeholder="Password" autocomplete="current-password">
+  <button id="loginBtn">Enter</button>
+  <div class="login-err" id="loginErr"></div>
+</div>
+
+<div id="app" class="wrap hidden">
+  <div class="hero-title">Search cases by person name</div>
+  <div class="hero-sub">Looks up Indian court cases where the name appears as a petitioner or respondent, using the official eCourtsIndia API. Open any result for full case details.</div>
+  <div class="note"><b>Read before relying on results.</b> Court records name people, not identities: many people share a name, so a match is only a lead. Confirm with father/husband name, address, age or case particulars before treating a case as belonging to your subject. Use only for lawful, legitimate purposes (due diligence, your own matters, clients). Each search uses paid API credits. Nothing you search is stored by this site.</div>
+
+  <div class="box">
+    <label for="name">Person's name</label>
+    <input type="text" id="name" placeholder="e.g. Ravi Kumar Sharma" autocomplete="off">
+    <div class="row">
+      <div>
+        <label for="mode">Name matching</label>
+        <select id="mode">
+          <option value="all">All words present (default)</option>
+          <option value="phrase">Exact phrase</option>
+          <option value="fuzzy">Fuzzy (spelling variants)</option>
+          <option value="any">Any word (broad)</option>
+        </select>
+      </div>
+      <div>
+        <label for="role">Appears as</label>
+        <select id="role">
+          <option value="any">Petitioner or respondent</option>
+          <option value="petitioner">Petitioner only</option>
+          <option value="respondent">Respondent only</option>
+        </select>
+      </div>
+    </div>
+    <div class="hint">Tip: start with the default. If you get too many unrelated people, use Exact phrase with the full name. If you get nothing, try Fuzzy (Indian names have many spellings).</div>
+    <button class="go" id="searchBtn">Search</button>
+  </div>
+
+  <div id="msg"></div>
+  <div id="results"></div>
+  <div id="pager" class="pager hidden">
+    <button class="btn" id="prev">Previous</button><span id="pageInfo" class="status"></span><button class="btn" id="next">Next</button>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://lawsticker-backend-494996217030.europe-west1.run.app';
+var pw = '';
+try { pw = localStorage.getItem('lsPassword') || ''; } catch(e) {}
+var page = 1, lastQuery = null;
+var $ = function(id){ return document.getElementById(id); };
+
+function api(path, payload){
+  payload.password = pw;
+  return fetch(BACKEND + path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)})
+    .then(function(r){ return r.json().catch(function(){return {ok:false,error:'Bad response from server.'};}).then(function(j){ j._status=r.status; return j; }); });
+}
+function showApp(){ $('login').classList.add('hidden'); $('app').classList.remove('hidden'); $('logout').classList.remove('hidden'); }
+function login(){
+  var v = $('pw').value || pw;
+  if(!v) return;
+  $('loginErr').textContent='';
+  fetch(BACKEND + '/api/vehicle-check-auth', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password:v})})
+    .then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+    .then(function(){ pw=v; try{localStorage.setItem('lsPassword', v);}catch(e){} showApp(); })
+    .catch(function(){ pw=''; try{localStorage.removeItem('lsPassword');}catch(e){} $('loginErr').textContent='Incorrect password.'; });
+}
+$('loginBtn').onclick = login;
+$('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') login(); });
+$('logout').onclick = function(){ try{localStorage.removeItem('lsPassword');}catch(e){} location.reload(); };
+if(pw){ $('pw').value = pw; login(); }
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function pick(o, keys){ for(var i=0;i<keys.length;i++){ var v=o[keys[i]]; if(v!==undefined && v!==null && v!=='' && !(Array.isArray(v)&&!v.length)) return v; } return ''; }
+function names(v){
+  if(!v) return '';
+  if(typeof v==='string') return v;
+  if(Array.isArray(v)) return v.map(function(x){ return typeof x==='string'?x:(x&&(x.name||x.fullName))||''; }).filter(Boolean).join(', ');
+  return v.name||'';
+}
+// Response shape: {data:{...}, meta:{...}}; the list of cases may sit under several keys, so find it defensively.
+function unwrap(r){ return (r && r.data) ? r.data : r; }
+function findCases(d){
+  if(Array.isArray(d)) return d;
+  if(!d || typeof d!=='object') return [];
+  var keys=['results','cases','items','records','hits'];
+  for(var i=0;i<keys.length;i++){ if(Array.isArray(d[keys[i]])) return d[keys[i]]; }
+  for(var k in d){ if(Array.isArray(d[k]) && d[k].length && typeof d[k][0]==='object') return d[k]; }
+  if(d.data) return findCases(d.data);
+  return [];
+}
+function totalOf(d){ return pick(d||{}, ['total','totalResults','totalCount','count']) || ''; }
+function dateFmt(v){ if(!v) return ''; var d=new Date(v); return isNaN(d)? String(v) : d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+
+function caseCard(c, idx){
+  var pet = names(pick(c,['petitioners','petitioner','petitionerNames']));
+  var res = names(pick(c,['respondents','respondent','respondentNames']));
+  var title = pick(c,['title','caseTitle']) || ((pet||'Unknown') + '  vs  ' + (res||'Unknown'));
+  var cnr = pick(c,['cnr','cnrNumber','CNR']);
+  var status = String(pick(c,['caseStatus','status','disposalNature']) || '');
+  var isDisp = /dispos|decid|closed/i.test(status);
+  var court = pick(c,['courtName','court','establishmentName','courtComplex']);
+  var type = pick(c,['caseType','caseTypeName','type']);
+  var num = pick(c,['caseNumber','registrationNumber','regNo','caseNo']);
+  var filed = pick(c,['filingDate','dateOfFiling','registrationDate']);
+  var next = pick(c,['nextHearingDate','nextDate','nextHearing']);
+  var judge = names(pick(c,['judges','judge','currentJudge','judgeName']));
+  var h = '<div class="case" data-i="'+idx+'">';
+  h += '<div class="case-title">' + esc(pet||title) + (res? '<span class="vs">vs</span>'+esc(res): '') + '</div>';
+  h += '<div style="margin-top:6px">' + (status? '<span class="tag '+(isDisp?'disposed':'pending')+'">'+esc(status)+'</span>':'') + '</div>';
+  h += '<div class="meta">';
+  if(court) h+='<span><b>Court</b> '+esc(court)+'</span>';
+  if(type||num) h+='<span><b>Case</b> '+esc([type,num].filter(Boolean).join(' '))+'</span>';
+  if(filed) h+='<span><b>Filed</b> '+esc(dateFmt(filed))+'</span>';
+  if(next) h+='<span><b>Next hearing</b> '+esc(dateFmt(next))+'</span>';
+  if(judge) h+='<span><b>Judge</b> '+esc(judge)+'</span>';
+  if(cnr) h+='<span><b>CNR</b> '+esc(cnr)+'</span>';
+  h += '</div>';
+  h += '<div class="actions">';
+  if(cnr) h+='<button class="btn" data-cnr="'+esc(cnr)+'" data-act="detail">Full details</button>';
+  h+='</div><div class="detail hidden"></div></div>';
+  return h;
+}
+
+function runSearch(p){
+  var name = $('name').value.trim();
+  if(name.length<3){ $('msg').innerHTML='<div class="err">Enter at least 3 characters.</div>'; return; }
+  page = p||1;
+  lastQuery = {name:name, match_mode:$('mode').value, role:$('role').value};
+  $('searchBtn').disabled=true; $('msg').innerHTML='<div class="status">Searching court records...</div>'; $('results').innerHTML='';
+  api('/api/litigant-search', {name:name, match_mode:lastQuery.match_mode, role:lastQuery.role, page:page, page_size:25})
+    .then(function(j){
+      $('searchBtn').disabled=false;
+      if(!j.ok){
+        if(j._status===401){ try{localStorage.removeItem('lsPassword');}catch(e){} location.reload(); return; }
+        $('msg').innerHTML='<div class="err">'+esc(j.error||'Search failed.')+'</div>'; $('pager').classList.add('hidden'); return;
+      }
+      var d = unwrap(j.result), list = findCases(d), total = totalOf(d);
+      window._cases = list;
+      if(!list.length){ $('msg').innerHTML='<div class="status">No cases found for "'+esc(name)+'". Try Fuzzy matching or a different spelling.</div>'; $('pager').classList.add('hidden'); return; }
+      $('msg').innerHTML='<div class="status">'+(total? esc(total)+' case(s) matched. ':'')+'Showing '+list.length+' on page '+page+'. These are name matches only, not confirmed identity.</div>';
+      $('results').innerHTML = list.map(caseCard).join('');
+      $('pager').classList.remove('hidden');
+      $('pageInfo').textContent='Page '+page;
+      $('prev').disabled = page<=1; $('next').disabled = list.length<25;
+    })
+    .catch(function(){ $('searchBtn').disabled=false; $('msg').innerHTML='<div class="err">Network error. Try again.</div>'; });
+}
+$('searchBtn').onclick = function(){ runSearch(1); };
+$('name').addEventListener('keydown', function(e){ if(e.key==='Enter') runSearch(1); });
+$('prev').onclick = function(){ if(page>1) runSearch(page-1); };
+$('next').onclick = function(){ runSearch(page+1); };
+
+function kv(title, v){ return v? '<h4>'+esc(title)+'</h4><div>'+esc(v)+'</div>' : ''; }
+function renderDetail(box, d){
+  var c = d || {};
+  var acts = pick(c,['acts','actsAndSections','act']);
+  if(Array.isArray(acts)) acts = acts.map(function(a){ return typeof a==='string'?a:[a.act||a.name,(a.sections||a.section||'')].filter(Boolean).join(' - '); }).join('; ');
+  var adv = names(pick(c,['advocates','petitionerAdvocates','respondentAdvocates']));
+  var h = '';
+  h += kv('Petitioners', names(pick(c,['petitioners','petitioner'])));
+  h += kv('Respondents', names(pick(c,['respondents','respondent'])));
+  h += kv('Advocates', adv);
+  h += kv('Acts and sections', acts);
+  h += kv('Status', pick(c,['caseStatus','status']));
+  h += kv('Stage', pick(c,['caseStage','stage','purpose']));
+  h += kv('Court', pick(c,['courtName','court']));
+  h += kv('Judge', names(pick(c,['judges','judge','currentJudge'])));
+  h += kv('Decision date', dateFmt(pick(c,['decisionDate','disposalDate'])));
+  h += kv('Nature of disposal', pick(c,['natureOfDisposal','disposalNature']));
+  var cnr = pick(c,['cnr','cnrNumber']);
+  if(cnr) h += '<h4>Verify</h4><div>Confirm this CNR on the official eCourts portal (services.ecourts.gov.in) before relying on it.</div>';
+  h += '<h4>Full record (raw)</h4><pre>'+esc(JSON.stringify(c,null,2))+'</pre>';
+  box.innerHTML = h;
+}
+$('results').addEventListener('click', function(e){
+  var b = e.target.closest('[data-act="detail"]'); if(!b) return;
+  var box = b.closest('.case').querySelector('.detail');
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); return; }
+  if(box.dataset.loaded){ box.classList.remove('hidden'); return; }
+  b.disabled=true; box.classList.remove('hidden'); box.innerHTML='<div class="status">Loading case details...</div>';
+  api('/api/litigant-case', {cnr:b.dataset.cnr}).then(function(j){
+    b.disabled=false;
+    if(!j.ok){ box.innerHTML='<div class="err">'+esc(j.error||'Could not load case.')+'</div>'; return; }
+    var d = unwrap(j.result); if(d && d.case) d = d.case;
+    renderDetail(box, d); box.dataset.loaded='1';
+  }).catch(function(){ b.disabled=false; box.innerHTML='<div class="err">Network error.</div>'; });
+});
+</script>
+</body>
+</html>
