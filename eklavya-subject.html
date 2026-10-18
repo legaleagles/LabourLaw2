@@ -160,6 +160,7 @@ gtag('config', 'G-TJXHVW6XCL');
   <a class="notes-download-btn" id="notesLink" href="#">📥 Download Notes So Far</a>
   <a class="exam-btn" id="examLink" href="#" style="display:none;">⏱️ Take the Mock Exam</a>
   <a class="exam-btn" id="pyqLink" href="#" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">📚 Previous Year Questions</a>
+  <a class="exam-btn" id="storyLink" href="#" target="_blank" rel="noopener" style="display:none;background:linear-gradient(135deg,#C9A227,#8a6d1a);">🎬 Story Notes (PDF)</a>
 </div>
 
 <div class="wrap">
@@ -197,6 +198,8 @@ var EXAM_SUBJECT_MAP = {
   's4-landlaws':'land', 's4-ipr':'ipr',
   'cpc':'cpc', 'bnss':'bnss', 'banking':'banking', 'adr':'adr', 'ethics':'ethics'
 };
+// Hand-made story-notes PDFs (same list as STORY_NOTES on eklavya.html).
+var STORY_NOTES_PDF = { 'bnss': 'downloads/notes/bnss/BNSS_Story_Notes.pdf' };
 var START, TOTAL_DAYS = 45, PLAN_END;
 var topicsData = null, lecturesData = null, selectedDay = null;
 var viewYear, viewMonth; // 0-indexed month currently shown
@@ -416,6 +419,12 @@ Promise.all([
   document.title = topicsData.subject_name + ' — Eklavya | LawSticker AI';
   document.getElementById('notesLink').href = 'eklavya-notes.html?subject=' + encodeURIComponent(subject);
   document.getElementById('pyqLink').href = 'pyq-archive.html?subject=' + encodeURIComponent(subject);
+  if (STORY_NOTES_PDF[subject]) {
+    var storyLink = document.getElementById('storyLink');
+    storyLink.href = STORY_NOTES_PDF[subject];
+    storyLink.style.display = 'inline-flex';
+    storyLink.onclick = function(){ try { gtag('event', 'story_notes_open', {file_name: subject}); } catch(e) {} };
+  }
   if (EXAM_SUBJECT_MAP[subject]) {
     var examLink = document.getElementById('examLink');
     examLink.href = 'https://lawsticker-ai.com/exam.html?subject=' + encodeURIComponent(EXAM_SUBJECT_MAP[subject]);

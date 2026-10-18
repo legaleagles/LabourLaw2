@@ -67,6 +67,18 @@ color:var(--ink);line-height:1.32;margin-bottom:10px;flex:1;}
 .sub-card-progress-label{font-size:9px;font-weight:800;color:var(--muted);white-space:nowrap;}
 .sub-card-status{font-size:9.5px;color:var(--muted);margin-bottom:10px;}
 .sub-card-status.today{color:#B45309;font-weight:700;}
+.notes-strip{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#FFF8E1,#FDF2F8);
+border:1.5px solid #F5D76E;border-radius:16px;padding:14px;margin:0 0 14px;box-shadow:0 2px 10px rgba(201,162,39,.15);}
+.notes-strip-icon{font-size:30px;line-height:1;}
+.notes-strip-title{font-family:'Playfair Display',serif;font-size:14.5px;font-weight:800;color:var(--ink);line-height:1.35;}
+.notes-strip-new{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:900;letter-spacing:.4px;color:#fff;background:var(--rose);
+padding:2px 7px;border-radius:6px;vertical-align:middle;margin-left:4px;}
+.notes-strip-desc{font-size:11px;color:#4B5563;margin:4px 0 8px;line-height:1.55;}
+.notes-strip-meta{font-size:9.5px;color:var(--muted);font-weight:700;margin-bottom:9px;}
+.notes-strip-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.notes-strip-btn{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:9px;font-size:11px;font-weight:800;
+text-decoration:none;color:#fff;background:linear-gradient(135deg,#C9A227,#8a6d1a);}
+.notes-strip-btn.alt{background:#fff;color:#8a6d1a;border:1.5px solid #E9D48A;}
 .sub-card-btn{display:block;text-align:center;padding:9px;border-radius:9px;
 font-size:11px;font-weight:800;text-decoration:none;color:#fff;margin-top:auto;}
 </style>
@@ -138,6 +150,32 @@ var SUBJECTS = [
   {slug:'s6-optional-investments',  name:'Optional: Law of Investments & Securities', sem:6, icon:'📈'},
   {slug:'s6-drafting',     name:'Drafting, Pleadings & Conveyancing', sem:6, icon:'✍️'}
 ];
+// Hand-made downloadable notes (PDF), shown inside their semester's section.
+// To add another: drop the PDF in downloads/notes/<subject>/ and add a line here.
+var STORY_NOTES = [
+  {sem:5, subject:'bnss', icon:'🎬',
+   title:'BNSS Story Notes — the whole subject as one crime story',
+   desc:'All 5 units in 16 comic episodes: FIR → arrest → bail → trial → verdict → appeal → probation → Juvenile Justice. BNSS + old CrPC section numbers, cases told as stories, practice MCQs with answers.',
+   meta:'PDF · 26 pages · 3.9 MB',
+   file:'downloads/notes/bnss/BNSS_Story_Notes.pdf'}
+];
+function trackNotes(name, action){
+  try { gtag('event', 'story_notes_' + action, {file_name: name}); } catch(e) {}
+}
+function notesStripHtml(n){
+  return '<div class="notes-strip">' +
+    '<div class="notes-strip-icon">' + n.icon + '</div>' +
+    '<div>' +
+      '<div class="notes-strip-title">' + n.title + '<span class="notes-strip-new">NEW</span></div>' +
+      '<div class="notes-strip-desc">' + n.desc + '</div>' +
+      '<div class="notes-strip-meta">' + n.meta + '</div>' +
+      '<div class="notes-strip-btns">' +
+        '<a class="notes-strip-btn" href="' + n.file + '" target="_blank" rel="noopener" onclick="trackNotes(\'' + n.subject + '\',\'open\')">📖 Read now</a>' +
+        '<a class="notes-strip-btn alt" href="' + n.file + '" download onclick="trackNotes(\'' + n.subject + '\',\'download\')">📥 Download</a>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
 var SEM_LABELS = {1:'Semester I',2:'Semester II',3:'Semester III',4:'Semester IV',5:'Semester V',6:'Semester VI'};
 var SEM_COLORS = {
   1:{hex:'#0EA5E9', bg:'var(--sky-bg)',    border:'var(--sky-border)'},
@@ -178,6 +216,8 @@ function render(){
       '</span>' +
       '<div class="sem-line"></div>' +
     '</div>';
+
+    STORY_NOTES.filter(function(n){ return n.sem === sem; }).forEach(function(n){ pageHtml += notesStripHtml(n); });
 
     pageHtml += '<div class="sub-grid">' + subs.map(function(s){
       var day = Math.max(0, Math.min(idx, TOTAL_DAYS));
