@@ -186,6 +186,7 @@ var EXAM_PACKS = [
    desc:'Built from 326 questions of 23 Osmania papers (2009–2025). Ready-to-write Part A, B & C answers, every past paper tagged by topic, and the analysis of what keeps coming back.',
    files:[
      {key:'cpc_cluster_notes', label:'📘 Final Exam Cluster Notes', meta:'16 clusters · ready-to-write Part A / B / C answers · 45+ case stories · PDF · 49 pages · 2.6 MB', file:'downloads/notes/cpc/CPC_Final_Exam_Cluster_Notes.pdf'},
+     {key:'cpc_nyaya_metro', label:'🚇 Nyaya Metro — the subject as a metro map (NEW format)', meta:'46 stations · 6 lines · 6 Part C route maps · tap stations on your phone · PDF · 11 pages', open:'nyaya-metro.html?subject=cpc', file:'downloads/notes/cpc/CPC_Nyaya_Metro.pdf'},
      {key:'cpc_pyq_papers', label:'📚 Previous Year Question Papers 2009–2025', meta:'23 sittings · 326 questions · each tagged with its cluster · PDF · 13 pages · 0.9 MB', file:'downloads/notes/cpc/CPC_Previous_Year_Question_Papers_2009-2025.pdf'},
      {key:'cpc_pyq_analysis', label:'📊 Previous Year Question Analysis', meta:'what is asked most, by part and by period · repeat questions · PDF · 3 pages · 0.3 MB', file:'downloads/notes/cpc/CPC_PYQ_Analysis_2009-2025.pdf'}
    ]},
@@ -194,6 +195,7 @@ var EXAM_PACKS = [
    desc:'Built from 165 questions of 11 Osmania papers (2013–2021 + a recent common paper). Ready-to-write Part A, B & C answers with BNSS + old CrPC sections, every past paper tagged by cluster, and the analysis of what keeps coming back.',
    files:[
      {key:'bnss_cluster_notes', label:'📘 Final Exam Cluster Notes', meta:'14 clusters · ready-to-write Part A / B / C answers · case stories · BNSS ⇄ CrPC section finder · PDF · 41 pages · 2.1 MB', file:'downloads/notes/bnss/BNSS_Final_Exam_Cluster_Notes.pdf'},
+     {key:'bnss_nyaya_metro', label:'🚇 Nyaya Metro — the subject as a metro map (NEW format)', meta:'48 stations · 6 lines · 6 Part C route maps · tap stations on your phone · PDF · 11 pages', open:'nyaya-metro.html?subject=bnss', file:'downloads/notes/bnss/BNSS_Nyaya_Metro.pdf'},
      {key:'bnss_pyq_papers', label:'📚 Previous Year Question Papers 2013–2021', meta:'11 sittings · 165 questions · each tagged with its cluster · PDF · 9 pages · 0.6 MB', file:'downloads/notes/bnss/BNSS_Previous_Year_Question_Papers_2013-2021.pdf'},
      {key:'bnss_pyq_analysis', label:'📊 Previous Year Question Analysis', meta:'14 topic clusters · what is asked most, by part and by period · repeat questions · PDF · 3 pages · 0.3 MB', file:'downloads/notes/bnss/BNSS_PYQ_Analysis_2013-2021.pdf'},
      {key:'bnss_story_notes', label:'🎬 Story Notes (understand every topic)', meta:'all 5 units as one crime story · PDF · 26 pages · 3.9 MB', file:'downloads/notes/bnss/BNSS_Story_Notes.pdf'}
@@ -203,6 +205,7 @@ var EXAM_PACKS = [
    desc:'Built from 305 questions of 20 Osmania papers (2012–2023). Ready-to-write Part A, B & C answers (every NI Act problem in IRAC form), every past paper tagged by cluster, and the analysis of what keeps coming back.',
    files:[
      {key:'banking_cluster_notes', label:'📘 Final Exam Cluster Notes', meta:'13 clusters · ready-to-write Part A / B / C answers · case stories · NI Act section finder · PDF · 38 pages · 1.9 MB', file:'downloads/notes/banking/Banking_Final_Exam_Cluster_Notes.pdf'},
+     {key:'banking_nyaya_metro', label:'🚇 Nyaya Metro — the subject as a metro map (NEW format)', meta:'45 stations · 6 lines · 6 Part C route maps · tap stations on your phone · PDF · 11 pages', open:'nyaya-metro.html?subject=banking', file:'downloads/notes/banking/Banking_Nyaya_Metro.pdf'},
      {key:'banking_pyq_papers', label:'📚 Previous Year Question Papers 2012–2023', meta:'20 sittings · 305 questions · each tagged with its cluster · PDF · 13 pages · 0.8 MB', file:'downloads/notes/banking/Banking_Previous_Year_Question_Papers_2012-2023.pdf'},
      {key:'banking_pyq_analysis', label:'📊 Previous Year Question Analysis', meta:'13 topic clusters · what is asked most, by part and by period · repeat questions · PDF · 3 pages · 0.3 MB', file:'downloads/notes/banking/Banking_PYQ_Analysis_2012-2023.pdf'},
      {key:'banking_story_notes', label:'🎬 Story Notes (understand every topic)', meta:'all 5 units as one customer’s story · PDF · 18 pages · 3.0 MB', file:'downloads/notes/banking/Banking_Story_Notes.pdf'}
@@ -218,7 +221,7 @@ function examPackHtml(pk){
     pk.files.map(function(f){
       return '<div class="pack-row"><div class="pack-row-t">' + f.label + '</div><div class="pack-row-m">' + f.meta + '</div>' +
         '<div class="notes-strip-btns">' +
-          '<a class="notes-strip-btn" href="' + f.file + '" target="_blank" rel="noopener" onclick="trackPack(\'' + f.key + '\',\'open\')">📖 Read now</a>' +
+          '<a class="notes-strip-btn" href="' + (f.open || f.file) + '" target="_blank" rel="noopener" onclick="trackPack(\'' + f.key + '\',\'open\')">' + (f.open ? '🚇 Ride it' : '📖 Read now') + '</a>' +
           '<a class="notes-strip-btn alt" href="' + f.file + '" download onclick="trackPack(\'' + f.key + '\',\'download\')">📥 Download</a>' +
         '</div></div>';
     }).join('') +
