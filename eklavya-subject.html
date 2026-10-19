@@ -201,7 +201,7 @@ var EXAM_SUBJECT_MAP = {
 };
 // Hand-made story-notes PDFs (same list as STORY_NOTES on eklavya.html).
 // Final-exam packs live on eklavya.html (EXAM_PACKS); this links to that card.
-var EXAM_PACK_ANCHOR = { 'cpc': 'eklavya.html#exam-pack-cpc' };
+var EXAM_PACK_ANCHOR = { 'cpc': 'eklavya.html#exam-pack-cpc', 'bnss': 'eklavya.html#exam-pack-bnss', 'banking': 'eklavya.html#exam-pack-banking' };
 var STORY_NOTES_PDF = {
   'cpc': 'downloads/notes/cpc/CPC_Story_Notes.pdf',
   'bnss': 'downloads/notes/bnss/BNSS_Story_Notes.pdf',
@@ -429,6 +429,7 @@ Promise.all([
   if (EXAM_PACK_ANCHOR[subject]) {
     var packLink = document.getElementById('packLink');
     packLink.href = EXAM_PACK_ANCHOR[subject];
+    if (subject !== 'cpc') packLink.textContent = '📚 Previous Papers + Analysis (PDFs)';
     packLink.style.display = 'inline-flex';
     packLink.onclick = function(){ try { gtag('event', 'exam_pack_click', {file_name: subject}); } catch(e) {} };
   }
