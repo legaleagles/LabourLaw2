@@ -185,6 +185,7 @@ var EXAM_PACKS = [
    title:'CPC Final Exam Pack — cluster notes + previous papers + analysis',
    desc:'Built from 326 questions of 23 Osmania papers (2009–2025). Ready-to-write Part A, B & C answers, every past paper tagged by topic, and the analysis of what keeps coming back.',
    files:[
+     {key:'cpc_chalchitra', label:'🎬 CPC in Motion — Chalchitra notes (NEW format)', meta:'the whole syllabus as 77 animated comic scenes · 6 episodes · music &amp; sound · quick quiz after each episode · watch as video', open:'chalchitra.html', openLabel:'🎬 Watch now'},
      {key:'cpc_cluster_notes', label:'📘 Final Exam Cluster Notes', meta:'16 clusters · ready-to-write Part A / B / C answers · 45+ case stories · PDF · 49 pages · 2.6 MB', file:'downloads/notes/cpc/CPC_Final_Exam_Cluster_Notes.pdf'},
      {key:'cpc_nyaya_metro', label:'🚇 Nyaya Metro — the subject as a metro map (NEW format)', meta:'46 stations · 6 lines · 6 Part C route maps · tap stations on your phone · PDF · 11 pages', open:'nyaya-metro.html?subject=cpc', file:'downloads/notes/cpc/CPC_Nyaya_Metro.pdf'},
      {key:'cpc_pyq_papers', label:'📚 Previous Year Question Papers 2009–2025', meta:'23 sittings · 326 questions · each tagged with its cluster · PDF · 13 pages · 0.9 MB', file:'downloads/notes/cpc/CPC_Previous_Year_Question_Papers_2009-2025.pdf'},
@@ -221,8 +222,8 @@ function examPackHtml(pk){
     pk.files.map(function(f){
       return '<div class="pack-row"><div class="pack-row-t">' + f.label + '</div><div class="pack-row-m">' + f.meta + '</div>' +
         '<div class="notes-strip-btns">' +
-          '<a class="notes-strip-btn" href="' + (f.open || f.file) + '" target="_blank" rel="noopener" onclick="trackPack(\'' + f.key + '\',\'open\')">' + (f.open ? '🚇 Ride it' : '📖 Read now') + '</a>' +
-          '<a class="notes-strip-btn alt" href="' + f.file + '" download onclick="trackPack(\'' + f.key + '\',\'download\')">📥 Download</a>' +
+          '<a class="notes-strip-btn" href="' + (f.open || f.file) + '" target="_blank" rel="noopener" onclick="trackPack(\'' + f.key + '\',\'open\')">' + (f.openLabel || (f.open ? '🚇 Ride it' : '📖 Read now')) + '</a>' +
+          (f.file ? '<a class="notes-strip-btn alt" href="' + f.file + '" download onclick="trackPack(\'' + f.key + '\',\'download\')">📥 Download</a>' : '') +
         '</div></div>';
     }).join('') +
   '</div>';

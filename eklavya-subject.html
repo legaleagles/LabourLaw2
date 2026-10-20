@@ -161,6 +161,7 @@ gtag('config', 'G-TJXHVW6XCL');
   <a class="exam-btn" id="examLink" href="#" style="display:none;">⏱️ Take the Mock Exam</a>
   <a class="exam-btn" id="pyqLink" href="#" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">📚 Previous Year Questions</a>
   <a class="exam-btn" id="storyLink" href="#" target="_blank" rel="noopener" style="display:none;background:linear-gradient(135deg,#C9A227,#8a6d1a);">🎬 Story Notes (PDF)</a>
+  <a class="exam-btn" id="chalLink" href="chalchitra.html" style="display:none;background:linear-gradient(135deg,#e4572e,#7b4bb7);">🎬 CPC in Motion (animated)</a>
   <a class="exam-btn" id="metroLink" href="#" style="display:none;background:linear-gradient(135deg,#0e7490,#1d4ed8);">🚇 Nyaya Metro (subject map)</a>
   <a class="exam-btn" id="packLink" href="#" style="display:none;background:linear-gradient(135deg,#0D1117,#1e2a5a);border:1px solid rgba(245,215,110,.6);">🎯 Final Exam Pack (PDFs)</a>
 </div>
@@ -432,6 +433,11 @@ Promise.all([
     metroLink.href = 'nyaya-metro.html?subject=' + encodeURIComponent(subject);
     metroLink.style.display = 'inline-flex';
     metroLink.onclick = function(){ try { gtag('event', 'nm_click', {subject: subject}); } catch(e) {} };
+  }
+  if (subject === 'cpc') {
+    var chalLink = document.getElementById('chalLink');
+    chalLink.style.display = 'inline-flex';
+    chalLink.onclick = function(){ try { gtag('event', 'chal_click', {subject: subject}); } catch(e) {} };
   }
   if (EXAM_PACK_ANCHOR[subject]) {
     var packLink = document.getElementById('packLink');
