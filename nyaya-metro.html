@@ -96,7 +96,7 @@ nav a.back{margin-left:auto;color:#cbd5e1;font-size:12px;font-weight:700;text-de
 </style>
 </head>
 <body>
-<nav><a class="nav-brand" href="index.html">⚖️ LawSticker AI</a><a class="back" href="eklavya.html#sem5">🏹 Eklavya</a></nav>
+<nav><a class="nav-brand" href="index.html">⚖️ LawSticker AI</a><a class="back" href="eklavya.html#sem5">🏹 Eklavya</a><a class="back" id="hubBack" href="cpc-hub.html" style="display:none;margin-left:12px">🗂️ All CPC</a></nav>
 <div class="hero">
   <div class="hero-title">🚇 Nyaya Metro</div>
   <div class="hero-sub">The whole subject as a metro map. <b>Lines</b> are units, <b>stations</b> are the keywords you must know — bigger stations were asked more often in past Osmania papers. Tap a station for its <b>ticket</b>; ride a <b>route</b> to solve a Part C problem.</div>
@@ -180,6 +180,7 @@ function load(slug){
   var S = SUBJ.filter(function(x){ return x.slug === slug; })[0] || SUBJ[0];
   document.querySelectorAll('#subj button').forEach(function(b){ b.classList.toggle('on', b.dataset.s === S.slug); });
   history.replaceState(null, '', '?subject=' + S.slug);
+  var hb = document.getElementById('hubBack'); if (hb) hb.style.display = S.slug === 'cpc' ? '' : 'none';
   fetch('downloads/notes/nyaya-metro/nyaya-metro-' + S.slug + '.json').then(function(r){ return r.json(); }).then(function(d){
     D = d; ST = {}; ORDER = [];
     d.lines.forEach(function(L){ L.stations.forEach(function(s){ ST[s.code] = s; ORDER.push(s.code); }); });
