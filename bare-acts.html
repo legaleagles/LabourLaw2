@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bare Acts — CPC, Limitation Act, Constitution, IPC, CrPC, Evidence | LawSticker AI</title>
-  <meta name="description" content="Search the bare text of the Code of Civil Procedure (all sections), CPC Orders, Limitation Act, Constitution of India, and the old IPC, CrPC and Evidence Act. Free, mobile-friendly.">
+<title>Bare Acts — CPC, Limitation Act, NI Act, Banking Regulation Act, Constitution, CrPC | LawSticker AI</title>
+  <meta name="description" content="Search the bare text of the Code of Civil Procedure (all sections), CPC Orders, Limitation Act, Constitution of India, and the old IPC, CrPC and Evidence Act — plus section-by-section summaries of the Negotiable Instruments Act and key sections of the Banking Regulation Act. Free, mobile-friendly.">
   <link rel="canonical" href="https://lawsticker-ai.com/bare-acts.html">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lawsticker-ai.com/bare-acts.html">
@@ -23,7 +23,7 @@
 :root{
   --navy:#0D1117;--ink:#1A1208;--ink-soft:#374151;--cream:#FEFCF5;--muted:#6B7486;--light:#E8EDF3;
   --gold:#C9A227;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
-  --cpc:#059669;--ord:#0F766E;--lim:#B45309;--con:#D97706;--ipc:#DC2626;--crpc:#2563EB;--evi:#7C3AED;
+  --ni:#9D174D;--br:#4338CA;--cpc:#059669;--ord:#0F766E;--lim:#B45309;--con:#D97706;--ipc:#DC2626;--crpc:#2563EB;--evi:#7C3AED;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
@@ -106,6 +106,8 @@ var ACTS = [
   {id:'cpc', label:'CPC', sub:'Sections', c:'var(--cpc)'},
   {id:'cpc-orders', label:'CPC', sub:'Orders', c:'var(--ord)'},
   {id:'limitation', label:'Limitation Act', sub:'', c:'var(--lim)'},
+  {id:'ni', label:'NI Act', sub:'', c:'var(--ni)'},
+  {id:'br', label:'BR Act', sub:'', c:'var(--br)'},
   {id:'constitution', label:'Constitution', sub:'', c:'var(--con)'},
   {id:'ipc', label:'IPC', sub:'old', c:'var(--ipc)'},
   {id:'crpc', label:'CrPC', sub:'old', c:'var(--crpc)'},
@@ -149,7 +151,7 @@ function banner(){
   if (current === 'all') return '<div class="banner">Searching every Act on this page. Type a section number or a word.</div>';
   var m = DATA[current].meta, h = '';
   if (m.repealed) h += '<div class="banner warn">⚠️ <b>Repealed from 1 July 2024</b> — replaced by the ' + esc(m.repealed) + '. Kept here for old section numbers and older judgments.</div>';
-  if (m.kind === 'summary') h += '<div class="banner sum">📝 <b>Plain-English summaries</b> of each provision, written for study — not the official wording. Read the official text on <a href="https://www.indiacode.nic.in" target="_blank" rel="noopener">India Code</a>.' + (current === 'cpc-orders' ? ' Covers all 51 Orders and their key rules.' : ' Covers every section and the main Articles of the Schedule.') + '</div>';
+  if (m.kind === 'summary') h += '<div class="banner sum">📝 <b>Plain-English summaries</b> of each provision, written for study — not the official wording. Read the official text on <a href="https://www.indiacode.nic.in" target="_blank" rel="noopener">India Code</a>.' + (m.cover ? ' ' + esc(m.cover) : current === 'cpc-orders' ? ' Covers all 51 Orders and their key rules.' : ' Covers every section and the main Articles of the Schedule.') + '</div>';
   else h += '<div class="banner">📜 <b>' + esc(m.act) + '</b> — full text. Square brackets [ ] mark words inserted by later amendments; * * * marks words omitted.</div>';
   return h;
 }
@@ -193,7 +195,7 @@ function hl(text){
 
 function card(r, k){
   var a = act(r.id), s = r.s, m = DATA[r.id].meta;
-  var label = m.short === 'COI' ? '' : (r.id === 'cpc' || r.id === 'ipc' || r.id === 'crpc' || r.id === 'evidence' ? 'S.' : '');
+  var label = m.short === 'COI' ? '' : (r.id === 'cpc' || r.id === 'ipc' || r.id === 'crpc' || r.id === 'evidence' || r.id === 'ni' || r.id === 'br' ? 'S.' : '');
   var body = '';
   if (s.gist) body += '<div class="sec-gist">' + hl(s.gist) + '</div>';
   if (s.text) { var long = s.text.length > 320; body += '<div class="sec-text' + (long ? ' clip' : '') + '" id="t' + k + '">' + s.text.split('\n').map(function(p){ return '<p>' + hl(p) + '</p>'; }).join('') + '</div>' + (long ? '<button class="more" data-k="' + k + '">Read full text ▾</button>' : ''); }

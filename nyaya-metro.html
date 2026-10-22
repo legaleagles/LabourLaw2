@@ -180,7 +180,7 @@ function load(slug){
   var S = SUBJ.filter(function(x){ return x.slug === slug; })[0] || SUBJ[0];
   document.querySelectorAll('#subj button').forEach(function(b){ b.classList.toggle('on', b.dataset.s === S.slug); });
   history.replaceState(null, '', '?subject=' + S.slug);
-  var hb = document.getElementById('hubBack'); if (hb) hb.style.display = S.slug === 'cpc' ? '' : 'none';
+  var hb = document.getElementById('hubBack'); if (hb) { hb.href = S.slug + '-hub.html'; hb.textContent = '🗂️ All ' + S.label; hb.style.display = ''; }
   fetch('downloads/notes/nyaya-metro/nyaya-metro-' + S.slug + '.json').then(function(r){ return r.json(); }).then(function(d){
     D = d; ST = {}; ORDER = [];
     d.lines.forEach(function(L){ L.stations.forEach(function(s){ ST[s.code] = s; ORDER.push(s.code); }); });

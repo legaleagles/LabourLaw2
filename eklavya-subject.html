@@ -435,8 +435,13 @@ Promise.all([
     metroLink.style.display = 'inline-flex';
     metroLink.onclick = function(){ try { gtag('event', 'nm_click', {subject: subject}); } catch(e) {} };
   }
+  var HUBS = { cpc: ['cpc-hub.html', 'CPC'], bnss: ['bnss-hub.html', 'BNSS'], banking: ['banking-hub.html', 'Banking'] };
+  if (HUBS[subject]) {
+    var hubLink = document.getElementById('hubLink');
+    hubLink.href = HUBS[subject][0]; hubLink.textContent = '🗂️ All ' + HUBS[subject][1] + ' material (one page)';
+    hubLink.style.display = 'inline-flex';
+  }
   if (subject === 'cpc') {
-    document.getElementById('hubLink').style.display = 'inline-flex';
     var chalLink = document.getElementById('chalLink');
     chalLink.style.display = 'inline-flex';
     chalLink.onclick = function(){ try { gtag('event', 'chal_click', {subject: subject}); } catch(e) {} };
