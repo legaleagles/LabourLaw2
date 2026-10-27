@@ -190,6 +190,20 @@ nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:re
 nav.tabs button{border:0;background:none;padding:12px 4px 13px;display:flex;flex-direction:column;align-items:center;color:var(--muted);position:relative;min-height:56px;font-weight:600;font-size:.98rem}
 nav.tabs button[aria-selected="true"]{color:var(--leaf)}
 nav.tabs button[aria-selected="true"]::before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 3px 3px;background:var(--leaf)}
+.autocard{display:flex;flex-direction:column;gap:8px;border-color:var(--leaf)}
+.btn.big{min-height:52px;font-size:1.05rem;width:100%}
+.locrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.locrow input{width:120px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);padding:9px 10px;font-weight:600;font-variant-numeric:tabular-nums}
+.pname{font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}
+.tag.auto{background:var(--leaf-soft);color:var(--leaf)}
+.tag.check{background:var(--haldi-soft);color:var(--haldi-ink)}
+.cands{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;background:var(--sunk);border-radius:10px;padding:10px}
+.cands p{margin:0 0 2px;font-size:.82rem;color:var(--muted);font-weight:600}
+.cand{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;min-height:44px}
+.cand.sel{border-color:var(--leaf);box-shadow:inset 0 0 0 1px var(--leaf)}
+.cand.oos{opacity:.55}
+.cand b{font-weight:500;font-size:.9rem;overflow-wrap:anywhere}
+.cand span{font-variant-numeric:tabular-nums;font-weight:600}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(74px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.92rem;z-index:30;max-width:calc(100% - 32px);box-shadow:0 6px 24px rgba(0,0,0,.18)}
 @media (prefers-reduced-motion:no-preference){.view-in{animation:rise .22s ease-out}@keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}}
 </style>
@@ -244,7 +258,7 @@ splitMin1:'Split the order only if it saves at least',splitMin2:'per extra app',
 shareMsg:'Compare grocery prices across Blinkit, Zepto, Instamart and BigBasket in one place with this free tool:',
 homeTip:'Tip: in Chrome, tap ⋮ then “Add to Home screen” to open this like an app.',
 disclaimer:'Prices are what you enter from each app. LawSticker AI is not connected to Blinkit, Zepto, Swiggy Instamart, BigBasket, Flipkart Minutes or any other app named here.',
-listMsgHead:'Grocery list',alsoSee:'Also read: grocery and quick-commerce tricks decoded'},
+autoH:'Fetch prices automatically',autoBtn:'Fetch all prices now',autoRefresh:'Refresh prices',locNeed:'Set your delivery location once so prices come from your nearest store.',useLoc:'Use my location',pinLabel:'Pincode',savePin:'Save',locSet:'Delivery pincode {p}',locSetNoPin:'Using your current location. Add a pincode for Flipkart Minutes.',locChange:'Change',locFail:'Couldn\u2019t get your location. Type your pincode and tap Save.',pinBad:'Enter a 6-digit pincode.',pinNotFound:'Couldn\u2019t find that pincode. Tap Use my location instead.',fetching:'Checking {a} of {b} items…',fetched:'Got prices for {n} items',lastFetch:'Prices fetched {t}',fetchErr:'Couldn\u2019t fetch prices right now. Try again in a few minutes, or type them.',capErr:'Today\u2019s free price lookups are used up. Type prices or try tomorrow.',busyErr:'Too many lookups in a short time. Try again in 10 minutes.',change:'Change',pickTitle:'Pick the exact product. We\u2019ll remember it.',outStock:'out of stock',tagAuto:'auto',tagCheck:'check match',manualOnly:'{a} isn\u2019t covered by auto fetch. Type its prices yourself.',autoNoteFees:'Delivery and handling fees are not fetched. Add them once under Fees for each app.',listMsgHead:'Grocery list',alsoSee:'Also read: grocery and quick-commerce tricks decoded'},
 te:{tagline:'సరుకుల యాప్‌ల ధరలు పోల్చండి',tabList:'నా జాబితా',tabPrices:'ధరలు',tabBest:'ఎక్కడ కొనాలి',pill:'ఉదాహరణ',
 exTitle:'ఇవి ఉదాహరణ ధరలు',exBody:'ఇది ఎలా పనిచేస్తుందో చూడటానికి మాత్రమే. మీ జాబితా, ధరలు ఈ ఫోన్‌లోనే ఉంటాయి.',startOwn:'నా జాబితా మొదలుపెట్టు',keepItems:'ఈ వస్తువులు ఉంచి, ధరలు తీసేయి',
 listH:'ఏమేమి కావాలి?',listSub:'జాబితా ఒక్కసారి తయారుచేయండి. తర్వాత సారి కావలసినవి టిక్ చేస్తే చాలు.',addLabel:'వస్తువులు చేర్చండి',addPh:'ఉదా: 2 ప్యాకెట్లు పాలు, ఉల్లిపాయలు 1 కిలో, ఆశీర్వాద్ ఆటా 5 kg',
@@ -269,7 +283,7 @@ splitMin1:'కనీసం ఇంత ఆదా అయితేనే విడ�
 shareMsg:'Blinkit, Zepto, Instamart, BigBasket ధరలు ఒకే చోట పోల్చి చూడండి, ఈ ఉచిత టూల్‌తో:',
 homeTip:'చిట్కా: Chromeలో ⋮ నొక్కి "Add to Home screen" ఎంచుకుంటే యాప్‌లా తెరుచుకుంటుంది.',
 disclaimer:'ధరలు మీరు ప్రతి యాప్ నుండి చూసి రాసినవే. ఇక్కడ పేర్కొన్న Blinkit, Zepto, Swiggy Instamart, BigBasket, Flipkart Minutes లేదా ఏ యాప్‌తోనూ LawSticker AIకి సంబంధం లేదు.',
-listMsgHead:'సరుకుల జాబితా',alsoSee:'ఇది కూడా చదవండి: సరుకుల యాప్‌ల మోసాలు'},
+autoH:'ధరలు ఆటోమేటిక్‌గా తెప్పించండి',autoBtn:'అన్ని ధరలు ఇప్పుడు తెప్పించు',autoRefresh:'ధరలు మళ్ళీ తెప్పించు',locNeed:'మీ దగ్గరి స్టోర్ ధరలు రావడానికి, డెలివరీ లొకేషన్ ఒక్కసారి సెట్ చేయండి.',useLoc:'నా లొకేషన్ వాడు',pinLabel:'పిన్‌కోడ్',savePin:'సేవ్',locSet:'డెలివరీ పిన్‌కోడ్ {p}',locSetNoPin:'మీ ప్రస్తుత లొకేషన్ వాడుతున్నాం. Flipkart Minutes కోసం పిన్‌కోడ్ కూడా ఇవ్వండి.',locChange:'మార్చు',locFail:'లొకేషన్ దొరకలేదు. పిన్‌కోడ్ టైప్ చేసి సేవ్ నొక్కండి.',pinBad:'6 అంకెల పిన్‌కోడ్ ఇవ్వండి.',pinNotFound:'ఆ పిన్‌కోడ్ దొరకలేదు. "నా లొకేషన్ వాడు" నొక్కండి.',fetching:'{b}లో {a} వస్తువులు చూస్తున్నాం…',fetched:'{n} వస్తువుల ధరలు వచ్చాయి',lastFetch:'ధరలు తెచ్చింది: {t}',fetchErr:'ఇప్పుడు ధరలు తేలేకపోయాం. కొద్దిసేపట్లో మళ్ళీ ప్రయత్నించండి, లేదా టైప్ చేయండి.',capErr:'ఈరోజు ఉచిత ధరల శోధనలు అయిపోయాయి. ధరలు టైప్ చేయండి లేదా రేపు ప్రయత్నించండి.',busyErr:'తక్కువ సమయంలో ఎక్కువ శోధనలు. 10 నిమిషాల తర్వాత ప్రయత్నించండి.',change:'మార్చు',pickTitle:'సరైన ప్రోడక్ట్ ఎంచుకోండి. మేము గుర్తుంచుకుంటాం.',outStock:'స్టాక్ లేదు',tagAuto:'ఆటో',tagCheck:'సరిచూడండి',manualOnly:'{a}కి ఆటో లేదు. దాని ధరలు మీరే టైప్ చేయండి.',autoNoteFees:'డెలివరీ, హ్యాండ్లింగ్ ఛార్జీలు ఆటోగా రావు. ప్రతి యాప్‌కి "ఛార్జీలు"లో ఒక్కసారి రాయండి.',listMsgHead:'సరుకుల జాబితా',alsoSee:'ఇది కూడా చదవండి: సరుకుల యాప్‌ల మోసాలు'},
 hi:{tagline:'किराना ऐप्स के दाम मिलाएँ',tabList:'मेरी सूची',tabPrices:'दाम',tabBest:'कहाँ खरीदें',pill:'उदाहरण',
 exTitle:'ये उदाहरण के दाम हैं',exBody:'ताकि आप देख सकें यह कैसे काम करता है। आपकी सूची और दाम इसी फ़ोन में रहते हैं।',startOwn:'अपनी सूची शुरू करें',keepItems:'ये सामान रखें, दाम हटाएँ',
 listH:'क्या-क्या चाहिए?',listSub:'सूची एक बार बनाइए। अगली बार बस ज़रूरी चीज़ों पर टिक कीजिए।',addLabel:'सामान जोड़ें',addPh:'जैसे: 2 पैकेट दूध, प्याज 1 किलो, आशीर्वाद आटा 5 kg',
@@ -294,7 +308,7 @@ splitMin1:'तभी बाँटें जब कम से कम इतनी
 shareMsg:'इस मुफ़्त टूल से Blinkit, Zepto, Instamart, BigBasket के दाम एक जगह मिलाकर देखें:',
 homeTip:'टिप: Chrome में ⋮ दबाकर "Add to Home screen" चुनें, यह ऐप की तरह खुलेगा।',
 disclaimer:'दाम वही हैं जो आप हर ऐप से देखकर लिखते हैं। LawSticker AI का यहाँ बताए Blinkit, Zepto, Swiggy Instamart, BigBasket, Flipkart Minutes या किसी ऐप से कोई संबंध नहीं है।',
-listMsgHead:'किराने की सूची',alsoSee:'यह भी पढ़ें: किराना ऐप्स की चालें'}
+autoH:'दाम अपने-आप लाएँ',autoBtn:'सारे दाम अभी लाएँ',autoRefresh:'दाम फिर से लाएँ',locNeed:'आपके पास वाले स्टोर के दाम आएँ, इसके लिए डिलीवरी लोकेशन एक बार सेट करें।',useLoc:'मेरी लोकेशन लें',pinLabel:'पिनकोड',savePin:'सेव',locSet:'डिलीवरी पिनकोड {p}',locSetNoPin:'आपकी मौजूदा लोकेशन ली गई है। Flipkart Minutes के लिए पिनकोड भी डालें।',locChange:'बदलें',locFail:'लोकेशन नहीं मिली। पिनकोड लिखकर सेव दबाएँ।',pinBad:'6 अंकों का पिनकोड डालें।',pinNotFound:'यह पिनकोड नहीं मिला। "मेरी लोकेशन लें" दबाएँ।',fetching:'{b} में से {a} सामान देख रहे हैं…',fetched:'{n} सामान के दाम आ गए',lastFetch:'दाम लाए गए: {t}',fetchErr:'अभी दाम नहीं ला सके। थोड़ी देर बाद कोशिश करें, या खुद लिखें।',capErr:'आज की मुफ़्त खोज खत्म हो गई। दाम खुद लिखें या कल कोशिश करें।',busyErr:'कम समय में बहुत ज़्यादा खोज। 10 मिनट बाद कोशिश करें।',change:'बदलें',pickTitle:'सही प्रोडक्ट चुनें। हम याद रखेंगे।',outStock:'स्टॉक में नहीं',tagAuto:'ऑटो',tagCheck:'जाँच लें',manualOnly:'{a} के लिए ऑटो नहीं है। इसके दाम खुद लिखें।',autoNoteFees:'डिलीवरी और हैंडलिंग चार्ज अपने-आप नहीं आते। हर ऐप के लिए "चार्ज" में एक बार लिखें।',listMsgHead:'किराने की सूची',alsoSee:'यह भी पढ़ें: किराना ऐप्स की चालें'}
 };
 let lang='en'; try{ const l=localStorage.getItem('lsLang'); if(T[l]) lang=l; }catch(e){}
 function t(k,v){ let s=(T[lang][k]??T.en[k]??k); if(v) for(const [a,b] of Object.entries(v)) s=s.split('{'+a+'}').join(b); return s; }
@@ -438,6 +452,57 @@ function parseChunk(raw){
 }
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 
+/* ---------- auto fetch (backend: QuickCommerce API) ---------- */
+const API='https://lawsticker-backend-494996217030.europe-west1.run.app';
+let auto={ok:false,platforms:[]}, busy=false, progressText='';
+fetch(API+'/api/sarukulu/status').then(r=>r.json()).then(d=>{ if(d&&d.ok&&d.configured){ auto={ok:true,platforms:d.platforms||[]}; render(); } }).catch(()=>{});
+const autoApps=()=>activeApps(state).filter(a=>auto.platforms.includes(a));
+function setProgress(txt){ progressText=txt; const el=document.getElementById('fetchMsg'); if(el) el.textContent=txt; }
+function errText(code){ return code==='daily_cap'||code==='no_credits'?t('capErr'):code==='too_many_requests'?t('busyErr'):t('fetchErr'); }
+function applyCands(it,app,cands){
+  const now=Date.now();
+  const slim=(cands||[]).slice(0,6).map(c=>({pid:c.pid,name:c.name,qty:c.qty,price:c.price,mrp:c.mrp,available:!!c.available,link:c.link||'',score:c.score||0}));
+  state.prices[it.id]=state.prices[it.id]||{};
+  const pick=(it.picks||{})[app]; let c=pick?slim.find(x=>x.pid===pick):null; const sure=!!c;
+  if(!c) c=slim.find(x=>x.available);
+  if(!c||!c.available){ state.prices[it.id][app]={na:true,at:now,src:'auto',cands:slim}; return; }
+  state.prices[it.id][app]={p:c.price,at:now,src:'auto',pid:c.pid,pname:c.name,pqty:c.qty,link:c.link,check:!sure&&c.score<0.7,cands:slim};
+}
+async function fetchAll(){
+  if(busy||!auto.ok||!state.loc) return;
+  const plats=autoApps(), items=state.items.filter(i=>i.on);
+  if(!plats.length||!items.length) return;
+  busy=true; render(); let done=0, got=0, lastErr=null;
+  setProgress(t('fetching',{a:0,b:items.length}));
+  for(let k=0;k<items.length;k+=4){
+    const chunk=items.slice(k,k+4);
+    try{
+      const r=await fetch(API+'/api/sarukulu/fetch',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({lat:state.loc.lat,lon:state.loc.lon,pincode:state.loc.pincode||'',platforms:plats,items:chunk.map(i=>({id:i.id,q:i.search||i.name}))})});
+      const d=await r.json();
+      if(!d.ok){ lastErr=d.error; if(['daily_cap','no_credits','not_configured','bad_key','too_many_requests'].includes(d.error)) break; }
+      else{ if(Object.keys(d.errors||{}).length) lastErr=Object.values(d.errors)[0];
+        for(const [iid,byApp] of Object.entries(d.results||{})){ const it=state.items.find(x=>x.id===iid); if(!it) continue; for(const [app,c] of Object.entries(byApp)) applyCands(it,app,c); got++; } }
+    }catch(e){ lastErr='network'; }
+    done+=chunk.length; setProgress(t('fetching',{a:done,b:items.length}));
+  }
+  busy=false; if(got){ state.lastFetch=Date.now(); state.example=false; }
+  save(); render(); track('sarukulu_autofetch',{items:items.length,got});
+  toast(got?t('fetched',{n:got}):errText(lastErr));
+}
+function setLoc(lat,lon,pincode){ state.loc={lat:+lat,lon:+lon,pincode:pincode||''}; state.ui.editLoc=false; save(); render(); }
+function autoCard(){
+  if(!auto.ok) return '';
+  const L=state.loc;
+  if(!L||state.ui.editLoc) return `<section class="card autocard"><p class="label" style="margin:0">${t('autoH')}</p><p class="hint">${t('locNeed')}</p>
+    <div class="locrow"><button class="btn primary" data-act="geo">${t('useLoc')}</button></div>
+    <div class="locrow"><label for="pinIn" class="hint">${t('pinLabel')}</label><input id="pinIn" inputmode="numeric" maxlength="6" value="${esc(L?.pincode||'')}" placeholder="500081"><button class="btn small" data-act="savePin">${t('savePin')}</button></div></section>`;
+  return `<section class="card autocard"><button class="btn primary big" data-act="fetch" ${busy?'disabled':''}>${state.lastFetch?t('autoRefresh'):t('autoBtn')}</button>
+    <p class="hint" id="fetchMsg" aria-live="polite">${busy?esc(progressText):(state.lastFetch?esc(t('lastFetch',{t:ago(state.lastFetch)})):'')}</p>
+    <p class="hint">${esc(L.pincode?t('locSet',{p:L.pincode}):t('locSetNoPin'))} · <button class="linkbtn" data-act="locChange">${t('locChange')}</button></p>
+    <p class="hint">${t('autoNoteFees')}</p></section>`;
+}
+
 /* ---------- state, storage ---------- */
 const LS='sarukulu.v1';
 let state; try{ state=normalize(JSON.parse(localStorage.getItem(LS))); }catch(e){ state=exampleState(); }
@@ -451,7 +516,7 @@ const uid=()=>'i'+Math.random().toString(36).slice(2,9);
 function ago(ts){ const m=(Date.now()-ts)/6e4; if(m<2) return t('justNow'); if(m<60) return t('minAgo',{n:Math.round(m)}); const h=m/60; if(h<24) return t('hAgo',{n:Math.round(h)}); const d=Math.round(h/24); return d===1?t('yday'):t('dAgo',{n:d}); }
 const STALE=3*24*3600e3;
 const mono=(id,cls='')=>{ const a=APP[id]; return `<span class="mono ${cls}" style="background:var(${a.c})" aria-hidden="true">${a.mono}</span>`; };
-const link=(id,item)=>{ const a=APP[id]; return a.url?a.url(encodeURIComponent(item.search||item.name)):a.home; };
+const link=(id,item)=>{ const r=rec(state,item.id,id); if(r&&r.link) return r.link; const a=APP[id]; return a.url?a.url(encodeURIComponent(item.search||item.name)):a.home; };
 const localName=i=>lang==='hi'?(i.hi||''):(i.te||'');
 let toastT; function toast(msg){ const el=$('#toast'); el.textContent=msg; el.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>el.hidden=true,3500); }
 function addItems(list){
@@ -523,20 +588,25 @@ function viewPrices(){
   const short=A?A.name.split(' ')[0]:'';
   const rows=!cur?'':items.map(i=>{
     const r=rec(state,i.id,cur)||{}; const stale=r.at&&Date.now()-r.at>STALE; const loc=localName(i);
-    const tag=r.at?`<span class="tag ${stale?'stale':''}">${r.src==='example'?t('tagEx'):ago(r.at)}</span>`:'';
+    const tag=(r.at?`<span class="tag ${stale?'stale':''}">${r.src==='example'?t('tagEx'):ago(r.at)}</span>`:'')+(r.src==='auto'?`<span class="tag ${r.check?'check':'auto'}">${r.check?t('tagCheck'):t('tagAuto')}</span>`:'');
+    const open=state.ui.open===i.id+'|'+cur;
+    const pinfo=r.src==='auto'&&(r.pname||r.cands?.length)?`<div class="pname">${r.pname?esc(r.pname)+(r.pqty?' · '+esc(r.pqty):''):''}${r.cands?.length?` <button class="linkbtn" data-act="cands" data-id="${i.id}">${t('change')}</button>`:''}</div>`:'';
+    const candList=open&&r.cands?.length?`<div class="cands"><p>${t('pickTitle')}</p>${r.cands.map(c=>`<button class="cand ${c.pid===r.pid?'sel':''} ${c.available?'':'oos'}" data-act="pick" data-id="${i.id}" data-pid="${esc(c.pid)}"><b>${esc(c.name)}${c.qty?' · '+esc(c.qty):''}${c.available?'':' · '+t('outStock')}</b><span>${rs(c.price)}</span></button>`).join('')}</div>`:'';
     return `<li class="prow ${r.na?'isna':''}">
       <div class="nm"><b>${esc(i.name)}${i.qty>1?` <span style="color:var(--muted)">× ${i.qty}</span>`:''}</b>${loc&&lang!=='en'?`<span class="loc">${esc(loc)}</span>`:''}
-      <div class="meta"><a href="${esc(link(cur,i))}" target="_blank" rel="noopener" data-track="find_click">${A.url?esc(t('find',{a:short})):esc(t('openApp',{a:A.name}))}</a>${tag}</div></div>
+      ${pinfo}<div class="meta"><a href="${esc(link(cur,i))}" target="_blank" rel="noopener" data-track="find_click">${A.url?esc(t('find',{a:short})):esc(t('openApp',{a:A.name}))}</a>${tag}</div></div>
       <div class="ctl"><span class="money"><span>₹</span><input id="p-${cur}-${i.id}" type="number" inputmode="decimal" min="0" step="0.5" placeholder="${esc(t('pricePh'))}" aria-label="${esc(A.name)} — ${esc(i.name)}" data-price="${i.id}" value="${r.p&&!r.na?r.p:''}" ${r.na?'disabled':''}></span>
-      <button class="na" data-act="na" data-id="${i.id}" aria-pressed="${!!r.na}" title="${esc(t('naTitle',{a:A.name}))}">${t('na')}</button></div></li>`;
+      <button class="na" data-act="na" data-id="${i.id}" aria-pressed="${!!r.na}" title="${esc(t('naTitle',{a:A.name}))}">${t('na')}</button></div>${candList}</li>`;
   }).join('');
   const nxt=apps[apps.indexOf(cur)+1];
   return `<div class="stack">
   <div><h2 class="view">${t('pricesH')}</h2><p class="sub">${t('pricesSub')}</p></div>
+  ${autoCard()}
   ${apps.length?`<div class="appbar" role="tablist">${tabs}</div>`:''}
   ${!apps.length?`<p class="warnbox">${t('turnOn')}</p>`:!items.length?`<p class="empty">${t('nothingTicked')} <button class="linkbtn" data-act="go" data-to="list">${t('goList')}</button></p>`:`
   <section class="card apphead">
     <div class="t">${mono(cur)}<h3>${esc(A.name)}</h3><a class="btn small" href="${esc(A.url?A.url(''):A.home)}" target="_blank" rel="noopener">${esc(t('openApp',{a:short}))}</a></div>
+    ${auto.ok&&!auto.platforms.includes(cur)?`<p class="hint">${esc(t('manualOnly',{a:A.name}))}</p>`:''}
     <details class="fees"><summary>${esc(t('feesT',{a:A.name}))}</summary>
       <p class="hint" style="margin-top:6px">${t('feesHint')}</p>
       <div class="feegrid">${money('delivery',t('fDelivery'))}${money('freeAbove',t('fFree'))}${money('handling',t('fHandling'))}${money('off',t('fOff'))}${money('smallCart',t('fSmall'))}${money('smallBelow',t('fSmallBelow'))}</div>
@@ -579,6 +649,7 @@ function viewBest(){
   const now=Date.now(); let stale=0; R.perItem.forEach(p=>{ const r=rec(state,p.item.id,p.low.a); if(r?.at&&r.src!=='example'&&now-r.at>STALE) stale++; });
   const rows=R.perItem.map(p=>`<tr><td>${esc(p.item.name)}</td><td><span class="who" title="${APP[p.low.a].name}">${mono(p.low.a)}${rs(p.low.p)}</span></td><td class="n">${p.n>1&&p.high.p>p.low.p?'+'+rs(p.high.p-p.low.p):'—'}</td></tr>`).join('');
   return `<div class="stack">
+  ${state.loc?autoCard():''}
   ${stale?`<p class="warnbox">${t('stale',{n:stale})}</p>`:''}
   ${R.unpriced.length?`<p class="warnbox">${esc(t('unpriced',{x:R.unpriced.map(i=>i.name).join(', ')}))} <button class="linkbtn" data-act="go" data-to="prices">${t('checkPrices')}</button></p>`:''}
   ${hero}
@@ -607,7 +678,29 @@ main.addEventListener('click',e=>{
     case 'allon': state.items.forEach(i=>i.on=true); break;
     case 'alloff': state.items.forEach(i=>i.on=false); break;
     case 'staple': { const W=WORDS[+el.dataset.w]; addItems([{name:el.dataset.name,te:W[1],hi:W[2]}]); break; }
-    case 'go': state.ui.tab=el.dataset.to; window.scrollTo(0,0); break;
+    case 'go': state.ui.tab=el.dataset.to; window.scrollTo(0,0);
+      if(el.dataset.to==='prices'&&auto.ok&&state.loc&&(!state.lastFetch||Date.now()-state.lastFetch>2*3600e3)) setTimeout(fetchAll,50);
+      break;
+    case 'fetch': fetchAll(); return;
+    case 'locChange': state.ui.editLoc=true; break;
+    case 'cands': { const k=id+'|'+state.ui.app; state.ui.open=state.ui.open===k?null:k; render(); return; }
+    case 'pick': { const app=state.ui.app, r=rec(state,id,app), c=r?.cands?.find(x=>x.pid===el.dataset.pid); if(!c) return;
+      it.picks=it.picks||{}; it.picks[app]=c.pid;
+      state.prices[id][app]={...r, p:c.price, na:!c.available, pid:c.pid, pname:c.name, pqty:c.qty, link:c.link, check:false, at:Date.now()};
+      if(!c.available) delete state.prices[id][app].p;
+      state.ui.open=null; break; }
+    case 'geo': {
+      if(!navigator.geolocation){ toast(t('locFail')); return; }
+      const pin=(document.getElementById('pinIn')?.value||'').replace(/\D/g,'');
+      navigator.geolocation.getCurrentPosition(pos=>setLoc(pos.coords.latitude,pos.coords.longitude,pin.length===6?pin:(state.loc?.pincode||'')),()=>toast(t('locFail')),{timeout:15000,maximumAge:600000,enableHighAccuracy:false});
+      return; }
+    case 'savePin': {
+      const pin=(document.getElementById('pinIn')?.value||'').replace(/\D/g,'');
+      if(pin.length!==6){ toast(t('pinBad')); return; }
+      if(state.loc&&state.loc.lat){ setLoc(state.loc.lat,state.loc.lon,pin); return; }
+      fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&country=India&postalcode='+pin).then(r=>r.json()).then(a=>{
+        if(a&&a[0]) setLoc(a[0].lat,a[0].lon,pin); else toast(t('pinNotFound')); }).catch(()=>toast(t('pinNotFound')));
+      return; }
     case 'app': state.ui.app=el.dataset.app; break;
     case 'appon': { const a=state.apps[el.dataset.app]; a.on=!a.on; break; }
     case 'na': { const p=state.prices[id]=state.prices[id]||{}; const cur=state.ui.app; if(p[cur]?.na) delete p[cur]; else p[cur]={na:true,at:Date.now(),src:'you'}; break; }
