@@ -218,14 +218,11 @@ html:not([lang=en]) *{letter-spacing:0!important;text-transform:none!important}
 
 <main class="wrap">
   <section class="card" aria-labelledby="rt">
-    <div class="card-t" id="rt"><span data-i="rateTitle">Today's rate</span></div>
+    <div class="card-t" id="rt"><span id="rateTitleTxt">Today's rate</span></div>
     <div class="rates">
       <label class="sr" for="city" data-i="city">City</label>
       <select id="city"></select>
-      <div class="chip"><span>24K</span><b id="rc24">–</b></div>
-      <div class="chip"><span>22K</span><b id="rc22">–</b></div>
-      <div class="chip"><span>18K</span><b id="rc18">–</b></div>
-      <div class="chip"><span data-i="silver">Silver</span><b id="rcS">–</b></div>
+      <div id="chips" style="display:contents"></div>
       <button class="link-btn" id="rateRefresh" data-i="refresh">Refresh</button>
       <div class="rate-note" id="rateNote" aria-live="polite"></div>
     </div>
@@ -624,8 +621,14 @@ function applyRates(o,stale){S.rates=o;paintChips();
   $('rateNote').textContent=(o.real?t('rateLive'):'~')+' · '+o.city.charAt(0).toUpperCase()+o.city.slice(1)+' · '+tm+(stale?' (old)':'')+'. '+t('rateManual');
   refreshAll();
 }
-function paintChips(){var r=S.rates;function g(k){return r&&r.gold&&r.gold[k]?fmt(r.gold[k]):'–'}
-  $('rc24').textContent=g('24');$('rc22').textContent=g('22');$('rc18').textContent=g('18');$('rcS').textContent=r&&r.silver?fmt(r.silver):'–'}
+function paintChips(){
+  var r=S.rates,ch=[];
+  function c(l,v){ch.push('<div class="chip"><span>'+l+'</span><b>'+(v?fmt(v):'–')+'</b></div>')}
+  if(S.metal==='silver'){var sv=r&&r.silver;c('999',sv);c('925',sv&&sv*.925);c('800',sv&&sv*.8)}
+  else{var g=r&&r.gold||{};var ks=S.metal==='diamond'?['22','18','14']:['24','22','20','18','14'];ks.forEach(function(k){c(k+'K',g[k])})}
+  $('chips').innerHTML=ch.join('');
+  $('rateTitleTxt').textContent=t('rateTitle')+' · '+t(S.metal)+' / g';
+}
 
 /* ---------------- checker frames ---------------- */
 function showMode(){
@@ -676,13 +679,13 @@ function applyLang(){
   document.querySelectorAll('[data-ph]').forEach(function(e){e.placeholder=t(e.dataset.ph)});
   document.querySelectorAll('.langs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===lang)});
   var c=$('city'),cur=S.city;c.innerHTML=CITIES.map(function(x){return '<option value="'+x+'"'+(x===cur?' selected':'')+'>'+x.charAt(0).toUpperCase()+x.slice(1)+'</option>'}).join('');
-  renderStatic();buildFeedbackUI();renderQuotes();refreshAll();loadBadge();
+  renderStatic();buildFeedbackUI();renderQuotes();paintChips();refreshAll();loadBadge();
   ['gold','silver','diamond'].forEach(function(m){var f=$('fr-'+m);if(f&&f.getAttribute('src')&&f.contentWindow)try{f.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}});
 }
 function refreshAll(){renderForm();renderResult()}
 var tAnalytics={};
 function track(){if(!tAnalytics[S.metal]&&lastR){tAnalytics[S.metal]=1;try{gtag('event','jewellery_calc',{metal:S.metal})}catch(e){}}}
-function setMetal(m){S.metal=m;document.body.dataset.metal=m;document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});showMode();refreshAll();syncUrl()}
+function setMetal(m){S.metal=m;paintChips();document.body.dataset.metal=m;document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});showMode();refreshAll();syncUrl()}
 function syncUrl(){try{var u=new URL(location.href);u.searchParams.set('m',S.metal);u.searchParams.set('mode',S.mode);history.replaceState(null,'',u)}catch(e){}}
 
 /* ---------------- events ---------------- */
