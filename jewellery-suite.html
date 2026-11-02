@@ -98,6 +98,11 @@ nav{background:var(--maroon);padding:12px 16px;display:flex;align-items:center;j
 .reset{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;margin-top:2px}
 
 input::placeholder,textarea::placeholder{color:#A8A08A;opacity:1;font-weight:400}
+.live-bar{position:sticky;top:0;z-index:35;background:linear-gradient(135deg,var(--maroon),#2A0505);color:var(--gold-l);border-radius:0 0 14px 14px;padding:10px 16px;margin:0 -4px 12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.live-bar span{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.85}
+.live-bar b{font-family:'Playfair Display',serif;font-size:22px}
+.live-bar.flash b{animation:fl .5s}
+@keyframes fl{0%{transform:scale(1.12);color:#fff}100%{transform:scale(1)}}
 .see{width:100%;margin:2px 0 12px;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l);font-size:15px;font-weight:700;cursor:pointer}
 /* results */
 .total{background:linear-gradient(135deg,var(--maroon),#2A0505);border-radius:16px;padding:20px 16px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden}
@@ -238,6 +243,7 @@ html:not([lang=en]) *{letter-spacing:0!important;text-transform:none!important}
 
   <!-- CALCULATOR -->
   <div id="calcPane">
+    <div class="live-bar hidden" id="liveBar" aria-live="polite"><span id="liveL"></span><b id="liveA"></b></div>
     <form class="card" id="form" onsubmit="return false" autocomplete="off"></form>
     <section id="result" aria-live="polite"></section>
   </div>
@@ -478,7 +484,7 @@ function renderForm(){
 function row(l,sub,a,cls){return '<div class="r '+(cls||'')+'"><span>'+esc(l)+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><b>'+a+'</b></div>'}
 var lastR=null;
 function renderResult(){
-  var r=calc();lastR=(r&&!r.needRate)?r:null;var box=$('result');
+  var r=calc();lastR=(r&&!r.needRate)?r:null;var box=$('result');updateLive();
   if(!r){$('miniTotal').classList.add('hidden');box.innerHTML='<div class="card"><div class="empty">'+esc(t(S.metal==='diamond'?'emptyD':'empty'))+'</div></div>';return}
   if(r.needRate){$('miniTotal').classList.add('hidden');box.innerHTML='<div class="card"><div class="empty">'+esc(t('rateFail'))+'</div></div>';return}
   var h='<div class="total"><div class="l">'+esc(t('youPay'))+'</div><div class="a">'+fmt(r.total)+'</div><div class="s">'+esc(summaryLine(r))+'</div></div>';
@@ -525,8 +531,17 @@ function renderResult(){
   box.innerHTML=h;
   watchTotal();
 }
+var lastLive='';
+function updateLive(){
+  var lb=$('liveBar');
+  if(!lastR){lb.classList.add('hidden');lastLive='';return}
+  var v=fmt(lastR.total);$('liveL').textContent=t('youPay');$('liveA').textContent=v;lb.classList.remove('hidden');
+  if(v!==lastLive&&lastLive){lb.classList.remove('flash');void lb.offsetWidth;lb.classList.add('flash')}
+  lastLive=v;
+}
 var io=null;
 function watchTotal(){
+  $('miniTotal').classList.add('hidden');return;
   var mt=$('miniTotal'),tot=document.querySelector('#result .total');
   if(io){io.disconnect();io=null}
   if(!tot||!lastR||S.mode!=='calc'){mt.classList.add('hidden');return}
