@@ -4,1280 +4,730 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jewellery Calculator — Gold, Silver & Diamond Price | LawSticker AI</title>
-  <meta name="description" content="Calculate exact price of gold, silver and diamond jewellery including making charges, wastage and GST. Know before you buy.">
-  <link rel="canonical" href="https://lawsticker-ai.com/jewellery-suite.html">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lawsticker-ai.com/jewellery-suite.html">
-  <meta property="og:title" content="Jewellery Calculator — Gold, Silver & Diamond Price | LawSticker AI">
-  <meta property="og:description" content="Calculate exact price of gold, silver and diamond jewellery including making charges, wastage and GST. Know before you buy.">
-  <meta property="og:site_name" content="LawSticker AI">
-  <meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Jewellery Calculator — Gold, Silver & Diamond Price | LawSticker AI">
-  <meta name="twitter:description" content="Calculate exact price of gold, silver and diamond jewellery including making charges, wastage and GST. Know before you buy.">
-  <meta name="twitter:image" content="https://lawsticker-ai.com/og-image.png">
+<meta name="description" content="Calculate the exact price of gold, silver and diamond jewellery including making charges, wastage and GST. See where your money goes, compare jewellers, and check a bill with AI.">
+<link rel="canonical" href="https://lawsticker-ai.com/jewellery-suite.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lawsticker-ai.com/jewellery-suite.html">
+<meta property="og:title" content="Jewellery Calculator — Gold, Silver & Diamond Price | LawSticker AI">
+<meta property="og:description" content="Know the real price before you pay: making charges, wastage and GST made visible. Compare jewellers and check a bill with AI.">
+<meta property="og:site_name" content="LawSticker AI">
+<meta property="og:image" content="https://lawsticker-ai.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jewellery Calculator — Gold, Silver & Diamond Price | LawSticker AI">
+<meta name="twitter:description" content="Know the real price before you pay: making charges, wastage and GST made visible.">
+<meta name="twitter:image" content="https://lawsticker-ai.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@500&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
 :root{
   --gold:#D4A017;--gold-l:#F5D76E;--gold-pale:#FDF6DC;--gold-deep:#8B6914;
-  --silver-metal:#94A3B8;--silver-pale:#F1F5F9;--silver-deep:#475569;
+  --silver:#94A3B8;--silver-pale:#F1F5F9;--silver-deep:#475569;
   --diamond:#7C3AED;--diamond-pale:#F5F3FF;--diamond-deep:#5B21B6;
   --maroon:#6B1C1C;--maroon2:#8B2323;
-  --ink:#1A1208;--ink-soft:#3D2B0E;--cream:#FEFCF5;
-  --muted:#8B95A8;--light:#E8EDF3;
-  --jade:#10B981;--jade-bg:#D1FAE5;
-  --rose:#DC2626;--rose-bg:#FEE2E2;
-  /* active metal */
-  --ac:var(--gold);--ac-l:var(--gold-l);--ac-pale:var(--gold-pale);--ac-deep:var(--gold-deep);
+  --ink:#1A1208;--ink-soft:#3D2B0E;--cream:#FEFCF5;--muted:#6B7280;--line:#E8E1CE;
+  --jade:#0F8A5F;--jade-bg:#D1FAE5;--rose:#C62828;--rose-bg:#FEE2E2;--amber:#B45309;--amber-bg:#FEF3C7;
+  --ac:var(--gold);--ac-pale:var(--gold-pale);--ac-deep:var(--gold-deep);
 }
-[data-metal="silver"]{--ac:var(--silver-metal);--ac-l:#CBD5E1;--ac-pale:var(--silver-pale);--ac-deep:var(--silver-deep)}
-[data-metal="diamond"]{--ac:var(--diamond);--ac-l:#C4B5FD;--ac-pale:var(--diamond-pale);--ac-deep:var(--diamond-deep)}
-
+[data-metal="silver"]{--ac:var(--silver);--ac-pale:var(--silver-pale);--ac-deep:var(--silver-deep)}
+[data-metal="diamond"]{--ac:var(--diamond);--ac-pale:var(--diamond-pale);--ac-deep:var(--diamond-deep)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;transition:background .3s}
+body{font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font-family:inherit}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hidden{display:none!important}
 
-/* NAV */
-nav{background:var(--maroon);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08)}
-.nav-left{display:flex;align-items:center;gap:10px}
-.nav-back{color:var(--gold-l);text-decoration:none;font-size:13px;font-weight:600;opacity:.7}
-.nav-back:hover{opacity:1}
+nav{background:var(--maroon);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.nav-left{display:flex;align-items:center;gap:12px}
+.nav-back{color:var(--gold-l);text-decoration:none;font-size:13px;font-weight:600;opacity:.8}
 .nav-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold-l)}
-.nav-langs{display:flex;gap:4px}
-.nav-lang{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,.4);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
-.nav-lang.active{border-color:var(--gold-l);color:var(--gold-l);background:rgba(245,215,110,.1)}
+.langs{display:flex;gap:4px}
+.langs button{padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.65);font-size:11px;font-weight:600;cursor:pointer}
+.langs button.on{border-color:var(--gold-l);color:var(--gold-l);background:rgba(245,215,110,.12)}
 
-/* METAL SWITCHER */
-.metal-switch{display:flex;padding:6px;gap:4px;background:rgba(0,0,0,.06);border-radius:14px;margin:20px 16px 0;max-width:688px;margin-left:auto;margin-right:auto}
-.metal-btn{flex:1;padding:12px 8px;border:none;border-radius:10px;background:transparent;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
-.metal-btn .m-icon{font-size:20px;line-height:1}
-.metal-btn.active{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);color:var(--ink)}
-.metal-btn[data-m="gold"].active{color:var(--gold-deep)}
-.metal-btn[data-m="silver"].active{color:var(--silver-deep)}
-.metal-btn[data-m="diamond"].active{color:var(--diamond-deep)}
+.hero{background:linear-gradient(160deg,var(--maroon) 0%,#2A0505 100%);color:#fff;padding:22px 16px 66px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(245,215,110,.22),transparent 45%),radial-gradient(circle at 10% 90%,rgba(245,215,110,.10),transparent 40%)}
+.hero-in{max-width:720px;margin:0 auto;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(24px,6.5vw,34px);font-weight:900;color:var(--gold-l);line-height:1.15;margin-bottom:8px}
+.hero p{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.78);max-width:520px}
 
-/* CONTAINER */
-.container{max-width:720px;margin:0 auto;padding:16px 16px 60px}
+.wrap{max-width:720px;margin:-46px auto 0;padding:0 16px 80px;position:relative}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.card-t{font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--ac-deep);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-t::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--ac),transparent)}
 
-/* CARDS */
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 10px rgba(0,0,0,.04)}
-.card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.card-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--ac),transparent)}
+/* rate strip */
+.rates{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rates select{padding:8px 10px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;font-weight:600;background:#fff}
+.chip{background:var(--gold-pale);border:1px solid #F0DFA0;border-radius:10px;padding:6px 10px;font-size:12px;color:var(--gold-deep);line-height:1.2}
+.chip b{display:block;font-size:15px;color:var(--ink)}
+.rate-note{font-size:11px;color:var(--muted);margin-top:8px;width:100%}
+.link-btn{background:none;border:none;color:var(--ac-deep);font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline}
 
-/* FIELDS */
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
-.field label .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px}
-.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #DDD5C0;border-radius:10px;font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--ac-pale);transition:border-color .2s;-webkit-appearance:none}
-.field input:focus,.field select:focus{outline:none;border-color:var(--ac);background:#fff}
-.pfx{position:relative}
-.pfx .p{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--ac-deep);pointer-events:none}
-.pfx input{padding-left:28px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light)}
-.toggle-row:last-child{border-bottom:none}
-.tl{font-size:13px;font-weight:500;color:var(--ink)}
-.tl .sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
-.tog{position:relative;width:42px;height:22px;flex-shrink:0}
-.tog input{opacity:0;width:0;height:0}
-.tog-sl{position:absolute;inset:0;background:#D0C9B8;border-radius:22px;cursor:pointer;transition:.2s}
-.tog-sl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.tog input:checked+.tog-sl{background:var(--ac)}
-.tog input:checked+.tog-sl::before{transform:translateX(20px)}
-.inline-in{display:flex;align-items:center;gap:6px}
-.mini{width:86px;padding:6px 8px;border:1.5px solid #DDD5C0;border-radius:8px;font-size:13px;font-weight:600;background:var(--ac-pale);text-align:right;font-family:inherit}
-.unit{font-size:12px;font-weight:700;color:var(--ac-deep)}
+/* tabs */
+.tabs{display:flex;padding:5px;gap:4px;background:rgba(0,0,0,.06);border-radius:14px;margin-bottom:12px}
+.tab{flex:1;padding:11px 6px;border:none;border-radius:10px;background:transparent;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab .gem{width:18px;height:18px;border-radius:50%;display:block}
+.tab[data-m=gold] .gem{background:radial-gradient(circle at 30% 30%,#FFF3B0,#D4A017 60%,#8B6914)}
+.tab[data-m=silver] .gem{background:radial-gradient(circle at 30% 30%,#fff,#CBD5E1 60%,#64748B)}
+.tab[data-m=diamond] .gem{background:conic-gradient(from 45deg,#C4B5FD,#7C3AED,#EDE9FE,#8B5CF6,#C4B5FD);border-radius:3px;transform:rotate(45deg) scale(.8)}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.modes{display:flex;gap:8px;margin-bottom:12px}
+.mode{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink-soft)}
+.mode.on{border-color:var(--ac);background:var(--ac-pale);color:var(--ac-deep)}
 
-/* GOODRETURNS LINK */
-.rate-link{display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--ac-deep);text-decoration:none}
-.rate-link:hover{text-decoration:underline}
+/* form */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f{margin-bottom:12px}
+.f label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.f input,.f select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-weight:500;color:var(--ink);background:var(--ac-pale)}
+.f input:focus,.f select:focus{background:#fff;border-color:var(--ac)}
+.f .sub{font-size:11px;color:var(--muted);margin-top:4px}
+.f .live{font-size:11px;color:var(--jade);font-weight:600;margin-top:4px}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;padding:9px 6px;border-radius:9px;border:1.5px solid var(--line);background:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.seg button.on{border-color:var(--ac);background:var(--ac-pale);color:var(--ac-deep)}
+.opt{border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.opt-h{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;cursor:pointer}
+.opt-h input{width:20px;height:20px;accent-color:var(--ac-deep)}
+.opt-b{margin-top:10px}
+.opt-b .chk{display:flex;gap:8px;align-items:center;font-size:12px;margin-bottom:8px}
+.opt-b .chk input{width:18px;height:18px;accent-color:var(--ac-deep)}
+.reset{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;margin-top:2px}
 
-/* CALC BUTTON */
-.calc-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l);border:none;border-radius:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:18px;box-shadow:0 4px 14px rgba(107,28,28,.3);transition:transform .1s}
-.calc-btn:active{transform:scale(.98)}
+/* results */
+.total{background:linear-gradient(135deg,var(--maroon),#2A0505);border-radius:16px;padding:20px 16px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden}
+.total .l{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-l);opacity:.75}
+.total .a{font-family:'Playfair Display',serif;font-size:clamp(32px,9vw,46px);font-weight:900;color:var(--gold-l);line-height:1.1;margin:4px 0}
+.total .s{font-size:12px;color:rgba(255,255,255,.65)}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:18px 8px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.kpi{background:var(--ac-pale);border-radius:12px;padding:10px 6px;text-align:center}
+.kpi b{display:block;font-family:'Playfair Display',serif;font-size:16px;color:var(--maroon)}
+.kpi span{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.split{display:flex;height:22px;border-radius:11px;overflow:hidden;margin:6px 0 10px;background:#eee}
+.split i{display:block;height:100%;min-width:2px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px}
+.legend div{display:flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.legend em{margin-left:auto;font-style:normal;font-weight:700}
+.meter{position:relative;height:14px;border-radius:7px;background:linear-gradient(to right,#34D399 0 34%,#FBBF24 34% 57%,#F87171 57%);margin:26px 0 6px}
+.meter b{position:absolute;top:-20px;transform:translateX(-50%);font-size:12px;font-weight:800;white-space:nowrap}
+.meter b::after{content:'';position:absolute;left:50%;top:18px;width:3px;height:22px;background:var(--ink);transform:translateX(-50%);border-radius:2px}
+.meter-l{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.verdict{margin-top:10px;font-size:13px;font-weight:700}
+.verdict.g{color:var(--jade)}.verdict.a{color:var(--amber)}.verdict.r{color:var(--rose)}
+.fine{font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px}
+.rows .r{display:flex;justify-content:space-between;gap:10px;padding:10px 2px;border-bottom:1px solid #F1ECDD;font-size:13px}
+.rows .r small{display:block;color:var(--muted);font-size:11px}
+.rows .r b{white-space:nowrap}
+.rows .r.minus b{color:var(--jade)}
+.rows .r.tot{background:var(--ink);color:var(--gold-l);border-radius:10px;padding:12px;border:none;margin-top:6px;font-size:14px;font-weight:700}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{padding:5px 10px;border-radius:14px;font-size:11.5px;font-weight:600}
+.pill.g{background:var(--jade-bg);color:#065F46}.pill.r{background:var(--rose-bg);color:#991B1B}.pill.a{background:var(--amber-bg);color:#92400E}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{padding:12px 10px;border-radius:11px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink)}
+.btn.pri{background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l);border:none}
+.btn.wa{background:#128C7E;color:#fff;border:none}
+.btn:disabled{opacity:.5}
+.tips{list-style:none}
+.tips li{padding:9px 0 9px 28px;border-bottom:1px solid #F1ECDD;font-size:13px;line-height:1.55;position:relative}
+.tips li:last-child{border:none}
+.tips li::before{content:'';position:absolute;left:4px;top:14px;width:12px;height:12px;background:var(--ac);transform:rotate(45deg);border-radius:2px}
 
-/* RESULTS */
-.result-hero{background:linear-gradient(135deg,var(--maroon),#2A0505);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
-.result-hero::before{content:'◆';position:absolute;font-size:110px;color:rgba(245,215,110,.05);right:-15px;top:-15px}
-.r-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-l);opacity:.6;margin-bottom:4px}
-.r-amount{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,46px);font-weight:900;color:var(--gold-l);line-height:1}
-.r-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px}
+/* quotes + compare */
+.q{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F1ECDD}
+.q:last-child{border:none}
+.q input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac-deep);flex-shrink:0}
+.q .m{flex:1;min-width:0}
+.q .m input{width:100%;border:none;border-bottom:1px dashed var(--line);font-size:13px;font-weight:600;padding:2px 0;background:transparent}
+.q .m small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.q b{font-size:14px;white-space:nowrap}
+.q .x{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:4px 8px}
+.cmp{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+.cmp th,.cmp td{padding:8px 6px;text-align:right;border-bottom:1px solid #F1ECDD}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--muted);font-weight:600}
+.cmp td.win{color:var(--jade);font-weight:800}
 
-.insight-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
-.ibox{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(0,0,0,.07)}
-.ibox .iv{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--maroon);line-height:1;margin-bottom:3px}
-.ibox .il{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+/* accordion */
+.acc{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden}
+.acc>button{width:100%;text-align:left;background:var(--ac-pale);border:none;padding:13px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac-deep);cursor:pointer;display:flex;justify-content:space-between}
+.acc>div{padding:6px 16px 14px;font-size:13px;line-height:1.65;color:var(--ink-soft)}
+.acc .tm{margin:9px 0;padding:8px 11px;border-left:3px solid var(--ac);background:var(--ac-pale);border-radius:0 8px 8px 0;font-size:12.5px}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #F1ECDD;font-size:13px;line-height:1.5}
+.ck input{width:20px;height:20px;margin-top:1px;accent-color:var(--jade);flex-shrink:0}
+.ck input:checked+span{color:var(--muted);text-decoration:line-through}
+.save-link{display:flex;gap:10px;align-items:center;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #F5D76E;border-radius:14px;padding:12px 14px;margin-bottom:14px;text-decoration:none;color:#7C5A0B;font-size:13px;font-weight:700}
 
-.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.pill{padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600}
-.pill.g{background:var(--jade-bg);color:var(--jade)}
-.pill.r{background:var(--rose-bg);color:var(--rose)}
-.pill.a{background:#FDF0C0;color:var(--gold-deep)}
+/* checker */
+.frame-wrap{position:relative;min-height:300px}
+.frame-wrap iframe{width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent}
+.frame-load{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:60px;color:var(--muted);font-size:13px;pointer-events:none}
 
-.bdown{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
-.bdown-head{background:var(--ac-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);border-bottom:1px solid rgba(0,0,0,.07)}
-.brow{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--light);font-size:13px}
-.brow:last-child{border-bottom:none}
-.brow .bl{color:var(--ink-soft);font-weight:500;flex:1}
-.brow .bl .bs{font-size:11px;color:var(--muted);display:block}
-.brow .ba{font-weight:700;color:var(--ink)}
-.brow.pos .ba{color:var(--jade)}
-.brow.neg .ba{color:var(--rose)}
-.brow.tot{background:var(--ink)}
-.brow.tot .bl{color:var(--gold-l);font-weight:700}
-.brow.tot .ba{color:var(--gold-l);font-size:15px}
+footer{text-align:center;padding:16px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6}
+footer a{color:var(--gold-deep)}
 
-/* NEGOTIATION PLAYBOOK */
-.nego{border-radius:16px;overflow:hidden;border:1.5px solid rgba(212,160,23,.3);box-shadow:0 4px 20px rgba(0,0,0,.1);margin-bottom:14px}
-.nego-hdr{background:linear-gradient(135deg,#2A1200,#4A2000);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.nego-hdr-l{display:flex;align-items:center;gap:10px}
-.nego-eye{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.5);margin-bottom:2px}
-.nego-ttl{font-size:14px;font-weight:700;color:var(--gold-l)}
-.nego-score{background:rgba(245,215,110,.1);border:1px solid rgba(245,215,110,.2);border-radius:10px;padding:6px 10px;text-align:center}
-.nego-score .sn{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--gold-l);line-height:1}
-.nego-score .sl{font-size:8px;font-weight:700;letter-spacing:1.5px;color:rgba(245,215,110,.45);text-transform:uppercase;margin-top:1px}
-.nego-body{background:#fff}
-.nego-sav{background:linear-gradient(90deg,#0D3B22,#1A5C35);padding:11px 16px;display:flex;justify-content:space-between;align-items:center}
-.nego-sav .ns-l{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.5px}
-.nego-sav .ns-a{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#6FCF97}
-.nego-moves{padding:12px 12px 4px;display:flex;flex-direction:column;gap:8px}
-.move{border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
-.move-top{display:flex}
-.move-rank{background:var(--maroon);color:var(--gold-l);font-family:'Playfair Display',serif;font-size:17px;font-weight:900;padding:0 12px;display:flex;align-items:center;justify-content:center;min-width:42px;flex-shrink:0}
-.move-rank.med{background:#5C3D00}
-.move-rank.low{background:#1A3A2A}
-.move-cnt{flex:1;padding:10px 12px;background:var(--ac-pale)}
-.move-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px}
-.move-sav{font-size:11px;font-weight:700;color:var(--jade);margin-bottom:3px}
-.move-sav.na{color:var(--muted)}
-.move-desc{font-size:11px;color:var(--ink-soft);line-height:1.5}
-.move-script{background:#FFFBEB;border-top:1px dashed rgba(0,0,0,.1);padding:8px 12px;font-size:11px;font-style:italic;color:var(--gold-deep);line-height:1.5}
-.move-script::before{content:'💬 ';font-style:normal}
-.nego-timing{margin:4px 12px 12px;background:linear-gradient(135deg,#0A1628,#112244);border-radius:10px;padding:11px 13px}
-.nego-timing .te{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(100,160,255,.6);margin-bottom:5px}
-.t-tip{font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:4px}
-.t-tip span{color:#7EB8F7;font-weight:600}
-
-/* EXPLAINER */
-.expl{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:14px}
-.expl-hdr{background:var(--ac-pale);padding:11px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ac-deep);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.expl-body{padding:14px 16px;font-size:12.5px;line-height:1.7;color:var(--ink-soft);display:none}
-.expl-body.open{display:block}
-.term{background:var(--ac-pale);border-left:3px solid var(--ac);padding:7px 11px;margin:8px 0;border-radius:0 7px 7px 0;font-size:12px}
-.term strong{color:var(--ac-deep)}
-
-/* RESET */
-.reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid #DDD5C0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:18px}
-
-/* STATS */
-.stats-bar{background:linear-gradient(135deg,#1A0A00,#2D1500);padding:14px 18px;text-align:center;cursor:pointer;border-top:1px solid rgba(212,160,23,.12)}
-.stats-eye{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,215,110,.4);margin-bottom:8px}
-.stats-global{background:rgba(245,215,110,.06);border:1px solid rgba(245,215,110,.12);border-radius:10px;padding:8px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-.stats-global .sg-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold-l);line-height:1}
-.stats-global .sg-l{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,215,110,.4);margin-top:2px}
-.stats-global .sg-note{font-size:10px;color:rgba(255,255,255,.2)}
-.stats-personal{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
-.sp-item{text-align:center}
-.sp-item .sp-n{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:rgba(245,215,110,.6);line-height:1}
-.sp-item .sp-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,215,110,.3);margin-top:2px}
-.stats-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(245,215,110,.07)}
-.stats-modes{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.mode-chip{background:rgba(245,215,110,.06);border-radius:7px;padding:5px 10px;text-align:center}
-.mode-chip .mc-n{font-size:12px;font-weight:700;color:var(--gold-l)}
-.mode-chip .mc-l{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
-
-footer{text-align:center;padding:14px;font-size:11px;color:var(--muted);border-top:1px solid var(--light)}
-footer a{color:var(--gold-deep);text-decoration:none}
-/* Gold now uses the embedded AI Bill Checker, not the manual calculator -
-   hide the shared calc button/results/stats panel on initial load (before
-   any tab-switch JS has run) whenever Gold is the active metal. */
-body[data-metal="gold"] #calc-btn,body[data-metal="gold"] #results,body[data-metal="gold"] .stats-bar{display:none}
-
-#results{display:none}
-#results.visible{display:block}
-
-@media(max-width:400px){.row2{grid-template-columns:1fr}.insight-row{grid-template-columns:1fr 1fr}}
+/* feedback */
+.fb-fab{position:fixed;right:14px;bottom:14px;z-index:40;background:var(--maroon);color:var(--gold-l);border:none;border-radius:26px;padding:12px 16px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:18px 16px 22px;max-height:92vh;overflow:auto}
+@media(min-width:560px){.modal{align-items:center}.sheet{border-radius:20px}}
+.sheet h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px}
+.sheet p{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.stars{display:flex;gap:6px;margin-bottom:12px}
+.stars button{background:none;border:none;font-size:34px;line-height:1;cursor:pointer;color:#D6CDB5;padding:2px}
+.stars button.on{color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips button{padding:7px 12px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.chips button.on{border-color:var(--maroon);background:#FBEDED;color:var(--maroon)}
+.sheet textarea,.sheet input[type=text]{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;margin-bottom:4px}
+.sheet textarea{min-height:90px;resize:vertical}
+.cnt{font-size:11px;color:var(--muted);text-align:right;margin-bottom:8px}
+.msg{font-size:13px;margin:8px 0;font-weight:600}
+.msg.err{color:var(--rose)}.msg.ok{color:var(--jade)}
+.toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;z-index:70}
+@media(max-width:340px){.grid2{grid-template-columns:1fr}.legend{grid-template-columns:1fr}}
+.mini{position:fixed;left:14px;bottom:14px;z-index:40;background:var(--ink);color:var(--gold-l);border:none;border-radius:26px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+html:not([lang=en]) *{letter-spacing:0!important;text-transform:none!important}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJXHVW6XCL"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-TJXHVW6XCL');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TJXHVW6XCL');</script>
 </head>
 <body data-metal="gold">
 
 <nav>
-  <div class="nav-left">
-    <a class="nav-back" href="calculators.html">← Calculators</a>
-    <div class="nav-title" id="nav-title">💍 Jewellery Suite</div>
-  </div>
-  <div class="nav-langs">
-    <button class="nav-lang active" onclick="setLang('en')">EN</button>
-    <button class="nav-lang" onclick="setLang('te')">తె</button>
-    <button class="nav-lang" onclick="setLang('hi')">हि</button>
-  </div>
+  <div class="nav-left"><a class="nav-back" href="calculators.html" data-i="back">← Calculators</a><div class="nav-title" data-i="navTitle">Jewellery Suite</div></div>
+  <div class="langs" role="group" aria-label="Language"><button data-l="en" class="on">EN</button><button data-l="te">తె</button><button data-l="hi">हि</button></div>
 </nav>
 
-<!-- METAL SWITCHER -->
-<div class="metal-switch">
-  <button class="metal-btn active" data-m="gold" onclick="setMetal('gold')">
-    <span class="m-icon">🪙</span>
-    <span id="mb-gold">Gold</span>
-  </button>
-  <button class="metal-btn" data-m="silver" onclick="setMetal('silver')">
-    <span class="m-icon">🥈</span>
-    <span id="mb-silver">Silver</span>
-  </button>
-  <button class="metal-btn" data-m="diamond" onclick="setMetal('diamond')">
-    <span class="m-icon">💎</span>
-    <span id="mb-diamond">Diamond</span>
-  </button>
-</div>
+<header class="hero"><div class="hero-in">
+  <h1 data-i="heroTitle">Know the real price before you pay</h1>
+  <p data-i="heroSub">Gold, silver and diamond jewellery, itemised to the rupee, with making charges, wastage and GST made visible.</p>
+</div></header>
 
-<div class="container">
-  <a href="gold-savings-guide.html" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #F5D76E;border-radius:14px;padding:12px 14px;margin-bottom:12px;text-decoration:none;">
-    <span style="font-size:22px;">🪙💰</span>
-    <span style="flex:1;">
-      <span style="display:block;font-weight:800;font-size:13px;color:#7C5A0B;" id="savingsGuideLinkTitle">Thinking of a gold saving scheme?</span>
-      <span style="display:block;font-size:11.5px;color:#8a6d1a;" id="savingsGuideLinkSub">See all your options, myths busted, and check your specific scheme →</span>
-    </span>
-  </a>
-  <div class="card" style="margin-bottom:10px">
-    <div class="toggle-row">
-      <div class="tl" id="gl-nocard">Shop already waives card charges? <span class="sub" id="gl-nocard-s">e.g. "No credit/debit card charges" ads</span></div>
-      <input type="checkbox" id="g-nocard-toggle">
+<main class="wrap">
+  <section class="card" aria-labelledby="rt">
+    <div class="card-t" id="rt"><span data-i="rateTitle">Today's rate</span></div>
+    <div class="rates">
+      <label class="sr" for="city" data-i="city">City</label>
+      <select id="city"></select>
+      <div class="chip"><span>24K</span><b id="rc24">–</b></div>
+      <div class="chip"><span>22K</span><b id="rc22">–</b></div>
+      <div class="chip"><span>18K</span><b id="rc18">–</b></div>
+      <div class="chip"><span data-i="silver">Silver</span><b id="rcS">–</b></div>
+      <button class="link-btn" id="rateRefresh" data-i="refresh">Refresh</button>
+      <div class="rate-note" id="rateNote" aria-live="polite"></div>
     </div>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab on" role="tab" data-m="gold"><span class="gem"></span><span data-i="gold">Gold</span></button>
+    <button class="tab" role="tab" data-m="silver"><span class="gem"></span><span data-i="silver">Silver</span></button>
+    <button class="tab" role="tab" data-m="diamond"><span class="gem"></span><span data-i="diamond">Diamond</span></button>
+  </div>
+  <div class="modes">
+    <button class="mode on" data-mode="calc" data-i="modeCalc">Calculator</button>
+    <button class="mode" data-mode="check" data-i="modeCheck">Check a bill (AI)</button>
   </div>
 
-  <!-- ══ GOLD FORM ══ -->
-  <div id="form-gold">
-    <iframe id="goldCheckerFrame" data-base-src="gold-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
+  <!-- CALCULATOR -->
+  <div id="calcPane">
+    <form class="card" id="form" onsubmit="return false" autocomplete="off"></form>
+    <section id="result" aria-live="polite"></section>
   </div>
 
-
-  <!-- ══ SILVER FORM ══ -->
-  <div id="form-silver" style="display:none">
-    <iframe id="silverCheckerFrame" data-base-src="silver-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
-
+  <!-- BILL CHECKER -->
+  <div id="checkPane" class="hidden">
+    <div class="card"><div class="fine" style="margin:0" data-i="checkNote">Photograph the jeweller's estimate or bill. The AI reads it and flags making, wastage and stone charges that look high. Your photo is analysed and not kept.</div></div>
+    <div class="frame-wrap" id="fw-gold"><div class="frame-load" data-i="loadingChecker">Loading checker…</div><iframe id="fr-gold" data-src="gold-bill-checker.html?embed=1" title="Gold bill checker"></iframe></div>
+    <div class="frame-wrap hidden" id="fw-silver"><div class="frame-load" data-i="loadingChecker">Loading checker…</div><iframe id="fr-silver" data-src="silver-bill-checker.html?embed=1" title="Silver bill checker"></iframe></div>
+    <div class="frame-wrap hidden" id="fw-diamond"><div class="frame-load" data-i="loadingChecker">Loading checker…</div><iframe id="fr-diamond" data-src="diamond-bill-checker.html?embed=1" title="Diamond bill checker"></iframe></div>
   </div>
 
-  <!-- ══ DIAMOND FORM ══ -->
-  <div id="form-diamond" style="display:none">
-    <iframe id="diamondCheckerFrame" data-base-src="diamond-bill-checker.html?embed=1" style="width:100%;border:none;border-radius:16px;min-height:900px;display:block;background:transparent;" onload="resizeGoldFrame(this)"></iframe>
+  <section class="card" id="quotesCard">
+    <div class="card-t"><span data-i="quotesTitle">My saved quotes</span></div>
+    <div id="quotes"></div>
+    <div id="compareOut"></div>
+  </section>
 
-  </div>
+  <a class="save-link" href="gold-savings-guide.html"><span style="font-size:22px">&#129689;</span><span data-i="schemeLink">Thinking of a gold saving scheme? See your options and check a scheme →</span></a>
 
-  <button class="calc-btn" id="calc-btn" onclick="calculate()">Calculate Total Price →</button>
-
-  <!-- RESULTS -->
-  <div id="results">
-    <div class="result-hero">
-      <div class="r-label" id="r-label">You Pay</div>
-      <div class="r-amount" id="r-amount">₹0</div>
-      <div class="r-sub" id="r-sub"></div>
-    </div>
-    <div class="insight-row" id="r-insights"></div>
-    <div class="pills" id="r-pills"></div>
-    <div class="bdown">
-      <div class="bdown-head" id="r-bd-head">Full Price Breakdown</div>
-      <div id="r-rows"></div>
-    </div>
-    <div class="nego" id="nego-wrap" style="display:none">
-      <div class="nego-hdr" onclick="document.getElementById('nego-body').style.display=document.getElementById('nego-body').style.display==='none'?'block':'none'">
-        <div class="nego-hdr-l">
-          <span style="font-size:22px">🤝</span>
-          <div><div class="nego-eye" id="nego-eye">Your Personalised</div><div class="nego-ttl" id="nego-ttl">Negotiation Playbook</div></div>
-        </div>
-        <div class="nego-score"><div class="sn" id="nego-score-num">—</div><div class="sl" id="nego-score-lbl">LEVERAGE</div></div>
-      </div>
-      <div class="nego-body" id="nego-body">
-        <div class="nego-sav">
-          <div><div class="ns-l" id="nego-sav-lbl">Potential Savings</div><div style="font-size:10px;color:rgba(255,255,255,.3)" id="nego-sav-sub">if all moves succeed</div></div>
-          <div class="ns-a" id="nego-sav-amt">₹0</div>
-        </div>
-        <div class="nego-moves" id="nego-moves"></div>
-        <div class="nego-timing">
-          <div class="te" id="nego-timing-eye">⏰ Timing & Strategy</div>
-          <div id="nego-timing-tips"></div>
-        </div>
-      </div>
-    </div>
-    <div class="expl">
-      <div class="expl-hdr" onclick="document.getElementById('expl-body').classList.toggle('open')">
-        <span id="expl-hdr-txt">📖 What Do These Terms Mean?</span><span>▾</span>
-      </div>
-      <div class="expl-body" id="expl-body"></div>
-    </div>
-    <button class="reset-btn" id="reset-btn" onclick="resetCalc()">← New Calculation</button>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="stats-bar" onclick="document.getElementById('stats-detail').style.display=document.getElementById('stats-detail').style.display==='none'?'block':'none'">
-  <div class="stats-eye" id="stats-eye">📊 Usage Stats</div>
-  <div class="stats-personal">
-    <div class="sp-item"><div class="sp-n" id="sp-calcs">—</div><div class="sp-l" id="sp-calcs-l">Your Calcs</div></div>
-    <div class="sp-item"><div class="sp-n" id="sp-streak">—</div><div class="sp-l" id="sp-streak-l">Day Streak</div></div>
-    <div class="sp-item"><div class="sp-n" id="sp-last">—</div><div class="sp-l" id="sp-last-l">Last Visit</div></div>
-  </div>
-  <div class="stats-detail" id="stats-detail">
-    <div class="stats-modes" id="stats-modes"></div>
-    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.18)" id="sp-note">📱 Your device only</div>
-  </div>
-</div>
+  <section class="acc"><button data-acc="ck"><span data-i="ckTitle">Before you pay: checklist</span><span>▾</span></button><div id="ck" class="hidden"></div></section>
+  <section class="acc"><button data-acc="gl"><span data-i="glTitle">What do these terms mean?</span><span>▾</span></button><div id="gl" class="hidden"></div></section>
+</main>
 
 <footer>
-  <span id="footer-txt">Jewellery Suite · Free · No login · Made in Hyderabad 🇮🇳</span> · <a href="calculators.html">All Calculators</a> · <a href="https://lawsticker-ai.com">LawSticker AI</a>
+  <div id="ratingBadge"></div>
+  <div data-i="disclaimer">Estimates for guidance only. The final bill depends on the shop's own rate, making and taxes. Check the rate and weight on your bill.</div>
+  <a href="#" id="fbLink" data-i="fbLink">Tell us what to improve</a>
 </footer>
 
-<script>
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
-let lang = 'en';
-let metal = 'gold';
-let _lastCtx = null;
+<button class="mini hidden" id="miniTotal" aria-label="Total"></button>
+<button class="fb-fab" id="fbFab" data-i="fbBtn">Feedback</button>
 
-const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
-const pf = k => ({24:1,22:.916,18:.75,14:.585,999:1,925:.925,800:.800}[k]||1);
-const el = id => document.getElementById(id);
-const s = (id,v) => { const e=el(id); if(e) e.textContent=v; };
-const h = (id,v) => { const e=el(id); if(e) e.innerHTML=v; };
-
-// ══════════════════════════════════════════
-//  TRANSLATIONS
-// ══════════════════════════════════════════
-const T = {
-  en:{
-    navTitle:'💍 Jewellery Suite',
-    mbGold:'Gold',mbSilver:'Silver',mbDiamond:'Diamond',
-    savingsGuideLinkTitle:'Thinking of a gold saving scheme?', savingsGuideLinkSub:'See all your options, myths busted, and check your specific scheme →',
-    glNoCard:'Shop already waives card charges?',glNoCardS:'e.g. "No credit/debit card charges" ads',
-    gC1:'Gold Details',gLWt:'Weight',gLPur:'Purity',gLRate:"Today's Gold Rate",gLRateH:'(₹/g for 24K)',
-    billCta1:"Already have a shop's bill or estimate?",billCta2:'Photograph it — AI checks the rate, making charge & math, in your language →',
-    gC2:'Making / VA Charges',gLMtype:'Making Type',gLMtypeS:'Flat % or ₹ per gram',
-    gLMval:'Making Rate',gMvalHint:'e.g. 6.95% from ad',gLWaste:'Wastage',gLWasteS:'Some shops add 2–5%',
-    gLWastep:'Wastage %',gLWastepS:'On gold value',
-    gC3:'Taxes & Exchange',gLGst:'GST on Gold',gLGstS:'Standard 3%',gLHall:'Hallmarking',gLHallS:'BIS charge if any',
-    gC2b:'Stones / Gemstones',gLStone:'Does this piece have stones set in it?',gLStoneS:'Diamonds, ruby, emerald, kundan, etc.',
-    gLStonewt:'Stone weight (grams)',gLStonewtS:'Weighed separately from gold',
-    gLStoneval:'Stone value billed (₹)',gLStonevalS:'What the shop is charging for the stone itself',
-    gLStoneinc:'Weight above includes the stones?',gLStoneincS:'Most bills weigh the whole piece together',
-    gLExch:'Old Gold Exchange',gLExchS:'Toggle to add old gold credit',
-    gLOwt:'Old Gold Weight (g)',gLOwtS:"What you're giving back",gLOpur:'Old Gold Purity',
-    gLOded:'Deduction %',gLOdedS:'0% = Zero Deduction offer',
-    gOptPct:'% of gold value',gOptPgram:'₹ per gram',gOptNone:'No Making (free)',
-    gRateLink:'🔗 Check today\'s rate on GoodReturns →',
-    gLoadRateBtn:'🔄 Load Today\'s Rate',gCityLabel:'Your City',gDetectBtn:'📍 Detect',
-    gCityInfoBox:'ℹ️ Pick your city above, then tap "Load Today\'s Rate" — this fetches the real published rate for your city, not an estimate. If we can\'t reach it for some reason, we\'ll clearly say so and show a fallback estimate instead. If typing your own rate manually, enter the 24K/999 rate — we\'ll adjust for your purity automatically.',
-    gRateBoxWarn:'⚠️ If typing your own rate manually (without using the button above), enter the 24K/999 rate — we\'ll adjust for your purity automatically. Many sites show 22K directly instead, so double check which one you have before typing it in.',
-    gRateLoading:'⏳ Loading…',gRateRealPrefix:'✅ Real published rate for ',gRateEstFallback:'⚠️ Estimate (could not reach real rate this time)',
-    gRateLoadedAt:' — loaded ',gRateDirectSuffix:'K rate directly',gRateLoadFail:'Could not load — try again.',
-    gRateServerFail:'Could not reach the server — try again.',
-    gDetectDetecting:'Detecting your location…',gDetectNotSupported:'Location not supported on this browser.',
-    gDetectPrefix:'✅ Detected: ',gDetectNoMatch:'Could not match your city to our list — please pick manually.',
-    gDetectFail:'Could not detect — please pick your city manually.',gDetectDenied:'Location permission denied — please pick your city manually.',
-    sC1:'Silver Details',sLWt:'Weight',sLPur:'Purity',sLRate:"Today's Silver Rate",sLRateH:'(₹/g for 999)',
-    sC2:'Making Charges',sLMtype:'Making Type',sLMtypeS:'Flat ₹/gram is common for silver',
-    sLMval:'Making Rate',sMvalHint:'Typical ₹50–200/g for silver',sLGst:'GST on Silver',sLGstS:'3% on silver + making',
-    sOptPgram:'₹ per gram',sOptPct:'% of silver value',sOptFixed:'Fixed ₹ per piece',sOptNone:'No Making',
-    sC3:'Bulk / Scheme Discount',sLBulk:'Flat scheme discount offered?',sLBulkS:'e.g. "₹10,000 off on 1kg" ads',sLBulkAmt:'Flat discount amount (₹)',
-    sRateLink:'🔗 Check today\'s rate on GoodReturns →',
-    dC1:'Diamond Details',dLCt:'Diamond Weight',dLShape:'Shape / Cut',dLColor:'Colour Grade',dLClarity:'Clarity',
-    dLPpc:'Approx. Diamond Price',dLPpcH:'(₹ per carat — check cert)',
-    dC2:'Gold Setting',dLGwt:'Setting Weight',dLGpur:'Setting Purity',dLGrate:'Gold Rate',dLMval:'Making Charges',dLMvalS:'% on gold setting value',
-    dC3:'GST — Important',
-    dGstNote:'⚠️ <strong>Hidden charge alert:</strong> Cut and polished diamonds attract <strong>GST @ 1.5%</strong> separately from the gold setting. Many shops bundle this silently. Ask for a split invoice.',
-    dRateLink:'🔗 Verify against IGI/GIA certificate →',
-    calcBtn:'Calculate Total Price →',
-    rLabel:'You Pay',rBdHead:'Full Price Breakdown',
-    perGram:'Per Gram (all-in)',aboveBase:'Above Base Price',baseRate:'Base Rate/g',basePriceD:'Diamond Value',
-    pillNoMaking:'✓ No Making Charges',pillNoWastage:'✓ No Wastage',pillGood:'⭐ Good Deal',pillHigh:'⚠️ High surcharge',
-    pillZeroDed:'✓ Zero Deduction',pillHighDed:'⚠️ High deduction',
-    goldValLbl:'Gold Value',makingLbl:'Making / VA Charges',wastageLbl:'Wastage',
-    subTotalLbl:'Sub-total (before GST)',gstLbl:'GST',hallLbl:'Hallmarking',totalLbl:'TOTAL YOU PAY',
-    exchSection:'Old Gold Exchange',oldGoldVal:'Old Gold Market Value',deductLbl:'Deduction',netCredit:'Net Credit for Old Gold',
-    diaValLbl:'Diamond Value',diaGstLbl:'GST on Diamond (1.5%)',goldSetLbl:'Gold Setting Value',goldSetMaking:'Making on Setting',goldSetGst:'GST on Setting (3%)',
-    exHdr:'📖 What Do These Terms Mean?',resetBtn:'← New Calculation',
-    footerTxt:'Jewellery Suite · Free · No login · Made in Hyderabad 🇮🇳',
-    negoEye:'Your Personalised',negoTtl:'🤝 Negotiation Playbook',
-    negoScoreLbl:'LEVERAGE',negoSavLbl:'Potential Savings',negoSavSub:'if all moves succeed',
-    negoTimingEye:'⏰ Timing & Strategy',
-    statsEye:'📊 Usage Stats',sgLbl:'Total Visits',sgNote:'🌐 All users · live',
-    spCalcsL:'Your Calcs',spStreakL:'Day Streak',spLastL:'Last Visit',spNote:'📱 Your device only',
-    explainers:{
-      gold:[
-        ['Gold Rate (Spot Price)','The base price of pure 24K gold per gram, set daily by exchanges. All other calculations start from this.'],
-        ['Purity Adjustment','22K gold is 91.6% pure. If 24K = ₹9,500/g, then 22K = ₹9,500 × 0.916 = ₹8,702/g.'],
-        ['VA / Making Charges','Value Addition — same as Making Charges. Jeweller\'s craftsmanship fee. 6.95% is very low (normal: 10–25%).'],
-        ['Wastage','Metal lost in manufacturing. Some shops add 2–5% separately — challenge it.'],
-        ['GST','3% on gold + making. Government tax — mandatory, no shop can waive it.'],
-        ['Zero Deduction','Shops give full market value for old gold with no deduction — a genuine good deal when offered.'],
-      ],
-      silver:[
-        ['Silver Purity','999 = fine silver, 925 = sterling (most jewellery), 800 = German silver (lower purity).'],
-        ['Making Charges','Silver making is usually charged per gram (₹50–200) not %, because silver value is lower. Negotiate hard — 30–40% reduction is possible.'],
-        ['GST on Silver','3% on silver value + making charges. Same rate as gold.'],
-        ['Silver vs Gold Making','Making charges as % of total are much higher for silver because base metal value is low. Always ask for flat ₹/gram rate.'],
-      ],
-      diamond:[
-        ['4Cs','Cut, Colour, Clarity, Carat — the four factors determining diamond quality. Always ask for IGI or GIA certificate.'],
-        ['GST Split','Gold setting: 3% GST. Diamond: 1.5% GST. Total GST on a diamond ring is split — many shops don\'t show this.'],
-        ['Price per Carat','Not linear — a 1ct diamond costs much more than 2 × 0.5ct diamonds of same quality. Check Rapaport price list online.'],
-        ['Ready vs Custom','Ready jewellery has higher making. Custom (loose diamond + setting separately) saves 10–15% but takes time.'],
-        ['Certificate','IGI and GIA certified diamonds have published prices. An uncertified diamond has no verifiable price — avoid or negotiate hard.'],
-      ],
-    },
-    timing:[
-      ['Visit on weekdays','Tuesday and Wednesday have lowest footfall — staff are less rushed and more willing to negotiate.'],
-      ['End of month','Shops push to meet monthly targets in the last 3 days — leverage this.'],
-      ['Avoid festivals','Akshaya Tritiya and Dhanteras mean zero negotiation power. Go 1–2 weeks before or after.'],
-      ['Get 3 quotes first','Collect written quotes from 3 shops. Return to your preferred shop with the best — they almost always match.'],
-      ['Never reveal budget','Say "what can I get for ₹X" not "I have ₹X to spend" — the second locks you in.'],
-    ],
-    moves:{
-      makingHigh:(ctx,l)=>({title:`Cut Making from ${ctx.makingPct}% → 10%`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`You're paying ${ctx.makingPct}% — above the normal 8–12% market range. Mentioning competitor rates almost always brings it down.`,script:`"I checked — making charge in this area is around 8–10%. Can you match that? I'm ready to buy today."`}),
-      makingFair:(ctx,l)=>({title:`${ctx.makingPct}% Is Already Within Market Norm`,saving:0,desc:`Market norm for making/VA is 8–12%, and ${ctx.makingPct}% sits inside that — often a fixed festival/scheme rate. Pushing for 5% usually won't work. Better ask: free hallmarking, waived making on old-gold exchange, or a small gift instead.`,script:`"Your making charge is already fair. Since I'm buying today, can you throw in free hallmarking or waive making on my old-gold exchange instead?"`}),
-      makingGood:(ctx,l)=>({title:`${ctx.makingPct}% Is Already a Strong Rate`,saving:0,desc:`${ctx.makingPct}% is at or below the typical 8–12% range — little room to push lower. Spend your energy verifying instead: BIS hallmark, purity stamp, itemised bill.`,script:`"This rate looks fair. Can you give me an itemised bill showing gold value, making, and GST separately, and confirm the BIS hallmark number?"`}),
-      stoneWeightFraud:(ctx,l)=>({title:`You're Being Charged Gold Rate on ${ctx.stoneWt}g of Stone`,saving:ctx.stoneOvercharge,desc:`The weight entered includes the stones, and the shop is billing the full piece weight at the gold rate — meaning you're paying gold prices for ${ctx.stoneWt}g of stone. Legally, stone weight should be deducted from gold weight, with the stone value billed separately and shown on the invoice.`,script:`"Please deduct the stone weight from the gold weight and bill it separately — I shouldn't be paying gold rate on the stone."`}),
-      stoneValue:(ctx,l)=>({title:`Verify and Negotiate the Stone Value Separately`,saving:0,desc:`Stone/gemstone pricing has no standard published rate like gold does, which makes it the easiest place for a shop to inflate margin. Ask for a certificate (for diamonds: IGI/GIA) and compare the quoted stone value against 2–3 other jewellers before agreeing — treat it as a completely separate negotiation from the gold price.`,script:`"Can I see a certificate for this stone, and can you itemise its value separately so I can compare it elsewhere before deciding?"`}),
-      wastage:(ctx,l)=>({title:`Challenge the Wastage (${ctx.wastagePct}%)`,saving:ctx.wastageAmt,desc:`Wastage is often hidden profit. Good shops include it in making. Demand they remove wastage OR reduce making by same %.`,script:`"Most reputed jewellers include wastage inside making. Can you either remove it or reduce making by ${ctx.wastagePct}%?"`}),
-      bulk:(ctx,l)=>({title:`Bulk Buyer — Ask for Flat ₹/gram Rate`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`Buying ${ctx.weight}g is significant. Switch from "% making" to "flat ₹/gram" — ₹500–600/g is often better than 8%+ on expensive gold.`,script:`"For ${ctx.weight}g today, I'd prefer ₹550/g flat making instead of percentage. Fair for both of us."`}),
-      deduction:(ctx,l)=>({title:`Demand Zero Deduction on Old Gold`,saving:ctx.deductionAmt||0,desc:`If a shop offers zero deduction elsewhere, use it as leverage. Politely walk toward the door — deduction often disappears.`,script:`"Chennai Shopping Mall offers zero deduction right now. Can you match that? Otherwise I'll check there first."`}),
-      cash:(ctx,l)=>({title:`Offer Cash — Unlock Informal Discount`,saving:ctx.total*0.01,desc:`Jewellers pay 1.5–2% MDR on card transactions. Cash on ₹30,000+ can unlock an informal 1% discount.`,script:`"If I pay cash today, can you give me 1% off for saving your card charges?"`}),
-      noCardAck:(ctx,l)=>({title:`This Shop Already Waives Card Charges`,saving:0,desc:`Since this shop doesn't pass on card MDR to you, the usual "pay cash for a discount" leverage doesn't apply here — you're already getting that benefit by default, whether you pay card or cash. Save your negotiating energy for making charges or a free gift instead.`,script:`"Since there's no card charge here anyway, can we focus on the making charge or a small loyalty gift instead?"`}),
-      freegift:(ctx,l)=>({title:`Ask for a Free Gold Coin or Gift`,saving:1500,desc:`On ₹50,000+ purchases jewellers have discretionary budgets — small gold coin (0.5–1g), silver article, or free lifetime polishing.`,script:`"I'm spending ₹${Math.round(ctx.total).toLocaleString('en-IN')} today — can you add a small gold coin as a loyalty gesture?"`}),
-      silverMaking:(ctx,l)=>({title:`Negotiate Silver Making from ₹${ctx.makingRate}/g → ₹90/g`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g is above the typical ₹50–150/g silver making range. Silver making is highly negotiable — shops expect you to ask. Even ₹30/g less on 100g saves ₹3,000.`,script:`"Your making is ₹${ctx.makingRate}/g. Can you do ₹90/g? I'm buying ${ctx.weight}g today."`}),
-      silverMakingFair:(ctx,l)=>({title:`₹${ctx.makingRate}/g Is Already Within Normal Range`,saving:0,desc:`Typical silver making runs ₹50–150/g, and ₹${ctx.makingRate}/g sits inside that. Instead of pushing the rate lower, ask for a small quantity discount or free polishing/cleaning service.`,script:`"This making rate looks fair. Since I'm buying ${ctx.weight}g, can you include free polishing or a small bulk discount?"`}),
-      silverPurity:(ctx,l)=>({title:`Verify Purity With BIS Hallmark`,saving:0,desc:`German silver (800) is sometimes sold as sterling (925). Always check for BIS hallmark stamp (925 or 999) on the piece physically.`,script:`"Can you show me the BIS hallmark on this piece? I want to confirm the purity before buying."`}),
-      silverBulk:(ctx,l)=>({title:`Compare the Bulk Discount Rate Across Shops`,saving:0,desc:`This scheme gives you ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)}/kg effective discount. Bulk silver discounts vary shop to shop — always compare the ₹-per-kg rate, not just the headline "₹${ctx.bulkAmt} off" number, since a bigger-sounding discount on a higher base price can still be worse value.`,script:`"What's your discount per kilogram on silver right now? I want to compare it with two other shops before deciding."`}),
-      diaGst:(ctx,l)=>({title:`Ask for Split GST Invoice`,saving:ctx.diaVal*0.015,desc:`Diamond GST (1.5%) and gold GST (3%) must be on separate line items by law. If the shop bundles them at 3%, you're overpaying. Demand a split invoice.`,script:`"Please show me the GST split — 3% on gold setting and 1.5% on diamond separately. I'd like a compliant invoice."`}),
-      diaBenchmark:(ctx,l)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct Is Well Above Entry-Level Pricing`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct Is Near Entry-Level Pricing`,saving:0,desc:ctx.ppc>60000?`Festival "starting from" ads often quote entry-level certified diamonds around ₹45,000–50,000/carat (typically EF color, VVS clarity). You're quoted ₹${ctx.ppc.toLocaleString('en-IN')}/ct — ask exactly which color/clarity grade justifies the gap, since a vague answer is a red flag.`:`This is close to typical festival entry-level pricing (₹45,000–50,000/ct for certified EF/VVS stones). At this price range, certification matters even more — a stone priced this low without a certificate is a bigger risk, not a better deal.`,script:ctx.ppc>60000?`"The ad mentions diamonds starting ₹49,900/carat. What color and clarity grade is this stone, and why is it priced above that starting point?"`:`"Since this is close to the advertised starting price, can I see the IGI/GIA certificate to confirm the exact color and clarity grade?"`}),
-      diaCert:(ctx,l)=>({title:`Only Buy Certified Diamonds`,saving:0,desc:`Uncertified diamonds have no verifiable price — you could be paying 2x. IGI/GIA certified diamonds have published Rapaport prices. Check online before entering the shop.`,script:`"Does this diamond come with IGI or GIA certification? I'd like to see the cert before we proceed."`}),
-      diaLoose:(ctx,l)=>({title:`Consider Loose Diamond + Separate Setting`,saving:ctx.total*0.12,desc:`Buying a loose certified diamond and separate setting (not pre-made jewellery) saves 10–15% on making and gives you more choice.`,script:`"Can you show me loose certified diamonds separately from the setting? I'd like to compare the total cost."`}),
-    },
-  },
-  te:{
-    navTitle:'💍 ఆభరణాల సూట్',
-    mbGold:'బంగారు',mbSilver:'వెండి',mbDiamond:'వజ్రం',
-    savingsGuideLinkTitle:'బంగారు పొదుపు పథకం ఆలోచిస్తున్నారా?', savingsGuideLinkSub:'మీ అన్ని ఆప్షన్లు చూడండి, అపోహలు తీరుస్తుంది, మీ పథకాన్ని చెక్ చేయండి →',
-    glNoCard:'దుకాణం ఇప్పటికే కార్డ్ ఛార్జీలు మాఫీ చేస్తోందా?',glNoCardS:'ఉదా: "క్రెడిట్/డెబిట్ కార్డ్ ఛార్జీలు లేవు" ప్రకటనలు',
-    gC1:'బంగారం వివరాలు',gLWt:'బరువు',gLPur:'స్వచ్ఛత',gLRate:'నేటి బంగారం రేటు',gLRateH:'(₹/g 24K కోసం)',
-    billCta1:'ఇప్పటికే దుకాణం బిల్లు లేదా అంచనా ఉందా?',billCta2:'దాన్ని ఫోటో తీయండి — AI రేటు, మేకింగ్ ఛార్జీ & లెక్క సరిగ్గా ఉందో మీ భాషలో చెక్ చేస్తుంది →',
-    gC2:'మేకింగ్ / VA ఛార్జీలు',gLMtype:'మేకింగ్ రకం',gLMtypeS:'% లేదా గ్రాముకు ₹',
-    gLMval:'మేకింగ్ రేటు',gMvalHint:'ఉదా: ప్రకటనలో 6.95%',gLWaste:'వేస్టేజ్',gLWasteS:'కొన్ని దుకాణాలు 2–5% వేస్తాయి',
-    gLWastep:'వేస్టేజ్ %',gLWastepS:'బంగారం విలువపై',
-    gC3:'పన్నులు & మార్పిడి',gLGst:'బంగారంపై GST',gLGstS:'3% ప్రభుత్వ పన్ను',gLHall:'హాల్‌మార్కింగ్',gLHallS:'BIS ఛార్జ్ ఉంటే',
-    gC2b:'రాళ్లు / రత్నాలు',gLStone:'ఈ ఆభరణంలో రాళ్లు ఉన్నాయా?',gLStoneS:'వజ్రాలు, కెంపు, పచ్చ, కుందన్ మొదలైనవి',
-    gLStonewt:'రాయి బరువు (గ్రాములు)',gLStonewtS:'బంగారం నుండి వేర్వేరుగా తూకం వేయబడింది',
-    gLStoneval:'రాయి విలువ బిల్లు (₹)',gLStonevalS:'రాయికి దుకాణం వసూలు చేస్తున్న మొత్తం',
-    gLStoneinc:'పైన బరువులో రాళ్లు కలిపి ఉన్నాయా?',gLStoneincS:'చాలా బిల్లులు మొత్తం ముక్కను కలిపి తూకం వేస్తాయి',
-    gLExch:'పాత బంగారం మార్పిడి',gLExchS:'పాత బంగారం క్రెడిట్ జోడించడానికి',
-    gLOwt:'పాత బంగారం బరువు (g)',gLOwtS:'మీరు తిరిగి ఇస్తున్నది',gLOpur:'పాత బంగారం స్వచ్ఛత',
-    gLOded:'తగ్గింపు %',gLOdedS:'0% = జీరో డిడక్షన్ ఆఫర్',
-    gOptPct:'% (బంగారం విలువపై)',gOptPgram:'₹ గ్రాముకు',gOptNone:'మేకింగ్ ఛార్జ్ లేదు',
-    gRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
-    gLoadRateBtn:'🔄 నేటి రేటు లోడ్ చేయండి',gCityLabel:'మీ నగరం',gDetectBtn:'📍 గుర్తించండి',
-    gCityInfoBox:'ℹ️ మీ నగరాన్ని ఎంచుకుని, "నేటి రేటు లోడ్ చేయండి" నొక్కండి — ఇది మీ నగరానికి నిజమైన ప్రచురిత రేటును తెస్తుంది, అంచనా కాదు. మేము దానిని పొందలేకపోతే, స్పష్టంగా చెప్పి బదులుగా అంచనా రేటు చూపిస్తాము. మీరే మాన్యువల్‌గా టైప్ చేస్తే, 24K/999 రేటు ఎంటర్ చేయండి — మీ శుద్ధతకు మేము స్వయంచాలకంగా సర్దుబాటు చేస్తాము.',
-    gRateBoxWarn:'⚠️ పైన బటన్ ఉపయోగించకుండా మాన్యువల్‌గా టైప్ చేస్తుంటే, 24K/999 రేటు ఎంటర్ చేయండి — మీ శుద్ధతకు మేము స్వయంచాలకంగా సర్దుబాటు చేస్తాము. చాలా సైట్లు 22K నేరుగా చూపిస్తాయి, కాబట్టి టైప్ చేసే ముందు మీకున్నది ఏది అని రెండుసార్లు తనిఖీ చేయండి.',
-    gRateLoading:'⏳ లోడ్ అవుతోంది…',gRateRealPrefix:'✅ నిజమైన ప్రచురిత రేటు ',gRateEstFallback:'⚠️ అంచనా (ఈసారి నిజమైన రేటు అందుబాటులో లేదు)',
-    gRateLoadedAt:' — లోడ్ చేయబడింది ',gRateDirectSuffix:'K రేటు నేరుగా',gRateLoadFail:'లోడ్ చేయలేకపోయాము — మళ్ళీ ప్రయత్నించండి.',
-    gRateServerFail:'సర్వర్‌ను చేరుకోలేకపోయాము — మళ్ళీ ప్రయత్నించండి.',
-    gDetectDetecting:'మీ లొకేషన్ గుర్తిస్తోంది…',gDetectNotSupported:'ఈ బ్రౌజర్‌లో లొకేషన్ మద్దతు లేదు.',
-    gDetectPrefix:'✅ గుర్తించబడింది: ',gDetectNoMatch:'మీ నగరాన్ని మా జాబితాతో సరిపోల్చలేకపోయాము — దయచేసి మాన్యువల్‌గా ఎంచుకోండి.',
-    gDetectFail:'గుర్తించలేకపోయాము — దయచేసి మీ నగరాన్ని మాన్యువల్‌గా ఎంచుకోండి.',gDetectDenied:'లొకేషన్ అనుమతి నిరాకరించబడింది — దయచేసి మాన్యువల్‌గా ఎంచుకోండి.',
-    sC1:'వెండి వివరాలు',sLWt:'బరువు',sLPur:'స్వచ్ఛత',sLRate:'నేటి వెండి రేటు',sLRateH:'(₹/g 999 కోసం)',
-    sC2:'మేకింగ్ ఛార్జీలు',sLMtype:'మేకింగ్ రకం',sLMtypeS:'వెండికి గ్రాముకు ₹ సాధారణం',
-    sLMval:'మేకింగ్ రేటు',sMvalHint:'సాధారణంగా ₹50–200/g',sLGst:'వెండిపై GST',sLGstS:'వెండి + మేకింగ్‌పై 3%',
-    sOptPgram:'₹ గ్రాముకు',sOptPct:'% వెండి విలువపై',sOptFixed:'వస్తువుకు నిర్ణీత ₹',sOptNone:'మేకింగ్ లేదు',
-    sC3:'బల్క్ / స్కీమ్ డిస్కౌంట్',sLBulk:'ఫ్లాట్ స్కీమ్ డిస్కౌంట్ ఉందా?',sLBulkS:'ఉదా: "1kgపై ₹10,000 తగ్గింపు" ప్రకటనలు',sLBulkAmt:'ఫ్లాట్ డిస్కౌంట్ మొత్తం (₹)',
-    sRateLink:'🔗 GoodReturns లో నేటి రేటు చూడండి →',
-    dC1:'వజ్రం వివరాలు',dLCt:'వజ్రం బరువు',dLShape:'ఆకృతి / కట్',dLColor:'రంగు గ్రేడ్',dLClarity:'స్పష్టత',
-    dLPpc:'అంచనా వజ్రం ధర',dLPpcH:'(₹ కేరట్‌కు — సర్టిఫికేట్ చూడండి)',
-    dC2:'బంగారు సెట్టింగ్',dLGwt:'సెట్టింగ్ బరువు',dLGpur:'సెట్టింగ్ స్వచ్ఛత',dLGrate:'బంగారం రేటు',dLMval:'మేకింగ్ ఛార్జీలు',dLMvalS:'బంగారు సెట్టింగ్ విలువపై %',
-    dC3:'GST — ముఖ్యమైనది',
-    dGstNote:'⚠️ <strong>దాచిన ఛార్జ్ హెచ్చరిక:</strong> కట్ చేసిన వజ్రాలపై <strong>GST 1.5%</strong> బంగారు సెట్టింగ్‌కు వేరుగా వేయాలి. చాలా దుకాణాలు దీన్ని దాచి వేస్తాయి. వేర్వేరు ఇన్వాయిస్ అడగండి.',
-    dRateLink:'🔗 IGI/GIA సర్టిఫికేట్‌తో సరిపోల్చండి →',
-    calcBtn:'మొత్తం ధర లెక్కించండి →',
-    rLabel:'మీరు చెల్లించాల్సిన మొత్తం',rBdHead:'పూర్తి ధర వివరాలు',
-    perGram:'గ్రాముకు (అన్నీ కలిపి)',aboveBase:'మూల ధరపై అదనం',baseRate:'మూల రేటు/g',basePriceD:'వజ్రం విలువ',
-    pillNoMaking:'✓ మేకింగ్ ఛార్జ్ లేదు',pillNoWastage:'✓ వేస్టేజ్ లేదు',pillGood:'⭐ మంచి డీల్',pillHigh:'⚠️ అధిక ఛార్జీలు',
-    pillZeroDed:'✓ జీరో తగ్గింపు',pillHighDed:'⚠️ అధిక తగ్గింపు',
-    goldValLbl:'బంగారం విలువ',makingLbl:'మేకింగ్ / VA ఛార్జీలు',wastageLbl:'వేస్టేజ్',
-    subTotalLbl:'ఉప-మొత్తం (GST ముందు)',gstLbl:'GST',hallLbl:'హాల్‌మార్కింగ్',totalLbl:'మీరు చెల్లించే మొత్తం',
-    exchSection:'పాత బంగారం మార్పిడి',oldGoldVal:'పాత బంగారం మార్కెట్ విలువ',deductLbl:'తగ్గింపు',netCredit:'పాత బంగారం నెట్ క్రెడిట్',
-    diaValLbl:'వజ్రం విలువ',diaGstLbl:'వజ్రంపై GST (1.5%)',goldSetLbl:'బంగారు సెట్టింగ్ విలువ',goldSetMaking:'సెట్టింగ్ మేకింగ్',goldSetGst:'సెట్టింగ్‌పై GST (3%)',
-    exHdr:'📖 ఈ పదాలు అర్థం ఏమిటి?',resetBtn:'← కొత్త లెక్క',
-    footerTxt:'ఆభరణాల సూట్ · ఉచితం · లాగిన్ అవసరం లేదు · హైదరాబాద్‌లో తయారైంది 🇮🇳',
-    negoEye:'మీ వ్యక్తిగత',negoTtl:'🤝 చర్చల వ్యూహం',
-    negoScoreLbl:'లాభం',negoSavLbl:'సాధ్యమైన ఆదా',negoSavSub:'అన్నీ సాధిస్తే',
-    negoTimingEye:'⏰ సమయం & వ్యూహం',
-    statsEye:'📊 వినియోగ గణాంకాలు',sgLbl:'మొత్తం సందర్శనలు',sgNote:'🌐 అందరి సందర్శనలు',
-    spCalcsL:'మీ లెక్కలు',spStreakL:'రోజుల వరుస',spLastL:'చివరి సందర్శన',spNote:'📱 మీ పరికరంలో మాత్రమే',
-    explainers:{
-      gold:[
-        ['బంగారం రేటు','ప్రతి రోజు మార్పిడిలో నిర్ణయించే 24K స్వచ్ఛమైన బంగారం ధర. అన్ని లెక్కలు దీనిపై ఆధారపడతాయి.'],
-        ['స్వచ్ఛత సర్దుబాటు','22K = 91.6% స్వచ్ఛం. 24K ₹9,500/g అయితే, 22K = ₹9,500 × 0.916 = ₹8,702/g.'],
-        ['VA / మేకింగ్ ఛార్జీలు','నగలు చేయడానికి జ్యువెలర్ వసూలు చేసే ఛార్జ్. 6.95% చాలా తక్కువ (సాధారణంగా 10–25%).'],
-        ['వేస్టేజ్','తయారీలో వృధా అయ్యే లోహం. కొన్ని దుకాణాలు 2–5% వేరుగా వేస్తాయి — ప్రశ్నించండి.'],
-        ['GST','బంగారు + మేకింగ్‌పై 3% ప్రభుత్వ పన్ను. తప్పనిసరి.'],
-        ['జీరో డిడక్షన్','పాత బంగారానికి పూర్తి మార్కెట్ విలువ ఇవ్వడం — నిజంగా మంచి ఆఫర్.'],
-      ],
-      silver:[
-        ['వెండి స్వచ్ఛత','999 = ఫైన్ సిల్వర్, 925 = స్టెర్లింగ్ (చాలా ఆభరణాలు), 800 = జర్మన్ సిల్వర్.'],
-        ['మేకింగ్ ఛార్జీలు','వెండికి సాధారణంగా గ్రాముకు ₹50–200 వేస్తారు. 30–40% తగ్గించడం సాధ్యమే.'],
-        ['వెండిపై GST','వెండి విలువ + మేకింగ్‌పై 3%.'],
-        ['వెండి vs బంగారు మేకింగ్','వెండి మూల విలువ తక్కువ కాబట్టి మేకింగ్ % చాలా ఎక్కువగా కనిపిస్తుంది. ఎప్పుడూ గ్రాముకు ₹ అడగండి.'],
-      ],
-      diamond:[
-        ['4Cs','కట్, కలర్, క్లారిటీ, కేరట్ — వజ్రం నాణ్యత నిర్ణయించే నాలుగు అంశాలు. IGI లేదా GIA సర్టిఫికేట్ అడగండి.'],
-        ['GST విభజన','బంగారు సెట్టింగ్: 3% GST. వజ్రం: 1.5% GST. చట్టప్రకారం వేరుగా ఉండాలి.'],
-        ['కేరట్‌కు ధర','రేఖీయంగా ఉండదు — 1ct వజ్రం రెండు 0.5ct వజ్రాల కంటే చాలా ఖరీదు.'],
-        ['సర్టిఫికేట్','IGI/GIA సర్టిఫికేట్ లేనిదే కొనకండి — ధర ధృవీకరించడం సాధ్యం కాదు.'],
-      ],
-    },
-    timing:[
-      ['వారాంతరం వెళ్ళండి','మంగళవారం, బుధవారాలలో తక్కువ మంది వస్తారు — చర్చకు అనువుగా ఉంటుంది.'],
-      ['నెల చివరిలో','చివరి 3 రోజులలో దుకాణాలు లక్ష్యాలు చేరుకోవాలని ఆతురత పడతాయి.'],
-      ['పండుగలు మానుకోండి','అక్షయ తృతీయ, ధంతేరాస్ — చర్చకు అవకాశం శూన్యం.'],
-      ['3 కోట్లు పొందండి','3 దుకాణాల నుండి రాత ధరలు పొందండి. అత్యుత్తమ ధరతో ఇష్టమైన దుకాణానికి తిరిగి వెళ్ళండి.'],
-      ['బడ్జెట్ చెప్పకండి','"₹X కు ఏమి వస్తుందో" అడగండి, "నా దగ్గర ₹X ఉంది" అని చెప్పకండి.'],
-    ],
-    moves:{
-      makingHigh:(ctx)=>({title:`మేకింగ్ ${ctx.makingPct}% నుండి 10%కి తగ్గించండి`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`మీరు ${ctx.makingPct}% చెల్లిస్తున్నారు — సాధారణ 8–12% పరిధి కంటే ఎక్కువ. పోటీ దుకాణాల ధరలు చెప్పి అడిగితే తగ్గుతుంది.`,script:`"ఈ ప్రాంతంలో మేకింగ్ ఛార్జ్ 8–10% — మీరు ఇవ్వగలరా? నేను ఈరోజే కొనడానికి సిద్ధంగా ఉన్నాను."`}),
-      makingFair:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మార్కెట్ పరిధిలోనే ఉంది`,saving:0,desc:`మార్కెట్ సాధారణ పరిధి 8–12%, మీ ${ctx.makingPct}% అందులోనే ఉంది — ఇది తరచుగా పండుగ రేటుగా స్థిరంగా ఉంటుంది. 5%కి అడగడం పని చేయకపోవచ్చు. బదులుగా ఉచిత హాల్‌మార్కింగ్ లేదా మేకింగ్ మాఫీ అడగండి.`,script:`"మీ మేకింగ్ ఛార్జ్ ఇప్పటికే న్యాయంగా ఉంది. ఉచిత హాల్‌మార్కింగ్ ఇవ్వగలరా?"`}),
-      makingGood:(ctx)=>({title:`${ctx.makingPct}% ఇప్పటికే మంచి రేటు`,saving:0,desc:`${ctx.makingPct}% సాధారణ 8–12% పరిధి కంటే తక్కువ — ఇంకా తగ్గించడానికి అవకాశం తక్కువ. బదులుగా BIS హాల్‌మార్కింగ్, బిల్లు వివరాలు నిర్ధారించుకోండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. వేర్వేరుగా చూపే బిల్లు ఇవ్వగలరా?"`}),
-      stoneWeightFraud:(ctx)=>({title:`${ctx.stoneWt}g రాయిపై బంగారు రేటు వసూలు చేస్తున్నారు`,saving:ctx.stoneOvercharge,desc:`నమోదు చేసిన బరువులో రాళ్లు కూడా ఉన్నాయి, కానీ మొత్తం బరువుకు బంగారు రేటు వసూలు చేస్తున్నారు — అంటే ${ctx.stoneWt}g రాయికి బంగారు ధర చెల్లిస్తున్నారు. రాయి బరువును బంగారం బరువు నుండి తీసివేసి, రాయి విలువను వేర్వేరుగా బిల్లు చేయాలి.`,script:`"రాయి బరువును బంగారం బరువు నుండి తీసివేసి వేర్వేరుగా బిల్లు చేయగలరా? నేను రాయిపై బంగారు రేటు చెల్లించకూడదు కదా."`}),
-      stoneValue:(ctx)=>({title:`రాయి విలువను వేర్వేరుగా నిర్ధారించి చర్చించండి`,saving:0,desc:`రాయి ధరకు బంగారంలా ప్రామాణిక రేటు లేదు కాబట్టి ఇక్కడ ఎక్కువ మార్జిన్ కలపడం సులభం. సర్టిఫికేట్ అడగండి, 2-3 దుకాణాలతో పోల్చండి.`,script:`"ఈ రాయికి సర్టిఫికేట్ చూపించగలరా? విలువను వేర్వేరుగా చూపించగలరా?"`}),
-      wastage:(ctx)=>({title:`వేస్టేజ్ (${ctx.wastagePct}%) తిరస్కరించండి`,saving:ctx.wastageAmt,desc:`వేస్టేజ్ తరచుగా దాచిన లాభం. వేస్టేజ్ తొలగించాలని లేదా అదే % మేకింగ్ తగ్గించాలని అడగండి.`,script:`"వేస్టేజ్ తొలగించగలరా లేదా మేకింగ్ ${ctx.wastagePct}% తగ్గించగలరా?"`}),
-      bulk:(ctx)=>({title:`పెద్ద కొనుగోలు — గ్రాముకు నిర్ణీత రేటు అడగండి`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g పెద్ద కొనుగోలు. % మేకింగ్ బదులు గ్రాముకు ₹ నిర్ణీత రేటు అడగండి.`,script:`"${ctx.weight}g కోసం గ్రాముకు ₹550 నిర్ణీత మేకింగ్ ఇవ్వండి."`}),
-      deduction:(ctx)=>({title:`పాత బంగారానికి జీరో తగ్గింపు అడగండి`,saving:ctx.deductionAmt||0,desc:`మరో దుకాణంలో జీరో తగ్గింపు ఆఫర్ ఉంటే దాన్ని లాభంగా వాడుకోండి.`,script:`"చెన్నై షాపింగ్ మాల్ జీరో తగ్గింపు ఇస్తోంది — మీరు ఇవ్వగలరా?"`}),
-      cash:(ctx)=>({title:`నగదు చెల్లింపు — అనధికారిక తగ్గింపు`,saving:ctx.total*0.01,desc:`కార్డ్ ఛార్జీలు ఆదా చేస్తే 1% తగ్గింపు సాధ్యం.`,script:`"నేను నగదు చెల్లిస్తే 1% తగ్గింపు ఇవ్వగలరా?"`}),
-      noCardAck:(ctx)=>({title:`ఈ దుకాణం ఇప్పటికే కార్డ్ ఛార్జీలు మాఫీ చేస్తోంది`,saving:0,desc:`ఈ దుకాణం కార్డ్ ఛార్జీలు వసూలు చేయదు కాబట్టి, "నగదుకు తగ్గింపు" అనే వ్యూహం ఇక్కడ వర్తించదు. బదులుగా మేకింగ్ ఛార్జ్ లేదా గిఫ్ట్‌పై దృష్టి పెట్టండి.`,script:`"ఇక్కడ కార్డ్ ఛార్జ్ లేదు కాబట్టి, మేకింగ్ ఛార్జ్ లేదా చిన్న గిఫ్ట్‌పై దృష్టి పెట్టవచ్చా?"`}),
-      freegift:(ctx)=>({title:`ఉచిత బంగారు నాణెం అడగండి`,saving:1500,desc:`₹50,000+ కొనుగోళ్ళపై విచక్షణాత్మక బడ్జెట్ ఉంటుంది.`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} ఖర్చు చేస్తున్నాను — చిన్న నాణెం ఇవ్వగలరా?"`}),
-      silverMaking:(ctx)=>({title:`వెండి మేకింగ్ ₹${ctx.makingRate}/g నుండి ₹90/gకి తగ్గించండి`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g సాధారణ ₹50–150/g పరిధి కంటే ఎక్కువ. వెండి మేకింగ్ అత్యంత చర్చించదగినది.`,script:`"మేకింగ్ ₹90/g ఇవ్వగలరా? నేను ${ctx.weight}g కొంటున్నాను."`}),
-      silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g ఇప్పటికే సాధారణ పరిధిలోనే ఉంది`,saving:0,desc:`సాధారణ వెండి మేకింగ్ ₹50–150/g, మీది అందులోనే ఉంది. బదులుగా ఉచిత పాలిషింగ్ లేదా బల్క్ డిస్కౌంట్ అడగండి.`,script:`"ఈ రేటు న్యాయంగా ఉంది. ఉచిత పాలిషింగ్ ఇవ్వగలరా?"`}),
-      silverPurity:(ctx)=>({title:`BIS హాల్‌మార్క్ తనిఖీ చేయండి`,saving:0,desc:`జర్మన్ సిల్వర్ (800) స్టెర్లింగ్ (925) గా అమ్మబడుతుంది. BIS హాల్‌మార్క్ తనిఖీ చేయండి.`,script:`"BIS హాల్‌మార్క్ చూపించగలరా?"`}),
-      silverBulk:(ctx)=>({title:`బల్క్ డిస్కౌంట్ రేటును దుకాణాల మధ్య పోల్చండి`,saving:0,desc:`ఈ స్కీమ్ కిలోకు ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)} ఎఫెక్టివ్ డిస్కౌంట్ ఇస్తోంది. కిలోకు రేటును పోల్చండి, "₹${ctx.bulkAmt} తగ్గింపు" అనే హెడ్‌లైన్ నంబర్‌ను మాత్రమే కాదు.`,script:`"మీ కిలోకు వెండి డిస్కౌంట్ ఎంత? నేను వేరే రెండు దుకాణాలతో పోల్చాలనుకుంటున్నాను."`}),
-      diaGst:(ctx)=>({title:`వేర్వేరు GST ఇన్వాయిస్ అడగండి`,saving:ctx.diaVal*0.015,desc:`వజ్రం GST (1.5%) మరియు బంగారు GST (3%) చట్టప్రకారం వేర్వేరుగా ఉండాలి.`,script:`"బంగారు 3% మరియు వజ్రం 1.5% GST వేర్వేరుగా చూపించిన ఇన్వాయిస్ ఇవ్వగలరా?"`}),
-      diaBenchmark:(ctx)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct ప్రారంభ ధర కంటే చాలా ఎక్కువ`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct ప్రారంభ ధరకు దగ్గరగా ఉంది`,saving:0,desc:ctx.ppc>60000?`పండుగ ప్రకటనలు సాధారణంగా ₹45,000–50,000/కేరట్ ధరతో సర్టిఫైడ్ వజ్రాలు చూపుతాయి. మీది ₹${ctx.ppc.toLocaleString('en-IN')}/ct — ఏ కలర్/క్లారిటీ గ్రేడ్ దీన్ని సమర్థిస్తుందో అడగండి.`:`ఇది సాధారణ ప్రారంభ ధరకు దగ్గరగా ఉంది. ఈ ధరలో సర్టిఫికేట్ మరింత ముఖ్యం.`,script:ctx.ppc>60000?`"ప్రకటనలో ₹49,900/కేరట్ నుండి అని ఉంది. ఈ రాయి కలర్/క్లారిటీ ఏమిటి, ఎందుకు ఎక్కువ ధర?"`:`"ఇది ప్రారంభ ధరకు దగ్గరగా ఉంది కాబట్టి, IGI/GIA సర్టిఫికేట్ చూపించగలరా?"`}),
-      diaCert:(ctx)=>({title:`సర్టిఫైడ్ వజ్రాలు మాత్రమే కొనండి`,saving:0,desc:`IGI/GIA సర్టిఫికేట్ లేకుండా ధర ధృవీకరించడం సాధ్యం కాదు.`,script:`"IGI లేదా GIA సర్టిఫికేట్ ఉందా?"`}),
-      diaLoose:(ctx)=>({title:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ పరిశీలించండి`,saving:ctx.total*0.12,desc:`లూజ్ వజ్రం + వేర్వేరు సెట్టింగ్ 10–15% ఆదా చేస్తుంది.`,script:`"లూజ్ సర్టిఫైడ్ వజ్రాలు వేర్వేరుగా చూపించగలరా?"`}),
-    },
-  },
-  hi:{
-    navTitle:'💍 ज्वेलरी सूट',
-    mbGold:'सोना',mbSilver:'चाँदी',mbDiamond:'हीरा',
-    savingsGuideLinkTitle:'सोने की बचत योजना सोच रहे हैं?', savingsGuideLinkSub:'अपने सभी विकल्प देखें, भ्रम दूर करें, अपनी योजना जांचें →',
-    glNoCard:'क्या दुकान पहले से कार्ड चार्ज माफ़ करती है?',glNoCardS:'जैसे "क्रेडिट/डेबिट कार्ड चार्ज नहीं" वाले विज्ञापन',
-    gC1:'सोने की जानकारी',gLWt:'वजन',gLPur:'शुद्धता',gLRate:'आज की सोने की दर',gLRateH:'(₹/g 24K के लिए)',
-    billCta1:'क्या आपके पास दुकान का बिल या अनुमान पहले से है?',billCta2:'उसकी फोटो लें — AI दर, मेकिंग चार्ज और हिसाब सही है या नहीं, आपकी भाषा में जांच करेगा →',
-    gC2:'मेकिंग / VA शुल्क',gLMtype:'मेकिंग का प्रकार',gLMtypeS:'% या ₹ प्रति ग्राम',
-    gLMval:'मेकिंग दर',gMvalHint:'जैसे विज्ञापन में 6.95%',gLWaste:'वेस्टेज',gLWasteS:'कुछ दुकानें 2–5% लेती हैं',
-    gLWastep:'वेस्टेज %',gLWastepS:'सोने की कीमत पर',
-    gC3:'टैक्स और एक्सचेंज',gLGst:'सोने पर GST',gLGstS:'मानक 3%',gLHall:'हॉलमार्किंग',gLHallS:'BIS शुल्क यदि हो',
-    gC2b:'पत्थर / रत्न',gLStone:'क्या इस गहने में पत्थर जड़े हैं?',gLStoneS:'हीरा, माणिक, पन्ना, कुंदन आदि',
-    gLStonewt:'पत्थर का वजन (ग्राम)',gLStonewtS:'सोने से अलग तौला गया',
-    gLStoneval:'पत्थर की बिल की गई कीमत (₹)',gLStonevalS:'दुकान पत्थर के लिए कितना वसूल रही है',
-    gLStoneinc:'ऊपर के वजन में पत्थर शामिल हैं?',gLStoneincS:'ज़्यादातर बिल पूरे गहने को साथ तौलते हैं',
-    gLExch:'पुराना सोना एक्सचेंज',gLExchS:'पुराने सोने का क्रेडिट जोड़ने के लिए',
-    gLOwt:'पुराने सोने का वजन (g)',gLOwtS:'जो आप वापस दे रहे हैं',gLOpur:'पुराने सोने की शुद्धता',
-    gLOded:'कटौती %',gLOdedS:'0% = जीरो डिडक्शन ऑफर',
-    gOptPct:'% (सोने की कीमत पर)',gOptPgram:'₹ प्रति ग्राम',gOptNone:'मेकिंग शुल्क नहीं',
-    gRateLink:'🔗 GoodReturns पर आज की दर देखें →',
-    gLoadRateBtn:'🔄 आज की दर लोड करें',gCityLabel:'आपका शहर',gDetectBtn:'📍 पता लगाएं',
-    gCityInfoBox:'ℹ️ ऊपर अपना शहर चुनें, फिर "आज की दर लोड करें" पर टैप करें — यह आपके शहर की असली प्रकाशित दर लाता है, अनुमान नहीं। अगर हम इसे किसी वजह से नहीं ला पाए, तो हम साफ बता देंगे और इसके बजाय अनुमानित दर दिखाएंगे। अगर मैन्युअल रूप से अपनी दर टाइप कर रहे हैं, तो 24K/999 दर डालें — हम आपकी शुद्धता के हिसाब से अपने आप समायोजित कर देंगे।',
-    gRateBoxWarn:'⚠️ अगर ऊपर बटन का उपयोग किए बिना मैन्युअल रूप से टाइप कर रहे हैं, तो 24K/999 दर डालें — हम आपकी शुद्धता के हिसाब से अपने आप समायोजित कर देंगे। कई साइटें सीधे 22K दिखाती हैं, इसलिए टाइप करने से पहले जांच लें आपके पास कौन सी है।',
-    gRateLoading:'⏳ लोड हो रहा है…',gRateRealPrefix:'✅ असली प्रकाशित दर ',gRateEstFallback:'⚠️ अनुमान (इस बार असली दर नहीं मिल पाई)',
-    gRateLoadedAt:' — लोड किया गया ',gRateDirectSuffix:'K दर सीधे',gRateLoadFail:'लोड नहीं हो पाया — फिर से कोशिश करें।',
-    gRateServerFail:'सर्वर तक नहीं पहुंच पाए — फिर से कोशिश करें।',
-    gDetectDetecting:'आपकी लोकेशन का पता लगाया जा रहा है…',gDetectNotSupported:'इस ब्राउज़र पर लोकेशन समर्थित नहीं है।',
-    gDetectPrefix:'✅ पता चला: ',gDetectNoMatch:'आपके शहर को हमारी सूची से मिला नहीं पाए — कृपया मैन्युअल रूप से चुनें।',
-    gDetectFail:'पता नहीं लगा पाए — कृपया अपना शहर मैन्युअल रूप से चुनें।',gDetectDenied:'लोकेशन अनुमति अस्वीकृत — कृपया मैन्युअल रूप से चुनें।',
-    sC1:'चाँदी की जानकारी',sLWt:'वजन',sLPur:'शुद्धता',sLRate:'आज की चाँदी दर',sLRateH:'(₹/g 999 के लिए)',
-    sC2:'मेकिंग शुल्क',sLMtype:'मेकिंग का प्रकार',sLMtypeS:'चाँदी के लिए ₹/ग्राम सामान्य है',
-    sLMval:'मेकिंग दर',sMvalHint:'सामान्यतः ₹50–200/g',sLGst:'चाँदी पर GST',sLGstS:'चाँदी + मेकिंग पर 3%',
-    sOptPgram:'₹ प्रति ग्राम',sOptPct:'% चाँदी मूल्य पर',sOptFixed:'प्रति टुकड़ा निश्चित ₹',sOptNone:'मेकिंग नहीं',
-    sC3:'थोक / स्कीम छूट',sLBulk:'फ्लैट स्कीम छूट है?',sLBulkS:'जैसे "1kg पर ₹10,000 की छूट" वाले विज्ञापन',sLBulkAmt:'फ्लैट छूट राशि (₹)',
-    sRateLink:'🔗 GoodReturns पर आज की दर देखें →',
-    dC1:'हीरे की जानकारी',dLCt:'हीरे का वजन',dLShape:'आकृति / कट',dLColor:'रंग ग्रेड',dLClarity:'स्पष्टता',
-    dLPpc:'अनुमानित हीरे की कीमत',dLPpcH:'(₹ प्रति कैरेट — सर्टिफिकेट देखें)',
-    dC2:'सोने की सेटिंग',dLGwt:'सेटिंग वजन',dLGpur:'सेटिंग शुद्धता',dLGrate:'सोने की दर',dLMval:'मेकिंग शुल्क',dLMvalS:'सोने की सेटिंग मूल्य पर %',
-    dC3:'GST — महत्वपूर्ण',
-    dGstNote:'⚠️ <strong>छुपा शुल्क सावधानी:</strong> कटे और पॉलिश किए हीरे पर <strong>GST @ 1.5%</strong> सोने की सेटिंग से अलग लगता है। कई दुकानें इसे छुपाती हैं। अलग इनवॉइस मांगें।',
-    dRateLink:'🔗 IGI/GIA सर्टिफिकेट से सत्यापित करें →',
-    calcBtn:'कुल कीमत की गणना करें →',
-    rLabel:'आप कितना देंगे',rBdHead:'पूरा मूल्य विवरण',
-    perGram:'प्रति ग्राम (सब मिलाकर)',aboveBase:'मूल कीमत से ऊपर',baseRate:'मूल दर/g',basePriceD:'हीरे का मूल्य',
-    pillNoMaking:'✓ मेकिंग शुल्क नहीं',pillNoWastage:'✓ वेस्टेज नहीं',pillGood:'⭐ अच्छा सौदा',pillHigh:'⚠️ अधिक शुल्क',
-    pillZeroDed:'✓ जीरो कटौती',pillHighDed:'⚠️ अधिक कटौती',
-    goldValLbl:'सोने का मूल्य',makingLbl:'मेकिंग / VA शुल्क',wastageLbl:'वेस्टेज',
-    subTotalLbl:'उपकुल (GST से पहले)',gstLbl:'GST',hallLbl:'हॉलमार्किंग',totalLbl:'कुल भुगतान',
-    exchSection:'पुराना सोना एक्सचेंज',oldGoldVal:'पुराने सोने का बाजार मूल्य',deductLbl:'कटौती',netCredit:'पुराने सोने का नेट क्रेडिट',
-    diaValLbl:'हीरे का मूल्य',diaGstLbl:'हीरे पर GST (1.5%)',goldSetLbl:'सोने की सेटिंग मूल्य',goldSetMaking:'सेटिंग मेकिंग',goldSetGst:'सेटिंग पर GST (3%)',
-    exHdr:'📖 इन शब्दों का अर्थ क्या है?',resetBtn:'← नई गणना',
-    footerTxt:'ज्वेलरी सूट · मुफ्त · कोई लॉगिन नहीं · हैदराबाद में बना 🇮🇳',
-    negoEye:'आपकी व्यक्तिगत',negoTtl:'🤝 मोलभाव रणनीति',
-    negoScoreLbl:'ताकत',negoSavLbl:'संभावित बचत',negoSavSub:'सभी सफल हों तो',
-    negoTimingEye:'⏰ समय और रणनीति',
-    statsEye:'📊 उपयोग आंकड़े',sgLbl:'कुल विज़िट',sgNote:'🌐 सभी उपयोगकर्ता',
-    spCalcsL:'आपकी गणनाएं',spStreakL:'दिन की स्ट्रीक',spLastL:'पिछली विज़िट',spNote:'📱 सिर्फ आपके डिवाइस पर',
-    explainers:{
-      gold:[
-        ['सोने की दर','रोज़ तय होने वाली 24K शुद्ध सोने की प्रति ग्राम कीमत।'],
-        ['शुद्धता समायोजन','22K = 91.6% शुद्ध। 24K ₹9,500/g तो 22K = ₹8,702/g।'],
-        ['VA / मेकिंग शुल्क','गहना बनाने का शिल्पकारी शुल्क। 6.95% बहुत कम है (सामान्यतः 10–25%)।'],
-        ['वेस्टेज','बनाते समय बर्बाद होने वाला धातु। कई दुकानें 2–5% अलग से लेती हैं।'],
-        ['GST','सोना + मेकिंग पर 3% सरकारी कर।'],
-        ['जीरो डिडक्शन','पुराने सोने का पूरा बाजार मूल्य मिलता है — वास्तव में अच्छा ऑफर।'],
-      ],
-      silver:[
-        ['चाँदी की शुद्धता','999 = शुद्ध चाँदी, 925 = स्टर्लिंग, 800 = जर्मन सिल्वर।'],
-        ['मेकिंग शुल्क','चाँदी के लिए ₹50–200/g सामान्य है। 30–40% कमी संभव है।'],
-        ['चाँदी पर GST','चाँदी + मेकिंग पर 3%।'],
-        ['चाँदी vs सोना मेकिंग','चाँदी की कम कीमत के कारण मेकिंग % बहुत ज़्यादा दिखती है। हमेशा ₹/ग्राम दर मांगें।'],
-      ],
-      diamond:[
-        ['4Cs','कट, रंग, स्पष्टता, कैरेट — IGI या GIA सर्टिफिकेट ज़रूरी।'],
-        ['GST विभाजन','सोने की सेटिंग: 3% GST। हीरा: 1.5% GST। कानूनन अलग होना चाहिए।'],
-        ['कैरेट प्रति कीमत','रैखिक नहीं — 1ct हीरा दो 0.5ct हीरों से बहुत महंगा।'],
-        ['सर्टिफिकेट','IGI/GIA प्रमाणित हीरे की प्रकाशित कीमत होती है। बिना सर्टिफिकेट के न खरीदें।'],
-      ],
-    },
-    timing:[
-      ['सप्ताह के बीच में जाएं','मंगलवार-बुधवार को कम भीड़ — मोलभाव के लिए बेहतर।'],
-      ['महीने के अंत में','आखिरी 3 दिन दुकानें लक्ष्य के लिए लचीली होती हैं।'],
-      ['त्योहारों से बचें','अक्षय तृतीया, धनतेरस पर मोलभाव की गुंजाइश शून्य।'],
-      ['3 कोट पहले लें','3 दुकानों से लिखित दर लें। सबसे अच्छे के साथ पसंदीदा दुकान जाएं।'],
-      ['बजट मत बताएं','"₹X में क्या मिलेगा?" पूछें, "मेरे पास ₹X है" मत कहें।'],
-    ],
-    moves:{
-      makingHigh:(ctx)=>({title:`मेकिंग ${ctx.makingPct}% से 10% करवाएं`,saving:ctx.baseVal*(ctx.makingPct-10)/100,desc:`आप ${ctx.makingPct}% दे रहे हैं — सामान्य 8–12% दायरे से ज़्यादा। प्रतिस्पर्धी दुकानों का हवाला दें।`,script:`"इस इलाके में मेकिंग 8–10% है। क्या आप मैच कर सकते हैं? मैं आज ही खरीदने के लिए तैयार हूं।"`}),
-      makingFair:(ctx)=>({title:`${ctx.makingPct}% पहले से ही बाज़ार के सामान्य दायरे में है`,saving:0,desc:`बाज़ार सामान्य दायरा 8–12% है, आपका ${ctx.makingPct}% उसी में है — यह अक्सर त्योहार रेट होता है। 5% की मांग करना अक्सर काम नहीं करेगा। इसके बजाय मुफ़्त हॉलमार्किंग या मेकिंग माफ़ी मांगें।`,script:`"आपका मेकिंग चार्ज पहले से उचित है। मुफ़्त हॉलमार्किंग दे सकते हैं?"`}),
-      makingGood:(ctx)=>({title:`${ctx.makingPct}% पहले से ही अच्छी दर है`,saving:0,desc:`${ctx.makingPct}% सामान्य 8–12% दायरे से कम है — घटाने की ज़्यादा गुंजाइश नहीं। इसके बजाय BIS हॉलमार्किंग और बिल विवरण जांचें।`,script:`"यह दर ठीक लगती है। अलग-अलग दिखाने वाला बिल दे सकते हैं?"`}),
-      stoneWeightFraud:(ctx)=>({title:`${ctx.stoneWt}g पत्थर पर सोने की दर वसूली जा रही है`,saving:ctx.stoneOvercharge,desc:`दर्ज किए गए वजन में पत्थर भी शामिल हैं, लेकिन पूरे वजन पर सोने की दर वसूली जा रही है — यानी ${ctx.stoneWt}g पत्थर के लिए सोने की कीमत चुका रहे हैं। पत्थर का वजन सोने से घटाकर, उसकी कीमत अलग से बिल होनी चाहिए।`,script:`"पत्थर का वजन सोने के वजन से घटाकर अलग से बिल कर सकते हैं? मुझे पत्थर पर सोने की दर नहीं देनी चाहिए।"`}),
-      stoneValue:(ctx)=>({title:`पत्थर की कीमत अलग से जांचें और मोलभाव करें`,saving:0,desc:`पत्थर की कीमत का सोने जैसा कोई मानक रेट नहीं है, इसलिए यहां मार्जिन बढ़ाना आसान है। सर्टिफिकेट मांगें, 2-3 दुकानों से तुलना करें।`,script:`"इस पत्थर का सर्टिफिकेट दिखा सकते हैं? कीमत अलग से बता सकते हैं?"`}),
-      wastage:(ctx)=>({title:`वेस्टेज (${ctx.wastagePct}%) को चुनौती दें`,saving:ctx.wastageAmt,desc:`वेस्टेज अक्सर छुपा मुनाफा है। इसे हटाने या मेकिंग कम करने की मांग करें।`,script:`"वेस्टेज हटाएं या मेकिंग ${ctx.wastagePct}% कम करें।"`}),
-      bulk:(ctx)=>({title:`बड़ी खरीद — फ्लैट ₹/ग्राम दर मांगें`,saving:ctx.baseVal*Math.min(ctx.makingPct,4)/100,desc:`${ctx.weight}g बड़ी खरीद है। % मेकिंग की बजाय ₹/ग्राम फ्लैट मांगें।`,script:`"${ctx.weight}g के लिए ₹550/g फ्लैट मेकिंग दें।"`}),
-      deduction:(ctx)=>({title:`पुराने सोने पर जीरो कटौती मांगें`,saving:ctx.deductionAmt||0,desc:`दूसरी दुकान का जीरो डिडक्शन ऑफर लीवरेज के रूप में उपयोग करें।`,script:`"चेन्नई शॉपिंग मॉल जीरो डिडक्शन दे रहा है — आप भी दे सकते हैं?"`}),
-      cash:(ctx)=>({title:`नकद दें — अनौपचारिक छूट पाएं`,saving:ctx.total*0.01,desc:`₹30,000+ पर नकद देने पर 1% अनौपचारिक छूट संभव।`,script:`"नकद दूं तो 1% छूट मिल सकती है?"`}),
-      noCardAck:(ctx)=>({title:`यह दुकान पहले से कार्ड चार्ज माफ़ करती है`,saving:0,desc:`यह दुकान कार्ड MDR आप पर नहीं डालती, तो "नकद पर छूट" वाली रणनीति यहां काम नहीं करेगी। इसके बजाय मेकिंग चार्ज या गिफ्ट पर ध्यान दें।`,script:`"यहां कार्ड चार्ज नहीं है, तो क्या हम मेकिंग चार्ज या छोटे गिफ्ट पर बात कर सकते हैं?"`}),
-      freegift:(ctx)=>({title:`मुफ्त सोने का सिक्का मांगें`,saving:1500,desc:`₹50,000+ पर जौहरियों के पास विवेकाधीन बजट होता है।`,script:`"₹${Math.round(ctx.total).toLocaleString('en-IN')} खर्च कर रहा हूं — छोटा सिक्का मिल सकता है?"`}),
-      silverMaking:(ctx)=>({title:`चाँदी की मेकिंग ₹${ctx.makingRate}/g से ₹90/g करवाएं`,saving:Math.max(0,(ctx.makingRate-90))*ctx.weight,desc:`₹${ctx.makingRate}/g सामान्य ₹50–150/g दायरे से ज़्यादा है। चाँदी मेकिंग सबसे ज़्यादा मोलभाव योग्य है।`,script:`"मेकिंग ₹90/g हो सकती है? मैं ${ctx.weight}g खरीद रहा हूं।"`}),
-      silverMakingFair:(ctx)=>({title:`₹${ctx.makingRate}/g पहले से सामान्य दायरे में है`,saving:0,desc:`सामान्य चाँदी मेकिंग ₹50–150/g है, आपकी उसी में है। इसके बजाय मुफ़्त पॉलिशिंग या बल्क छूट मांगें।`,script:`"यह दर ठीक लगती है। मुफ़्त पॉलिशिंग दे सकते हैं?"`}),
-      silverPurity:(ctx)=>({title:`BIS हॉलमार्क से शुद्धता जांचें`,saving:0,desc:`जर्मन सिल्वर (800) को स्टर्लिंग (925) के रूप में बेचा जाता है।`,script:`"इस पीस पर BIS हॉलमार्क दिखा सकते हैं?"`}),
-      silverBulk:(ctx)=>({title:`थोक छूट दर की दुकानों में तुलना करें`,saving:0,desc:`यह स्कीम प्रति किलो ₹${Math.round(ctx.bulkAmt/ctx.weight*1000)} प्रभावी छूट देती है। हमेशा प्रति-किलो दर की तुलना करें, सिर्फ़ "₹${ctx.bulkAmt} की छूट" वाले हेडलाइन नंबर से नहीं।`,script:`"आपकी प्रति किलो चाँदी की छूट कितनी है? मैं दो और दुकानों से तुलना करना चाहता हूं।"`}),
-      diaGst:(ctx)=>({title:`अलग GST इनवॉइस मांगें`,saving:ctx.diaVal*0.015,desc:`हीरा GST (1.5%) और सोना GST (3%) कानूनन अलग होना चाहिए।`,script:`"सोने पर 3% और हीरे पर 1.5% GST अलग दिखाएं।"`}),
-      diaBenchmark:(ctx)=>({title:ctx.ppc>60000?`₹${ctx.ppc.toLocaleString('en-IN')}/ct शुरुआती दर से काफ़ी ज़्यादा है`:`₹${ctx.ppc.toLocaleString('en-IN')}/ct शुरुआती दर के करीब है`,saving:0,desc:ctx.ppc>60000?`त्योहार विज्ञापन आमतौर पर ₹45,000–50,000/कैरेट सर्टिफाइड हीरे दिखाते हैं। आपका ₹${ctx.ppc.toLocaleString('en-IN')}/ct है — कौन सा कलर/क्लैरिटी ग्रेड इसे उचित ठहराता है, पूछें।`:`यह सामान्य शुरुआती दर के करीब है। इस दर पर सर्टिफिकेट और भी ज़रूरी है।`,script:ctx.ppc>60000?`"विज्ञापन में ₹49,900/कैरेट से शुरू लिखा है। इस पत्थर का कलर/क्लैरिटी क्या है, ज़्यादा दर क्यों?"`:`"यह शुरुआती दर के करीब है, तो क्या IGI/GIA सर्टिफिकेट दिखा सकते हैं?"`}),
-      diaCert:(ctx)=>({title:`केवल प्रमाणित हीरा खरीदें`,saving:0,desc:`IGI/GIA सर्टिफिकेट के बिना कीमत सत्यापित नहीं हो सकती।`,script:`"IGI या GIA सर्टिफिकेट है?"`}),
-      diaLoose:(ctx)=>({title:`लूज़ हीरा + अलग सेटिंग पर विचार करें`,saving:ctx.total*0.12,desc:`अलग लूज़ हीरा + सेटिंग खरीदने से 10–15% बचत।`,script:`"लूज़ सर्टिफाइड हीरे अलग दिखा सकते हैं?"`}),
-    },
-  }
-};
-
-// ══════════════════════════════════════════
-//  LANG & METAL SWITCHING
-// ══════════════════════════════════════════
-function applyLang() {
-  const t = T[lang];
-  s('nav-title',t.navTitle);
-  s('mb-gold',t.mbGold);s('mb-silver',t.mbSilver);s('mb-diamond',t.mbDiamond);
-  s('gl-nocard',t.glNoCard);s('gl-nocard-s',t.glNoCardS);
-  s('savingsGuideLinkTitle',t.savingsGuideLinkTitle);s('savingsGuideLinkSub',t.savingsGuideLinkSub);
-  // gold
-  s('g-c1',t.gC1);s('g-l-wt',t.gLWt);s('g-l-pur',t.gLPur);s('g-l-rate',t.gLRate);s('g-l-rate-h',t.gLRateH);
-  s('billCta1',t.billCta1);s('billCta2',t.billCta2);
-  s('g-c2',t.gC2);s('g-l-mtype',t.gLMtype);s('g-l-mtype-s',t.gLMtypeS);
-  s('g-l-mval',t.gLMval);s('g-mval-hint',t.gMvalHint);s('g-l-waste',t.gLWaste);s('g-l-waste-s',t.gLWasteS);
-  s('g-l-wastep',t.gLWastep);s('g-l-wastep-s',t.gLWastepS);
-  s('g-c2b',t.gC2b);s('g-l-stone',t.gLStone);s('g-l-stone-s',t.gLStoneS);
-  s('g-l-stonewt',t.gLStonewt);s('g-l-stonewt-s',t.gLStonewtS);
-  s('g-l-stoneval',t.gLStoneval);s('g-l-stoneval-s',t.gLStonevalS);
-  s('g-l-stoneinc',t.gLStoneinc);s('g-l-stoneinc-s',t.gLStoneincS);
-  s('g-c3',t.gC3);s('g-l-gst',t.gLGst);s('g-l-gst-s',t.gLGstS);s('g-l-hall',t.gLHall);s('g-l-hall-s',t.gLHallS);
-  s('g-l-exch',t.gLExch);s('g-l-exch-s',t.gLExchS);
-  s('g-l-owt',t.gLOwt);s('g-l-owt-s',t.gLOwtS);s('g-l-opur',t.gLOpur);s('g-l-oded',t.gLOded);s('g-l-oded-s',t.gLOdedS);
-  s('g-opt-pct',t.gOptPct);s('g-opt-pgram',t.gOptPgram);s('g-opt-none',t.gOptNone);
-  s('g-rate-link',t.gRateLink);
-  s('loadLiveRateBtn',t.gLoadRateBtn);s('g-city-label',t.gCityLabel);s('detectCityBtn',t.gDetectBtn);
-  s('g-city-info-box',t.gCityInfoBox);
-  // Silver and diamond form fields no longer exist in the DOM (both tabs
-  // now embed their own AI Bill Checker iframe, which has its own
-  // trilingual UI) - the old per-field label translation calls for them
-  // were removed rather than left to silently target nothing.
-  // shared
-  s('calc-btn',t.calcBtn);s('r-label',t.rLabel);s('r-bd-head',t.rBdHead);
-  s('expl-hdr-txt',t.exHdr);s('reset-btn',t.resetBtn);s('footer-txt',t.footerTxt);
-  s('nego-eye',t.negoEye);s('nego-ttl',t.negoTtl);s('nego-score-lbl',t.negoScoreLbl);
-  s('nego-sav-lbl',t.negoSavLbl);s('nego-sav-sub',t.negoSavSub);s('nego-timing-eye',t.negoTimingEye);
-  s('stats-eye',t.statsEye);
-  s('sp-calcs-l',t.spCalcsL);s('sp-streak-l',t.spStreakL);s('sp-last-l',t.spLastL);s('sp-note',t.spNote);
-  // rebuild explainer
-  buildExplainer();
-  // rebuild nego if exists
-  if(_lastCtx) buildNego(_lastCtx);
-  renderStats();
-}
-
-function setLang(l){
-  lang=l;
-  document.querySelectorAll('.nav-lang').forEach((b,i)=>b.classList.toggle('active',['en','te','hi'][i]===l));
-  document.documentElement.lang=l==='hi'?'hi':l==='te'?'te':'en';
-  applyLang();
-  // All three metals now embed their own AI Bill Checker (Gold/Silver/
-  // Diamond), each with its own language dictionary and no visible language
-  // buttons of its own when embedded - this page's switcher is the single
-  // source of truth for all three, so the language is pushed to every
-  // checker frame (harmless for the two currently hidden/inactive ones).
-  ['goldCheckerFrame','silverCheckerFrame','diamondCheckerFrame'].forEach(function(id){
-    var frame = document.getElementById(id);
-    if (frame && frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: l}, '*');
-  });
-}
-
-function setMetal(m){
-  metal=m;
-  document.body.dataset.metal=m;
-  document.querySelectorAll('.metal-btn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));
-  ['gold','silver','diamond'].forEach(x=>el('form-'+x).style.display=x===m?'':'none');
-  el('results').classList.remove('visible');
-  el('nego-wrap').style.display='none';
-  _lastCtx=null;
-  buildExplainer();
-  // All three metals now use their own embedded AI Bill Checker instead of
-  // the old manual enter-numbers-and-calculate flow, so the shared calc
-  // button and results/stats panels from that older flow are never shown
-  // for any of them anymore.
-  el('calc-btn').style.display = 'none';
-  el('results').style.display = 'none';
-  document.querySelector('.stats-bar').style.display = 'none';
-  // Lazy-load this metal's checker iframe the first time its tab is opened
-  // (see the init IIFE below, which only eagerly loads the default 'gold'
-  // frame) - avoids fetching and running all three checkers' full JS on
-  // every page load when only one is ever visible at a time.
-  var frame = el(m + 'CheckerFrame');
-  if (frame && !frame.src) frame.src = frame.dataset.baseSrc + '&lang=' + lang;
-  // update select styling
-  document.querySelectorAll('.field input, .field select, .mini').forEach(e=>{
-    e.style.background='var(--ac-pale)';
-  });
-}
-
-function resizeGoldFrame(frame){
-  try {
-    var doc = frame.contentWindow.document;
-    var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
-    if (h > 200) frame.style.height = (h + 40) + 'px';
-  } catch(e) { /* cross-origin fallback - shouldn't happen, same origin */ }
-  // Sync whatever language this page is currently showing into the checker
-  // on first load, in case it wasn't English when this tab was opened.
-  if (frame.contentWindow) frame.contentWindow.postMessage({type: 'setLang', lang: lang}, '*');
-}
-// The embedded checkers' content height changes a lot after analysis
-// (upload zone -> full report), so listen for it to tell us the new size
-// rather than relying only on the one-time onload resize above. Matched by
-// ev.source (the actual frame window that sent the message) rather than a
-// single hardcoded frame id, since any of the three metals' frames can post
-// this now, not just Gold's.
-window.addEventListener('message', function(ev){
-  if (ev.data && ev.data.type === 'goldCheckerHeight') {
-    ['goldCheckerFrame','silverCheckerFrame','diamondCheckerFrame'].forEach(function(id){
-      var frame = document.getElementById(id);
-      if (frame && frame.contentWindow === ev.source) frame.style.height = (ev.data.height + 40) + 'px';
-    });
-  }
-});
-
-
-// The old s-mtype change listener was removed - that select field no
-// longer exists (Silver tab now embeds its own AI Bill Checker iframe).
-
-// ══════════════════════════════════════════
-//  CALCULATE
-// ══════════════════════════════════════════
-function calculate(){
-  if(metal==='gold') calcGold();
-  else if(metal==='silver') calcSilver();
-  else calcDiamond();
-}
-
-function calcGold(silent){
-  const t=T[lang];
-  const wt=parseFloat(el('g-weight').value)||0;
-  const pur=parseInt(el('g-purity').value);
-  const rate=parseFloat(el('g-rate').value)||0;
-  const mtype=el('g-mtype').value;
-  const mval=parseFloat(el('g-mval').value)||0;
-  const wOn=el('g-waste-tog').checked;
-  const wPct=wOn?(parseFloat(el('g-wastep').value)||0):0;
-  const gst=parseFloat(el('g-gst').value)||3;
-  const hall=parseFloat(el('g-hall').value)||0;
-  const exchOn=el('g-exch-tog').checked;
-  const owt=exchOn?(parseFloat(el('g-owt').value)||0):0;
-  const opur=parseInt(el('g-opur').value)||22;
-  const odedPct=exchOn?(parseFloat(el('g-oded').value)||0):0;
-  const stoneOn=el('g-stone-tog').checked;
-  const stoneWt=stoneOn?(parseFloat(el('g-stonewt').value)||0):0;
-  const stoneVal=stoneOn?(parseFloat(el('g-stoneval').value)||0):0;
-  const stoneInc=el('g-stoneinc-tog').checked;
-
-  const netGoldWt=stoneOn&&stoneInc?Math.max(wt-stoneWt,0):wt;
-  const overchargedWt=stoneOn&&stoneInc?stoneWt:0;
-
-  // If a live rate was loaded, use the EXACT rate for each item's own
-  // purity directly (no 24K intermediate step needed) - this correctly
-  // handles the new item and the old exchange item even when they're
-  // different purities, without ever requiring a 24K conversion.
-  const liveRates = window.__goldRatesByPurity;
-  const baseRate = liveRates && liveRates[pur] ? liveRates[pur] : rate*pf(pur);
-  const oldBaseRate = liveRates && liveRates[opur] ? liveRates[opur] : rate*pf(opur);
-  const goldVal=netGoldWt*baseRate;
-  const stoneOvercharge=overchargedWt*baseRate;
-  let making=0;
-  if(mtype==='pct') making=goldVal*mval/100;
-  else if(mtype==='pgram') making=netGoldWt*mval;
-  const wastage=goldVal*wPct/100;
-  const preTax=goldVal+making+wastage+stoneVal;
-  const gstAmt=preTax*gst/100;
-  const subtotal=preTax+gstAmt+hall;
-
-  let oldGoldVal=0,deduction=0,oldCredit=0,finalTotal=subtotal;
-  if(exchOn){
-    oldGoldVal=owt*oldBaseRate;
-    deduction=oldGoldVal*odedPct/100;
-    oldCredit=oldGoldVal-deduction;
-    finalTotal=Math.max(0,subtotal-oldCredit);
-  }
-
-  const surcharge=((subtotal-goldVal)/goldVal)*100;
-
-  el('r-amount').textContent=fmt(finalTotal);
-  el('r-sub').textContent=`${wt}g ${pur}K @ ₹${Math.round(rate).toLocaleString('en-IN')}/g`;
-  el('r-insights').innerHTML=`
-    <div class="ibox"><div class="iv">₹${Math.round(subtotal/wt).toLocaleString('en-IN')}</div><div class="il">${t.perGram}</div></div>
-    <div class="ibox"><div class="iv">${surcharge.toFixed(1)}%</div><div class="il">${t.aboveBase}</div></div>
-    <div class="ibox"><div class="iv">₹${Math.round(baseRate).toLocaleString('en-IN')}</div><div class="il">${t.baseRate}</div></div>`;
-
-  const pills=[];
-  if(mtype==='none') pills.push(`<div class="pill g">${t.pillNoMaking}</div>`);
-  if(!wOn) pills.push(`<div class="pill g">${t.pillNoWastage}</div>`);
-  if(surcharge<12) pills.push(`<div class="pill a">${t.pillGood}</div>`);
-  if(surcharge>20) pills.push(`<div class="pill r">${t.pillHigh}</div>`);
-  if(exchOn&&odedPct===0) pills.push(`<div class="pill g">${t.pillZeroDed}</div>`);
-  if(exchOn&&odedPct>5) pills.push(`<div class="pill r">${t.pillHighDed}</div>`);
-  if(stoneOvercharge>0) pills.push(`<div class="pill r">⚠️ ₹${Math.round(stoneOvercharge).toLocaleString('en-IN')} charged extra on stone weight</div>`);
-  el('r-pills').innerHTML=pills.join('');
-
-  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl} (${netGoldWt.toFixed(2)}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(goldVal)}</div></div>`;
-  if(stoneVal>0) rows+=`<div class="brow neg"><div class="bl">Stone Value (${stoneWt}g)</div><div class="ba">+ ${fmt(stoneVal)}</div></div>`;
-  if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}<span class="bs">${mtype==='pct'?mval+'%':fmt(mval)+'/g'}</span></div><div class="ba">+ ${fmt(making)}</div></div>`;
-  if(wastage>0) rows+=`<div class="brow neg"><div class="bl">${t.wastageLbl}<span class="bs">${wPct}%</span></div><div class="ba">+ ${fmt(wastage)}</div></div>`;
-  rows+=`<div class="brow"><div class="bl">${t.subTotalLbl}</div><div class="ba">${fmt(preTax)}</div></div>`;
-  rows+=`<div class="brow neg"><div class="bl">${t.gstLbl} @ ${gst}%</div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
-  if(hall>0) rows+=`<div class="brow neg"><div class="bl">${t.hallLbl}</div><div class="ba">+ ${fmt(hall)}</div></div>`;
-  if(exchOn){
-    rows+=`<div class="brow" style="background:#F0FFF4"><div class="bl" style="color:var(--jade)">${t.oldGoldVal} (${owt}g, ${opur}K)</div><div class="ba" style="color:var(--jade)">${fmt(oldGoldVal)}</div></div>`;
-    if(deduction>0) rows+=`<div class="brow neg"><div class="bl">${t.deductLbl} @ ${odedPct}%</div><div class="ba">− ${fmt(deduction)}</div></div>`;
-    rows+=`<div class="brow" style="background:#E8F5E9"><div class="bl" style="color:var(--jade)">${t.netCredit}</div><div class="ba" style="color:var(--jade)">− ${fmt(oldCredit)}</div></div>`;
-  }
-  rows+=`<div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(finalTotal)}</div></div>`;
-  el('r-rows').innerHTML=rows;
-
-  const ctx={mode:'gold',weight:wt,purity:pur,baseVal:goldVal,makingPct:mtype==='pct'?mval:0,
-    makingRate:mtype==='pgram'?mval:0,wastageAmt:wastage,wastagePct:wPct,hallmark:hall,
-    total:finalTotal,deductionAmt:deduction,surcharge,noCardFee:el('g-nocard-toggle').checked,
-    stoneOn,stoneWt,stoneVal,stoneOvercharge};
-  _lastCtx=ctx;
-  buildNego(ctx);
-  showResults(silent);
-  recordCalc('gold');
-}
-
-function calcSilver(){
-  const t=T[lang];
-  const wt=parseFloat(el('s-weight').value)||0;
-  const pur=parseInt(el('s-purity').value);
-  const rate=parseFloat(el('s-rate').value)||0;
-  const mtype=el('s-mtype').value;
-  const mval=parseFloat(el('s-mval').value)||0;
-  const gst=parseFloat(el('s-gst').value)||3;
-  const bulkOn=el('s-bulk-toggle').checked;
-  const bulkAmt=bulkOn?(parseFloat(el('s-bulk-amt').value)||0):0;
-
-  const baseRate=rate*pf(pur);
-  const silverVal=wt*baseRate;
-  let making=0;
-  if(mtype==='pct') making=silverVal*mval/100;
-  else if(mtype==='pgram') making=wt*mval;
-  else if(mtype==='fixed') making=mval;
-  const preTax=silverVal+making;
-  const gstAmt=preTax*gst/100;
-  const total=Math.max(preTax+gstAmt-bulkAmt,0);
-  const surcharge=making>0?((making+gstAmt)/silverVal)*100:gst;
-
-  el('r-amount').textContent=fmt(total);
-  el('r-sub').textContent=`${wt}g ${pur} Silver @ ₹${Math.round(rate).toLocaleString('en-IN')}/g`;
-  el('r-insights').innerHTML=`
-    <div class="ibox"><div class="iv">₹${Math.round(total/wt).toLocaleString('en-IN')}</div><div class="il">${t.perGram}</div></div>
-    <div class="ibox"><div class="iv">${surcharge.toFixed(1)}%</div><div class="il">${t.aboveBase}</div></div>
-    <div class="ibox"><div class="iv">₹${Math.round(baseRate).toLocaleString('en-IN')}</div><div class="il">${t.baseRate}</div></div>`;
-
-  const pills=[];
-  if(mtype==='none') pills.push(`<div class="pill g">${t.pillNoMaking}</div>`);
-  if(bulkAmt>0) pills.push(`<div class="pill g">✓ ₹${bulkAmt.toLocaleString('en-IN')} scheme discount applied</div>`);
-  el('r-pills').innerHTML=pills.join('');
-
-  let rows=`<div class="brow pos"><div class="bl">${t.goldValLbl.replace('Gold','Silver').replace('బంగారం','వెండి').replace('सोने','चाँदी')} (${wt}g × ₹${Math.round(baseRate).toLocaleString('en-IN')})</div><div class="ba">${fmt(silverVal)}</div></div>`;
-  if(making>0) rows+=`<div class="brow neg"><div class="bl">${t.makingLbl}</div><div class="ba">+ ${fmt(making)}</div></div>`;
-  rows+=`<div class="brow neg"><div class="bl">${t.gstLbl} @ ${gst}%</div><div class="ba">+ ${fmt(gstAmt)}</div></div>`;
-  if(bulkAmt>0) rows+=`<div class="brow pos"><div class="bl">Scheme Discount</div><div class="ba">− ${fmt(bulkAmt)}</div></div>`;
-  rows+=`<div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
-  el('r-rows').innerHTML=rows;
-
-  const ctx={mode:'silver',weight:wt,baseVal:silverVal,makingPct:mtype==='pct'?mval:0,
-    makingRate:mtype==='pgram'?mval:0,total,bulkOn,bulkAmt,noCardFee:el('g-nocard-toggle').checked};
-  _lastCtx=ctx;
-  buildNego(ctx);
-  showResults();
-  recordCalc('silver');
-}
-
-function calcDiamond(){
-  const t=T[lang];
-  const carat=parseFloat(el('d-carat').value)||0;
-  const ppc=parseFloat(el('d-ppc').value)||0;
-  const colMult=parseFloat(el('d-color').value)||1;
-  const claMult=parseFloat(el('d-clarity').value)||1;
-  const gwt=parseFloat(el('d-gwt').value)||0;
-  const gpur=parseInt(el('d-gpur').value)||18;
-  const grate=parseFloat(el('d-grate').value)||0;
-  const making=parseFloat(el('d-making').value)||0;
-  const ggst=parseFloat(el('d-ggst').value)||3;
-  const dgst=parseFloat(el('d-dgst').value)||1.5;
-
-  const diaVal=carat*ppc;
-  const diaGstAmt=diaVal*dgst/100;
-  const goldSet=gwt*grate*pf(gpur);
-  const goldMaking=goldSet*making/100;
-  const goldPreTax=goldSet+goldMaking;
-  const goldGstAmt=goldPreTax*ggst/100;
-  const total=diaVal+diaGstAmt+goldPreTax+goldGstAmt;
-
-  el('r-amount').textContent=fmt(total);
-  el('r-sub').textContent=`${carat}ct Diamond + ${gwt}g ${gpur}K Setting`;
-  el('r-insights').innerHTML=`
-    <div class="ibox"><div class="iv">${fmt(diaVal)}</div><div class="il">${t.basePriceD}</div></div>
-    <div class="ibox"><div class="iv">${fmt(goldPreTax)}</div><div class="il">${t.goldSetLbl}</div></div>
-    <div class="ibox"><div class="iv">${fmt(diaGstAmt+goldGstAmt)}</div><div class="il">${t.gstLbl} Total</div></div>`;
-
-  el('r-pills').innerHTML=`<div class="pill r">⚠️ Always insist on IGI/GIA certificate</div>`;
-
-  el('r-rows').innerHTML=`
-    <div class="brow pos"><div class="bl">${t.diaValLbl} (${carat}ct × ₹${ppc.toLocaleString('en-IN')})</div><div class="ba">${fmt(diaVal)}</div></div>
-    <div class="brow neg"><div class="bl">${t.diaGstLbl}</div><div class="ba">+ ${fmt(diaGstAmt)}</div></div>
-    <div class="brow pos"><div class="bl">${t.goldSetLbl} (${gwt}g, ${gpur}K)</div><div class="ba">${fmt(goldSet)}</div></div>
-    <div class="brow neg"><div class="bl">${t.goldSetMaking} (${making}%)</div><div class="ba">+ ${fmt(goldMaking)}</div></div>
-    <div class="brow neg"><div class="bl">${t.goldSetGst}</div><div class="ba">+ ${fmt(goldGstAmt)}</div></div>
-    <div class="brow tot"><div class="bl">${t.totalLbl}</div><div class="ba">${fmt(total)}</div></div>`;
-
-  const ctx={mode:'diamond',diaVal,goldSet,total,makingPct:making,ppc,carat,noCardFee:el('g-nocard-toggle').checked};
-  _lastCtx=ctx;
-  buildNego(ctx);
-  showResults();
-  recordCalc('diamond');
-}
-
-function showResults(silent){
-  el('results').classList.add('visible');
-  if (!silent) el('results').scrollIntoView({behavior:'smooth'});
-}
-
-// ══════════════════════════════════════════
-//  NEGOTIATION PLAYBOOK
-// ══════════════════════════════════════════
-function buildNego(ctx){
-  const t=T[lang];
-  const moves=t.moves;
-  let applicable=[];
-
-  if(ctx.mode==='gold'){
-    if(ctx.makingPct>12) applicable.push({priority:'high',...moves.makingHigh(ctx)});
-    else if(ctx.makingPct>=8) applicable.push({priority:'low',...moves.makingFair(ctx)});
-    else applicable.push({priority:'low',...moves.makingGood(ctx)});
-    if(ctx.wastageAmt>0) applicable.push({priority:'high',...moves.wastage(ctx)});
-    if(ctx.weight>=20) applicable.push({priority:'high',...moves.bulk(ctx)});
-    if(ctx.deductionAmt>0) applicable.push({priority:'high',...moves.deduction(ctx)});
-    if(ctx.stoneOvercharge>0) applicable.push({priority:'high',...moves.stoneWeightFraud(ctx)});
-    if(ctx.stoneOn && ctx.stoneVal>0) applicable.push({priority:'med',...moves.stoneValue(ctx)});
-    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
-    else applicable.push({priority:'med',...moves.cash(ctx)});
-    if(ctx.total>=50000) applicable.push({priority:'low',...moves.freegift(ctx)});
-  } else if(ctx.mode==='silver'){
-    if(ctx.makingRate>150) applicable.push({priority:'high',...moves.silverMaking(ctx)});
-    else applicable.push({priority:'low',...moves.silverMakingFair(ctx)});
-    applicable.push({priority:'med',...moves.silverPurity(ctx)});
-    if(ctx.bulkOn && ctx.bulkAmt>0) applicable.push({priority:'med',...moves.silverBulk(ctx)});
-    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
-    else applicable.push({priority:'med',...moves.cash(ctx)});
-  } else {
-    applicable.push({priority:'high',...moves.diaGst(ctx)});
-    applicable.push({priority:'high',...moves.diaCert(ctx)});
-    if(ctx.ppc>0) applicable.push({priority:'med',...moves.diaBenchmark(ctx)});
-    applicable.push({priority:'med',...moves.diaLoose(ctx)});
-    if(ctx.noCardFee) applicable.push({priority:'low',...moves.noCardAck(ctx)});
-    else applicable.push({priority:'med',...moves.cash(ctx)});
-  }
-
-  const score=Math.min(10,Math.round(
-    applicable.filter(m=>m.priority==='high').length*3+
-    applicable.filter(m=>m.priority==='med').length*1.5+
-    applicable.filter(m=>m.priority==='low').length*0.5));
-  const totalSav=applicable.reduce((a,m)=>a+Math.max(0,m.saving||0),0);
-  const scoreColor=score>=7?'#F5D76E':score>=4?'#FFA94D':'#6FCF97';
-
-  el('nego-score-num').textContent=score+'/10';
-  el('nego-score-num').style.color=scoreColor;
-  el('nego-sav-amt').textContent=fmt(totalSav);
-
-  const rk={high:'high',med:'med',low:'low'};
-  el('nego-moves').innerHTML=applicable.map((m,i)=>`
-    <div class="move">
-      <div class="move-top">
-        <div class="move-rank ${rk[m.priority]}">${i+1}</div>
-        <div class="move-cnt">
-          <div class="move-title">${m.title}</div>
-          <div class="move-sav ${(m.saving||0)<100?'na':''}">${(m.saving||0)>100?'💰 '+fmt(m.saving):(lang==='te'?'ఆర్థికేతర లాభం':lang==='hi'?'गैर-मौद्रिक लाभ':'Non-monetary benefit')}</div>
-          <div class="move-desc">${m.desc}</div>
-        </div>
-      </div>
-      <div class="move-script">${m.script}</div>
-    </div>`).join('');
-
-  el('nego-timing-tips').innerHTML=t.timing.map(([title,body])=>
-    `<div class="t-tip"><span>${title}:</span> ${body}</div>`).join('');
-
-  el('nego-wrap').style.display='block';
-}
-
-// ══════════════════════════════════════════
-//  EXPLAINER
-// ══════════════════════════════════════════
-function buildExplainer(){
-  const t=T[lang];
-  const terms=t.explainers[metal]||t.explainers.gold;
-  el('expl-body').innerHTML=terms.map(([term,def])=>
-    `<div class="term"><strong>${term}:</strong> ${def}</div>`).join('');
-}
-
-// ══════════════════════════════════════════
-//  RESET
-// ══════════════════════════════════════════
-function resetCalc(){
-  el('results').classList.remove('visible');
-  el('nego-wrap').style.display='none';
-  _lastCtx=null;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// ══════════════════════════════════════════
-//  STATS (localStorage + CountAPI)
-// ══════════════════════════════════════════
-const STATS_KEY='jewellery_suite_stats';
-const loadStats=()=>{try{return JSON.parse(localStorage.getItem(STATS_KEY))||{}}catch(e){return{}}};
-const saveStats=s=>{try{localStorage.setItem(STATS_KEY,JSON.stringify(s))}catch(e){}};
-
-function recordVisit(){
-  const st=loadStats();
-  const today=new Date().toISOString().slice(0,10);
-  const prev=st.prevVisitDate;
-  if(prev){
-    const diff=(new Date(today)-new Date(prev))/86400000;
-    st.streak=diff<=1?(st.streak||1)+(diff===1?1:0):1;
-  } else st.streak=1;
-  st.prevVisitDate=today;st.lastVisit=today;
-  st.calcs=st.calcs||0;
-  st.modes=st.modes||{gold:0,silver:0,diamond:0};
-  saveStats(st);
-}
-
-function recordCalc(mode){
-  const st=loadStats();
-  st.calcs=(st.calcs||0)+1;
-  st.modes=st.modes||{gold:0,silver:0,diamond:0};
-  st.modes[mode]=(st.modes[mode]||0)+1;
-  saveStats(st);
-  renderStats();
-}
-
-function renderStats(){
-  const st=loadStats();const t=T[lang];
-  if(el('sp-calcs')) el('sp-calcs').textContent=(st.calcs||0).toLocaleString('en-IN');
-  if(el('sp-streak')) el('sp-streak').textContent=(st.streak||0)+'🔥';
-  if(el('sp-last')) el('sp-last').textContent=st.lastVisit
-    ?new Date(st.lastVisit).toLocaleDateString(lang==='te'?'te-IN':lang==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'short'}):'—';
-  const modes=st.modes||{};
-  const modeNames={
-    gold: t.mbGold, silver: t.mbSilver, diamond: t.mbDiamond
-  };
-  if(el('stats-modes')) el('stats-modes').innerHTML=Object.entries(modes).map(([k,v])=>`
-    <div class="mode-chip"><div class="mc-n">${v}</div><div class="mc-l">${modeNames[k]||k}</div></div>`).join('');
-}
-
-// INIT
-recordVisit();
-applyLang();
-buildExplainer();
-(function(){
-  // Only the initially-active metal's checker frame loads eagerly - the
-  // other two are lazy-loaded (src set on first switch, see setMetal)
-  // rather than all three fetching and running their full JS on every page
-  // load regardless of which tab is actually visible.
-  var frame = document.getElementById(metal + 'CheckerFrame');
-  if (frame) frame.src = frame.dataset.baseSrc + '&lang=' + lang;
-})();
-</script>
-<script>
-/* Click-triggered live rate load — fetches fresh every time, no daily
-   cron dependency, no caching. Fills the 24K value directly since this
-   calculator's own math always multiplies by purity itself. */
-var CITY_GOODRETURNS_SLUGS = {
-  hyderabad:'hyderabad', vijayawada:'vijayawada', visakhapatnam:'visakhapatnam', chennai:'chennai',
-  bangalore:'bangalore', mumbai:'mumbai', delhi:'delhi', kolkata:'kolkata', pune:'pune',
-  ahmedabad:'ahmedabad', jaipur:'jaipur', lucknow:'lucknow', kochi:'kochi', coimbatore:'coimbatore',
-  nagpur:'nagpur', surat:'surat', patna:'patna', bhopal:'bhopal', chandigarh:'chandigarh', guwahati:'guwahati'
-};
-
-function updateCityLink(){
-  var city = document.getElementById('citySelect').value;
-  var slug = CITY_GOODRETURNS_SLUGS[city] || 'hyderabad';
-  document.getElementById('g-rate-link').href = 'https://www.goodreturns.in/gold-rates/' + slug + '.html';
-}
-document.addEventListener('DOMContentLoaded', function(){
-  var sel = document.getElementById('citySelect');
-  if (sel) sel.addEventListener('change', updateCityLink);
-});
-
-function detectMyCity(){
-  var t = T[lang];
-  var statusEl = document.getElementById('city-detect-status');
-  var btn = document.getElementById('detectCityBtn');
-  if (!navigator.geolocation) { if (statusEl) statusEl.textContent = t.gDetectNotSupported; return; }
-
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
-  if (statusEl) statusEl.textContent = t.gDetectDetecting;
-
-  navigator.geolocation.getCurrentPosition(function(pos){
-    var lat = pos.coords.latitude, lon = pos.coords.longitude;
-    // Free, open reverse-geocoding (OpenStreetMap Nominatim) - no API key needed
-    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10')
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
-        var addr = data.address || {};
-        var found = (addr.city || addr.town || addr.state_district || addr.county || '').toLowerCase();
-        var matchedKey = Object.keys(CITY_GOODRETURNS_SLUGS).find(function(k){ return found.indexOf(k) !== -1; });
-        if (matchedKey) {
-          document.getElementById('citySelect').value = matchedKey;
-          updateCityLink();
-          if (statusEl) statusEl.textContent = t.gDetectPrefix + matchedKey.charAt(0).toUpperCase() + matchedKey.slice(1);
-        } else {
-          if (statusEl) statusEl.textContent = t.gDetectNoMatch;
-        }
-      })
-      .catch(function(){
-        if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
-        if (statusEl) statusEl.textContent = t.gDetectFail;
-      });
-  }, function(){
-    if (btn) { btn.disabled = false; btn.textContent = t.gDetectBtn; }
-    if (statusEl) statusEl.textContent = t.gDetectDenied;
-  }, {timeout: 10000});
-}
-
-function loadLiveGoldRate(){
-  var t = T[lang];
-  var btn = document.getElementById('loadLiveRateBtn');
-  var stampEl = document.getElementById('g-rate-updated');
-  var sStampEl = document.getElementById('s-rate-updated');
-  var citySel = document.getElementById('citySelect');
-  var city = citySel ? citySel.value : 'hyderabad';
-  if (btn) { btn.disabled = true; btn.textContent = t.gRateLoading; }
-
-  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/live-gold-rate?city=' + encodeURIComponent(city))
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (btn) { btn.disabled = false; btn.textContent = t.gLoadRateBtn; }
-      if (!data.ok) { if (stampEl) stampEl.textContent = t.gRateLoadFail; return; }
-
-      // Keep the full purity map available to calcGold() so it can use
-      // exact per-purity rates directly instead of a 24K conversion.
-      window.__goldRatesByPurity = data.gold_by_purity_per_gram_inr;
-
-      var gEl = document.getElementById('g-rate');
-      var sEl = document.getElementById('s-rate');
-      var purityEl = document.getElementById('g-purity');
-      var pur = purityEl ? purityEl.value : '22';
-      if (gEl) gEl.value = data.gold_by_purity_per_gram_inr[pur] || data.gold_by_purity_per_gram_inr['22'];
-      if (sEl) sEl.value = data.silver_999_per_gram_inr;
-
-      var d = new Date(data.fetched_at);
-      var sourceTag = data.source === 'goodreturns_real'
-        ? (t.gRateRealPrefix + (data.city || city).charAt(0).toUpperCase() + (data.city || city).slice(1))
-        : t.gRateEstFallback;
-      var stamp = sourceTag + t.gRateLoadedAt + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit', hour12:true}) + ' IST, ' + pur + t.gRateDirectSuffix;
-      if (stampEl) stampEl.textContent = stamp;
-      if (sStampEl) sStampEl.textContent = '✅';
-
-      try { if (typeof calcGold === 'function') calcGold(true); } catch(e) {}
-    })
-    .catch(function(){
-      if (btn) { btn.disabled = false; btn.textContent = t.gLoadRateBtn; }
-      if (stampEl) stampEl.textContent = t.gRateServerFail;
-    });
-}
-</script>
-<script>
-/* Language persistence — remembers choice across all pages */
-document.addEventListener('DOMContentLoaded',function(){
- try{
-  var langs=['en','te','hi'];
-  var btns=document.querySelectorAll('.nav-lang');
-  btns.forEach(function(b,i){
-   b.addEventListener('click',function(){try{localStorage.setItem('lsLang',langs[i]);}catch(e){}});
-  });
-  var s=localStorage.getItem('lsLang');
-  if(s&&typeof setLang==='function'){
-   var i=langs.indexOf(s);
-   if(i>0&&btns[i])setLang(s,btns[i]);
-  }
- }catch(e){}
-});
-</script>
-
-<div id="parentZoomModal" onclick="if(event.target.tagName!=='IMG')this.style.display='none'"
-     style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:99999;align-items:center;justify-content:center;">
-  <button onclick="document.getElementById('parentZoomModal').style.display='none'"
-          style="position:absolute;top:16px;right:20px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1;">✕</button>
-  <img id="parentZoomImg" src="" style="max-width:96vw;max-height:88vh;">
-  <div style="position:absolute;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12px;">Pinch or scroll to zoom — tap outside to close</div>
+<div class="modal hidden" id="fbModal" role="dialog" aria-modal="true" aria-labelledby="fbT">
+  <div class="sheet">
+    <h3 id="fbT" data-i="fbTitle">How is the calculator?</h3>
+    <p data-i="fbSub">Your rating and comments help us fix and improve it. Please don't put personal details in the comment.</p>
+    <div class="stars" id="stars" role="radiogroup" aria-label="Rating"></div>
+    <div class="chips" id="cats"></div>
+    <label class="sr" for="fbMsg" data-i="fbMsgL">Your comment</label>
+    <textarea id="fbMsg" maxlength="600" data-ph="fbMsgPh"></textarea>
+    <div class="cnt"><span id="fbCnt">0</span>/600</div>
+    <label class="sr" for="fbContact" data-i="fbContactL">Contact (optional)</label>
+    <input type="text" id="fbContact" maxlength="80" data-ph="fbContactPh" autocomplete="off">
+    <div class="cnt" style="text-align:left" data-i="fbContactNote">Optional. Seen only by us, never shown or stored publicly.</div>
+    <input type="text" id="fbWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+    <div class="msg" id="fbMsgOut" aria-live="polite"></div>
+    <div class="acts"><button class="btn" id="fbCancel" data-i="cancel">Cancel</button><button class="btn pri" id="fbSend" data-i="send">Send</button></div>
+  </div>
 </div>
+<div class="toast hidden" id="toast"></div>
+
 <script>
-// Receives the zoom request from the embedded Gold Bill Checker - see the
-// comment in that page's openZoom() for why this can't just draw its own
-// modal: position:fixed inside a tall auto-resizing iframe doesn't align
-// with the real visible screen, but this page IS the real top-level
-// document, so its own fixed modal behaves correctly.
-window.addEventListener('message', function(ev){
-  if (ev.data && ev.data.type === 'openZoom' && ev.data.src) {
-    document.getElementById('parentZoomImg').src = ev.data.src;
-    document.getElementById('parentZoomModal').style.display = 'flex';
+(function(){
+'use strict';
+var BACKEND='https://lawsticker-backend-494996217030.europe-west1.run.app';
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+var fmt=function(n){return '₹'+Math.round(n).toLocaleString('en-IN')};
+var num=function(v,max){var n=parseFloat(v);if(!isFinite(n)||n<0)return 0;return Math.min(n,max||1e9)};
+var PF={24:1,22:.916,20:.833,18:.75,14:.585,999:1,925:.925,800:.8};
+
+/* ---------------- translations ---------------- */
+var T={
+en:{back:'← Calculators',navTitle:'Jewellery Suite',heroTitle:'Know the real price before you pay',heroSub:'Gold, silver and diamond jewellery, itemised to the rupee, with making charges, wastage and GST made visible.',
+rateTitle:"Today's rate",city:'City',refresh:'Refresh',gold:'Gold',silver:'Silver',diamond:'Diamond',modeCalc:'Calculator',modeCheck:'Check a bill (AI)',
+checkNote:"Photograph the jeweller's estimate or bill. The AI reads it and flags making, wastage and stone charges that look high. Your photo is analysed and not kept.",loadingChecker:'Loading checker…',
+quotesTitle:'My saved quotes',schemeLink:'Thinking of a gold saving scheme? See your options and check a scheme →',ckTitle:'Before you pay: checklist',glTitle:'What do these terms mean?',
+disclaimer:"Estimates for guidance only. The final bill depends on the shop's own rate, making and taxes. Check the rate and weight on your bill.",fbLink:'Tell us what to improve',fbBtn:'Feedback',
+fbTitle:'How is the calculator?',fbSub:"Your rating and comments help us fix and improve it. Please don't put personal details in the comment.",fbMsgL:'Your comment',fbMsgPh:'What worked, what confused you, what is missing?',fbContactL:'Contact (optional)',fbContactPh:'Email or phone, only if you want a reply',fbContactNote:'Optional. Seen only by us, never shown or stored publicly.',cancel:'Cancel',send:'Send',
+rateLive:'Live rate',rateManual:'Rates are estimates. Type your own rate if the shop quotes differently.',rateFail:'Could not load live rates. Enter the shop rate yourself.',rateLoading:'Loading rates…',
+weight:'Weight (grams)',purity:'Purity',ratePg:'Rate per gram (₹)',usingLive:'Live rate filled in',making:'Making charge',mkPct:'% of metal',mkGram:'₹ per gram',mkFixed:'Fixed ₹',mkNone:'None',makingVal:'Making value',
+wastage:'Wastage charged',wastagePct:'Wastage %',gstPct:'GST %',hall:'Hallmark charge (₹)',stoneTog:'Stones or beads studded',stoneW:'Stone weight (g)',stoneV:'Stone price (₹)',stoneInc:'Bill weight includes the stone weight',
+exTog:'Exchanging old gold',exW:'Old gold weight (g)',exP:'Old gold purity',exD:"Shop's deduction %",discount:'Scheme discount (₹)',reset:'Reset form',
+carat:'Diamond weight (carat)',ppc:'Price per carat (₹)',setW:'Gold setting weight (g)',setMk:'Setting making %',gstG:'GST on gold %',gstD:'GST on diamond %',cert:'Certificate',certNone:'None',
+youPay:'You pay',perGram:'Per gram',overMetal:'Over metal value',metalRate:'Metal rate',empty:'Enter the weight to see the price.',emptyD:'Enter carat and price per carat to see the price.',
+splitT:'Where your money goes',meterT:'Is the extra fair?',zLow:'Low',zUsual:'Usual',zHigh:'High',vLow:'Good: you pay little above the metal value.',vUsual:'Usual range for plain and machine-made designs.',vHigh:'High: ask what justifies it, or compare shops.',meterNote:'Rule of thumb only. Detailed handwork, antiques and stones can fairly cost more.',
+bMetal:'Metal value',bMaking:'Making',bWastage:'Wastage',bStone:'Stones',bGst:'GST',bHall:'Hallmark',bDia:'Diamond',bSet:'Gold setting',bSub:'Subtotal before tax',oldVal:'Old gold value',deduct:'Shop deduction',netCredit:'Credit for old gold',total:'Total to pay',
+pNoMk:'No making charge',pNoWaste:'No wastage',pStone:'Check: stone weight must not be charged at gold rate',pCert:'Insist on an IGI or GIA certificate',pZeroDed:'No deduction on old gold',pHighDed:'High deduction on old gold',
+save:'Save quote',share:'Share on WhatsApp',copy:'Copy summary',saved:'Quote saved',copied:'Copied',
+tipsT:'Your bargaining notes',tHighMk:'Making is high. Ask for it per gram on net weight and get one more shop\'s estimate.',tBoth:'You are charged both making and wastage. Ask which one they will drop.',tStone:'Stone weight is in the bill weight. Ask them to deduct it before applying the gold rate.',tDed:'Old-gold deduction is above 5%. Many shops give a lower deduction if you buy the same day.',tItem:'Ask for an itemised bill: rate, net weight, making and GST on separate lines.',tHuid:'Check the BIS hallmark and 6-character HUID on the piece before paying.',tBuyback:'Ask for the buyback and exchange terms in writing.',tCert:'Ask for the stone certificate number and check it on the issuer\'s website.',
+none:'No quotes yet. Save a calculation to compare jewellers side by side.',cmpBtn:'Compare 2 selected',cmpHint:'Tick two quotes to compare.',cLabel:'',cTotal:'Total',cPer:'Per gram',cOver:'Over metal',cMaking:'Making',cWaste:'Wastage',cGst:'GST',cNote:'Compare like with like: same purity and similar design.',
+ckItems:['Get the day\'s rate in writing and match it with today\'s published rate.','Check purity: BIS hallmark logo, purity grade and the 6-character HUID.','Weigh it in front of you and note gross and net weight.','Confirm making is charged on net gold weight only, not on stones.','Ask if wastage is charged on top of making. Many shops drop one.','Get an itemised bill with GST shown separately.','Ask about buyback, exchange value and any deduction in writing.','For diamonds, get the IGI or GIA certificate and verify it online.','Pay by UPI or bank transfer and keep the bill and certificate safe.'],
+glItems:[['Making charge','The jeweller\'s fee for crafting. Charged as % of metal value or ₹ per gram.'],['Wastage','Metal said to be lost while crafting. It is often another way of charging for labour.'],['Hallmark / HUID','BIS purity mark and a unique 6-character ID that proves what you bought.'],['GST','3% on gold and silver jewellery value, 1.5% on cut diamonds.'],['Net weight','Weight of the metal alone, without stones, beads or pearls.'],['Purity','24K is pure gold. 22K is 91.6% gold. Silver 999 is pure, 925 is sterling.']],
+fbCats:{bug:'Something is broken',wrong_price:'Wrong price',idea:'Idea',praise:'Loved it',other:'Other'},fbPick:'Please pick a star rating.',fbSending:'Sending…',fbThanks:'Thank you! Your feedback reached us.',fbFail:'Could not send. Please try again.',fbBadge:'rated by {n} people'},
+te:{back:'← కాల్కులేటర్లు',navTitle:'నగల సూట్',heroTitle:'చెల్లించే ముందే అసలు ధర తెలుసుకోండి',heroSub:'బంగారం, వెండి, వజ్రాల నగలు రూపాయి వరకు వివరంగా, తరుగు, వేస్టేజ్, GST స్పష్టంగా.',
+rateTitle:'ఈ రోజు ధర',city:'నగరం',refresh:'రిఫ్రెష్',gold:'బంగారం',silver:'వెండి',diamond:'వజ్రం',modeCalc:'కాల్కులేటర్',modeCheck:'బిల్లు తనిఖీ (AI)',
+checkNote:'నగల దుకాణం ఎస్టిమేట్ లేదా బిల్లు ఫోటో తీయండి. AI చదివి ఎక్కువగా కనిపించే మేకింగ్, వేస్టేజ్, రాళ్ల ఛార్జీలను చూపుతుంది. మీ ఫోటో భద్రపరచబడదు.',loadingChecker:'లోడ్ అవుతోంది…',
+quotesTitle:'నేను సేవ్ చేసిన కోట్లు',schemeLink:'బంగారం పొదుపు పథకం ఆలోచనలో ఉన్నారా? ఎంపికలు చూడండి →',ckTitle:'చెల్లించే ముందు: చెక్‌లిస్ట్',glTitle:'ఈ పదాల అర్థం ఏమిటి?',
+disclaimer:'ఇవి అంచనాలు మాత్రమే. తుది బిల్లు దుకాణం రేటు, మేకింగ్, పన్నులపై ఆధారపడి ఉంటుంది. బిల్లులో రేటు, బరువు సరిచూడండి.',fbLink:'ఏమి మెరుగుపరచాలో చెప్పండి',fbBtn:'అభిప్రాయం',
+fbTitle:'కాల్కులేటర్ ఎలా ఉంది?',fbSub:'మీ రేటింగ్, అభిప్రాయం దీన్ని మెరుగుపరచడానికి సహాయపడతాయి. వ్యాఖ్యలో వ్యక్తిగత వివరాలు రాయవద్దు.',fbMsgL:'మీ వ్యాఖ్య',fbMsgPh:'ఏది బాగుంది, ఏది గందరగోళం, ఏమి లేదు?',fbContactL:'సంప్రదింపు (ఐచ్ఛికం)',fbContactPh:'సమాధానం కావాలంటే ఇమెయిల్ లేదా ఫోన్',fbContactNote:'ఐచ్ఛికం. మాకు మాత్రమే కనిపిస్తుంది, బహిరంగంగా ఉంచము.',cancel:'రద్దు',send:'పంపండి',
+rateLive:'లైవ్ ధర',rateManual:'ధరలు అంచనాలు. దుకాణం వేరే ధర చెబితే మీరే టైప్ చేయండి.',rateFail:'లైవ్ ధరలు రాలేదు. దుకాణం ధర మీరే ఇవ్వండి.',rateLoading:'ధరలు లోడ్ అవుతున్నాయి…',
+weight:'బరువు (గ్రాములు)',purity:'స్వచ్ఛత',ratePg:'గ్రాము ధర (₹)',usingLive:'లైవ్ ధర నింపబడింది',making:'మేకింగ్ ఛార్జీ',mkPct:'లోహ విలువ %',mkGram:'గ్రాముకు ₹',mkFixed:'స్థిరం ₹',mkNone:'లేదు',makingVal:'మేకింగ్ విలువ',
+wastage:'వేస్టేజ్ వేశారా',wastagePct:'వేస్టేజ్ %',gstPct:'GST %',hall:'హాల్‌మార్క్ ఛార్జీ (₹)',stoneTog:'రాళ్లు లేదా పూసలు ఉన్నాయి',stoneW:'రాళ్ల బరువు (గ్రా)',stoneV:'రాళ్ల ధర (₹)',stoneInc:'బిల్లు బరువులో రాళ్ల బరువు కలిసి ఉంది',
+exTog:'పాత బంగారం మార్పిడి',exW:'పాత బంగారం బరువు (గ్రా)',exP:'పాత బంగారం స్వచ్ఛత',exD:'దుకాణం తగ్గింపు %',discount:'స్కీమ్ డిస్కౌంట్ (₹)',reset:'ఫారమ్ రీసెట్',
+carat:'వజ్రం బరువు (క్యారెట్)',ppc:'క్యారెట్ ధర (₹)',setW:'బంగారు సెట్టింగ్ బరువు (గ్రా)',setMk:'సెట్టింగ్ మేకింగ్ %',gstG:'బంగారంపై GST %',gstD:'వజ్రంపై GST %',cert:'సర్టిఫికెట్',certNone:'లేదు',
+youPay:'మీరు చెల్లించాల్సింది',perGram:'గ్రాముకు',overMetal:'లోహ విలువ కంటే అదనం',metalRate:'లోహ ధర',empty:'ధర చూడటానికి బరువు ఇవ్వండి.',emptyD:'ధర చూడటానికి క్యారెట్, క్యారెట్ ధర ఇవ్వండి.',
+splitT:'మీ డబ్బు ఎటు వెళ్తోంది',meterT:'అదనపు ఛార్జీ సరైనదేనా?',zLow:'తక్కువ',zUsual:'సాధారణం',zHigh:'ఎక్కువ',vLow:'మంచిది: లోహ విలువ కంటే కొద్దిగానే ఎక్కువ.',vUsual:'సాదా, మెషిన్ డిజైన్లకు సాధారణ స్థాయి.',vHigh:'ఎక్కువ: కారణం అడగండి లేదా ఇతర దుకాణాలతో పోల్చండి.',meterNote:'ఇది కేవలం అంచనా నియమం. చేతిపని, పురాతన డిజైన్లు, రాళ్లకు ఎక్కువ ఖర్చు న్యాయమే కావచ్చు.',
+bMetal:'లోహ విలువ',bMaking:'మేకింగ్',bWastage:'వేస్టేజ్',bStone:'రాళ్లు',bGst:'GST',bHall:'హాల్‌మార్క్',bDia:'వజ్రం',bSet:'బంగారు సెట్టింగ్',bSub:'పన్నుకు ముందు మొత్తం',oldVal:'పాత బంగారం విలువ',deduct:'దుకాణం తగ్గింపు',netCredit:'పాత బంగారానికి జమ',total:'చెల్లించాల్సిన మొత్తం',
+pNoMk:'మేకింగ్ లేదు',pNoWaste:'వేస్టేజ్ లేదు',pStone:'గమనిక: రాళ్ల బరువుకు బంగారం ధర వేయకూడదు',pCert:'IGI లేదా GIA సర్టిఫికెట్ అడగండి',pZeroDed:'పాత బంగారంపై తగ్గింపు లేదు',pHighDed:'పాత బంగారంపై తగ్గింపు ఎక్కువ',
+save:'కోట్ సేవ్ చేయి',share:'వాట్సాప్‌లో షేర్',copy:'సారాంశం కాపీ',saved:'కోట్ సేవ్ అయింది',copied:'కాపీ అయింది',
+tipsT:'బేరసారాల సూచనలు',tHighMk:'మేకింగ్ ఎక్కువగా ఉంది. నికర బరువుపై గ్రాముకు లెక్కించమని అడగండి, మరో దుకాణం ఎస్టిమేట్ తీసుకోండి.',tBoth:'మేకింగ్, వేస్టేజ్ రెండూ వేస్తున్నారు. ఏదో ఒకటి తీసేయమని అడగండి.',tStone:'బిల్లు బరువులో రాళ్ల బరువు ఉంది. బంగారం ధర వేసే ముందు దాన్ని తీసేయమనండి.',tDed:'పాత బంగారం తగ్గింపు 5% కంటే ఎక్కువ. అదే రోజు కొంటే తక్కువ తగ్గింపు ఇవ్వచ్చు.',tItem:'వివరమైన బిల్లు అడగండి: రేటు, నికర బరువు, మేకింగ్, GST వేర్వేరు లైన్లలో.',tHuid:'చెల్లించే ముందు BIS హాల్‌మార్క్, 6 అక్షరాల HUID చూడండి.',tBuyback:'బైబ్యాక్, మార్పిడి నిబంధనలు రాతపూర్వకంగా అడగండి.',tCert:'రాళ్ల సర్టిఫికెట్ నంబర్ అడిగి జారీ చేసిన సంస్థ వెబ్‌సైట్‌లో సరిచూడండి.',
+none:'ఇంకా కోట్లు లేవు. దుకాణాలను పక్కపక్కన పోల్చడానికి లెక్కను సేవ్ చేయండి.',cmpBtn:'ఎంచుకున్న 2 పోల్చు',cmpHint:'పోల్చడానికి రెండు కోట్లను టిక్ చేయండి.',cTotal:'మొత్తం',cPer:'గ్రాముకు',cOver:'లోహంపై అదనం',cMaking:'మేకింగ్',cWaste:'వేస్టేజ్',cGst:'GST',cNote:'ఒకే స్వచ్ఛత, ఒకే రకం డిజైన్లను పోల్చండి.',
+ckItems:['ఆ రోజు రేటును రాతపూర్వకంగా తీసుకుని ప్రచురిత రేటుతో సరిచూడండి.','స్వచ్ఛత చూడండి: BIS హాల్‌మార్క్ గుర్తు, స్వచ్ఛత గ్రేడ్, 6 అక్షరాల HUID.','మీ ముందే తూకం వేయించి స్థూల, నికర బరువు నోట్ చేయండి.','మేకింగ్ నికర బంగారం బరువుపైనే వేశారా, రాళ్లపై కాదా అని నిర్ధారించండి.','మేకింగ్‌తో పాటు వేస్టేజ్ కూడా వేస్తున్నారా అడగండి. చాలా దుకాణాలు ఒకటి తీసేస్తాయి.','GST విడిగా చూపే వివరమైన బిల్లు తీసుకోండి.','బైబ్యాక్, మార్పిడి విలువ, తగ్గింపు గురించి రాతపూర్వకంగా అడగండి.','వజ్రాలకు IGI లేదా GIA సర్టిఫికెట్ తీసుకుని ఆన్‌లైన్‌లో సరిచూడండి.','UPI లేదా బ్యాంక్ బదిలీ ద్వారా చెల్లించి బిల్లు, సర్టిఫికెట్ భద్రపరచండి.'],
+glItems:[['మేకింగ్ ఛార్జీ','నగ తయారీకి దుకాణం తీసుకునే రుసుము. లోహ విలువలో % లేదా గ్రాముకు ₹.'],['వేస్టేజ్ (తరుగు)','తయారీలో పోతుందని చెప్పే లోహం. తరచూ ఇది కూడా కూలీ వసూలుకు మరో రూపమే.'],['హాల్‌మార్క్ / HUID','స్వచ్ఛతను చూపే BIS గుర్తు, 6 అక్షరాల ప్రత్యేక ID.'],['GST','బంగారం, వెండి నగలపై 3%, కట్ చేసిన వజ్రాలపై 1.5%.'],['నికర బరువు','రాళ్లు, పూసలు లేకుండా లోహం బరువు మాత్రమే.'],['స్వచ్ఛత','24K స్వచ్ఛ బంగారం. 22K అంటే 91.6% బంగారం. వెండి 999 స్వచ్ఛం, 925 స్టెర్లింగ్.']],
+fbCats:{bug:'ఏదో పనిచేయడం లేదు',wrong_price:'ధర తప్పు',idea:'ఆలోచన',praise:'చాలా నచ్చింది',other:'ఇతరం'},fbPick:'దయచేసి స్టార్ రేటింగ్ ఇవ్వండి.',fbSending:'పంపుతున్నాం…',fbThanks:'ధన్యవాదాలు! మీ అభిప్రాయం మాకు చేరింది.',fbFail:'పంపలేకపోయాం. మళ్లీ ప్రయత్నించండి.',fbBadge:'{n} మంది రేట్ చేశారు'},
+hi:{back:'← कैलकुलेटर',navTitle:'ज्वेलरी सूट',heroTitle:'पैसे देने से पहले असली कीमत जानें',heroSub:'सोने, चाँदी और हीरे के गहने रुपये तक की जानकारी के साथ, मेकिंग, वेस्टेज और GST साफ़ दिखाते हुए।',
+rateTitle:'आज का भाव',city:'शहर',refresh:'रिफ्रेश',gold:'सोना',silver:'चाँदी',diamond:'हीरा',modeCalc:'कैलकुलेटर',modeCheck:'बिल जाँचें (AI)',
+checkNote:'ज्वेलर के एस्टिमेट या बिल की फ़ोटो लें। AI उसे पढ़कर ज़्यादा लगने वाले मेकिंग, वेस्टेज और स्टोन चार्ज बताता है। आपकी फ़ोटो सहेजी नहीं जाती।',loadingChecker:'लोड हो रहा है…',
+quotesTitle:'मेरे सहेजे हुए कोट',schemeLink:'सोने की बचत योजना सोच रहे हैं? विकल्प देखें →',ckTitle:'पैसे देने से पहले: चेकलिस्ट',glTitle:'इन शब्दों का मतलब क्या है?',
+disclaimer:'ये केवल अनुमान हैं। अंतिम बिल दुकान के भाव, मेकिंग और टैक्स पर निर्भर करता है। बिल में भाव और वज़न जाँचें।',fbLink:'बताइए क्या सुधारें',fbBtn:'फ़ीडबैक',
+fbTitle:'कैलकुलेटर कैसा लगा?',fbSub:'आपकी रेटिंग और राय इसे बेहतर बनाने में मदद करती है। कृपया टिप्पणी में निजी जानकारी न लिखें।',fbMsgL:'आपकी टिप्पणी',fbMsgPh:'क्या अच्छा लगा, क्या उलझन हुई, क्या कमी है?',fbContactL:'संपर्क (वैकल्पिक)',fbContactPh:'जवाब चाहिए तो ईमेल या फ़ोन',fbContactNote:'वैकल्पिक। केवल हमें दिखेगा, सार्वजनिक रूप से नहीं रखा जाएगा।',cancel:'रद्द करें',send:'भेजें',
+rateLive:'लाइव भाव',rateManual:'भाव अनुमानित हैं। दुकान का भाव अलग हो तो खुद डालें।',rateFail:'लाइव भाव नहीं मिले। दुकान का भाव खुद डालें।',rateLoading:'भाव लोड हो रहे हैं…',
+weight:'वज़न (ग्राम)',purity:'शुद्धता',ratePg:'प्रति ग्राम भाव (₹)',usingLive:'लाइव भाव भरा गया',making:'मेकिंग चार्ज',mkPct:'धातु का %',mkGram:'₹ प्रति ग्राम',mkFixed:'निश्चित ₹',mkNone:'नहीं',makingVal:'मेकिंग मान',
+wastage:'वेस्टेज लगा है',wastagePct:'वेस्टेज %',gstPct:'GST %',hall:'हॉलमार्क चार्ज (₹)',stoneTog:'पत्थर या मोती जड़े हैं',stoneW:'पत्थर का वज़न (ग्रा)',stoneV:'पत्थर की कीमत (₹)',stoneInc:'बिल के वज़न में पत्थर का वज़न शामिल है',
+exTog:'पुराना सोना बदल रहे हैं',exW:'पुराने सोने का वज़न (ग्रा)',exP:'पुराने सोने की शुद्धता',exD:'दुकान की कटौती %',discount:'स्कीम छूट (₹)',reset:'फ़ॉर्म रीसेट',
+carat:'हीरे का वज़न (कैरेट)',ppc:'प्रति कैरेट कीमत (₹)',setW:'सोने की सेटिंग का वज़न (ग्रा)',setMk:'सेटिंग मेकिंग %',gstG:'सोने पर GST %',gstD:'हीरे पर GST %',cert:'प्रमाणपत्र',certNone:'नहीं',
+youPay:'आप देंगे',perGram:'प्रति ग्राम',overMetal:'धातु मूल्य से ऊपर',metalRate:'धातु भाव',empty:'कीमत देखने के लिए वज़न डालें।',emptyD:'कीमत देखने के लिए कैरेट और प्रति कैरेट कीमत डालें।',
+splitT:'आपका पैसा कहाँ जाता है',meterT:'क्या अतिरिक्त चार्ज उचित है?',zLow:'कम',zUsual:'सामान्य',zHigh:'ज़्यादा',vLow:'अच्छा: धातु मूल्य से थोड़ा ही ऊपर।',vUsual:'सादे और मशीन डिज़ाइन के लिए सामान्य दायरा।',vHigh:'ज़्यादा: कारण पूछें या दूसरी दुकानों से तुलना करें।',meterNote:'यह सिर्फ़ मोटा नियम है। हाथ की कारीगरी, एंटीक और पत्थरों का दाम ज़्यादा होना जायज़ हो सकता है।',
+bMetal:'धातु मूल्य',bMaking:'मेकिंग',bWastage:'वेस्टेज',bStone:'पत्थर',bGst:'GST',bHall:'हॉलमार्क',bDia:'हीरा',bSet:'सोने की सेटिंग',bSub:'टैक्स से पहले कुल',oldVal:'पुराने सोने का मूल्य',deduct:'दुकान की कटौती',netCredit:'पुराने सोने का क्रेडिट',total:'कुल देय',
+pNoMk:'मेकिंग नहीं',pNoWaste:'वेस्टेज नहीं',pStone:'ध्यान दें: पत्थर के वज़न पर सोने का भाव न लगे',pCert:'IGI या GIA प्रमाणपत्र ज़रूर लें',pZeroDed:'पुराने सोने पर कटौती नहीं',pHighDed:'पुराने सोने पर ज़्यादा कटौती',
+save:'कोट सहेजें',share:'WhatsApp पर भेजें',copy:'सारांश कॉपी',saved:'कोट सहेजा गया',copied:'कॉपी हो गया',
+tipsT:'मोलभाव के नोट्स',tHighMk:'मेकिंग ज़्यादा है। नेट वज़न पर प्रति ग्राम लगाने को कहें और एक और दुकान का एस्टिमेट लें।',tBoth:'मेकिंग और वेस्टेज दोनों लगे हैं। पूछें कि कौन सा हटाएँगे।',tStone:'बिल के वज़न में पत्थर का वज़न है। सोने का भाव लगाने से पहले उसे घटाने को कहें।',tDed:'पुराने सोने की कटौती 5% से ज़्यादा है। उसी दिन खरीदें तो कई दुकानें कम कटौती देती हैं।',tItem:'विस्तृत बिल माँगें: भाव, नेट वज़न, मेकिंग और GST अलग पंक्तियों में।',tHuid:'पैसे देने से पहले BIS हॉलमार्क और 6 अक्षर का HUID देखें।',tBuyback:'बायबैक और एक्सचेंज की शर्तें लिखित में लें।',tCert:'पत्थर का प्रमाणपत्र नंबर लें और जारीकर्ता की वेबसाइट पर जाँचें।',
+none:'अभी कोई कोट नहीं। दुकानों की तुलना के लिए गणना सहेजें।',cmpBtn:'चुने हुए 2 की तुलना',cmpHint:'तुलना के लिए दो कोट टिक करें।',cTotal:'कुल',cPer:'प्रति ग्राम',cOver:'धातु से ऊपर',cMaking:'मेकिंग',cWaste:'वेस्टेज',cGst:'GST',cNote:'एक जैसी शुद्धता और मिलते-जुलते डिज़ाइन की तुलना करें।',
+ckItems:['उस दिन का भाव लिखित में लें और प्रकाशित भाव से मिलाएँ।','शुद्धता जाँचें: BIS हॉलमार्क, शुद्धता ग्रेड और 6 अक्षर का HUID।','अपने सामने तौल करवाएँ और ग्रॉस व नेट वज़न नोट करें।','पक्का करें कि मेकिंग सिर्फ़ नेट सोने के वज़न पर लगी है, पत्थर पर नहीं।','पूछें कि मेकिंग के साथ वेस्टेज भी लग रहा है क्या। कई दुकानें एक हटा देती हैं।','GST अलग दिखाने वाला विस्तृत बिल लें।','बायबैक, एक्सचेंज मूल्य और कटौती के बारे में लिखित में पूछें।','हीरे के लिए IGI या GIA प्रमाणपत्र लें और ऑनलाइन जाँचें।','UPI या बैंक ट्रांसफ़र से भुगतान करें और बिल व प्रमाणपत्र सँभालकर रखें।'],
+glItems:[['मेकिंग चार्ज','गहना बनाने की दुकान की फ़ीस। धातु मूल्य के % या ₹ प्रति ग्राम में।'],['वेस्टेज','बनाते समय धातु घटने का दावा। अक्सर यह मज़दूरी वसूलने का दूसरा तरीका होता है।'],['हॉलमार्क / HUID','शुद्धता का BIS निशान और 6 अक्षर की अनोखी ID।'],['GST','सोने-चाँदी के गहनों पर 3%, कटे हीरों पर 1.5%।'],['नेट वज़न','पत्थर, मोती के बिना सिर्फ़ धातु का वज़न।'],['शुद्धता','24K शुद्ध सोना। 22K यानी 91.6% सोना। चाँदी 999 शुद्ध, 925 स्टर्लिंग।']],
+fbCats:{bug:'कुछ ख़राब है',wrong_price:'गलत कीमत',idea:'सुझाव',praise:'बहुत पसंद आया',other:'अन्य'},fbPick:'कृपया स्टार रेटिंग चुनें।',fbSending:'भेज रहे हैं…',fbThanks:'धन्यवाद! आपका फ़ीडबैक हमें मिल गया।',fbFail:'भेज नहीं सके। कृपया फिर कोशिश करें।',fbBadge:'{n} लोगों ने रेटिंग दी'}
+};
+var lang=(store('lsLang')||localStorage.getItem('lsLang')||'en');
+if(!T[lang])lang='en';
+function t(k){var v=(T[lang]||{})[k];return v!==undefined?v:T.en[k]}
+
+/* ---------------- state ---------------- */
+var CITIES=['hyderabad','vijayawada','visakhapatnam','chennai','bangalore','mumbai','delhi','kolkata','pune','ahmedabad','jaipur','lucknow','kochi','coimbatore','nagpur','surat','patna','bhopal','chandigarh','guwahati'];
+var S={metal:'gold',mode:'calc',rates:null,city:'hyderabad'};
+var DEF={
+  gold:{weight:'',purity:'22',rate:'',rateDirty:false,mk:'pct',mv:'12',wasteOn:false,waste:'',gst:'3',hall:'',stoneOn:false,sw:'',sv:'',sinc:true,exOn:false,ew:'',ep:'22',ed:'3'},
+  silver:{weight:'',purity:'925',rate:'',rateDirty:false,mk:'pct',mv:'10',gst:'3',disc:''},
+  diamond:{carat:'',ppc:'',cert:'none',gw:'',gp:'18',rate:'',rateDirty:false,mv:'12',gg:'3',gd:'1.5'}
+};
+var F=store('jsForm')||{};
+['gold','silver','diamond'].forEach(function(m){F[m]=Object.assign({},DEF[m],F[m]||{})});
+function persist(){store('jsForm',F)}
+
+/* ---------------- pure calculators ---------------- */
+function liveRate(purity){var r=S.rates;if(!r)return 0;
+  if(purity==='silver')return r.silver||0;
+  return (r.gold&&r.gold[purity])||0}
+function rateFor(metal,f){
+  if(f.rateDirty&&num(f.rate))return num(f.rate);
+  if(metal==='silver'){var s=liveRate('silver');return s?s*(PF[f.purity]||1):num(f.rate)}
+  var p=metal==='gold'?f.purity:f.gp;var g=liveRate(p);
+  if(g)return g;var r24=liveRate('24');return r24?r24*(PF[p]||1):num(f.rate);
+}
+function calcGold(f){
+  var w=num(f.weight,10000);if(!w)return null;
+  var rate=rateFor('gold',f);if(!rate)return {needRate:true};
+  var sw=f.stoneOn?num(f.sw,w):0, sv=f.stoneOn?num(f.sv):0;
+  var net=f.stoneOn&&f.sinc?Math.max(w-sw,0):w;
+  var metalV=net*rate;
+  var mv=num(f.mv), making=f.mk==='pct'?metalV*Math.min(mv,100)/100:f.mk==='pgram'?net*mv:f.mk==='fixed'?mv:0;
+  var waste=f.wasteOn?metalV*Math.min(num(f.waste),100)/100:0;
+  var pre=metalV+making+waste+sv, gstP=num(f.gst===''?3:f.gst,100), gst=pre*gstP/100, hall=num(f.hall);
+  var sub=pre+gst+hall;
+  var ex=null,total=sub;
+  if(f.exOn&&num(f.ew)){
+    var er=liveRate(f.ep)||(liveRate('24')?liveRate('24')*(PF[f.ep]||1):rate*(PF[f.ep]||1)/(PF[f.purity]||1));
+    var ev=num(f.ew)*er, ded=ev*Math.min(num(f.ed),100)/100;
+    ex={val:ev,ded:ded,credit:ev-ded,w:num(f.ew),p:f.ep,dedPct:num(f.ed)};total=Math.max(sub-ex.credit,0);
   }
+  return {metal:'gold',w:w,net:net,purity:f.purity,rate:rate,metalV:metalV,making:making,mk:f.mk,mv:mv,waste:waste,wastePct:num(f.waste),stone:sv,sw:sw,sinc:f.stoneOn&&f.sinc,gst:gst,gstP:gstP,hall:hall,sub:sub,ex:ex,total:total,
+    over:metalV>0?(sub-metalV)/metalV*100:0,perG:total/w,
+    split:[['bMetal',metalV,'#B8860B'],['bMaking',making,'#6B1C1C'],['bWastage',waste,'#C62828'],['bStone',sv,'#7C3AED'],['bGst',gst,'#64748B'],['bHall',hall,'#0F8A5F']]};
+}
+function calcSilver(f){
+  var w=num(f.weight,100000);if(!w)return null;
+  var rate=rateFor('silver',f);if(!rate)return {needRate:true};
+  var metalV=w*rate, mv=num(f.mv);
+  var making=f.mk==='pct'?metalV*Math.min(mv,100)/100:f.mk==='pgram'?w*mv:f.mk==='fixed'?mv:0;
+  var pre=metalV+making, gstP=num(f.gst===''?3:f.gst,100), gst=pre*gstP/100, disc=num(f.disc);
+  var sub=pre+gst, total=Math.max(sub-disc,0);
+  return {metal:'silver',w:w,net:w,purity:f.purity,rate:rate,metalV:metalV,making:making,mk:f.mk,mv:mv,waste:0,stone:0,gst:gst,gstP:gstP,hall:0,disc:disc,sub:sub,total:total,
+    over:(sub-metalV)/metalV*100,perG:total/w,
+    split:[['bMetal',metalV,'#64748B'],['bMaking',making,'#6B1C1C'],['bGst',gst,'#B8860B']]};
+}
+function calcDiamond(f){
+  var ct=num(f.carat,1000),ppc=num(f.ppc);if(!ct||!ppc)return null;
+  var gw=num(f.gw,10000),rate=gw?rateFor('diamond',f):0;if(gw&&!rate)return {needRate:true};
+  var diaV=ct*ppc,gstD=diaV*num(f.gd===''?1.5:f.gd,100)/100;
+  var setV=gw*rate,mv=num(f.mv),mk=setV*Math.min(mv,100)/100,preG=setV+mk,gstG=preG*num(f.gg===''?3:f.gg,100)/100;
+  var total=diaV+gstD+preG+gstG;
+  return {metal:'diamond',w:gw,ct:ct,rate:rate,metalV:setV,making:mk,mk:'pct',mv:mv,waste:0,stone:diaV,gst:gstD+gstG,hall:0,cert:f.cert,sub:total,total:total,
+    over:setV>0?(mk+gstG)/setV*100:null,perG:null,
+    split:[['bDia',diaV,'#7C3AED'],['bSet',setV,'#B8860B'],['bMaking',mk,'#6B1C1C'],['bGst',gstD+gstG,'#64748B']]};
+}
+function calc(){var f=F[S.metal];return S.metal==='gold'?calcGold(f):S.metal==='silver'?calcSilver(f):calcDiamond(f)}
+function zone(over){return over<=12?'g':over<=20?'a':'r'}
+
+/* ---------------- form rendering ---------------- */
+function fld(id,label,val,opts){opts=opts||{};
+  return '<div class="f"><label for="'+id+'">'+esc(label)+'</label><input id="'+id+'" data-k="'+id.split('-')[1]+'" inputmode="'+(opts.text?'text':'decimal')+'" value="'+esc(val)+'" '+(opts.ph?'placeholder="'+esc(opts.ph)+'"':'')+'>'+(opts.sub?'<div class="sub">'+opts.sub+'</div>':'')+'</div>'}
+function sel(id,label,val,items){return '<div class="f"><label for="'+id+'">'+esc(label)+'</label><select id="'+id+'" data-k="'+id.split('-')[1]+'">'+items.map(function(i){return '<option value="'+i[0]+'"'+(String(val)===String(i[0])?' selected':'')+'>'+esc(i[1])+'</option>'}).join('')+'</select></div>'}
+function seg(key,val,items){return '<div class="seg" data-seg="'+key+'">'+items.map(function(i){return '<button type="button" data-v="'+i[0]+'" class="'+(val===i[0]?'on':'')+'">'+esc(i[1])+'</button>'}).join('')+'</div>'}
+function opt(key,on,title,body){return '<div class="opt"><label class="opt-h"><span>'+esc(title)+'</span><input type="checkbox" data-tog="'+key+'"'+(on?' checked':'')+'></label>'+(on?'<div class="opt-b">'+body+'</div>':'')+'</div>'}
+var PUR_G=[['24','24K'],['22','22K (916)'],['20','20K'],['18','18K'],['14','14K']];
+function liveHint(metal){var f=F[metal];var l=metal==='silver'?liveRate('silver'):liveRate(metal==='gold'?f.purity:f.gp);return (!f.rateDirty&&l)?'<div class="live">'+esc(t('usingLive'))+'</div>':''}
+function renderForm(){
+  var f=F[S.metal],h='';
+  if(S.metal==='gold'){
+    h+='<div class="grid2">'+fld('g-weight',t('weight'),f.weight,{ph:'10'})+sel('g-purity',t('purity'),f.purity,PUR_G)+'</div>';
+    h+=fld('g-rate',t('ratePg'),f.rateDirty?f.rate:(rateFor('gold',f)||f.rate||''),{sub:liveHint('gold')});
+    h+='<div class="f"><label>'+esc(t('making'))+'</label>'+seg('mk',f.mk,[['pct',t('mkPct')],['pgram',t('mkGram')],['fixed',t('mkFixed')],['none',t('mkNone')]])+'</div>';
+    if(f.mk!=='none')h+=fld('g-mv',t('makingVal'),f.mv);
+    h+=opt('wasteOn',f.wasteOn,t('wastage'),fld('g-waste',t('wastagePct'),f.waste));
+    h+=opt('stoneOn',f.stoneOn,t('stoneTog'),'<div class="grid2">'+fld('g-sw',t('stoneW'),f.sw)+fld('g-sv',t('stoneV'),f.sv)+'</div><label class="chk"><input type="checkbox" data-tog="sinc"'+(f.sinc?' checked':'')+'>'+esc(t('stoneInc'))+'</label>');
+    h+=opt('exOn',f.exOn,t('exTog'),'<div class="grid2">'+fld('g-ew',t('exW'),f.ew)+sel('g-ep',t('exP'),f.ep,PUR_G)+'</div>'+fld('g-ed',t('exD'),f.ed));
+    h+='<div class="grid2">'+fld('g-gst',t('gstPct'),f.gst)+fld('g-hall',t('hall'),f.hall)+'</div>';
+  }else if(S.metal==='silver'){
+    h+='<div class="grid2">'+fld('s-weight',t('weight'),f.weight,{ph:'100'})+sel('s-purity',t('purity'),f.purity,[['999','999'],['925','925'],['800','800']])+'</div>';
+    h+=fld('s-rate',t('ratePg'),f.rateDirty?f.rate:(rateFor('silver',f)||f.rate||''),{sub:liveHint('silver')});
+    h+='<div class="f"><label>'+esc(t('making'))+'</label>'+seg('mk',f.mk,[['pct',t('mkPct')],['pgram',t('mkGram')],['fixed',t('mkFixed')],['none',t('mkNone')]])+'</div>';
+    if(f.mk!=='none')h+=fld('s-mv',t('makingVal'),f.mv);
+    h+='<div class="grid2">'+fld('s-gst',t('gstPct'),f.gst)+fld('s-disc',t('discount'),f.disc)+'</div>';
+  }else{
+    h+='<div class="grid2">'+fld('d-carat',t('carat'),f.carat,{ph:'0.50'})+fld('d-ppc',t('ppc'),f.ppc)+'</div>';
+    h+=sel('d-cert',t('cert'),f.cert,[['none',t('certNone')],['IGI','IGI'],['GIA','GIA'],['SGL','SGL']]);
+    h+='<div class="grid2">'+fld('d-gw',t('setW'),f.gw,{ph:'3'})+sel('d-gp',t('purity'),f.gp,PUR_G.filter(function(x){return x[0]!=='24'}))+'</div>';
+    h+=fld('d-rate',t('ratePg'),f.rateDirty?f.rate:(rateFor('diamond',f)||f.rate||''),{sub:liveHint('diamond')});
+    h+='<div class="grid2">'+fld('d-mv',t('setMk'),f.mv)+fld('d-gg',t('gstG'),f.gg)+'</div>'+fld('d-gd',t('gstD'),f.gd);
+  }
+  h+='<button type="button" class="reset" id="resetBtn">'+esc(t('reset'))+'</button>';
+  $('form').innerHTML=h;
+}
+
+/* ---------------- result rendering ---------------- */
+function row(l,sub,a,cls){return '<div class="r '+(cls||'')+'"><span>'+esc(l)+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><b>'+a+'</b></div>'}
+var lastR=null;
+function renderResult(){
+  var r=calc();lastR=(r&&!r.needRate)?r:null;var box=$('result');
+  if(!r){$('miniTotal').classList.add('hidden');box.innerHTML='<div class="card"><div class="empty">'+esc(t(S.metal==='diamond'?'emptyD':'empty'))+'</div></div>';return}
+  if(r.needRate){$('miniTotal').classList.add('hidden');box.innerHTML='<div class="card"><div class="empty">'+esc(t('rateFail'))+'</div></div>';return}
+  var h='<div class="total"><div class="l">'+esc(t('youPay'))+'</div><div class="a">'+fmt(r.total)+'</div><div class="s">'+esc(summaryLine(r))+'</div></div>';
+  h+='<div class="kpis">'+
+    '<div class="kpi"><b>'+(r.perG?fmt(r.perG):'–')+'</b><span>'+esc(t('perGram'))+'</span></div>'+
+    '<div class="kpi"><b>'+(r.over==null?'–':r.over.toFixed(1)+'%')+'</b><span>'+esc(t('overMetal'))+'</span></div>'+
+    '<div class="kpi"><b>'+(r.rate?fmt(r.rate):'–')+'</b><span>'+esc(t('metalRate'))+'</span></div></div>';
+  var pills=[];
+  if(r.metal!=='diamond'&&r.making===0)pills.push('<span class="pill g">'+esc(t('pNoMk'))+'</span>');
+  if(r.metal==='gold'&&!r.waste)pills.push('<span class="pill g">'+esc(t('pNoWaste'))+'</span>');
+  if(r.sinc&&r.sw)pills.push('<span class="pill a">'+esc(t('pStone'))+' ('+fmt(r.sw*r.rate)+')</span>');
+  if(r.metal==='diamond'&&r.cert==='none')pills.push('<span class="pill r">'+esc(t('pCert'))+'</span>');
+  if(r.ex){if(!r.ex.dedPct)pills.push('<span class="pill g">'+esc(t('pZeroDed'))+'</span>');else if(r.ex.dedPct>5)pills.push('<span class="pill r">'+esc(t('pHighDed'))+'</span>')}
+  if(pills.length)h+='<div class="pills">'+pills.join('')+'</div>';
+  // split
+  var tot=r.split.reduce(function(a,x){return a+x[1]},0),parts=r.split.filter(function(x){return x[1]>0});
+  h+='<div class="card"><div class="card-t"><span>'+esc(t('splitT'))+'</span></div><div class="split" role="img" aria-label="'+esc(t('splitT'))+'">'+
+    parts.map(function(x){return '<i style="width:'+(x[1]/tot*100).toFixed(2)+'%;background:'+x[2]+'"></i>'}).join('')+'</div><div class="legend">'+
+    parts.map(function(x){return '<div><i style="background:'+x[2]+'"></i>'+esc(t(x[0]))+'<em>'+Math.round(x[1]/tot*100)+'%</em></div>'}).join('')+'</div></div>';
+  // meter
+  if(r.over!=null){var z=zone(r.over),pos=Math.min(Math.max(r.over,0),35)/35*100;
+    h+='<div class="card"><div class="card-t"><span>'+esc(t('meterT'))+'</span></div><div class="meter"><b style="left:'+pos.toFixed(1)+'%">'+r.over.toFixed(1)+'%</b></div><div class="meter-l"><span>'+esc(t('zLow'))+' ≤12%</span><span>'+esc(t('zUsual'))+' 12–20%</span><span>'+esc(t('zHigh'))+' &gt;20%</span></div><div class="verdict '+z+'">'+esc(t(z==='g'?'vLow':z==='a'?'vUsual':'vHigh'))+'</div><div class="fine">'+esc(t('meterNote'))+'</div></div>';
+  }
+  // rows
+  var rows='';
+  if(r.metal==='diamond'){
+    rows+=row(t('bDia'),r.ct+' ct',fmt(r.stone))+row(t('bSet'),r.w?r.w+' g':'',fmt(r.metalV))+row(t('bMaking'),r.mv+'%',fmt(r.making))+row(t('bGst'),'',fmt(r.gst));
+  }else{
+    rows+=row(t('bMetal'),r.net.toFixed(2)+' g × '+fmt(r.rate),fmt(r.metalV));
+    if(r.stone)rows+=row(t('bStone'),'',fmt(r.stone));
+    if(r.making)rows+=row(t('bMaking'),r.mk==='pct'?r.mv+'%':r.mk==='pgram'?fmt(r.mv)+'/g':'',fmt(r.making));
+    if(r.waste)rows+=row(t('bWastage'),r.wastePct+'%',fmt(r.waste));
+    rows+=row(t('bGst'),r.gstP+'%',fmt(r.gst));
+    if(r.hall)rows+=row(t('bHall'),'',fmt(r.hall));
+    if(r.disc)rows+=row(t('discount'),'','− '+fmt(r.disc),'minus');
+    if(r.ex){rows+=row(t('oldVal'),r.ex.w+' g, '+r.ex.p+'K','− '+fmt(r.ex.val),'minus');if(r.ex.ded)rows+=row(t('deduct'),r.ex.dedPct+'%','+ '+fmt(r.ex.ded))}
+  }
+  rows+=row(t('total'),'',fmt(r.total),'tot');
+  h+='<div class="card rows">'+rows+'</div>';
+  // tips
+  var tips=makeTips(r);
+  h+='<div class="card"><div class="card-t"><span>'+esc(t('tipsT'))+'</span></div><ul class="tips">'+tips.map(function(k){return '<li>'+esc(t(k))+'</li>'}).join('')+'</ul></div>';
+  h+='<div class="acts" style="margin-bottom:14px"><button class="btn pri" id="saveQ">'+esc(t('save'))+'</button><button class="btn wa" id="shareQ">'+esc(t('share'))+'</button><button class="btn" id="copyQ" style="grid-column:1/-1">'+esc(t('copy'))+'</button></div>';
+  box.innerHTML=h;
+  watchTotal();
+}
+var io=null;
+function watchTotal(){
+  var mt=$('miniTotal'),tot=document.querySelector('#result .total');
+  if(io){io.disconnect();io=null}
+  if(!tot||!lastR||S.mode!=='calc'){mt.classList.add('hidden');return}
+  mt.textContent=fmt(lastR.total)+'  ↓';
+  if(!('IntersectionObserver' in window)){return}
+  io=new IntersectionObserver(function(en){mt.classList.toggle('hidden',en[0].isIntersecting||!lastR||S.mode!=='calc')},{threshold:0.2});
+  io.observe(tot);
+}
+function summaryLine(r){
+  if(r.metal==='diamond')return r.ct+' ct diamond'+(r.w?' + '+r.w+' g setting':'');
+  return r.w+' g '+(r.metal==='gold'?r.purity+'K':r.purity+' silver')+' @ '+fmt(r.rate)+'/g';
+}
+function makeTips(r){var k=[];
+  if(r.metal==='diamond'){if(r.cert==='none')k.push('tCert');if(r.over!=null&&r.over>20)k.push('tHighMk')}
+  else{
+    if(r.over>20||(r.mk==='pct'&&r.mv>18))k.push('tHighMk');
+    if(r.waste>0&&r.making>0)k.push('tBoth');
+    if(r.sinc&&r.sw)k.push('tStone');
+    if(r.ex&&r.ex.dedPct>5)k.push('tDed');
+  }
+  k.push('tItem');if(r.metal!=='silver'||true)k.push('tHuid');k.push('tBuyback');
+  return k.slice(0,5);
+}
+function plainSummary(r){
+  var L=[];L.push('*'+t('navTitle')+'* - '+t(r.metal));L.push(summaryLine(r));
+  L.push(t('youPay')+': *'+fmt(r.total)+'*');
+  if(r.perG)L.push(t('perGram')+': '+fmt(r.perG));
+  r.split.forEach(function(x){if(x[1]>0)L.push('- '+t(x[0])+': '+fmt(x[1]))});
+  if(r.over!=null)L.push(t('overMetal')+': '+r.over.toFixed(1)+'%');
+  L.push('');L.push('lawsticker-ai.com/jewellery-suite.html');return L.join('\n');
+}
+
+/* ---------------- quotes + compare ---------------- */
+var quotes=store('jsQuotes')||[];var picked=[];
+function saveQuotes(){store('jsQuotes',quotes)}
+function addQuote(){
+  if(!lastR)return;
+  if(quotes.length>=12)quotes.pop();
+  var d=new Date();
+  quotes.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts:Date.now(),label:t(lastR.metal)+' '+(lastR.w?lastR.w+'g ':'')+d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}),metal:lastR.metal,
+    total:lastR.total,perG:lastR.perG,over:lastR.over,making:lastR.making,waste:lastR.waste,gst:lastR.gst,w:lastR.w,summary:summaryLine(lastR)});
+  saveQuotes();renderQuotes();toast(t('saved'));
+}
+function renderQuotes(){
+  var box=$('quotes');
+  if(!quotes.length){box.innerHTML='<div class="empty">'+esc(t('none'))+'</div>';$('compareOut').innerHTML='';return}
+  box.innerHTML=quotes.map(function(q){return '<div class="q"><input type="checkbox" data-pick="'+q.id+'" aria-label="select"'+(picked.indexOf(q.id)>-1?' checked':'')+'><div class="m"><input type="text" data-label="'+q.id+'" maxlength="40" value="'+esc(q.label)+'" aria-label="name"><small>'+esc(q.summary)+'</small></div><b>'+fmt(q.total)+'</b><button class="x" data-del="'+q.id+'" aria-label="delete">×</button></div>'}).join('')+
+    '<div class="fine" id="cmpHint">'+esc(t('cmpHint'))+'</div>';
+  renderCompare();
+}
+function renderCompare(){
+  var out=$('compareOut');if(picked.length!==2){out.innerHTML='';return}
+  var a=quotes.filter(function(q){return q.id===picked[0]})[0],b=quotes.filter(function(q){return q.id===picked[1]})[0];if(!a||!b){out.innerHTML='';return}
+  function r(label,key,f,lowWins){var x=a[key],y=b[key];var win=(x==null||y==null||x===y)?-1:((lowWins?x<y:x>y)?0:1);
+    return '<tr><td>'+esc(label)+'</td><td class="'+(win===0?'win':'')+'">'+(x==null?'–':f(x))+'</td><td class="'+(win===1?'win':'')+'">'+(y==null?'–':f(y))+'</td></tr>'}
+  var pct=function(v){return v.toFixed(1)+'%'};
+  out.innerHTML='<table class="cmp"><thead><tr><th></th><th>'+esc(a.label)+'</th><th>'+esc(b.label)+'</th></tr></thead><tbody>'+
+    r(t('cTotal'),'total',fmt,true)+r(t('cPer'),'perG',fmt,true)+r(t('cOver'),'over',pct,true)+r(t('cMaking'),'making',fmt,true)+r(t('cWaste'),'waste',fmt,true)+r(t('cGst'),'gst',fmt,true)+'</tbody></table><div class="fine">'+esc(t('cNote'))+'</div>';
+}
+
+/* ---------------- accordions ---------------- */
+function renderStatic(){
+  $('ck').innerHTML=t('ckItems').map(function(x,i){return '<label class="ck"><input type="checkbox" data-ck="'+i+'"'+((store('jsCk')||{})[i]?' checked':'')+'><span>'+esc(x)+'</span></label>'}).join('');
+  $('gl').innerHTML=t('glItems').map(function(x){return '<div class="tm"><strong>'+esc(x[0])+'</strong>: '+esc(x[1])+'</div>'}).join('');
+}
+
+/* ---------------- rates ---------------- */
+function loadRates(force){
+  var city=S.city,key='jsRates_'+city,c=store(key);
+  if(!force&&c&&Date.now()-c.at<15*60*1000){applyRates(c);return}
+  $('rateNote').textContent=t('rateLoading');
+  fetch(BACKEND+'/api/live-gold-rate?city='+encodeURIComponent(city)).then(function(r){return r.json()}).then(function(d){
+    if(!d||!d.ok)throw 0;
+    var o={at:Date.now(),gold:d.gold_by_purity_per_gram_inr,silver:d.silver_999_per_gram_inr,real:d.source==='goodreturns_real',city:d.city||city};
+    store(key,o);applyRates(o);
+  }).catch(function(){ if(c)applyRates(c,true);else{S.rates=null;$('rateNote').textContent=t('rateFail');paintChips();refreshAll()} });
+}
+function applyRates(o,stale){S.rates=o;paintChips();
+  var tm=new Date(o.at).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true});
+  $('rateNote').textContent=(o.real?t('rateLive'):'~')+' · '+o.city.charAt(0).toUpperCase()+o.city.slice(1)+' · '+tm+(stale?' (old)':'')+'. '+t('rateManual');
+  refreshAll();
+}
+function paintChips(){var r=S.rates;function g(k){return r&&r.gold&&r.gold[k]?fmt(r.gold[k]):'–'}
+  $('rc24').textContent=g('24');$('rc22').textContent=g('22');$('rc18').textContent=g('18');$('rcS').textContent=r&&r.silver?fmt(r.silver):'–'}
+
+/* ---------------- checker frames ---------------- */
+function showMode(){
+  if(S.mode!=='calc')$('miniTotal').classList.add('hidden');
+  $('calcPane').classList.toggle('hidden',S.mode!=='calc');
+  $('checkPane').classList.toggle('hidden',S.mode!=='check');
+  document.querySelectorAll('.mode').forEach(function(b){b.classList.toggle('on',b.dataset.mode===S.mode)});
+  ['gold','silver','diamond'].forEach(function(m){$('fw-'+m).classList.toggle('hidden',m!==S.metal)});
+  if(S.mode==='check'){var fr=$('fr-'+S.metal);if(!fr.getAttribute('src')){fr.setAttribute('src',fr.dataset.src+'&lang='+lang);fr.onload=function(){fr.parentNode.querySelector('.frame-load').classList.add('hidden');sizeFrame(fr);try{fr.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}}}}
+}
+function sizeFrame(fr){try{var d=fr.contentWindow.document,h=Math.max(d.body.scrollHeight,d.documentElement.scrollHeight);if(h>200)fr.style.height=(h+40)+'px'}catch(e){}}
+window.addEventListener('message',function(ev){
+  if(ev.data&&ev.data.type==='goldCheckerHeight'){['gold','silver','diamond'].forEach(function(m){var f=$('fr-'+m);if(f&&f.contentWindow===ev.source)f.style.height=(ev.data.height+40)+'px'})}
 });
+
+/* ---------------- feedback ---------------- */
+var fb={rating:0,cat:'other',sending:false},lastFocus=null;
+function buildFeedbackUI(){
+  $('stars').innerHTML=[1,2,3,4,5].map(function(n){return '<button type="button" data-star="'+n+'" role="radio" aria-checked="false" aria-label="'+n+'">★</button>'}).join('');
+  $('cats').innerHTML=Object.keys(t('fbCats')).map(function(k){return '<button type="button" data-cat="'+k+'" class="'+(fb.cat===k?'on':'')+'">'+esc(t('fbCats')[k])+'</button>'}).join('');
+  paintStars();
+}
+function paintStars(){document.querySelectorAll('#stars button').forEach(function(b){var on=+b.dataset.star<=fb.rating;b.classList.toggle('on',on);b.setAttribute('aria-checked',+b.dataset.star===fb.rating?'true':'false')})}
+function openFb(){lastFocus=document.activeElement;fb.rating=0;fb.cat='other';buildFeedbackUI();$('fbMsg').value='';$('fbContact').value='';$('fbCnt').textContent='0';$('fbMsgOut').textContent='';$('fbMsgOut').className='msg';$('fbSend').disabled=false;$('fbModal').classList.remove('hidden');$('fbFab').classList.add('hidden');setTimeout(function(){var b=document.querySelector('#stars button');if(b)b.focus()},30)}
+function closeFb(){$('fbModal').classList.add('hidden');$('fbFab').classList.remove('hidden');if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function sendFb(){
+  if(fb.sending)return;var out=$('fbMsgOut');
+  if(!fb.rating){out.textContent=t('fbPick');out.className='msg err';return}
+  fb.sending=true;$('fbSend').disabled=true;out.textContent=t('fbSending');out.className='msg';
+  fetch(BACKEND+'/api/jewellery-feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rating:fb.rating,category:fb.cat,message:$('fbMsg').value,contact:$('fbContact').value,website:$('fbWebsite').value,metal:S.metal,mode:S.mode,lang:lang})})
+    .then(function(r){return r.json().then(function(j){return{ok:r.ok&&j.ok,j:j}})}).then(function(x){
+      fb.sending=false;
+      if(x.ok){out.textContent=t('fbThanks');out.className='msg ok';store('jsFbDone',Date.now());setTimeout(closeFb,1600)}
+      else{out.textContent=(x.j&&x.j.error)||t('fbFail');out.className='msg err';$('fbSend').disabled=false}
+    }).catch(function(){fb.sending=false;out.textContent=t('fbFail');out.className='msg err';$('fbSend').disabled=false});
+}
+function loadBadge(){
+  fetch(BACKEND+'/api/jewellery-feedback-summary').then(function(r){return r.json()}).then(function(d){
+    if(d&&d.ok&&d.count>=5)$('ratingBadge').textContent='★ '+d.average.toFixed(1)+' · '+t('fbBadge').replace('{n}',d.count);
+  }).catch(function(){});
+}
+
+/* ---------------- misc ui ---------------- */
+var toastT;function toast(m){var e=$('toast');e.textContent=m;e.classList.remove('hidden');clearTimeout(toastT);toastT=setTimeout(function(){e.classList.add('hidden')},1800)}
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i]').forEach(function(e){e.textContent=t(e.dataset.i)});
+  document.querySelectorAll('[data-ph]').forEach(function(e){e.placeholder=t(e.dataset.ph)});
+  document.querySelectorAll('.langs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===lang)});
+  var c=$('city'),cur=S.city;c.innerHTML=CITIES.map(function(x){return '<option value="'+x+'"'+(x===cur?' selected':'')+'>'+x.charAt(0).toUpperCase()+x.slice(1)+'</option>'}).join('');
+  renderStatic();buildFeedbackUI();renderQuotes();refreshAll();loadBadge();
+  ['gold','silver','diamond'].forEach(function(m){var f=$('fr-'+m);if(f&&f.getAttribute('src')&&f.contentWindow)try{f.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}});
+}
+function refreshAll(){renderForm();renderResult()}
+var tAnalytics={};
+function track(){if(!tAnalytics[S.metal]&&lastR){tAnalytics[S.metal]=1;try{gtag('event','jewellery_calc',{metal:S.metal})}catch(e){}}}
+function setMetal(m){S.metal=m;document.body.dataset.metal=m;document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});showMode();refreshAll();syncUrl()}
+function syncUrl(){try{var u=new URL(location.href);u.searchParams.set('m',S.metal);u.searchParams.set('mode',S.mode);history.replaceState(null,'',u)}catch(e){}}
+
+/* ---------------- events ---------------- */
+var deb;function later(fn){clearTimeout(deb);deb=setTimeout(fn,120)}
+$('form').addEventListener('input',function(e){
+  var el=e.target,id=el.id;if(!id||!el.dataset.k)return;var f=F[S.metal];var k=el.dataset.k;
+  var map={weight:'weight',mv:'mv',waste:'waste',sw:'sw',sv:'sv',ew:'ew',ed:'ed',gst:'gst',hall:'hall',disc:'disc',carat:'carat',ppc:'ppc',gw:'gw',gg:'gg',gd:'gd'};
+  if(k==='rate'){f.rate=el.value;f.rateDirty=true}
+  else if(map[k])f[map[k]]=el.value;
+  persist();later(function(){renderResult();track()});
+});
+$('form').addEventListener('change',function(e){
+  var el=e.target;
+  if(el.tagName==='SELECT'){var k=el.dataset.k,f=F[S.metal];
+    if(k==='purity'||k==='gp'){f[k==='gp'?'gp':'purity']=el.value;f.rateDirty=false;f.rate=''}
+    else if(k==='ep')f.ep=el.value;else if(k==='cert')f.cert=el.value;
+    persist();refreshAll();return}
+  if(el.dataset.tog){F[S.metal][el.dataset.tog]=el.checked;persist();refreshAll()}
+});
+$('form').addEventListener('click',function(e){
+  var b=e.target.closest('.seg button');
+  if(b){var key=b.parentNode.dataset.seg;F[S.metal][key]=b.dataset.v;persist();refreshAll();return}
+  if(e.target.id==='resetBtn'){F[S.metal]=Object.assign({},DEF[S.metal]);persist();refreshAll()}
+});
+$('result').addEventListener('click',function(e){
+  var id=e.target.id;
+  if(id==='saveQ')addQuote();
+  else if(id==='shareQ'&&lastR)window.open('https://wa.me/?text='+encodeURIComponent(plainSummary(lastR)),'_blank','noopener');
+  else if(id==='copyQ'&&lastR){var tx=plainSummary(lastR);(navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(function(){toast(t('copied'))}).catch(function(){var a=document.createElement('textarea');a.value=tx;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast(t('copied'))}catch(x){}a.remove()})}
+});
+$('quotes').addEventListener('change',function(e){
+  var el=e.target;
+  if(el.dataset.pick){var i=picked.indexOf(el.dataset.pick);if(el.checked){if(i<0)picked.push(el.dataset.pick);if(picked.length>2)picked.shift()}else if(i>-1)picked.splice(i,1);renderQuotes()}
+  else if(el.dataset.label){quotes.forEach(function(q){if(q.id===el.dataset.label)q.label=el.value.slice(0,40)||q.label});saveQuotes();renderCompare()}
+});
+$('quotes').addEventListener('click',function(e){var d=e.target.dataset.del;if(!d)return;quotes=quotes.filter(function(q){return q.id!==d});picked=picked.filter(function(p){return p!==d});saveQuotes();renderQuotes()});
+document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){setMetal(b.dataset.m)})});
+document.querySelectorAll('.mode').forEach(function(b){b.addEventListener('click',function(){S.mode=b.dataset.mode;showMode();syncUrl()})});
+document.querySelectorAll('.langs button').forEach(function(b){b.addEventListener('click',function(){lang=b.dataset.l;try{localStorage.setItem('lsLang',lang)}catch(e){}applyLang()})});
+document.querySelectorAll('[data-acc]').forEach(function(b){b.addEventListener('click',function(){$(b.dataset.acc).classList.toggle('hidden')})});
+$('ck').addEventListener('change',function(e){if(e.target.dataset.ck!==undefined){var o=store('jsCk')||{};o[e.target.dataset.ck]=e.target.checked;store('jsCk',o)}});
+$('city').addEventListener('change',function(){S.city=this.value;store('jsCity',S.city);['gold','silver','diamond'].forEach(function(m){F[m].rateDirty=false;F[m].rate=''});persist();loadRates(false)});
+$('rateRefresh').addEventListener('click',function(){['gold','silver','diamond'].forEach(function(m){F[m].rateDirty=false});loadRates(true)});
+$('miniTotal').addEventListener('click',function(){var t=document.querySelector('#result .total');if(t)t.scrollIntoView({behavior:'smooth',block:'start'})});
+$('fbFab').addEventListener('click',openFb);$('fbLink').addEventListener('click',function(e){e.preventDefault();openFb()});$('fbCancel').addEventListener('click',closeFb);$('fbSend').addEventListener('click',sendFb);
+$('fbModal').addEventListener('click',function(e){if(e.target===this)closeFb()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('fbModal').classList.contains('hidden'))closeFb()});
+$('stars').addEventListener('click',function(e){var b=e.target.closest('button');if(b){fb.rating=+b.dataset.star;paintStars()}});
+$('cats').addEventListener('click',function(e){var b=e.target.closest('button');if(b){fb.cat=b.dataset.cat;buildFeedbackUI()}});
+$('fbMsg').addEventListener('input',function(){$('fbCnt').textContent=this.value.length});
+
+/* ---------------- init ---------------- */
+(function init(){
+  var q=new URLSearchParams(location.search);
+  var m=q.get('m');if(m==='gold'||m==='silver'||m==='diamond')S.metal=m;
+  if(q.get('mode')==='check')S.mode='check';
+  var c=store('jsCity');if(c&&CITIES.indexOf(c)>-1)S.city=c;
+  document.body.dataset.metal=S.metal;
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===S.metal)});
+  applyLang();showMode();loadRates(false);
+})();
+window.JW={calcGold:calcGold,calcSilver:calcSilver,calcDiamond:calcDiamond,zone:zone,_S:S,_F:F};
+})();
 </script>
 </body>
 </html>
