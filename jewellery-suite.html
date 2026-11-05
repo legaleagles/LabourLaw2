@@ -73,6 +73,8 @@ nav{background:var(--maroon);padding:12px 16px;display:flex;align-items:center;j
 .tab[data-m=gold] .gem{background:radial-gradient(circle at 30% 30%,#FFF3B0,#D4A017 60%,#8B6914)}
 .tab[data-m=silver] .gem{background:radial-gradient(circle at 30% 30%,#fff,#CBD5E1 60%,#64748B)}
 .tab[data-m=diamond] .gem{background:conic-gradient(from 45deg,#C4B5FD,#7C3AED,#EDE9FE,#8B5CF6,#C4B5FD);border-radius:3px;transform:rotate(45deg) scale(.8)}
+.tab[data-m=trend] .gem{background:none;border-radius:0;font-size:17px;line-height:18px;color:var(--maroon);font-weight:800}
+.tab[data-m=trend] .gem::before{content:'⇅'}
 .tab.on{background:#fff;color:var(--ink);box-shadow:0 2px 10px rgba(0,0,0,.12)}
 .modes{display:flex;gap:8px;margin-bottom:12px}
 .mode{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink-soft)}
@@ -232,7 +234,9 @@ html:not([lang=en]) *{letter-spacing:0!important;text-transform:none!important}
     <button class="tab on" role="tab" data-m="gold"><span class="gem"></span><span data-i="gold">Gold</span></button>
     <button class="tab" role="tab" data-m="silver"><span class="gem"></span><span data-i="silver">Silver</span></button>
     <button class="tab" role="tab" data-m="diamond"><span class="gem"></span><span data-i="diamond">Diamond</span></button>
+    <button class="tab" role="tab" data-m="trend"><span class="gem" aria-hidden="true"></span><span data-i="trendTab">Direction</span></button>
   </div>
+  <div id="toolArea">
   <div class="modes">
     <button class="mode on" data-mode="calc" data-i="modeCalc">Calculator</button>
     <button class="mode" data-mode="check" data-i="modeCheck">Check a bill (AI)</button>
@@ -264,6 +268,12 @@ html:not([lang=en]) *{letter-spacing:0!important;text-transform:none!important}
 
   <section class="acc"><button data-acc="ck"><span data-i="ckTitle">Before you pay: checklist</span><span>▾</span></button><div id="ck" class="hidden"></div></section>
   <section class="acc"><button data-acc="gl"><span data-i="glTitle">What do these terms mean?</span><span>▾</span></button><div id="gl" class="hidden"></div></section>
+  </div>
+
+  <!-- PRICE DIRECTION -->
+  <div id="trendPane" class="hidden">
+    <div class="frame-wrap" id="fw-trend"><div class="frame-load" data-i="loadingTrend">Loading today's direction…</div><iframe id="fr-trend" data-src="metal-direction.html?embed=1" title="Gold and silver price direction"></iframe></div>
+  </div>
 </main>
 
 <footer>
@@ -307,7 +317,7 @@ var PF={24:1,22:.916,20:.833,18:.75,14:.585,999:1,925:.925,800:.8};
 
 /* ---------------- translations ---------------- */
 var T={
-en:{plansLink:"Joining a jeweller's monthly scheme? See your real gain, the risks and common shop tricks →",est:'est.',eg:'e.g.',seePrice:'See price',back:'← Calculators',navTitle:'Jewellery Suite',heroTitle:'Know the real price before you pay',heroSub:'Gold, silver and diamond jewellery, itemised to the rupee, with making charges, wastage and GST made visible.',
+en:{trendTab:'Direction',loadingTrend:"Loading today's direction…",plansLink:"Joining a jeweller's monthly scheme? See your real gain, the risks and common shop tricks →",est:'est.',eg:'e.g.',seePrice:'See price',back:'← Calculators',navTitle:'Jewellery Suite',heroTitle:'Know the real price before you pay',heroSub:'Gold, silver and diamond jewellery, itemised to the rupee, with making charges, wastage and GST made visible.',
 rateTitle:"Today's rate",city:'City',refresh:'Refresh',gold:'Gold',silver:'Silver',diamond:'Diamond',modeCalc:'Calculator',modeCheck:'Check a bill (AI)',
 checkNote:"Photograph the jeweller's estimate or bill. The AI reads it and flags making, wastage and stone charges that look high. Your photo is analysed and not kept.",loadingChecker:'Loading checker…',
 quotesTitle:'My saved quotes',schemeLink:'Thinking of a gold saving scheme? See your options and check a scheme →',ckTitle:'Before you pay: checklist',glTitle:'What do these terms mean?',
@@ -328,7 +338,7 @@ none:'No quotes yet. Save a calculation to compare jewellers side by side.',cmpB
 ckItems:['Get the day\'s rate in writing and match it with today\'s published rate.','Check purity: BIS hallmark logo, purity grade and the 6-character HUID.','Weigh it in front of you and note gross and net weight.','Confirm making is charged on net gold weight only, not on stones.','Ask if wastage is charged on top of making. Many shops drop one.','Get an itemised bill with GST shown separately.','Ask about buyback, exchange value and any deduction in writing.','For diamonds, get the IGI or GIA certificate and verify it online.','Pay by UPI or bank transfer and keep the bill and certificate safe.'],
 glItems:[['Making charge','The jeweller\'s fee for crafting. Charged as % of metal value or ₹ per gram.'],['Wastage','Metal said to be lost while crafting. It is often another way of charging for labour.'],['Hallmark / HUID','BIS purity mark and a unique 6-character ID that proves what you bought.'],['GST','3% on gold and silver jewellery value, 1.5% on cut diamonds.'],['Net weight','Weight of the metal alone, without stones, beads or pearls.'],['Purity','24K is pure gold. 22K is 91.6% gold. Silver 999 is pure, 925 is sterling.']],
 fbCats:{bug:'Something is broken',wrong_price:'Wrong price',idea:'Idea',praise:'Loved it',other:'Other'},fbPick:'Please pick a star rating.',fbSending:'Sending…',fbThanks:'Thank you! Your feedback reached us.',fbFail:'Could not send. Please try again.',fbBadge:'rated by {n} people'},
-te:{plansLink:'నగల దుకాణం నెలవారీ స్కీమ్‌లో చేరుతున్నారా? అసలు లాభం, ప్రమాదాలు, దుకాణాల సాధారణ మోసాలు చూడండి →',est:'అంచనా',eg:'ఉదా.',seePrice:'ధర చూడండి',back:'← కాల్కులేటర్లు',navTitle:'నగల సూట్',heroTitle:'చెల్లించే ముందే అసలు ధర తెలుసుకోండి',heroSub:'బంగారం, వెండి, వజ్రాల నగలు రూపాయి వరకు వివరంగా, తరుగు, వేస్టేజ్, GST స్పష్టంగా.',
+te:{trendTab:'దిశ',loadingTrend:'ఈరోజు దిశ లోడ్ అవుతోంది…',plansLink:'నగల దుకాణం నెలవారీ స్కీమ్‌లో చేరుతున్నారా? అసలు లాభం, ప్రమాదాలు, దుకాణాల సాధారణ మోసాలు చూడండి →',est:'అంచనా',eg:'ఉదా.',seePrice:'ధర చూడండి',back:'← కాల్కులేటర్లు',navTitle:'నగల సూట్',heroTitle:'చెల్లించే ముందే అసలు ధర తెలుసుకోండి',heroSub:'బంగారం, వెండి, వజ్రాల నగలు రూపాయి వరకు వివరంగా, తరుగు, వేస్టేజ్, GST స్పష్టంగా.',
 rateTitle:'ఈ రోజు ధర',city:'నగరం',refresh:'రిఫ్రెష్',gold:'బంగారం',silver:'వెండి',diamond:'వజ్రం',modeCalc:'కాల్కులేటర్',modeCheck:'బిల్లు తనిఖీ (AI)',
 checkNote:'నగల దుకాణం ఎస్టిమేట్ లేదా బిల్లు ఫోటో తీయండి. AI చదివి ఎక్కువగా కనిపించే మేకింగ్, వేస్టేజ్, రాళ్ల ఛార్జీలను చూపుతుంది. మీ ఫోటో భద్రపరచబడదు.',loadingChecker:'లోడ్ అవుతోంది…',
 quotesTitle:'నేను సేవ్ చేసిన కోట్లు',schemeLink:'బంగారం పొదుపు పథకం ఆలోచనలో ఉన్నారా? ఎంపికలు చూడండి →',ckTitle:'చెల్లించే ముందు: చెక్‌లిస్ట్',glTitle:'ఈ పదాల అర్థం ఏమిటి?',
@@ -349,7 +359,7 @@ none:'ఇంకా కోట్లు లేవు. దుకాణాలను 
 ckItems:['ఆ రోజు రేటును రాతపూర్వకంగా తీసుకుని ప్రచురిత రేటుతో సరిచూడండి.','స్వచ్ఛత చూడండి: BIS హాల్‌మార్క్ గుర్తు, స్వచ్ఛత గ్రేడ్, 6 అక్షరాల HUID.','మీ ముందే తూకం వేయించి స్థూల, నికర బరువు నోట్ చేయండి.','మేకింగ్ నికర బంగారం బరువుపైనే వేశారా, రాళ్లపై కాదా అని నిర్ధారించండి.','మేకింగ్‌తో పాటు వేస్టేజ్ కూడా వేస్తున్నారా అడగండి. చాలా దుకాణాలు ఒకటి తీసేస్తాయి.','GST విడిగా చూపే వివరమైన బిల్లు తీసుకోండి.','బైబ్యాక్, మార్పిడి విలువ, తగ్గింపు గురించి రాతపూర్వకంగా అడగండి.','వజ్రాలకు IGI లేదా GIA సర్టిఫికెట్ తీసుకుని ఆన్‌లైన్‌లో సరిచూడండి.','UPI లేదా బ్యాంక్ బదిలీ ద్వారా చెల్లించి బిల్లు, సర్టిఫికెట్ భద్రపరచండి.'],
 glItems:[['మేకింగ్ ఛార్జీ','నగ తయారీకి దుకాణం తీసుకునే రుసుము. లోహ విలువలో % లేదా గ్రాముకు ₹.'],['వేస్టేజ్ (తరుగు)','తయారీలో పోతుందని చెప్పే లోహం. తరచూ ఇది కూడా కూలీ వసూలుకు మరో రూపమే.'],['హాల్‌మార్క్ / HUID','స్వచ్ఛతను చూపే BIS గుర్తు, 6 అక్షరాల ప్రత్యేక ID.'],['GST','బంగారం, వెండి నగలపై 3%, కట్ చేసిన వజ్రాలపై 1.5%.'],['నికర బరువు','రాళ్లు, పూసలు లేకుండా లోహం బరువు మాత్రమే.'],['స్వచ్ఛత','24K స్వచ్ఛ బంగారం. 22K అంటే 91.6% బంగారం. వెండి 999 స్వచ్ఛం, 925 స్టెర్లింగ్.']],
 fbCats:{bug:'ఏదో పనిచేయడం లేదు',wrong_price:'ధర తప్పు',idea:'ఆలోచన',praise:'చాలా నచ్చింది',other:'ఇతరం'},fbPick:'దయచేసి స్టార్ రేటింగ్ ఇవ్వండి.',fbSending:'పంపుతున్నాం…',fbThanks:'ధన్యవాదాలు! మీ అభిప్రాయం మాకు చేరింది.',fbFail:'పంపలేకపోయాం. మళ్లీ ప్రయత్నించండి.',fbBadge:'{n} మంది రేట్ చేశారు'},
-hi:{plansLink:'ज्वेलर की मासिक स्कीम में जुड़ रहे हैं? असली फ़ायदा, जोखिम और आम चालें देखें →',est:'अनुमान',eg:'जैसे',seePrice:'कीमत देखें',back:'← कैलकुलेटर',navTitle:'ज्वेलरी सूट',heroTitle:'पैसे देने से पहले असली कीमत जानें',heroSub:'सोने, चाँदी और हीरे के गहने रुपये तक की जानकारी के साथ, मेकिंग, वेस्टेज और GST साफ़ दिखाते हुए।',
+hi:{trendTab:'दिशा',loadingTrend:'आज की दिशा लोड हो रही है…',plansLink:'ज्वेलर की मासिक स्कीम में जुड़ रहे हैं? असली फ़ायदा, जोखिम और आम चालें देखें →',est:'अनुमान',eg:'जैसे',seePrice:'कीमत देखें',back:'← कैलकुलेटर',navTitle:'ज्वेलरी सूट',heroTitle:'पैसे देने से पहले असली कीमत जानें',heroSub:'सोने, चाँदी और हीरे के गहने रुपये तक की जानकारी के साथ, मेकिंग, वेस्टेज और GST साफ़ दिखाते हुए।',
 rateTitle:'आज का भाव',city:'शहर',refresh:'रिफ्रेश',gold:'सोना',silver:'चाँदी',diamond:'हीरा',modeCalc:'कैलकुलेटर',modeCheck:'बिल जाँचें (AI)',
 checkNote:'ज्वेलर के एस्टिमेट या बिल की फ़ोटो लें। AI उसे पढ़कर ज़्यादा लगने वाले मेकिंग, वेस्टेज और स्टोन चार्ज बताता है। आपकी फ़ोटो सहेजी नहीं जाती।',loadingChecker:'लोड हो रहा है…',
 quotesTitle:'मेरे सहेजे हुए कोट',schemeLink:'सोने की बचत योजना सोच रहे हैं? विकल्प देखें →',ckTitle:'पैसे देने से पहले: चेकलिस्ट',glTitle:'इन शब्दों का मतलब क्या है?',
@@ -642,7 +652,7 @@ function showMode(){
 }
 function sizeFrame(fr){try{var d=fr.contentWindow.document,h=Math.max(d.body.scrollHeight,d.documentElement.scrollHeight);if(h>200)fr.style.height=(h+40)+'px'}catch(e){}}
 window.addEventListener('message',function(ev){
-  if(ev.data&&ev.data.type==='goldCheckerHeight'){['gold','silver','diamond'].forEach(function(m){var f=$('fr-'+m);if(f&&f.contentWindow===ev.source)f.style.height=(ev.data.height+40)+'px'})}
+  if(ev.data&&ev.data.type==='goldCheckerHeight'){['gold','silver','diamond','trend'].forEach(function(m){var f=$('fr-'+m);if(f&&f.contentWindow===ev.source)f.style.height=(ev.data.height+40)+'px'})}
 });
 
 /* ---------------- feedback ---------------- */
@@ -681,13 +691,21 @@ function applyLang(){
   document.querySelectorAll('.langs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===lang)});
   var c=$('city'),cur=S.city;c.innerHTML=CITIES.map(function(x){return '<option value="'+x+'"'+(x===cur?' selected':'')+'>'+x.charAt(0).toUpperCase()+x.slice(1)+'</option>'}).join('');
   renderStatic();buildFeedbackUI();renderQuotes();paintChips();refreshAll();loadBadge();
-  ['gold','silver','diamond'].forEach(function(m){var f=$('fr-'+m);if(f&&f.getAttribute('src')&&f.contentWindow)try{f.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}});
+  ['gold','silver','diamond','trend'].forEach(function(m){var f=$('fr-'+m);if(f&&f.getAttribute('src')&&f.contentWindow)try{f.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}});
 }
 function refreshAll(){renderForm();renderResult()}
 var tAnalytics={};
 function track(){if(!tAnalytics[S.metal]&&lastR){tAnalytics[S.metal]=1;try{gtag('event','jewellery_calc',{metal:S.metal})}catch(e){}}}
-function setMetal(m){S.metal=m;paintChips();document.body.dataset.metal=m;document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});showMode();refreshAll();syncUrl()}
-function syncUrl(){try{var u=new URL(location.href);u.searchParams.set('m',S.metal);u.searchParams.set('mode',S.mode);history.replaceState(null,'',u)}catch(e){}}
+function showView(){
+  var tr=S.view==='trend';
+  $('toolArea').classList.toggle('hidden',tr);$('trendPane').classList.toggle('hidden',!tr);
+  if(tr){$('miniTotal').classList.add('hidden');
+    var fr=$('fr-trend');if(!fr.getAttribute('src')){fr.setAttribute('src',fr.dataset.src+'&lang='+lang);fr.onload=function(){fr.parentNode.querySelector('.frame-load').classList.add('hidden');sizeFrame(fr);try{fr.contentWindow.postMessage({type:'setLang',lang:lang},'*')}catch(e){}}}
+    try{if(!tAnalytics.trend){tAnalytics.trend=1;gtag('event','jewellery_direction_tab')}}catch(e){}}
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',tr?b.dataset.m==='trend':b.dataset.m===S.metal)});
+}
+function setMetal(m){if(m==='trend'){S.view='trend';showView();syncUrl();return}S.view=null;showView();S.metal=m;paintChips();document.body.dataset.metal=m;document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});showMode();refreshAll();syncUrl()}
+function syncUrl(){try{var u=new URL(location.href);u.searchParams.set('m',S.view==='trend'?'trend':S.metal);u.searchParams.set('mode',S.mode);history.replaceState(null,'',u)}catch(e){}}
 
 /* ---------------- events ---------------- */
 var deb;function later(fn){clearTimeout(deb);deb=setTimeout(fn,120)}
@@ -742,12 +760,12 @@ $('fbMsg').addEventListener('input',function(){$('fbCnt').textContent=this.value
 /* ---------------- init ---------------- */
 (function init(){
   var q=new URLSearchParams(location.search);
-  var m=q.get('m');if(m==='gold'||m==='silver'||m==='diamond')S.metal=m;
+  var m=q.get('m');if(m==='gold'||m==='silver'||m==='diamond')S.metal=m;if(m==='trend')S.view='trend';
   if(q.get('mode')==='check')S.mode='check';
   var c=store('jsCity');if(c&&CITIES.indexOf(c)>-1)S.city=c;
   document.body.dataset.metal=S.metal;
   document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.m===S.metal)});
-  applyLang();showMode();loadRates(false);
+  applyLang();showMode();showView();loadRates(false);
 })();
 window.JW={calcGold:calcGold,calcSilver:calcSilver,calcDiamond:calcDiamond,zone:zone,_S:S,_F:F};
 })();
