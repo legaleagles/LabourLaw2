@@ -82,6 +82,46 @@ html:not([lang=en]) .card-t{letter-spacing:0;text-transform:none;font-size:12.5p
 .tip b{display:block;font-size:15px;margin-bottom:6px}
 .tip p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
 .tip a{display:inline-block;margin-top:8px;font-weight:800;color:var(--maroon);font-size:14px}
+/* metal switch + chart */
+.mseg{display:flex;padding:5px;gap:4px;background:rgba(0,0,0,.06);border-radius:14px;margin-bottom:12px}
+.mseg button{flex:1;padding:11px 6px;border:none;border-radius:10px;background:transparent;font-size:15px;font-weight:800;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:8px}
+.mseg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.mseg .gem{width:16px;height:16px;border-radius:50%}
+.mseg [data-k=gold] .gem{background:radial-gradient(circle at 30% 30%,#FFF3B0,#D4A017 60%,#8B6914)}
+.mseg [data-k=silver] .gem{background:radial-gradient(circle at 30% 30%,#fff,#CBD5E1 60%,#64748B)}
+.pc{padding:16px 16px 12px}
+.pc-l{font-size:12px;font-weight:700;color:var(--muted)}
+.pc-p{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;line-height:1.1;margin:2px 0 4px;color:var(--ink)}
+.pc-p small{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--muted)}
+.wk{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:800;padding:4px 10px;border-radius:12px}
+.wk.u{background:var(--up-bg);color:#065F46}.wk.d{background:var(--down-bg);color:#991B1B}.wk.f{background:#F3F4F6;color:var(--muted)}
+.vd{display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:14px;font-size:16.5px;font-weight:800;line-height:1.3}
+.vd i{font-style:normal;font-size:26px;line-height:1}
+.vd.up{background:var(--up-bg);color:#065F46}.vd.down{background:var(--down-bg);color:#991B1B}.vd.mixed{background:var(--mix-bg);color:#92400E}
+.vd small{display:block;font-size:12px;font-weight:600;opacity:.85;margin-top:2px}
+.chart{position:relative;margin:10px -6px 0}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:'DM Sans',sans-serif}
+.ctip{min-height:20px;font-size:12.5px;font-weight:700;color:var(--ink-soft);text-align:center;margin-top:2px}
+.lg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted);margin-top:6px}
+.lg span{display:inline-flex;align-items:center;gap:5px}
+.lg i{display:inline-block;width:18px;height:0;border-top:3px solid var(--gold-deep)}
+.lg i.d{border-top-style:dashed}
+.lg i.b{height:10px;border:none;border-radius:3px;opacity:.5}
+.rng{font-size:13.5px;line-height:1.55;margin-top:10px;color:var(--ink-soft)}
+.rng b{color:var(--ink)}
+.surp{display:flex;gap:8px;margin-top:10px;padding:10px 12px;border-radius:12px;background:#FFF7ED;border:1px solid #FED7AA;font-size:12.5px;line-height:1.5;color:#7C2D12}
+/* factors */
+.fc{display:grid;grid-template-columns:44px 1fr;gap:4px 12px;padding:13px 0;border-bottom:1px solid #F1ECDD}
+.fc:last-child{border:none}
+.fc .ic{grid-row:span 3;width:44px;height:44px;border-radius:12px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-size:22px}
+.fc .hd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.fc .nm{font-size:15px;font-weight:800}
+.fc .st{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:10px}
+.fc .st.p{background:var(--up-bg);color:#065F46}.fc .st.m{background:var(--down-bg);color:#991B1B}.fc .st.n{background:#F3F4F6;color:var(--muted)}
+.fc .hw{font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.fc .wf{font-size:12px;line-height:1.45;color:var(--muted)}
+.fc .wf b{color:var(--maroon)}
 /* read */
 .headline{font-family:'Playfair Display',serif;font-size:19px;line-height:1.3;margin-bottom:8px}
 html:not([lang=en]) .headline{font-family:inherit;font-weight:700;font-size:17px}
@@ -146,21 +186,42 @@ html:not([lang=en]) .headline{font-family:inherit;font-weight:700;font-size:17px
 <main class="wrap">
   <div class="intro" data-i="intro">Nobody can predict tomorrow's price exactly. What we can see is which forces are pushing up or down today. Use this to understand the market, not to time a purchase.</div>
 
-  <div id="simple" aria-live="polite"><div class="sm"><div class="skel"></div><div class="skel" style="width:70%"></div></div><div class="sm"><div class="skel"></div><div class="skel" style="width:70%"></div></div></div>
-  <button class="bigbtn listen hidden" id="listenBtn" data-i="listen">🔊 Listen</button>
-  <div class="tip"><b data-i="tipT">💡 Buying jewellery soon?</b><p data-i="tip"></p><a href="jewellery-suite.html?m=gold" target="_top" data-i="tipLink">Check making charges →</a></div>
-  <button class="bigbtn detbtn" id="detBtn" aria-expanded="false" aria-controls="details" data-i="showDet">📊 See full details</button>
+  <div class="mseg" role="tablist" id="mseg"><button data-k="gold" class="on" role="tab"><span class="gem"></span><span data-i="gold">Gold</span></button><button data-k="silver" role="tab"><span class="gem"></span><span data-i="silver">Silver</span></button></div>
 
-  <div id="details" class="hidden">
-  <div class="leans" id="leans"></div>
-  <section class="card" id="readCard" aria-live="polite">
-    <div class="card-t"><span data-i="readT">Today's read</span></div>
-    <div id="read"><div class="skel"></div><div class="skel" style="width:80%"></div><div class="skel" style="width:60%"></div></div>
+  <section class="card pc" id="chartCard" aria-live="polite">
+    <div id="pcTop"><div class="skel" style="width:50%"></div><div class="skel" style="height:30px;width:60%"></div></div>
+    <div id="verdict"></div>
+    <div class="chart" id="chart"><div class="skel" style="height:150px"></div></div>
+    <div class="ctip" id="ctip"></div>
+    <div class="lg" id="legend"></div>
+    <div class="rng" id="range"></div>
+    <div class="surp"><span aria-hidden="true">⚠️</span><span data-i="surprise"></span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-t"><span data-i="whyDirT">Why this direction</span></div>
+    <div id="simple"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-t"><span data-i="facT">Key factors to watch</span></div>
+    <div id="factors"></div>
   </section>
 
   <section class="card">
     <div class="card-t"><span data-i="evT">Coming up: if this, then that</span></div>
     <div id="events"><div class="skel"></div><div class="skel" style="width:70%"></div></div>
+  </section>
+
+  <button class="bigbtn listen hidden" id="listenBtn" data-i="listen">🔊 Listen</button>
+  <div class="tip"><b data-i="tipT">💡 Buying jewellery soon?</b><p data-i="tip"></p><a href="jewellery-suite.html?m=gold" target="_top" data-i="tipLink">Check making charges →</a></div>
+  <button class="bigbtn detbtn" id="detBtn" aria-expanded="false" aria-controls="details" data-i="showDet">📊 See full details</button>
+
+  <div id="details" class="hidden">
+  <div class="leans hidden" id="leans"></div>
+  <section class="card" id="readCard" aria-live="polite">
+    <div class="card-t"><span data-i="readT">Today's read</span></div>
+    <div id="read"><div class="skel"></div><div class="skel" style="width:80%"></div><div class="skel" style="width:60%"></div></div>
   </section>
 
   <section class="card">
@@ -189,10 +250,21 @@ var lang='en';try{var sl=localStorage.getItem('lsLang');if(['en','te','hi'].inde
 var q=new URLSearchParams(location.search);
 var EMBED=q.get('embed')==='1';
 if(['en','te','hi'].indexOf(q.get('lang'))>-1)lang=q.get('lang');
-var D=null,loading=true,genTried=false,netErr=false;
+var D=null,loading=true,genTried=false,netErr=false,RATE=null,CITY='hyderabad',MET='gold';
+try{var jc=JSON.parse(localStorage.getItem('jsCity'));if(jc&&/^[a-z ]+$/.test(jc))CITY=jc}catch(e){}
+try{var mm=localStorage.getItem('mdMetal');if(mm==='silver')MET='silver'}catch(e){}
 
 var T={
-en:{intro:"No one can know tomorrow's price. Here are the signs pushing it up or down today.",n_gold:'gold',n_silver:'silver',
+en:{steady:'Steady',perG22:'22K gold · per gram · {c}',perKg:'Silver · per kg · {c}',approx:' (approx.)',wk:'{s} in the last 7 days',
+v_up:'Next 2 days: likely UP',v_down:'Next 2 days: likely DOWN',v_mixed:'Next 2 days: no clear direction',v_low:"Low confidence · based on today's signs",v_medium:"Medium confidence · based on today's signs",
+lgPast:'Last 7 days',lgNext:'Next 2 days direction',lgBand:'Usual range',rm_gold:'22K gold',rm_silver:'silver',un_gold:'per gram',un_silver:'per kg',
+range:'In 2 days, {m} usually stays between <b>{a}</b> and <b>{b}</b> {u}.',rangeNote:'This is how much it normally moves. The arrow shows which side is more likely.',
+surprise:'Surprises can change this any time: war news, a big US report or a sharp rupee move. Use it to plan, not as a promise.',
+whyDirT:'Why this direction',facT:'Key factors to watch',today:'Today',tapHint:'Tap a point to see the price',wfL:'Watch:',
+f_season:'Festival & wedding season',
+hw_dxy:'When the dollar gets stronger, gold and silver usually get cheaper.',hw_us10y:'When US interest rates go up, gold usually goes down, because savings start paying more.',hw_usdinr:"When the rupee gets weaker, gold and silver cost more in India, even if world prices don't move.",hw_vix:'When the world gets worried (war, crisis), people buy gold for safety, so it goes up.',hw_copper:'Silver is used in solar panels and phones. When factories are busy, silver usually rises.',hw_season:'In festival and wedding months more people buy in India, so shops hold prices higher.',
+wf_dxy:'US jobs and inflation reports (evenings, India time)',wf_us10y:'US Federal Reserve meetings and speeches',wf_usdinr:'RBI news and crude oil prices',wf_vix:'War, election or banking-crisis headlines',wf_copper:'China factory news, solar demand',wf_season:'Dhanteras, Akshaya Tritiya, wedding dates',
+st_dxy_u:'Stronger',st_dxy_d:'Weaker',st_us10y_u:'Rising',st_us10y_d:'Falling',st_usdinr_u:'Rupee weaker',st_usdinr_d:'Rupee stronger',st_vix_u:'Fear rising',st_vix_d:'Fear easing',st_copper_u:'Rising',st_copper_d:'Falling',st_season_u:'Busy season now',st_season_d:'Quiet season',intro:"No one can know tomorrow's price. Here are the signs pushing it up or down today.",n_gold:'gold',n_silver:'silver',
 l_up:'More signs say {m} may go <b>UP</b> in the next day or two.',l_down:'More signs say {m} may come <b>DOWN</b> in the next day or two.',l_mixed:'Signs are <b>mixed</b>. {m} may stay about the same or move either way.',
 notPromise:'This is only a sign, not a promise.',pullUp:'⬆ Pushing UP',pullDown:'⬇ Pushing DOWN',nothing:'Nothing big',
 s_dxy_p:'💵 Dollar weak',s_dxy_m:'💵 Dollar strong',s_us10y_p:'🏦 US interest falling',s_us10y_m:'🏦 US interest rising',s_usdinr_p:'₹ Rupee weak',s_usdinr_m:'₹ Rupee strong',s_vix_p:'😟 World is worried',s_vix_m:'😌 World is calm',s_copper_p:'🏭 Factories buying',s_copper_m:'🏭 Factories slow',s_trend_p:'📈 Rising lately',s_trend_m:'📉 Falling lately',
@@ -219,7 +291,16 @@ why:["After a price moves, we know which news came out, so explaining it is easy
 "Only surprises move the price: inflation data hotter than expected, a sudden war headline, a central bank doing something unexpected. Surprises cannot be known in advance.",
 "So for tomorrow, direction is close to a coin toss even for professionals. Over weeks and months the drivers matter more and the noise matters less.",
 "What you can do: know which forces are pushing today, and what each scheduled event could do. Then the news will make sense to you as it happens."]},
-te:{intro:'రేపటి ధర ఎవరికీ తెలియదు. ఈరోజు ధరను పైకి లేదా కిందికి నెడుతున్న సూచనలు ఇవి.',n_gold:'బంగారం',n_silver:'వెండి',
+te:{steady:'నిలకడగా',perG22:'22K బంగారం · గ్రాముకు · {c}',perKg:'వెండి · కిలోకు · {c}',approx:' (సుమారు)',wk:'గత 7 రోజుల్లో {s}',
+v_up:'రాబోయే 2 రోజులు: పెరిగే అవకాశం',v_down:'రాబోయే 2 రోజులు: తగ్గే అవకాశం',v_mixed:'రాబోయే 2 రోజులు: స్పష్టమైన దిశ లేదు',v_low:'తక్కువ నమ్మకం · ఈరోజు సూచనల ఆధారంగా',v_medium:'మధ్యస్థ నమ్మకం · ఈరోజు సూచనల ఆధారంగా',
+lgPast:'గత 7 రోజులు',lgNext:'రాబోయే 2 రోజుల దిశ',lgBand:'సాధారణ పరిధి',rm_gold:'22K బంగారం',rm_silver:'వెండి',un_gold:'గ్రాముకు',un_silver:'కిలోకు',
+range:'2 రోజుల్లో {m} ధర సాధారణంగా <b>{a}</b> నుంచి <b>{b}</b> మధ్య ({u}) ఉంటుంది.',rangeNote:'సాధారణంగా ధర ఇంత కదులుతుంది. ఏ వైపు ఎక్కువ అవకాశమో బాణం చూపిస్తుంది.',
+surprise:'అనుకోని సంఘటనలు దీన్ని ఎప్పుడైనా మార్చవచ్చు: యుద్ధ వార్తలు, అమెరికా పెద్ద నివేదిక లేదా రూపాయి హఠాత్ కదలిక. ప్లాన్ చేసుకోవడానికి వాడండి, హామీగా కాదు.',
+whyDirT:'ఈ దిశ ఎందుకు',facT:'గమనించాల్సిన ముఖ్య అంశాలు',today:'ఈరోజు',tapHint:'ధర చూడటానికి చుక్కను తాకండి',wfL:'గమనించండి:',
+f_season:'పండుగ, పెళ్లిళ్ల సీజన్',
+hw_dxy:'డాలర్ బలపడితే బంగారం, వెండి సాధారణంగా చౌకవుతాయి.',hw_us10y:'అమెరికా వడ్డీ రేట్లు పెరిగితే బంగారం సాధారణంగా తగ్గుతుంది, ఎందుకంటే డిపాజిట్లపై ఎక్కువ వస్తుంది.',hw_usdinr:'రూపాయి బలహీనపడితే ప్రపంచ ధర మారకపోయినా భారత్‌లో బంగారం, వెండి ఖరీదవుతాయి.',hw_vix:'ప్రపంచంలో భయం పెరిగితే (యుద్ధం, సంక్షోభం) ప్రజలు భద్రత కోసం బంగారం కొంటారు, ధర పెరుగుతుంది.',hw_copper:'వెండిని సోలార్ ప్యానెళ్లు, ఫోన్లలో వాడతారు. పరిశ్రమలు బిజీగా ఉంటే వెండి సాధారణంగా పెరుగుతుంది.',hw_season:'పండుగ, పెళ్లిళ్ల నెలల్లో ఎక్కువ మంది కొంటారు, అందుకే షాపులు ధరలు ఎక్కువగా ఉంచుతాయి.',
+wf_dxy:'అమెరికా ఉద్యోగ, ద్రవ్యోల్బణ నివేదికలు (భారత కాలమానం సాయంత్రం)',wf_us10y:'అమెరికా ఫెడరల్ రిజర్వ్ సమావేశాలు, ప్రసంగాలు',wf_usdinr:'RBI వార్తలు, ముడి చమురు ధరలు',wf_vix:'యుద్ధం, ఎన్నికలు, బ్యాంకింగ్ సంక్షోభ వార్తలు',wf_copper:'చైనా పరిశ్రమల వార్తలు, సోలార్ డిమాండ్',wf_season:'ధనత్రయోదశి, అక్షయ తృతీయ, ముహూర్తాలు',
+st_dxy_u:'బలపడింది',st_dxy_d:'బలహీనపడింది',st_us10y_u:'పెరుగుతోంది',st_us10y_d:'తగ్గుతోంది',st_usdinr_u:'రూపాయి బలహీనం',st_usdinr_d:'రూపాయి బలపడింది',st_vix_u:'భయం పెరుగుతోంది',st_vix_d:'భయం తగ్గుతోంది',st_copper_u:'పెరుగుతోంది',st_copper_d:'తగ్గుతోంది',st_season_u:'ఇప్పుడు బిజీ సీజన్',st_season_d:'ప్రశాంత సీజన్',intro:'రేపటి ధర ఎవరికీ తెలియదు. ఈరోజు ధరను పైకి లేదా కిందికి నెడుతున్న సూచనలు ఇవి.',n_gold:'బంగారం',n_silver:'వెండి',
 l_up:'{m} ధర రాబోయే ఒకటి రెండు రోజుల్లో <b>పెరిగే</b> సూచనలు ఎక్కువగా ఉన్నాయి.',l_down:'{m} ధర రాబోయే ఒకటి రెండు రోజుల్లో <b>తగ్గే</b> సూచనలు ఎక్కువగా ఉన్నాయి.',l_mixed:'సూచనలు <b>రెండు వైపులా</b> ఉన్నాయి. {m} ధర దాదాపు అలాగే ఉండవచ్చు లేదా ఏ వైపైనా కదలవచ్చు.',
 notPromise:'ఇది కేవలం సూచన మాత్రమే, హామీ కాదు.',pullUp:'⬆ పైకి నెడుతున్నవి',pullDown:'⬇ కిందికి నెడుతున్నవి',nothing:'పెద్దగా ఏమీ లేదు',
 s_dxy_p:'💵 డాలర్ బలహీనం',s_dxy_m:'💵 డాలర్ బలంగా ఉంది',s_us10y_p:'🏦 అమెరికా వడ్డీ తగ్గుతోంది',s_us10y_m:'🏦 అమెరికా వడ్డీ పెరుగుతోంది',s_usdinr_p:'₹ రూపాయి బలహీనం',s_usdinr_m:'₹ రూపాయి బలంగా ఉంది',s_vix_p:'😟 ప్రపంచంలో భయం',s_vix_m:'😌 ప్రపంచం ప్రశాంతం',s_copper_p:'🏭 పరిశ్రమలు కొంటున్నాయి',s_copper_m:'🏭 పరిశ్రమలు నెమ్మదిగా',s_trend_p:'📈 ఇటీవల పెరుగుతోంది',s_trend_m:'📉 ఇటీవల తగ్గుతోంది',
@@ -246,7 +327,16 @@ why:['ధర కదిలిన తర్వాత ఏ వార్త వచ్
 'ఊహించనివి మాత్రమే ధరను కదిలిస్తాయి: అంచనా కంటే ఎక్కువ ద్రవ్యోల్బణం, హఠాత్తుగా యుద్ధ వార్త, సెంట్రల్ బ్యాంక్ ఊహించని నిర్ణయం. వీటిని ముందే తెలుసుకోలేం.',
 'అందుకే రేపటి దిశ నిపుణులకు కూడా దాదాపు బొమ్మా-బొరుసే. వారాలు, నెలల్లో మాత్రం కారణాల ప్రభావం ఎక్కువ, హడావుడి తక్కువ.',
 'మీరు చేయగలిగింది: ఈరోజు ఏ శక్తులు నెడుతున్నాయో, ప్రతి షెడ్యూల్ ఈవెంట్ ఏం చేయగలదో తెలుసుకోవడం. అప్పుడు వార్తలు వచ్చినప్పుడు మీకు అర్థమవుతాయి.']},
-hi:{intro:'कल का दाम कोई नहीं जान सकता। आज दाम को ऊपर या नीचे धकेलने वाले संकेत ये हैं।',n_gold:'सोने',n_silver:'चाँदी',
+hi:{steady:'स्थिर',perG22:'22K सोना · प्रति ग्राम · {c}',perKg:'चाँदी · प्रति किलो · {c}',approx:' (लगभग)',wk:'पिछले 7 दिनों में {s}',
+v_up:'अगले 2 दिन: बढ़ने की संभावना',v_down:'अगले 2 दिन: घटने की संभावना',v_mixed:'अगले 2 दिन: कोई साफ़ दिशा नहीं',v_low:'कम भरोसा · आज के संकेतों पर आधारित',v_medium:'मध्यम भरोसा · आज के संकेतों पर आधारित',
+lgPast:'पिछले 7 दिन',lgNext:'अगले 2 दिन की दिशा',lgBand:'सामान्य दायरा',rm_gold:'22K सोने',rm_silver:'चाँदी',un_gold:'प्रति ग्राम',un_silver:'प्रति किलो',
+range:'2 दिन में {m} का दाम आम तौर पर <b>{a}</b> से <b>{b}</b> ({u}) के बीच रहता है।',rangeNote:'आम तौर पर दाम इतना ही हिलता है। तीर बताता है कि किस ओर ज़्यादा संभावना है।',
+surprise:'अचानक की घटनाएँ इसे कभी भी बदल सकती हैं: युद्ध की ख़बर, अमेरिका की बड़ी रिपोर्ट या रुपये में तेज़ बदलाव। इसे योजना के लिए इस्तेमाल करें, गारंटी के रूप में नहीं।',
+whyDirT:'यह दिशा क्यों',facT:'ध्यान रखने वाली मुख्य बातें',today:'आज',tapHint:'दाम देखने के लिए बिंदु छुएँ',wfL:'देखें:',
+f_season:'त्योहार और शादी का मौसम',
+hw_dxy:'डॉलर मज़बूत होने पर सोना-चाँदी आम तौर पर सस्ते होते हैं।',hw_us10y:'अमेरिका में ब्याज दरें बढ़ें तो सोना आम तौर पर गिरता है, क्योंकि जमा पर ज़्यादा मिलने लगता है।',hw_usdinr:'रुपया कमज़ोर हो तो दुनिया में दाम न बदलें तब भी भारत में सोना-चाँदी महँगे होते हैं।',hw_vix:'दुनिया में डर बढ़े (युद्ध, संकट) तो लोग सुरक्षा के लिए सोना ख़रीदते हैं, दाम बढ़ता है।',hw_copper:'चाँदी सोलर पैनल और फ़ोन में लगती है। कारख़ाने व्यस्त हों तो चाँदी आम तौर पर चढ़ती है।',hw_season:'त्योहार और शादी के महीनों में ज़्यादा लोग ख़रीदते हैं, इसलिए दुकानें दाम ऊँचे रखती हैं।',
+wf_dxy:'अमेरिकी रोज़गार और महँगाई रिपोर्ट (भारत में शाम)',wf_us10y:'अमेरिकी फ़ेडरल रिज़र्व की बैठकें और भाषण',wf_usdinr:'RBI की ख़बरें और कच्चे तेल के दाम',wf_vix:'युद्ध, चुनाव या बैंकिंग संकट की ख़बरें',wf_copper:'चीन के कारख़ानों की ख़बरें, सोलर माँग',wf_season:'धनतेरस, अक्षय तृतीया, शादी के मुहूर्त',
+st_dxy_u:'मज़बूत हुआ',st_dxy_d:'कमज़ोर हुआ',st_us10y_u:'बढ़ रही',st_us10y_d:'घट रही',st_usdinr_u:'रुपया कमज़ोर',st_usdinr_d:'रुपया मज़बूत',st_vix_u:'डर बढ़ रहा',st_vix_d:'डर घट रहा',st_copper_u:'बढ़ रहा',st_copper_d:'घट रहा',st_season_u:'अभी व्यस्त मौसम',st_season_d:'शांत मौसम',intro:'कल का दाम कोई नहीं जान सकता। आज दाम को ऊपर या नीचे धकेलने वाले संकेत ये हैं।',n_gold:'सोने',n_silver:'चाँदी',
 l_up:'अगले एक-दो दिन में {m} का दाम <b>बढ़ने</b> के संकेत ज़्यादा हैं।',l_down:'अगले एक-दो दिन में {m} का दाम <b>घटने</b> के संकेत ज़्यादा हैं।',l_mixed:'संकेत <b>मिले-जुले</b> हैं। {m} का दाम लगभग वैसा ही रह सकता है या किसी भी ओर जा सकता है।',
 notPromise:'यह सिर्फ़ संकेत है, गारंटी नहीं।',pullUp:'⬆ ऊपर धकेल रहे',pullDown:'⬇ नीचे धकेल रहे',nothing:'कुछ ख़ास नहीं',
 s_dxy_p:'💵 डॉलर कमज़ोर',s_dxy_m:'💵 डॉलर मज़बूत',s_us10y_p:'🏦 अमेरिकी ब्याज घट रहा',s_us10y_m:'🏦 अमेरिकी ब्याज बढ़ रहा',s_usdinr_p:'₹ रुपया कमज़ोर',s_usdinr_m:'₹ रुपया मज़बूत',s_vix_p:'😟 दुनिया में डर',s_vix_m:'😌 दुनिया शांत',s_copper_p:'🏭 कारख़ाने ख़रीद रहे',s_copper_m:'🏭 कारख़ाने सुस्त',s_trend_p:'📈 हाल में चढ़ रहा',s_trend_m:'📉 हाल में गिर रहा',
@@ -287,6 +377,104 @@ function spark(arr,dir){
 }
 function sgn(n,u){if(n==null)return '–';var s=(n>0?'+':'')+(u==='pts'?n.toFixed(2)+' pts':n.toFixed(1)+'%');return s}
 
+/* ---------- price series in ₹ ---------- */
+var OZ=31.1035;
+function inferDates(n,asOf){var d=new Date((asOf||new Date().toISOString()).slice(0,10)+'T12:00:00'),out=[];while(out.length<n){var w=d.getDay();if(w!==0&&w!==6)out.unshift(d.toISOString().slice(0,10));d.setDate(d.getDate()-1)}return out}
+function inrSeries(k){
+  var S=D&&D.market&&D.market.series||{},g=S[k],fx=S.usdinr;if(!g||!g.spark||g.spark.length<5)return null;
+  var dates=(g.dates&&g.dates.length===g.spark.length)?g.dates:inferDates(g.spark.length,D.market.as_of);
+  var fxv={},fxLast=fx?fx.last:null;
+  if(fx&&fx.spark){var fd=(fx.dates&&fx.dates.length===fx.spark.length)?fx.dates:inferDates(fx.spark.length,D.market.as_of);fd.forEach(function(d,i){fxv[d]=fx.spark[i]})}
+  var lastFx=fxLast||88,raw=[];
+  dates.forEach(function(d,i){var f=fxv[d];if(f)lastFx=f;raw.push(g.spark[i]/OZ*(f||lastFx||88))});
+  raw[raw.length-1]=g.spark[g.spark.length-1]/OZ*(fxLast||lastFx||88);
+  var unit=k==='silver'?1000:1,real=null;
+  if(RATE){real=k==='gold'?(RATE.gold&&RATE.gold['22']):(RATE.silver?RATE.silver*1000:null)}
+  var factor=real?real/(raw[raw.length-1]*unit):(k==='gold'?0.916*1.09:1.10);
+  return {dates:dates,vals:raw.map(function(v){return v*unit*factor}),approx:!real};
+}
+function lastWeek(ser){
+  var n=ser.dates.length,end=new Date(ser.dates[n-1]+'T12:00:00'),i=n-1;
+  while(i>0&&(end-new Date(ser.dates[i-1]+'T12:00:00'))/864e5<=7)i--;
+  if(n-i<5)i=Math.max(0,n-6);
+  return {dates:ser.dates.slice(i),vals:ser.vals.slice(i)};
+}
+function sigma(vals){var r=[];for(var i=Math.max(1,vals.length-20);i<vals.length;i++)r.push(vals[i]/vals[i-1]-1);if(r.length<3)return .01;var m=r.reduce(function(a,b){return a+b},0)/r.length;return Math.sqrt(r.reduce(function(a,b){return a+(b-m)*(b-m)},0)/(r.length-1))||.01}
+function rup(v){return '₹'+Math.round(v).toLocaleString('en-IN')}
+function rupShort(v){return v>=1e5?'₹'+(v/1e5).toFixed(2)+'L':'₹'+Math.round(v).toLocaleString('en-IN')}
+function dayLbl(iso,short){try{return new Date(iso+'T12:00:00').toLocaleDateString({en:'en-IN',te:'te-IN',hi:'hi-IN'}[lang],short?{weekday:'short'}:{weekday:'short',day:'numeric',month:'short'})}catch(e){return iso.slice(5)}}
+function addDays(iso,n){var d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function proj(k,ser){
+  var ln=leanOf(k),conf=(D.read&&D.read.confidence==='medium')?'medium':'low',sg=sigma(ser.vals),P=ser.vals[ser.vals.length-1];
+  var kk=conf==='medium'?.6:.35,dr=ln==='up'?kk*sg:ln==='down'?-kk*sg:0;
+  var c1=P*(1+dr),c2=P*(1+2*dr);
+  return {ln:ln,conf:conf,c1:c1,c2:c2,lo1:c1-P*sg,hi1:c1+P*sg,lo2:c2-P*sg*Math.SQRT2,hi2:c2+P*sg*Math.SQRT2};
+}
+var LC={up:'#0F8A5F',down:'#C62828',mixed:'#B45309'};
+function renderChart(){
+  var top=$('pcTop'),ch=$('chart');
+  if(!D){if(netErr){top.innerHTML='<div class="err">'+esc(t('loadFail'))+'</div><button class="retry" id="retryBtn">'+esc(t('retry'))+'</button>';ch.innerHTML='';$('verdict').innerHTML='';$('range').innerHTML='';$('legend').innerHTML=''}return}
+  var full=inrSeries(MET);
+  if(!full){top.innerHTML='<div class="err">'+esc(t('loadFail'))+'</div>';ch.innerHTML='';return}
+  var w=lastWeek(full),pr=proj(MET,full),P=w.vals[w.vals.length-1],ch7=P-w.vals[0],pc=ch7/w.vals[0]*100;
+  var cityN=(RATE&&RATE.city||CITY);cityN=cityN.charAt(0).toUpperCase()+cityN.slice(1);
+  var cls=Math.abs(pc)<.15?'f':(ch7>0?'u':'d'),sym=cls==='u'?'▲ +':cls==='d'?'▼ −':'';
+  top.innerHTML='<div class="pc-l">'+esc(fill(t(MET==='gold'?'perG22':'perKg'),{c:cityN}))+(full.approx?esc(t('approx')):'')+'</div>'+
+    '<div class="pc-p">'+rup(P)+'</div>'+
+    '<span class="wk '+cls+'">'+esc(fill(t('wk'),{s:sym+rup(Math.abs(ch7)).replace('₹','₹')+' ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1)+'%)'}))+'</span>';
+  var ic=pr.ln==='up'?'↗':pr.ln==='down'?'↘':'↔';
+  $('verdict').innerHTML='<div class="vd '+pr.ln+'"><i aria-hidden="true">'+ic+'</i><div>'+esc(t('v_'+pr.ln))+'<small>'+esc(t('v_'+pr.conf))+'</small></div></div>';
+  /* svg */
+  var W=340,H=196,L=50,R=332,T=16,B=160,n=w.vals.length,slots=n+1;
+  var all=w.vals.concat([pr.lo2,pr.hi2,pr.lo1,pr.hi1]),mn=Math.min.apply(null,all),mx=Math.max.apply(null,all),pad=(mx-mn)*.08||P*.005;mn-=pad;mx+=pad;
+  function X(i){return L+(R-L)*i/slots}function Y(v){return B-(v-mn)/(mx-mn)*(B-T)}
+  var pc_=MET==='gold'?'#8B6914':'#475569',col=LC[pr.ln];
+  var pts=w.vals.map(function(v,i){return [X(i),Y(v)]});
+  var line=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');
+  var area=line+' L'+pts[n-1][0].toFixed(1)+' '+B+' L'+pts[0][0].toFixed(1)+' '+B+' Z';
+  var xt=pts[n-1][0],yt=pts[n-1][1],x1=X(n),x2=X(n+1);
+  var band='M'+xt+' '+yt+' L'+x1+' '+Y(pr.hi1)+' L'+x2+' '+Y(pr.hi2)+' L'+x2+' '+Y(pr.lo2)+' L'+x1+' '+Y(pr.lo1)+' Z';
+  var g='';
+  [mx-pad,(mx+mn)/2,mn+pad].forEach(function(v){var y=Y(v);g+='<line x1="'+L+'" x2="'+R+'" y1="'+y+'" y2="'+y+'" stroke="#EFE8D6" stroke-width="1"/><text x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="#9CA3AF">'+rupShort(v)+'</text>'});
+  g+='<rect x="'+xt+'" y="'+T+'" width="'+(R-xt)+'" height="'+(B-T)+'" fill="'+col+'" opacity=".05"/>';
+  g+='<line x1="'+xt+'" x2="'+xt+'" y1="'+(T-6)+'" y2="'+B+'" stroke="#D6CDB5" stroke-dasharray="3 3"/>';
+  g+='<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+pc_+'" stop-opacity=".22"/><stop offset="1" stop-color="'+pc_+'" stop-opacity="0"/></linearGradient>'+
+     '<marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="'+col+'"/></marker></defs>';
+  g+='<path d="'+area+'" fill="url(#ga)"/>';
+  g+='<path d="'+band+'" fill="'+col+'" opacity=".16"/>';
+  g+='<path d="'+line+'" fill="none" stroke="'+pc_+'" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>';
+  g+='<path d="M'+xt+' '+yt+' L'+x1+' '+Y(pr.c1)+' L'+(x2-4)+' '+Y(pr.c2)+'" fill="none" stroke="'+col+'" stroke-width="2.6" stroke-dasharray="5 4" marker-end="url(#ah)"/>';
+  pts.forEach(function(p,i){var last=i===n-1;g+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(last?5.5:3.2)+'" fill="'+(last?'#fff':pc_)+'" stroke="'+pc_+'" stroke-width="'+(last?3:0)+'"/>'+
+    '<circle class="hit" data-i="'+i+'" cx="'+p[0]+'" cy="'+p[1]+'" r="14" fill="transparent" style="cursor:pointer"/>'});
+  g+='<text x="'+xt+'" y="'+(T-8)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#6B7280">'+esc(t('today'))+'</text>';
+  var xl='';w.dates.forEach(function(d,i){if(n>6&&i%2===1&&i!==n-1)return;xl+='<text x="'+X(i)+'" y="'+(B+16)+'" text-anchor="middle" font-size="10" fill="#6B7280">'+esc(dayLbl(d,true))+'</text>'});
+  var today=w.dates[n-1];
+  xl+='<text x="'+x1+'" y="'+(B+16)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+col+'">'+esc(dayLbl(addDays(today,1),true))+'</text>';
+  xl+='<text x="'+x2+'" y="'+(B+16)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+col+'">'+esc(dayLbl(addDays(today,2),true))+'</text>';
+  xl+='<text x="'+((L+xt)/2)+'" y="'+(B+32)+'" text-anchor="middle" font-size="10" fill="#9CA3AF">'+esc(t('lgPast'))+'</text>';
+  xl+='<text x="'+((xt+R)/2)+'" y="'+(B+32)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+col+'">'+esc(t('lgNext'))+'</text>';
+  ch.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t('lgPast')+' / '+t('lgNext'))+'">'+g+xl+'</svg>';
+  ch.dataset.met=MET;ch._w=w;
+  $('ctip').textContent=t('tapHint');
+  $('legend').innerHTML='<span><i style="border-color:'+pc_+'"></i>'+esc(t('lgPast'))+'</span><span><i class="d" style="border-color:'+col+'"></i>'+esc(t('lgNext'))+'</span><span><i class="b" style="background:'+col+'"></i>'+esc(t('lgBand'))+'</span>';
+  var lo=Math.min(pr.lo2,pr.hi2),hi=Math.max(pr.lo2,pr.hi2);
+  $('range').innerHTML=fill(t('range'),{m:esc(t('rm_'+MET)),a:rup(lo),b:rup(hi),u:esc(t('un_'+MET))})+' <span style="color:#6B7280">'+esc(t('rangeNote'))+'</span>';
+}
+/* ---------- key factors ---------- */
+function seasonOn(){var m=new Date().getMonth()+1;return [10,11,12,1,2,4,5].indexOf(m)>-1}
+var FIC={dxy:'💵',us10y:'🏦',usdinr:'₹',vix:'😟',copper:'🏭',season:'🪔'};
+function renderFactors(){
+  var el=$('factors');if(!D){el.innerHTML='';return}
+  var S=(D.market&&D.market.series)||{},drv={};((D.market&&D.market.drivers)||[]).forEach(function(d){drv[d.key]=d});
+  var keys=MET==='gold'?['dxy','us10y','usdinr','vix','season']:['dxy','usdinr','copper','us10y','season'];
+  el.innerHTML=keys.map(function(k){
+    var name=k==='season'?t('f_season'):t(k),st='',cls='n';
+    if(k==='season'){var on=seasonOn();st=t(on?'st_season_u':'st_season_d');cls=on?'p':'n'}
+    else{var s=S[k];if(!s||s.chg_5d==null)return '';var up=s.chg_5d>0,flat=Math.abs(s.chg_5d)<(s.unit==='pts'?.01:.05);st=flat?t('steady'):t('st_'+k+(up?'_u':'_d'))+' '+(s.unit==='pts'?(up?'+':'−')+Math.abs(s.chg_5d).toFixed(2):(up?'+':'−')+Math.abs(s.chg_5d).toFixed(1)+'%');
+      var e=drv[k]?(MET==='gold'?drv[k].effect_gold:drv[k].effect_silver):0;cls=e>0?'p':e<0?'m':'n';if(!flat)st+=e>0?' → ↑':e<0?' → ↓':''}
+    return '<div class="fc"><div class="ic" aria-hidden="true">'+FIC[k]+'</div><div class="hd"><span class="nm">'+esc(name)+'</span><span class="st '+cls+'">'+esc(st)+'</span></div><div class="hw">'+esc(t('hw_'+k))+'</div><div class="wf"><b>'+esc(t('wfL'))+'</b> '+esc(t('wf_'+k))+'</div></div>';
+  }).join('');
+}
 function pushes(k){
   var m=D&&D.market,up=[],dn=[];
   ((m&&m.drivers)||[]).forEach(function(d){
@@ -299,29 +487,25 @@ function pushes(k){
 function leanOf(k){var rd=D&&D.read,m=D&&D.market;return (rd&&rd[k+'_lean'])||(m&&m.tally_lean&&m.tally_lean[k])||'mixed'}
 function renderSimple(){
   var el=$('simple');
-  if(!D){if(netErr)el.innerHTML='<div class="sm"><div class="err">'+esc(t('loadFail'))+'</div><button class="retry" id="retryBtn">'+esc(t('retry'))+'</button></div>';return}
-  el.innerHTML=['gold','silver'].map(function(k){
-    var ln=leanOf(k),p=pushes(k),ico=ln==='up'?'↑':ln==='down'?'↓':'↔';
-    var sent=fill(t('l_'+ln),{m:esc(t('n_'+k))});
-    function col(arr,cls,h){return '<div class="'+cls+'"><h4>'+esc(t(h))+'</h4>'+(arr.length?arr.map(function(x){return '<span>'+esc(x)+'</span>'}).join(''):'<span class="e">'+esc(t('nothing'))+'</span>')+'</div>'}
-    var tot=p.up.length+p.dn.length,uw=tot?Math.round(p.up.length/tot*100):50;
-    return '<div class="sm '+k+' '+ln+'"><div class="sm-top"><div class="sm-ico" aria-hidden="true">'+ico+'</div><div><div class="sm-m"><span class="gem"></span>'+esc(t(k))+'</div><div class="sm-s">'+sent+'</div><div class="sm-n">'+esc(t('notPromise'))+'</div></div></div>'+
-      '<div class="tug">'+col(p.up,'u','pullUp')+col(p.dn,'d','pullDown')+'</div>'+
-      '<div class="rope" aria-hidden="true"><i style="width:'+uw+'%;background:var(--up)"></i><i style="width:'+(100-uw)+'%;background:var(--down)"></i></div></div>';
-  }).join('');
+  if(!D){el.innerHTML='';return}
+  var k=MET,p=pushes(k);
+  function col(arr,cls,h){return '<div class="'+cls+'"><h4>'+esc(t(h))+'</h4>'+(arr.length?arr.map(function(x){return '<span>'+esc(x)+'</span>'}).join(''):'<span class="e">'+esc(t('nothing'))+'</span>')+'</div>'}
+  var tot=p.up.length+p.dn.length,uw=tot?Math.round(p.up.length/tot*100):50;
+  el.innerHTML='<div class="tug" style="margin-top:0">'+col(p.up,'u','pullUp')+col(p.dn,'d','pullDown')+'</div><div class="rope" aria-hidden="true"><i style="width:'+uw+'%;background:var(--up)"></i><i style="width:'+(100-uw)+'%;background:var(--down)"></i></div>';
   if(window.speechSynthesis)$('listenBtn').classList.remove('hidden');
 }
 /* listen (browser voice, free) */
 var speaking=false;
 function speakText(){
-  var parts=[];
-  ['gold','silver'].forEach(function(k){
+  var parts=[],tmp0=document.createElement('div');
+  tmp0.innerHTML=$('verdict').innerText+'. '+$('range').innerHTML;parts.push(tmp0.textContent.replace(/₹/g,lang==='en'?'Rupees ':'₹'));
+  [MET].forEach(function(k){
     var p=pushes(k),tmp=document.createElement('div');tmp.innerHTML=fill(t('l_'+leanOf(k)),{m:t('n_'+k)});parts.push(tmp.textContent);
     if(p.up.length)parts.push(t('pullUp').replace('⬆','')+': '+p.up.join(', '));
     if(p.dn.length)parts.push(t('pullDown').replace('⬇','')+': '+p.dn.join(', '));
   });
   parts.push(t('notPromise'));parts.push(t('tip'));
-  return parts.join('. ').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,'').replace(/₹/g,lang==='en'?'Rupee':'');
+  return parts.join('. ').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF↗↘↔→↑↓▲▼]/gu,'').replace(/₹/g,lang==='en'?'Rupees ':'');
 }
 function toggleListen(){
   var ss=window.speechSynthesis;if(!ss)return;
@@ -387,7 +571,7 @@ function renderTrack(){
   if(any<5){el.innerHTML='<div class="none">'+esc(t('trkNone'))+'</div><div class="fine">'+esc(t('trkNote'))+'</div>';return}
   el.innerHTML='<div class="trk">'+['gold','silver'].map(function(k){var x=tr[k],p=x.called?Math.round(x.matched/x.called*100):0;return '<div><span>'+esc(t(k))+'</span><b>'+(x.called?p+'%':'–')+'</b><span>'+esc(fill(t('trkLine'),{h:x.matched,n:x.called}))+'</span></div>'}).join('')+'</div><div class="fine">'+esc(t('trkNote'))+'</div>';
 }
-function renderAll(){renderSimple();renderLeans();renderRead();renderEvents();renderDrivers();renderTrack();postH()}
+function renderAll(){renderChart();renderSimple();renderFactors();renderLeans();renderRead();renderEvents();renderDrivers();renderTrack();postH()}
 function applyLang(){
   if(speaking&&window.speechSynthesis){window.speechSynthesis.cancel();speaking=false}
   document.documentElement.lang=lang;
@@ -418,12 +602,18 @@ if(EMBED){document.body.classList.add('embed');$('nav').classList.add('hidden');
 }
 document.querySelectorAll('.langs button').forEach(function(b){b.addEventListener('click',function(){lang=b.dataset.l;try{localStorage.setItem('lsLang',lang)}catch(e){}applyLang()})});
 $('listenBtn').addEventListener('click',toggleListen);
+function paintSeg(){document.querySelectorAll('#mseg button').forEach(function(b){var on=b.dataset.k===MET;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)})}
+$('mseg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.dataset.k===MET)return;MET=b.dataset.k;try{localStorage.setItem('mdMetal',MET)}catch(x){}paintSeg();if(speaking&&window.speechSynthesis){window.speechSynthesis.cancel();speaking=false;$('listenBtn').textContent=t('listen')}renderAll()});
+paintSeg();
+$('chart').addEventListener('click',function(e){var c=e.target.closest('.hit');if(!c)return;var w=$('chart')._w,i=+c.getAttribute('data-i');if(!w)return;var n=w.vals.length;$('ctip').textContent=(i===n-1?t('today'):dayLbl(w.dates[i]))+': '+rup(w.vals[i])+' '+t('un_'+MET)});
 $('detBtn').addEventListener('click',function(){var d=$('details'),open=d.classList.toggle('hidden')===false;this.setAttribute('aria-expanded',open);this.textContent=t(open?'hideDet':'showDet');try{localStorage.setItem('mdDet',open?'1':'0')}catch(e){}if(open)try{gtag('event','metal_direction_details')}catch(e){};postH()});
 try{if(localStorage.getItem('mdDet')==='1'){$('details').classList.remove('hidden');$('detBtn').setAttribute('aria-expanded','true')}}catch(e){}
 document.querySelectorAll('[data-acc]').forEach(function(b){b.addEventListener('click',function(){$(b.dataset.acc).classList.toggle('hidden');postH()})});
 document.addEventListener('click',function(e){if(e.target&&e.target.id==='retryBtn'){loading=true;netErr=false;load(false)}});
 window.addEventListener('resize',postH);
-applyLang();load(false);
+applyLang();
+fetch(BACKEND+'/api/live-gold-rate?city='+encodeURIComponent(CITY)).then(function(r){return r.json()}).then(function(d){if(d&&d.ok){RATE={gold:d.gold_by_purity_per_gram_inr,silver:d.silver_999_per_gram_inr,city:d.city};if(D)renderAll()}}).catch(function(){});
+load(false);
 try{gtag('event','metal_direction_view',{embed:EMBED?1:0})}catch(e){}
 window.MD={_get:function(){return D},T:T};
 })();
