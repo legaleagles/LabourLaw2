@@ -52,6 +52,36 @@ html:not([lang=en]) .card-t{letter-spacing:0;text-transform:none;font-size:12.5p
 .lean.down{border-color:#FCA5A5;background:linear-gradient(180deg,#FEF2F2,#fff)}.lean.down .arrow,.lean.down .w{color:var(--down)}
 .lean.mixed{border-color:#FCD34D;background:linear-gradient(180deg,#FFFBEB,#fff)}.lean.mixed .arrow,.lean.mixed .w{color:var(--mix)}
 
+/* simple view */
+.sm{border-radius:18px;padding:16px;margin-bottom:12px;border:2px solid var(--line);background:#fff}
+.sm.up{border-color:#86EFAC;background:linear-gradient(180deg,#F0FDF4,#fff 60%)}
+.sm.down{border-color:#FCA5A5;background:linear-gradient(180deg,#FEF2F2,#fff 60%)}
+.sm.mixed{border-color:#FCD34D;background:linear-gradient(180deg,#FFFBEB,#fff 60%)}
+.sm-top{display:flex;gap:14px;align-items:center}
+.sm-ico{flex-shrink:0;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:#fff}
+.sm.up .sm-ico{background:var(--up)}.sm.down .sm-ico{background:var(--down)}.sm.mixed .sm-ico{background:var(--mix)}
+.sm-m{font-size:13px;font-weight:800;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.sm-m .gem{width:14px;height:14px;border-radius:50%}
+.sm.gold .gem{background:radial-gradient(circle at 30% 30%,#FFF3B0,#D4A017 60%,#8B6914)}
+.sm.silver .gem{background:radial-gradient(circle at 30% 30%,#fff,#CBD5E1 60%,#64748B)}
+.sm-s{font-size:17px;font-weight:700;line-height:1.4}
+.sm.up .sm-s b{color:var(--up)}.sm.down .sm-s b{color:var(--down)}.sm.mixed .sm-s b{color:var(--mix)}
+.sm-n{font-size:12px;color:var(--muted);margin-top:3px}
+.tug{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tug h4{font-size:12.5px;font-weight:800;margin-bottom:6px}
+.tug .u h4{color:var(--up)}.tug .d h4{color:var(--down)}
+.tug span{display:block;font-size:13.5px;font-weight:600;padding:7px 9px;border-radius:10px;margin-bottom:5px;line-height:1.3}
+.tug .u span{background:var(--up-bg);color:#065F46}.tug .d span{background:var(--down-bg);color:#991B1B}
+.tug .e{background:#F3F4F6!important;color:var(--muted)!important;font-weight:500}
+.rope{display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:10px;background:#E5E7EB}
+.rope i{display:block;height:100%}
+.bigbtn{width:100%;padding:14px;border-radius:14px;border:none;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:12px}
+.listen{background:linear-gradient(135deg,var(--maroon),var(--maroon2));color:var(--gold-l)}
+.detbtn{background:#fff;border:2px solid var(--gold);color:var(--gold-deep)}
+.tip{background:#FFFBEB;border:1.5px solid #F5D76E;border-radius:16px;padding:14px;margin-bottom:12px}
+.tip b{display:block;font-size:15px;margin-bottom:6px}
+.tip p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.tip a{display:inline-block;margin-top:8px;font-weight:800;color:var(--maroon);font-size:14px}
 /* read */
 .headline{font-family:'Playfair Display',serif;font-size:19px;line-height:1.3;margin-bottom:8px}
 html:not([lang=en]) .headline{font-family:inherit;font-weight:700;font-size:17px}
@@ -116,11 +146,13 @@ html:not([lang=en]) .headline{font-family:inherit;font-weight:700;font-size:17px
 <main class="wrap">
   <div class="intro" data-i="intro">Nobody can predict tomorrow's price exactly. What we can see is which forces are pushing up or down today. Use this to understand the market, not to time a purchase.</div>
 
-  <div class="leans" id="leans" aria-live="polite">
-    <div class="lean gold"><div class="m"><span class="gem"></span><span data-i="gold">Gold</span></div><div class="skel"></div><div class="skel"></div></div>
-    <div class="lean silver"><div class="m"><span class="gem"></span><span data-i="silver">Silver</span></div><div class="skel"></div><div class="skel"></div></div>
-  </div>
+  <div id="simple" aria-live="polite"><div class="sm"><div class="skel"></div><div class="skel" style="width:70%"></div></div><div class="sm"><div class="skel"></div><div class="skel" style="width:70%"></div></div></div>
+  <button class="bigbtn listen hidden" id="listenBtn" data-i="listen">🔊 Listen</button>
+  <div class="tip"><b data-i="tipT">💡 Buying jewellery soon?</b><p data-i="tip"></p><a href="jewellery-suite.html?m=gold" target="_top" data-i="tipLink">Check making charges →</a></div>
+  <button class="bigbtn detbtn" id="detBtn" aria-expanded="false" aria-controls="details" data-i="showDet">📊 See full details</button>
 
+  <div id="details" class="hidden">
+  <div class="leans" id="leans"></div>
   <section class="card" id="readCard" aria-live="polite">
     <div class="card-t"><span data-i="readT">Today's read</span></div>
     <div id="read"><div class="skel"></div><div class="skel" style="width:80%"></div><div class="skel" style="width:60%"></div></div>
@@ -142,6 +174,7 @@ html:not([lang=en]) .headline{font-family:inherit;font-weight:700;font-size:17px
   </section>
 
   <section class="acc"><button data-acc="why"><span data-i="whyT">Why can't anyone predict the exact price?</span><span>▾</span></button><div id="why" class="hidden"></div></section>
+  </div>
 
   <div class="disc" data-i="disc">For understanding only. This is not investment advice and not a price forecast. LawSticker AI is not a SEBI-registered adviser. Prices can move against any lean, at any time.</div>
 </main>
@@ -159,8 +192,11 @@ if(['en','te','hi'].indexOf(q.get('lang'))>-1)lang=q.get('lang');
 var D=null,loading=true,genTried=false,netErr=false;
 
 var T={
-en:{back:'← Jewellery Suite',title:'Which way are gold & silver leaning?',sub:'What is pushing prices right now, in plain language. A direction sense, not a forecast.',
-intro:"Nobody can predict tomorrow's price exactly. What we can see is which forces are pushing up or down today. Use this to understand the market, not to time a purchase.",
+en:{intro:"No one can know tomorrow's price. Here are the signs pushing it up or down today.",n_gold:'gold',n_silver:'silver',
+l_up:'More signs say {m} may go <b>UP</b> in the next day or two.',l_down:'More signs say {m} may come <b>DOWN</b> in the next day or two.',l_mixed:'Signs are <b>mixed</b>. {m} may stay about the same or move either way.',
+notPromise:'This is only a sign, not a promise.',pullUp:'⬆ Pushing UP',pullDown:'⬇ Pushing DOWN',nothing:'Nothing big',
+s_dxy_p:'💵 Dollar weak',s_dxy_m:'💵 Dollar strong',s_us10y_p:'🏦 US interest falling',s_us10y_m:'🏦 US interest rising',s_usdinr_p:'₹ Rupee weak',s_usdinr_m:'₹ Rupee strong',s_vix_p:'😟 World is worried',s_vix_m:'😌 World is calm',s_copper_p:'🏭 Factories buying',s_copper_m:'🏭 Factories slow',s_trend_p:'📈 Rising lately',s_trend_m:'📉 Falling lately',
+listen:'🔊 Listen',stop:'⏹ Stop',tipT:'💡 Buying jewellery soon?',tip:"No one knows tomorrow's price. If you need jewellery for a function, buy when you need it. Checking making charges and wastage at two shops usually saves more than waiting for the price to fall.",tipLink:'Check making charges →',showDet:'📊 See full details',hideDet:'▲ Hide details',back:'← Jewellery Suite',title:'Which way are gold & silver leaning?',sub:'What is pushing prices right now, in plain language. A direction sense, not a forecast.',
 gold:'Gold',silver:'Silver',readT:"Today's read",evT:'Coming up: if this, then that',drvT:"What's pushing prices (last 5 days)",trkT:'How often has our lean been right?',whyT:"Why can't anyone predict the exact price?",
 disc:'For understanding only. This is not investment advice and not a price forecast. LawSticker AI is not a SEBI-registered adviser. Prices can move against any lean, at any time.',
 up:'Leaning up',down:'Leaning down',mixed:'Mixed',low:'Low confidence',medium:'Medium confidence',sigSays:'Signals tally: {x}',
@@ -183,8 +219,11 @@ why:["After a price moves, we know which news came out, so explaining it is easy
 "Only surprises move the price: inflation data hotter than expected, a sudden war headline, a central bank doing something unexpected. Surprises cannot be known in advance.",
 "So for tomorrow, direction is close to a coin toss even for professionals. Over weeks and months the drivers matter more and the noise matters less.",
 "What you can do: know which forces are pushing today, and what each scheduled event could do. Then the news will make sense to you as it happens."]},
-te:{back:'← జ్యువెలరీ సూట్',title:'బంగారం, వెండి ఏ వైపు మొగ్గుతున్నాయి?',sub:'ప్రస్తుతం ధరలను ఏవి నెడుతున్నాయో సులభమైన భాషలో. ఇది దిశ అంచనా మాత్రమే, ధర జోస్యం కాదు.',
-intro:'రేపటి ధరను ఎవరూ ఖచ్చితంగా చెప్పలేరు. ఈరోజు ఏ శక్తులు ధరను పైకి లేదా కిందికి నెడుతున్నాయో మాత్రం చూడవచ్చు. మార్కెట్‌ను అర్థం చేసుకోవడానికి వాడండి, కొనుగోలు సమయం నిర్ణయించడానికి కాదు.',
+te:{intro:'రేపటి ధర ఎవరికీ తెలియదు. ఈరోజు ధరను పైకి లేదా కిందికి నెడుతున్న సూచనలు ఇవి.',n_gold:'బంగారం',n_silver:'వెండి',
+l_up:'{m} ధర రాబోయే ఒకటి రెండు రోజుల్లో <b>పెరిగే</b> సూచనలు ఎక్కువగా ఉన్నాయి.',l_down:'{m} ధర రాబోయే ఒకటి రెండు రోజుల్లో <b>తగ్గే</b> సూచనలు ఎక్కువగా ఉన్నాయి.',l_mixed:'సూచనలు <b>రెండు వైపులా</b> ఉన్నాయి. {m} ధర దాదాపు అలాగే ఉండవచ్చు లేదా ఏ వైపైనా కదలవచ్చు.',
+notPromise:'ఇది కేవలం సూచన మాత్రమే, హామీ కాదు.',pullUp:'⬆ పైకి నెడుతున్నవి',pullDown:'⬇ కిందికి నెడుతున్నవి',nothing:'పెద్దగా ఏమీ లేదు',
+s_dxy_p:'💵 డాలర్ బలహీనం',s_dxy_m:'💵 డాలర్ బలంగా ఉంది',s_us10y_p:'🏦 అమెరికా వడ్డీ తగ్గుతోంది',s_us10y_m:'🏦 అమెరికా వడ్డీ పెరుగుతోంది',s_usdinr_p:'₹ రూపాయి బలహీనం',s_usdinr_m:'₹ రూపాయి బలంగా ఉంది',s_vix_p:'😟 ప్రపంచంలో భయం',s_vix_m:'😌 ప్రపంచం ప్రశాంతం',s_copper_p:'🏭 పరిశ్రమలు కొంటున్నాయి',s_copper_m:'🏭 పరిశ్రమలు నెమ్మదిగా',s_trend_p:'📈 ఇటీవల పెరుగుతోంది',s_trend_m:'📉 ఇటీవల తగ్గుతోంది',
+listen:'🔊 వినండి',stop:'⏹ ఆపండి',tipT:'💡 త్వరలో నగలు కొంటున్నారా?',tip:'రేపటి ధర ఎవరికీ తెలియదు. శుభకార్యానికి నగలు కావాలంటే అవసరమైనప్పుడే కొనండి. ధర తగ్గే వరకు ఎదురుచూడటం కంటే, రెండు షాపుల్లో తరుగు, మేకింగ్ ఛార్జీలు పోల్చడం వల్లే సాధారణంగా ఎక్కువ ఆదా అవుతుంది.',tipLink:'మేకింగ్ ఛార్జీలు లెక్కించండి →',showDet:'📊 పూర్తి వివరాలు చూడండి',hideDet:'▲ వివరాలు దాచండి',back:'← జ్యువెలరీ సూట్',title:'బంగారం, వెండి ఏ వైపు మొగ్గుతున్నాయి?',sub:'ప్రస్తుతం ధరలను ఏవి నెడుతున్నాయో సులభమైన భాషలో. ఇది దిశ అంచనా మాత్రమే, ధర జోస్యం కాదు.',
 gold:'బంగారం',silver:'వెండి',readT:'ఈరోజు విశ్లేషణ',evT:'రాబోయేవి: ఇలా జరిగితే, అలా',drvT:'ధరలను ఏవి నెడుతున్నాయి (గత 5 రోజులు)',trkT:'మా అంచనా ఎంత తరచుగా సరైంది?',whyT:'ఖచ్చితమైన ధరను ఎవరూ ఎందుకు చెప్పలేరు?',
 disc:'అవగాహన కోసం మాత్రమే. ఇది పెట్టుబడి సలహా కాదు, ధర జోస్యం కాదు. LawSticker AI SEBI నమోదిత సలహాదారు కాదు. ఏ అంచనాకైనా వ్యతిరేకంగా ధరలు ఎప్పుడైనా కదలవచ్చు.',
 up:'పైకి మొగ్గు',down:'కిందికి మొగ్గు',mixed:'మిశ్రమం',low:'తక్కువ నమ్మకం',medium:'మధ్యస్థ నమ్మకం',sigSays:'సంకేతాల లెక్క: {x}',
@@ -207,8 +246,11 @@ why:['ధర కదిలిన తర్వాత ఏ వార్త వచ్
 'ఊహించనివి మాత్రమే ధరను కదిలిస్తాయి: అంచనా కంటే ఎక్కువ ద్రవ్యోల్బణం, హఠాత్తుగా యుద్ధ వార్త, సెంట్రల్ బ్యాంక్ ఊహించని నిర్ణయం. వీటిని ముందే తెలుసుకోలేం.',
 'అందుకే రేపటి దిశ నిపుణులకు కూడా దాదాపు బొమ్మా-బొరుసే. వారాలు, నెలల్లో మాత్రం కారణాల ప్రభావం ఎక్కువ, హడావుడి తక్కువ.',
 'మీరు చేయగలిగింది: ఈరోజు ఏ శక్తులు నెడుతున్నాయో, ప్రతి షెడ్యూల్ ఈవెంట్ ఏం చేయగలదో తెలుసుకోవడం. అప్పుడు వార్తలు వచ్చినప్పుడు మీకు అర్థమవుతాయి.']},
-hi:{back:'← ज्वेलरी सूट',title:'सोना और चाँदी किस ओर झुक रहे हैं?',sub:'अभी कीमतों को क्या धकेल रहा है, आसान भाषा में। यह दिशा का अंदाज़ा है, भविष्यवाणी नहीं।',
-intro:'कल का सही दाम कोई नहीं बता सकता। हम यह देख सकते हैं कि आज कौन-सी ताक़तें कीमत को ऊपर या नीचे धकेल रही हैं। इसे बाज़ार समझने के लिए इस्तेमाल करें, ख़रीद का समय तय करने के लिए नहीं।',
+hi:{intro:'कल का दाम कोई नहीं जान सकता। आज दाम को ऊपर या नीचे धकेलने वाले संकेत ये हैं।',n_gold:'सोने',n_silver:'चाँदी',
+l_up:'अगले एक-दो दिन में {m} का दाम <b>बढ़ने</b> के संकेत ज़्यादा हैं।',l_down:'अगले एक-दो दिन में {m} का दाम <b>घटने</b> के संकेत ज़्यादा हैं।',l_mixed:'संकेत <b>मिले-जुले</b> हैं। {m} का दाम लगभग वैसा ही रह सकता है या किसी भी ओर जा सकता है।',
+notPromise:'यह सिर्फ़ संकेत है, गारंटी नहीं।',pullUp:'⬆ ऊपर धकेल रहे',pullDown:'⬇ नीचे धकेल रहे',nothing:'कुछ ख़ास नहीं',
+s_dxy_p:'💵 डॉलर कमज़ोर',s_dxy_m:'💵 डॉलर मज़बूत',s_us10y_p:'🏦 अमेरिकी ब्याज घट रहा',s_us10y_m:'🏦 अमेरिकी ब्याज बढ़ रहा',s_usdinr_p:'₹ रुपया कमज़ोर',s_usdinr_m:'₹ रुपया मज़बूत',s_vix_p:'😟 दुनिया में डर',s_vix_m:'😌 दुनिया शांत',s_copper_p:'🏭 कारख़ाने ख़रीद रहे',s_copper_m:'🏭 कारख़ाने सुस्त',s_trend_p:'📈 हाल में चढ़ रहा',s_trend_m:'📉 हाल में गिर रहा',
+listen:'🔊 सुनें',stop:'⏹ रोकें',tipT:'💡 जल्द गहने ख़रीद रहे हैं?',tip:'कल का दाम कोई नहीं जानता। किसी समारोह के लिए गहने चाहिए तो ज़रूरत के समय ख़रीदें। दाम गिरने का इंतज़ार करने से ज़्यादा बचत अक्सर दो दुकानों पर मेकिंग चार्ज और वेस्टेज की तुलना करके होती है।',tipLink:'मेकिंग चार्ज जाँचें →',showDet:'📊 पूरी जानकारी देखें',hideDet:'▲ जानकारी छिपाएँ',back:'← ज्वेलरी सूट',title:'सोना और चाँदी किस ओर झुक रहे हैं?',sub:'अभी कीमतों को क्या धकेल रहा है, आसान भाषा में। यह दिशा का अंदाज़ा है, भविष्यवाणी नहीं।',
 gold:'सोना',silver:'चाँदी',readT:'आज का विश्लेषण',evT:'आगे क्या: ऐसा हुआ तो वैसा',drvT:'कीमतों को क्या धकेल रहा है (पिछले 5 दिन)',trkT:'हमारा अंदाज़ा कितनी बार सही रहा?',whyT:'सही कीमत कोई क्यों नहीं बता सकता?',
 disc:'सिर्फ़ समझने के लिए। यह निवेश सलाह नहीं है और कीमत की भविष्यवाणी नहीं है। LawSticker AI SEBI-पंजीकृत सलाहकार नहीं है। कीमतें किसी भी अंदाज़े के उलट, कभी भी चल सकती हैं।',
 up:'ऊपर की ओर झुकाव',down:'नीचे की ओर झुकाव',mixed:'मिला-जुला',low:'कम भरोसा',medium:'मध्यम भरोसा',sigSays:'संकेतों का जोड़: {x}',
@@ -245,6 +287,51 @@ function spark(arr,dir){
 }
 function sgn(n,u){if(n==null)return '–';var s=(n>0?'+':'')+(u==='pts'?n.toFixed(2)+' pts':n.toFixed(1)+'%');return s}
 
+function pushes(k){
+  var m=D&&D.market,up=[],dn=[];
+  ((m&&m.drivers)||[]).forEach(function(d){
+    var e=k==='gold'?d.effect_gold:d.effect_silver;if(!e)return;
+    var key=(d.key==='gold'||d.key==='silver')?'trend':d.key;
+    (e>0?up:dn).push(t('s_'+key+(e>0?'_p':'_m')));
+  });
+  return {up:up,dn:dn};
+}
+function leanOf(k){var rd=D&&D.read,m=D&&D.market;return (rd&&rd[k+'_lean'])||(m&&m.tally_lean&&m.tally_lean[k])||'mixed'}
+function renderSimple(){
+  var el=$('simple');
+  if(!D){if(netErr)el.innerHTML='<div class="sm"><div class="err">'+esc(t('loadFail'))+'</div><button class="retry" id="retryBtn">'+esc(t('retry'))+'</button></div>';return}
+  el.innerHTML=['gold','silver'].map(function(k){
+    var ln=leanOf(k),p=pushes(k),ico=ln==='up'?'↑':ln==='down'?'↓':'↔';
+    var sent=fill(t('l_'+ln),{m:esc(t('n_'+k))});
+    function col(arr,cls,h){return '<div class="'+cls+'"><h4>'+esc(t(h))+'</h4>'+(arr.length?arr.map(function(x){return '<span>'+esc(x)+'</span>'}).join(''):'<span class="e">'+esc(t('nothing'))+'</span>')+'</div>'}
+    var tot=p.up.length+p.dn.length,uw=tot?Math.round(p.up.length/tot*100):50;
+    return '<div class="sm '+k+' '+ln+'"><div class="sm-top"><div class="sm-ico" aria-hidden="true">'+ico+'</div><div><div class="sm-m"><span class="gem"></span>'+esc(t(k))+'</div><div class="sm-s">'+sent+'</div><div class="sm-n">'+esc(t('notPromise'))+'</div></div></div>'+
+      '<div class="tug">'+col(p.up,'u','pullUp')+col(p.dn,'d','pullDown')+'</div>'+
+      '<div class="rope" aria-hidden="true"><i style="width:'+uw+'%;background:var(--up)"></i><i style="width:'+(100-uw)+'%;background:var(--down)"></i></div></div>';
+  }).join('');
+  if(window.speechSynthesis)$('listenBtn').classList.remove('hidden');
+}
+/* listen (browser voice, free) */
+var speaking=false;
+function speakText(){
+  var parts=[];
+  ['gold','silver'].forEach(function(k){
+    var p=pushes(k),tmp=document.createElement('div');tmp.innerHTML=fill(t('l_'+leanOf(k)),{m:t('n_'+k)});parts.push(tmp.textContent);
+    if(p.up.length)parts.push(t('pullUp').replace('⬆','')+': '+p.up.join(', '));
+    if(p.dn.length)parts.push(t('pullDown').replace('⬇','')+': '+p.dn.join(', '));
+  });
+  parts.push(t('notPromise'));parts.push(t('tip'));
+  return parts.join('. ').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,'').replace(/₹/g,lang==='en'?'Rupee':'');
+}
+function toggleListen(){
+  var ss=window.speechSynthesis;if(!ss)return;
+  if(speaking){ss.cancel();speaking=false;$('listenBtn').textContent=t('listen');return}
+  var u=new SpeechSynthesisUtterance(speakText());u.lang={en:'en-IN',te:'te-IN',hi:'hi-IN'}[lang];u.rate=.92;
+  var v=(ss.getVoices()||[]).filter(function(x){return x.lang&&x.lang.replace('_','-').indexOf(u.lang)===0})[0];if(v)u.voice=v;
+  u.onend=u.onerror=function(){speaking=false;$('listenBtn').textContent=t('listen')};
+  ss.cancel();ss.speak(u);speaking=true;$('listenBtn').textContent=t('stop');
+  try{gtag('event','metal_direction_listen',{lang:lang})}catch(e){}
+}
 function renderLeans(){
   var el=$('leans');
   if(loading&&!D){return}
@@ -300,11 +387,13 @@ function renderTrack(){
   if(any<5){el.innerHTML='<div class="none">'+esc(t('trkNone'))+'</div><div class="fine">'+esc(t('trkNote'))+'</div>';return}
   el.innerHTML='<div class="trk">'+['gold','silver'].map(function(k){var x=tr[k],p=x.called?Math.round(x.matched/x.called*100):0;return '<div><span>'+esc(t(k))+'</span><b>'+(x.called?p+'%':'–')+'</b><span>'+esc(fill(t('trkLine'),{h:x.matched,n:x.called}))+'</span></div>'}).join('')+'</div><div class="fine">'+esc(t('trkNote'))+'</div>';
 }
-function renderAll(){renderLeans();renderRead();renderEvents();renderDrivers();renderTrack();postH()}
+function renderAll(){renderSimple();renderLeans();renderRead();renderEvents();renderDrivers();renderTrack();postH()}
 function applyLang(){
+  if(speaking&&window.speechSynthesis){window.speechSynthesis.cancel();speaking=false}
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-i]').forEach(function(e){e.textContent=t(e.dataset.i)});
   document.querySelectorAll('.langs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===lang)});
+  $('detBtn').textContent=t($('details').classList.contains('hidden')?'showDet':'hideDet');
   $('why').innerHTML=t('why').map(function(p){return '<p>'+esc(p)+'</p>'}).join('');
   if(D||netErr)renderAll();else postH();
 }
@@ -328,6 +417,9 @@ if(EMBED){document.body.classList.add('embed');$('nav').classList.add('hidden');
   window.addEventListener('message',function(ev){if(ev.data&&ev.data.type==='setLang'&&['en','te','hi'].indexOf(ev.data.lang)>-1){lang=ev.data.lang;applyLang()}});
 }
 document.querySelectorAll('.langs button').forEach(function(b){b.addEventListener('click',function(){lang=b.dataset.l;try{localStorage.setItem('lsLang',lang)}catch(e){}applyLang()})});
+$('listenBtn').addEventListener('click',toggleListen);
+$('detBtn').addEventListener('click',function(){var d=$('details'),open=d.classList.toggle('hidden')===false;this.setAttribute('aria-expanded',open);this.textContent=t(open?'hideDet':'showDet');try{localStorage.setItem('mdDet',open?'1':'0')}catch(e){}if(open)try{gtag('event','metal_direction_details')}catch(e){};postH()});
+try{if(localStorage.getItem('mdDet')==='1'){$('details').classList.remove('hidden');$('detBtn').setAttribute('aria-expanded','true')}}catch(e){}
 document.querySelectorAll('[data-acc]').forEach(function(b){b.addEventListener('click',function(){$(b.dataset.acc).classList.toggle('hidden');postH()})});
 document.addEventListener('click',function(e){if(e.target&&e.target.id==='retryBtn'){loading=true;netErr=false;load(false)}});
 window.addEventListener('resize',postH);
