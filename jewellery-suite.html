@@ -669,7 +669,7 @@ function sendFb(){
   if(fb.sending)return;var out=$('fbMsgOut');
   if(!fb.rating){out.textContent=t('fbPick');out.className='msg err';return}
   fb.sending=true;$('fbSend').disabled=true;out.textContent=t('fbSending');out.className='msg';
-  fetch(BACKEND+'/api/jewellery-feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rating:fb.rating,category:fb.cat,message:$('fbMsg').value,contact:$('fbContact').value,website:$('fbWebsite').value,metal:S.metal,mode:S.mode,lang:lang})})
+  fetch(BACKEND+'/api/jewellery-feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rating:fb.rating,category:fb.cat,message:$('fbMsg').value,contact:$('fbContact').value,website:$('fbWebsite').value,metal:S.view==='trend'?'direction':S.metal,mode:S.view==='trend'?'view':S.mode,lang:lang})})
     .then(function(r){return r.json().then(function(j){return{ok:r.ok&&j.ok,j:j}})}).then(function(x){
       fb.sending=false;
       if(x.ok){out.textContent=t('fbThanks');out.className='msg ok';store('jsFbDone',Date.now());setTimeout(closeFb,1600)}
