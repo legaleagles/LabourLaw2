@@ -129,6 +129,14 @@ th{background:#f6f1e4;}
 .done{display:flex;align-items:center;gap:10px;margin-top:18px;padding:10px 12px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:700;font-size:14.5px;cursor:pointer;}
 .done input{width:20px;height:20px;accent-color:#2a9d55;}
 .nav2{display:flex;gap:8px;margin-top:14px;}
+.viva{display:grid;gap:6px;}
+.viva details{border:1px solid var(--line);border-left:4px solid var(--c,#b4451f);border-radius:10px;padding:8px 10px;background:#fffdf8;}
+.viva summary{cursor:pointer;font-weight:700;font-size:14.5px;list-style:none;}
+.viva summary::-webkit-details-marker{display:none;}
+.viva summary::before{content:'❓ ';}
+.viva details[open] summary::before{content:'💡 ';}
+.viva details div{font-size:14.5px;margin-top:6px;color:#1d1b18;}
+.viva small{color:var(--mute);font-weight:600;}
 .nav2 button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px;font-weight:700;font-size:14px;}
 .nav2 button:disabled{opacity:.4;}
 .journey{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
@@ -318,6 +326,7 @@ function openTopic(id,ki){
   if(t.tbl)h+=t.tbl;
   h+=`<div class="k">What it teaches</div><ul class="les">${t.lesson.map(x=>`<li>${x}</li>`).join('')}</ul>`;
   h+=`<div class="k">In real life</div><div class="real">${t.real}</div>`;
+  if(t.viva&&t.viva.length)h+=`<div class="k">Viva questions (${t.viva.length}) — try first, then tap</div><div class="viva">${t.viva.map(v=>`<details><summary>${v.q} <small>· Q${v.n}</small></summary><div>${v.a}</div></details>`).join('')}</div>`;
   const L=LINKS[id]||[];
   if(L.length)h+=`<div class="k">Connected topics (${L.length})</div><div class="links">${L.map(([b,w])=>`<button data-go="${b}" style="--lc:${U[T[b].unit].col}"><b>${U[T[b].unit].name} · ${T[b].short} →</b><span>${w}</span></button>`).join('')}</div>`;
   h+=`<label class="done"><input type="checkbox" id="chk" ${done.has(id)?'checked':''}> I understand this topic</label>`;
@@ -339,7 +348,7 @@ function openRoot(){cur=null;
   let h=`<h2>${D.root.title}</h2><div class="idea">${D.root.idea}</div><div class="k">The journey of a civil suit</div><div class="journey">`+
   D.root.journey.map((id,i)=>`${i?'<i>→</i>':''}<button data-go="${id}">${T[id].short.replace(/ —.*/,'')}</button>`).join('')+`</div><p class="note" style="font-size:13.5px;color:#3c3830">${D.root.journey_note}</p>`;
   h+=`<div class="k">The five units</div><div class="ulist">`+D.units.map(u=>{const ts=D.topics.filter(t=>t.unit===u.key);const dn=ts.filter(t=>done.has(t.id)).length;return `<button data-unit="${u.key}" style="--uc:${u.col}"><span>${u.name} · ${u.title}</span><small>${dn}/${ts.length} ✓</small></button>`;}).join('')+`</div>`;
-  h+=`<div class="k">How to use this map</div><ul class="les"><li>Tap a <b>unit</b> to open its topics, then tap a <b>topic</b> to read it here.</li><li>Small grey boxes are <b>key concepts</b>. Tap one to jump to it.</li><li>The <b>dashed orange lines</b> and the “Connected topics” list show how topics link up.</li><li>Dot colour shows importance across ${D.npapers} question papers (${D.yrs}): <b style="color:#dc2626">red</b> asked ${D.th[0]}+ times, <b style="color:#d97706">amber</b> ${D.th[1]}–${D.th[0]-1}, <b style="color:#0284c7">blue</b> 0–${D.th[1]-1}.</li><li>Tick <b>“I understand this topic”</b> to track your progress. It is saved on this device only.</li></ul>`;
+  h+=`<div class="k">How to use this map</div><ul class="les"><li>Tap a <b>unit</b> to open its topics, then tap a <b>topic</b> to read it here.</li><li>Small grey boxes are <b>key concepts</b>. Tap one to jump to it.</li><li>The <b>dashed orange lines</b> and the “Connected topics” list show how topics link up.</li><li>Dot colour shows importance across ${D.npapers} question papers (${D.yrs}): <b style="color:#dc2626">red</b> asked ${D.th[0]}+ times, <b style="color:#d97706">amber</b> ${D.th[1]}–${D.th[0]-1}, <b style="color:#0284c7">blue</b> 0–${D.th[1]-1}.</li><li>Tick <b>“I understand this topic”</b> to track your progress. It is saved on this device only.</li>${D.topics.some(t=>t.viva)?`<li>🎤 <b>Viva practice:</b> each topic ends with the faculty's viva questions (${D.topics.reduce((n,t)=>n+(t.viva||[]).length,0)} in all). Answer aloud first, then tap to check.</li>`:''}</ul>`;
   pB.innerHTML=h;openPanel('#1f2a44','Overview');wireGo();
   pB.querySelectorAll('[data-unit]').forEach(b=>b.onclick=()=>{const n=NODE[b.dataset.unit];n.open=true;sel=n.id;render();focusNode(n,true);openUnit(n.id);});}
 function wireGo(){pB.querySelectorAll('[data-go]').forEach(b=>{if(b.dataset.go)b.onclick=()=>openTopic(b.dataset.go);});}
@@ -347,7 +356,7 @@ document.getElementById('pPrev').onclick=()=>{const i=cur?ORDER.indexOf(cur):0;i
 document.getElementById('pNext').onclick=()=>{const i=cur?ORDER.indexOf(cur):-1;if(i<ORDER.length-1)openTopic(ORDER[i+1]);};
 // ---- search ----
 const q=document.getElementById('q'),res=document.getElementById('res');
-const IDX=D.topics.map(t=>({id:t.id,s:(t.short+' '+t.title+' '+t.sec+' '+t.case+' '+t.kids.map(k=>k.l+' '+k.t).join(' ')+' '+t.idea).replace(/<[^>]+>/g,' ').toLowerCase()}));
+const IDX=D.topics.map(t=>({id:t.id,s:(t.short+' '+t.title+' '+t.sec+' '+t.case+' '+t.kids.map(k=>k.l+' '+k.t).join(' ')+' '+t.idea+' '+(t.viva||[]).map(v=>v.q).join(' ')).replace(/<[^>]+>/g,' ').toLowerCase()}));
 q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase().replace(/section\s*/,'s.');if(v.length<2){res.style.display='none';return;}
   const words=v.split(/\s+/);const hits=IDX.filter(x=>words.every(w=>x.s.includes(w))).slice(0,8);
   res.innerHTML=hits.length?hits.map(h=>`<button data-go="${h.id}"><b>${T[h.id].short}</b> <small>· ${U[T[h.id].unit].name} · ${T[h.id].sec}</small></button>`).join(''):'<button disabled>No match. Try a section (s.11) or a case name.</button>';
