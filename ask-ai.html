@@ -296,6 +296,18 @@ var qlang = 'en';
 (function(){
   var params = new URLSearchParams(window.location.search);
   var urlTopic = params.get('topic');
+  // ?q=<question>[&lang=te|hi] — used by the homepage "Ask Vidura" box:
+  // opens the chat and sends the question straight away.
+  var urlQ = (params.get('q') || '').trim().slice(0, 500);
+  if (urlQ) {
+    window.addEventListener('DOMContentLoaded', function(){
+      var l = params.get('lang');
+      if (l === 'te' || l === 'hi') setQLang(l);
+      skipToChat();
+      document.getElementById('questionInput').value = urlQ;
+      sendQuestion();
+    });
+  }
   if (urlTopic === 'scam_verify') {
     window.addEventListener('DOMContentLoaded', function(){
       pickTopic('scam_verify', 'Check a Scam');
