@@ -62,42 +62,56 @@ nav.top .links a{color:#cbd5e1}
 .prog .pb{width:90px;height:7px;background:#EFE9D6;border-radius:6px;overflow:hidden}
 .prog .pb i{display:block;height:100%;background:var(--leaf);width:0;transition:width .3s}
 /* tree */
-.tree{position:relative;margin-top:14px;padding-left:34px}
-.tree::before{content:"";position:absolute;left:13px;top:6px;bottom:0;width:8px;border-radius:6px;background:linear-gradient(180deg,#9a6b3a,var(--bark));box-shadow:inset -2px 0 0 rgba(0,0,0,.12)}
-.stage{position:relative;margin-bottom:22px}
-.node{position:absolute;left:-34px;top:0;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:900;font-size:14px;display:grid;place-items:center;border:3px solid var(--cream);box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.stage.done .node{background:var(--leaf);color:#fff}
-.sh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:34px;padding-left:6px}
-.sh .ic{font-size:22px}
-.sh h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;line-height:1.1}
-.badge{font-size:10.5px;font-weight:800;letter-spacing:.3px;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.crown{max-width:400px;margin:16px auto 0}
+.crown svg{width:100%;height:auto;display:block}
+.tree{position:relative;margin-top:-3px;padding-bottom:4px}
+.tree::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:14px;margin-left:-7px;background:linear-gradient(90deg,#8a5a2b,#7C4A1E 45%,#9a6b3a);border-radius:0 0 8px 8px}
+.row{position:relative;margin-bottom:14px}
+.pill{position:relative;z-index:3;display:flex;align-items:center;gap:7px;margin:0 auto;border:2px solid var(--gold);background:#fff;border-radius:999px;padding:4px 12px 4px 4px;font-weight:800;font-size:13.5px;color:var(--ink);cursor:pointer}
+.pill .num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:12px;font-weight:900}
+.row.done .pill .num{background:var(--leaf);color:#fff}
+.pill .ic{font-size:16px}
+.badge{font-size:10px;font-weight:800;border-radius:999px;padding:2px 7px;white-space:nowrap}
 .badge.twin{background:#DCFCE7;color:#166534}.badge.cousin{background:#FEF3C7;color:#92400E}.badge.orphan{background:#F3E8FF;color:#6B21A8}
-.q{font-size:14px;font-weight:700;color:var(--ink2);padding-left:6px;margin:2px 0 8px}
-.vig{background:#FBF6E4;border:1px dashed #D9C47A;border-radius:12px;padding:9px 11px;font-size:12.8px;color:#4B3B0A;margin-bottom:9px}
-.vig b{color:#7A5A00}.vig div{margin-top:3px}
-.vig .cv{color:var(--civ-d)}.vig .bv{color:var(--cri-d)}
-.leaves{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:stretch}
-.f-cpc .leaf.bnss,.f-bnss .leaf.cpc{display:none}
-.f-cpc .leaves,.f-bnss .leaves{grid-template-columns:1fr}
-.leaf{position:relative;border-radius:16px;background:#fff;border:1.5px solid var(--c);overflow:hidden;display:flex;flex-direction:column}
-.leaf.cpc{--c:var(--civ);--cb:var(--civ-bg);--cd:var(--civ-d)}.leaf.bnss{--c:var(--cri);--cb:var(--cri-bg);--cd:var(--cri-d)}
-.leaf .lh{background:var(--c);color:#fff;font-size:11px;font-weight:800;letter-spacing:.6px;padding:5px 12px;display:flex;justify-content:space-between}
-.leaf .lb{padding:11px 12px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
-.leaf .one{flex:0 0 auto}.leaf .hook{margin-top:auto}
-.leaf .nm{font-weight:800;font-size:16px;line-height:1.2;color:var(--cd)}
-.sec{display:inline-block;align-self:flex-start;font-size:11.5px;font-weight:800;color:#fff;background:#1d1d26;border-radius:6px;padding:2px 8px}
-.leaf .one{font-size:13.5px;color:var(--ink2);line-height:1.5}
-.hook{background:var(--cb);color:var(--cd);border-radius:9px;padding:6px 10px;font-size:13px;font-weight:700}
-.boss{font-size:12px;color:#7c2d12;line-height:1.45}
-.cover{position:absolute;inset:26px 0 0 0;background:repeating-linear-gradient(135deg,var(--cb),var(--cb) 10px,#fff 10px,#fff 20px);display:none;place-items:center;text-align:center;font-weight:800;font-size:14px;color:var(--cd);padding:14px;cursor:pointer;z-index:2}
-.cover span{background:#fff;border:1.5px solid var(--c);border-radius:12px;padding:10px 14px}
-.hide-cpc .leaf.cpc:not(.shown) .cover,.hide-bnss .leaf.bnss:not(.shown) .cover{display:grid}
-.cmp{margin-top:9px;display:grid;gap:6px}
-.cmp div{border-radius:11px;padding:8px 11px;font-size:13px;line-height:1.45}
+.qline{position:relative;z-index:3;display:table;margin:4px auto 7px;background:var(--cream);padding:0 8px;border-radius:8px;font-size:12px;font-weight:700;color:var(--ink2);text-align:center}
+.twigs{display:grid;grid-template-columns:1fr 40px 1fr;align-items:stretch}
+.side{position:relative;display:flex}
+.chip{position:relative;z-index:2;width:100%;border:1.5px solid var(--c);background:#fff;border-radius:12px;padding:8px 9px 9px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;font:inherit;color:inherit;overflow:hidden}
+.chip.b{--c:var(--cri);--cb:var(--cri-bg);--cd:var(--cri-d);border-left-width:6px}
+.chip.c{--c:var(--civ);--cb:var(--civ-bg);--cd:var(--civ-d);border-right-width:6px}
+.side::after{content:"";position:absolute;top:50%;width:15px;height:7px;margin-top:-3px;background:var(--bark);z-index:1}
+.side.b::after{right:-14px;border-radius:0 4px 4px 0}
+.side.c::after{left:-14px;border-radius:4px 0 0 4px}
+.chip .cn{font-weight:800;font-size:13.5px;line-height:1.2;color:var(--cd)}
+.sec{display:inline-block;align-self:flex-start;font-size:10.5px;font-weight:800;color:#fff;background:#1d1d26;border-radius:5px;padding:1px 6px}
+.chip .ck{font-size:12px;color:var(--ink2);line-height:1.4}
+.chip .more{font-size:10.5px;font-weight:800;color:var(--cd);margin-top:auto}
+.row.open .chip{box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.row.open .chip .more{visibility:hidden}
+.detail{display:none;position:relative;z-index:3;margin:9px 0 2px;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:9px;box-shadow:0 6px 18px rgba(13,17,23,.08)}
+.row.open .detail{display:block}
+.dcols{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dcol{position:relative;border-radius:12px;border:1.5px solid var(--c);overflow:hidden;background:#fff}
+.dcol.b{--c:var(--cri);--cb:var(--cri-bg);--cd:var(--cri-d)}.dcol.c{--c:var(--civ);--cb:var(--civ-bg);--cd:var(--civ-d)}
+.dcol .dh{background:var(--c);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:4px 9px}
+.dcol .db{padding:8px 9px 9px;display:flex;flex-direction:column;gap:6px}
+.dcol .one{font-size:12.5px;line-height:1.5;color:var(--ink2)}
+.hook{background:var(--cb);color:var(--cd);border-radius:8px;padding:5px 8px;font-size:12px;font-weight:700}
+.boss{font-size:11px;color:#7c2d12;line-height:1.4}
+.cv{position:absolute;inset:0;background:repeating-linear-gradient(135deg,var(--cb),var(--cb) 9px,#fff 9px,#fff 18px);display:none;place-items:center;text-align:center;font-weight:800;font-size:12px;color:var(--cd);padding:6px;cursor:pointer;z-index:4}
+.cv span{background:#fff;border:1.5px solid var(--c);border-radius:10px;padding:6px 9px}
+.hide-bnss .row:not(.sh-b) .b .cv,.hide-cpc .row:not(.sh-c) .c .cv{display:grid}
+.vig{background:#FBF6E4;border:1px dashed #D9C47A;border-radius:12px;padding:8px 10px;font-size:12.5px;color:#4B3B0A;margin-top:8px}
+.vig b{color:#7A5A00}.vig div{margin-top:3px}.vig .cv2{color:var(--civ-d)}.vig .bv{color:var(--cri-d)}
+.cmp{margin-top:8px;display:grid;gap:6px}
+.cmp div{border-radius:11px;padding:7px 10px;font-size:12.8px;line-height:1.45}
 .cmp .same{background:#ECFDF5;color:#14532D}.cmp .twist{background:#FFF7ED;color:#7C2D12}.cmp .trap{background:#FEF2F2;color:#7F1D1D}
-.cmp b{font-weight:800}
 .got{margin-top:9px;border:1.5px solid var(--leaf);background:#fff;color:var(--leaf);border-radius:11px;font-weight:800;font-size:12.5px;padding:7px 13px}
-.stage.done .got{background:var(--leaf);color:#fff}
+.row.done .got{background:var(--leaf);color:#fff}
+.f-bnss .twigs,.f-cpc .twigs{grid-template-columns:1fr}
+.f-bnss .twigs .trunkcell,.f-cpc .twigs .trunkcell,.f-bnss .side::after,.f-cpc .side::after{display:none}
+.f-bnss .side.c,.f-bnss .dcol.c,.f-cpc .side.b,.f-cpc .dcol.b{display:none}
+.f-bnss .dcols,.f-cpc .dcols{grid-template-columns:1fr}
 .bonus{margin-top:6px;background:#fff;border:1.5px solid var(--gold);border-radius:18px;padding:14px}
 .bonus h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px}
 .bonus .sub{font-size:13px;color:var(--muted);margin-bottom:10px}
@@ -148,20 +162,13 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
 .foot a{color:var(--civ);font-weight:700}
 .links-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
 @media(max-width:699px){
-  .tree{padding-left:26px}.tree::before{left:8px;width:7px}
-  .node{left:-26px;width:26px;height:26px;font-size:12px;border-width:2px}
-  .sh{padding-left:4px}.sh h3{font-size:17px}.q{padding-left:4px;font-size:13px}
-  .leaves{gap:5px}
-  .leaf{border-radius:12px}
-  .leaf .lh{font-size:9.5px;padding:4px 7px;letter-spacing:.3px}
-  .leaf .lb{padding:7px 7px 8px;gap:5px}
-  .leaf .nm{font-size:13px;line-height:1.2}
-  .sec{font-size:9.5px;padding:1px 5px;border-radius:5px}
-  .leaf .one{font-size:11.5px;line-height:1.42}
-  .hook{font-size:11px;padding:4px 6px;border-radius:7px}
-  .boss{font-size:10px;line-height:1.35}
-  .cover span{font-size:12px;padding:8px 8px}.cover{padding:6px}
-  .vig{font-size:12px;padding:8px 9px}
+  .pill{font-size:12.5px}
+  .twigs{grid-template-columns:1fr 34px 1fr}
+  .side.b::after{right:-12px;width:13px}.side.c::after{left:-12px;width:13px}
+  .chip{padding:7px 7px 8px;border-radius:11px}
+  .chip .cn{font-size:12.5px}.chip .ck{font-size:11px;line-height:1.35}.sec{font-size:9.5px}
+  .dcol .one{font-size:11.5px}.hook{font-size:11px}.boss{font-size:10px}
+  .vig{font-size:11.8px}.cmp div{font-size:12px}
   .pair .pt{grid-template-columns:1fr auto 1fr;gap:5px}.pair .pl{font-size:12px;padding:6px 7px}
 }
 @media print{
@@ -180,15 +187,15 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
     <path d="M92 150 C94 112 96 96 98 78 L102 78 C104 96 106 112 108 150Z" fill="#7C4A1E"/>
     <path d="M100 100 C84 90 70 84 56 70" stroke="#7C4A1E" stroke-width="5" fill="none" stroke-linecap="round"/>
     <path d="M100 100 C116 90 130 84 144 70" stroke="#7C4A1E" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <circle cx="52" cy="58" r="24" fill="#1D4ED8"/><circle cx="72" cy="44" r="20" fill="#3B6BEA"/><circle cx="38" cy="72" r="16" fill="#2D5BE0"/>
-    <circle cx="148" cy="58" r="24" fill="#BE123C"/><circle cx="128" cy="44" r="20" fill="#DB2F57"/><circle cx="162" cy="72" r="16" fill="#CC1F49"/>
+    <circle cx="52" cy="58" r="24" fill="#BE123C"/><circle cx="72" cy="44" r="20" fill="#DB2F57"/><circle cx="38" cy="72" r="16" fill="#CC1F49"/>
+    <circle cx="148" cy="58" r="24" fill="#1D4ED8"/><circle cx="128" cy="44" r="20" fill="#3B6BEA"/><circle cx="162" cy="72" r="16" fill="#2D5BE0"/>
     <circle cx="100" cy="34" r="22" fill="#C9A227"/>
-    <text x="52" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">CPC</text>
-    <text x="148" y="62" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">BNSS</text>
+    <text x="52" y="62" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">BNSS</text>
+    <text x="148" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">CPC</text>
     <text x="100" y="39" text-anchor="middle" font-size="16" fill="#0D1117">⚖️</text>
   </svg>
   <h1>Twin Tree</h1>
-  <p>Learn <b>CPC</b> and <b>BNSS</b> at the same time. One trunk — the <b>life of a case</b> — and at every stage, the civil branch and the criminal branch side by side.</p>
+  <p>Learn <b>BNSS</b> and <b>CPC</b> at the same time. One trunk — the <b>life of a case</b> — with the criminal branch on the left, the civil branch on the right, and every twig facing its twin.</p>
 </header>
 
 <div class="page">
@@ -196,10 +203,10 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
     <h2>📖 One wrong, two courts</h2>
     <p>Sita lends her scooter to Raju. He sells it to a stranger and disappears. Sita can go down <b>two roads at once</b> — and every stage of the tree below follows her on both.</p>
     <div class="roads">
-      <div class="road civ"><b>⚖️ CIVIL ROAD · CPC</b>“Get my scooter’s value back.” Sita sues Raju in a civil court.</div>
       <div class="road cri"><b>🚔 CRIMINAL ROAD · BNSS</b>“Punish the cheating.” Sita reports to the police; the State prosecutes.</div>
+      <div class="road civ"><b>⚖️ CIVIL ROAD · CPC</b>“Get my scooter’s value back.” Sita sues Raju in a civil court.</div>
     </div>
-    <div class="how"><span>1 · Read a stage</span><span>2 · Cover one side &amp; guess its twin</span><span>3 · Play the CPC-or-BNSS game</span></div>
+    <div class="how"><span>1 · Tap a twig to open its stage</span><span>2 · Cover one side &amp; guess its twin</span><span>3 · Play the BNSS-or-CPC game</span></div>
   </div>
 
   <div class="bar">
@@ -210,13 +217,25 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
 
   <section id="p-tree" class="pane">
     <div class="ctl" id="ctl" style="margin:12px 0 0">
-      <span>Show <span class="seg" id="segShow"><button data-v="both" class="on">Both</button><button data-v="cpc" class="c">CPC</button><button data-v="bnss" class="b">BNSS</button></span></span>
-      <span>Test me: cover <span class="seg" id="segHide"><button data-v="none" class="on">Off</button><button data-v="cpc" class="c">CPC</button><button data-v="bnss" class="b">BNSS</button></span></span>
+      <span>Show <span class="seg" id="segShow"><button data-v="both" class="on">Both</button><button data-v="bnss" class="b">BNSS</button><button data-v="cpc" class="c">CPC</button></span></span>
+      <span>Test me: cover <span class="seg" id="segHide"><button data-v="none" class="on">Off</button><button data-v="bnss" class="b">BNSS</button><button data-v="cpc" class="c">CPC</button></span></span>
+      <button class="seg" id="openAll" style="border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 11px;font-size:12px;font-weight:800;color:var(--ink2)">Open all ▾</button>
       <span class="prog"><span id="progTxt">0/12</span><span class="pb"><i id="progBar"></i></span></span>
     </div>
+    <div class="crown"><svg viewBox="0 0 400 205" role="img" aria-label="The tree of law: criminal procedure (BNSS) on the left, civil procedure (CPC) on the right">
+      <g fill="#15803D"><circle cx="112" cy="82" r="48"/><circle cx="162" cy="56" r="53"/><circle cx="218" cy="52" r="55"/><circle cx="268" cy="64" r="49"/><circle cx="305" cy="94" r="42"/><circle cx="96" cy="116" r="37"/><circle cx="138" cy="120" r="41"/><circle cx="202" cy="114" r="47"/><circle cx="264" cy="120" r="41"/><circle cx="302" cy="120" r="33"/></g>
+      <g fill="#E9F7EC"><circle cx="112" cy="82" r="45"/><circle cx="162" cy="56" r="50"/><circle cx="218" cy="52" r="52"/><circle cx="268" cy="64" r="46"/><circle cx="305" cy="94" r="39"/><circle cx="96" cy="116" r="34"/><circle cx="138" cy="120" r="38"/><circle cx="202" cy="114" r="44"/><circle cx="264" cy="120" r="38"/><circle cx="302" cy="120" r="30"/></g>
+      <text x="200" y="88" text-anchor="middle" font-size="40" font-weight="900" fill="#14532D" font-family="Playfair Display,serif">LAW</text>
+      <text x="200" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#166534" font-family="DM Sans,sans-serif">the life of a case</text>
+      <path d="M200 205 L200 150" stroke="#7C4A1E" stroke-width="14"/>
+      <path d="M200 176 C150 176 110 170 62 160" stroke="#7C4A1E" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M200 176 C250 176 290 170 338 160" stroke="#7C4A1E" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <rect x="6" y="166" width="112" height="26" rx="13" fill="#BE123C"/><text x="62" y="183.5" text-anchor="middle" font-size="12.5" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">BNSS · criminal</text>
+      <rect x="282" y="166" width="112" height="26" rx="13" fill="#1D4ED8"/><text x="338" y="183.5" text-anchor="middle" font-size="12.5" font-weight="800" fill="#fff" font-family="DM Sans,sans-serif">CPC · civil</text>
+    </svg></div>
     <div class="tree" id="tree"></div>
     <div class="bonus" id="bonus"></div>
-    <div class="roots">🌱 Roots: Limitation, Constitution Arts 14, 20, 21 — they hold up both branches.</div>
+    <div class="roots">🌱 Roots: Limitation · Constitution Arts 14, 20, 21 — they hold up both branches.</div>
   </section>
 
   <section id="p-traps" class="pane hidden">
@@ -371,28 +390,44 @@ var done={};try{done=JSON.parse(localStorage.getItem('ttDone')||'{}')||{};}catch
 function save(){try{localStorage.setItem('ttDone',JSON.stringify(done));}catch(e){}}
 
 /* ---------------- tree ---------------- */
-function leaf(kind,d){
-  var nm=kind==='cpc'?'CPC · CIVIL':'BNSS · CRIMINAL';
-  return '<div class="leaf '+kind+'" data-k="'+kind+'"><div class="lh"><span>'+nm+'</span><span>'+(kind==='cpc'?'⚖️':'🚔')+'</span></div><div class="lb">'+
-   '<div class="nm">'+esc(d.n)+'</div><span class="sec">'+esc(d.s)+'</span><div class="one">'+esc(d.o)+'</div>'+
-   '<div class="hook">🧠 '+esc(d.h)+'</div>'+(d.b?'<div class="boss">⚖️ <b>'+esc(d.b.split(' — ')[0])+'</b>'+(d.b.indexOf(' — ')>0?' — '+esc(d.b.split(' — ').slice(1).join(' — ')):'')+'</div>':'')+
-   '</div><div class="cover"><span>👆 Tap to reveal the '+(kind==='cpc'?'CPC':'BNSS')+' twin</span></div></div>';
+// Short one-line keys shown on each twig: [BNSS (left), CPC (right)]
+var KEY={
+ door:['Tried where the offence happened','Sue where the defendant lives or the cause arose'],
+ start:['FIR to the police, or complaint to a Magistrate','Plaintiff files a plaint with court fee'],
+ call:['Summons → warrant → proclamation → attachment','Summons: personal → family → affix → substituted'],
+ hold:['Arrest, remand, bail, anticipatory bail','Injunction, attachment before judgment, caveat'],
+ reply:['Accused may stay silent; prosecution must prove','Written statement in 30 days — deny it or it is admitted'],
+ fix:['The court frames the charge','The court frames the issues'],
+ settle:['Compounding (listed offences) and plea bargaining','Compromise decree; ADR under S.89'],
+ proof:['Prosecution proves beyond reasonable doubt','Affidavits, cross-examination; more likely than not'],
+ verdict:['Judgment → sentence (+ victim compensation)','Judgment → decree (+ costs)'],
+ appeal:['Appeal, reference, revision — no review','Appeal, reference, review, revision'],
+ real:['Sentence by warrant; confirmation, remission','Execution: attach and sell, arrest, receiver'],
+ clock:['A clock only for minor offences (S.514)','A time-barred suit is dismissed (S.3)']
+};
+function chip(kind,s,d){
+  return '<div class="side '+kind+'"><div class="chip '+kind+'" data-open="'+s.id+'"><div class="cn">'+esc(d.n)+'</div><span class="sec">'+esc(d.s)+'</span><div class="ck">'+esc(KEY[s.id][kind==='b'?0:1])+'</div><div class="more">tap for detail ▾</div><div class="cv"><span>👆 Tap to reveal</span></div></div></div>';
+}
+function dcol(kind,d){
+  var nm=kind==='b'?'BNSS · CRIMINAL':'CPC · CIVIL';
+  return '<div class="dcol '+kind+'"><div class="dh">'+nm+'</div><div class="db"><div class="one">'+esc(d.o)+'</div><div class="hook">🧠 '+esc(d.h)+'</div>'+(d.b?'<div class="boss">⚖️ <b>'+esc(d.b.split(' — ')[0])+'</b>'+(d.b.indexOf(' — ')>0?' — '+esc(d.b.split(' — ').slice(1).join(' — ')):'')+'</div>':'')+'</div><div class="cv"><span>👆 Tap to reveal</span></div></div>';
 }
 function renderTree(){
   var h='';
   STAGES.forEach(function(s,i){
-    h+='<article class="stage'+(done[s.id]?' done':'')+'" id="st-'+s.id+'"><div class="node">'+(i+1)+'</div>'+
-     '<div class="sh"><span class="ic">'+s.ic+'</span><h3>'+esc(s.t)+'</h3><span class="badge '+s.badge+'">'+BADGE[s.badge]+'</span></div>'+
-     '<div class="q">'+esc(s.q)+'</div>'+
-     '<div class="vig"><b>📖 Sita’s scooter</b><div class="cv">⚖️ '+esc(s.story[0])+'</div><div class="bv">🚔 '+esc(s.story[1])+'</div></div>'+
-     '<div class="leaves">'+leaf('cpc',s.cpc)+leaf('bnss',s.bnss)+'</div>'+
+    h+='<article class="row'+(done[s.id]?' done':'')+'" id="st-'+s.id+'">'+
+     '<button class="pill" data-open="'+s.id+'"><span class="num">'+(i+1)+'</span><span class="ic">'+s.ic+'</span>'+esc(s.t)+' <span class="badge '+s.badge+'">'+BADGE[s.badge]+'</span></button>'+
+     '<div class="qline">'+esc(s.q)+'</div>'+
+     '<div class="twigs">'+chip('b',s,s.bnss)+'<div class="trunkcell"></div>'+chip('c',s,s.cpc)+'</div>'+
+     '<div class="detail"><div class="dcols">'+dcol('b',s.bnss)+dcol('c',s.cpc)+'</div>'+
+     '<div class="vig"><b>📖 Sita’s scooter</b><div class="bv">🚔 '+esc(s.story[1])+'</div><div class="cv2">⚖️ '+esc(s.story[0])+'</div></div>'+
      '<div class="cmp"><div class="same"><b>🟰 Same idea:</b> '+esc(s.same)+'</div><div class="twist"><b>🔀 The twist:</b> '+esc(s.twist)+'</div><div class="trap"><b>⚠️ Exam trap:</b> '+esc(s.trap)+'</div></div>'+
-     '<button class="got" data-id="'+s.id+'">'+(done[s.id]?'✓ Learned':'Mark as learned')+'</button></article>';
+     '<button class="got" data-id="'+s.id+'">'+(done[s.id]?'✓ Learned':'Mark as learned')+'</button></div></article>';
   });
   $('tree').innerHTML=h;
-  var b='<h3>⚡ Quick twins</h3><div class="sub">Four more pairs that sit outside the main trunk.</div>';
+  var b='<h3>⚡ Quick twins</h3><div class="sub">Four more pairs that sit outside the main trunk. Criminal on the left, civil on the right — same as the tree.</div>';
   BONUS.forEach(function(p){
-    b+='<div class="pair"><div class="pt"><div class="pl c"><small>CPC · '+esc(p.cs)+'</small>'+esc(p.c)+'</div><div class="eq">⇄</div><div class="pl b"><small>BNSS · '+esc(p.bs)+'</small>'+esc(p.b)+'</div></div><p><b>'+esc(p.t)+'</b> '+esc(p.w)+'</p></div>';
+    b+='<div class="pair"><div class="pt"><div class="pl b"><small>BNSS · '+esc(p.bs)+'</small>'+esc(p.b)+'</div><div class="eq">⇄</div><div class="pl c"><small>CPC · '+esc(p.cs)+'</small>'+esc(p.c)+'</div></div><p><b>'+esc(p.t)+'</b> '+esc(p.w)+'</p></div>';
   });
   $('bonus').innerHTML=b;
   progress();
@@ -401,18 +436,25 @@ function progress(){
   var n=STAGES.filter(function(s){return done[s.id];}).length;
   $('progTxt').textContent=n+'/'+STAGES.length;$('progBar').style.width=(100*n/STAGES.length)+'%';
 }
-$('tree').addEventListener('click',function(e){
+var treeEl=$('p-tree');
+treeEl.addEventListener('click',function(e){
+  var cv=e.target.closest('.cv');
+  if(cv){var row=cv.closest('.row');row.classList.add(cv.closest('.b')?'sh-b':'sh-c');ev('tt_reveal');e.stopPropagation();return;}
   var g=e.target.closest('.got');
-  if(g){var id=g.dataset.id;done[id]=!done[id];if(!done[id])delete done[id];save();g.textContent=done[id]?'✓ Learned':'Mark as learned';g.closest('.stage').classList.toggle('done',!!done[id]);progress();if(done[id])ev('tt_stage_done',{stage:id});return;}
-  var c=e.target.closest('.cover');
-  if(c){c.parentNode.classList.add('shown');ev('tt_reveal');}
+  if(g){var id=g.dataset.id;done[id]=!done[id];if(!done[id])delete done[id];save();g.textContent=done[id]?'✓ Learned':'Mark as learned';g.closest('.row').classList.toggle('done',!!done[id]);progress();if(done[id])ev('tt_stage_done',{stage:id});return;}
+  var o=e.target.closest('[data-open]');
+  if(o){var r=o.closest('.row');r.classList.toggle('open');if(r.classList.contains('open'))ev('tt_open',{stage:o.dataset.open});}
+});
+$('openAll').addEventListener('click',function(){
+  var rows=[].slice.call(document.querySelectorAll('.row')),anyClosed=rows.some(function(r){return !r.classList.contains('open');});
+  rows.forEach(function(r){r.classList.toggle('open',anyClosed);});
+  this.textContent=anyClosed?'Close all ▴':'Open all ▾';ev('tt_open_all',{open:anyClosed});
 });
 
 /* ---------------- controls ---------------- */
-var treeEl=$('p-tree');
 function seg(id,fn){$(id).addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call($(id).children,function(x){x.classList.toggle('on',x===b);});fn(b.dataset.v);});}
 seg('segShow',function(v){treeEl.classList.remove('f-cpc','f-bnss');if(v!=='both')treeEl.classList.add('f-'+v);ev('tt_show',{v:v});});
-seg('segHide',function(v){treeEl.classList.remove('hide-cpc','hide-bnss');[].forEach.call(document.querySelectorAll('.leaf.shown'),function(l){l.classList.remove('shown');});if(v!=='none')treeEl.classList.add('hide-'+v);ev('tt_cover',{v:v});});
+seg('segHide',function(v){treeEl.classList.remove('hide-cpc','hide-bnss');[].forEach.call(document.querySelectorAll('.row.sh-b,.row.sh-c'),function(l){l.classList.remove('sh-b','sh-c');});if(v!=='none')treeEl.classList.add('hide-'+v);ev('tt_cover',{v:v});});
 
 /* ---------------- traps ---------------- */
 function renderTraps(f){
@@ -424,7 +466,7 @@ function renderTraps(f){
   $('traps').innerHTML=h;
 }
 seg('segTrap',renderTraps);
-function openStage(id){tab('tree');setTimeout(function(){var e=$('st-'+id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},60);}
+function openStage(id){tab('tree');setTimeout(function(){var e=$('st-'+id);if(e){e.classList.add('open');e.scrollIntoView({behavior:'smooth',block:'start'});}},60);}
 document.addEventListener('click',function(e){var g=e.target.closest('[data-go]');if(g){e.preventDefault();openStage(g.dataset.go);}});
 
 /* ---------------- game ---------------- */
@@ -442,7 +484,7 @@ function drawQ(){
     $('again').onclick=startGame;return;
   }
   var q=G.q[G.i];
-  box.innerHTML='<div class="gtop"><span>Question '+(G.i+1)+' / '+G.q.length+'</span><span>Score '+G.score+'</span></div><div class="gq">“'+esc(q[0])+'”</div><div class="gbtn"><button class="c" data-a="c">⚖️ CPC</button><button class="a" data-a="both">🟰 Both</button><button class="b" data-a="b">🚔 BNSS</button></div><div id="gfb"></div>';
+  box.innerHTML='<div class="gtop"><span>Question '+(G.i+1)+' / '+G.q.length+'</span><span>Score '+G.score+'</span></div><div class="gq">“'+esc(q[0])+'”</div><div class="gbtn"><button class="b" data-a="b">🚔 BNSS</button><button class="a" data-a="both">🟰 Both</button><button class="c" data-a="c">⚖️ CPC</button></div><div id="gfb"></div>';
   G.locked=false;
 }
 $('game').addEventListener('click',function(e){
@@ -458,14 +500,14 @@ $('game').addEventListener('click',function(e){
 
 /* ---------------- cheat sheet ---------------- */
 function renderCheat(){
-  var h='<thead><tr><th>#</th><th>Stage</th><th>⚖️ CPC (civil)</th><th>🚔 BNSS (criminal)</th></tr></thead><tbody>';
+  var h='<thead><tr><th>#</th><th>Stage</th><th>🚔 BNSS (criminal)</th><th>⚖️ CPC (civil)</th></tr></thead><tbody>';
   STAGES.forEach(function(s,i){
-    h+='<tr><td>'+(i+1)+'</td><td><b>'+s.ic+' '+esc(s.t)+'</b><br><small>'+esc(s.q)+'</small></td><td class="c"><span class="sc">'+esc(s.cpc.s)+'</span><br><b>'+esc(s.cpc.n)+'</b><br>🧠 '+esc(s.cpc.h)+'</td><td class="b"><span class="sc">'+esc(s.bnss.s)+'</span><br><b>'+esc(s.bnss.n)+'</b><br>🧠 '+esc(s.bnss.h)+'</td></tr>';
+    h+='<tr><td>'+(i+1)+'</td><td><b>'+s.ic+' '+esc(s.t)+'</b><br><small>'+esc(s.q)+'</small></td><td class="b"><span class="sc">'+esc(s.bnss.s)+'</span><br><b>'+esc(s.bnss.n)+'</b><br>🧠 '+esc(s.bnss.h)+'</td><td class="c"><span class="sc">'+esc(s.cpc.s)+'</span><br><b>'+esc(s.cpc.n)+'</b><br>🧠 '+esc(s.cpc.h)+'</td></tr>';
   });
   BONUS.forEach(function(p){h+='<tr><td>⚡</td><td><b>'+esc(p.t)+'</b></td><td class="c"><span class="sc">'+esc(p.cs)+'</span><br><b>'+esc(p.c)+'</b></td><td class="b"><span class="sc">'+esc(p.bs)+'</span><br><b>'+esc(p.b)+'</b></td></tr>';});
   $('cheat').innerHTML=h+'</tbody>';
   function ul(a){return '<ul>'+a.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';}
-  $('venn').innerHTML='<div class="vc"><h4>⚖️ Only in CPC</h4>'+ul(ORPH.c)+'</div><div class="vboth"><h4>🟰 On both branches</h4>'+ul(ORPH.both)+'</div><div class="vb"><h4>🚔 Only in BNSS</h4>'+ul(ORPH.b)+'</div>';
+  $('venn').innerHTML='<div class="vb"><h4>🚔 Only in BNSS</h4>'+ul(ORPH.b)+'</div><div class="vboth"><h4>🟰 On both branches</h4>'+ul(ORPH.both)+'</div><div class="vc"><h4>⚖️ Only in CPC</h4>'+ul(ORPH.c)+'</div>';
 }
 
 /* ---------------- tabs ---------------- */
