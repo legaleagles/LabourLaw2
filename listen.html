@@ -79,7 +79,7 @@ button:focus-visible,select:focus-visible,.row:focus-visible,a:focus-visible{out
 </header>
 <div class="tabs" role="tablist" id="tabs"><button class="tab" role="tab" data-s="cpc" style="--c:#1D4ED8"><small>Paper I</small>CPC &amp; Limitation</button><button class="tab" role="tab" data-s="bnss" style="--c:#BE123C"><small>Paper II</small>BNSS · JJ · Probation</button><button class="tab" role="tab" data-s="banking" style="--c:#0B7A55"><small>Paper III</small>Banking Law</button><button class="tab" role="tab" data-s="adr" style="--c:#0E7490"><small>Paper IV</small>ADR</button><button class="tab" role="tab" data-s="ethics" style="--c:#B45309"><small>Paper V</small>Professional Ethics</button></div>
 <section class="list" id="list" aria-live="polite"></section>
-<p class="note"><b>Tips.</b> Clusters play one after another automatically. Your place is remembered on this phone. Tap ⬇ to save a cluster for offline listening. The voice is computer-generated: section numbers are read as "Section 478", Orders as "Order 21". <b>If you are driving, start the audio before you set off and do not handle the phone on the road.</b></p>
+<p class="note"><b>Tips.</b> Clusters play one after another automatically. Your place is remembered on this phone. The voice is computer-generated: section numbers are read as "Section 478", Orders as "Order 21". <b>If you are driving, start the audio before you set off and do not handle the phone on the road.</b></p>
 <p class="note">Free study material from <b>LawSticker AI</b> · lawsticker-ai.com. Spotted an error? Use the feedback button on the <a href="/">homepage</a>.</p>
 </div>
 <div class="player" id="player" hidden>
@@ -109,7 +109,7 @@ function showSubj(s){
   var L=DATA[s]||[],M=META[s],tot=L.reduce(function(a,c){return a+c.d;},0),h='';
   document.documentElement.style.setProperty('--c',M.col);
   h+='<div class="lh"><span><b>'+esc(M.name)+'</b> · '+L.length+' clusters · '+fmt(tot)+'</span><button type="button" id="all">▶ Play all</button></div>';
-  L.forEach(function(c,i){h+='<div class="row'+(cur.s===s&&cur.i===i?' on':'')+'" data-i="'+i+'" tabindex="0"><button class="pl" type="button" aria-label="Play cluster '+c.n+'">'+(cur.s===s&&cur.i===i&&!au.paused?'❚❚':c.n)+'</button><div class="tx"><b>'+c.t+'</b><span>Cluster '+c.n+' · '+fmt(c.d)+'</span></div><a class="dl" href="'+c.f+'" download aria-label="Download cluster '+c.n+' MP3">⬇</a></div>';});
+  L.forEach(function(c,i){h+='<div class="row'+(cur.s===s&&cur.i===i?' on':'')+'" data-i="'+i+'" tabindex="0"><button class="pl" type="button" aria-label="Play cluster '+c.n+'">'+(cur.s===s&&cur.i===i&&!au.paused?'❚❚':c.n)+'</button><div class="tx"><b>'+c.t+'</b><span>Cluster '+c.n+' · '+fmt(c.d)+'</span></div></div>';});
   $('list').innerHTML=h; $('list').dataset.s=s;
   $('all').onclick=function(){load(s,0,0,true);};
   document.querySelectorAll('.row').forEach(function(r){
