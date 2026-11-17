@@ -7,21 +7,21 @@
 <meta name="description" content="Daily AI-generated lecture calendar for your LLB paper — one topic unlocks each day, all 6 semesters covered.">
 <meta name="author" content="Durga Sankar Pedagopu">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@75..125,100..800&family=Anek+Telugu:wdth,wght@75..125,100..800&family=Anek+Devanagari:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e09fd067f6fa48feb2687141fcada9b0"}'></script>
 <style>
-:root{--navy:#0D1117;--gold:#C9A227;--gold-l:#F5D76E;--cream:#FEFCF5;--ink:#111827;--muted:#6B7280;}
+:root{--navy:#1C1E6B;--gold:#FFB703;--gold-l:#FFD166;--cream:#EEF0F8;--ink:#111827;--muted:#6B7280;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
-nav{background:rgba(13,17,23,.97);padding:12px 16px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;}
-.nav-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold-l);text-decoration:none;}
+body{font-family:'Anek Latin','Anek Telugu','Anek Devanagari',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:rgba(28,30,107,.97);padding:12px 16px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Anek Latin','Anek Telugu','Anek Devanagari',serif;font-size:15px;font-weight:900;color:var(--gold-l);text-decoration:none;}
 .nav-back{color:rgba(255,255,255,.55);font-size:12px;font-weight:700;text-decoration:none;}
-.hero{background:linear-gradient(150deg,#0D1117 0%,#1a1030 60%,#241505 100%);padding:22px 18px 20px;}
+.hero{background:#2A2C94;padding:22px 18px 20px;}
 .hero-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#7DD3FC;}
-.hero-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:#F5D76E;margin-top:4px;line-height:1.3;}
+.hero-title{font-family:'Anek Latin','Anek Telugu','Anek Devanagari',serif;font-size:19px;font-weight:900;color:#FFD166;margin-top:4px;line-height:1.3;}
 .hero-progress-row{display:flex;align-items:center;gap:10px;margin-top:12px;}
 .hero-progress-track{flex:1;height:7px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
-.hero-progress-fill{height:100%;background:linear-gradient(90deg,#C9A227,#F5D76E);border-radius:5px;}
+.hero-progress-fill{height:100%;background:linear-gradient(90deg,#FFB703,#FFD166);border-radius:5px;}
 .hero-progress-label{font-size:10.5px;font-weight:800;color:rgba(255,255,255,.6);white-space:nowrap;}
 .hero-daterange{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:9px;}
 .notes-download-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:linear-gradient(135deg,#0EA5E9,#0284C7);
@@ -34,7 +34,7 @@ color:#fff;font-size:11.5px;font-weight:800;padding:9px 15px;border-radius:10px;
 .cal-nav-btn{background:#fff;border:1px solid #E5E7EB;border-radius:8px;width:34px;height:34px;
 font-size:16px;cursor:pointer;color:var(--ink);}
 .cal-nav-btn:disabled{opacity:.3;cursor:not-allowed;}
-.cal-month-label{font-family:'Playfair Display',serif;font-weight:900;font-size:15px;color:var(--ink);}
+.cal-month-label{font-family:'Anek Latin','Anek Telugu','Anek Devanagari',serif;font-weight:900;font-size:15px;color:var(--ink);}
 .cal-weekday-row{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:6px;}
 .cal-weekday{text-align:center;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:18px;}
@@ -47,7 +47,7 @@ font-size:10px;cursor:default;border:1.5px solid transparent;position:relative;}
 .cal-day.locked .dn::after{content:'🔒';font-size:8px;display:block;}
 .cal-day.available{background:#fff;border-color:var(--gold);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;}
 .cal-day.available.done{background:linear-gradient(135deg,#FEF9E7,#FDF3D0);}
-.cal-day.today{background:linear-gradient(135deg,#C9A227,#F5D76E);color:#1a1030;border-color:#8a6d1a;cursor:pointer;}
+.cal-day.today{background:linear-gradient(135deg,#FFB703,#FFD166);color:#23257F;border-color:#8a6d1a;cursor:pointer;}
 .cal-day.selected{outline:2.5px solid #0EA5E9;outline-offset:1px;}
 .cal-day .star{position:absolute;bottom:2px;font-size:7px;}
 
@@ -55,11 +55,11 @@ font-size:10px;cursor:default;border:1.5px solid transparent;position:relative;}
 .lec-unit{font-size:9.5px;font-weight:800;color:#0369A1;text-transform:uppercase;letter-spacing:.5px;}
 .lec-refresh-line{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#92400E;
 background:#FFFBEB;border:1px solid #FDE68A;border-radius:20px;padding:4px 11px;margin:8px 0 10px;font-weight:800;}
-.lec-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 12px;line-height:1.3;}
-.lec-hook{background:linear-gradient(135deg,#1a1030,#2d1b4e);border-radius:13px;padding:13px 14px;margin-bottom:16px;
+.lec-title{font-family:'Anek Latin','Anek Telugu','Anek Devanagari',serif;font-size:19px;font-weight:900;color:var(--ink);margin:5px 0 12px;line-height:1.3;}
+.lec-hook{background:linear-gradient(135deg,#23257F,#2d1b4e);border-radius:13px;padding:13px 14px;margin-bottom:16px;
 display:flex;align-items:flex-start;gap:10px;box-shadow:0 4px 14px rgba(45,27,78,.25);}
 .lec-hook-icon{font-size:20px;flex-shrink:0;}
-.lec-hook-text{font-size:13px;color:#F5D76E;font-weight:700;line-height:1.55;font-style:italic;}
+.lec-hook-text{font-size:13px;color:#FFD166;font-weight:700;line-height:1.55;font-style:italic;}
 .lec-stars{display:flex;align-items:center;gap:6px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:9px;padding:9px 11px;margin-bottom:14px;}
 .lec-stars-icons{font-size:14px;letter-spacing:1px;}
 .lec-stars-reason{font-size:11px;color:#7C5A0A;flex:1;}
@@ -141,6 +141,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-TJXHVW6XCL');
 </script>
+<link rel="stylesheet" href="assets/brand.css">
 </head>
 <body>
 
@@ -160,11 +161,11 @@ gtag('config', 'G-TJXHVW6XCL');
   <a class="notes-download-btn" id="notesLink" href="#">📥 Download Notes So Far</a>
   <a class="exam-btn" id="examLink" href="#" style="display:none;">⏱️ Take the Mock Exam</a>
   <a class="exam-btn" id="pyqLink" href="#" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">📚 Previous Year Questions</a>
-  <a class="exam-btn" id="storyLink" href="#" target="_blank" rel="noopener" style="display:none;background:linear-gradient(135deg,#C9A227,#8a6d1a);">🎬 Story Notes (PDF)</a>
-  <a class="exam-btn" id="hubLink" href="cpc-hub.html" style="display:none;background:linear-gradient(135deg,#1f2a44,#b4451f);">🗂️ All CPC material (one page)</a>
+  <a class="exam-btn" id="storyLink" href="#" target="_blank" rel="noopener" style="display:none;background:linear-gradient(135deg,#FFB703,#8a6d1a);">🎬 Story Notes (PDF)</a>
+  <a class="exam-btn" id="hubLink" href="cpc-hub.html" style="display:none;background:linear-gradient(135deg,#262887,#b4451f);">🗂️ All CPC material (one page)</a>
   <a class="exam-btn" id="chalLink" href="chalchitra.html" style="display:none;background:linear-gradient(135deg,#e4572e,#7b4bb7);">🎬 CPC in Motion (animated)</a>
   <a class="exam-btn" id="metroLink" href="#" style="display:none;background:linear-gradient(135deg,#0e7490,#1d4ed8);">🚇 Nyaya Metro (subject map)</a>
-  <a class="exam-btn" id="packLink" href="#" style="display:none;background:linear-gradient(135deg,#0D1117,#1e2a5a);border:1px solid rgba(245,215,110,.6);">🎯 Final Exam Pack (PDFs)</a>
+  <a class="exam-btn" id="packLink" href="#" style="display:none;background:linear-gradient(135deg,#1C1E6B,#1e2a5a);border:1px solid rgba(245,215,110,.6);">🎯 Final Exam Pack (PDFs)</a>
 </div>
 
 <div class="wrap">
