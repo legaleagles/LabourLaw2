@@ -54,14 +54,14 @@ button{font:inherit;color:inherit}
 nav.top{position:sticky;top:0;z-index:50;background:var(--indigo-d);color:#fff}
 .nav-in{display:flex;align-items:center;gap:10px;height:56px}
 .brand{display:flex;align-items:center;gap:9px;margin-right:auto;font-stretch:85%;font-weight:800;font-size:21px;letter-spacing:-.01em;white-space:nowrap;line-height:1}
-.brand .dot{width:32px;height:32px;border-radius:50%;background:var(--mari);border:2.5px solid #fff;display:grid;place-items:center;font-size:15px;transform:rotate(-8deg)}
+.brand .dot{width:32px;height:32px;border-radius:50%;background:var(--mari);color:#17183F;border:2.5px solid #fff;display:grid;place-items:center;transform:rotate(-8deg)}.brand .dot svg.gl{width:18px;height:18px;stroke-width:2.3}
 .navlinks{display:none;gap:22px;margin-right:14px;font-size:15.5px;font-weight:500}
 .navlinks a{opacity:.82;padding:6px 0;border-bottom:2px solid transparent}
 .navlinks a:hover{opacity:1;border-bottom-color:var(--mari)}
 @media(min-width:900px){.navlinks{display:flex}}
 .navfb{border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#fff;border-radius:999px;height:36px;min-width:36px;padding:0 9px;display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:600;cursor:pointer}
 .navfb:hover{border-color:#fff}
-.navfb span{display:none}
+.navfb svg.gl{width:19px;height:19px}.navfb span{display:none}
 @media(min-width:900px){.navfb{padding:0 15px}.navfb span{display:inline}}
 .langs{display:flex;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;overflow:hidden}
 .langs button{border:0;background:transparent;color:rgba(255,255,255,.75);font-weight:700;font-size:13.5px;padding:0 11px;height:33px;cursor:pointer;line-height:1}
@@ -137,13 +137,13 @@ html[lang=te] .sh h2,html[lang=hi] .sh h2{line-height:1.2;font-size:clamp(25px,6
 .rank a{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:14px;padding:13px 16px}
 .rank a:hover{background:var(--tint)}
 .rank .n{font-stretch:76%;font-weight:800;font-size:40px;line-height:1;width:.7em;text-align:center;color:var(--indigo)}
-.rank .e{font-size:27px;line-height:1}
+.rank .ico{width:44px;height:44px}
 .rank b{display:block;font-weight:700;font-size:17.5px;line-height:1.2}
 .rank i{display:block;font-style:normal;font-size:14.5px;color:var(--muted);line-height:1.3;margin-top:2px}
 .rank li.first a{background:var(--mari);color:var(--on-mari);padding:18px 16px}
 .rank li.first a:hover{background:var(--mari-d)}
 .rank li.first .n{color:var(--on-mari);font-size:64px}
-.rank li.first .e{font-size:36px}
+.rank li.first .ico{width:58px;height:58px;border-width:4px}
 .rank li.first b{font-stretch:82%;font-weight:800;font-size:25px;line-height:1.05}
 .rank li.first i{color:rgba(23,24,63,.78);font-size:15.5px}
 .rank.plain a{grid-template-columns:auto minmax(0,1fr)}
@@ -153,7 +153,7 @@ html[lang=te] .sh h2,html[lang=hi] .sh h2{line-height:1.2;font-size:clamp(25px,6
   .rank li.first{grid-row:1/5;display:flex}
   .rank li.first a{flex:1;grid-template-columns:minmax(0,1fr);align-content:end;gap:6px;padding:30px}
   .rank li.first .n{font-size:190px;width:auto;text-align:left;line-height:.78;margin-bottom:auto}
-  .rank li.first .e{font-size:44px}
+  .rank li.first .ico{width:76px;height:76px}
   .rank li.first b{font-size:42px}
   .rank li.first i{font-size:18px}
   .rank li+li{border-top:0;border-left:1.5px dashed var(--line)}
@@ -161,25 +161,30 @@ html[lang=te] .sh h2,html[lang=hi] .sh h2{line-height:1.2;font-size:clamp(25px,6
   .rank a{padding:17px 22px}
 }
 
+/* icon stickers: every icon is a small die-cut sticker */
+.ico{flex:none;display:grid;place-items:center;width:44px;height:44px;border:3px solid #fff;border-radius:var(--sh,50%);background:var(--bg,var(--indigo));color:var(--fg,#fff);box-shadow:0 1px 0 rgba(0,0,0,.12),0 4px 10px rgba(8,9,50,.22);transform:rotate(var(--r,0deg))}
+.ico svg{width:58%;height:58%}
+.ico svg,svg.gl{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+svg.gl{width:22px;height:22px;display:block}
 /* tag flows (who is it with, calculators) */
 .tags{display:flex;flex-wrap:wrap;gap:9px}
-.tag{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--ink);border-radius:999px;padding:8px 16px 8px 12px;font-weight:600;font-size:16px;line-height:1.2}
-.tag i{font-style:normal;font-size:19px;line-height:1}
+.tag{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--ink);border-radius:999px;padding:6px 16px 6px 8px;font-weight:600;font-size:16px;line-height:1.2}
+.tag .ico{width:28px;height:28px;border-width:2px;box-shadow:0 2px 5px rgba(8,9,50,.2)}.tag .ico svg{width:62%;height:62%;stroke-width:2.3}
 .tag:hover{background:var(--mari);color:var(--on-mari);border-color:var(--on-mari)}
-.tags.sm .tag{font-size:15px;padding:7px 14px 7px 11px;border-color:var(--line)}
+.tags.sm .tag{font-size:15px;padding:6px 14px 6px 7px;border-color:var(--line)}.tags.sm .tag:not(:has(.ico)){padding-left:14px}
 .tags.sm .tag:hover{border-color:var(--on-mari)}
 
-@media(max-width:699px){.tags{gap:7px}.tag{font-size:15px;padding:7px 13px 7px 10px;gap:6px}.tag i{font-size:17px}}
+@media(max-width:699px){.tags{gap:7px}.tag{font-size:15px;padding:6px 13px 6px 7px;gap:7px}.tag .ico{width:26px;height:26px}}
 /* sticker sheets: one sheet per section, cells split by kiss-cut lines */
 .sg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-radius:18px;padding-top:7px;box-shadow:inset 0 7px 0 var(--sc,var(--indigo));overflow:hidden}
 .cell{position:relative;display:flex;flex-direction:column;gap:3px;padding:15px 14px 16px;border-right:1.5px dashed var(--line);border-bottom:1.5px dashed var(--line);margin:0 -1.5px -1.5px 0;min-width:0}
 .cell:hover{background:var(--tint)}
-.cell .e{font-size:28px;line-height:1;margin-bottom:6px}
+.cell .ico{width:46px;height:46px;margin-bottom:9px}
 .cell .tt{font-weight:700;font-size:17px;line-height:1.18}
 .cell .td{font-size:14.5px;color:var(--muted);line-height:1.32}
 .cell .new{position:absolute;top:12px;right:10px;background:var(--mari);color:var(--on-mari);font-weight:800;font-size:12.5px;line-height:1;padding:5px 9px;border-radius:999px;border:2px solid #fff;box-shadow:0 2px 6px rgba(8,9,50,.22);transform:rotate(6deg)}
 .cell.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:14px;padding:18px 16px}
-.cell.wide .e{font-size:40px;margin:0}
+.cell.wide .ico{width:62px;height:62px;margin:0;border-width:4px}
 .cell.wide .tx{display:flex;flex-direction:column;gap:3px;min-width:0}
 .cell.wide .tt{font-stretch:82%;font-weight:800;font-size:25px;line-height:1.05}
 .cell.wide .td{font-size:15.5px}
@@ -278,10 +283,10 @@ footer p{max-width:46em;line-height:1.5}
 /* tab bar (phones) */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;height:calc(var(--tabh) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--indigo-d);display:flex;justify-content:space-around;align-items:center}
 .tab{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:60px;padding:6px;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:600;line-height:1.15}
-.tab i{font-style:normal;font-size:20px;line-height:1.1}
+.tab i{font-style:normal;display:grid;place-items:center;height:24px}
 .tab.on{color:#fff}
 .tab.fab{margin-top:-24px;color:#fff;font-weight:700}
-.tab.fab i{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--mari);border:4px solid #fff;box-shadow:0 8px 16px rgba(8,9,50,.4);font-size:23px;transform:rotate(-6deg);margin-bottom:2px}
+.tab.fab i{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--mari);color:#17183F;border:4px solid #fff;box-shadow:0 8px 16px rgba(8,9,50,.4);transform:rotate(-6deg);margin-bottom:2px}.tab.fab svg.gl{width:26px;height:26px}
 @media(min-width:900px){.tabbar{display:none}body{padding-bottom:24px}}
 html[lang=te] *,html[lang=hi] *{letter-spacing:normal!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -293,11 +298,12 @@ gtag('js',new Date());gtag('config','G-TJXHVW6XCL');
 </script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M9 4.5h6l2 2.7-5 3.8-5-3.8z"/></symbol><symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 8.5h6M9 11.3h6M9 8.5h2.2a2.8 2.8 0 0 1 0 5.6H9l4.6 3.4"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3v18l2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5V3z"/><path d="M9.5 8h5M9.5 12h5"/></symbol><symbol id="i-plate" viewBox="0 0 24 24"><circle cx="12.5" cy="12" r="4.5"/><path d="M4.5 3v18M2.7 3v4.5a1.8 1.8 0 0 0 3.6 0V3"/><path d="M20.5 3c-2 2.2-2 6.8 0 9v9"/></symbol><symbol id="i-building" viewBox="0 0 24 24"><path d="M5 21V5.5L13 3v18M13 9h6v12M3 21h18"/><path d="M8.5 8.5h1M8.5 12.5h1M8.5 16.5h1M16 13.5h.01M16 17.5h.01"/></symbol><symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10.5h18M7 15h3.5"/></symbol><symbol id="i-chartup" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7.5 15.5l3.5-4 3 2.7 5-6.2M15.5 8H19v3.5"/></symbol><symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol><symbol id="i-cart" viewBox="0 0 24 24"><path d="M2.5 4H5l2.3 10.5h10.2L20 7H6"/><circle cx="9.5" cy="18.8" r="1.5"/><circle cx="16.5" cy="18.8" r="1.5"/></symbol><symbol id="i-magnifier" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3L21 21"/></symbol><symbol id="i-calculator" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M9 7.5h6"/><path d="M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/></symbol><symbol id="i-rupee" viewBox="0 0 24 24"><path d="M7 4.5h10M7 9h10M7 4.5h3.5a4.5 4.5 0 0 1 0 9H7l8 7"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M3.5 11.5L12 4l8.5 7.5M6 9.8V20h12V9.8"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20.5h16.5"/><path d="M6.5 17v-5M11 17V6M15.5 17v-7M20 17V9"/></symbol><symbol id="i-pillars" viewBox="0 0 24 24"><path d="M3 9.5l9-5.5 9 5.5zM4.5 20.5h15"/><path d="M6.5 12.5v5M10.2 12.5v5M13.8 12.5v5M17.5 12.5v5"/></symbol><symbol id="i-scales" viewBox="0 0 24 24"><path d="M12 4v16M7.5 20.5h9M5 7h14"/><path d="M5 7l-2.5 6a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/></symbol><symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11"/><path d="M8 3v3.5l4 5.5-4 5.5V21M16 3v3.5L12 12l4 5.5V21"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2.5L5 14h6l-1.5 7.5L19 10h-6z"/></symbol><symbol id="i-cycle" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-4.3M19.5 3.5v4h-4M20 13a8 8 0 0 1-14 4.3M4.5 20.5v-4h4"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.2L16 4.8l3.2 3.2L8.2 19z"/><path d="M13.6 7.2l3.2 3.2"/></symbol><symbol id="i-lifebuoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="M6 6l3.5 3.5M14.5 14.5L18 18M18 6l-3.5 3.5M9.5 14.5L6 18"/></symbol><symbol id="i-warning" viewBox="0 0 24 24"><path d="M12 3.5L21.5 20h-19z"/><path d="M12 10v4.5M12 17.2h.01"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 2.8V11c0 5-3.4 8.4-7 10-3.6-1.6-7-5-7-10V5.8z"/><path d="M9 12l2.2 2.2L15.2 10"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12.5H6z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></symbol><symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 3L3 10.5l6.5 2.7L12.2 20 15 14.5z"/><path d="M9.5 13.2L21 3"/></symbol><symbol id="i-apartment" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7.5h.01M15 7.5h.01M9 11.5h.01M15 11.5h.01"/><path d="M10.5 21v-4.5h3V21"/></symbol><symbol id="i-document" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12.5h5M10 16.5h5"/></symbol><symbol id="i-mindmap" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M9.9 9.9L6.4 6.4M14.1 9.9l3.5-3.5M9.9 14.1l-3.5 3.5M14.1 14.1l3.5 3.5"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v14H7.5A2.5 2.5 0 0 0 5 19.5zM5 19.5A2.5 2.5 0 0 0 7.5 21H19v-4"/><path d="M9.5 7.5h5.5"/></symbol><symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 21.5V13"/><path d="M12 14c-4.5 0-7-2.6-7-5.3C5 6.2 7 4 9.2 4.4 10.2 2.5 13.8 2.5 14.8 4.4 17 4 19 6.2 19 8.7c0 2.7-2.5 5.3-7 5.3z"/><path d="M12 17.5l3-2"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3.5"/><path d="M6 10.5h12M9.3 13.8h.01M14.7 13.8h.01"/><path d="M8.5 21l2-4M15.5 21l-2-4"/></symbol><symbol id="i-bow" viewBox="0 0 24 24"><path d="M7 3c8.5 2.2 8.5 15.8 0 18"/><path d="M7 3v18"/><path d="M3 12h17.5M17.5 9l3 3-3 3"/></symbol><symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9.5L12 4.5l10 5-10 5z"/><path d="M6.5 12v4.3c2 2.3 9 2.3 11 0V12M22 9.5V15"/></symbol><symbol id="i-stopwatch" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M12 2.5V6M18.3 6.7l1.4-1.4"/></symbol><symbol id="i-books" viewBox="0 0 24 24"><path d="M4 4h4v16.5H4zM8 4h4v16.5H8z"/><path d="M13.3 6.3l3.8-1 3.6 14-3.8 1z"/></symbol><symbol id="i-scroll" viewBox="0 0 24 24"><path d="M8 21h9.5a2.5 2.5 0 0 0 2.5-2.5V17H10.5v1.5A2.5 2.5 0 0 1 8 21a2.5 2.5 0 0 1-2.5-2.5V5.5A2.5 2.5 0 0 0 3 3h11.5A2.5 2.5 0 0 1 17 5.5V17"/><path d="M9.5 8h4M9.5 12h4"/></symbol><symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2.5"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13.5h18"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H5V6a3 3 0 0 0 3 3M16 5.5h3V6a3 3 0 0 1-3 3M12 13v4M8.5 20.5h7M9.8 17h4.4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4.5h16v11.5H10.5L6 20v-4H4z"/><path d="M8 9h8M8 12.3h5"/></symbol><symbol id="i-cross" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8v8M8 12h8"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6L12 16.7 6.5 19.6l1.2-6L3.2 9.4l6.1-.8z"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4.5 9L6 4h12l1.5 5M5 12v8.5h14V12"/><path d="M4.5 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0"/><path d="M10 20.5v-5h4v5"/></symbol><symbol id="i-people" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c0-4 2.7-6.3 6-6.3s6 2.3 6 6.3M16 14.8c3.2-.3 5.5 1.7 5.5 5.2"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol><symbol id="i-hardhat" viewBox="0 0 24 24"><path d="M3 17.5h18v2.5H3zM5.5 17.5V15a6.5 6.5 0 0 1 13 0v2.5"/><path d="M10 9V6.5h4V9"/></symbol></defs></svg>
 
 <nav class="top"><div class="wrap nav-in">
-  <a class="brand" href="/"><span class="dot">⚖️</span>LawSticker AI</a>
+  <a class="brand" href="/"><span class="dot"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-scales"/></svg></span>LawSticker AI</a>
   <div class="navlinks"><a href="rights-hub.html" data-k="nRights"></a><a href="#tools" data-k="tTools"></a><a href="calculators.html" data-k="nCalc"></a><a href="#study" data-k="tStudy"></a></div>
-  <button class="navfb" id="navFb" type="button" aria-label="Feedback">💬<span data-k="nFb"></span></button>
+  <button class="navfb" id="navFb" type="button" aria-label="Feedback"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg><span data-k="nFb"></span></button>
   <div class="langs" role="group" aria-label="Language">
     <button data-l="en" class="on">EN</button><button data-l="te">తె</button><button data-l="hi">हि</button>
   </div>
@@ -407,11 +413,11 @@ gtag('js',new Date());gtag('config','G-TJXHVW6XCL');
 </div></div>
 
 <nav class="tabbar" aria-label="Main">
-  <a class="tab on" href="/"><i>🏠</i><span data-k="tHome"></span></a>
-  <a class="tab" href="rights-hub.html"><i>⚖️</i><span data-k="nRights"></span></a>
-  <a class="tab fab" href="ask-ai.html"><i>🤖</i><span data-k="tAsk"></span></a>
-  <a class="tab" href="#tools"><i>🧰</i><span data-k="tTools"></span></a>
-  <a class="tab" href="#study"><i>🎓</i><span data-k="tStudy"></span></a>
+  <a class="tab on" href="/"><i><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg></i><span data-k="tHome"></span></a>
+  <a class="tab" href="rights-hub.html"><i><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-scales"/></svg></i><span data-k="nRights"></span></a>
+  <a class="tab fab" href="ask-ai.html"><i><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg></i><span data-k="tAsk"></span></a>
+  <a class="tab" href="#tools"><i><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"/></svg></i><span data-k="tTools"></span></a>
+  <a class="tab" href="#study"><i><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cap"/></svg></i><span data-k="tStudy"></span></a>
 </nav>
 
 <script>
@@ -581,15 +587,32 @@ function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=c
 function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function nm(slug){return C[slug][2][IDX[L]]||C[slug][2][0];}
 function ds(slug){var d=C[slug][3];return (d&&(d[IDX[L]]||d[0]))||'';}
+/* ---------- icon stickers ---------- */
+var IC={"jewellery-suite":"ring","jewellery-plans":"coin","gst-fraud":"receipt","restaurant-check":"plate","real-estate-checker":"building","loans-credit-checker":"card","metal-direction":"chartup","gimmicks-hub":"target","sarukulu":"cart","food-adulteration-checker":"magnifier","calculators":"calculator","finance-suite":"rupee","property-suite":"house","savings-suite":"bars","govt-legal-suite":"pillars","court-fee-calc":"scales","limitation-calc":"hourglass","gold-loan-calc":"coin","electricity-calc":"bolt","chit-fund-calc":"cycle","letters":"pen","legal-help":"lifebuoy","scam-fingerprints":"warning","scam-stories":"shield","smart-shopper":"bag","solar-legal":"sun","travel-rights":"plane","rights-residents":"apartment","tools":"document","cpc-mindmap":"mindmap","bnss-mindmap":"mindmap","adr-mindmap":"mindmap","ethics-mindmap":"mindmap","banking-mindmap":"mindmap","cpc-hub":"book","bnss-hub":"book","cpc-bnss-twin":"tree","nyaya-metro":"train","eklavya":"bow","subjects":"cap","aibe":"scales","mock-hub":"stopwatch","pyq-archive":"books","bare-acts":"scroll","career":"briefcase","challenge":"trophy","resume-builder":"document","rights-hub":"scales","ask-ai":"chat"};
+var SIT_G=["briefcase", "house", "hardhat", "apartment", "cross", "star", "pillars", "store", "cap", "plane", "bolt", "people"],SIT_C=["#2A2C94", "#0B9E6B", "#FB8500", "#3A86FF", "#E63946", "#17183F", "#0B9E6B", "#FFB703", "#2A2C94", "#3A86FF", "#FFB703", "#E63946"];
+// Catalogue colours are folded into the six sticker colours so the page stays one family.
+function pal(hex){
+  var n=parseInt(hex.slice(1),16),r=(n>>16)/255,g=((n>>8)&255)/255,b=(n&255)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn,h=0;
+  if(d<.2)return '#17183F';
+  if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;
+  h=(h*60+360)%360;
+  return h<18||h>=335?'#E63946':h<38?'#FB8500':h<62?'#FFB703':h<185?'#0B9E6B':h<228?'#3A86FF':'#2A2C94';
+}
+function ico(glyph,colour,seed){
+  var k=0;for(var i=0;i<seed.length;i++)k=(k*31+seed.charCodeAt(i))%997;
+  var bg=pal(colour),fg=bg==='#FFB703'?'#17183F':'#fff';
+  return '<span class="ico" style="--bg:'+bg+';--fg:'+fg+';--sh:'+['50%','34%','26%'][k%3]+';--r:'+(((k%7)-3)*2)+'deg"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-'+glyph+'"/></svg></span>';
+}
+function icon(slug){return ico(IC[slug],C[slug][1],slug);}
 function tile(slug,big){
   var c=C[slug],a=el('a','cell'+(big?' wide':''));
   a.href=slug+'.html';a.dataset.slug=slug;
   var d=ds(slug);
-  if(big)a.innerHTML='<span class="e">'+c[0]+'</span><span class="tx"><span class="tt">'+esc(nm(slug))+'</span><span class="td">'+esc(d)+'</span></span>';
-  else a.innerHTML=(c[4]?'<span class="new">'+(c[4]==='NEW'?'New':c[4])+'</span>':'')+'<span class="e">'+c[0]+'</span><span class="tt">'+esc(nm(slug))+'</span>'+(d?'<span class="td">'+esc(d)+'</span>':'');
+  if(big)a.innerHTML=icon(slug)+'<span class="tx"><span class="tt">'+esc(nm(slug))+'</span><span class="td">'+esc(d)+'</span></span>';
+  else a.innerHTML=(c[4]?'<span class="new">'+(c[4]==='NEW'?'New':c[4])+'</span>':'')+icon(slug)+'<span class="tt">'+esc(nm(slug))+'</span>'+(d?'<span class="td">'+esc(d)+'</span>':'');
   return a;
 }
-function chip(slug){var c=C[slug],a=el('a','tag','<i>'+c[0]+'</i>'+esc(nm(slug)));a.href=slug+'.html';a.dataset.slug=slug;return a;}
+function chip(slug){var a=el('a','tag',icon(slug)+esc(nm(slug)));a.href=slug+'.html';a.dataset.slug=slug;return a;}
 
 /* ---------- hits (GA4 via backend) with last-known cache so ordering never jumps ---------- */
 var HITS=null; // array of slugs, most viewed first
@@ -619,7 +642,7 @@ function renderTrend(){
   g.className='rank'+(live?'':' plain');   // numbers only when the order really is this week's ranking
   list.forEach(function(sl,i){
     var c=C[sl],li=el('li',i===0?'first':''),a=el('a');a.href=sl+'.html';a.dataset.slug=sl;
-    a.innerHTML=(live?'<span class="n">'+(i+1)+'</span>':'')+'<span class="e">'+c[0]+'</span><span><b>'+esc(nm(sl))+'</b><i>'+esc(ds(sl))+'</i></span>';
+    a.innerHTML=(live?'<span class="n">'+(i+1)+'</span>':'')+icon(sl)+'<span><b>'+esc(nm(sl))+'</b><i>'+esc(ds(sl))+'</i></span>';
     a.addEventListener('click',function(){try{gtag('event','home_spot',{slug:sl,pos:i+1,live:live});}catch(e){}});
     li.appendChild(a);g.appendChild(li);
   });
@@ -635,7 +658,7 @@ function renderAll(){
   renderStickers();
   renderTrend();
   var s=$('sits');s.innerHTML='';
-  SITS.forEach(function(x){var a=el('a','tag','<i>'+x[0]+'</i>'+esc(x[1+IDX[L]]));a.href=x[4]+'.html';s.appendChild(a);});
+  SITS.forEach(function(x,si){var a=el('a','tag',ico(SIT_G[si],SIT_C[si],x[4]+si)+esc(x[1+IDX[L]]));a.href=x[4]+'.html';s.appendChild(a);});
   var gc=$('gCheck');gc.innerHTML='';
   // The wide card goes to the best-ranked checker that is not already in the spotlight above.
   var order=rank(G.check),hi=0;
