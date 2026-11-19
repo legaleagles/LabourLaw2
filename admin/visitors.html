@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visitor Log | LawSticker AI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF0F8;--surface:#fff;--ink:#17183F;--ink2:#3B3F66;--muted:#62668C;--line:#DCE0EE;--chip:#E8EBF5;--acc:#2A2C94;--live:#0B9E6B;--warn:#B42318;--amber:#9A5B00;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D0E26;--surface:#171939;--ink:#EEF0FF;--ink2:#C9CCEB;--muted:#A2A7D0;--line:#2B2E5C;--chip:#24275A;--acc:#8F95F2;--live:#3DD598;--warn:#FF8A80;--amber:#FFC266;color-scheme:dark}}
+[hidden]{display:none!important}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Anek Latin',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.45}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:12px}
+header h1{font-size:26px;font-stretch:85%;font-weight:800}
+header a{color:var(--muted);font-size:14px;font-weight:700;text-decoration:none;margin-left:auto}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+select,input,button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:7px 10px}
+input[type=search]{flex:1;min-width:180px}
+button{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:700;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.stat b{display:block;font-size:34px;font-weight:800;font-stretch:82%;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13.5px;color:var(--ink2)}
+.list{display:grid;gap:8px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+summary{list-style:none;cursor:pointer;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px}
+summary::-webkit-details-marker{display:none}
+.who{font-weight:800;font-size:16.5px}
+.when{font-size:13.5px;color:var(--muted);text-align:right;white-space:nowrap}
+.meta{grid-column:1/-1;font-size:14px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:4px 8px}
+.chip{background:var(--chip);border-radius:6px;padding:0 7px;font-size:13px;font-variant-numeric:tabular-nums}
+.chip.ip{font-weight:700}
+.chip.flag{background:color-mix(in srgb,var(--amber) 18%,var(--surface));color:var(--amber);font-weight:700}
+.now{color:var(--live);font-weight:800}
+.body{padding:0 14px 12px;border-top:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:4px 10px;font-size:14px;margin:10px 0}
+.kv dt{color:var(--muted)}.kv dd{overflow-wrap:anywhere}
+ol.trail{list-style:none;font-size:14px;display:grid;gap:3px}
+ol.trail li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px}
+ol.trail time{color:var(--muted);font-variant-numeric:tabular-nums}
+.note{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:75ch}
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:15px;display:none}
+.msg.err{border-color:var(--warn)}
+.login{max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px}
+@media (max-width:640px){.stats{grid-template-columns:1fr 1fr}.kv{grid-template-columns:96px minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Visitor log</h1><a href="live.html">Live counts →</a></header>
+
+<form class="login" id="login">
+  <label for="pw">Admin password</label>
+  <input type="password" id="pw" autocomplete="current-password" required>
+  <button type="submit">Open the visitor log</button>
+</form>
+
+<div id="app" hidden>
+  <div class="bar">
+    <select id="hours" aria-label="Time window">
+      <option value="1">Last hour</option><option value="6">Last 6 hours</option>
+      <option value="24" selected>Last 24 hours</option><option value="72">Last 3 days</option>
+      <option value="168">Last 7 days</option><option value="720">Last 30 days</option>
+    </select>
+    <input type="search" id="q" placeholder="Filter by IP, city, ISP, phone, page…" aria-label="Filter">
+    <button id="reload" type="button">Refresh</button>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div class="stats">
+    <div class="stat"><b id="sV">–</b><span>visitors</span></div>
+    <div class="stat"><b id="sH">–</b><span>page views</span></div>
+    <div class="stat"><b id="sN">–</b><span>active in last 5 min</span></div>
+    <div class="stat"><b id="sC">–</b><span id="sCl">top city</span></div>
+  </div>
+  <div class="list" id="list"></div>
+  <p class="note">One row per device (a random id kept in that browser), newest first. Place and network come from the IP address, so they show the internet provider's location, which can be a nearby city rather than where the person is. Phone networks such as Jio and Airtel share one IP among many users, so an IP alone doesn't identify a person. Visits are kept in Google Cloud Logging for 30 days. Only visits after this log was switched on appear here.</p>
+</div>
+</div>
+<script>
+var BACKEND='https://lawsticker-backend-494996217030.europe-west1.run.app';
+var pw='',DATA=null;
+try{pw=sessionStorage.getItem('vis_pw')||''}catch(e){}
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function ago(iso){var s=(Date.now()-new Date(iso))/1000;if(s<90)return'just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+' h ago';return Math.round(s/86400)+' d ago'}
+function hm(iso){return new Date(iso).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false})}
+function dt(iso){return new Date(iso).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}
+function place(p){if(!p||!p.city&&!p.country)return'Unknown place';return[p.city,p.region,p.country].filter(function(x,i,a){return x&&a.indexOf(x)===i}).join(', ')}
+function show(m,err){var e=$('msg');e.textContent=m;e.className='msg'+(err?' err':'');e.style.display=m?'block':'none'}
+function load(){
+  show('Loading…');
+  fetch(BACKEND+'/api/visitors?hours='+$('hours').value,{headers:{'X-Admin-Password':pw},cache:'no-store'})
+  .then(function(r){if(r.status===401){throw new Error('auth')}return r.json()})
+  .then(function(d){if(!d.ok)throw new Error(d.error||'failed');DATA=d;show(d.note||'',!!d.note);render()})
+  .catch(function(e){if(e.message==='auth'){try{sessionStorage.removeItem('vis_pw')}catch(x){}$('app').hidden=true;$('login').hidden=false;show('');alert('Wrong password');return}
+    show('Could not load the visitor log: '+e.message,true)});
+}
+function render(){
+  var q=$('q').value.trim().toLowerCase(),rows=DATA.rows.filter(function(g){return!q||JSON.stringify(g).toLowerCase().indexOf(q)>=0});
+  var five=Date.now()-5*60000,cities={};
+  DATA.rows.forEach(function(g){var c=(g.places[0]||{}).city;if(c)cities[c]=(cities[c]||0)+1});
+  var top=Object.keys(cities).sort(function(a,b){return cities[b]-cities[a]})[0];
+  $('sV').textContent=DATA.visitors;$('sH').textContent=DATA.hits;
+  $('sN').textContent=DATA.rows.filter(function(g){return new Date(g.last)>five}).length;
+  $('sC').textContent=top?cities[top]:'–';$('sCl').textContent=top?'visitors from '+top:'top city';
+  $('list').innerHTML=rows.length?rows.map(function(g){
+    var p=g.places[0]||{},live=new Date(g.last)>five;
+    var flags=g.places.some(function(x){return x.vpn})?'<span class="chip flag">VPN / proxy</span>':'';
+    flags+=g.places.some(function(x){return x.hosting})?'<span class="chip flag">data-centre IP</span>':'';
+    var from=g.src?('campaign: '+g.src):g.ref?g.ref.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]:'direct / WhatsApp / app';
+    return '<details><summary><span class="who">'+esc(place(p))+'</span><span class="when">'+(live?'<span class="now">● online</span>':esc(ago(g.last)))+'</span>'+
+      '<span class="meta"><span class="chip ip">'+esc(g.ips.join(', '))+'</span><span class="chip">'+esc(p.isp||'network unknown')+'</span>'+
+      '<span class="chip">'+esc(g.device+' · '+g.os+' · '+g.browser)+'</span><span class="chip">'+g.views+' page'+(g.views>1?'s':'')+' · '+g.sessions+' visit'+(g.sessions>1?'s':'')+'</span>'+flags+'</span></summary>'+
+      '<div class="body"><dl class="kv"><dt>First seen</dt><dd>'+esc(dt(g.first))+'</dd><dt>Last seen</dt><dd>'+esc(dt(g.last))+'</dd>'+
+      '<dt>Came from</dt><dd>'+esc(from)+(g.ref&&!g.src?' — '+esc(g.ref):'')+'</dd>'+
+      g.places.map(function(x){return'<dt>IP '+esc(x.ip)+'</dt><dd>'+esc(place(x))+' · '+esc(x.isp||'?')+(x.mobile?' · mobile data':'')+'</dd>'}).join('')+
+      '<dt>Screen</dt><dd>'+esc(g.scr)+'</dd><dt>Language · zone</dt><dd>'+esc(g.lang+' · '+g.tz)+'</dd>'+
+      '<dt>Browser string</dt><dd style="font-size:12.5px;color:var(--muted)">'+esc(g.ua)+'</dd></dl>'+
+      '<ol class="trail">'+g.pages.map(function(x){return'<li><time>'+esc(hm(x.ts))+'</time><span>'+esc(x.title||x.path)+' <span style="color:var(--muted);font-size:12.5px">'+esc(x.path)+'</span></span></li>'}).join('')+'</ol></div></details>';
+  }).join(''):'<p class="msg" style="display:block">No visits in this window yet.</p>';
+}
+$('login').addEventListener('submit',function(e){e.preventDefault();pw=$('pw').value;try{sessionStorage.setItem('vis_pw',pw)}catch(x){}start()});
+function start(){$('login').hidden=true;$('app').hidden=false;load()}
+$('hours').addEventListener('change',load);$('reload').addEventListener('click',load);$('q').addEventListener('input',function(){if(DATA)render()});
+if(pw)start();
+setInterval(function(){if(DATA&&!document.hidden)load()},60000);
+</script>
+</body>
+</html>
