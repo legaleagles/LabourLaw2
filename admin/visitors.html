@@ -122,7 +122,7 @@ function render(){
       '<dt>Screen</dt><dd>'+esc(g.scr)+'</dd><dt>Language · zone</dt><dd>'+esc(g.lang+' · '+g.tz)+'</dd>'+
       '<dt>Browser string</dt><dd style="font-size:12.5px;color:var(--muted)">'+esc(g.ua)+'</dd></dl>'+
       '<ol class="trail">'+g.pages.map(function(x){return'<li><time>'+esc(hm(x.ts))+'</time><span>'+esc(x.title||x.path)+' <span style="color:var(--muted);font-size:12.5px">'+esc(x.path)+'</span></span></li>'}).join('')+'</ol></div></details>';
-  }).join(''):'<p class="msg" style="display:block">No visits in this window yet.</p>';
+  }).join(''):'<p class="msg" style="display:block">No visits recorded in this window. Recording started on 19 Nov 2026 at 7:16 am, so earlier visitors (like yesterday\'s) can\'t appear here. To check it works, open <a href="/" target="_blank">lawsticker-ai.com</a> in another tab, then tap Refresh here.</p>';
 }
 $('login').addEventListener('submit',function(e){e.preventDefault();pw=$('pw').value;try{sessionStorage.setItem('vis_pw',pw)}catch(x){}start()});
 function start(){$('login').hidden=true;$('app').hidden=false;load()}
