@@ -300,6 +300,16 @@ html[lang=te] *,html[lang=hi] *{letter-spacing:normal!important}
 .exbar-in a.hot{background:#17183F;color:#fff}
 .exbar-in a:focus-visible{outline:3px solid #17183F;outline-offset:2px}
 .exbar .lsb{background:rgba(255,255,255,.55);border-color:rgba(11,120,80,.45)}
+.pulse{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.pulse[hidden]{display:none}
+.pulse .pf{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.pulse .pf b{display:block;font-size:clamp(22px,6vw,30px);font-weight:800;font-stretch:82%;line-height:1.05;font-variant-numeric:tabular-nums;color:var(--ink)}
+.pulse .pf span{display:block;font-size:13px;color:var(--muted);margin-top:3px;line-height:1.25}
+.pulse .tr{grid-column:1/-1;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pulse .tr a{color:var(--ink);text-decoration:none;background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;font-weight:600;font-size:13.5px}
+.pulse .tr a i{font-style:normal;color:#B07400;font-weight:800;margin-right:4px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse .tr a i{color:#FFC94D}}
+.pulse .since{grid-column:1/-1;font-size:12.5px;color:var(--muted);margin-top:-2px}
 .exc{background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--mari);border-radius:16px;padding:14px;margin:4px 0 18px}
 .exh{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-bottom:10px}
 .exh h2{font-size:20px;line-height:1.15;font-stretch:88%}
@@ -370,6 +380,14 @@ gtag('js',new Date());gtag('config','G-TJXHVW6XCL');
       <a href="visual-notes/" onclick="try{gtag('event','home_exam_corner',{item:'visual'})}catch(e){}"><span class="exi" aria-hidden="true">🧠</span><span><b data-k="ex2T"></b><small data-k="ex2S"></small></span></a>
       <a class="hot" href="quick-revision/" onclick="try{gtag('event','home_exam_corner',{item:'revision'})}catch(e){}"><span class="exi" aria-hidden="true">⚡</span><span><b><span data-k="ex3T"></span> <i data-k="exNew"></i></b><small data-k="ex3S"></small></span></a>
     </div>
+  </section>
+
+  <section id="pulse" class="pulse" aria-label="LawSticker AI in numbers" hidden>
+    <div class="pf"><b data-pu="users">–</b><span data-pl="users"></span></div>
+    <div class="pf"><b data-pu="views">–</b><span data-pl="views"></span></div>
+    <div class="pf"><b data-pu="ret">–</b><span data-pl="ret"></span></div>
+    <div class="since" data-pl="since"></div>
+    <div class="tr" data-pu="top" hidden></div>
   </section>
 
   <section id="top5">
@@ -841,5 +859,42 @@ if(location.hash){setTimeout(function(){var t=document.querySelector(location.ha
 })();
 </script>
 <script defer src="/live-badge.js"></script><script defer src="/voices.js"></script>
+<script>
+/* Site pulse: all-time numbers (Google Analytics, via the backend, cached 6 h)
+   and the top-rated study pages (from /data/ratings.json). Hidden until data arrives. */
+(function(){
+  var L={en:{users:'visitors so far',views:'pages read',ret:'came back again',since:'Since {d} · counted by Google Analytics',top:'Top rated by students:'},
+    te:{users:'సందర్శకులు ఇప్పటివరకు',views:'పేజీలు చదివారు',ret:'మళ్ళీ తిరిగి వచ్చారు',since:'{d} నుంచి · Google Analytics లెక్క',top:'విద్యార్థులు ఎక్కువ రేట్ చేసినవి:'},
+    hi:{users:'अब तक आए लोग',views:'पेज पढ़े गए',ret:'दोबारा लौटकर आए',since:'{d} से · Google Analytics के अनुसार',top:'विद्यार्थियों की सबसे पसंदीदा:'}};
+  var el=document.getElementById('pulse'); if(!el)return;
+  var S=null,R=null;
+  function lg(){var l=document.documentElement.lang;return L[l]?l:'en'}
+  function fmt(n){return Number(n).toLocaleString('en-IN')}
+  function paint(){
+    var t=L[lg()];
+    if(S){
+      el.querySelector('[data-pu=users]').textContent=fmt(S.users);
+      el.querySelector('[data-pu=views]').textContent=fmt(S.page_views);
+      el.querySelector('[data-pu=ret]').textContent=S.returning_pct+'%';
+      var d=S.since?new Date(S.since+'T00:00:00').toLocaleDateString('en-IN',{month:'short',year:'numeric'}):'';
+      ['users','views','ret'].forEach(function(k){el.querySelector('[data-pl='+k+']').textContent=t[k]});
+      el.querySelector('[data-pl=since]').textContent=d?t.since.replace('{d}',d):'';
+      el.hidden=false;
+    }
+    var tb=el.querySelector('[data-pu=top]');
+    if(R&&R.length){
+      tb.innerHTML='<span>'+t.top+'</span>'+R.map(function(x){var a=document.createElement('a');a.href=x.p;a.innerHTML='<i>★ '+x.a+'</i>';a.appendChild(document.createTextNode(x.t));return a.outerHTML}).join('');
+      tb.hidden=false; if(S)el.hidden=false;
+    }
+  }
+  fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/site-stats').then(function(r){return r.json()}).then(function(d){if(d&&d.ok&&d.users>0){S=d;paint()}}).catch(function(){});
+  fetch('/data/ratings.json?v='+Math.floor(Date.now()/600000),{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+    var p=(d&&d.pages)||{},a=[];
+    for(var k in p){var e=p[k];if(e.n>=5&&e.t)a.push({p:k,t:e.t.length>38?e.t.slice(0,36)+'…':e.t,a:(Math.round(e.s/e.n*10)/10).toFixed(1),s:e.s/e.n,n:e.n})}
+    a.sort(function(x,y){return y.s-x.s||y.n-x.n});R=a.slice(0,3);paint();
+  }).catch(function(){});
+  new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 </body>
 </html>
