@@ -300,16 +300,23 @@ html[lang=te] *,html[lang=hi] *{letter-spacing:normal!important}
 .exbar-in a.hot{background:#17183F;color:#fff}
 .exbar-in a:focus-visible{outline:3px solid #17183F;outline-offset:2px}
 .exbar .lsb{background:rgba(255,255,255,.55);border-color:rgba(11,120,80,.45)}
-.pulse{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.pulse{display:flex;align-items:stretch;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:12px 4px;margin:0 0 6px}
 .pulse[hidden]{display:none}
-.pulse .pf{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
-.pulse .pf b{display:block;font-size:clamp(22px,6vw,30px);font-weight:800;font-stretch:82%;line-height:1.05;font-variant-numeric:tabular-nums;color:var(--ink)}
-.pulse .pf span{display:block;font-size:13px;color:var(--muted);margin-top:3px;line-height:1.25}
-.pulse .tr{grid-column:1/-1;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.pulse .tr a{color:var(--ink);text-decoration:none;background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;font-weight:600;font-size:13.5px}
-.pulse .tr a i{font-style:normal;color:#B07400;font-weight:800;margin-right:4px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse .tr a i{color:#FFC94D}}
-.pulse .since{grid-column:1/-1;font-size:12.5px;color:var(--muted);margin-top:-2px}
+.pulse .pf{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:0 6px}
+.pulse .pf+.pf{border-left:1.5px dashed var(--line)}
+.pulse .pi{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;margin-bottom:2px}
+.pulse .pi svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pulse .pf:nth-child(1) .pi{background:#E6E8FF;color:#2A2C94}
+.pulse .pf:nth-child(2) .pi{background:#FFF1CC;color:#9A5B00}
+.pulse .pf:nth-child(3) .pi{background:#DDF5EA;color:#0B7A50}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse .pf:nth-child(1) .pi{background:#2A2D6E;color:#B9BDFF}:root:not([data-theme="light"]) .pulse .pf:nth-child(2) .pi{background:#3A2E10;color:#FFC94D}:root:not([data-theme="light"]) .pulse .pf:nth-child(3) .pi{background:#123D2D;color:#5FE0A8}}
+.pulse .pf b{font-size:clamp(21px,5.6vw,28px);font-weight:800;font-stretch:82%;line-height:1.05;font-variant-numeric:tabular-nums;color:var(--ink)}
+.pulse .pf span{font-size:12.5px;color:var(--muted);line-height:1.2}
+.pmeta{font-size:12.5px;color:var(--muted);margin:0 2px 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pmeta[hidden]{display:none}
+.pmeta a{color:var(--ink);text-decoration:none;background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:2px 10px;font-weight:600;font-size:13px}
+.pmeta a i{font-style:normal;color:#B07400;font-weight:800;margin-right:4px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pmeta a i{color:#FFC94D}}
 .exc{background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--mari);border-radius:16px;padding:14px;margin:4px 0 18px}
 .exh{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-bottom:10px}
 .exh h2{font-size:20px;line-height:1.15;font-stretch:88%}
@@ -383,12 +390,11 @@ gtag('js',new Date());gtag('config','G-TJXHVW6XCL');
   </section>
 
   <section id="pulse" class="pulse" aria-label="LawSticker AI in numbers" hidden>
-    <div class="pf"><b data-pu="users">–</b><span data-pl="users"></span></div>
-    <div class="pf"><b data-pu="views">–</b><span data-pl="views"></span></div>
-    <div class="pf"><b data-pu="ret">–</b><span data-pl="ret"></span></div>
-    <div class="since" data-pl="since"></div>
-    <div class="tr" data-pu="top" hidden></div>
+    <div class="pf"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.3c2.3.1 4 1.5 4.5 4"/></svg></span><b data-pu="users">–</b><span data-pl="users"></span></div>
+    <div class="pf"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg></span><b data-pu="views">–</b><span data-pl="views"></span></div>
+    <div class="pf"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"/><path d="M20 3.5v5h-5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5"/><path d="M4 20.5v-5h5"/></svg></span><b data-pu="ret">–</b><span data-pl="ret"></span></div>
   </section>
+  <div class="pmeta" id="pmeta" hidden><span data-pl="since"></span><span data-pu="top"></span></div>
 
   <section id="top5">
     <div class="sh"><h2 id="trendT"></h2><p id="spotS"></p></div>
@@ -863,10 +869,10 @@ if(location.hash){setTimeout(function(){var t=document.querySelector(location.ha
 /* Site pulse: all-time numbers (Google Analytics, via the backend, cached 6 h)
    and the top-rated study pages (from /data/ratings.json). Hidden until data arrives. */
 (function(){
-  var L={en:{users:'visitors so far',views:'pages read',ret:'came back again',since:'Since {d} · counted by Google Analytics',top:'Top rated by students:'},
+  var L={en:{users:'visitors',views:'pages read',ret:'came back again',since:'Since {d} · counted by Google Analytics',top:'Top rated by students:'},
     te:{users:'సందర్శకులు ఇప్పటివరకు',views:'పేజీలు చదివారు',ret:'మళ్ళీ తిరిగి వచ్చారు',since:'{d} నుంచి · Google Analytics లెక్క',top:'విద్యార్థులు ఎక్కువ రేట్ చేసినవి:'},
     hi:{users:'अब तक आए लोग',views:'पेज पढ़े गए',ret:'दोबारा लौटकर आए',since:'{d} से · Google Analytics के अनुसार',top:'विद्यार्थियों की सबसे पसंदीदा:'}};
-  var el=document.getElementById('pulse'); if(!el)return;
+  var el=document.getElementById('pulse'),pm=document.getElementById('pmeta'); if(!el||!pm)return;
   var S=null,R=null;
   function lg(){var l=document.documentElement.lang;return L[l]?l:'en'}
   function fmt(n){return Number(n).toLocaleString('en-IN')}
@@ -878,13 +884,13 @@ if(location.hash){setTimeout(function(){var t=document.querySelector(location.ha
       el.querySelector('[data-pu=ret]').textContent=S.returning_pct+'%';
       var d=S.since?new Date(S.since+'T00:00:00').toLocaleDateString('en-IN',{month:'short',year:'numeric'}):'';
       ['users','views','ret'].forEach(function(k){el.querySelector('[data-pl='+k+']').textContent=t[k]});
-      el.querySelector('[data-pl=since]').textContent=d?t.since.replace('{d}',d):'';
-      el.hidden=false;
+      pm.querySelector('[data-pl=since]').textContent=d?t.since.replace('{d}',d):'';
+      el.hidden=false;pm.hidden=false;
     }
-    var tb=el.querySelector('[data-pu=top]');
+    var tb=pm.querySelector('[data-pu=top]');
     if(R&&R.length){
-      tb.innerHTML='<span>'+t.top+'</span>'+R.map(function(x){var a=document.createElement('a');a.href=x.p;a.innerHTML='<i>★ '+x.a+'</i>';a.appendChild(document.createTextNode(x.t));return a.outerHTML}).join('');
-      tb.hidden=false; if(S)el.hidden=false;
+      tb.style.display='contents';tb.innerHTML='<span>'+t.top+'</span>'+R.map(function(x){var a=document.createElement('a');a.href=x.p;a.innerHTML='<i>★ '+x.a+'</i>';a.appendChild(document.createTextNode(x.t));return a.outerHTML}).join('');
+      
     }
   }
   fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/site-stats').then(function(r){return r.json()}).then(function(d){if(d&&d.ok&&d.users>0){S=d;paint()}}).catch(function(){});
