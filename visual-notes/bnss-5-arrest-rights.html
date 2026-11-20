@@ -225,6 +225,51 @@ footer{font-size:13.5px;color:var(--mute);text-align:center;margin-top:20px}foot
   #map{box-shadow:3px 3px 0 var(--ink)}
 }
 @media print{body{background:#fff}.jump,nav.top,.acts,.pn2,.mmbar button,.info{display:none}#map{box-shadow:none}figure,.strip,.route,.card{break-inside:avoid}.n2.hid{opacity:1}}
+
+/* real-life examples */
+.rl{margin:0 14px 14px;border:1.5px solid #BFE3D1;border-radius:14px;background:#F4FBF7;overflow:hidden}
+.rl summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.rl summary::-webkit-details-marker{display:none}
+.rl summary:focus-visible{outline:3px solid var(--indigo);outline-offset:-3px;border-radius:12px}
+.rli{flex:none;width:36px;height:36px;border-radius:50%;background:#fff;border:1.5px solid #BFE3D1;display:grid;place-items:center;font-size:19px}
+.rlt{flex:1;min-width:0;font-weight:800;font-size:15.5px;line-height:1.25;color:#0B4F37}
+.rlt i{display:block;font-style:normal;font-weight:700;font-size:12px;color:#2F8A63;margin-bottom:1px}
+.rlx{flex:none;width:26px;height:26px;border-radius:50%;background:#0B7A55;position:relative;transition:transform .2s}
+.rlx::before,.rlx::after{content:"";position:absolute;left:7px;right:7px;top:12px;height:2px;background:#fff;border-radius:2px}
+.rlx::after{transform:rotate(90deg);transition:transform .2s}
+.rl[open] .rlx::after{transform:rotate(0)}
+.rls{list-style:none;margin:0;padding:2px 14px 14px 14px;display:grid;gap:0}
+.rls li{position:relative;padding:8px 0 8px 22px;border-left:2.5px solid #D5ECE0;margin-left:7px}
+.rls li:last-child{border-left-color:transparent}
+.rls li::before{content:"";position:absolute;left:-8.5px;top:11px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--d)}
+.rls li.s1{--d:#E08A00}.rls li.s2{--d:var(--indigo)}.rls li.s3{--d:#0B7A55}
+.rls li span{display:block;font-weight:800;font-size:12.5px;color:var(--d);margin-bottom:1px}
+.rls li p{margin:0;font-size:15px;line-height:1.5}
+.rls li.s3 p{background:#fff;border:1.5px solid #BFE3D1;border-radius:10px;padding:8px 10px}
+@media (prefers-reduced-motion:no-preference){.rl[open] .rls li{animation:rlin .35s ease both}.rl[open] .rls li.s2{animation-delay:.08s}.rl[open] .rls li.s3{animation-delay:.16s}}
+@keyframes rlin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* study dock */
+.dock{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;display:flex;gap:4px;background:#17183F;border-radius:999px;padding:5px;box-shadow:0 10px 30px rgba(23,24,63,.28)}
+.dock button{font:inherit;font-size:14px;font-weight:700;color:#fff;background:transparent;border:0;border-radius:999px;padding:8px 13px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.dock button[aria-pressed=true]{background:#FFD43B;color:#17183F}
+.dock button:focus-visible{outline:3px solid #FFD43B;outline-offset:1px}
+.dock button[hidden]{display:none}
+@media (max-width:420px){.dock button{padding:8px 10px;font-size:13.5px}.dock .lg{display:none}}
+body{padding-bottom:80px}
+.toast{position:fixed;left:12px;right:12px;margin:0 auto;bottom:calc(70px + env(safe-area-inset-bottom));z-index:61;max-width:440px;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;font-size:14.5px;box-shadow:0 10px 30px rgba(23,24,63,.18);display:none}
+.toast.show{display:block}
+.toast button{font:inherit;font-weight:800;font-size:13.5px;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;margin:6px 6px 0 0;cursor:pointer;color:var(--ink)}
+.penbtn{position:fixed;z-index:62;display:none;font:inherit;font-weight:800;font-size:14px;background:#0B7A55;color:#fff;border:0;border-radius:999px;padding:8px 14px;box-shadow:0 8px 20px rgba(11,122,85,.35);cursor:pointer}
+mark.mine{background:linear-gradient(transparent 30%,#A8EBC8 30%,#A8EBC8 94%,transparent 94%)}
+body.pen mark.mine{cursor:pointer;outline:1px dashed #0B7A55;outline-offset:1px}
+/* magic highlight: only the key words stay bright */
+body.magic .cb p,body.magic .cb li,body.magic .cb td,body.magic .cb th,body.magic .eg,body.magic .hk p,body.magic .rls p,body.magic .story p,body.magic .recall,body.magic .ladder .lt,body.magic .nums span{color:rgba(23,24,63,.28);transition:color .3s}
+body.magic mark,body.magic b,body.magic strong,body.magic .cs,body.magic mark.mine{color:var(--ink)}
+body.magic mark{background:linear-gradient(transparent 30%,#FFD43B 30%,#FFD43B 94%,transparent 94%) no-repeat;background-size:100% 100%;box-shadow:0 0 0 1px rgba(255,212,59,.0)}
+body.magic .sec{background:var(--c);color:#fff;border-color:var(--c)}
+@media (prefers-reduced-motion:no-preference){body.magic mark{animation:sweep .7s ease-out both}}
+@keyframes sweep{from{background-size:0 100%}to{background-size:100% 100%}}
+@media print{.dock,.toast,.penbtn{display:none!important}.rl .rls{display:block}}
 </style>
 <script src="/visit.js" defer></script>
 </head>
@@ -361,5 +406,53 @@ document.getElementById('share').addEventListener('click',function(e){e.preventD
 </script>
 <script defer src="/live-badge.js"></script><script defer src="/feedback.js"></script>
 <script src="/rating.js" defer></script>
+<div class="dock" role="toolbar" aria-label="Study tools"><button type="button" id="tMagic" aria-pressed="false">✨<span>Magic</span><span class="lg">&nbsp;highlight</span></button><button type="button" id="tEx" aria-pressed="false" hidden>🏘️<span>Examples</span></button><button type="button" id="tPen" aria-pressed="false">🖍️<span>Highlight</span><span class="lg">er</span></button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button type="button" class="penbtn" id="penbtn">🖍️ Highlight</button>
+<script>
+/* Study tools: magic highlight (only key words stay bright), open all real-life examples, personal highlighter saved on this device. */
+(function(){
+var B=document.body,toast=document.getElementById('toast'),tt;
+function say(h,ms){toast.innerHTML=h;toast.classList.add('show');clearTimeout(tt);if(ms!==0)tt=setTimeout(function(){toast.classList.remove('show')},ms||3800);}
+function ga(n){try{gtag('event','vn_tool',{tool:n})}catch(e){}}
+var ls={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+// magic
+var bm=document.getElementById('tMagic');
+bm.addEventListener('click',function(){var on=!B.classList.contains('magic');B.classList.toggle('magic',on);bm.setAttribute('aria-pressed',on);
+ if(on){ga('magic');if(!ls.get('vn_magic_seen')){ls.set('vn_magic_seen','1');say('✨ Only the <b>key words</b> stay bright. Read just these to revise the whole page in minutes. Tap again to switch off.',6000)}}});
+// examples
+var ex=document.querySelectorAll('details.rl'),be=document.getElementById('tEx');
+if(ex.length){be.hidden=false;be.addEventListener('click',function(){var on=be.getAttribute('aria-pressed')!=='true';be.setAttribute('aria-pressed',on);
+ for(var i=0;i<ex.length;i++)ex[i].open=on; if(on){ga('examples');say('🏘️ '+ex.length+' real-life examples opened.')}});}
+// personal highlighter
+var KEY='vnhl:'+location.pathname,pen=document.getElementById('tPen'),pb=document.getElementById('penbtn'),H=[];
+try{H=JSON.parse(ls.get(KEY)||'[]')}catch(e){H=[]}
+function save(){ls.set(KEY,JSON.stringify(H))}
+function zone(n){var e=n.nodeType===1?n:n.parentNode;return e&&e.closest&&e.closest('.wrap section:not(#map), .wrap .hero .big')}
+function anchorOf(n){var e=n.nodeType===1?n:n.parentNode;var a=e.closest('[id]');return a?a.id:''}
+function wrapNode(tn,s,e){if(e<=s)return null;var r=document.createRange();r.setStart(tn,s);r.setEnd(tn,e);var m=document.createElement('mark');m.className='mine';try{r.surroundContents(m)}catch(x){return null}return m}
+function textNodesIn(range){var root=range.commonAncestorContainer;if(root.nodeType===3)return[root];var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),out=[],n;while(n=w.nextNode()){if(range.intersectsNode(n)&&n.nodeValue.trim())out.push(n)}return out}
+function highlight(range){var ns=textNodesIn(range),made=[];ns.forEach(function(n){if(n.parentNode.closest('mark.mine'))return;var s=n===range.startContainer?range.startOffset:0,e=n===range.endContainer?range.endOffset:n.nodeValue.length;var m=wrapNode(n,s,e);if(m)made.push(m)});
+ made.forEach(function(m){var t=m.textContent;if(t.trim().length>1)H.push({a:anchorOf(m),t:t})});save();return made.length}
+function restore(){H.forEach(function(h){var root=h.a&&document.getElementById(h.a);if(!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;while(n=w.nextNode()){if(n.parentNode.closest('mark.mine'))continue;var i=n.nodeValue.indexOf(h.t);if(i>=0){wrapNode(n,i,i+h.t.length);break}}})}
+restore();
+function sync(){pen.setAttribute('aria-pressed',B.classList.contains('pen'))}
+pen.addEventListener('click',function(){var on=!B.classList.contains('pen');B.classList.toggle('pen',on);sync();
+ if(on){ga('pen');var c=document.querySelectorAll('mark.mine').length;say('🖍️ <b>Select any words</b> to highlight them in green. Tap a green highlight to remove it. Saved on this phone.'+(c?'<br><button type="button" id="hlclr">Clear all '+c+'</button><button type="button" id="hljump">Go to my highlights</button>':''),c?0:5000);
+  var cl=document.getElementById('hlclr');if(cl)cl.onclick=function(){document.querySelectorAll('mark.mine').forEach(un);H=[];save();say('All your highlights are cleared.')};
+  var jp=document.getElementById('hljump');if(jp)jp.onclick=function(){var m=document.querySelector('mark.mine');if(m)m.scrollIntoView({behavior:'smooth',block:'center'});toast.classList.remove('show')};}
+ else{pb.style.display='none';toast.classList.remove('show')}});
+function un(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()}
+document.addEventListener('click',function(e){if(!B.classList.contains('pen'))return;var m=e.target.closest&&e.target.closest('mark.mine');if(!m)return;e.preventDefault();var t=m.textContent,a=anchorOf(m);un(m);
+ for(var i=0;i<H.length;i++){if(H[i].t===t&&H[i].a===a){H.splice(i,1);break}}save();});
+var st;function place(){var s=getSelection();
+ if(!s||s.isCollapsed||!s.rangeCount){pb.style.display='none';return}var r=s.getRangeAt(0);if(!zone(r.startContainer)||!zone(r.endContainer)){pb.style.display='none';return}
+ var b=r.getBoundingClientRect();pb.style.display='block';var x=Math.min(Math.max(8,b.left+b.width/2-60),innerWidth-140),y=b.top-48;if(y<60)y=b.bottom+12;pb.style.left=x+'px';pb.style.top=y+'px';}
+document.addEventListener('selectionchange',function(){if(!B.classList.contains('pen'))return;clearTimeout(st);st=setTimeout(place,200)});
+addEventListener('scroll',function(){if(B.classList.contains('pen')&&pb.style.display==='block'){clearTimeout(st);st=setTimeout(place,120)}},{passive:true});
+pb.addEventListener('mousedown',function(e){e.preventDefault()});
+pb.addEventListener('click',function(){var s=getSelection();if(!s.rangeCount)return;var n=highlight(s.getRangeAt(0));s.removeAllRanges();pb.style.display='none';if(n){ga('pen_add');say('Saved. Your highlights stay on this phone.',2000)}});
+})();
+</script>
 </body>
 </html>
