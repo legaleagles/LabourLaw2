@@ -85,6 +85,16 @@ text-align:left;margin-bottom:9px;transition:all .15s;}
 .nav-prev{background:var(--light);color:var(--ink2);border:1.5px solid var(--border);}
 .nav-next{background:var(--navy);color:var(--gold-l);}
 .nav-next.submit{background:var(--rose);color:#fff;}
+.finish-row{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.finish-btn{width:100%;padding:13px;border-radius:12px;font-family:inherit;font-size:14.5px;font-weight:800;cursor:pointer;background:transparent;color:var(--rose);border:2px solid var(--rose)}
+.finish-btn.ready{background:var(--rose);color:#fff}
+.finish-note{font-size:13px;text-align:center;color:inherit;opacity:.75}
+.confirm-box{display:none;border:2px solid var(--rose);border-radius:12px;padding:12px;font-size:14px;line-height:1.45}
+.confirm-box.show{display:block}
+.confirm-box .cb-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.confirm-box button{padding:11px;border-radius:10px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;border:none}
+.confirm-box .cb-yes{background:var(--rose);color:#fff}
+.confirm-box .cb-no{background:rgba(0,0,0,.06);color:inherit}
 .jump-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:14px;}
 .jump-btn{aspect-ratio:1;border-radius:6px;border:1.5px solid var(--border);background:#fff;font-size:10px;
 font-weight:700;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -170,7 +180,7 @@ border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:90
     </div>
     <div class="intro-rules">
       <div class="rules-title">Exam Rules</div>
-      <div class="rule-item">Timer starts the moment you tap Start — 30 minutes, auto-submits at zero.</div>
+      <div class="rule-item">Timer starts the moment you tap Start and auto-submits at zero. Finished early? Tap Finish any time to see your score.</div>
       <div class="rule-item">Questions and answer order are shuffled — every attempt is different.</div>
       <div class="rule-item">No answer feedback during the exam — this simulates real exam conditions.</div>
       <div class="rule-item">Full topic-wise score analysis and answer review appear only after submission.</div>
@@ -196,6 +206,14 @@ border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:90
       <button class="nav-btn nav-next" id="nextBtn" onclick="nextQ()">Next →</button>
     </div>
     <div class="jump-grid" id="jumpGrid"></div>
+    <div class="finish-row">
+      <button class="finish-btn" id="finishBtn" type="button" onclick="askFinish()">✓ Finish &amp; see my score</button>
+      <div class="confirm-box" id="confirmBox" role="alertdialog" aria-live="polite">
+        <div id="confirmText"></div>
+        <div class="cb-row"><button class="cb-no" type="button" onclick="cancelFinish()">Keep going</button><button class="cb-yes" type="button" onclick="submitExam()">Submit now</button></div>
+      </div>
+      <div class="finish-note" id="finishNote">You can submit any time. You don't have to wait for the timer.</div>
+    </div>
   </div>
 
   <div class="result" id="result">
@@ -394,8 +412,24 @@ function renderQuestion(){
  updateJumpGrid();
 }
 
-function selectAnswer(i){ answers[currentQ] = i; renderQuestion(); }
-function nextQ(){ if(currentQ === QUESTIONS.length-1){ submitExam(); return; } currentQ++; renderQuestion(); }
+function selectAnswer(i){ answers[currentQ] = i; renderQuestion(); updateFinish(); }
+function unansweredCount(){ let n=0; for(let i=0;i<QUESTIONS.length;i++){ if(answers[i]===undefined) n++; } return n; }
+function updateFinish(){
+ const left = unansweredCount(), btn = document.getElementById('finishBtn');
+ if(!btn) return;
+ btn.classList.toggle('ready', left===0);
+ btn.textContent = left===0 ? '✓ All answered — Submit & see my score' : '✓ Finish & see my score';
+ document.getElementById('finishNote').textContent = left===0 ? 'All questions answered. Submit now — no need to wait for the timer.' : 'You can submit any time. You don\'t have to wait for the timer.';
+}
+function askFinish(){
+ const left = unansweredCount();
+ if(left===0){ submitExam(); return; }
+ document.getElementById('confirmText').innerHTML = '<b>'+left+' of '+QUESTIONS.length+' questions are not answered.</b> They will be marked wrong. Submit anyway?';
+ document.getElementById('confirmBox').classList.add('show');
+ document.getElementById('finishBtn').style.display='none';
+}
+function cancelFinish(){ document.getElementById('confirmBox').classList.remove('show'); document.getElementById('finishBtn').style.display=''; }
+function nextQ(){ if(currentQ === QUESTIONS.length-1){ askFinish(); return; } currentQ++; renderQuestion(); }
 function prevQ(){ if(currentQ === 0) return; currentQ--; renderQuestion(); }
 
 function renderJumpGrid(){
@@ -488,7 +522,9 @@ function startWeakDrill(){
  window.location.href = 'https://lawsticker-ai.com/exam.html?subject=aibe-mixed&count=' + drillSet.length;
 }
 
+let examSubmitted = false;
 function submitExam(){
+ if(examSubmitted) return; examSubmitted = true;
  clearInterval(timerInterval);
  const examMinutes = LENGTH_TIME_MIN[QUESTIONS.length] || Math.max(15, Math.round(QUESTIONS.length * 1.0));
  const timeTakenSec = (examMinutes*60) - timeLeftSec;
@@ -623,7 +659,6 @@ function downloadReview(){
 <div class="dl-meta">Score: ${score}/${total} (${pct}%) — ${studentName || 'Student'}</div>
 ${rows}
 <div class="dl-footer">Generated by LawSticker AI — lawsticker-ai.com</div>
-<script src="/rating.js" defer></script>
 </body>
 </html>`;
 
@@ -721,5 +756,6 @@ document.getElementById('studentName').addEventListener('keyup', function(){
 
 loadExam();
 </script>
+<script src="/rating.js" defer></script>
 </body>
 </html>
