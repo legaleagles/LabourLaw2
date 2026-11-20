@@ -68,11 +68,12 @@ ol.trail time{color:var(--muted);font-variant-numeric:tabular-nums}
       <option value="168">Last 7 days</option><option value="720">Last 30 days</option>
     </select>
     <input type="search" id="q" placeholder="Filter by IP, city, ISP, phone, page…" aria-label="Filter">
+    <label style="display:flex;gap:6px;align-items:center;font-size:14.5px"><input type="checkbox" id="hb" checked style="width:18px;height:18px"> Hide likely bots</label>
     <button id="reload" type="button">Refresh</button>
   </div>
   <div class="msg" id="msg"></div>
   <div class="stats">
-    <div class="stat"><b id="sV">–</b><span>visitors</span></div>
+    <div class="stat"><b id="sV">–</b><span id="sVl">visitors</span></div>
     <div class="stat"><b id="sH">–</b><span>page views</span></div>
     <div class="stat"><b id="sN">–</b><span>active in last 5 min</span></div>
     <div class="stat"><b id="sC">–</b><span id="sCl">top city</span></div>
@@ -101,17 +102,19 @@ function load(){
     show('Could not load the visitor log: '+e.message,true)});
 }
 function render(){
-  var q=$('q').value.trim().toLowerCase(),rows=DATA.rows.filter(function(g){return!q||JSON.stringify(g).toLowerCase().indexOf(q)>=0});
+  var hb=$('hb').checked,base=DATA.rows.filter(function(g){return!hb||!g.likely_bot}),bots=DATA.rows.length-DATA.rows.filter(function(g){return!g.likely_bot}).length;
+  var q=$('q').value.trim().toLowerCase(),rows=base.filter(function(g){return!q||JSON.stringify(g).toLowerCase().indexOf(q)>=0});
   var five=Date.now()-5*60000,cities={};
-  DATA.rows.forEach(function(g){var c=(g.places[0]||{}).city;if(c)cities[c]=(cities[c]||0)+1});
+  base.forEach(function(g){var c=(g.places[0]||{}).city;if(c)cities[c]=(cities[c]||0)+1});
   var top=Object.keys(cities).sort(function(a,b){return cities[b]-cities[a]})[0];
-  $('sV').textContent=DATA.visitors;$('sH').textContent=DATA.hits;
-  $('sN').textContent=DATA.rows.filter(function(g){return new Date(g.last)>five}).length;
+  $('sV').textContent=base.length;$('sVl').textContent=hb?'visitors ('+bots+' bots hidden)':'visitors incl. bots';$('sH').textContent=base.reduce(function(a,g){return a+g.views},0);
+  $('sN').textContent=base.filter(function(g){return new Date(g.last)>five}).length;
   $('sC').textContent=top?cities[top]:'–';$('sCl').textContent=top?'visitors from '+top:'top city';
   $('list').innerHTML=rows.length?rows.map(function(g){
     var p=g.places[0]||{},live=new Date(g.last)>five;
     var flags=g.places.some(function(x){return x.vpn})?'<span class="chip flag">VPN / proxy</span>':'';
     flags+=g.places.some(function(x){return x.hosting})?'<span class="chip flag">data-centre IP</span>':'';
+    flags+=g.likely_bot?'<span class="chip flag">likely bot</span>':'';
     var from=g.src?('campaign: '+g.src):g.ref?g.ref.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]:'direct / WhatsApp / app';
     return '<details><summary><span class="who">'+esc(place(p))+'</span><span class="when">'+(live?'<span class="now">● online</span>':esc(ago(g.last)))+'</span>'+
       '<span class="meta"><span class="chip ip">'+esc(g.ips.join(', '))+'</span><span class="chip">'+esc(p.isp||'network unknown')+'</span>'+
@@ -126,7 +129,7 @@ function render(){
 }
 $('login').addEventListener('submit',function(e){e.preventDefault();pw=$('pw').value;try{sessionStorage.setItem('vis_pw',pw)}catch(x){}start()});
 function start(){$('login').hidden=true;$('app').hidden=false;load()}
-$('hours').addEventListener('change',load);$('reload').addEventListener('click',load);$('q').addEventListener('input',function(){if(DATA)render()});
+$('hours').addEventListener('change',load);$('hb').addEventListener('change',function(){if(DATA)render()});$('reload').addEventListener('click',load);$('q').addEventListener('input',function(){if(DATA)render()});
 if(pw)start();
 setInterval(function(){if(DATA&&!document.hidden)load()},60000);
 </script>
