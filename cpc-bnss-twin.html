@@ -205,6 +205,28 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
   .pane{display:none!important}#p-cheat{display:block!important}
   .tblwrap{border:0;overflow:visible}table.cheat{min-width:0;font-size:10.5px}
 }
+
+body.wall .pane{display:none!important}body.wall #p-tree{display:block!important}
+@media print{
+  body.wall #p-cheat{display:none!important}
+  body.wall #p-tree{display:block!important}
+  body.wall #p-tree .ctl,body.wall .rowact,body.wall .more,body.wall .got{display:none!important}
+  body.wall .tree{gap:4px}body.wall .leaf{break-inside:avoid;box-shadow:none}
+  body.wall .crown svg{max-height:120px}
+  body.wall .cmp .same,body.wall .cmp .twist,body.wall .detail,body.wall .cv,body.wall .how,body.wall .cover,body.wall .roots{display:none!important}
+  body.wall #tree{display:grid!important;grid-template-columns:1fr 1fr;gap:6px 14px!important}
+  body.wall .tree::before,body.wall .trunkcell,body.wall .leaf::after{display:none!important}
+  body.wall .grp{grid-column:1/-1;margin:4px 0 0!important;padding:2px 8px!important}body.wall .grp b{font-size:11px!important}
+  body.wall .twigs{grid-template-columns:1fr 1fr!important;gap:4px!important}
+  body.wall .row{margin:0!important;padding:0!important;break-inside:avoid}
+  body.wall .qline{font-size:9px!important;margin:1px 0!important}
+  body.wall .pill{font-size:10px!important;padding:2px 8px!important;margin:0!important}
+  body.wall .leaf{padding:3px 6px!important;margin:0!important}
+  body.wall .leaf .cn{font-size:10px!important}body.wall .leaf .one{font-size:8.6px!important;line-height:1.25!important}
+  body.wall .leaf .hook{font-size:8.4px!important;padding:1px 4px!important;margin-top:2px!important}
+  body.wall .sec{font-size:7.8px!important}
+  body.wall .cmp{margin:2px 0 0!important}body.wall .cmp .trap{font-size:8.4px!important;padding:2px 6px!important}
+}
 </style>
 <link rel="stylesheet" href="assets/brand.css">
 <script src="/visit.js" defer></script>
@@ -252,6 +274,7 @@ table.cheat{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px
       <span>Show <span class="seg" id="segShow"><button data-v="both" class="on">Both</button><button data-v="bnss" class="b">BNSS</button><button data-v="cpc" class="c">CPC</button></span></span>
       <span>Test me: cover <span class="seg" id="segHide"><button data-v="none" class="on">Off</button><button data-v="bnss" class="b">BNSS</button><button data-v="cpc" class="c">CPC</button></span></span>
       <button class="mini" id="openAll">📖 Story &amp; cases: open all ▾</button>
+      <button class="mini" id="wallBtn" type="button">🖼️ Print wall chart</button>
       <span class="prog"><span id="progTxt">0/30</span><span class="pb"><i id="progBar"></i></span></span>
     </div>
     <div class="crown"><svg viewBox="0 0 400 205" role="img" aria-label="The tree of law: criminal procedure (BNSS) on the left, civil procedure (CPC) on the right">
@@ -479,6 +502,16 @@ $('tabs').addEventListener('click',function(e){var b=e.target.closest('button');
 renderTree();renderTraps('all');renderCheat();renderSyl('');
 if(location.hash&&/^#st-/.test(location.hash)){setTimeout(function(){var e=document.querySelector(location.hash);if(e)e.scrollIntoView();},80);}
 window.__TT={ROWS:ROWS,STN:STN,SYL:SYL,GAME:GAME};
+})();
+</script>
+<script>
+(function(){var b=document.getElementById('wallBtn');if(!b)return;
+b.addEventListener('click',function(){
+ document.body.classList.add('wall');
+ var st=document.createElement('style');st.id='wallpage';st.textContent='@page{size:A3 portrait;margin:8mm}';document.head.appendChild(st);
+ setTimeout(function(){window.print()},150);});
+addEventListener('afterprint',function(){document.body.classList.remove('wall');var st=document.getElementById('wallpage');if(st)st.remove();});
+try{gtag('event','twin_wall_seen')}catch(e){}
 })();
 </script>
 </body>
