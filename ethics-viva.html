@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Professional Ethics Viva Kit · LawSticker AI</title><meta name="description" content="Professional Ethics viva in one page: the advocate's journey, all 60 record cases as a case tree, and viva flip cards."><script src="/visit.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, confident coach for a busy student; short lines, no clutter
+   IDEA: an advocate's case file — one journey, seven doors of cases, flip cards
+   PICTURE: the advocate's journey: five stops from enrolment to contempt
+   COLOUR and TYPE: claret gown band, white page, gold only for "say this"; Archivo + Inter
+   LAYOUT: one column for the phone; tabs at top: Journey · Cases · Viva cards · Plan */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#15121a);--ink:light-dark(#1d1a22,#efeaf2);--mut:light-dark(#5d5866,#b3acbb);--cl:#7a1730;--cl2:light-dark(#f7e9ed,#3a1622);--gold:light-dark(#fff3cf,#3d3313);--line:light-dark(#e6e1ea,#2e2836);--card:light-dark(#faf8fb,#1e1a24);--ok:light-dark(#e3f4e8,#173222);--okk:light-dark(#1d6b3a,#8fdca9);--bad:light-dark(#fde5e5,#3b1818);--badk:light-dark(#a12020,#ff9d9d)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;line-height:1.1;text-wrap:balance;margin:0}
+.top{background:var(--cl);color:#fff;padding:22px max(5vw,16px) 18px}
+.top h1{font-size:clamp(30px,7vw,44px);font-weight:800}
+.top p{margin:6px 0 0;opacity:.9;max-width:60ch}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:8px max(5vw,12px)}
+nav button{flex:none;font:600 15px Inter,sans-serif;border:1.5px solid var(--cl);color:var(--ink);background:none;border-radius:999px;padding:9px 15px;min-height:44px;cursor:pointer}
+nav button.on{background:var(--cl);color:#fff}
+button:focus-visible,summary:focus-visible{outline:3px solid #c8962b;outline-offset:2px}
+main{max-width:760px;margin:auto;padding:18px max(4vw,14px) 60px}
+.say{background:var(--gold);border-radius:14px;padding:14px 16px;margin:0 0 18px}
+.say b{display:block;font-size:14px;color:var(--mut);font-weight:600;margin-bottom:4px}
+h2{font-size:26px;margin:26px 0 10px}
+.stop{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
+.stop:not(:last-child)::before{content:"";position:absolute;left:23px;top:48px;bottom:0;width:2px;background:var(--cl)}
+.dot{width:48px;height:48px;border-radius:50%;background:var(--cl);color:#fff;display:grid;place-items:center;font:800 20px Archivo,sans-serif}
+.stop h3{font-size:20px;margin-top:10px}
+.stop .q{color:var(--mut);font-size:14px;margin:2px 0 8px}
+.stop ul{margin:0;padding-left:18px}.stop li{margin:3px 0}
+.hook{display:inline-block;background:var(--cl2);border-radius:10px;padding:6px 10px;margin-top:8px;font-size:15px}
+.sec{font-weight:700;color:var(--cl)}:root[data-theme=dark] .sec{color:#ff9fb6}@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .sec{color:#ff9fb6}}
+details.door{border:1px solid var(--line);border-radius:14px;margin:10px 0;background:var(--card)}
+details.door>summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+details.door>summary::-webkit-details-marker{display:none}
+.door h3{font-size:18px}.door small{display:block;color:var(--mut);font-size:14px;margin-top:3px}
+.cnt{font:700 14px Inter;background:var(--cl2);border-radius:999px;padding:4px 10px}
+.case{border-top:1px solid var(--line);padding:11px 16px}
+.case .n{font-weight:700}.case .id{color:var(--mut);font-size:13px;font-weight:600}
+.case p{margin:3px 0 0;font-size:15px}
+.res{display:inline-block;font-size:13px;font-weight:700;border-radius:8px;padding:2px 8px;margin-top:5px}
+.res.g{background:var(--bad);color:var(--badk)}.res.w{background:var(--ok);color:var(--okk)}
+.star{border:2px solid var(--cl);border-radius:14px;padding:12px 14px;margin:10px 0}
+.star h3{font-size:17px}.star p{margin:4px 0 0;font-size:15px}
+.cards{display:grid;gap:10px}
+.fc{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px;cursor:pointer;min-height:44px;text-align:left;font:inherit;color:inherit;width:100%}
+.fc .qq{font-weight:700;font-size:17px}
+.fc .aa{display:none;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.fc.open .aa{display:block}.fc .tap{color:var(--mut);font-size:13px}.fc.open .tap{display:none}
+.prog{color:var(--mut);font-size:14px;margin:4px 0 10px}
+.plan li{margin:8px 0}.plan b{color:var(--cl)}
+.tip{border-left:4px solid var(--cl);padding:6px 12px;margin:12px 0;background:var(--cl2);border-radius:0 10px 10px 0}
+.tree{position:relative;padding-left:34px;margin:14px 0}
+.tree::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:8px;border-radius:4px;background:linear-gradient(#6b4a2b,#8a6238)}
+.root{position:relative;z-index:1;font:700 15px Inter;background:#6b4a2b;color:#fff;border-radius:12px;padding:8px 12px;margin:0 0 14px -34px;display:inline-block}
+.br{position:relative;margin:0 0 18px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--c) 12%,var(--bg))}
+.br::before{content:"";position:absolute;left:-26px;top:22px;width:26px;height:5px;background:#8a6238;border-radius:3px}
+.br h3{font-size:17px;color:var(--ink)}.br h3 span{color:var(--mut);font:600 13px Inter}
+.br p{margin:2px 0 8px;font-size:14px;color:var(--mut)}
+.leaves{display:flex;flex-wrap:wrap;gap:7px}
+.leaf{font:700 14px Inter;border:0;cursor:pointer;min-height:40px;padding:8px 12px;border-radius:18px 4px 18px 4px;background:var(--c);color:#fff}
+.leaf.seen{outline:3px solid #c8962b}
+.meter{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:8px 0 4px}.meter i{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);border-top:4px solid var(--cl);border-radius:18px 18px 0 0;padding:18px max(5vw,16px) 26px;box-shadow:0 -10px 30px rgba(0,0,0,.25);max-width:760px;margin:auto;transform:translateY(110%);transition:transform .25s}
+.sheet.on{transform:none}.sheet h3{font-size:20px;margin:4px 0}.sheet .x{float:right;border:0;background:var(--cl2);color:var(--ink);border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer}
+.sheet .nav2{display:flex;gap:8px;margin-top:12px}.sheet .nav2 button{flex:1;min-height:44px;border:1.5px solid var(--cl);background:none;color:var(--ink);border-radius:10px;font:600 15px Inter;cursor:pointer}
+.tp{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;background:var(--card)}.tp b{color:var(--cl)}
+.who{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}.who div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}.who b{display:block}
+.foot{color:var(--mut);font-size:13px;margin-top:30px}
+@media(prefers-reduced-motion:no-preference){.fc{transition:background .2s}}
+</style></head><body>
+<header class="top"><h1>Professional Ethics viva kit</h1><p>Everything in the Professional Ethics record on one page: one journey to understand the subject, seven doors for all 60 cases, and flip cards to practise out loud.</p></header>
+<nav id="tabs"><button data-v="journey" class="on">🧭 Journey</button><button data-v="cases">🌳 Case tree</button><button data-v="topics">✅ 16 topics</button><button data-v="cards">🎴 Viva cards</button><button data-v="plan">🗓️ 4-day plan</button></nav>
+<main>
+<section id="journey">
+<div class="say"><b>If they ask "What is in your record?"</b>"My record has four parts: an introduction to professional ethics in 16 topics, 10 Supreme Court cases, 25 disciplinary proceedings of the Bar Council of India, and 25 of the State Bar Council of Telangana."</div>
+<p>The whole subject is one advocate's life, in five stops. Remember the stops and you can talk about any topic.</p>
+<div id="stops"></div>
+<div class="tip"><b>One line on ethics:</b> Professional ethics is the set of rules of conduct an advocate must follow towards the court, the client, the opponent, colleagues and society. A lawyer is an <i>officer of the court</i>, so law is a noble profession, not a business.</div>
+</section>
+<section id="cases" hidden>
+<div class="say"><b>The trick for 60 cases</b>All 60 cases grow from one trunk: a complaint against an advocate. It splits into seven branches. Learn the branches, then tap any leaf to read its one-line story and result.</div>
+<div id="meter"></div>
+<h2>⭐ Six star cases to narrate</h2><div id="stars"></div>
+<h2>🌳 The case tree</h2><div class="tree" id="tree"></div>
+<details class="door"><summary><div><h3>📋 Show all 60 as a list</h3><small>For a quick read-through</small></div><span class="cnt">60</span></summary><div id="doors"></div></details>
+</section>
+<section id="topics" hidden>
+<h2>All 16 topics of Part I</h2><p>Your record's introduction, one line each. ✔ means it is also on the journey or in the viva cards.</p><div id="tps"></div>
+<h2>Who's who: 12 legal professionals</h2><div class="who" id="who"></div>
+</section>
+<section id="cards" hidden>
+<h2>Viva cards</h2><p class="prog" id="prog"></p><p>Read the question, say the answer out loud, then tap to check.</p><div class="cards" id="fcs"></div>
+</section>
+<section id="plan" hidden>
+<h2>4 days, about 30 minutes a day</h2>
+<ol class="plan">
+<li><b>Day 1 · Journey.</b> Read the five stops. Close the page and say the five stops in order with one section each.</li>
+<li><b>Day 2 · Star cases + the Punished door.</b> Narrate the six star cases out loud. Note the punishment in each.</li>
+<li><b>Day 3 · Other doors.</b> Just learn which door each case goes through. Read the door titles, not every line.</li>
+<li><b>Day 4 · Viva cards.</b> Go through all the cards twice. Practise the opening "What is in your record?" answer.</li>
+<li><b>Monday morning.</b> Five stops, the seven lamps mnemonic, and two star cases. Nothing new.</li>
+</ol>
+<div class="tip"><b>In the viva:</b> start every answer with the <span class="sec">section</span> and a one-line meaning, then stop. Examiners stop you when you're right. If you don't know a case, say "That case came under <i>[door]</i>: the complaint failed because…" and give the general rule.</div>
+</section>
+<div class="sheet" id="sheet" role="dialog" aria-live="polite"></div>
+<p class="foot">Made from the Professional Ethics record (LL.B. V semester). <a href="/visual-notes/">Visual notes</a> · <a href="/top-10-answers.html#ethics">Top 10 Ethics answers</a><br> Section numbers are from the Advocates Act, 1961 and the Contempt of Courts Act, 1971.</p>
+</main>
+<script>
+{
+const STOPS=[
+['1','Enter: become an advocate','Who can enrol?',['<span class="sec">S.24</span> Qualifications: Indian citizen, 21 years, law degree, State Bar Council rules, enrolment fee','<span class="sec">S.24A</span> Disqualifications: conviction for moral turpitude, or dismissal from government service for it; the bar lifts 2 years after release or removal','<b>AIBE</b>: after enrolment you must pass it to get the Certificate of Practice'],'🪝 "Citizen, 21, Degree, Fee" = the four keys to the court door'],
+['2','Practise: your rights','What can an advocate do?',['<span class="sec">S.30</span> Right to practise in every court and tribunal in India','<span class="sec">Art.19(1)(g)</span> Right to profession, but subject to reasonable restrictions under Art.19(6). So it is a <b>privilege</b> regulated by law, not an absolute right','<span class="sec">S.16</span> Two classes: Senior Advocates and other advocates'],'🪝 Right to practise = a licence: given by law, taken away for misconduct'],
+['3','Behave: duties and ideals','How must an advocate behave?',['Duties to the <b>court, client, opponent, colleagues and public</b> (BCI Rules)','<b>Seven Lamps</b> (Judge Edward Abbott Parry): Honesty, Courage, Industry, Wit, Eloquence, Judgment, Fellowship','<b>Panchsheel</b> (five functions): Advising, Drafting, Pleading, Negotiating, Officer of the court','No touting or advertising (Rule 36). Don\'t buy property in a case (Rule 22). Keep client accounts (Rules 22–30)'],'🪝 Lamps: "Honest Courage Is Wit, Eloquence, Judgment, Fellowship" · Panchsheel: "ADPNO = A Doctor Prescribes, Nurse Obeys"'],
+['4','Punished: misconduct','What happens if he misbehaves?',['Bar Councils: <span class="sec">S.3</span> State Bar Council, <span class="sec">S.4</span> BCI, <span class="sec">S.9</span> Disciplinary Committees','<span class="sec">S.35</span> SBC Disciplinary Committee can: 1) dismiss, 2) reprimand, 3) suspend, 4) remove from the roll (highest)','<span class="sec">S.36B</span> Not decided in 1 year → goes to the BCI','<span class="sec">S.37</span> Appeal to the BCI in 60 days → <span class="sec">S.38</span> Appeal to the Supreme Court in 60 days','Proof: quasi-criminal, so <b>beyond reasonable doubt</b>; the burden is on the complainant'],'🪝 "Dismiss, Reprimand, Suspend, Remove" = DRSR, light to heavy · 35 → 37 → 38, 60 days each'],
+['5','Contempt of court','What if he insults the court?',['Contempt of Courts Act, 1971 + <span class="sec">Art.129</span> (SC) and <span class="sec">Art.215</span> (HC)','<span class="sec">S.2(b)</span> Civil: wilful disobedience of a court order','<span class="sec">S.2(c)</span> Criminal: scandalising the court, interfering with justice','<span class="sec">S.12</span> Up to 6 months or fine up to ₹2,000; a sincere apology can be accepted','Defences: innocent publication (S.3), fair reporting (S.4), fair criticism of a judgment (S.5)'],'🪝 Criticise the judgment, never the judge']
+];
+document.getElementById('stops').innerHTML=STOPS.map(s=>`<div class="stop"><div class="dot">${s[0]}</div><div><h3>${s[1]}</h3><p class="q">${s[2]}</p><ul>${s[3].map(x=>`<li>${x}</li>`).join('')}</ul><span class="hook">${s[4]}</span></div></div>`).join('');
+
+const STARS=[
+['SC 2 · Pooja Ramesh Singh v. J&K Bank','The tribunal\'s order relied on judgments that did not exist; they were made up by AI. The Supreme Court set the order aside.','Rule: citing AI authorities without checking them is misconduct. (Great modern example.)'],
+['SC 1 · Manoj Kumar Sharma v. Priyanka Bansal','The advocate kept making scandalous allegations against his own client in pleadings.','Result: 3-year suspension upheld, plus ₹1 lakh costs.'],
+['DP 21 · Kamal Prasad Mishra v. Mehilal','The advocate betrayed his client and even pretended the client had died.','Result: 10 years\' suspension maintained. The longest in the record.'],
+['DP 8 · Badri Prasad Gupta v. Dhirendra Kumar','The advocate switched sides and appeared for the opposite party in the same matter.','Result: guilty; removal reduced to 1 year\'s suspension plus ₹30,000.'],
+['DP 19 · Ashok Singhal v. Kanwar Sangram Singh','He advertised himself in a newspaper and misused the profession to blackmail.','Result: 2 years\' suspension. Rule 36 (no advertising).'],
+['SBC 15 · Bar Council of Telangana v. Eunice Chawngthu','The advocate assaulted and abused court staff.','Result: 5 years\' suspension. Dignity of the court.']
+];
+document.getElementById('stars').innerHTML=STARS.map(s=>`<div class="star"><h3>${s[0]}</h3><p>${s[1]}</p><p><b>${s[2]}</b></p></div>`).join('');
+
+const G=1,W=0;
+const DOORS=[
+['🔴 Punished: misconduct proved','Something the advocate did was wrong, and it was proved.',[
+['SC 1','Manoj Kumar Sharma v. Priyanka Bansal','Scandalous allegations against his own client in pleadings.','3 yrs suspension + ₹1 lakh',G],
+['DP 5','Lakkhi Chandra Tyagi v. Rameshwar Prasad Maurya','Bought property involved in his own case (Rule 22).','3 yrs reduced to 1 yr + ₹20,000',G],
+['DP 7','Suo Motu v. Manikandan Vathan Chettiar','Abusive language against the Bar Council.','5 yrs suspension',G],
+['DP 8','Badri Prasad Gupta v. Dhirendra Kumar','Switched sides in the same matter.','1 yr + ₹30,000',G],
+['DP 9','Mohd. Akhlaque v. Unnisa Sultana','Evaded court process and tampered with records: "other misconduct".','Appeal dismissed + ₹50,000',G],
+['DP 11','Jagadamba Prasad v. Jagdish Prasad Sharma','Appellant never prosecuted his appeal; the SBC order was well reasoned.','Order upheld + ₹15,000',G],
+['DP 17','Bar Council of Rajasthan v. Babulal Bairwa','Second petition on the same cause with a false affidavit.','Reprimand (young age) + ₹5,000 each',G],
+['DP 19','Ashok Singhal v. Kanwar Sangram Singh','Newspaper self-advertisement and blackmail (Rule 36).','2 yrs suspension',G],
+['DP 20','Praveen Dixit v. Mahendra Dev Sharma','Pressured a colleague to give false evidence; filthy language in pleadings.','2 yrs debarred',G],
+['DP 21','Kamal Prasad Mishra v. Mehilal','Betrayed the client and fabricated his death.','10 yrs suspension',G],
+['DP 22','Alialal Khan v. Bada Meena','Did not account for or refund the client\'s money (Rules 22–30).','1 yr suspension',G],
+['DP 24','Suo Motu Enquiry (C.H. Raju)','Took the brief, never filed the case, lied to the client.','Debarred from practice',G],
+['SBC 6','Aruna Rani v. P. Shiva Kumar','Took the fee, misused a senior\'s name, let the appeal become time-barred.','3 months suspension',G],
+['SBC 15','Bar Council of Telangana v. Eunice Chawngthu','Assaulted and abused court staff.','5 yrs suspension',G],
+['SBC 16','Bar Council of Telangana v. Yennelli Swamy','Hid criminal cases; defamatory conduct. Withdrawal refused.','2 yrs suspension',G],
+['SBC 17','Bar Council of Telangana v. Ramesh Tejavath','Convicted of an offence involving moral turpitude (S.24A).','Suspended till honourable acquittal',G],
+['SBC 24','M. Harik Rao v. Naragoni Chandra Mouli','Took the client\'s signatures and fee, then neglected the case.','Reprimand',G],
+['SBC 25','Challa Prakash v. Aysha Afsar','Filed a vakalat without the person\'s instructions.','Guilty, warned not to repeat',G]]],
+['⚖️ Contempt of court','The advocate attacked the court or disobeyed its order.',[
+['SC 6','Nilesh C. Ojha v. Bombay High Court','Took allegations against a sitting judge to the media.','Criminal contempt proceeds',G],
+['SC 7','Yatin Narendra Oza v. Gujarat HC','Senior advocate made scurrilous attacks on the HC.','Contempt upheld; sentence suspended under Art.142',G],
+['SC 8','In Re: N. Peddi Raju','Signed pleadings scandalising a judge. The apology went first to that judge.','Apology accepted, closed',W],
+['SC 9','N. Eswaranathan v. State (DSP)','Suppressed facts in a successive petition.','Unconditional apology accepted',W],
+['SC 10','Israr Ahmad Khan v. Amarnath Prasad','Wilful disobedience; "administrative difficulty" is no defence.','Final chance to comply, else charges',G]]],
+['🤖 AI and new-age','A modern problem.',[
+['SC 2','Pooja Ramesh Singh v. J&K Bank','Order relied on fake, AI-made judgments.','Order set aside; verify every authority',G]]],
+['🟢 Advocate wins: not proved','The burden is on the complainant, and proof must be beyond reasonable doubt. Suspicion, family fights and dissatisfaction are not proof.',[
+['DP 1','Amanjot Singh v. Meena Arora','Vague order that did not specify the misconduct.','Complaint dismissed',W],
+['DP 6','Hiteshi Arora v. Shekhar Anand Gupta','Targeted for appearing for the opposite party.','Dismissed + ₹20,000 on complainant',W],
+['DP 12','Baker Oil Tools v. S.P. Mahajan','Absent on a day the court itself was not sitting.','Not negligence',W],
+['DP 13','V. Parvatha Lingam v. Prakash Chakravarthy','Allegations from a family dispute, disproved by documents.','Dismissed',W],
+['DP 14','Jasbir Singh v. Manoj Kumar','False complaint; burden on complainant.','Dismissed + ₹20,000',W],
+['DP 16','LIC v. Tarun Jain','Personal grudge; the advocate was ready to return the files.','Dismissed',W],
+['DP 18','Ramji Dass v. Tarsem Raj Goel','Alleged false enrolment, never proved with the roll.','Dismissed',W],
+['DP 23','Kausalya Praveen v. Ratan Kumar Jain','Only an unsupported resolution, no proof.','Dismissed, advised vigilance',W],
+['SBC 1','Lal Singh v. Narinder Pal Singh','Suspicion is not proof (handwriting not proved).','Dismissed',W],
+['SBC 2','Narinder Pal Singh v. J. Rama Krishna','Dissatisfaction with progress is not misconduct.','No prima facie case',W],
+['SBC 3','G. Srisailam v. A. Manik Prabhu Goud','Court records showed regular appearance.','Dismissed',W],
+['SBC 4','Maduri Srinivasa Rao v. Vallala Srinivasa Rao','Forgery and threats not proved; acting in later separate cases is allowed.','Not guilty',W],
+['SBC 7','Vege Veeraiah v. Surya Balu Mahindra','No evidence; misconduct can\'t be presumed.','Dismissed',W],
+['SBC 9','Petta Sarat Chandra v. Indupalli Ashok Kumar','Complainant must prove the case on merits.','Dismissed',W],
+['SBC 12','Diksha Gaikwad v. Rathan Singh','No evidence at all.','Dismissed',W],
+['SBC 18','Lal Singh v. Narinder Pal Singh','Authorship of a disputed document not proved.','Dismissed',W],
+['SBC 23','Bar Council of Telangana v. N. Jagan Mohan','Asking fees for work properly done is not misconduct.','Dismissed',W]]],
+['🚪 Wrong door: jurisdiction or procedure','The case failed because the wrong body or the wrong procedure was used.',[
+['SC 4','Prem Pal Singh v. BCI','A warning is a penalty; it can\'t be given once the complaint is found false.','Warning quashed',W],
+['SC 5','Ajay Vijh v. Indian Banks\' Association','Only Bar Councils can find misconduct; a negligent opinion is not fraud.','Caution-list entry illegal',W],
+['DP 2','Rais Ahmed Khan v. Mujib Ahmed Khan','Conduct before enrolment falls under S.26, not S.35.','Order void',W],
+['DP 3','Ritu Kumar v. Jharkhand SBC','A stranger without locus; e-evidence without a S.65B certificate.','Name restored to the roll',W],
+['DP 4','Shanti Bhushan Pandey v. K.N. Tiwari','Punished for an act that was never charged: natural justice.','Set aside',W],
+['DP 10','Gurmukh Das v. Amar Nath','Complaint goes to the SBC where he is enrolled; a tenancy dispute is private.','Dismissed + ₹30,000',W],
+['DP 25','Geeta Sahu v. Nitin Kumar Saxena','S.35 covers only acts done as an advocate, not before enrolment.','SBC order set aside',W],
+['SBC 13','J. Mallesh v. R. Arun Kumar','Notice to the Advocate-General under S.35(3) is part of the procedure.','Closed, not pressed',W]]],
+['🤝 No client, no case','First prove there was an advocate–client relationship.',[
+['DP 15','Ch. Durga Prasad v. P. Ram Reddy','No proof he was ever engaged.','Dismissed',W],
+['SBC 21','Gundla Rajamma v. Ravi Prabhakar Reddy','Relationship is the first fact to prove.','Dismissed',W],
+['SBC 22','T. Devanand Singh v. Kothapeta Natraj','A property dispute with an advocate is not professional misconduct.','Dismissed',W]]],
+['🕳️ Complainant walked away','Withdrew, settled or never turned up: dismissed for default or as withdrawn.',[
+['SC 3','Monty Goyal v. Navrang Singh','Complainant withdrew on oath; the basis disappeared.','Finding set aside',W],
+['SBC 5','Mohammed Ghouse v. Thakur Chandra Kamal Singh','Compromise by notarised affidavit.','Closed as withdrawn',W],
+['SBC 8','Sridhar Singireddi v. Sheela Jyothi S.','A matrimonial dispute; not prosecuted.','Dismissed for default',W],
+['SBC 10','Turupu Sattiah v. Merugu Prasad','Referred, but no evidence was led.','Default, costs to advocate',W],
+['SBC 11','Syed Habeebullah Hussaini v. Syed Haji','Acted for both sides, but a genuine joint settlement followed.','Withdrawn',W],
+['SBC 14','B. Ram Mohan Sudershan v. B. Ram Mohan Reddy','Persistent absence even after a conditional order.','Dismissed for default',W],
+['SBC 19','Numa Estates v. S. Kantha Reddy','Settled and withdrew; nothing remained.','Closed',W],
+['SBC 20','Katta Pandu v. B. Mohan','Complainant never entered the witness box.','Dismissed',W]]]
+];
+document.getElementById('doors').innerHTML=DOORS.map(d=>`<details class="door"><summary><div><h3>${d[0]}</h3><small>${d[1]}</small></div><span class="cnt">${d[2].length}</span></summary>${d[2].map(c=>`<div class="case"><span class="id">${c[0]}</span> <span class="n">${c[1]}</span><p>${c[2]}</p><span class="res ${c[4]?'g':'w'}">${c[3]}</span></div>`).join('')}</details>`).join('');
+
+
+const COL=['#b42335','#7a3fb0','#0f7c8c','#2b8a3e','#c26a00','#3c5bd6','#6c6f78'];
+const ALL=[];DOORS.forEach((d,i)=>d[2].forEach(c=>ALL.push({d:i,c})));
+const tot=ALL.length,pun=DOORS[0][2].length;
+document.getElementById('meter').innerHTML=`<p><b>${tot} cases.</b> Only ${pun} ended in punishment for proved misconduct. Most complaints failed: the burden of proof is on the complainant.</p><div class="meter">${DOORS.map((d,i)=>`<i style="width:${d[2].length/tot*100}%;background:${COL[i]}"></i>`).join('')}</div>`;
+document.getElementById('tree').innerHTML='<span class="root">🌱 Trunk: complaint against an advocate (S.35)</span>'+DOORS.map((d,i)=>`<div class="br" style="--c:${COL[i]}"><h3>${d[0]} <span>${d[2].length}</span></h3><p>${d[1]}</p><div class="leaves">${d[2].map(c=>`<button class="leaf" style="--c:${COL[i]}" data-k="${ALL.findIndex(x=>x.c===c)}">${c[0]}</button>`).join('')}</div></div>`).join('');
+const sh=document.getElementById('sheet');let cur=-1;
+const open=k=>{cur=k;const {d,c}=ALL[k];sh.innerHTML=`<button class="x" aria-label="Close">✕</button><span class="cnt" style="background:${COL[d]};color:#fff">${DOORS[d][0]}</span><h3>${c[0]} · ${c[1]}</h3><p>${c[2]}</p><span class="res ${c[4]?'g':'w'}">${c[3]}</span><div class="nav2"><button data-m="-1">‹ Previous</button><button data-m="1">Next ›</button></div>`;sh.classList.add('on');document.querySelector(`.leaf[data-k="${k}"]`).classList.add('seen')};
+document.getElementById('tree').addEventListener('click',e=>{const b=e.target.closest('.leaf');if(b)open(+b.dataset.k)});
+sh.addEventListener('click',e=>{if(e.target.closest('.x')){sh.classList.remove('on');return}const m=e.target.closest('[data-m]');if(m)open((cur+ +m.dataset.m+tot)%tot)});
+const TP=[
+['1.1 Professional ethics','Rules of conduct towards court, client, opponent, colleagues and society; law is a noble profession.',1],
+['1.2 Legal profession – advocacy','An advocate is an officer of the court who helps it do justice; advocacy means representing and arguing for a client.',1],
+['1.3 Legal professionals','Mukhtar, pleader, vakil, attorney, solicitor, counsel, public prosecutor, amicus curiae and more: see "Who\'s who" below.',1],
+['1.4 Advocate and Senior Advocate','S.2(1)(a) defines an advocate; S.16 creates two classes: Senior Advocates and other advocates.',1],
+['1.5 Qualifications and disqualifications','S.24: citizen, 21, law degree, SBC conditions, fee. S.24A: moral turpitude, with a 2-year bar.',1],
+['1.6 Bar Councils and committees','S.3 SBC, S.4 BCI, S.7 BCI functions; S.9 Disciplinary Committee; S.10 Executive and Legal Education Committees.',1],
+['1.7 Misconduct, punishment, remedies','S.35: dismiss, reprimand, suspend, remove; S.36B 1 year; appeals S.37 (BCI) and S.38 (SC), 60 days each.',1],
+['1.8 Rights and duties','S.30 right to practise; duties to court, client, opponent, colleagues; legal aid under Art.39A.',1],
+['1.9 Right or privilege?','Art.19(1)(g) and S.30, but subject to Art.19(6) and Bar Council discipline: a privilege regulated by law.',1],
+['1.10 AIBE','A BCI exam an enrolled advocate must pass for the Certificate of Practice.',1],
+['1.11 Bar–Bench relations','Mutual respect; the two wheels of the chariot of justice.',1],
+['1.12 Contempt of court','Civil S.2(b), criminal S.2(c); punishment S.12; defences S.3–6; Art.129 and Art.215.',1],
+['1.13 Seven Lamps','Honesty, Courage, Industry, Wit, Eloquence, Judgment, Fellowship (Judge Parry).',1],
+['1.14 Elements of advocacy','A science and an art: preparation, clarity, witness examination skill, persuasion, patience, tact, language, integrity, continuous learning.',0],
+['1.15 Panchsheel','Advising, Drafting, Pleading, Negotiating, Officer of the court.',1],
+['1.16 Conclusion','Every rule serves one goal: lawyers stay honest officers of the court and keep public trust in justice.',0]];
+document.getElementById('tps').innerHTML=TP.map(t=>`<div class="tp"><b>${t[2]?'✔ ':''}${t[0]}</b><br>${t[1]}</div>`).join('');
+const WHO=[['Mukhtar','Old: acted for parties in criminal courts'],['Pleader','Old: argued in lower courts'],['Revenue agent','Appears in revenue (land) courts'],['Vakil','Mughal/British term for Indian lawyers'],['Lawyer','Anyone trained in law'],['Attorney','In India: the Attorney General'],['Solicitor','Prepares cases, instructs an advocate (UK, old Bombay/Calcutta)'],['Counsel','A lawyer arguing a case, e.g. "Counsel for the State"'],['Jury','Citizens deciding facts; abolished after Nanavati (1959)'],['Public Prosecutor','For the State in criminal cases (S.18 BNSS)'],['Government Pleader','For the State in civil cases'],['Amicus curiae','"Friend of the court", appointed to assist it']];
+document.getElementById('who').innerHTML=WHO.map(w=>`<div><b>${w[0]}</b>${w[1]}</div>`).join('');
+
+const Q=[
+['What is professional ethics?','The rules of conduct an advocate must follow towards the court, client, opponent, colleagues and society. Many are binding under the Advocates Act, 1961 and the BCI Rules.'],
+['Why is a lawyer called an officer of the court?','He helps the court find the truth and do justice. His first duty is to the court, even above the client.'],
+['Qualifications for enrolment?','S.24: citizen of India, 21 years, a law degree, State Bar Council conditions, enrolment fee.'],
+['Disqualifications for enrolment?','S.24A: conviction for an offence involving moral turpitude, or dismissal from government service for it. The bar lifts 2 years after release or removal.'],
+['What is AIBE?','The All India Bar Examination, conducted by the BCI. An enrolled advocate must pass it to get the Certificate of Practice before practising.'],
+['Is the right to practise a right or a privilege?','S.30 gives the right, and Art.19(1)(g) protects the profession. But it is subject to reasonable restrictions (Art.19(6)) and Bar Council discipline, so it is a privilege regulated by law.'],
+['Who is a Senior Advocate?','S.16: an advocate designated by the SC or a HC for ability, standing at the Bar and experience. The other class is "other advocates".'],
+['Functions of the Bar Council of India?','S.7: lays down standards of conduct and etiquette, legal education, recognises law degrees, safeguards advocates\' rights, hears disciplinary appeals, conducts AIBE.'],
+['What is professional misconduct?','Conduct that is dishonest or unworthy of an advocate, e.g. touting, advertising, taking both sides, misusing client money, neglecting a brief. S.35 also covers "other misconduct".'],
+['Punishments under S.35?','Dismiss the complaint, reprimand, suspend for a period, or remove the name from the roll (the highest).'],
+['Remedy against a State Bar Council order?','Appeal to the BCI within 60 days (S.37), then to the Supreme Court within 60 days (S.38).'],
+['What if the SBC doesn\'t decide in time?','S.36B: a complaint not decided within one year is transferred to the BCI.'],
+['Standard of proof in disciplinary cases?','Quasi-criminal, so beyond reasonable doubt, and the burden is on the complainant. (Many cases in my record were dismissed for this reason.)'],
+['Can an advocate advertise?','No. Rule 36 of the BCI Rules prohibits soliciting work or advertising. Example: Ashok Singhal (DP 19), 2 years\' suspension.'],
+['Can an advocate appear for both sides?','No. Example: Badri Prasad Gupta (DP 8). He switched sides and was suspended for 1 year with a ₹30,000 fine.'],
+['Can an advocate buy property in his client\'s case?','No, under Rule 22. Example: Lakkhi Chandra Tyagi (DP 5).'],
+['What are the Seven Lamps of Advocacy?','By Judge Edward Abbott Parry: Honesty, Courage, Industry, Wit, Eloquence, Judgment, Fellowship.'],
+['What is the Panchsheel of advocates?','Five functions: Advising, Drafting, Pleading, Negotiating, and acting as an Officer of the court.'],
+['Kinds of contempt?','Civil, S.2(b): wilful disobedience of a court order. Criminal, S.2(c): scandalising the court or interfering with justice.'],
+['Punishment for contempt?','S.12: simple imprisonment up to 6 months, or fine up to ₹2,000, or both. It can be remitted on a sincere apology.'],
+['Is criticising a judge contempt?','Fair criticism of a judgment in good faith is a defence (S.5). Attacking the judge personally is criminal contempt (Nilesh Ojha, Yatin Oza).'],
+['Duties of an advocate to the client?','Loyalty, confidentiality, no conflict of interest, keep accounts of the client\'s money, do not neglect the brief, return papers.'],
+['What about AI in legal practice?','Pooja Ramesh Singh v. J&K Bank: citing AI-made authorities without checking that they exist is misconduct. An order built on fake precedents cannot stand.'],
+['Which case in your record had the longest suspension?','Kamal Prasad Mishra v. Mehilal (DP 21): 10 years, for betraying the client and fabricating his death.'],
+['What do Bar–Bench relations mean?','Mutual respect between advocates and judges. The Bar must respect the court, and the Bench must be patient and courteous. Both are wheels of the same chariot of justice.']
+];
+let seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem('pevk')||'[]'))}catch(e){}
+const fcs=document.getElementById('fcs'),prog=document.getElementById('prog');
+const upd=()=>{prog.textContent=`${seen.size} of ${Q.length} checked`};
+fcs.innerHTML=Q.map((q,i)=>`<button class="fc" data-i="${i}"><div class="qq">${i+1}. ${q[0]}</div><div class="tap">Tap to see the answer</div><div class="aa">${q[1]}</div></button>`).join('');
+fcs.addEventListener('click',e=>{const b=e.target.closest('.fc');if(!b)return;b.classList.toggle('open');seen.add(+b.dataset.i);try{localStorage.setItem('pevk',JSON.stringify([...seen]))}catch(e){}upd()});upd();
+
+const show=v=>{document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==v);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))};
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;show(b.dataset.v);history.replaceState(null,'','#'+b.dataset.v);scrollTo(0,0)});
+const h=location.hash.slice(1);if(['journey','cases','topics','cards','plan'].includes(h))show(h);
+}
+</script><script src="/rating.js" defer></script></body></html>
