@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Professional Ethics Viva Kit · LawSticker AI</title><meta name="description" content="Professional Ethics viva in one page: the advocate's journey, all 60 record cases as a case tree, and viva flip cards."><script src="/visit.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<title>Professional Ethics Viva Kit · LawSticker AI</title><meta name="description" content="Professional Ethics viva in one page: the advocate's journey, all 60 record cases as a case tree, and viva flip cards."><script src="/visit.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
 <style>
 /* VOICE: calm, confident coach for a busy student; short lines, no clutter
@@ -98,6 +98,7 @@ details.door>summary::-webkit-details-marker{display:none}
 #cert{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);margin-top:12px}
 .rvh{margin:22px 0 6px}.rv{padding-left:22px}.rv li{margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line)}.rv li.ok{border-left:5px solid var(--okk)}.rv li.no{border-left:5px solid var(--badk)}.rv li.sk{border-left:5px solid var(--mut)}.rv p{margin:3px 0}.rq{font-weight:700}
 @media print{nav,.top p,#tabs,.qact,.sheet,.foot,.rating-card,[data-live-badge]{display:none!important}main>section{display:none!important}main>#game{display:block!important}body{background:#fff;color:#000}.rv li{break-inside:avoid}#cert{max-width:600px}}
+.qstats{display:inline-block;background:var(--gold);border-radius:999px;padding:6px 14px;font-weight:700;margin:0 0 10px}.pri.wa{background:#25D366;color:#0b2e17}
 .foot{color:var(--mut);font-size:13px;margin-top:30px}
 @media(prefers-reduced-motion:no-preference){.fc{transition:background .2s}}
 </style></head><body>
@@ -122,7 +123,7 @@ details.door>summary::-webkit-details-marker{display:none}
 <h2>All 16 topics of Part I</h2><p>Your record's introduction, one line each. ✔ means it is also on the journey or in the viva cards.</p><div id="tps"></div>
 <h2>Who's who: 12 legal professionals</h2><div class="who" id="who"></div>
 </section>
-<section id="game" hidden><h2>🎮 Practice quiz</h2><div id="qbox"></div></section>
+<section id="game" hidden><h2>🎮 Practice quiz</h2><p class="qstats" id="qstats" hidden></p><div id="qbox"></div></section>
 <section id="cards" hidden>
 <h2>Viva cards</h2><p class="prog" id="prog"></p><p>Read the question, say the answer out loud, then tap to check.</p><div class="cards" id="fcs"></div>
 </section>
@@ -382,7 +383,9 @@ const caseQ=k=>{const {d,c}=ALL[k],X=EXTRA[c[0]],t=Math.floor(Math.random()*3),r
  if(t===0)return{q:`${c[0]} · ${c[1]}: ${X[0][0]} ${X[0][1]} What was the result?`,a:c[3],o:pick(res,3,c[3]),e:X[1],h:X[2],tag:'Case'};
  if(t===1)return{q:`Which rule does ${c[0]} (${c[1]}) stand for?`,a:X[1],o:pick(rules,3,X[1]),e:`${X[0][1]} Result: ${c[3]}.`,h:X[2],tag:'Case'};
  return{q:`Which case matches this story? "${X[0][1]}"`,a:names[k],o:pick(names,3,names[k]),e:`${X[1]} Result: ${c[3]}.`,h:X[2],tag:'Case'}};
-const qbox=document.getElementById('qbox');let QZ=[],qi=0,ans=[],who='',LAST='';
+const qbox=document.getElementById('qbox');let QZ=[],qi=0,ans=[],who='',LAST='',SENT=0;
+const qev=e=>{try{fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/quiz-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:'ethics',e}),keepalive:true}).catch(()=>{})}catch(x){}};
+let SHARED=0;const shareEv=()=>{if(!SHARED){SHARED=1;qev('share')}};
 const nameOK=n=>n.replace(/[<>&"']/g,'').trim().slice(0,30);
 const qStart=()=>{qbox.innerHTML=`<div class="qcard"><h3>Professional Ethics practice quiz</h3><p>Questions on all 16 topics and all 60 cases of the record, mixed differently every time. Skip any question, or stop whenever you like: you are marked only on what you answered.</p>
 <label class="fl">Your name or nickname <small>(for your certificate)</small><input id="qn" maxlength="30" autocomplete="nickname" placeholder="e.g. Ravi"></label>
@@ -398,9 +401,9 @@ const qEnd=()=>{const done=ans.filter(a=>a&&a.pick),ok=done.filter(a=>a.ok).leng
  try{localStorage.setItem('pevname',who)}catch(e){}
  qbox.innerHTML=`<div class="qcard res"><div class="big">${g[0]}</div><h3>${g[1]}${who?', '+who:''}</h3><p class="score"><b>${ok}</b> / ${done.length} correct · ${p}%</p><p class="mut">${sk?`${sk} question${sk>1?'s':''} skipped or not reached (not counted).`:'All questions answered.'}</p>
  <canvas id="cert" width="1200" height="850" aria-label="Certificate"></canvas>
- <div class="qact wrap"><button class="pri" data-act="dl">⬇️ Download certificate</button><button class="pri" data-act="share">📤 Share</button><button class="ghost" data-act="print">🖨️ Print / save PDF with answers</button><button class="ghost" data-act="again">🔁 New quiz</button></div></div>
+ <div class="qact wrap"><button class="pri" data-act="dl">⬇️ Download certificate</button><button class="pri" data-act="share">📤 Share certificate</button><button class="pri wa" data-act="wa">🟢 WhatsApp</button><button class="ghost" data-act="print">🖨️ Print / save PDF with answers</button><button class="ghost" data-act="again">🔁 New quiz</button></div></div>
  <h3 class="rvh">Your answers</h3><ol class="rv">${QZ.map((q,i)=>{const a=ans[i];const st=!a||!a.pick?'sk':a.ok?'ok':'no';return `<li class="${st}"><p class="rq">${q.q}</p><p>${st==='sk'?'⏭️ Skipped':`Your answer: <b>${a.pick}</b> ${a.ok?'✅':'❌'}`}</p>${st!=='ok'?`<p>Correct: <b>${q.a}</b></p>`:''}<p class="mut">${q.e}</p></li>`}).join('')}</ol>`;
- LAST=`${ok}/${done.length} (${p}%)`;drawCert(ok,done.length,p);document.getElementById('game').scrollIntoView()};
+ LAST=`${ok}/${done.length} (${p}%)`;if(done.length&&!SENT){SENT=1;qev('test')}drawCert(ok,done.length,p);document.getElementById('game').scrollIntoView()};
 const drawCert=(ok,n,p)=>{const cv=document.getElementById('cert'),x=cv.getContext('2d'),W=1200,H=850,F="'Anek Latin',sans-serif";
  x.fillStyle='#FFFFFF';x.fillRect(0,0,W,H);x.fillStyle='#2A2C94';x.fillRect(0,0,W,22);x.fillRect(0,H-22,W,22);x.strokeStyle='#FFB703';x.lineWidth=6;x.strokeRect(40,50,W-80,H-100);
  x.textAlign='center';x.fillStyle='#2A2C94';x.font=`700 30px ${F}`;x.fillText('LawSticker AI',W/2,120);
@@ -410,10 +413,10 @@ const drawCert=(ok,n,p)=>{const cv=document.getElementById('cert'),x=cv.getConte
  x.font=`400 28px ${F}`;x.fillStyle='#17183F';x.fillText('completed the Professional Ethics viva practice quiz',W/2,435);
  x.font=`800 44px ${F}`;x.fillText(`Score: ${ok} / ${n}  ·  ${p}%`,W/2,505);
  x.font=`400 24px ${F}`;x.fillStyle='#5A5F86';x.fillText(new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),W/2,550);
- x.textAlign='left';x.font=`700 26px ${F}`;x.fillStyle='#17183F';x.fillText('Practise free, scan or visit:',100,680);x.font=`400 24px ${F}`;x.fillStyle='#2A2C94';x.fillText('lawsticker-ai.com/ethics-viva.html',100,718);
- x.font=`400 18px ${F}`;x.fillStyle='#5A5F86';x.fillText('A practice certificate for motivation, not an official qualification.',100,760);
- try{const qr=qrcode(0,'M');qr.addData('https://lawsticker-ai.com/ethics-viva.html#game');qr.make();const m=qr.getModuleCount(),s=Math.floor(170/m),ox=W-110-m*s,oy=600;x.fillStyle='#fff';x.fillRect(ox-10,oy-10,m*s+20,m*s+20);x.fillStyle='#17183F';for(let r=0;r<m;r++)for(let c=0;c<m;c++)if(qr.isDark(r,c))x.fillRect(ox+c*s,oy+r*s,s,s)}catch(e){}};
-qbox.addEventListener('click',async e=>{const ln=e.target.closest('[data-n]');if(ln){who=nameOK(document.getElementById('qn').value);QZ=build(+ln.dataset.n);qi=0;ans=[];qShow();return}
+ x.fillStyle='#FFF1C9';x.fillRect(200,615,800,90);x.font=`700 26px ${F}`;x.fillStyle='#17183F';x.fillText('Practise free at',W/2,652);x.font=`800 32px ${F}`;x.fillStyle='#2A2C94';x.fillText('lawsticker-ai.com/ethics-viva.html',W/2,692);
+ x.font=`400 18px ${F}`;x.fillStyle='#5A5F86';x.fillText('A practice certificate for motivation, not an official qualification.',W/2,760);
+ };
+qbox.addEventListener('click',async e=>{const ln=e.target.closest('[data-n]');if(ln){who=nameOK(document.getElementById('qn').value);QZ=build(+ln.dataset.n);qi=0;ans=[];SENT=0;SHARED=0;qShow();return}
  const o=e.target.closest('.opt');if(o&&!ans[qi]){const q=QZ[qi],pk=q.opts[+o.dataset.o],ok=pk===q.a;ans[qi]={pick:pk,ok};qbox.querySelectorAll('.opt').forEach(b=>{const t=q.opts[+b.dataset.o];b.disabled=true;if(t===q.a)b.classList.add('right');else if(b===o)b.classList.add('wrong')});
   document.getElementById('fb').innerHTML=`<p class="verdict">${ok?'✅ Correct!':'❌ Not quite.'}</p><p class="why">${q.e}</p>${q.h?`<p class="hk">${q.h}</p>`:''}<button class="nxt">${qi+1<QZ.length?'Next question ›':'See my result ›'}</button>`;return}
  const a=e.target.closest('[data-act]'),n=e.target.closest('.nxt');
@@ -421,9 +424,11 @@ qbox.addEventListener('click',async e=>{const ln=e.target.closest('[data-n]');if
  if(v==='skip'){qi++;qShow();document.getElementById('game').scrollIntoView()}else if(v==='quit')qEnd();else if(v==='again')qStart();else if(v==='print')window.print();
  else if(v==='dl'){const l=document.createElement('a');l.download='LawSticker-Ethics-Certificate.png';l.href=document.getElementById('cert').toDataURL('image/png');l.click()}
  else if(v==='share'){const txt=`I scored ${LAST} on the Professional Ethics viva practice quiz on LawSticker AI. Try it free: https://lawsticker-ai.com/ethics-viva.html#game`;
-  try{const bl=await new Promise(r=>document.getElementById('cert').toBlob(r));const f=new File([bl],'certificate.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:txt});return}if(navigator.share){await navigator.share({text:txt});return}}catch(err){if(err&&err.name==='AbortError')return}
-  location.href='https://wa.me/?text='+encodeURIComponent(txt)}});
+  try{const bl=await new Promise(r=>document.getElementById('cert').toBlob(r));const f=new File([bl],'certificate.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:txt});shareEv();return}if(navigator.share){await navigator.share({text:txt});shareEv();return}}catch(err){if(err&&err.name==='AbortError')return}
+  shareEv();location.href='https://wa.me/?text='+encodeURIComponent(txt)}
+ else if(v==='wa'){shareEv();location.href='https://wa.me/?text='+encodeURIComponent(`I scored ${LAST} on the Professional Ethics viva practice quiz on LawSticker AI 🎓 Try it free: https://lawsticker-ai.com/ethics-viva.html#game`)}});
 qStart();
+fetch('/data/quiz-stats.json?'+Date.now()).then(r=>r.json()).then(d=>{const e=d.ethics||{},bits=[];if(e.tests>=10)bits.push(`🎓 ${e.tests} quizzes taken`);if(e.shares>=10)bits.push(`📤 ${e.shares} certificates shared`);if(bits.length){const q=document.getElementById('qstats');q.textContent=bits.join(' · ');q.hidden=false}}).catch(()=>{});
 
 const Q=[
 ['What is professional ethics?','The rules of conduct an advocate must follow towards the court, client, opponent, colleagues and society. Many are binding under the Advocates Act, 1961 and the BCI Rules.'],
