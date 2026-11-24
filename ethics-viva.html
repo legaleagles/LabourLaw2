@@ -74,11 +74,20 @@ details.door>summary::-webkit-details-marker{display:none}
 .sheet .nav2{display:flex;gap:8px;margin-top:12px}.sheet .nav2 button{flex:1;min-height:44px;border:1.5px solid var(--cl);background:none;color:var(--ink);border-radius:10px;font:600 15px Inter;cursor:pointer}
 .tp{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;background:var(--card)}.tp b{color:var(--cl)}
 .who{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}.who div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}.who b{display:block}
+.lad{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0;margin:10px 0}
+.lad .r{font:800 14px Archivo,sans-serif;color:#fff;padding:10px 8px;display:flex;align-items:center;border-bottom:2px solid var(--bg)}
+.lad .c{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border-bottom:1px solid var(--line)}
+.lad .c button{font:700 13px Inter;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 9px;min-height:36px;cursor:pointer}
+.gq{border:2px solid var(--cl);border-radius:16px;padding:16px}.gq h3{font-size:19px;margin:4px 0 8px}
+.gb{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.gb button{min-height:52px;border-radius:12px;font:700 16px Inter;cursor:pointer;border:2px solid}
+.gb .gy{background:var(--bad);color:var(--badk);border-color:var(--badk)}.gb .gn{background:var(--ok);color:var(--okk);border-color:var(--okk)}
+.verdict{margin-top:12px;font-size:17px;font-weight:700}
+.nxt{margin-top:12px;width:100%;min-height:48px;border-radius:12px;border:0;background:var(--cl);color:#fff;font:700 16px Inter;cursor:pointer}
 .foot{color:var(--mut);font-size:13px;margin-top:30px}
 @media(prefers-reduced-motion:no-preference){.fc{transition:background .2s}}
 </style></head><body>
-<header class="top"><h1>Professional Ethics viva kit</h1><p>Everything in the Professional Ethics record on one page: one journey to understand the subject, seven doors for all 60 cases, and flip cards to practise out loud.</p></header>
-<nav id="tabs"><button data-v="journey" class="on">🧭 Journey</button><button data-v="cases">🌳 Case tree</button><button data-v="topics">✅ 16 topics</button><button data-v="cards">🎴 Viva cards</button><button data-v="plan">🗓️ 4-day plan</button></nav>
+<header class="top"><h1>Professional Ethics viva kit</h1><p>Everything in the Professional Ethics record on one page: one journey to understand the subject, seven doors for all 60 cases, and flip cards to practise out loud.</p><span data-live-badge hidden style="display:inline-block;margin-top:8px"></span></header>
+<nav id="tabs"><button data-v="journey" class="on">🧭 Journey</button><button data-v="cases">🌳 Case tree</button><button data-v="topics">✅ 16 topics</button><button data-v="game">🎮 Guess the verdict</button><button data-v="cards">🎴 Viva cards</button><button data-v="plan">🗓️ 4-day plan</button></nav>
 <main>
 <section id="journey">
 <div class="say"><b>If they ask "What is in your record?"</b>"My record has four parts: an introduction to professional ethics in 16 topics, 10 Supreme Court cases, 25 disciplinary proceedings of the Bar Council of India, and 25 of the State Bar Council of Telangana."</div>
@@ -90,12 +99,17 @@ details.door>summary::-webkit-details-marker{display:none}
 <div class="say"><b>The trick for 60 cases</b>All 60 cases grow from one trunk: a complaint against an advocate. It splits into seven branches. Learn the branches, then tap any leaf to read its one-line story and result.</div>
 <div id="meter"></div>
 <h2>⭐ Six star cases to narrate</h2><div id="stars"></div>
+<h2>🌡️ Punishment ladder</h2><p>Only the punished cases, from lightest to heaviest. If you remember the rung, you remember the punishment.</p><div id="ladder"></div>
 <h2>🌳 The case tree</h2><div class="tree" id="tree"></div>
 <details class="door"><summary><div><h3>📋 Show all 60 as a list</h3><small>For a quick read-through</small></div><span class="cnt">60</span></summary><div id="doors"></div></details>
 </section>
 <section id="topics" hidden>
 <h2>All 16 topics of Part I</h2><p>Your record's introduction, one line each. ✔ means it is also on the journey or in the viva cards.</p><div id="tps"></div>
 <h2>Who's who: 12 legal professionals</h2><div class="who" id="who"></div>
+</section>
+<section id="game" hidden>
+<h2>Guess the verdict</h2><p>You are the Disciplinary Committee. Read the story, decide, then see what really happened. Guessing first makes the case stick far better than reading it.</p>
+<p class="prog" id="gsc"></p><div id="gbox"></div>
 </section>
 <section id="cards" hidden>
 <h2>Viva cards</h2><p class="prog" id="prog"></p><p>Read the question, say the answer out loud, then tap to check.</p><div class="cards" id="fcs"></div>
@@ -301,6 +315,18 @@ const EXTRA={
 'SBC 25':[['A man found a vakalat filed in his name in a city civil suit.','He said his signature was forged and he had never instructed it.','He learned of it only from the ex parte notice.'],'Filing a vakalat without instructions is a serious breach; the advocate was told not to repeat it.','🖊️ "No instruction, no vakalat".']
 };
 
+const LAD=[['Reprimand','#c99a2e',['DP 17','SBC 24','SBC 25']],['3 months','#d9822b',['SBC 6']],['1 year','#d46a2a',['DP 5','DP 8','DP 22']],['2 years','#c7522a',['DP 19','DP 20','SBC 16']],['3 years','#b8402a',['SC 1','DP 9']],['5 years','#a8302a',['DP 7','SBC 15']],['10 years','#8f1f2a',['DP 21']],['Debarred / till acquittal','#6e1020',['DP 24','SBC 17']]];
+const idx=id=>ALL.findIndex(x=>x.c[0]===id);
+document.getElementById('ladder').innerHTML='<div class="lad">'+LAD.map(r=>`<div class="r" style="background:${r[1]}">${r[0]}</div><div class="c">${r[2].map(id=>`<button data-k="${idx(id)}">${id}</button>`).join('')}</div>`).join('')+'</div>';
+document.getElementById('ladder').addEventListener('click',e=>{const b=e.target.closest('button');if(b)open(+b.dataset.k)});
+const POOL=ALL.map((x,i)=>i).filter(i=>ALL[i].d!==2);let order=POOL.slice().sort(()=>Math.random()-.5),gi=0,right=0,done=0;
+const gbox=document.getElementById('gbox'),gsc=document.getElementById('gsc');
+const gshow=()=>{const k=order[gi%order.length],{d,c}=ALL[k],X=EXTRA[c[0]];gsc.textContent=`Score: ${right} of ${done}`;
+gbox.innerHTML=`<div class="gq"><span class="id">${c[0]}</span><h3>${c[1]}</h3><div class="strip">${X[0].slice(0,2).map((t,i)=>`<div class="pn"><i>${['👤','⚡'][i]}</i>${t}</div>`).join('')}</div><p><b>Your verdict?</b></p><div class="gb"><button class="gy" data-g="1">🔨 Guilty</button><button class="gn" data-g="0">🕊️ Not guilty / let off</button></div><div id="gres"></div></div>`};
+gbox.addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(b&&!gbox.querySelector('.verdict')){const k=order[gi%order.length],{c}=ALL[k],X=EXTRA[c[0]];const ok=(+b.dataset.g)===c[4];done++;if(ok)right++;gsc.textContent=`Score: ${right} of ${done}`;
+document.getElementById('gres').innerHTML=`<p class="verdict">${ok?'✅ Correct!':'❌ Not quite.'}</p><div class="pn"><i>⚖️</i>${X[0][2]}</div><div class="stamp ${c[4]?'g':'w'}">${c[3]}</div><p class="why"><b>The rule</b>${X[1]}</p><p class="hk"><b>Remember it as</b>${X[2]}</p><button class="nxt">Next case ›</button>`;return}
+if(e.target.closest('.nxt')){gi++;gshow();scrollTo(0,0)}});gshow();
+
 const Q=[
 ['What is professional ethics?','The rules of conduct an advocate must follow towards the court, client, opponent, colleagues and society. Many are binding under the Advocates Act, 1961 and the BCI Rules.'],
 ['Why is a lawyer called an officer of the court?','He helps the court find the truth and do justice. His first duty is to the court, even above the client.'],
@@ -336,6 +362,7 @@ fcs.addEventListener('click',e=>{const b=e.target.closest('.fc');if(!b)return;b.
 
 const show=v=>{document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==v);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))};
 document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;show(b.dataset.v);history.replaceState(null,'','#'+b.dataset.v);scrollTo(0,0)});
-const h=location.hash.slice(1);if(['journey','cases','topics','cards','plan'].includes(h))show(h);
+addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(document.getElementById(v)&&document.querySelector(`#tabs [data-v="${v}"]`))show(v)});
+const h=location.hash.slice(1);if(['journey','cases','topics','game','cards','plan'].includes(h))show(h);
 }
-</script><script src="/rating.js" defer></script></body></html>
+</script><script defer src="/live-badge.js"></script><script src="/rating.js" defer></script></body></html>
