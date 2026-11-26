@@ -53,6 +53,9 @@ h2 small{font-weight:500;color:var(--muted);font-size:13px;margin-left:6px}
 .note{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:70ch}
 .err{display:none;background:color-mix(in srgb,var(--warn) 12%,var(--surface));border:1px solid var(--warn);color:var(--ink);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:14.5px}
 @media (max-width:720px){.hero{grid-template-columns:1fr 1fr}.hero .card:first-child{grid-column:1/-1}.two{grid-template-columns:1fr}.big{font-size:56px}}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px;margin:6px 0}
+.seg button{border:0;background:none;color:var(--ink);font:600 15px 'Anek Latin',sans-serif;padding:8px 12px;border-radius:9px;min-height:40px;cursor:pointer}.seg button.on{background:var(--bar);color:#fff}
+.hist{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))!important}.chg{font-size:13px;font-weight:700}.chg.up{color:var(--live)}.chg.dn{color:var(--warn)}
 </style>
 </head>
 <body>
@@ -84,6 +87,22 @@ h2 small{font-weight:500;color:var(--muted);font-size:13px;margin-left:6px}
 </div>
 
 <p class="note">Numbers come from Google Analytics Realtime and refresh every minute. A person counts as active if they opened or used a page in the window; one person reading several pages counts once in the totals. Visitors whose browser blocks analytics are not counted, so the real number can be a little higher. Page rows can add up to more than the total because the same person may open several pages.</p>
+
+<h1 style="margin:26px 0 4px">Traffic history</h1>
+<div class="seg" id="seg" role="group" aria-label="Period"><button data-d="1" class="on">Yesterday</button><button data-d="7">Last 7 days</button><button data-d="28">Last 28 days</button></div>
+<p class="sub" id="hst">Loading…</p>
+<section class="hero hist" id="htiles"></section>
+<div class="two">
+  <section class="card"><h2>Where the views went <small>by section</small></h2><ul class="rows" id="hsec"></ul></section>
+  <section class="card"><h2>How they arrived <small>visits</small></h2><ul class="rows" id="hch"></ul></section>
+</div>
+<section class="card"><h2>Top pages <small>views · people · avg time on page</small></h2><ul class="rows" id="hpages"></ul></section>
+<div class="two">
+  <section class="card"><h2>Top sources <small>visits</small></h2><ul class="rows" id="hsrc"></ul></section>
+  <section class="card"><h2>Cities <small>people</small></h2><ul class="rows" id="hcity"></ul></section>
+</div>
+<p class="note" id="hquiz"></p>
+<p class="note">History comes from Google Analytics and covers full days in IST, ending yesterday; it refreshes every 30 minutes. The change shown is against the same length of time just before. "People" counts each person once, even if they read many pages.</p>
 </div>
 <script>
 (function(){
@@ -126,6 +145,27 @@ function load(){
     $('err').style.display='block';$('err').textContent='Could not load live numbers ('+e.message+'). Retrying in a minute; the last numbers shown stay on screen.';
   });
 }
+
+var TS='https://lawsticker-backend-494996217030.europe-west1.run.app/api/traffic-summary?days=';
+function dur(x){x=Math.round(x);return x>=60?Math.floor(x/60)+'m '+('0'+x%60).slice(-2)+'s':x+'s'}
+function chg(c,p){if(!p)return '';var v=Math.round((c-p)/p*100);return '<span class="chg '+(v>0?'up':v<0?'dn':'')+'">'+(v>0?'▲ ':v<0?'▼ ':'')+Math.abs(v)+'%</span>'}
+function hist(days){$('hst').textContent='Loading…';
+  fetch(TS+days,{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){if(!d.ok)throw new Error(d.error||'unavailable');
+    var t=d.totals,p=d.previous;
+    $('hst').textContent=(d.days===1?d.range.to:d.range.from+' – '+d.range.to)+' · compared with the '+(d.days===1?'day':d.days+' days')+' before';
+    var tiles=[[Math.round(t.activeUsers),'people',chg(t.activeUsers,p.activeUsers)],[Math.round(t.newUsers),'new people',chg(t.newUsers,p.newUsers)],[Math.round(t.sessions),'visits',chg(t.sessions,p.sessions)],[Math.round(t.screenPageViews),'page views',chg(t.screenPageViews,p.screenPageViews)],[dur(t.averageSessionDuration),'average visit',chg(t.averageSessionDuration,p.averageSessionDuration)],[Math.round(t.engagementRate*100)+'%','visits engaged','']];
+    $('htiles').innerHTML=tiles.map(function(x){return '<div class="card"><div class="mid">'+x[0]+'</div><p class="lab">'+x[1]+'</p><p class="sub">'+x[2]+'</p></div>'}).join('');
+    var V=t.screenPageViews||1;
+    rows($('hsec'),d.sections,function(x){return x.name},function(x){return x.views},function(x){return Math.round(x.views/V*100)+'%'});
+    var S=(d.channels||[]).reduce(function(a,x){return a+x.sessions},0)||1;
+    rows($('hch'),d.channels,function(x){return x.name},function(x){return x.sessions},function(x){return Math.round(x.sessions/S*100)+'%'});
+    rows($('hpages'),d.pages.slice(0,15),function(x){return x.path},function(x){return x.views},function(x){return '· '+x.users+' people · '+dur(x.avg_secs)});
+    rows($('hsrc'),d.sources,function(x){return x.name},function(x){return x.sessions});
+    rows($('hcity'),d.cities,function(x){return x.name},function(x){return x.users});
+    var q=d.quiz||{};$('hquiz').textContent=(q.tests||q.shares)?'🎓 Ethics practice quiz, all time: '+q.tests+' taken · '+q.shares+' certificates shared':'';
+  }).catch(function(e){$('hst').textContent='Could not load history ('+e.message+').'})}
+$('seg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call($('seg').children,function(x){x.classList.toggle('on',x===b)});hist(+b.dataset.d)});
+hist(1);
 load();setInterval(function(){if(!document.hidden)load()},60000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)load()});
 })();
