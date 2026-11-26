@@ -150,7 +150,7 @@ var TS='https://lawsticker-backend-494996217030.europe-west1.run.app/api/traffic
 function dur(x){x=Math.round(x);return x>=60?Math.floor(x/60)+'m '+('0'+x%60).slice(-2)+'s':x+'s'}
 function chg(c,p){if(!p)return '';var v=Math.round((c-p)/p*100);return '<span class="chg '+(v>0?'up':v<0?'dn':'')+'">'+(v>0?'▲ ':v<0?'▼ ':'')+Math.abs(v)+'%</span>'}
 function hist(days){$('hst').textContent='Loading…';
-  fetch(TS+days,{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){if(!d.ok)throw new Error(d.error||'unavailable');
+  fetch(TS+days,{cache:'no-store'}).then(function(r){if(r.status===404)throw new Error('the server update is still deploying, try again in a few minutes');return r.json()}).then(function(d){if(!d.ok)throw new Error(d.error||'unavailable');
     var t=d.totals,p=d.previous;
     $('hst').textContent=(d.days===1?d.range.to:d.range.from+' – '+d.range.to)+' · compared with the '+(d.days===1?'day':d.days+' days')+' before';
     var tiles=[[Math.round(t.activeUsers),'people',chg(t.activeUsers,p.activeUsers)],[Math.round(t.newUsers),'new people',chg(t.newUsers,p.newUsers)],[Math.round(t.sessions),'visits',chg(t.sessions,p.sessions)],[Math.round(t.screenPageViews),'page views',chg(t.screenPageViews,p.screenPageViews)],[dur(t.averageSessionDuration),'average visit',chg(t.averageSessionDuration,p.averageSessionDuration)],[Math.round(t.engagementRate*100)+'%','visits engaged','']];
@@ -163,7 +163,7 @@ function hist(days){$('hst').textContent='Loading…';
     rows($('hsrc'),d.sources,function(x){return x.name},function(x){return x.sessions});
     rows($('hcity'),d.cities,function(x){return x.name},function(x){return x.users});
     var q=d.quiz||{};$('hquiz').textContent=(q.tests||q.shares)?'🎓 Ethics practice quiz, all time: '+q.tests+' taken · '+q.shares+' certificates shared':'';
-  }).catch(function(e){$('hst').textContent='Could not load history ('+e.message+').'})}
+  }).catch(function(e){$('hst').textContent='Could not load history: '+e.message+'.'})}
 $('seg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call($('seg').children,function(x){x.classList.toggle('on',x===b)});hist(+b.dataset.d)});
 hist(1);
 load();setInterval(function(){if(!document.hidden)load()},60000);
