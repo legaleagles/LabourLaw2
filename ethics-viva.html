@@ -98,11 +98,11 @@ details.door>summary::-webkit-details-marker{display:none}
 #cert{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);margin-top:12px}
 .rvh{margin:22px 0 6px}.rv{padding-left:22px}.rv li{margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line)}.rv li.ok{border-left:5px solid var(--okk)}.rv li.no{border-left:5px solid var(--badk)}.rv li.sk{border-left:5px solid var(--mut)}.rv p{margin:3px 0}.rq{font-weight:700}
 @media print{nav,.top p,#tabs,.qact,.sheet,.foot,.rating-card,[data-live-badge]{display:none!important}main>section{display:none!important}main>#game{display:block!important}body{background:#fff;color:#000}.rv li{break-inside:avoid}#cert{max-width:600px}}
-.qstats{display:inline-block;background:var(--gold);border-radius:999px;padding:6px 14px;font-weight:700;margin:0 0 10px}.pri.wa{background:#25D366;color:#0b2e17}
+[hidden]{display:none!important}.top .qstats{margin:10px 0 0}.qstats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.qstats span{display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--ink);font-size:15px;border:1.5px solid var(--mari);border-radius:999px;padding:6px 14px 6px 8px;font-weight:600}.qstats i{font-style:normal;width:28px;height:28px;border-radius:50%;background:var(--gold);display:grid;place-items:center}.qstats b{font-size:18px;font-weight:800;color:var(--cl)}.pri.wa{background:#25D366;color:#0b2e17}
 .foot{color:var(--mut);font-size:13px;margin-top:30px}
 @media(prefers-reduced-motion:no-preference){.fc{transition:background .2s}}
 </style></head><body>
-<header class="top"><h1>Professional Ethics viva kit</h1><p>Everything in the Professional Ethics record on one page: one journey to understand the subject, a case tree for all 60 cases, a practice quiz with a certificate, and flip cards to practise out loud.</p><p style="margin:8px 0 0"><span data-live-badge hidden></span></p></header>
+<header class="top"><h1>Professional Ethics viva kit</h1><p>Everything in the Professional Ethics record on one page: one journey to understand the subject, a case tree for all 60 cases, a practice quiz with a certificate, and flip cards to practise out loud.</p><p style="margin:8px 0 0"><span data-live-badge hidden></span></p><p class="qstats" id="qstats" hidden></p></header>
 <nav id="tabs"><button data-v="journey" class="on">🧭 Journey</button><button data-v="cases">🌳 Case tree</button><button data-v="topics">✅ 16 topics</button><button data-v="game">🎮 Quiz</button><button data-v="cards">🎴 Viva cards</button><button data-v="plan">🗓️ 4-day plan</button></nav>
 <main>
 <section id="journey">
@@ -123,7 +123,7 @@ details.door>summary::-webkit-details-marker{display:none}
 <h2>All 16 topics of Part I</h2><p>Your record's introduction, one line each. ✔ means it is also on the journey or in the viva cards.</p><div id="tps"></div>
 <h2>Who's who: 12 legal professionals</h2><div class="who" id="who"></div>
 </section>
-<section id="game" hidden><h2>🎮 Practice quiz</h2><p class="qstats" id="qstats" hidden></p><div id="qbox"></div></section>
+<section id="game" hidden><h2>🎮 Practice quiz</h2><div id="qbox"></div></section>
 <section id="cards" hidden>
 <h2>Viva cards</h2><p class="prog" id="prog"></p><p>Read the question, say the answer out loud, then tap to check.</p><div class="cards" id="fcs"></div>
 </section>
@@ -145,7 +145,7 @@ details.door>summary::-webkit-details-marker{display:none}
 {
 const STOPS=[
 ['1','Enter: become an advocate','Who can enrol?',['<span class="sec">S.24</span> Qualifications: Indian citizen, 21 years, law degree, State Bar Council rules, enrolment fee','<span class="sec">S.24A</span> Disqualifications: conviction for moral turpitude, or dismissal from government service for it; the bar lifts 2 years after release or removal','<b>AIBE</b>: after enrolment you must pass it to get the Certificate of Practice'],'🪝 "Citizen, 21, Degree, Fee" = the four keys to the court door'],
-['2','Practise: your rights','What can an advocate do?',['<span class="sec">S.30</span> Right to practise in every court and tribunal in India','<span class="sec">Art.19(1)(g)</span> Right to profession, but subject to reasonable restrictions under Art.19(6). So it is a <b>privilege</b> regulated by law, not an absolute right','<span class="sec">S.16</span> Two classes: Senior Advocates and other advocates'],'🪝 Right to practise = a licence: given by law, taken away for misconduct'],
+['2','Practise: your rights','What can an advocate do?',['<span class="sec">S.30</span> Right to practise in every court and tribunal in India','<span class="sec">Art.19(1)(g)</span> Right to profession, but subject to reasonable restrictions under Art.19(6). Neither absolute nor a mere privilege: a <b>right coupled with a continuing duty</b> (O.P. Sharma, 2011)','<span class="sec">S.16</span> Two classes: Senior Advocates and other advocates'],'🪝 Right to practise = a licence: given by law, kept by good conduct'],
 ['3','Behave: duties and ideals','How must an advocate behave?',['Duties to the <b>court, client, opponent, colleagues and public</b> (BCI Rules)','<b>Seven Lamps</b> (Judge Edward Abbott Parry): Honesty, Courage, Industry, Wit, Eloquence, Judgment, Fellowship','<b>Panchsheel</b> (five functions): Advising, Drafting, Pleading, Negotiating, Officer of the court','No touting or advertising (Rule 36). Don\'t buy property in a case (Rule 22). Keep client accounts (Rules 22–30)'],'🪝 Lamps: "Honest Courage Is Wit, Eloquence, Judgment, Fellowship" · Panchsheel: "ADPNO = A Doctor Prescribes, Nurse Obeys"'],
 ['4','Punished: misconduct','What happens if he misbehaves?',['Bar Councils: <span class="sec">S.3</span> State Bar Council, <span class="sec">S.4</span> BCI, <span class="sec">S.9</span> Disciplinary Committees','<span class="sec">S.35</span> SBC Disciplinary Committee can: 1) dismiss, 2) reprimand, 3) suspend, 4) remove from the roll (highest)','<span class="sec">S.36B</span> Not decided in 1 year → goes to the BCI','<span class="sec">S.37</span> Appeal to the BCI in 60 days → <span class="sec">S.38</span> Appeal to the Supreme Court in 60 days','Proof: quasi-criminal, so <b>beyond reasonable doubt</b>; the burden is on the complainant'],'🪝 "Dismiss, Reprimand, Suspend, Remove" = DRSR, light to heavy · 35 → 37 → 38, 60 days each'],
 ['5','Contempt of court','What if he insults the court?',['Contempt of Courts Act, 1971 + <span class="sec">Art.129</span> (SC) and <span class="sec">Art.215</span> (HC)','<span class="sec">S.2(b)</span> Civil: wilful disobedience of a court order','<span class="sec">S.2(c)</span> Criminal: scandalising the court, interfering with justice','<span class="sec">S.12</span> Up to 6 months or fine up to ₹2,000; a sincere apology can be accepted','Defences: innocent publication (S.3), fair reporting (S.4), fair criticism of a judgment (S.5)'],'🪝 Criticise the judgment, never the judge']
@@ -216,7 +216,7 @@ const DOORS=[
 ['DP 4','Shanti Bhushan Pandey v. K.N. Tiwari','Punished for an act that was never charged: natural justice.','Set aside',W],
 ['DP 10','Gurmukh Das v. Amar Nath','Complaint goes to the SBC where he is enrolled; a tenancy dispute is private.','Dismissed + ₹30,000',W],
 ['DP 25','Geeta Sahu v. Nitin Kumar Saxena','S.35 covers only acts done as an advocate, not before enrolment.','SBC order set aside',W],
-['SBC 13','J. Mallesh v. R. Arun Kumar','Notice to the Advocate-General under S.35(3) is part of the procedure.','Closed, not pressed',W]]],
+['SBC 13','J. Mallesh v. R. Arun Kumar','Notice to the Advocate-General (S.35(2)) is part of the procedure.','Closed, not pressed',W]]],
 ['🤝 No client, no case','First prove there was an advocate–client relationship.',[
 ['DP 15','Ch. Durga Prasad v. P. Ram Reddy','No proof he was ever engaged.','Dismissed',W],
 ['SBC 21','Gundla Rajamma v. Ravi Prabhakar Reddy','Relationship is the first fact to prove.','Dismissed',W],
@@ -253,7 +253,7 @@ const TP=[
 ['1.6 Bar Councils and committees','S.3 SBC, S.4 BCI, S.7 BCI functions; S.9 Disciplinary Committee; S.10 Executive and Legal Education Committees.',1],
 ['1.7 Misconduct, punishment, remedies','S.35: dismiss, reprimand, suspend, remove; S.36B 1 year; appeals S.37 (BCI) and S.38 (SC), 60 days each.',1],
 ['1.8 Rights and duties','S.30 right to practise; duties to court, client, opponent, colleagues; legal aid under Art.39A.',1],
-['1.9 Right or privilege?','Art.19(1)(g) and S.30, but subject to Art.19(6) and Bar Council discipline: a privilege regulated by law.',1],
+['1.9 Right or privilege?','A middle path: a valuable statutory (S.30) and constitutional (Art.19(1)(g)) right, but not absolute: subject to Art.19(6) and Bar Council discipline. A right coupled with a continuing duty (O.P. Sharma, 2011).',1],
 ['1.10 AIBE','A BCI exam an enrolled advocate must pass for the Certificate of Practice.',1],
 ['1.11 Bar–Bench relations','Mutual respect; the two wheels of the chariot of justice.',1],
 ['1.12 Contempt of court','Civil S.2(b), criminal S.2(c); punishment S.12; defences S.3–6; Art.129 and Art.215.',1],
@@ -313,7 +313,7 @@ const EXTRA={
 'SBC 10':[['A complaint against two advocates; one was cleared at the first stage.','Against the other, the complainant stayed absent despite a conditional order.','Costs went to the advocate.'],'It must first pass the prima facie stage, then the complainant must lead evidence.','🚦 "Green light at the gate, red light for no evidence".'],
 'SBC 11':[['An advocate filed a caveat for one side.','He then filed a vakalat for the other side, the complainant, without instructions.','During the evidence stage, both parties settled.'],'No appearing for both sides, but a genuine settlement can close the case.','⚖️ "Two sides, one lawyer = foul; a handshake ended it".'],
 'SBC 12':[['A complaint was referred under S.35.','The complainant never appeared or filed evidence.','The advocate attended every date.'],'A finding of misconduct must rest on evidence.','🫙 "An empty file proves nothing".'],
-'SBC 13':[['A complaint was referred, with notice to the Advocate-General under S.35(3).','The advocate adopted his earlier counter by memo.','At the evidence stage, the complainant said he didn\'t want to proceed.'],'Notice to the Advocate-General is part of the procedure; a complaint not pressed is closed.','📨 "S.35(3): always copy the AG".'],
+'SBC 13':[['A complaint was referred, with notice to the Advocate-General (the order cites S.35(3); the Act puts this notice in S.35(2)).','The advocate adopted his earlier counter by memo.','At the evidence stage, the complainant said he didn\'t want to proceed.'],'Notice to the Advocate-General is part of the procedure; a complaint not pressed is closed.','📨 "S.35(3): always copy the AG".'],
 'SBC 14':[['Notice was sent to the Advocate-General and the matter posted.','The complainant was absent on ten dates.','He ignored even a conditional order.'],'Persistent absence means dismissal for default.','🔟 "Ten absences and you\'re out".'],
 'SBC 15':[['High Court staff complained about an advocate in the filing section.','She abused them, pushed them and slapped a typist.','She stayed away from the enquiry.'],'Assaulting court staff degrades the court: 5 years\' suspension.','👋 "One slap = five years".'],
 'SBC 16':[['The Gajwel Bar President complained about a member.','The member posted defamatory WhatsApp messages and had hidden a criminal case at enrolment.','The complainant tried to withdraw, but the Council refused.'],'A serious complaint can continue despite withdrawal; it was "other misconduct": 2 years\' suspension.','📱 "Forward with care: WhatsApp cost him 2 years".'],
@@ -353,7 +353,7 @@ const TH=[
 ['The Supreme Court\'s power to punish for its own contempt comes from','Article 129',['Article 215','Article 142','Article 32'],'Art.129 for the SC; Art.215 for High Courts.'],
 ['Fair criticism of a judicial act in good faith is a defence under','S.5',['S.3','S.12','S.19'],'S.3 is innocent publication; S.4 is fair reporting.'],
 ['The right to practise any profession flows from','Article 19(1)(g)',['Article 21','Article 14','Article 39A'],'Subject to reasonable restrictions under Art.19(6).'],
-['Is the right to practise absolute?','No, it is a privilege regulated by law',['Yes, it is absolute','Only for Senior Advocates','Only after 10 years'],'Art.19(6) restrictions and Bar Council discipline apply.'],
+['Is the right to practise law absolute?','No: it is a right coupled with a continuing duty',['Yes, it is absolute','Only for Senior Advocates','Only after 10 years'],'A statutory and constitutional right, subject to Art.19(6) and Bar Council discipline (O.P. Sharma, 2011).'],
 ['Free legal aid as a constitutional goal is in','Article 39A',['Article 19(1)(g)','Article 129','Article 51A'],'Advocates must support legal aid for the poor.'],
 ['The All India Bar Examination is conducted by','The Bar Council of India',['The Supreme Court','The State Bar Council','The Law Ministry'],'Passing it gives the Certificate of Practice.'],
 ['An enrolled advocate who hasn\'t cleared AIBE','Cannot practise until he passes',['Can practise everywhere','Can practise only in the SC','Loses enrolment at once'],'The Certificate of Practice alone authorises practice.'],
@@ -370,7 +370,7 @@ const TH=[
 ['The standard of proof in disciplinary proceedings is','Beyond reasonable doubt',['Preponderance of probability','Mere suspicion','No proof needed'],'They are quasi-criminal.'],
 ['In a misconduct complaint, the burden of proof lies on','The complainant',['The advocate','The Bar Council','The Advocate-General'],'Most complaints in the record failed for this reason.'],
 ['Conduct before enrolment is examined under','S.26 (enrolment), not S.35',['S.35','S.38','S.12'],'DP 2 and DP 25.'],
-['Before a disciplinary enquiry, notice must go to the Advocate-General under','S.35(3)',['S.24A','S.36B','S.49'],'SBC 13.'],
+['When a Disciplinary Committee fixes a hearing, notice must also go to the Advocate-General under','S.35(2)',['S.24A','S.36B','S.49'],'S.35(2) requires notice to the advocate and the Advocate-General; S.35(3) lets both be heard before an order. Example: SBC 13.'],
 ['Electronic evidence like a DVD needs a certificate under','S.65B, Evidence Act',['S.35, Advocates Act','S.12, Contempt Act','Art.129'],'DP 3: a copied DVD without one was inadmissible.'],
 ['A lawyer is called an "officer of the court" because','He helps the court find the truth and do justice',['He is paid by the court','He is a government servant','He can sign orders'],'His first duty is to the court.'],
 ['Advocacy is described in the record as','Both a science and an art',['Only a science','Only an art','A business'],'Knowledge of law plus the skill to present it.'],
@@ -379,10 +379,13 @@ const TH=[
 ];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const pick=(arr,n,not)=>shuf([...new Set(arr.filter(x=>x!==not))]).slice(0,n);
-const caseQ=k=>{const {d,c}=ALL[k],X=EXTRA[c[0]],t=Math.floor(Math.random()*3),res=ALL.map(a=>a.c[3]),rules=ALL.map(a=>EXTRA[a.c[0]][1]),names=ALL.map(a=>a.c[0]+' · '+a.c[1]);
- if(t===0)return{q:`${c[0]} · ${c[1]}: ${X[0][0]} ${X[0][1]} What was the result?`,a:c[3],o:pick(res,3,c[3]),e:X[1],h:X[2],tag:'Case'};
- if(t===1)return{q:`Which rule does ${c[0]} (${c[1]}) stand for?`,a:X[1],o:pick(rules,3,X[1]),e:`${X[0][1]} Result: ${c[3]}.`,h:X[2],tag:'Case'};
- return{q:`Which case matches this story? "${X[0][1]}"`,a:names[k],o:pick(names,3,names[k]),e:`${X[1]} Result: ${c[3]}.`,h:X[2],tag:'Case'}};
+const okey=r=>{r=r.toLowerCase();if(/reprimand/.test(r))return 'rep';const m=r.match(/(\d+)\s*(yr|year|month)/);if(m)return m[1]+m[2][0];if(/debar/.test(r))return 'deb';if(/till/.test(r))return 'till';if(/apology|warn/.test(r))return 'apol';if(/contempt|charges|comply/.test(r))return 'ctp';return 'off'};
+const distinct=(pool,n,avoid)=>{const seen=new Set(avoid),out=[];for(const x of shuf(pool)){const k=x.k;if(seen.has(k))continue;seen.add(k);out.push(x.v);if(out.length===n)break}return out};
+const caseQ=k=>{const {d,c}=ALL[k],X=EXTRA[c[0]],t=Math.floor(Math.random()*3);
+ const others=ALL.map((a,i)=>({a,i})).filter(o=>o.i!==k);
+ if(t===0){const pool=others.map(o=>({k:okey(o.a.c[3]),v:o.a.c[3]}));return{q:`${c[0]} · ${c[1]}: ${X[0][0]} ${X[0][1]} What was the result?`,a:c[3],o:distinct(pool,3,[okey(c[3])]),e:X[1],h:X[2],tag:'Case'}}
+ if(t===1){const grp=x=>[3,5,6].includes(x)?'fail':x;const pool=others.filter(o=>grp(o.a.d)!==grp(d)).map(o=>({k:o.i,v:EXTRA[o.a.c[0]][1]}));return{q:`Which rule does ${c[0]} (${c[1]}) stand for?`,a:X[1],o:distinct(pool,3,[]),e:`${X[0][1]} Result: ${c[3]}.`,h:X[2],tag:'Case'}}
+ const pool=others.map(o=>({k:o.i,v:o.a.c[0]+' · '+o.a.c[1]}));return{q:`Which case matches this story? "${X[0][1]}"`,a:c[0]+' · '+c[1],o:distinct(pool,3,[]),e:`${X[1]} Result: ${c[3]}.`,h:X[2],tag:'Case'}};
 const qbox=document.getElementById('qbox');let QZ=[],qi=0,ans=[],who='',LAST='',SENT=0;
 const qev=e=>{try{fetch('https://lawsticker-backend-494996217030.europe-west1.run.app/api/quiz-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:'ethics',e}),keepalive:true}).catch(()=>{})}catch(x){}};
 let SHARED=0;const shareEv=()=>{if(!SHARED){SHARED=1;qev('share')}};
@@ -403,7 +406,7 @@ const qEnd=()=>{const done=ans.filter(a=>a&&a.pick),ok=done.filter(a=>a.ok).leng
  <canvas id="cert" width="1200" height="850" aria-label="Certificate"></canvas>
  <div class="qact wrap"><button class="pri" data-act="dl">⬇️ Download certificate</button><button class="pri" data-act="share">📤 Share certificate</button><button class="pri wa" data-act="wa">🟢 WhatsApp</button><button class="ghost" data-act="print">🖨️ Print / save PDF with answers</button><button class="ghost" data-act="again">🔁 New quiz</button></div></div>
  <h3 class="rvh">Your answers</h3><ol class="rv">${QZ.map((q,i)=>{const a=ans[i];const st=!a||!a.pick?'sk':a.ok?'ok':'no';return `<li class="${st}"><p class="rq">${q.q}</p><p>${st==='sk'?'⏭️ Skipped':`Your answer: <b>${a.pick}</b> ${a.ok?'✅':'❌'}`}</p>${st!=='ok'?`<p>Correct: <b>${q.a}</b></p>`:''}<p class="mut">${q.e}</p></li>`}).join('')}</ol>`;
- LAST=`${ok}/${done.length} (${p}%)`;if(done.length&&!SENT){SENT=1;qev('test')}drawCert(ok,done.length,p);document.getElementById('game').scrollIntoView()};
+ LAST=`${ok}/${done.length} (${p}%)`;if(done.length>=Math.min(5,QZ.length)&&!SENT){SENT=1;qev('test')}drawCert(ok,done.length,p);document.getElementById('game').scrollIntoView()};
 const drawCert=(ok,n,p)=>{const cv=document.getElementById('cert'),x=cv.getContext('2d'),W=1200,H=850,F="'Anek Latin',sans-serif";
  x.fillStyle='#FFFFFF';x.fillRect(0,0,W,H);x.fillStyle='#2A2C94';x.fillRect(0,0,W,22);x.fillRect(0,H-22,W,22);x.strokeStyle='#FFB703';x.lineWidth=6;x.strokeRect(40,50,W-80,H-100);
  x.textAlign='center';x.fillStyle='#2A2C94';x.font=`700 30px ${F}`;x.fillText('LawSticker AI',W/2,120);
@@ -427,8 +430,11 @@ qbox.addEventListener('click',async e=>{const ln=e.target.closest('[data-n]');if
   try{const bl=await new Promise(r=>document.getElementById('cert').toBlob(r));const f=new File([bl],'certificate.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:txt});shareEv();return}if(navigator.share){await navigator.share({text:txt});shareEv();return}}catch(err){if(err&&err.name==='AbortError')return}
   shareEv();location.href='https://wa.me/?text='+encodeURIComponent(txt)}
  else if(v==='wa'){shareEv();location.href='https://wa.me/?text='+encodeURIComponent(`I scored ${LAST} on the Professional Ethics viva practice quiz on LawSticker AI 🎓 Try it free: https://lawsticker-ai.com/ethics-viva.html#game`)}});
-qStart();
-fetch('/data/quiz-stats.json?'+Date.now()).then(r=>r.json()).then(d=>{const e=d.ethics||{},bits=[];if(e.tests>=10)bits.push(`🎓 ${e.tests} quizzes taken`);if(e.shares>=10)bits.push(`📤 ${e.shares} certificates shared`);if(bits.length){const q=document.getElementById('qstats');q.textContent=bits.join(' · ');q.hidden=false}}).catch(()=>{});
+qStart();window.__qz={build:build,okey:okey};
+fetch('/data/quiz-stats.json?'+Date.now()).then(r=>r.json()).then(d=>{const e=d.ethics||{},today=new Date(Date.now()+19800000).toISOString().slice(0,10),td=((e.days||{})[today]||{}).tests||0,bits=[];
+ if(e.tests>=10)bits.push(['🎓',e.tests,'quizzes taken']);if(td>=3)bits.push(['🔥',td,'today']);if(e.shares>=5)bits.push(['📤',e.shares,'certificates shared']);
+ if(!bits.length)return;const q=document.getElementById('qstats');q.innerHTML=bits.map(b=>`<span><i>${b[0]}</i><b data-n="${b[1]}">0</b> ${b[2]}</span>`).join('');q.hidden=false;
+ q.querySelectorAll('b[data-n]').forEach(el=>{const n=+el.dataset.n,t0=performance.now();const step=t=>{const p=Math.min(1,(t-t0)/900);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};matchMedia('(prefers-reduced-motion:reduce)').matches?el.textContent=n:requestAnimationFrame(step)})}).catch(()=>{});
 
 const Q=[
 ['What is professional ethics?','The rules of conduct an advocate must follow towards the court, client, opponent, colleagues and society. Many are binding under the Advocates Act, 1961 and the BCI Rules.'],
@@ -436,7 +442,7 @@ const Q=[
 ['Qualifications for enrolment?','S.24: citizen of India, 21 years, a law degree, State Bar Council conditions, enrolment fee.'],
 ['Disqualifications for enrolment?','S.24A: conviction for an offence involving moral turpitude, or dismissal from government service for it. The bar lifts 2 years after release or removal.'],
 ['What is AIBE?','The All India Bar Examination, conducted by the BCI. An enrolled advocate must pass it to get the Certificate of Practice before practising.'],
-['Is the right to practise a right or a privilege?','S.30 gives the right, and Art.19(1)(g) protects the profession. But it is subject to reasonable restrictions (Art.19(6)) and Bar Council discipline, so it is a privilege regulated by law.'],
+['Is the right to practise a right or a privilege?','S.30 gives the right, and Art.19(1)(g) protects the profession. But it is subject to reasonable restrictions (Art.19(6)) and Bar Council discipline, so the record takes a middle path: a valuable right coupled with a continuing duty (O.P. Sharma v. High Court of Punjab and Haryana, 2011).'],
 ['Who is a Senior Advocate?','S.16: an advocate designated by the SC or a HC for ability, standing at the Bar and experience. The other class is "other advocates".'],
 ['Functions of the Bar Council of India?','S.7: lays down standards of conduct and etiquette, legal education, recognises law degrees, safeguards advocates\' rights, hears disciplinary appeals, conducts AIBE.'],
 ['What is professional misconduct?','Conduct that is dishonest or unworthy of an advocate, e.g. touting, advertising, taking both sides, misusing client money, neglecting a brief. S.35 also covers "other misconduct".'],
