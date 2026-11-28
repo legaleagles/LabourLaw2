@@ -179,6 +179,31 @@ table.cmp td.cmp-label{font-weight:700;white-space:nowrap;}
 .crosslink{flex:1;min-width:140px;background:#fff;border:1.5px solid #EEE8D8;border-radius:12px;padding:12px;text-align:center;text-decoration:none;font-size:12px;font-weight:700;color:#7C5A0B;}
 
 footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);}
+.oe{background:#fff;border:1.5px solid #EEE8D8;border-radius:18px;padding:14px;margin-bottom:8px}
+.oe-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.oe-inputs label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:#7C5A0B}
+.oe-inputs input{font:inherit;font-size:16px;font-weight:700;color:var(--ink);border:1.5px solid #E5DDC8;border-radius:10px;padding:9px 10px;width:100%}
+.oe-note{font-size:11.5px;color:var(--muted);margin:8px 0 12px;line-height:1.45}
+.oe-cal{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.oe-cal button{border:1.5px solid #E5DDC8;background:#FFFBEF;border-radius:10px;padding:6px 0;font:inherit;font-size:16px;font-weight:800;color:#7C5A0B;cursor:pointer;min-height:44px;line-height:1.1}
+.oe-cal button small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;font-weight:600;color:var(--muted)}
+.oe-cal button.on{background:var(--navy);border-color:var(--navy);color:#fff}.oe-cal button.on small{color:#FFD166}
+.oe-cal button.end{border-color:var(--gold);background:#FFF1C9}
+.oe-day{margin:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.oe-day>div{border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.45}
+.oe-day .s{background:#EEF0F8;border-left:5px solid var(--navy)}.oe-day .y{background:#FFF6DA;border-left:5px solid var(--gold)}
+.oe-day b.h{display:block;font-size:12px;margin-bottom:4px}.oe-day .v{display:block;font-size:18px;font-weight:900;margin:2px 0}
+.oe-day .full{grid-column:1/-1;background:#F3FBF6;border-left:5px solid var(--green);font-size:12.5px}
+.oe-chart{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;align-items:end;height:120px;border-bottom:1.5px solid #E5DDC8;margin-top:6px}
+.oe-chart .c{display:flex;gap:2px;align-items:flex-end;height:100%;justify-content:center}
+.oe-chart .c i{display:block;width:40%;border-radius:4px 4px 0 0;min-height:2px}
+.oe-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;margin:6px 0 12px}.oe-legend span{display:flex;align-items:center;gap:5px}.oe-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.oe-tbl table{width:100%;border-collapse:collapse;font-size:12.5px}
+.oe-tbl th{background:var(--navy);color:#fff;padding:7px 8px;text-align:left;font-size:12px}
+.oe-tbl th:first-child{border-radius:10px 0 0 0}.oe-tbl th:last-child{border-radius:0 10px 0 0}
+.oe-tbl td{padding:8px;border-bottom:1px solid #EEE8D8;vertical-align:top;line-height:1.45;width:50%}
+.oe-watch{margin-top:12px;background:#FEF2F2;border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.5}
+.oe-watch b{display:block;color:var(--rose);margin-bottom:4px}.oe-watch ol{padding-left:18px}.oe-watch li{margin:4px 0}
 </style>
 <link rel="stylesheet" href="assets/brand.css">
 </head>
@@ -239,6 +264,25 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);}
   <div class="section-hd"><span id="tCmpHd">⚖️ Side-by-Side</span></div>
   <div class="section-sub" id="tCmpSub">Scroll sideways to see all six options compared on what actually matters.</div>
   <div class="cmp-wrap"><div id="cmpArea"></div></div>
+
+  <!-- OLD GOLD EXCHANGE WITH WEIGHT LOCK -->
+  <div class="section-hd"><span id="oeHd"></span></div>
+  <div class="section-sub" id="oeSub"></div>
+  <div class="oe">
+    <div class="oe-inputs">
+      <label><span id="oeLg"></span><input id="oeG" type="number" inputmode="decimal" min="1" step="0.1" value="20"></label>
+      <label><span id="oeLr"></span><input id="oeR" type="number" inputmode="numeric" min="1000" step="10" value="7500"></label>
+      <label><span id="oeLm"></span><input id="oeM" type="number" inputmode="decimal" min="0" max="40" step="0.5" value="12"></label>
+      <label><span id="oeLi"></span><input id="oeI" type="number" inputmode="decimal" min="0" max="30" step="0.5" value="12"></label>
+    </div>
+    <p class="oe-note" id="oeNote"></p>
+    <div class="oe-cal" id="oeCal" role="tablist"></div>
+    <div class="oe-day" id="oeDay"></div>
+    <div class="oe-chart" id="oeChart"></div>
+    <div class="oe-legend"><span><i style="background:#1C1E6B"></i><b id="oeLs"></b></span><span><i style="background:#FFB703"></i><b id="oeLy"></b></span></div>
+    <div class="oe-tbl" id="oeTbl"></div>
+    <div class="oe-watch" id="oeWatch"></div>
+  </div>
 
   <!-- BEST PRACTICES -->
   <div class="section-hd"><span id="tBpHd">✅ Before You Sign Up Anywhere</span></div>
@@ -1081,6 +1125,72 @@ applyStaticLang();
 initStory();
 onSchemeInputChange();
 updateLivePreview();
+</script>
+<script>
+(function(){
+var T={
+en:{hd:'🔒 Old gold exchange with a weight lock',sub:'You give old jewellery today. The shop tests it and writes down its gold weight in grams. After 8 months you choose a new ornament against those grams, and making charges are waived. Tap each month to see who gains what.',
+lg:'Grams credited on your receipt',lr:'Gold rate per gram today (₹)',lm:'Usual making charge (%)',li:'Shop\'s cost of money (% a year)',
+note:'Example figures: enter today\'s rate and the shop\'s usual making charge. "Cost of money" is what the shop would otherwise pay to borrow (gold loans are often 9–12% a year); it shows what free use of your gold is worth to them.',
+m:'Month',start:'Today',end:'Order',sh:'🏪 The shop gets',yo:'👪 You get',
+s0:'Your old gold today, worth about ₹{V}, without paying you cash.',y0:'A receipt that locks {g} g. Nothing to pay now.',
+sm:'Free use of your gold for stock or raw material: like an interest-free loan. Worth about ₹{F} so far.',ym:'Your {g} g stay {g} g whether the gold rate goes up or down.',
+s8:'About ₹{F} of free funding over 8 months, plus a sure sale (often of more than {g} g).',y8:'Making charges waived: about ₹{S} saved on {g} g. Choose your ornament.',
+v:'On these numbers you save about ₹{S} and the shop gains about ₹{F} of free funding. Watch the testing deduction: every 1 g cut from your necklace costs you about ₹{R}.',
+ls:'Shop\'s free-funding benefit',ly:'Your making-charge saving',
+th1:'🏪 What the shop gains',th2:'👪 What you gain',
+rows:[['Your gold now, without paying cash: free stock or raw material for 8 months.','Your grams are locked: a price rise does not shrink what you get.'],['A guaranteed customer: you must buy from them, and people often buy more than the locked weight.','Making charges waived: often 8–25% of an ornament\'s price.'],['No price risk: it receives gold and owes gold, so rate changes cancel out.','No cash needed now, and 8 months to choose a design.'],['Room to earn back the waiver: testing deductions, chosen collections, stone or extra-weight charges.','A written record of your gold, instead of a necklace you were not wearing.']],
+wt:'⚠️ Before you hand over the gold, get these in writing',
+w:['Grams credited, purity (22K/916 or pure gold), the date and the 8-month order date.','What exactly is waived: making charges, wastage (VA), stone charges? Is GST still charged on the new ornament? Usually it is.','How much was deducted at testing (stones, solder, impurities) and why.','Any limit on designs or collections, and how extra weight beyond {g} g is billed.','What happens if you need cash instead, or the shop closes: your gold is now only the shop\'s promise.']},
+te:{hd:'🔒 పాత బంగారం మార్పిడి: గ్రాముల లాక్',sub:'ఈ రోజు పాత నగ ఇస్తారు. షాపు దాన్ని పరీక్షించి బంగారం బరువును గ్రాముల్లో రాస్తుంది. 8 నెలల తర్వాత ఆ గ్రాములకు కొత్త నగ ఎంచుకుంటారు, తయారీ ఛార్జీలు మాఫీ. ఎవరికి ఏ లాభమో ప్రతి నెలపై నొక్కి చూడండి.',
+lg:'రసీదులో జమ అయిన గ్రాములు',lr:'ఈ రోజు గ్రాము బంగారం ధర (₹)',lm:'సాధారణ తయారీ ఛార్జీ (%)',li:'షాపుకు డబ్బు ఖర్చు (సంవత్సరానికి %)',
+note:'ఇవి ఉదాహరణ అంకెలు: ఈ రోజు ధర, షాపు సాధారణ తయారీ ఛార్జీ నమోదు చేయండి. "డబ్బు ఖర్చు" అంటే షాపు అప్పు తీసుకుంటే చెల్లించే వడ్డీ (గోల్డ్ లోన్‌లు తరచూ సంవత్సరానికి 9–12%); మీ బంగారాన్ని ఉచితంగా వాడుకోవడం వారికి ఎంత విలువో ఇది చూపిస్తుంది.',
+m:'నెల',start:'ఈ రోజు',end:'ఆర్డర్',sh:'🏪 షాపుకు దక్కేది',yo:'👪 మీకు దక్కేది',
+s0:'నగదు ఇవ్వకుండానే మీ పాత బంగారం, సుమారు ₹{V} విలువ.',y0:'{g} గ్రా. లాక్ చేసే రసీదు. ఇప్పుడు ఏమీ చెల్లించనక్కర్లేదు.',
+sm:'మీ బంగారాన్ని స్టాక్‌గా లేదా ముడిసరుకుగా ఉచితంగా వాడుకోవడం: వడ్డీ లేని అప్పు లాంటిది. ఇప్పటివరకు సుమారు ₹{F} విలువ.',ym:'ధర పెరిగినా తగ్గినా మీ {g} గ్రా. అలాగే ఉంటాయి.',
+s8:'8 నెలల్లో సుమారు ₹{F} ఉచిత నిధి, తప్పకుండా జరిగే అమ్మకం (తరచూ {g} గ్రా. కంటే ఎక్కువ).',y8:'తయారీ ఛార్జీలు మాఫీ: {g} గ్రా. పై సుమారు ₹{S} ఆదా. మీ నగ ఎంచుకోండి.',
+v:'ఈ అంకెలతో మీకు సుమారు ₹{S} ఆదా, షాపుకు సుమారు ₹{F} ఉచిత నిధి. పరీక్షలో తగ్గింపు జాగ్రత్త: మీ నగ నుంచి తగ్గించే ప్రతి 1 గ్రా. మీకు సుమారు ₹{R} నష్టం.',
+ls:'షాపుకు ఉచిత నిధి లాభం',ly:'మీకు తయారీ ఛార్జీ ఆదా',
+th1:'🏪 షాపు లాభం',th2:'👪 మీ లాభం',
+rows:[['నగదు ఇవ్వకుండానే మీ బంగారం: 8 నెలలు ఉచిత స్టాక్ లేదా ముడిసరుకు.','మీ గ్రాములు లాక్: ధర పెరిగినా మీకు వచ్చేది తగ్గదు.'],['ఖచ్చితమైన కస్టమర్: మీరు వారి దగ్గరే కొనాలి, తరచూ లాక్ చేసిన బరువు కంటే ఎక్కువ కొంటారు.','తయారీ ఛార్జీలు మాఫీ: తరచూ నగ ధరలో 8–25%.'],['ధర రిస్క్ లేదు: బంగారం తీసుకుని బంగారమే ఇవ్వాలి, ధర మార్పులు రద్దవుతాయి.','ఇప్పుడు నగదు అక్కర్లేదు, డిజైన్ ఎంచుకోవడానికి 8 నెలలు.'],['మాఫీని తిరిగి సంపాదించే అవకాశాలు: పరీక్ష తగ్గింపు, ఎంచుకున్న కలెక్షన్లు, రాళ్ల లేదా అదనపు బరువు ఛార్జీలు.','వాడని నగకు బదులు మీ బంగారానికి రాతపూర్వక రికార్డు.']],
+wt:'⚠️ బంగారం ఇచ్చే ముందు ఇవి రాతపూర్వకంగా తీసుకోండి',
+w:['జమ అయిన గ్రాములు, స్వచ్ఛత (22K/916 లేదా స్వచ్ఛమైన బంగారం), తేదీ, 8 నెలల ఆర్డర్ తేదీ.','ఏవి మాఫీ: తయారీ ఛార్జీ, వేస్టేజ్ (VA), రాళ్ల ఛార్జీ? కొత్త నగపై GST ఉంటుందా? సాధారణంగా ఉంటుంది.','పరీక్షలో ఎంత తగ్గించారు (రాళ్లు, టంకం, మలినాలు), ఎందుకు.','డిజైన్లు లేదా కలెక్షన్లపై పరిమితి ఉందా, {g} గ్రా. మించిన బరువుకు ఎలా బిల్లు వేస్తారు.','నగదు కావాలంటే లేదా షాపు మూతపడితే ఏమవుతుంది: మీ బంగారం ఇప్పుడు షాపు మాట మాత్రమే.']},
+hi:{hd:'🔒 पुराने सोने का बदला: ग्राम लॉक',sub:'आज आप पुराना गहना देते हैं। दुकान उसकी जाँच करके सोने का वज़न ग्राम में लिखती है। 8 महीने बाद उन ग्रामों पर नया गहना चुनते हैं, बनवाई (मेकिंग) चार्ज माफ़। किसे क्या फ़ायदा, हर महीने पर टैप करके देखें।',
+lg:'रसीद में जमा ग्राम',lr:'आज सोने का भाव प्रति ग्राम (₹)',lm:'सामान्य मेकिंग चार्ज (%)',li:'दुकान की पैसे की लागत (% सालाना)',
+note:'ये उदाहरण के अंक हैं: आज का भाव और दुकान का सामान्य मेकिंग चार्ज डालें। "पैसे की लागत" वह ब्याज है जो दुकान उधार लेने पर देती (गोल्ड लोन अक्सर 9–12% सालाना); इससे पता चलता है कि आपका सोना मुफ़्त इस्तेमाल करना उनके लिए कितना कीमती है।',
+m:'महीना',start:'आज',end:'ऑर्डर',sh:'🏪 दुकान को मिलता है',yo:'👪 आपको मिलता है',
+s0:'बिना नकद दिए आपका पुराना सोना, लगभग ₹{V} का।',y0:'{g} ग्राम लॉक करने वाली रसीद। अभी कुछ नहीं देना।',
+sm:'आपके सोने का स्टॉक या कच्चे माल की तरह मुफ़्त इस्तेमाल: बिना ब्याज के कर्ज़ जैसा। अब तक लगभग ₹{F} का।',ym:'भाव बढ़े या घटे, आपके {g} ग्राम {g} ग्राम ही रहेंगे।',
+s8:'8 महीनों में लगभग ₹{F} का मुफ़्त फंड, और पक्की बिक्री (अक्सर {g} ग्राम से ज़्यादा)।',y8:'मेकिंग चार्ज माफ़: {g} ग्राम पर लगभग ₹{S} की बचत। अपना गहना चुनें।',
+v:'इन अंकों पर आपकी बचत लगभग ₹{S} और दुकान को लगभग ₹{F} का मुफ़्त फंड। जाँच में कटौती पर ध्यान दें: आपके गहने से कटा हर 1 ग्राम आपको लगभग ₹{R} का नुकसान है।',
+ls:'दुकान का मुफ़्त फंड लाभ',ly:'आपकी मेकिंग चार्ज बचत',
+th1:'🏪 दुकान का फ़ायदा',th2:'👪 आपका फ़ायदा',
+rows:[['बिना नकद दिए आपका सोना: 8 महीने मुफ़्त स्टॉक या कच्चा माल।','आपके ग्राम लॉक: भाव बढ़ने पर भी आपको मिलने वाला कम नहीं होता।'],['पक्का ग्राहक: आपको उन्हीं से खरीदना है, और लोग अक्सर लॉक वज़न से ज़्यादा खरीदते हैं।','मेकिंग चार्ज माफ़: अक्सर गहने की कीमत का 8–25%।'],['भाव का जोखिम नहीं: सोना लिया, सोना देना है, भाव के बदलाव बराबर हो जाते हैं।','अभी नकद की ज़रूरत नहीं, और डिज़ाइन चुनने को 8 महीने।'],['माफ़ी वसूलने के रास्ते: जाँच में कटौती, चुनिंदा कलेक्शन, पत्थर या अतिरिक्त वज़न के चार्ज।','बिना पहने गहने की जगह आपके सोने का लिखित रिकॉर्ड।']],
+wt:'⚠️ सोना देने से पहले ये लिखित में लें',
+w:['जमा ग्राम, शुद्धता (22K/916 या शुद्ध सोना), तारीख और 8 महीने की ऑर्डर तारीख।','क्या-क्या माफ़ है: मेकिंग चार्ज, वेस्टेज (VA), पत्थर चार्ज? नए गहने पर GST लगेगा? आम तौर पर लगता है।','जाँच में कितना काटा गया (पत्थर, टांका, अशुद्धि) और क्यों।','डिज़ाइन या कलेक्शन पर कोई रोक, और {g} ग्राम से ज़्यादा वज़न का बिल कैसे बनेगा।','नकद चाहिए या दुकान बंद हो जाए तो क्या होगा: आपका सोना अब सिर्फ़ दुकान का वादा है।']}
+};
+var sel=8,$=function(i){return document.getElementById(i)};
+function lang(){return (typeof PAGE_LANG!=='undefined'&&T[PAGE_LANG])?PAGE_LANG:'en'}
+function inr(n){return Math.round(n).toLocaleString('en-IN')}
+function fill(s,d){return s.replace(/\{(\w)\}/g,function(_,k){return d[k]})}
+function render(){var L=T[lang()],g=Math.max(0,+$('oeG').value||0),r=Math.max(0,+$('oeR').value||0),mk=Math.max(0,+$('oeM').value||0)/100,ir=Math.max(0,+$('oeI').value||0)/100;
+ var V=g*r,S=V*mk,fin=function(m){return V*ir/12*m};
+ ['hd','sub','lg','lr','lm','li','note','ls','ly'].forEach(function(k){$('oe'+{hd:'Hd',sub:'Sub',lg:'Lg',lr:'Lr',lm:'Lm',li:'Li',note:'Note',ls:'Ls',ly:'Ly'}[k]).textContent=L[k]});
+ var c='';for(var m=0;m<=8;m++){c+='<button role="tab" aria-selected="'+(m===sel)+'" class="'+(m===sel?'on ':'')+(m===8?'end':'')+'" data-m="'+m+'">'+m+'<small>'+(m===0?L.start:m===8?L.end:L.m)+'</small></button>'}
+ $('oeCal').innerHTML=c;
+ var d={g:(+g.toFixed(2)).toString(),V:inr(V),F:inr(fin(sel)),S:inr(S),R:inr(r)};
+ var sh=sel===0?L.s0:sel===8?L.s8:L.sm,yo=sel===0?L.y0:sel===8?L.y8:L.ym;
+ $('oeDay').innerHTML='<div class="s"><b class="h">'+L.sh+'</b>'+fill(sh,d)+'</div><div class="y"><b class="h">'+L.yo+'</b>'+fill(yo,d)+'</div>'+(sel===8?'<div class="full">'+fill(L.v,{S:inr(S),F:inr(fin(8)),R:inr(r)})+'</div>':'');
+ var mx=Math.max(fin(8),S)||1,ch='';for(m=0;m<=8;m++){ch+='<div class="c" title="'+L.m+' '+m+'"><i style="height:'+(fin(m)/mx*100)+'%;background:#1C1E6B"></i><i style="height:'+((m===8?S:0)/mx*100)+'%;background:#FFB703"></i></div>'}
+ $('oeChart').innerHTML=ch;
+ $('oeTbl').innerHTML='<table><tr><th>'+L.th1+'</th><th>'+L.th2+'</th></tr>'+L.rows.map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>'}).join('')+'</table>';
+ $('oeWatch').innerHTML='<b>'+L.wt+'</b><ol>'+L.w.map(function(x){return '<li>'+fill(x,d)+'</li>'}).join('')+'</ol>';
+}
+$('oeCal').addEventListener('click',function(e){var b=e.target.closest('button');if(b){sel=+b.dataset.m;render()}});
+['oeG','oeR','oeM','oeI'].forEach(function(i){$(i).addEventListener('input',render)});
+if(typeof setPageLang==='function'){var _o=setPageLang;window.setPageLang=setPageLang=function(l){_o(l);render()}}
+render();
+})();
 </script>
 </body>
 </html>
